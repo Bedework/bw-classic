@@ -550,40 +550,29 @@ ul#eventList li {
 .bwStatusConfirmed {
 }
 .eventTitle {
- display: block;
 }
 .eventListingCal {
- display: block;
 }
 .eventLink {
- display: block;
 }
 .eventWhen {
- display: block;
 }
 .eventWhere {
- display: block;
 }
 .eventDescription {
- display: block;
+ margin: 1em 0;
 }
 .eventStatus {
- display: block;
 }
 .eventCost {
- display: block;
 }
 .eventLink {
- display: block;
 }
 .eventContact {
- display: block;
 }
 .eventCategories {
- display: block;
 }
 .eventComments {
- display: block;
 }
 .eventIcons {
  display: block;
@@ -889,6 +878,4 @@ div#footer a.rss {
 }
 #footForms form {
   display: inline;
-}
-}
 }

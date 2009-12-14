@@ -50,10 +50,6 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
 
-  <!-- ================================= -->
-  <!--  DEMO PUBLIC CALENDAR STYLESHEET  -->
-  <!-- ================================= -->
-
   <!-- DEFINE INCLUDES -->
   <xsl:include href="../../../bedework-common/default/default/errors.xsl" />
   <xsl:include href="../../../bedework-common/default/default/messages.xsl" />
@@ -61,6 +57,7 @@
   <xsl:include href="./strings.xsl" />
 
   <!-- Page subsections -->
+  <xsl:include href="./defaultTheme/head.xsl" />
   <xsl:include href="./defaultTheme/header.xsl" />
   <xsl:include href="./defaultTheme/footer.xsl" />
   <xsl:include href="./defaultTheme/eventslist.xsl" />
@@ -68,6 +65,7 @@
   <xsl:include href="./defaultTheme/views.xsl" />
   <xsl:include href="./defaultTheme/ongoing.xsl" />
   <xsl:include href="./defaultTheme/featured.xsl"/>
+  <xsl:include href="./defaultTheme/groups.xsl"/>
   <xsl:include href="./defaultTheme/system-stats.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
@@ -121,54 +119,7 @@
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">
-      <head>
-        <title>
-          <xsl:choose>
-            <xsl:when test="/bedework/page='event'">
-              <xsl:value-of select="/bedework/event/summary" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:copy-of select="$bwStr-Root-PageTitle" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </title>
-
-        <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-
-        <!-- address bar favicon -->
-        <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
-
-        <!-- load css -->
-        <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/fixed.css" />
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
-
-        <!-- Dependencies -->
-        <xsl:text disable-output-escaping="yes">
-          <![CDATA[
-          <!--[if IE 6]>
-            <link rel="stylesheet" type="text/css" media="screen" href="/calrsrc.MainCampus/default/default/defaultTheme/css/ie6.css"/>
-          <![endif]-->
-
-          <!--[if IE 7]>
-            <link rel="stylesheet" type="text/css" media="screen" href="/calrsrc.MainCampus/default/default/defaultTheme/css/ie7.css"/>
-          <![endif]-->
-          ]]>
-        </xsl:text>
-
-        <!-- load javascript -->
-        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/yahoo-dom-event.js">&#160;</script>
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/calendar-min.js">&#160;</script>
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/yui/animation-min.js">&#160;</script>
-        <xsl:if test="/bedework/page='searchResult'">
-          <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">&#160;</script>
-        </xsl:if>
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/mainCampus.js">&#160;</script>
-        <script type="text/javascript">
-          <xsl:call-template name="jsonDataObject" />
-        </script>
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/ifs-calendar.js">&#160;</script>
-      </head>
+      <xsl:call-template name="head"/>
       <body>
         <div id="wrap">
           <div id="header">
@@ -177,13 +128,13 @@
           </div>
           <xsl:if test="/bedework/error">
             <div id="errors">
-              <xsl:apply-templates
-                select="/bedework/error" />
+              <xsl:apply-templates select="/bedework/error" />
             </div>
           </xsl:if>
           <div id="content">
             <xsl:choose>
               <!-- Set up the layouts for each type of display -->
+
               <!-- Layout for: Single Event Display-->
               <xsl:when test="/bedework/page = 'event'">
                 <div id="contentSection">
@@ -335,7 +286,7 @@
       <ul class="sideLinks">
         <li>
           <a href="#"
-            onClick="javascript:toggleDiv('groupListDiv'); toggleDiv('right_column'); toggleDiv('center_column');">
+            onclick="javascript:toggleDiv('groupListDiv'); toggleDiv('right_column'); toggleDiv('center_column');">
             Group List
           </a>
         </li>
@@ -404,54 +355,6 @@
   </xsl:template>
 
 
-  <!-- Groups List -->
-  <xsl:template name="groupsList">
-    <div style="display:none;" id="groupListDiv">
-      <div class="groupHeader">
-        <h3>Select a Group</h3>
-        <a href="#"
-          onClick="javascript:toggleDiv('groupListDiv'); toggleDiv('right_column'); toggleDiv('center_column');">
-          X - Close
-        </a>
-      </div>
-      <ul class="groupList">
-        <li>
-          <a href="/cal/?setappvar=group(all)">
-            <xsl:if
-              test="((/bedework/appvar[key = 'group']/value = 'all') or not(/bedework/appvar[key = 'group']/value))">
-              <xsl:attribute name="class">current</xsl:attribute>
-            </xsl:if>
-            All
-          </a>
-        </li>
-        <xsl:for-each
-          select="/bedework/urlPrefixes/groups/group[ memberof/name = 'campusAdminGroups' ]">
-          <xsl:variable name="eventOwner"
-            select="eventOwner/text()" />
-          <xsl:variable name="groupName" select="name/text()" />
-          <xsl:variable name="groupDescription"
-            select="description/text()" />
-          <li>
-            <a
-              href="/cal/?setappvar=group({$eventOwner})">
-              <xsl:if
-                test="$eventOwner = (/bedework/appvar[key = 'group']/value)">
-                <xsl:attribute name="class">current</xsl:attribute>
-              </xsl:if>
-              <xsl:value-of select="$groupName" />
-            </a>
-            <xsl:if
-              test="$groupName != $groupDescription">
-              <div class="groupDesc">
-                <xsl:value-of
-                  select="$groupDescription" />
-              </div>
-            </xsl:if>
-          </li>
-        </xsl:for-each>
-      </ul>
-    </div>
-  </xsl:template>
 
   <!-- Side Links Navigation -->
   <xsl:template name="sideLinksList">

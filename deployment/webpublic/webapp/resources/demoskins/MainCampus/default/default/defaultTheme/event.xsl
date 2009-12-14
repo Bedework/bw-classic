@@ -25,24 +25,24 @@
         <xsl:variable name="gEnddate" select="end/utcdate" />
         <xsl:variable name="gText" select="summary" />
         <xsl:variable name="gDetails" select="summary" />
-        <a class="eventIcons" href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
-          <img title="Add to Google Calendar" src="{$resourcesRoot}/images/gcal.gif" alt="Add to Google Calendar" />
+        <a class="eventIcons" href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}" title="{$bwStr-SgEv-AddToGoogleCalendar}">
+          <img title="Add to Google Calendar" src="{$resourcesRoot}/images/gcal.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}" />
         </a>
         <xsl:choose>
           <xsl:when test="string-length($recurrenceId)">
-            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/{$recurrenceId}/{$guidEsc}">
-              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="Add to Facebook" />
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/{$recurrenceId}/{$guidEsc}" title="{$bwStr-SgEv-AddToGoogleCalendar}">
+              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToFacebook}" />
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/0/{$guidEsc}">
-              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="Add to Facebook" />
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/0/{$guidEsc}" title="{$bwStr-SgEv-AddToGoogleCalendar}">
+              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}" />
             </a>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:variable name="eventIcalName" select="concat($guid,'.ics')" />
-        <a class="eventIcons" href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download .ics file for import to other calendars">
-          <img src="{$resourcesRoot}/images/std-ical_icon.gif" alt="Download this event" />
+        <a class="eventIcons" href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
+          <img src="{$resourcesRoot}/images/std-ical_icon.gif" alt="{$bwStr-SgEv-Download}"/>
         </a>
       </div>
 
@@ -178,8 +178,8 @@
         </xsl:if>
       </div>
 
-      <span class="eventWhere">
-        <span class="infoTitle">Where: </span>
+      <div class="eventWhere">
+        <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Where"/><xsl:text> </xsl:text></span>
         <xsl:choose>
           <xsl:when test="location/link=''">
             <xsl:value-of select="location/address" />
@@ -190,56 +190,53 @@
             </xsl:if>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="locationLink"
-              select="location/link" />
-            <a href="{$locationLink}">
-              <xsl:value-of select="location/address" />
+            <a>
+              <xsl:attribute name="href"><xsl:value-of select="location/link"/></xsl:attribute>
+              <xsl:value-of select="location/address"/>
               <xsl:if test="location/subaddress!=''">
                 <xsl:text> </xsl:text>
-                <xsl:value-of
-                  select="location/subaddress" />
+                <xsl:value-of select="location/subaddress" />
               </xsl:if>
             </a>
           </xsl:otherwise>
         </xsl:choose>
-      </span>
+      </div>
 
       <xsl:if test="cost!=''">
-        <span class="eventCost">
-          <span class="infoTitle">Cost: </span>
+        <div class="eventCost">
+          <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Cost"/><xsl:text> </xsl:text></span>
           <xsl:value-of select="cost" />
-        </span>
+        </div>
       </xsl:if>
 
-      <span class="eventLink">
+      <div class="eventLink">
         <xsl:if test="link != ''">
-          <xsl:variable name="link" select="link" />
-          <span class="infoTitle">
-            <a href="{$link}">More Info</a>
-          </span>
+          <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-See"/><xsl:text> </xsl:text></span>
+            <a>
+              <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
+              <xsl:value-of select="link"/>
+            </a>
         </xsl:if>
-      </span>
+      </div>
 
-      <br />
-      <xsl:if
-        test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
-        <xsl:variable name="bwImage">
-          <xsl:value-of
-            select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" />
-        </xsl:variable>
-        <img src="{$bwImage}" class="bwEventImage" />
+      <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+        <img class="bwEventImage">
+          <xsl:attribute name="src"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" /></xsl:attribute>
+        </img>
       </xsl:if>
-      <span class="eventDescription">
-        <span class="infoTitle">Description: </span>
+
+      <div class="eventDescription">
+        <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Description"/><xsl:text> </xsl:text></span>
+        <!-- to preserve line breaks in descriptions, set <br/> as the replacement string
+             in this replace template call: -->
         <xsl:call-template name="replace">
           <xsl:with-param name="string" select="description" />
           <xsl:with-param name="pattern" select="'&#xA;'" />
           <xsl:with-param name="replacement"></xsl:with-param>
         </xsl:call-template>
-      </span>
-      <br />
+      </div>
 
-      <!--   <span class="eventListingCal">
+      <!--   <div class="eventListingCal">
         <xsl:if test="calendar/path!=''">
         Calendar:
         <xsl:variable name="calUrl" select="calendar/encodedPath"/>
@@ -247,54 +244,25 @@
         <xsl:value-of select="calendar/name"/>
         </a>
         </xsl:if>
-        </span>-->
+        </div>-->
 
       <xsl:if test="status !='' and status != 'CONFIRMED'">
-        <span class="eventStatus">
-          <span class="infoTitle">Status: </span>
+        <div class="eventStatus">
+          <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-STATUS"/><xsl:text> </xsl:text></span>
           <xsl:value-of select="status" />
-        </span>
+        </div>
       </xsl:if>
-      <xsl:choose>
-        <xsl:when
-          test="xproperties/X-BEDEWORK-CS/values/text != ''">
-          <span class="eventContact">
-            <span class="infoTitle">Co-sponsors: </span>
-            <xsl:if test="creator != ''">
-              <xsl:variable name="creator"
-                select="creator" />
-              <xsl:value-of
-                select="/bedework/urlPrefixes/groups/group[eventOwner = $creator]/name" />
-            </xsl:if>
-            <xsl:value-of disable-output-escaping="yes"
-              select="xproperties/X-BEDEWORK-CS/values/text" />
-          </span>
-        </xsl:when>
-        <xsl:otherwise>
-          <span class="eventContact">
-            <span class="infoTitle">Sponsor: </span>
-            <xsl:if test="creator != ''">
-              <xsl:variable name="creator"
-                select="creator" />
-              <xsl:value-of
-                select="/bedework/urlPrefixes/groups/group[eventOwner = $creator]/name" />
-            </xsl:if>
-            <xsl:value-of disable-output-escaping="yes"
-              select="xproperties/X-BEDEWORK-CS/values/text" />
-          </span>
-        </xsl:otherwise>
-      </xsl:choose>
+
       <xsl:if test="contact/name!='None'">
-        <span class="eventContact">
-          <span class="infoTitle">Contact Information: </span>
+        <div class="eventContact">
+          <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Contact"/><xsl:text> </xsl:text></span>
           <xsl:choose>
             <xsl:when test="contact/link=''">
               <xsl:value-of select="contact/name" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:variable name="sponsorLink"
-                select="contact/link" />
-              <a href="{$sponsorLink}">
+              <a>
+                <xsl:attribute name="href"><xsl:value-of select="contact/link" /></xsl:attribute>
                 <xsl:value-of select="contact/name" />
               </a>
             </xsl:otherwise>
@@ -311,42 +279,42 @@
               <xsl:value-of select="$contactLink" />
             </a>
           </xsl:if>
-        </span>
+        </div>
       </xsl:if>
-      <xsl:if
-        test="xproperties/node()[name()='X-BEDEWORK-STUDENT-CONTACT']/values/text != ''">
-        <span class="eventContact">
-          <span class="infoTitle">Contact Information: </span>
-          <xsl:value-of
-            select="xproperties/node()[name()='X-BEDEWORK-STUDENT-CONTACT']/values/text" />
-          <xsl:if
-            test="xproperties/node()[name()='X-BEDEWORK-STUDENT-CONTACT']/parameters/X-BEDEWORK-PARAM-EMAIL != ''">
-            <xsl:variable name="emailAddress"
-              select="xproperties/node()[name()='X-BEDEWORK-STUDENT-CONTACT']/parameters/X-BEDEWORK-PARAM-EMAIL" />
-            <a href="mailto:{$emailAddress}">E-mail</a>
-          </xsl:if>
-        </span>
-      </xsl:if>
-      <xsl:if test="categories[1]/category">
-        <span class="eventCategories">
-          <span class="infoTitle">Categories: </span>
-          <xsl:for-each
-            select="categories[1]/category[(word != 'Local') and (word != 'Main') and (word != 'Student') and (word != 'calCrossPublish')]">
-            <xsl:value-of select="word" />
-            <xsl:if test="position() != last()">, </xsl:if>
+
+      <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+        <div class="eventAliases">
+          <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-TopicalArea"/><xsl:text> </xsl:text></span>
+          <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+            <xsl:variable name="calUrl" select="values/text"/>
+            <a href="{$setSelection}&amp;virtualPath={$calUrl}&amp;setappvar=curCollection({$calUrl})">
+              <xsl:call-template name="substring-afterLastInstanceOf">
+                <xsl:with-param name="string" select="values/text"/>
+                <xsl:with-param name="char">/</xsl:with-param>
+              </xsl:call-template>
+            </a><xsl:if test="position()!=last()">, </xsl:if>
           </xsl:for-each>
-        </span>
+        </div>
+      </xsl:if>
+
+      <xsl:if test="categories[1]/category">
+        <div class="eventCategories">
+          <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Categories"/><xsl:text> </xsl:text></span>
+          <xsl:for-each select="categories/category">
+              <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+            </xsl:for-each>
+        </div>
       </xsl:if>
 
       <xsl:if test="comments/comment">
-        <span class="eventComments">
-          <span class="infoTitle">Comments: </span>
+        <div class="eventComments">
+          <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Comments"/><xsl:text> </xsl:text></span>
           <xsl:for-each select="comments/comment">
             <p>
               <xsl:value-of select="value" />
             </p>
           </xsl:for-each>
-        </span>
+        </div>
       </xsl:if>
     </div>
 

@@ -68,7 +68,7 @@
   <xsl:variable name="bwStr-SgEv-EditMaster">edit master (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-SgEv-EditThisInstance">edit this instance (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-SgEv-EditEvent">edit event</xsl:variable>
-  <xsl:variable name="bwStr-SgEv-DownloadEvent">Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-DownloadEvent">Download ical</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Download">Download</xsl:variable>
   <xsl:variable name="bwStr-SgEv-DownloadMaster">download master (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-SgEv-DownloadThisInstance">download this instance (recurring event)</xsl:variable>
@@ -85,7 +85,9 @@
   <xsl:variable name="bwStr-SgEv-Start">Start:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-End">End:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToMyCalendar">add to my calendar</xsl:variable>
-  <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Add event to MyCalendar</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-AddToGoogleCalendar">Add to Google Calendar</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-AddToFacebook">Add to Facebook</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Where">Where:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Complete">Complete:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-ORGANIZER">Organizer:</xsl:variable>
@@ -98,20 +100,22 @@
   <xsl:variable name="bwStr-SgEv-ChangeMyStatus">change my status</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Cost">Cost:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-See">See:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-MoreInfo">More Info</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Contact">Contact:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-ContactInfo">Contact Information:</xsl:variable>
   <!--Recipients:, recipient -->
   <xsl:variable name="bwStr-SgEv-Calendar">Calendar:</xsl:variable>
-  <xsl:variable name="bwStr-SgEv-Categories">Categories:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-Categories">Tags:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Comments">Comments:</xsl:variable>
-  <xsl:variable name="bwStr-SgEv-TopicalArea">Topical Area:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-TopicalArea">Topical Areas:</xsl:variable>
 
   <!--  xsl:template name="listView" -->
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplay">No events to display.</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AllDay">all day</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Today">today</xsl:variable>
-  <xsl:variable name="bwStr-LsVw-AddEventToMyCalendar">Add event to MyCalendar</xsl:variable>
-  <xsl:variable name="bwStr-LsVw-DownloadEvent">Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-DownloadEvent">Download ical</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Description">description</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Canceled">CANCELED:</xsl:variable>
   <xsl:variable name="bwStr-LsVw-NoTitle">no title</xsl:variable>
@@ -120,7 +124,7 @@
   <!--  xsl:template match="events" mode="eventList" -->
   <xsl:variable name="bwStr-LsEv-Next7Days">Next 7 Days</xsl:variable>
   <xsl:variable name="bwStr-LsEv-NoEventsToDisplay">No events to display.</xsl:variable>
-  <xsl:variable name="bwStr-LsEv-DownloadEvent">Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-DownloadEvent">Download ical</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Categories">Categories:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Contact">Contact:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Canceled">CANCELED:</xsl:variable>

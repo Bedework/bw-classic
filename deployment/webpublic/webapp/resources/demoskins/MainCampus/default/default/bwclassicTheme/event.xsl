@@ -22,8 +22,8 @@
       <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text></xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
-          <xsl:variable name="link" select="link"/>
-          <a href="{$link}">
+          <a>
+            <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
             <xsl:value-of select="summary"/>
           </a>
         </xsl:when>
@@ -163,7 +163,7 @@
         <th class="icalIcon" rowspan="2">
           <div id="eventIcons">
             <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-AddEventToMyCalendar}" target="myCalendar">
-              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="Add event to MyCalendar"/>
+              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" width="20" height="26" border="0" alt="{$bwStr-SgEv-AddEventToMyCalendar}"/>
               <xsl:copy-of select="$bwStr-SgEv-AddToMyCalendar"/>
             </a>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
@@ -181,8 +181,8 @@
               <xsl:value-of select="location/address"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:variable name="locationLink" select="location/link"/>
-              <a href="{$locationLink}">
+              <a>
+                <xsl:attribute name="href"><xsl:value-of select="location/link"/></xsl:attribute>
                 <xsl:value-of select="location/address"/>
               </a>
             </xsl:otherwise>
@@ -196,8 +196,9 @@
         <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Description"/></td>
         <td colspan="2" class="fieldval description">
           <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
-            <xsl:variable name="bwImage"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:variable>
-            <img src="{$bwImage}" class="bwEventImage"/>
+            <img class="bwEventImage">
+              <xsl:attribute name="src"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" /></xsl:attribute>
+            </img>
           </xsl:if>
           <xsl:call-template name="replace">
             <xsl:with-param name="string" select="description"/>
@@ -224,8 +225,10 @@
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-See"/></td>
           <td colspan="2" class="fieldval">
-            <xsl:variable name="link" select="link"/>
-            <a href="{$link}"><xsl:value-of select="link"/></a>
+            <a>
+              <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
+              <xsl:value-of select="link"/>
+            </a>
           </td>
         </tr>
       </xsl:if>
@@ -238,9 +241,9 @@
                 <xsl:value-of select="contact/name"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:variable name="sponsorLink" select="contact/link"/>
-                <a href="{$sponsorLink}">
-                  <xsl:value-of select="contact/name"/>
+                <a>
+                  <xsl:attribute name="href"><xsl:value-of select="contact/link" /></xsl:attribute>
+                  <xsl:value-of select="contact/name" />
                 </a>
               </xsl:otherwise>
             </xsl:choose>
