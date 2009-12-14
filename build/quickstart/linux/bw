@@ -40,7 +40,8 @@ usage() {
   echo "     target       Ant target to execute"
   echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
-  echo "     -carddav     Target is for the CardDAV build, otherwise it's a calendar build"
+  echo "     -carddav     Target is for the CardDAV build"
+  echo "     -monitor     Target is for the bedework monitor application"
   echo "     -naming      Target is for the abstract naming api"
   echo "     The default is a calendar build"
   echo ""
@@ -90,6 +91,7 @@ caldav=
 webdav=
 bedework=
 naming=
+monitor=
 
 if [ "$1" = "" ] ; then
   usage
@@ -140,6 +142,11 @@ do
       pkgdefault=
       shift
       ;;
+    -monitor)
+      monitor="yes"
+      pkgdefault=
+      shift
+      ;;
     -naming)
       naming="yes"
       pkgdefault=
@@ -185,6 +192,10 @@ CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
 
 if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav
+fi
+
+if [ "$monitor" != "" ] ; then
+  cd $QUICKSTART_HOME/MonitorApp
 fi
 
 if [ "$naming" != "" ] ; then
