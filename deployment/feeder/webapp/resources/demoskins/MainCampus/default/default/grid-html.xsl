@@ -556,7 +556,7 @@
                     <td class="{$dateRangeStyle} center" colspan="3">
                       <!--<a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                         <xsl:value-of select="start/time"/> -->
-                      <a href="{$bwCacheHostUrl}/v1.0/event/blah2/list-html/{$recurrenceId}/{$guid}">
+                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                       </a>
                     </td>
                   </xsl:when>
@@ -579,11 +579,11 @@
                       </a>
                     </td>
                     <td class="{$dateRangeStyle} center">
-	                  <a href="{$bwCacheHostUrl}/v1.0/event/blah3/list-html/{$recurrenceId}/{$guid}"></a>
+	                  <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}"></a>
                       <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a> -->
                     </td>
                     <td class="{$dateRangeStyle} left">
-	                  <a href="{$bwCacheHostUrl}/v1.0/event/blah4/list-html/{$recurrenceId}/{$guid}">
+	                  <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                       <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"> -->
                       <xsl:choose>
                         <xsl:when test="end/allday = 'true' and
@@ -622,7 +622,7 @@
                   <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-	                  <a href="{$bwCacheHostUrl}/v1.0/event/blah/5/list-html/{$recurrenceId}/{$guid}">
+	                  <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                       <!-- ><a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"> -->
                         <strong>
                           <xsl:value-of select="summary"/>:
@@ -660,7 +660,7 @@
                     </xsl:when>
                     <xsl:otherwise>
                       <!-- ><a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"> -->
-	                  <a href="{$bwCacheHostUrl}/v1.0/event/blah6/list-html/{$recurrenceId}/{$guid}">
+	                  <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                         <xsl:value-of select="summary"/>
                         <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                          -
@@ -745,7 +745,7 @@
 
                 <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsEv-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><em><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></em></xsl:if>
-                <a href="{$bwCacheHostUrl}/v1.0/event/blah7/list-html/{$recurrenceId}/{$guid}">
+                <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                 <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">  -->
                   <xsl:value-of select="summary"/>
                 </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
@@ -936,7 +936,7 @@
 		                <xsl:when test="$filterName = 'grpAndCats'">
 			              <xsl:variable name="group" select="substring-before($filterVal, '~')" /> 
 					      <xsl:variable name="cats" select="substring-after($filterVal, '~')" />
-						  <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{dayDate}/grid-html/{$group}/{$cats}">
+						  <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/{$group}/{$cats}">
 			                <xsl:value-of select="value"/>
 			              </a>
 		                </xsl:when>
@@ -1122,7 +1122,7 @@
         <tr>
           <td colspan="8" class="monthName">
             <xsl:variable name="firstDayOfMonth" select="week/day/date"/>
-            <a href="{$bwCacheHostUrl}/v1.0/v1.0/genFeedPeriod/month/{$firstDayOfMonth}/grid-html/all/all">
+            <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/month/{$firstDayOfMonth}/grid-html/all/all">
             <!-- <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$firstDayOfMonth}">  -->
               <xsl:value-of select="longname"/>
             </a>
