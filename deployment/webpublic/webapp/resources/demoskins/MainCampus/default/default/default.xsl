@@ -15,9 +15,10 @@
     MainCampus Calendar Suite - Duke/Yale Skin
 
     This stylesheet is devoid of school branding.  It is a good
-    starting point for development of a customized calendar.
+    starting point for development of a customized theme.
 
-    It is based on work by Duke University and Yale University.
+    It is based on work by Duke University and Yale University with
+    credit also to the University of Chicago.
 
     For detailed instructions on how to work with the XSLT
     stylesheets included with this distribution, please see the
@@ -54,7 +55,11 @@
   <xsl:include href="../../../bedework-common/default/default/errors.xsl" />
   <xsl:include href="../../../bedework-common/default/default/messages.xsl" />
   <xsl:include href="../../../bedework-common/default/default/util.xsl" />
+  <xsl:include href="./globals.xsl" />
   <xsl:include href="./strings.xsl" />
+
+  <!-- Theme preferences -->
+  <xsl:include href="./defaultTheme/themeSettings.xsl" />
 
   <!-- Page subsections -->
   <xsl:include href="./defaultTheme/head.xsl" />
@@ -64,54 +69,9 @@
   <xsl:include href="./defaultTheme/event.xsl" />
   <xsl:include href="./defaultTheme/views.xsl" />
   <xsl:include href="./defaultTheme/ongoing.xsl" />
-  <xsl:include href="./defaultTheme/featured.xsl"/>
+  <xsl:include href="./defaultTheme/featuredEvents.xsl"/>
   <xsl:include href="./defaultTheme/groups.xsl"/>
-  <xsl:include href="./defaultTheme/system-stats.xsl"/>
-
-  <!-- DEFINE GLOBAL CONSTANTS -->
-
-  <!-- URL of the XSL template directory -->
-  <!-- The approot is an appropriate place to put
-    included stylesheets and xml fragments. These are generally
-    referenced relatively (like the included files above).  -->
-  <xsl:variable name="appRoot" select="/bedework/approot" />
-
-  <!-- URL of html resources (images, css, other html);
-       by default this is set to the current theme directory  -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/default/default/defaultTheme</xsl:variable>
-
-  <!-- Properly encoded prefixes to the application actions; use these to build
-    urls; allows the application to be used without cookies or within a portal.
-    These urls are rewritten in header.jsp and simply passed through for use
-    here. Every url includes a query string (either ?b=de or a real query
-    string) so that all links constructed in this stylesheet may begin the
-    query string with an ampersand. -->
-  <xsl:variable name="setup" select="/bedework/urlPrefixes/setup" />
-  <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection" />
-  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars" />
-  <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod" />
-  <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents" />
-  <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView" />
-  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef" />
-  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export" />
-  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search" />
-  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next" />
-  <xsl:variable name="calendar-fetchForExport" select="/bedework/urlPrefixes/calendar/fetchForExport" />
-  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent" />
-  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats" />
-
-  <!-- acheck -->
-  <xsl:variable name="allGroupsAppVar">&amp;setappvar=group(all)</xsl:variable>
-
-  <!-- URL of the web application - includes web context -->
-  <xsl:variable name="urlPrefix" select="/bedework/urlprefix" />
-
-  <!-- Other generally useful global variables -->
-  <xsl:variable name="privateCal">/ucal</xsl:variable>
-  <xsl:variable name="feederPrefix">/feeder</xsl:variable>
-  <xsl:variable name="prevdate" select="/bedework/previousdate" />
-  <xsl:variable name="nextdate" select="/bedework/nextdate" />
-  <xsl:variable name="curdate" select="/bedework/currentdate/date" />
+  <xsl:include href="./defaultTheme/systemStats.xsl"/>
 
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">

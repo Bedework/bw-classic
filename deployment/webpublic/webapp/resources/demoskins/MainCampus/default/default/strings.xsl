@@ -3,7 +3,9 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
 
-  <!-- xsl:template match="/" -->
+  <!-- All text exposed by the stylesheets is set here. -->
+  <!-- To change the language of a web client, translate the strings file. -->
+
   <xsl:variable name="bwStr-Root-PageTitle">Bedework Events Calendar</xsl:variable>
 
   <!-- xsl:template name="headBar" -->
