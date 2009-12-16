@@ -5370,7 +5370,7 @@
             </textarea>
           </td>
         </tr>
-        <xsl:if test="isSubscription='false'">
+        <!-- xsl:if test="isSubscription='false'" -->
           <!-- we can't color subscriptions yet -->
           <tr>
             <th><xsl:copy-of select="$bwStr-CuCa-Color"/></th>
@@ -5384,7 +5384,7 @@
               </xsl:call-template>
             </td>
           </tr>
-        </xsl:if>
+        <!-- /xsl:if -->
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Display"/></th>
           <td>
