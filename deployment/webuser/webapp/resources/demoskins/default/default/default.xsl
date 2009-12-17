@@ -1372,7 +1372,7 @@
                     <br/>
                     <xsl:copy-of select="$bwStr-LsEv-Categories"/><xsl:text> </xsl:text>
                     <xsl:for-each select="categories/category">
-                      <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+                      <xsl:value-of select="value"/><xsl:if test="position() != last()">, </xsl:if>
                     </xsl:for-each>
                   </xsl:if>
                   <br/>
@@ -2464,7 +2464,7 @@
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Categories"/></td>
           <td class="fieldval">
             <xsl:for-each select="categories/category">
-              <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+              <xsl:value-of select="value"/><xsl:if test="position() != last()">, </xsl:if>
             </xsl:for-each>
           </td>
         </tr>
