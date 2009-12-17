@@ -4,7 +4,7 @@
   xmlns="http://www.w3.org/1999/xhtml">
 
   <!--==== SINGLE EVENT ====-->
-  <xsl:template match="event">
+  <xsl:template match="event" mode="singleEvent">
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="guidEsc" select="translate(guid, '.', '_')" />
@@ -17,6 +17,13 @@
       </xsl:choose>
     </xsl:variable>
 
+    <div class="secondaryColHeader">
+      <a class="linkBack" href="{$setup}"><xsl:copy-of select="$bwStr-HdBr-BackLink"/></a>
+      <h3>
+        <xsl:copy-of select="$bwStr-HdBr-EventInformation"/>
+      </h3>
+    </div>
+
     <div class="singleEvent">
 
       <div id="eventIcons">
@@ -26,20 +33,23 @@
         <xsl:variable name="gText" select="summary" />
         <xsl:variable name="gDetails" select="summary" />
         <a class="eventIcons" href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}" title="{$bwStr-SgEv-AddToGoogleCalendar}">
-          <img title="Add to Google Calendar" src="{$resourcesRoot}/images/gcal.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}" />
+          <img title="{$bwStr-SgEv-AddToGoogleCalendar}" src="{$resourcesRoot}/images/gcal.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}" />
         </a>
         <xsl:choose>
           <xsl:when test="string-length($recurrenceId)">
-            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/{$recurrenceId}/{$guidEsc}" title="{$bwStr-SgEv-AddToGoogleCalendar}">
-              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToFacebook}" />
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/{$recurrenceId}/{$guidEsc}" title="{$bwStr-SgEv-AddToFacebook}">
+              <img title="{$bwStr-SgEv-AddToFacebook}" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToFacebook}" />
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/0/{$guidEsc}" title="{$bwStr-SgEv-AddToGoogleCalendar}">
-              <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}" />
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feederPrefix}/event/cal/html/Public/0/{$guidEsc}" title="{$bwStr-SgEv-AddToFacebook}">
+              <img title="{$bwStr-SgEv-AddToFacebook}" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToFacebook}" />
             </a>
           </xsl:otherwise>
         </xsl:choose>
+        <a class="eventIcons" href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-AddEventToMyCalendar}" target="myCalendar">
+          <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" alt="{$bwStr-SgEv-AddEventToMyCalendar}"/>
+        </a>
         <xsl:variable name="eventIcalName" select="concat($guid,'.ics')" />
         <a class="eventIcons" href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
           <img src="{$resourcesRoot}/images/std-ical_icon.gif" alt="{$bwStr-SgEv-Download}"/>

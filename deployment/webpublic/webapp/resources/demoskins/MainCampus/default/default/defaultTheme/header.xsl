@@ -7,6 +7,10 @@
 
   <xsl:template name="titleBar">
     <div id="head-top">
+      <div id="title-logoArea">
+        <!-- we attach the logoArea link to this div - do not remove the space -->
+        <xsl:text> </xsl:text>
+      </div>
       <div id="title-text">
         <h2>
           <xsl:copy-of select="$bwStr-HdBr-PublicCalendar" />
@@ -19,7 +23,8 @@
           <xsl:copy-of select="$bwStr-HdBr-UniversityHome" />
         </a>
         |
-        <a href="http://www.bedework.org/">
+        <!-- a href="http://www.bedework.org/"-->
+        <a href="?refreshXslt=yes">
           <xsl:copy-of select="$bwStr-HdBr-OtherLink" />
         </a>
       </div>

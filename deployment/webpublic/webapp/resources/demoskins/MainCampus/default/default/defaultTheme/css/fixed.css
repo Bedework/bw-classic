@@ -54,9 +54,16 @@ div#header {
 div#head-top {
  position: relative;
  height: 90px;
- cursor: pointer;
  background: #014B94 url("../images/bedeworkLogo3p6.gif") top left no-repeat;
  color: white;
+}
+div#title-logoArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 90px;
+  width: 330px;
+  cursor: pointer;
 }
 div#title-text {
  position: absolute;
@@ -294,6 +301,24 @@ div#errors {
 .secondaryColHeader h3 {
  display: inline;
 }
+a.linkBack:link,
+a.linkBack:active,
+a.linkBack:visited {
+  display: block;
+  float: right;
+  margin: 1em 1em 0 0;
+  text-decoration: none;
+  color: #ddd;
+  background-color: transparent;
+}
+a.linkBack:hover {
+  display: block;
+  float: right;
+  margin: 1em 1em 0 0;
+  text-decoration: none;
+  color: #fff;
+  background-color: transparent;
+}
 .groupHeader {
  padding: 0 12px;
  background: #273E6D;
@@ -476,12 +501,20 @@ table.eventList tr td.time {
  text-align: center;
  background: #ECECEC;
  width: 8em;
+ white-space: nowrap;
 }
 table.eventList tr td.description a {
  color: #333;
 }
 table.eventList tr td.icons {
  width: 5em;
+}
+table.eventList .icons {
+ float: right;
+}
+table.eventList .icons a {
+ padding: 2px;
+ display: inline;
 }
 table.eventList tr td.fillrow {
  border-bottom: none;

@@ -7,6 +7,7 @@
   <!-- To change the language of a web client, translate the strings file. -->
 
   <xsl:variable name="bwStr-Root-PageTitle">Bedework Events Calendar</xsl:variable>
+  <xsl:variable name="bwStr-Error">Error:</xsl:variable>
 
   <!-- xsl:template name="headBar" -->
   <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Events Calendar</xsl:variable>
@@ -21,6 +22,11 @@
   <xsl:variable name="bwStr-HdBr-RSS">RSS</xsl:variable>
   <xsl:variable name="bwStr-HdBr-RSSFeed">RSS feed</xsl:variable>
   <xsl:variable name="bwStr-HdBr-EventInformation">Event Information</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-BackLink">(return to events)</xsl:variable>
+
+  <!-- ongoing events -->
+  <xsl:variable name="bwStr-Ongoing-Title">Ongoing</xsl:variable>
+  <xsl:variable name="bwStr-Ongoing-NoEvents">There are no ongoing events in this time period or view</xsl:variable>
 
   <!--  xsl:template name="tabs" -->
   <xsl:variable name="bwStr-Tabs-LoggedInAs">logged in as</xsl:variable>
@@ -44,6 +50,10 @@
   <xsl:variable name="bwStr-SrcB-Go">go</xsl:variable>
   <xsl:variable name="bwStr-SrcB-ToggleListCalView">toggle list/calendar view</xsl:variable>
   <xsl:variable name="bwStr-SrcB-ToggleSummDetView">toggle summary/detailed view</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-ShowDetails">Show Details</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-HideDetails">Hide Details</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-Summary">Summary</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-Details">Details</xsl:variable>
   <xsl:variable name="bwStr-SrcB-TopicalArea">Topical Area:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-CurrentSearch">Current search:</xsl:variable>
 
@@ -112,10 +122,10 @@
   <xsl:variable name="bwStr-SgEv-TopicalArea">Topical Areas:</xsl:variable>
 
   <!--  xsl:template name="listView" -->
-  <xsl:variable name="bwStr-LsVw-NoEventsToDisplay">No events to display.</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-NoEventsToDisplay">No events found.  Please try a different view or time period.</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Add">add...</xsl:variable>
-  <xsl:variable name="bwStr-LsVw-AllDay">all day</xsl:variable>
-  <xsl:variable name="bwStr-LsVw-Today">today</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-AllDay">All Day</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-Today">Today</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-LsVw-DownloadEvent">Download ical</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Description">description</xsl:variable>
