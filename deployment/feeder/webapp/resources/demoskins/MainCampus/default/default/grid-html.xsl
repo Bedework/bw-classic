@@ -1020,26 +1020,30 @@
     </xsl:variable>
     <li>
       <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}"> -->
-	    <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}" class="{$eventClass} {$subscriptionClass}">
-        <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-EvCG-CanceledColon"/><xsl:text> </xsl:text></xsl:if>
+	  <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}" class="{$eventClass} {$subscriptionClass}">
+      <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-EvCG-CanceledColon"/><xsl:text> </xsl:text></xsl:if>
+      <xsl:choose>
+        <xsl:when test="start/shortdate != ../shortdate">
+          <xsl:copy-of select="$bwStr-EvCG-Cont"/>
+        </xsl:when>
+        <xsl:when test="start/allday = 'false'">
+          <xsl:value-of select="start/time"/>:
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="$bwStr-EvCG-AllDayColon"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:value-of select="summary"/>
+      <xsl:variable name="eventTipClass">
         <xsl:choose>
-          <xsl:when test="start/shortdate != ../shortdate">
-            <xsl:copy-of select="$bwStr-EvCG-Cont"/>
-          </xsl:when>
-          <xsl:when test="start/allday = 'false'">
-            <xsl:value-of select="start/time"/>:
-          </xsl:when>
+          <xsl:when test="$dayPos &gt; 5">
+	        eventTipReverse
+	      </xsl:when>
           <xsl:otherwise>
-            <xsl:copy-of select="$bwStr-EvCG-AllDayColon"/>
-          </xsl:otherwise>
+	        eventTip
+	      </xsl:otherwise>
         </xsl:choose>
-        <xsl:value-of select="summary"/>
-        <xsl:variable name="eventTipClass">
-          <xsl:choose>
-            <xsl:when test="$dayPos &gt; 5">eventTipReverse</xsl:when>
-            <xsl:otherwise>eventTip</xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+      </xsl:variable>
         <span class="{$eventTipClass}">
           <xsl:if test="status='CANCELLED'"><span class="eventTipStatusCancelled"><xsl:copy-of select="$bwStr-EvCG-CanceledColon"/></span></xsl:if>
           <xsl:if test="status='TENTATIVE'"><span class="eventTipStatusTentative"><xsl:copy-of select="$bwStr-EvCG-Tentative"/></span></xsl:if>
@@ -1064,7 +1068,8 @@
                 <xsl:value-of select="end/time"/>
               </xsl:if>
             </xsl:otherwise>
-          </xsl:choose><br/>
+          </xsl:choose>
+          <br/>
           <xsl:if test="location/address">
             <xsl:copy-of select="$bwStr-EvCG-Location"/><xsl:text> </xsl:text><xsl:value-of select="location/address"/><br/>
           </xsl:if>
@@ -1237,12 +1242,12 @@
 	    <xsl:variable name="remaining" select="substring-after($list, '~')" />
 	    <xsl:choose>
 		  <xsl:when test="$group = 'all'">
-	        <xsl:apply-templates select="event[categories/category/id = $catid]">  
+	        <xsl:apply-templates select="event[categories/category/id = $catid] mode="calendarLayout"">  
 	          <xsl:with-param name="dayPos" select="$dayPos"/>
 	        </xsl:apply-templates> 
 	      </xsl:when>
 	      <xsl:otherwise>
-	        <xsl:apply-templates select="event[categories/category/id = $catid]">
+	        <xsl:apply-templates select="event[categories/category/id = $catid] mode="calendarLayout"">
 	          <xsl:with-param name="dayPos" select="$dayPos"/>
 	        </xsl:apply-templates>
 	      </xsl:otherwise>
@@ -1259,7 +1264,7 @@
 		  <xsl:when test="$group = 'all'">
 			<xsl:choose>
 			  <xsl:when test="$list = 'all'">
-	            <xsl:apply-templates select="event">
+	            <xsl:apply-templates select="event" mode="calendarLayout">
 		          <xsl:with-param name="dayPos" select="$dayPos"/>
 		        </xsl:apply-templates>
 	          </xsl:when>
