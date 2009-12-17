@@ -1227,7 +1227,7 @@
     <xsl:call-template name="processCategories">
 	  <xsl:with-param name="group" select="$group" />
       <xsl:with-param name="list" select="$remaining" /> 
-      <xsl:with-param name="dayPos" select="$remaining" /> 
+      <xsl:with-param name="dayPos" select="$dayPos" /> 
     </xsl:call-template>
   </xsl:template>
 
@@ -1242,12 +1242,12 @@
 	    <xsl:variable name="remaining" select="substring-after($list, '~')" />
 	    <xsl:choose>
 		  <xsl:when test="$group = 'all'">
-	        <xsl:apply-templates select="event[categories/category/id = $catid] mode="calendarLayout"">  
+> 	        <xsl:apply-templates select="event[categories/category/id = $catid]" mode="calendarLayout">  
 	          <xsl:with-param name="dayPos" select="$dayPos"/>
 	        </xsl:apply-templates> 
 	      </xsl:when>
 	      <xsl:otherwise>
-	        <xsl:apply-templates select="event[categories/category/id = $catid] mode="calendarLayout"">
+	        <xsl:apply-templates select="event[categories/category/id = $catid]" mode="calendarLayout">
 	          <xsl:with-param name="dayPos" select="$dayPos"/>
 	        </xsl:apply-templates>
 	      </xsl:otherwise>
@@ -1255,7 +1255,9 @@
 
 		<!-- now use recursion to process the remaining categories -->
 	    <xsl:call-template name="processCategories">
+	      <xsl:with-param name="group" select="$group" />		  
 	      <xsl:with-param name="list" select="$remaining" /> 
+	      <xsl:with-param name="dayPos" select="$dayPos" />
 	    </xsl:call-template>
 	  </xsl:when>
 	  <xsl:otherwise>
