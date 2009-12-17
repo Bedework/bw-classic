@@ -32,5 +32,6 @@
   -->
 
   <xsl:variable name="bwCacheHostUrl">http://localhost:3000</xsl:variable>
+  <xsl:variable name="bwCalendarHostURL">http://localhost:8080</xsl:variable>
   
 </xsl:stylesheet>
