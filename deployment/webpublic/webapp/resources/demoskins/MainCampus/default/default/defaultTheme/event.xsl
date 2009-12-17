@@ -311,8 +311,8 @@
         <div class="eventCategories">
           <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Categories"/><xsl:text> </xsl:text></span>
           <xsl:for-each select="categories/category">
-              <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
-            </xsl:for-each>
+            <xsl:value-of select="value"/><xsl:if test="position() != last()">, </xsl:if>
+          </xsl:for-each>
         </div>
       </xsl:if>
 

@@ -295,6 +295,7 @@
     </td>
     <!-- td class="icons">
         keep and place icons here if spacing is an issue
+        (but change the day cell to colspan=3)
       </td-->
     </tr>
   </xsl:template>
