@@ -621,6 +621,19 @@
   <xsl:variable name="bwStr-MdSP-SystemIDNote">System id used when building uids and identifying users. Should not be changed.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-Indexing">Indexing:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-IndexingNote">True if the system does indexing internally. Generally false for externally indexed</xsl:variable>
+
+
+  <xsl:variable name="bwStr-MdSP-DefaultFBPeriod">Default Freebusy days:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-DefaultFBPeriodNote">The default freebusy fetch period</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-MaxFBPeriod">Max. Freebusy days:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-MaxFBPeriodNote">The maximum freebusy fetch period (for non-super user)</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-DefaultWebCalPeriod">Default webcal days:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-DefaultWebCalPeriodNote">The default webcal fetch period</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-MaxWebCalPeriod">Max. webcal days:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-MaxWebCalPeriodNote">The maximum webcal fetch period (for non-super user)</xsl:variable>
+
+
+
   <xsl:variable name="bwStr-MdSP-PubCalendarRoot">Public Calendar Root:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-PubCalendarRootNote">Name for public calendars root directory. Should not be changed.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserCalendarRoot">User Calendar Root:</xsl:variable>

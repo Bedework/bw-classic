@@ -5481,6 +5481,46 @@
           </td>
         </tr>
         <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-DefaultFBPeriod"/></th>
+          <td>
+            <xsl:variable name="defaultFBPeriod" select="/bedework/system/defaultFBPeriod"/>
+            <input value="{$defaultFBPeriod}" name="defaultFBPeriod" />
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-DefaultFBPeriodNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-MaxFBPeriod"/></th>
+          <td>
+            <xsl:variable name="systemp" select="/bedework/system/maxFBPeriod"/>
+            <input value="{$systemp}" name="maxFBPeriod" />
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-MaxFBPeriodNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-DefaultWebCalPeriod"/></th>
+          <td>
+            <xsl:variable name="systemp" select="/bedework/system/defaultWebCalPeriod"/>
+            <input value="{$systemp}" name="defaultWebCalPeriod" />
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-DefaultWebCalPeriodNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-MaxWebCalPeriod"/></th>
+          <td>
+            <xsl:variable name="systemp" select="/bedework/system/maxWebCalPeriod"/>
+            <input value="{$systemp}" name="maxWebCalPeriod" />
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-MaxWebCalPeriodNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-PubCalendarRoot"/></th>
           <td>
             <xsl:variable name="publicCalendarRoot" select="/bedework/system/publicCalendarRoot"/>
