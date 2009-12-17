@@ -17,18 +17,18 @@
           <tr>
             <td class="eventFilterInfo" colspan="3">
               Displaying Events for Topical Area
-              <span class="displayGroupName">
+              <span class="displayFilterName">
                 <xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/>
               </span><xsl:text> </xsl:text>
               <a id="allView" href="{$setSelection}">(show all)</a></td>
           </tr>
         </xsl:when>
-        <xsl:when test="/bedework/selectionState/selectionType/view/name != 'All'">
+        <xsl:when test="/bedework/selectionState/view/name != 'All'">
           <tr>
             <td class="eventFilterInfo" colspan="3">
               Displaying Events for View
-              <span class="displayGroupName">
-                <xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/>
+              <span class="displayFilterName">
+                <xsl:value-of select="/bedework/selectionState/view/name"/>
               </span><xsl:text> </xsl:text>
             <a id="allView" href="setSelection.do?b=de{$allGroupsAppVar}">(show all)</a></td>
           </tr>
@@ -44,7 +44,7 @@
           </tr>
         </xsl:when>
         <xsl:when test="$ongoingEventsEnabled = 'true'
-               and not(/bedework/eventscalendar/year/month/week/day/event[not(categories/category = $ongoingEventsCatName)])">
+               and not(/bedework/eventscalendar/year/month/week/day/event[not(categories/category/value = $ongoingEventsCatName)])">
             <tr>
               <td class="noEventsCell">
                 <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplay"/>

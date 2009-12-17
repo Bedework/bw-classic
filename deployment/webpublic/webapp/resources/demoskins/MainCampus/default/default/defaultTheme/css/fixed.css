@@ -523,7 +523,8 @@ table.eventList tr td.fillrow {
 table.eventList tr td.eventFilterInfo {
  font-size: 1.1em;
 }
-table.eventList tr td span.displayGroupName {
+table.eventList tr td span.displayGroupName,
+table.eventList tr td span.displayFilterName {
  font-weight: bold;
 }
 table.eventList li {
