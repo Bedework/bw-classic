@@ -1,0 +1,17 @@
+<featuredEvents>
+  <image>
+    <name>nov_undraborn.jpg</name>
+    <link>http://calendar.duke.edu/cal/event/eventView.do?b=de&amp;subid=3753&amp;calPath=%2Fpublic%2FPublic&amp;guid=CAL-18832e99-244f42d0-0124-5e02dc98-000004f2demobedework@mysite.edu&amp;recurrenceId=</link>
+    <toolTip>Undraborn</toolTip>
+  </image>
+  <image>
+    <name>dec_candle.jpg</name>
+    <link>http://calendar.duke.edu/cal/event/eventView.do?b=de&amp;subid=3753&amp;calPath=%2Fpublic%2FPublic&amp;guid=CAL-18832e99-24102402-0124-4e4f6ebd-000008bfdemobedework@mysite.edu&amp;recurrenceId=</link>
+    <toolTip>Candlelight</toolTip>
+  </image>
+  <image>
+    <name>aug_picasso.jpg</name>
+    <link>http://calendar.duke.edu/cal/event/eventView.do?b=de&amp;subid=3753&amp;calPath=%2Fpublic%2FPublic&amp;guid=CAL-18832e99-21b8520e-0122-18732d67-000003acdemobedework@mysite.edu&amp;recurrenceId=</link>
+    <toolTip>Picasso</toolTip>
+  </image>
+</featuredEvents>
