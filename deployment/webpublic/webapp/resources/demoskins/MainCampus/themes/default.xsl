@@ -163,6 +163,7 @@
                     <xsl:call-template name="stats" />
                   </xsl:when>
 
+                  <!-- show us what page was requested... -->
                   <xsl:otherwise>
                     <xsl:copy-of select="$bwStr-Error"/>
                     <xsl:text> </xsl:text>

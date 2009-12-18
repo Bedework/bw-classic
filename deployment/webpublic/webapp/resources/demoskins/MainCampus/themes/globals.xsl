@@ -10,9 +10,6 @@
   <!-- URL of the XSL template directory for this calendar suite -->
   <xsl:variable name="appRoot" select="/bedework/approot" />
 
-  <!-- URL of html resources (images, css, other html) for the current theme -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/default/default/defaultTheme</xsl:variable>
-
   <!-- Properly encoded prefixes to the application actions; use these to build
     urls; allows the application to be used without cookies or within a portal.
     These urls are rewritten in header.jsp and simply passed through for use
