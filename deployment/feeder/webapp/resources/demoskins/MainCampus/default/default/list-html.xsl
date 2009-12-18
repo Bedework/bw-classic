@@ -295,7 +295,7 @@
               <xsl:copy-of select="$bwStr-SgEv-AddToMyCalendar"/>
             </a>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$bwCacheHostUrl}/v1.0/download/{$recurrenceId}/{$guid}/{$guid}" title="{$bwStr-SgEv-DownloadEvent}">
+            <a href="{$bwCacheHostUrl}/v1.0/download/{$recurrenceId}/{$guid}/{$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
               <img src="{$resourcesRoot}/images/std-ical_icon.gif" width="20" height="26" border="0" alt="Download this event"/>
               <xsl:copy-of select="$bwStr-SgEv-Download"/>
             </a>
@@ -478,10 +478,9 @@
                 </a>
                 <xsl:text> </xsl:text>
                 <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-                <a href="{$bwCacheHostUrl}/v1.0/download/{$recurrenceId}/{$guid}/{$id}" title="{$bwStr-SgEv-DownloadEvent}">
+                <a href="{$bwCacheHostUrl}/v1.0/download/{$recurrenceId}/{$guid}/{$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
                   <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
                 </a>
-
                 <br/>
 
                 <xsl:value-of select="substring(start/dayname,1,3)"/>,
