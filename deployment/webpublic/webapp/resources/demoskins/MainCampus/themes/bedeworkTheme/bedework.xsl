@@ -52,34 +52,28 @@
     to the maximum extent the law permits. -->
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl" />
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl" />
-  <xsl:include href="../../../bedework-common/default/default/util.xsl" />
-  <xsl:include href="./globals.xsl" />
-  <xsl:include href="./strings.xsl" />
-
   <!-- Theme preferences -->
-  <xsl:include href="./defaultTheme/themeSettings.xsl" />
+  <xsl:include href="themeSettings.xsl" />
 
   <!-- theme utility functions -->
-  <xsl:include href="./defaultTheme/themeUtil.xsl" />
+  <xsl:include href="themeUtil.xsl" />
 
   <!-- Page subsections -->
-  <xsl:include href="./defaultTheme/head.xsl" />
-  <xsl:include href="./defaultTheme/header.xsl" />
-  <xsl:include href="./defaultTheme/leftColumn.xsl" />
-  <xsl:include href="./defaultTheme/views.xsl" />
-  <xsl:include href="./defaultTheme/featuredEvents.xsl"/>
-  <xsl:include href="./defaultTheme/navigation.xsl" />
-  <xsl:include href="./defaultTheme/eventList.xsl" />
-  <xsl:include href="./defaultTheme/event.xsl" />
-  <xsl:include href="./defaultTheme/year.xsl" />
-  <xsl:include href="./defaultTheme/calendarList.xsl" />
-  <xsl:include href="./defaultTheme/search.xsl"/>
-  <xsl:include href="./defaultTheme/ongoing.xsl" />
-  <xsl:include href="./defaultTheme/groups.xsl"/>
-  <xsl:include href="./defaultTheme/systemStats.xsl"/>
-  <xsl:include href="./defaultTheme/footer.xsl" />
+  <xsl:include href="head.xsl" />
+  <xsl:include href="header.xsl" />
+  <xsl:include href="leftColumn.xsl" />
+  <xsl:include href="views.xsl" />
+  <xsl:include href="featuredEvents.xsl"/>
+  <xsl:include href="navigation.xsl" />
+  <xsl:include href="eventList.xsl" />
+  <xsl:include href="event.xsl" />
+  <xsl:include href="year.xsl" />
+  <xsl:include href="calendarList.xsl" />
+  <xsl:include href="search.xsl"/>
+  <xsl:include href="ongoing.xsl" />
+  <xsl:include href="groups.xsl"/>
+  <xsl:include href="systemStats.xsl"/>
+  <xsl:include href="footer.xsl" />
 
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
