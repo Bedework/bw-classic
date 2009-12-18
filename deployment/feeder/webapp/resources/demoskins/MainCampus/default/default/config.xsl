@@ -31,7 +31,40 @@
     to the maximum extent the law permits. 
   -->
 
+  <!-- URL of resources common to all bedework apps (javascript, images) -->
+  <xsl:variable name="resourceCommons">../../../bedework-common</xsl:variable>
+
+  <!-- URL for resources (images, css, javascript) -->
+  <xsl:variable name="resourcesRoot" select="concat($appRoot,'/default/default/theme')"/>
+
+  <!-- DEFINE INCLUDES -->
+  <!-- cannot use the resourceCommons variable in xsl:include paths -->
+  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
+  <xsl:include href="./strings.xsl"/>
+
+  <!-- URL of the XSL template directory -->
+  <xsl:variable name="appRoot" select="/bedework/approot"/>
+ 
   <xsl:variable name="bwCacheHostUrl">http://localhost:3000</xsl:variable>
   <xsl:variable name="bwCalendarHostURL">http://localhost:8080</xsl:variable>
+
+  <!-- Properly encoded prefixes to the application actions; use these to build
+      urls; allows the application to be used without cookies or within a portal.
+      These urls are rewritten in header.jsp and simply passed through for use
+      here. Every url includes a query string (either ?b=de or a real query
+      string) so that all links constructed in this stylesheet may begin the
+      query string with an ampersand. -->
+  <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
+  <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
+  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
+  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
+  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
+  
+
+  <!-- URL of the web application - includes web context -->
+  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
+
   
 </xsl:stylesheet>

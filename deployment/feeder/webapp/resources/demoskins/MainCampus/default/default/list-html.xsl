@@ -13,13 +13,8 @@
   standalone="yes"
   omit-xml-declaration="yes"/>
 
-<!-- =========================================================
-
-
-
-===============================================================  -->
 <!-- **********************************************************************
-    Copyright 2006 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2009 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -42,53 +37,15 @@
     Institute, nor the authors of the software are liable for any indirect,
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
-
-  <!-- ================================= -->
-  <!--  DEMO PUBLIC CALENDAR STYLESHEET  -->
-  <!-- ================================= -->
-
-  <!-- URL of resources common to all bedework apps (javascript, images) -->
-  <xsl:variable name="resourceCommons">../../../bedework-common</xsl:variable>
-
-  <!-- DEFINE INCLUDES -->
-  <!-- cannot use the resourceCommons variable in xsl:include paths -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
+ 
+  <!-- Bring in settings --> 
   <xsl:include href="./config.xsl"/>
-  <xsl:include href="./strings.xsl"/>
 
-  <!-- DEFINE GLOBAL CONSTANTS -->
-
-  <!-- URL of html resources (images, css, other html); by default this is
-       set to the application root -->
-  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
-
-  <!-- URL of the XSL template directory -->
-  <!-- The approot is an appropriate place to put
-       included stylesheets and xml fragments. These are generally
-       referenced relatively (like errors.xsl and messages.xsl above);
-       this variable is here for your convenience if you choose to
-       reference it explicitly.  It is not used in this stylesheet, however,
-       and can be safely removed if you so choose. -->
-  <xsl:variable name="appRoot" select="/bedework/approot"/>
-
-  <!-- Properly encoded prefixes to the application actions; use these to build
-       urls; allows the application to be used without cookies or within a portal.
-       These urls are rewritten in header.jsp and simply passed through for use
-       here. Every url includes a query string (either ?b=de or a real query
-       string) so that all links constructed in this stylesheet may begin the
-       query string with an ampersand. -->
-  <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
-  <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
-  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
-  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
-  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
-
-  <!-- URL of the web application - includes web context -->
-  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
-
-  <!-- Other generally useful global variables -->
+  <!--  global variables -->
+  <xsl:variable name="prevdate" select="/bedework/previousdate"/>
+  <xsl:variable name="nextdate" select="/bedework/nextdate"/>
+  <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
+  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
   <xsl:variable name="privateCal" select="concat($bwCalendarHostURL,'/ucal')"/>
 
   <!-- MAIN TEMPLATE -->
@@ -97,16 +54,16 @@
       <head>
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-        <link rel="stylesheet" href="{$resourcesRoot}/default/default/blue.css"/>
-        <link rel="stylesheet" href="../../../bedework-common/default/default/subColors.css"/>
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
+        <link rel="stylesheet" href="{$resourcesRoot}/css/blue.css"/>
+        <link rel="stylesheet" href="{$resourceCommons}/default/default/subColors.css"/>
+        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event'">
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
+          <script type="text/javascript" src="{$resourceCommons}/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+          <script type="text/javascript" src="{$resourceCommons}/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+          <link rel="stylesheet" href="{$resourceCommons}/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+          <link rel="stylesheet" href="{$resourceCommons}/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+          <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
         </xsl:if>
         <!-- address bar icon -->
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
@@ -144,7 +101,7 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
+      <a id="linkToEvent" href="javascript:showLink('{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
        <xsl:copy-of select="$bwStr-SgEv-LinkToThisEvent"/>
      </a>
       <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text></xsl:if>
