@@ -5845,7 +5845,7 @@
         <tr>
           <th><xsl:copy-of select="$bwStr-CalS-NameColon"/></th>
           <td>
-            <input name="name" value="{$calSuiteName}" size="20"/>
+            <xsl:value-of select="$calSuiteName"/>
           </td>
           <td>
             <xsl:copy-of select="$bwStr-CalS-NameOfCalendarSuite"/>
@@ -5854,8 +5854,7 @@
         <tr>
           <th><xsl:copy-of select="$bwStr-CalS-Group"/></th>
           <td>
-            <xsl:variable name="group" select="group"/>
-            <input name="groupName" value="{$group}" size="20"/>
+            <xsl:value-of select="group"/>
           </td>
           <td>
             <xsl:copy-of select="$bwStr-CalS-NameOfAdminGroup"/>
