@@ -6,7 +6,7 @@
   <!-- THEME SPECIFIC SETTINGS -->
 
   <!-- URL of html resources (images, css, other html) for the current theme -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/default/default/defaultTheme</xsl:variable>
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/themes/bedeworkTheme</xsl:variable>
 
   <!-- Features for the current theme -->
   <!-- Note: Set the global calendar suite preferences

@@ -14,7 +14,7 @@
                    ($featuredEventsForYear = 'true' and /bedework/periodname = 'Year')))">
       <div id="feature">
         <!-- pulls in the first three images from the FeaturedEvent.xml document -->
-        <xsl:apply-templates select="document('defaultTheme/data/FeaturedEvent.xml')/featuredEvents/image[position() &lt; 4]" mode="featuredEvents" />
+        <xsl:apply-templates select="document('../../themes/bedeworkTheme/data/FeaturedEvent.xml')/featuredEvents/image[position() &lt; 4]" mode="featuredEvents" />
       </div>
     </xsl:if>
   </xsl:template>
