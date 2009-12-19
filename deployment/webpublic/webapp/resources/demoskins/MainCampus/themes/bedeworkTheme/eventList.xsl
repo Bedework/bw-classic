@@ -13,12 +13,15 @@
 
       <!-- display information about the current selection state if not default -->
       <xsl:choose>
-        <xsl:when test="/bedework/selectionState/selectionType = 'calendar'">
+        <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
           <tr>
             <td class="eventFilterInfo" colspan="3">
-              Displaying Events for Topical Area
+              Displaying Events for Calendar
               <span class="displayFilterName">
-                <xsl:value-of select="/bedework/selectionState/subscriptions/subscription/calendar/name"/>
+                <xsl:call-template name="substring-afterLastInstanceOf">
+                  <xsl:with-param name="string" select="/bedework/selectionState/collection/virtualpath"/>
+                  <xsl:with-param name="char">/</xsl:with-param>
+                </xsl:call-template>
               </span><xsl:text> </xsl:text>
               <a id="allView" href="{$setSelection}">(show all)</a></td>
           </tr>

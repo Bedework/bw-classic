@@ -64,7 +64,7 @@
   <xsl:include href="./strings.xsl"/>
 
   <!-- Page subsections -->
-  <xsl:include href="./bwclassicTheme/event.xsl" />
+  <xsl:include href="./event.xsl" />
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 

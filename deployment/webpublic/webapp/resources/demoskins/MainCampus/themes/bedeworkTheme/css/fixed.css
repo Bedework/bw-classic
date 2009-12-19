@@ -720,6 +720,14 @@ span.queryInfo {
 span.queryInfo em {
  font-weight: bold;
 }
+div.calendarList {
+  float: left;
+  margin: 0 0 0 4em;
+}
+.info {
+  font-size: 1.1em;
+  margin: 1em 1em 0 1em;
+}
 table#searchTable {
  font-size: .9em;
  color: #333;
@@ -796,24 +804,66 @@ ul.calendarTree {
  padding: 1em;
 }
 ul.calendarTree li {
+ font-weight: bold;
+ padding-top: 0.25em;
+ padding-bottom: 0.25em;
 }
 ul.calendarTree li a {
  color: #335080;
 }
-ul.calendarTree li.folder {
- font-weight: bold;
- margin: .8em 0 0 0;
-}
-ul.calendarTree li.calendar {
- font-weight: normal;
- margin: .2em 0 0 0;
-}
 ul.calendarTree li ul {
- margin: 0 0 .5em 1em;
+ margin: 0 0 .5em 1.5em;
 }
 ul.calendarTree li ul li {
+ font-weight: normal;
  margin: 0;
  padding: 0;
+}
+ul.calendarTree li.folder {
+  /*list-style-image: url("../images/catIcon.gif");*/
+}
+ul.calendarTree li.calendar {
+  /*list-style-image: url("../images/calIcon-sm.gif");*/
+}
+ul.calendarTree .exportCalLink {
+  font-size: 0.6em;
+  padding-left: 1em;
+  color: #aaa;
+  background-color: transparent;
+}
+ul.calendarTree .exportCalLink a:link,
+ul.calendarTree .exportCalLink a:active,
+ul.calendarTree .exportCalLink a:visited {
+  color: #aaa;
+  background-color: transparent;
+  text-decoration: none;
+}
+ul.calendarTree .exportCalLink a:hover {
+  color: #333;
+  background-color: transparent;
+  text-decoration: none;
+}
+#export {
+  font-size: 1.1em;
+  margin: 0px;
+  padding: 1em;
+}
+#export em {
+  font-size: 1.2em;
+  font-style: italic;
+}
+#export p {
+  margin-bottom: 1em;
+}
+#exportDateRange {
+  font-size: 1em;
+}
+.bwWidgetSubmit {
+  display: block;
+  margin-top: 0.5em;
+}
+.invisible {
+  display: none;
 }
 div.right_column {
  float: left;

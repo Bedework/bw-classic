@@ -198,8 +198,8 @@
   <!--  xsl:template match="month" -->
 
   <!--  xsl:template match="calendars" -->
-  <xsl:variable name="bwStr-Cals-AllTopicalAreas">All Topical Areas</xsl:variable>
-  <xsl:variable name="bwStr-Cals-SelectTopicalArea">Select a topical area from the list below to see only its events.</xsl:variable>
+  <xsl:variable name="bwStr-Cals-AllTopicalAreas">All Calendars</xsl:variable>
+  <xsl:variable name="bwStr-Cals-SelectTopicalArea">Select a calendar to see only its events.</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="calTree" -->
   <xsl:variable name="bwStr-Calr-Folder">folder</xsl:variable>
@@ -207,7 +207,7 @@
 
   <!--  xsl:template match="currentCalendar" mode="export" -->
   <xsl:variable name="bwStr-Cals-ExportCals">Export Calendars as iCal</xsl:variable>
-  <xsl:variable name="bwStr-Cals-CalendarToExport">Calendar to export:</xsl:variable>
+  <xsl:variable name="bwStr-Cals-CalendarToExport">Exporting:</xsl:variable>
   <xsl:variable name="bwStr-Cals-Name">Name:</xsl:variable>
   <xsl:variable name="bwStr-Cals-Path">Path:</xsl:variable>
   <xsl:variable name="bwStr-Cals-EventDateLimits">Event date limits:</xsl:variable>

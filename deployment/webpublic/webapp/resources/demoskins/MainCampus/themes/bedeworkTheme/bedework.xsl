@@ -53,15 +53,15 @@
 
   <!-- DEFINE INCLUDES -->
   <!-- Theme preferences -->
-  <xsl:include href="themeSettings.xsl" />
-
+  <xsl:include href="./themeSettings.xsl" />
+s
   <!-- theme utility functions -->
-  <xsl:include href="themeUtil.xsl" />
+  <xsl:include href="./themeUtil.xsl" />
 
   <!-- Page subsections -->
-  <xsl:include href="head.xsl" />
-  <xsl:include href="header.xsl" />
-  <xsl:include href="leftColumn.xsl" />
+  <xsl:include href="./head.xsl" />
+  <xsl:include href="./header.xsl" />
+  <xsl:include href="./leftColumn.xsl" />
   <xsl:include href="views.xsl" />
   <xsl:include href="featuredEvents.xsl"/>
   <xsl:include href="navigation.xsl" />

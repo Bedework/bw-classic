@@ -27,11 +27,11 @@
   <!--============= Display Side Bar ======-->
   <xsl:template name="displaySideBar">
     <div class="sideBarContainer">
-      <h4>FILTER BY TOPICAL AREA:</h4>
+      <h4>FILTER ON CALENDARS:</h4>
       <ul class="sideLinks">
         <li>
           <a href="{$fetchPublicCalendars}">
-            All Topical Areas
+            View All Calendars
           </a>
         </li>
       </ul>
