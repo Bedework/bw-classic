@@ -22,4 +22,20 @@
     </xsl:choose>
   </xsl:variable>
 
+  <!-- look for existence of deadlines -->
+  <xsl:variable name="deadlines">
+    <xsl:choose>
+      <xsl:when test="$deadlinesEnabled = 'true' and
+                      /bedework/page = 'eventscalendar' and
+                      /bedework/periodname != 'Year'">
+        <xsl:choose>
+          <xsl:when test="$deadlinesAlwaysDisplayed = 'true'">true</xsl:when>
+          <xsl:when test="/bedework/eventscalendar//event/entityType = 2">true</xsl:when>
+          <xsl:otherwise>false</xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>false</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
 </xsl:stylesheet>

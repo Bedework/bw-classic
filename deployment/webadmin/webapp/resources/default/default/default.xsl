@@ -1279,7 +1279,7 @@
             <xsl:copy-of select="$bwStr-AEEF-Title"/>
           </td>
           <td>
-            <input type="text" value="Bfranklin plays chess" size="60" name="summary">
+            <input type="text" size="60" name="summary">
               <xsl:attribute name="value"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
             </input>
@@ -1288,6 +1288,17 @@
                 <strong><xsl:value-of select="form/title/input/@value"/></strong>
               </div>
             </xsl:if>
+          </td>
+        </tr>
+
+        <tr>
+          <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+          <td class="fieldName">
+            <xsl:copy-of select="$bwStr-AEEF-Type"/>
+          </td>
+          <td>
+            <input type="radio" name="entityType" value="1"/><xsl:copy-of select="$bwStr-AEEF-Event"/>
+            <input type="radio" name="entityType" value="2"/><xsl:copy-of select="$bwStr-AEEF-Deadline"/>
           </td>
         </tr>
 
@@ -1393,34 +1404,43 @@
             <xsl:copy-of select="$bwStr-AEEF-AllDay"/>
 
             <!-- floating event: no timezone (and not UTC) -->
-            <xsl:choose>
-              <xsl:when test="form/floating/input/@checked='checked'">
-                <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="on" checked="checked"/>
-                <input type="hidden" name="eventStartDate.floating" value="on" id="startFloating"/>
-                <input type="hidden" name="eventEndDate.floating" value="on" id="endFloating"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating"/>
-                <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:copy-of select="$bwStr-AEEF-Floating"/>
+            <!-- let's hide it completely unless it comes in checked
+                 (e.g. from import); to restore this field, remove the if  -->
+            <xsl:if test="form/floating/input/@checked='checked'">
+              <xsl:choose>
+                <xsl:when test="form/floating/input/@checked='checked'">
+                  <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="on" checked="checked"/>
+                  <input type="hidden" name="eventStartDate.floating" value="on" id="startFloating"/>
+                  <input type="hidden" name="eventEndDate.floating" value="on" id="endFloating"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="off"/>
+                  <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating"/>
+                  <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:copy-of select="$bwStr-AEEF-Floating"/>
+            </xsl:if>
 
             <!-- store time as coordinated universal time (UTC) -->
-            <xsl:choose>
-              <xsl:when test="form/storeUTC/input/@checked='checked'">
-                <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
-                <input type="hidden" name="eventStartDate.storeUTC" value="on" id="startStoreUTC"/>
-                <input type="hidden" name="eventEndDate.storeUTC" value="on" id="endStoreUTC"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC"/>
-                <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:copy-of select="$bwStr-AEEF-StoreAsUTC"/>
+            <!-- like floating time, let's hide UTC completely unless an
+                 event comes in checked; (e.g. from import);
+                 to restore this field, remove the if -->
+            <xsl:if test="form/storeUTC/input/@checked='checked'">
+              <xsl:choose>
+                <xsl:when test="form/storeUTC/input/@checked='checked'">
+                  <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
+                  <input type="hidden" name="eventStartDate.storeUTC" value="on" id="startStoreUTC"/>
+                  <input type="hidden" name="eventEndDate.storeUTC" value="on" id="endStoreUTC"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="off"/>
+                  <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC"/>
+                  <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:copy-of select="$bwStr-AEEF-StoreAsUTC"/>
+            </xsl:if>
 
             <br/>
             <div class="dateStartEndBox">
@@ -2342,6 +2362,7 @@
           </td>
         </tr>
         <!--  Transparency  -->
+        <!-- let's not set this in the public client, and let the defaults hold
         <tr>
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
           <td class="fieldName">
@@ -2358,7 +2379,7 @@
             </input>
             <xsl:copy-of select="$bwStr-AEEF-NoTransparent"/>
           </td>
-        </tr>
+        </tr> -->
         <!--  Description  -->
         <tr>
           <td class="fieldName">

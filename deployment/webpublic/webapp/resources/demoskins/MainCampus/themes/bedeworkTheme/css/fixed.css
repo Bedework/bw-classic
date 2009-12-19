@@ -294,11 +294,19 @@ div#errors {
 }
 .secondaryColHeader {
  padding: 0 0 0 10px;
- background: #273E6D;
+ background-color: #273E6D;
  white-space: nowrap;
  clear: both;
 }
-.secondaryColHeader h3 {
+.secondaryColHeaderGray {
+ padding: 0 0 0 10px;
+ background-color: #E0E6D8;
+ color: #273E6D;
+ white-space: nowrap;
+ clear: both;
+}
+.secondaryColHeader h3,
+.secondaryColHeaderGray h3 {
  display: inline;
 }
 a.linkBack:link,

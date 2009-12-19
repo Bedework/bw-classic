@@ -28,6 +28,11 @@
   <xsl:variable name="bwStr-Ongoing-Title">Ongoing</xsl:variable>
   <xsl:variable name="bwStr-Ongoing-NoEvents">There are no ongoing events in this time period or view</xsl:variable>
 
+  <!-- deadlines -->
+  <xsl:variable name="bwStr-Deadline-Title">Deadlines</xsl:variable>
+  <xsl:variable name="bwStr-Deadline-NoEvents">There are no deadlines in this time period or view</xsl:variable>
+
+
   <!--  xsl:template name="tabs" -->
   <xsl:variable name="bwStr-Tabs-LoggedInAs">logged in as</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Logout">logout</xsl:variable>

@@ -43,6 +43,15 @@
    <xsl:variable name="ongoingEventsAlwaysDisplayed">true</xsl:variable>
 
 
+   <!-- DEADLINES/TASKS -->
+   <!-- use the deadlines sidebar? -->
+   <!-- if deadlines sidebar is enabled, deadlines will appear
+        in the sidebar under ongoing events -->
+   <xsl:variable name="deadlinesEnabled">true</xsl:variable>
+
+   <!-- always display sidebar, even if no deadlines are present? -->
+   <xsl:variable name="deadlinesAlwaysDisplayed">true</xsl:variable>
+
 
   <!-- VIEW HIERARCHY -->
   <!-- force like-named views into a heirarchy? -->

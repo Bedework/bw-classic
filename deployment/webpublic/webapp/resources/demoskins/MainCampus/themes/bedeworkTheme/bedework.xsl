@@ -53,15 +53,15 @@
 
   <!-- DEFINE INCLUDES -->
   <!-- Theme preferences -->
-  <xsl:include href="./themeSettings.xsl" />
-s
+  <xsl:include href="themeSettings.xsl" />
+
   <!-- theme utility functions -->
-  <xsl:include href="./themeUtil.xsl" />
+  <xsl:include href="themeUtil.xsl" />
 
   <!-- Page subsections -->
-  <xsl:include href="./head.xsl" />
-  <xsl:include href="./header.xsl" />
-  <xsl:include href="./leftColumn.xsl" />
+  <xsl:include href="head.xsl" />
+  <xsl:include href="header.xsl" />
+  <xsl:include href="leftColumn.xsl" />
   <xsl:include href="views.xsl" />
   <xsl:include href="featuredEvents.xsl"/>
   <xsl:include href="navigation.xsl" />
@@ -71,6 +71,7 @@ s
   <xsl:include href="calendarList.xsl" />
   <xsl:include href="search.xsl"/>
   <xsl:include href="ongoing.xsl" />
+  <xsl:include href="deadlines.xsl" />
   <xsl:include href="groups.xsl"/>
   <xsl:include href="systemStats.xsl"/>
   <xsl:include href="footer.xsl" />
@@ -168,10 +169,15 @@ s
               </div>
             </div>
 
-            <!-- ONGOING EVENTS, if enabled -->
-            <xsl:if test="$ongoingEvents = 'true'">
+            <!-- ONGOING EVENTS and DEADLINES, if enabled -->
+            <xsl:if test="$ongoingEvents = 'true' or $deadlines = 'true'">
               <div class="right_column" id="right_column">
-                <xsl:call-template name="ongoingEventList" />
+                <xsl:if test="$ongoingEvents = 'true'">
+                  <xsl:call-template name="ongoingEventList" />
+                </xsl:if>
+                <xsl:if test="$deadlines = 'true'">
+                  <xsl:call-template name="deadlines" />
+                </xsl:if>
               </div>
             </xsl:if>
 

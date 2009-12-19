@@ -120,6 +120,7 @@
   <xsl:variable name="bwStr-AEEF-PopUp">pop-up</xsl:variable>
   <xsl:variable name="bwStr-AEEF-For">for</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Title">Title:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Type">Type:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Calendar">Calendar:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SelectColon">Select:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SubmittedEvents">submitted events</xsl:variable>
@@ -142,6 +143,7 @@
   <xsl:variable name="bwStr-AEEF-This">This</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Task">task</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Event">event</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Deadline">deadline</xsl:variable>
   <xsl:variable name="bwStr-AEEF-HasNoDurationEndDate">has no duration / end date</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ThisEventHasNoDurationEndDate">This event has no duration / end date</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Complete">Complete:</xsl:variable>
