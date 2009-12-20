@@ -37,8 +37,8 @@
     Institute, nor the authors of the software are liable for any indirect,
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
- 
-  <!-- Bring in settings --> 
+
+  <!-- Bring in settings -->
   <xsl:include href="./config.xsl"/>
 
   <!--  global variables -->
@@ -376,7 +376,7 @@
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Categories"/></td>
           <td class="fieldval">
             <xsl:for-each select="categories/category">
-              <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+              <xsl:value-of select="value"/><xsl:if test="position() != last()">, </xsl:if>
             </xsl:for-each>
           </td>
         </tr>
@@ -476,7 +476,7 @@
                     <br/>
                     <xsl:copy-of select="$bwStr-LsEv-Categories"/>
                     <xsl:for-each select="categories/category">
-                      <xsl:value-of select="word"/><xsl:if test="position() != last()">, </xsl:if>
+                      <xsl:value-of select="value"/><xsl:if test="position() != last()">, </xsl:if>
                     </xsl:for-each>
                   </xsl:if>
                   <br/>

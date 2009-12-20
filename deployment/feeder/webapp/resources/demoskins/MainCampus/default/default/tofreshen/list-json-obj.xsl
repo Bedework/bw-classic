@@ -167,7 +167,7 @@
                     'encodedPath' : '<xsl:value-of select='calendar/encodedPath'/>'
                 },
                 'categories' : [
-                    <xsl:for-each select='categories/category'>'<xsl:value-of select='word'/>'<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
+                    <xsl:for-each select='categories/category'>'<xsl:value-of select='value'/>'<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
                 ],
                 'description' : '<xsl:value-of select='$strippedDescription'/>',
                 'xproperties' : {

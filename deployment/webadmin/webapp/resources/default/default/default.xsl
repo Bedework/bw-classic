@@ -985,7 +985,7 @@
               <xsl:if test="/bedework/appvar[key='catFilter']/value = uid">
                 <xsl:attribute name="selected">selected</xsl:attribute>
               </xsl:if>
-              <xsl:value-of select="keyword"/>
+              <xsl:value-of select="value"/>
             </option>
           </xsl:for-each>
         </select>
@@ -1142,7 +1142,7 @@
       <xsl:if test="$pending = 'false'">
         <td class="calcat">
           <xsl:for-each select="categories/category">
-            <xsl:value-of select="keyword"/><br/>
+            <xsl:value-of select="value"/><br/>
           </xsl:for-each>
         </td>
       </xsl:if>
@@ -2615,7 +2615,7 @@
                     <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
                     <td>
                       <xsl:for-each select="form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
-                        <xsl:sort select="keyword" order="ascending"/>
+                        <xsl:sort select="value" order="ascending"/>
                         <input type="checkbox" name="catUid">
                           <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                           <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
@@ -2624,13 +2624,13 @@
                           <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                             <xsl:attribute name="disabled">disabled</xsl:attribute>
                           </xsl:if>
-                          <xsl:value-of select="keyword"/>
+                          <xsl:value-of select="value"/>
                         </input><br/>
                       </xsl:for-each>
                     </td>
                     <td>
                       <xsl:for-each select="form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
-                        <xsl:sort select="keyword" order="ascending"/>
+                        <xsl:sort select="value" order="ascending"/>
                         <input type="checkbox" name="catUid">
                           <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                           <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
@@ -2639,7 +2639,7 @@
                           <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                             <xsl:attribute name="disabled">disabled</xsl:attribute>
                           </xsl:if>
-                          <xsl:value-of select="keyword"/>
+                          <xsl:value-of select="value"/>
                         </input><br/>
                       </xsl:for-each>
                     </td>
@@ -2666,7 +2666,7 @@
                             <xsl:attribute name="disabled">disabled</xsl:attribute>
                           </xsl:if>
                         </xsl:if>
-                        <xsl:value-of select="keyword"/>
+                        <xsl:value-of select="value"/>
                       </input><br/>
                     </xsl:for-each>
                   </td>
@@ -2684,7 +2684,7 @@
                             <xsl:attribute name="disabled">disabled</xsl:attribute>
                           </xsl:if>
                         </xsl:if>
-                        <xsl:value-of select="keyword"/>
+                        <xsl:value-of select="value"/>
                       </input><br/>
                     </xsl:for-each>
                   </td>
@@ -3625,7 +3625,7 @@
           <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
             <a href="{$category-fetchForUpdate}&amp;catUid={$catUid}">
-              <xsl:value-of select="keyword"/>
+              <xsl:value-of select="value"/>
             </a>
           </td>
           <td>
@@ -3676,8 +3676,9 @@
                 <xsl:copy-of select="$bwStr-MoCa-Keyword"/>
               </td>
               <td>
-                <xsl:variable name="keyword" select="normalize-space(/bedework/currentCategory/category/keyword)"/>
-                <input type="text" name="categoryWord.value" value="{$keyword}" size="40"/>
+                <input type="text" name="categoryWord.value" value="" size="40">
+                  <xsl:attribute name="value"><xsl:value-of select="normalize-space(/bedework/currentCategory/category/value)"/></xsl:attribute>
+                </input>
               </td>
             </tr>
             <tr class="optional">
@@ -3717,7 +3718,7 @@
           <xsl:copy-of select="$bwStr-DeCC-Keyword"/>
         </td>
         <td>
-          <xsl:value-of select="/bedework/currentCategory/category/keyword"/>
+          <xsl:value-of select="/bedework/currentCategory/category/value"/>
         </td>
       </tr>
       <tr class="optional">
@@ -3741,12 +3742,12 @@
     <!-- show the selected categories -->
     <ul class="catlist">
       <xsl:for-each select="/bedework/categories/current/category">
-        <xsl:sort select="keyword" order="ascending"/>
+        <xsl:sort select="value" order="ascending"/>
         <li>
           <input type="checkbox" name="catUid" checked="checked">
             <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
           </input>
-          <xsl:value-of select="keyword"/>
+          <xsl:value-of select="value"/>
         </li>
       </xsl:for-each>
     </ul>
@@ -3756,14 +3757,14 @@
     <div id="calCategories" class="invisible">
       <ul class="catlist">
         <xsl:for-each select="/bedework/categories/all/category">
-          <xsl:sort select="keyword" order="ascending"/>
+          <xsl:sort select="value" order="ascending"/>
           <!-- don't duplicate the selected categories -->
           <xsl:if test="not(uid = ../../current//category/uid)">
             <li>
               <input type="checkbox" name="catUid">
                 <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
               </input>
-              <xsl:value-of select="keyword"/>
+              <xsl:value-of select="value"/>
             </li>
           </xsl:if>
         </xsl:for-each>
@@ -3998,11 +3999,11 @@
             <div id="filterCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <li>
                     <input type="checkbox" name="filterCatUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </input>
                   </li>
                 </xsl:for-each>
@@ -4019,7 +4020,7 @@
             <div id="calCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <li>
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
@@ -4027,7 +4028,7 @@
                       <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                         <xsl:attribute name="disabled">disabled</xsl:attribute>
                       </xsl:if>
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </input>
                   </li>
                 </xsl:for-each>
@@ -4225,12 +4226,12 @@
             <xsl:if test="$filterUids != ''">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <xsl:if test="contains($filterUids,uid)">
                     <li>
                       <input type="checkbox" name="filterCatUid" checked="checked">
                         <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:value-of select="keyword"/>
+                        <xsl:value-of select="value"/>
                       </input>
                     </li>
                   </xsl:if>
@@ -4248,13 +4249,13 @@
             <div id="filterCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <!-- don't duplicate the selected filters -->
                   <xsl:if test="not(contains($filterUids,uid))">
                     <li>
                       <input type="checkbox" name="filterCatUid">
                         <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:value-of select="keyword"/>
+                        <xsl:value-of select="value"/>
                       </input>
                     </li>
                   </xsl:if>
@@ -4269,14 +4270,14 @@
             <!-- show the selected categories -->
             <ul class="catlist">
               <xsl:for-each select="/bedework/categories/current/category">
-                <xsl:sort select="keyword" order="ascending"/>
+                <xsl:sort select="value" order="ascending"/>
                 <li>
                   <input type="checkbox" name="catUid" checked="checked">
                     <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                     <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                       <xsl:attribute name="disabled">disabled</xsl:attribute>
                     </xsl:if>
-                    <xsl:value-of select="keyword"/>
+                    <xsl:value-of select="value"/>
                   </input>
                 </li>
               </xsl:for-each>
@@ -4287,14 +4288,14 @@
             <div id="calCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <!-- don't duplicate the selected categories -->
                   <xsl:if test="not(uid = ../../current//category/uid)">
                     <li>
                       <input type="checkbox" name="catUid">
                         <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       </input>
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </li>
                   </xsl:if>
                 </xsl:for-each>
@@ -4977,11 +4978,11 @@
             <div id="filterCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <li>
                     <input type="checkbox" name="filterCatUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </input>
                   </li>
                 </xsl:for-each>
@@ -4998,7 +4999,7 @@
             <div id="calCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <li>
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
@@ -5006,7 +5007,7 @@
                       <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                         <xsl:attribute name="disabled">disabled</xsl:attribute>
                       </xsl:if>
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </input>
                   </li>
                 </xsl:for-each>
@@ -6002,11 +6003,11 @@
             <!-- show the selected categories -->
             <ul class="catlist">
               <xsl:for-each select="/bedework/categories/current/category">
-                <xsl:sort select="keyword" order="ascending"/>
+                <xsl:sort select="value" order="ascending"/>
                 <li>
                   <input type="checkbox" name="defaultCategory" checked="checked">
                     <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                    <xsl:value-of select="keyword"/>
+                    <xsl:value-of select="value"/>
                   </input>
                 </li>
               </xsl:for-each>
@@ -6017,13 +6018,13 @@
             <div id="calCategories" class="invisible">
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
-                  <xsl:sort select="keyword" order="ascending"/>
+                  <xsl:sort select="value" order="ascending"/>
                   <!-- don't duplicate the selected categories -->
                   <xsl:if test="not(uid = ../../current//category/uid)">
                     <li>
                       <input type="checkbox" name="defaultCategory">
                         <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:value-of select="keyword"/>
+                        <xsl:value-of select="value"/>
                       </input>
                     </li>
                   </xsl:if>

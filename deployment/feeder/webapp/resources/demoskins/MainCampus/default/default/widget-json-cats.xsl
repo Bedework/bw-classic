@@ -42,15 +42,15 @@
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
 
   <xsl:template match='/'>
-	
-	<xsl:choose>
+
+  <xsl:choose>
       <xsl:when test="/bedework/appvar/key = 'objName'">
     var <xsl:value-of select="/bedework/appvar[key='objName']/value"/> = {"bwCategories": {
       </xsl:when>
       <xsl:otherwise>
     {"bwCategories": {
       </xsl:otherwise>
-    </xsl:choose>	
+    </xsl:choose>
         "categories": [
             <xsl:apply-templates select="/bedework/categories/category"/>
         ]
@@ -61,7 +61,7 @@
     <!-- first, escape apostrophes -->
     <xsl:variable name="aposStrippedKeyword">
       <xsl:call-template name="replace">
-        <xsl:with-param name="string" select="keyword"/>
+        <xsl:with-param name="string" select="value"/>
         <xsl:with-param name="pattern" select='"&apos;"'/>
         <xsl:with-param name="replacement" select='"\&apos;"'/>
       </xsl:call-template>
@@ -70,8 +70,9 @@
     <xsl:variable name="strippedKeyword" select='translate($aposStrippedKeyword,"&#xA;"," ")'/>
     <!-- finally, produce the JSON output -->
             {
-                "keyword" : "<xsl:value-of select="$strippedKeyword"/>",
+                "value" : "<xsl:value-of select="$strippedKeyword"/>",
                 "id" : "<xsl:value-of select="id"/>",
+                "uid" : "<xsl:value-of select="uid"/>",
                 "creator" : "<xsl:value-of select="creator"/>"
             }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>

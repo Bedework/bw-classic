@@ -3136,7 +3136,7 @@
                         <input type="checkbox" name="catUid"/>
                           <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                           <xsl:if test="uid = form/categories/current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:value-of select="keyword"/>
+                          <xsl:value-of select="value"/>
                         <br/>
                       </xsl:for-each>
                     </td>
@@ -3145,7 +3145,7 @@
                         <input type="checkbox" name="catUid"/>
                           <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                           <xsl:if test="uid = form/categories/current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:value-of select="keyword"/>
+                          <xsl:value-of select="value"/>
                         <br/>
                       </xsl:for-each>
                     </td>
@@ -4570,7 +4570,7 @@
                   <xsl:variable name="catUid" select="uid"/>
                   <li>
                     <a href="{$category-fetchForUpdate}&amp;catUid={$catUid}">
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </a>
                   </li>
                 </xsl:for-each>
@@ -4648,8 +4648,9 @@
                 <xsl:copy-of select="$bwStr-MCat-Keyword"/>
               </td>
               <td>
-                <xsl:variable name="keyword" select="normalize-space(/bedework/currentCategory/category/keyword)"/>
-                <input type="text" name="categoryWord.value" value="{$keyword}" size="40"/>
+                <input type="text" name="categoryWord.value" value="" size="40">
+                  <xsl:attribute name="value"><xsl:value-of select="normalize-space(/bedework/currentCategory/category/value)"/></xsl:attribute>
+                </input>
               </td>
             </tr>
             <tr>
@@ -4697,7 +4698,7 @@
           <xsl:copy-of select="$bwStr-DlCC-Keyword"/>
         </td>
         <td>
-          <xsl:value-of select="/bedework/currentCategory/category/keyword"/>
+          <xsl:value-of select="/bedework/currentCategory/category/value"/>
         </td>
       </tr>
       <tr>

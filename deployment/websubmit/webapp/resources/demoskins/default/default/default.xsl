@@ -1084,7 +1084,7 @@
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </input><br/>
                   </xsl:for-each>
                 </td>
@@ -1093,7 +1093,7 @@
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                      <xsl:value-of select="keyword"/>
+                      <xsl:value-of select="value"/>
                     </input><br/>
                   </xsl:for-each>
                 </td>

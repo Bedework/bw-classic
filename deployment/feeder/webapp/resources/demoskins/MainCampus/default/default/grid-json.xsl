@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="html" omit-xml-declaration="yes" indent="no" media-type="text/javascript" standalone="yes"/>
-  
+
   <!-- **********************************************************************
     Copyright 2009 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
@@ -25,17 +25,17 @@
     repair or correction. In particular, neither Rensselaer Polytechnic
     Institute, nor the authors of the software are liable for any indirect,
     special, consequential, or incidental damages related to the software,
-    to the maximum extent the law permits. 
+    to the maximum extent the law permits.
   -->
 
   <!-- DEFINE INCLUDES -->
   <!-- util.xsl belongs in bedework-common on your application server for use
-       by all stylesheets: 
+       by all stylesheets:
   -->
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
   <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
-  
+
   <xsl:template match='/'>
     <xsl:choose>
       <xsl:when test="/bedework/appvar/key = 'objName'">
@@ -47,133 +47,133 @@
     </xsl:choose>
         "year": {
           "value": "<xsl:value-of select='/bedework/eventscalendar/year/value'/>",
-	       <xsl:apply-templates select="/bedework/eventscalendar/year/month" />
-	    }
+         <xsl:apply-templates select="/bedework/eventscalendar/year/month" />
+      }
       }}
   </xsl:template>
 
   <xsl:template name="processGrpAndCats">
-    <xsl:param name="list" /> 
-    <xsl:variable name="group" select="substring-before($list, '~')" /> 
+    <xsl:param name="list" />
+    <xsl:variable name="group" select="substring-before($list, '~')" />
     <xsl:variable name="remaining" select="substring-after($list, '~')" />
     <xsl:call-template name="processCategories">
-	  <xsl:with-param name="group" select="$group" />
-      <xsl:with-param name="list" select="$remaining" /> 
+    <xsl:with-param name="group" select="$group" />
+      <xsl:with-param name="list" select="$remaining" />
     </xsl:call-template>
   </xsl:template>
 
   <xsl:template name="processCategories">
-	<xsl:param name="group" />
-    <xsl:param name="list" /> 
+  <xsl:param name="group" />
+    <xsl:param name="list" />
     <xsl:choose>
-	  <xsl:when test="contains($list, '~')">
-		<!-- Grab the first off the list and process -->
-	  	<xsl:variable name="catid" select="substring-before($list, '~')" /> 
-	    <xsl:variable name="remaining" select="substring-after($list, '~')" />
-	    <xsl:choose>
-		  <xsl:when test="$group = 'all'">
-	        <xsl:apply-templates select="event[categories/category/id = $catid]" />
-	      </xsl:when>
-	      <xsl:otherwise>
-	        <xsl:apply-templates select="event[categories/category/id = $catid]" />
-	      </xsl:otherwise>
-	    </xsl:choose>
-	
-		<!-- now use recursion to process the remaining categories -->
-	    <xsl:call-template name="processCategories">
-	      <xsl:with-param name="list" select="$remaining" /> 
-	    </xsl:call-template>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- No more tildes, so this is the last category.  Process it -->
-		<xsl:choose>
-		  <xsl:when test="$group = 'all'">
-			<xsl:choose>
-			  <xsl:when test="$list = 'all'">
-	            <xsl:apply-templates select="event" />
-	          </xsl:when>
-	          <xsl:otherwise>
-		        <xsl:apply-templates select="event[categories/category/id = $list]" />
-		      </xsl:otherwise>
-	        </xsl:choose>
-	      </xsl:when>
-	      <xsl:otherwise>
-		    <xsl:choose>
-			  <xsl:when test="$list = 'all'">
-	            <xsl:apply-templates select="event[creator = $group]" />
-	          </xsl:when>
-	          <xsl:otherwise>
-		        <xsl:choose>
-		          <xsl:when test="event/creator = $group">
-		            <xsl:apply-templates select="event[categories/category/id = $list]" />
-		          </xsl:when>
-		        </xsl:choose>
-		      </xsl:otherwise>
-			</xsl:choose>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:otherwise>
-	</xsl:choose>
+    <xsl:when test="contains($list, '~')">
+    <!-- Grab the first off the list and process -->
+      <xsl:variable name="catid" select="substring-before($list, '~')" />
+      <xsl:variable name="remaining" select="substring-after($list, '~')" />
+      <xsl:choose>
+      <xsl:when test="$group = 'all'">
+          <xsl:apply-templates select="event[categories/category/id = $catid]" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="event[categories/category/id = $catid]" />
+        </xsl:otherwise>
+      </xsl:choose>
+
+    <!-- now use recursion to process the remaining categories -->
+      <xsl:call-template name="processCategories">
+        <xsl:with-param name="list" select="$remaining" />
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <!-- No more tildes, so this is the last category.  Process it -->
+    <xsl:choose>
+      <xsl:when test="$group = 'all'">
+      <xsl:choose>
+        <xsl:when test="$list = 'all'">
+              <xsl:apply-templates select="event" />
+            </xsl:when>
+            <xsl:otherwise>
+            <xsl:apply-templates select="event[categories/category/id = $list]" />
+          </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+        <xsl:choose>
+        <xsl:when test="$list = 'all'">
+              <xsl:apply-templates select="event[creator = $group]" />
+            </xsl:when>
+            <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="event/creator = $group">
+                <xsl:apply-templates select="event[categories/category/id = $list]" />
+              </xsl:when>
+            </xsl:choose>
+          </xsl:otherwise>
+      </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:otherwise>
+  </xsl:choose>
   </xsl:template>
 
   <xsl:template match="month">
-	    "month": {
-	      "value" : "<xsl:value-of select='value'/>",
-	      "longname" : "<xsl:value-of select='longname'/>",
-	      "shortname" : "<xsl:value-of select='shortname'/>",
-	      "weeks" : [
+      "month": {
+        "value" : "<xsl:value-of select='value'/>",
+        "longname" : "<xsl:value-of select='longname'/>",
+        "shortname" : "<xsl:value-of select='shortname'/>",
+        "weeks" : [
           <xsl:apply-templates select="week" />
           ]
         }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 
   <xsl:template match="week">
-	      {
-	        "value" : "<xsl:value-of select='value'/>",
-	        "days" : [
-	           <xsl:apply-templates select="day" />
-	        ]
-	      }<xsl:if test="position() != last()">,</xsl:if>
+        {
+          "value" : "<xsl:value-of select='value'/>",
+          "days" : [
+             <xsl:apply-templates select="day" />
+          ]
+        }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
-  
+
   <xsl:template match="day">
-	        {
-	          <xsl:choose>
-		        <xsl:when test="filler = 'true'">
-			  "filler" : "<xsl:value-of select='filler'/>"
-		        </xsl:when>
-		        <xsl:otherwise>
-			  "filler" : "<xsl:value-of select='filler'/>",
-	          "value" : "<xsl:value-of select='value'/>",
-	          "name" : "<xsl:value-of select='name'/>",
-	          "date" : "<xsl:value-of select='date'/>",
-	          "longdate" : "<xsl:value-of select='longdate'/>",
-	          "shortdate" : "<xsl:value-of select='shortdate'/>",
-	          "events" : [
-	              <xsl:choose>
-		            <xsl:when test="/bedework/appvar/key = 'filter'">
-  		              <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-		              <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-		              <!-- Define filters here: -->
-		              <xsl:choose>
-		                <xsl:when test="$filterName = 'grpAndCats'">
-		  	              <xsl:call-template name="processGrpAndCats"><xsl:with-param name="list" select="$filterVal"/></xsl:call-template>
-		                </xsl:when>
-		                <xsl:otherwise>
-		                  <!-- Filter name not defined? Turn off filtering. -->
-		                  <xsl:apply-templates select="event"/>
-	  	                </xsl:otherwise>
-		              </xsl:choose>
-		            </xsl:when>
-		            <xsl:otherwise>
-		              <xsl:apply-templates select="event"/>
-		            </xsl:otherwise>
-		          </xsl:choose>
-		          ]
-		        </xsl:otherwise>
-		      </xsl:choose>
-		    }<xsl:if test="position() != last()">,</xsl:if>
-  </xsl:template>	
+          {
+            <xsl:choose>
+            <xsl:when test="filler = 'true'">
+        "filler" : "<xsl:value-of select='filler'/>"
+            </xsl:when>
+            <xsl:otherwise>
+        "filler" : "<xsl:value-of select='filler'/>",
+            "value" : "<xsl:value-of select='value'/>",
+            "name" : "<xsl:value-of select='name'/>",
+            "date" : "<xsl:value-of select='date'/>",
+            "longdate" : "<xsl:value-of select='longdate'/>",
+            "shortdate" : "<xsl:value-of select='shortdate'/>",
+            "events" : [
+                <xsl:choose>
+                <xsl:when test="/bedework/appvar/key = 'filter'">
+                    <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
+                  <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
+                  <!-- Define filters here: -->
+                  <xsl:choose>
+                    <xsl:when test="$filterName = 'grpAndCats'">
+                      <xsl:call-template name="processGrpAndCats"><xsl:with-param name="list" select="$filterVal"/></xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <!-- Filter name not defined? Turn off filtering. -->
+                      <xsl:apply-templates select="event"/>
+                      </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="event"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              ]
+            </xsl:otherwise>
+          </xsl:choose>
+        }<xsl:if test="position() != last()">,</xsl:if>
+  </xsl:template>
 
   <xsl:template match="event">
     <!-- first, escape apostrophes -->
@@ -242,7 +242,7 @@
                       "encodedPath" : "<xsl:value-of select='calendar/encodedPath'/>"
                     },
                     "categories" : [
-                      <xsl:for-each select='categories/category'>"<xsl:value-of select='word'/>"<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
+                      <xsl:for-each select='categories/category'>"<xsl:value-of select='value'/>"<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
                     ],
                     "description" : "<xsl:value-of select='$strippedDescription'/>",
                     "xproperties" : [
@@ -256,7 +256,7 @@
                           }
                         }
                       }<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
-                      
+
                     ]
                  }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>

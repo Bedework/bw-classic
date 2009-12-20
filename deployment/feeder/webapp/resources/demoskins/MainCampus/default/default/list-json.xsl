@@ -52,17 +52,17 @@
     repair or correction. In particular, neither Rensselaer Polytechnic
     Institute, nor the authors of the software are liable for any indirect,
     special, consequential, or incidental damages related to the software,
-    to the maximum extent the law permits. 
+    to the maximum extent the law permits.
   -->
 
   <!-- DEFINE INCLUDES -->
   <!-- util.xsl belongs in bedework-common on your application server for use
-       by all stylesheets: 
+       by all stylesheets:
   -->
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
   <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
-  
+
   <xsl:template match='/'>
     <xsl:choose>
       <xsl:when test="/bedework/appvar/key = 'objName'">
@@ -78,7 +78,7 @@
     }}
   </xsl:template>
 
-  
+
   <xsl:template match="event">
     <!-- first, escape apostrophes -->
     <xsl:variable name="aposStrippedSummary">
@@ -146,7 +146,7 @@
                     'encodedPath' : '<xsl:value-of select='calendar/encodedPath'/>'
                 },
                 'categories' : [
-                    <xsl:for-each select='categories/category'>'<xsl:value-of select='word'/>'<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
+                    <xsl:for-each select='categories/category'>'<xsl:value-of select='value'/>'<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
                 ],
                 'description' : '<xsl:value-of select='$strippedDescription'/>',
                 'xproperties' : {

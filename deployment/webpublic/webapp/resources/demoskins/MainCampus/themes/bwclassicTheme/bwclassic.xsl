@@ -775,7 +775,7 @@
             <xsl:for-each select="/bedework/categories/category">
               <option>
                 <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                <xsl:value-of select="keyword"/>
+                <xsl:value-of select="value"/>
               </option>
             </xsl:for-each>
           </select>

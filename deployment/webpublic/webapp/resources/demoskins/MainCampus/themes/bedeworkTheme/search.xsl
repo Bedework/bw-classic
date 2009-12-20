@@ -211,15 +211,15 @@
               <td>
                 <ul>
                   <xsl:for-each
-                    select="/bedework/categories/category[(position() &lt;= ceiling($catCount div 2)) and (keyword != 'Local') and (creator != 'agrp_public-user') and (keyword != 'Main') and (keyword != 'Student') and (keyword != 'calCrossPublish')]">
+                    select="/bedework/categories/category[(position() &lt;= ceiling($catCount div 2)) and (value != 'Local') and (creator != 'agrp_public-user') and (value != 'Main') and (value != 'Student') and (value != 'calCrossPublish')]">
                     <xsl:variable name="currId"
-                      select="keyword" />
+                      select="value" />
                     <li>
                       <p>
                         <input type="checkbox"
                           name="categoryKey" value="{$currId}" />
                         <xsl:value-of
-                          select="keyword" />
+                          select="value" />
                       </p>
                     </li>
                   </xsl:for-each>
@@ -228,15 +228,15 @@
               <td>
                 <ul>
                   <xsl:for-each
-                    select="/bedework/categories/category[(position() &gt; ceiling($catCount div 2)) and (keyword != 'Local') and (creator != 'agrp_public-user') and (keyword != 'Main') and (keyword != 'Student') and (keyword != 'calCrossPublish')]">
+                    select="/bedework/categories/category[(position() &gt; ceiling($catCount div 2)) and (value != 'Local') and (creator != 'agrp_public-user') and (value != 'Main') and (value != 'Student') and (value != 'calCrossPublish')]">
                     <xsl:variable name="currId2"
-                      select="keyword" />
+                      select="value" />
                     <li>
                       <p>
                         <input type="checkbox"
                           name="categoryKey" value="{$currId2}" />
                         <xsl:value-of
-                          select="keyword" />
+                          select="value" />
                       </p>
                     </li>
                   </xsl:for-each>
