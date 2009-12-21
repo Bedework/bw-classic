@@ -71,7 +71,6 @@
     <!-- finally, produce the JSON output -->
             {
                 "value" : "<xsl:value-of select="$strippedKeyword"/>",
-                "id" : "<xsl:value-of select="id"/>",
                 "uid" : "<xsl:value-of select="uid"/>",
                 "creator" : "<xsl:value-of select="creator"/>"
             }<xsl:if test="position() != last()">,</xsl:if>
