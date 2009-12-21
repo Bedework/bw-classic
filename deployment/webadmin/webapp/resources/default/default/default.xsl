@@ -4470,6 +4470,7 @@
     </xsl:choose>
 
     <form name="delCalForm" action="{$calendar-delete}" method="post">
+      <input type="hidden" name="deleteContent" value="true"/>
       <table class="eventFormTable">
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Path"/></th>

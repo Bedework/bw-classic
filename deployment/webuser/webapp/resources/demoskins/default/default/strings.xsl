@@ -603,10 +603,10 @@
   <!-- The rest found above -->
 
   <!--  xsl:template match="currentCalendar" mode="deleteCalendarConfirm"  -->
-  <xsl:variable name="bwStr-CuCa-YesDeleteFolder">Yes: Delete Folder!"</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-YesDeleteCalendar">Yes: Delete Calendar!"</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-YesDeleteFolder">Yes: Delete Folder!</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-YesDeleteCalendar">Yes: Delete Calendar!</xsl:variable>
   <xsl:variable name="bwStr-CuCa-TheFollowingFolder">The following folder <em>and all its contents</em> will be deleted.  Continue?</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-TheFollowingCalendar">The following calendar will be deleted.  Continue?</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-TheFollowingCalendar">The following calendar <em>and all its contents</em> will be deleted.  Continue?</xsl:variable>
   <!-- The rest found above -->
 
   <!--  xsl:template match="calendars" mode="exportCalendars" -->

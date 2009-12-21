@@ -472,7 +472,7 @@
   <xsl:variable name="bwStr-CuCa-DeleteFolder">Delete Folder</xsl:variable>
   <xsl:variable name="bwStr-CuCa-FollowingFolderDeleted">The following folder <em>and all its contents</em> will be deleted.  Continue?</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DeleteCalendar">Delete Calendar</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-FollowingCalendarDeleted">The following calendar will be deleted.  Continue?</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-FollowingCalendarDeleted">The following calendar <em>and all its contents</em> will be deleted.  Continue?</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Path">Path:</xsl:variable>
 
   <!--  xsl:template match="currentCalendar" mode="deleteCalendarConfirm" -->
