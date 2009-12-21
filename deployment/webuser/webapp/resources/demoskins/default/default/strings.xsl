@@ -574,7 +574,7 @@
   <xsl:variable name="bwStr-CuCa-ThisItemIsInaccessible">This item is inaccessible and has been disabled.  You may re-enable it to try again.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-FilterExpression">Filter Expression:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Current Access:</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>00Note:</strong> If you grant write access to another user, and you wish to see events added by that user in your calendar, <strong>you must explicitly grant yourself access to the same calendar.</strong>  Enter your UserID as a user in the "Who" box with "All" set in the "Rights" box.</p> <p>This is standard access control; the reason you will not see the other user's events without doing this is that the default access is grant:all to "owner" - and you don't own the other user's events.</p></xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Note:</strong> If you grant write access to another user, and you wish to see events added by that user in your calendar, <strong>you must explicitly grant yourself access to the same calendar.</strong>  Enter your UserID as a user in the "Who" box with "All" set in the "Rights" box.</p> <p>This is standard access control; the reason you will not see the other user's events without doing this is that the default access is grant:all to "owner" - and you don't own the other user's events.</p></xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">pick</xsl:variable>

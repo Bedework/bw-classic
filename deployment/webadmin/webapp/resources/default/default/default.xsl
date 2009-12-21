@@ -923,10 +923,19 @@
             <xsl:copy-of select="$bwStr-TaSy-ManageSysPrefs"/>
           </a>
         </li>
-        <li class="timezones">
-          <a href="{$timezones-initUpload}">
-            <xsl:copy-of select="$bwStr-TaSy-ManageSysTZs"/>
+      </ul>
+      <ul class="adminMenu">
+        <li>
+          <a href="{$filter-showAddForm}">
+            <xsl:copy-of select="$bwStr-TaSy-ManageCalDAVFilters"/>
           </a>
+        </li>
+        <li class="timezones">
+          <a href="{$timezones-fix}">
+            <xsl:attribute name="title"><xsl:copy-of select="$bwStr-UpTZ-FixTZNote"/></xsl:attribute>
+            <xsl:copy-of select="$bwStr-UpTZ-FixTZ"/>
+          </a>
+          <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-UpTZ-RecalcUTC"/><br/>
         </li>
       </ul>
       <ul class="adminMenu">
@@ -944,13 +953,6 @@
               </a>
             </li>
           </ul>
-        </li>
-      </ul>
-      <ul class="adminMenu">
-        <li>
-          <a href="{$filter-showAddForm}">
-            <xsl:copy-of select="$bwStr-TaSy-ManageCalDAVFilters"/>
-          </a>
         </li>
       </ul>
     </xsl:if>
@@ -5869,18 +5871,26 @@
           <td>
             <xsl:value-of select="$calSuiteName"/>
           </td>
+          <!--
           <td>
-            <xsl:copy-of select="$bwStr-CalS-NameOfCalendarSuite"/>
+            <p class="note">
+              <xsl:copy-of select="$bwStr-CalS-NameOfCalendarSuite"/>
+            </p>
           </td>
+          -->
         </tr>
         <tr>
           <th><xsl:copy-of select="$bwStr-CalS-Group"/></th>
           <td>
             <xsl:value-of select="group"/>
           </td>
+          <!--
           <td>
-            <xsl:copy-of select="$bwStr-CalS-NameOfAdminGroup"/>
+            <p class="note">
+              <xsl:copy-of select="$bwStr-CalS-NameOfAdminGroup"/>
+            </p>
           </td>
+          -->
         </tr>
       </table>
 
