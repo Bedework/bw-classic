@@ -237,14 +237,14 @@ var hows = new function() {
 
   //hv.push(new howVals("N", "rPFapcbStysu", "", howNoneVal)); // None is -A
 
-  this. getHows = function(ch) {
+  this.getHows = function(ch) {
     for (var i = 0; i < hv.length; i++) {
       if (hv[i].how == ch) {
         return hv[i];
       }
     }
 
-    alert("No how values for how=" + ch);
+    alert("No how values for how = " + ch);
 
     return null;
   }
