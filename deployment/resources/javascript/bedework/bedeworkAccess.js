@@ -496,14 +496,14 @@ function bwAce(who, whoType, how, inherited, invert) {
     var formattedHow = "";
 
     for (var i = 0; i < how.length; i++) {
-      var h = how[i];
+      var h = how.charAt(i);
       var negated = false;
       var grantDenyStr = grantStr;
       if (h == "-") {
         negated = true;
         grantDenyStr = denyStr;
         i++;
-        h = how[i];
+        h = how.charAt(i);
       }
 
       formattedHow += '<span class="' + grantDenyStr + '">' + hows.getHows(h).getDispVal(negated) + '</span>';
@@ -528,7 +528,7 @@ function bwAce(who, whoType, how, inherited, invert) {
     var res = "";
 
     for (var hi = 0; hi < how.length; hi++) {
-      var h = how[hi];
+      var h = how.charAt(hi);
 
       if (doGrants && (h == "-")) {
         // skip
@@ -538,7 +538,7 @@ function bwAce(who, whoType, how, inherited, invert) {
       } else {
         if (h == "-") {
           hi++;
-          h = how[hi];
+          h = how.charAt(hi);
         }
 
         var hvs = hows.getHows(h);
