@@ -16,24 +16,24 @@
         <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
           <tr>
             <td class="eventFilterInfo" colspan="3">
-              Displaying Events for Calendar
+              <xsl:copy-of select="$bwStr-LsVw-DispEventsForCal"/>
               <span class="displayFilterName">
                 <xsl:call-template name="substring-afterLastInstanceOf">
                   <xsl:with-param name="string" select="/bedework/selectionState/collection/virtualpath"/>
                   <xsl:with-param name="char">/</xsl:with-param>
                 </xsl:call-template>
               </span><xsl:text> </xsl:text>
-              <a id="allView" href="{$setSelection}">(show all)</a></td>
+              <a id="allView" href="{$setSelection}"><xsl:copy-of select="$bwStr-LsVw-ShowAll"/></a></td>
           </tr>
         </xsl:when>
         <xsl:when test="/bedework/selectionState/view/name != 'All'">
           <tr>
             <td class="eventFilterInfo" colspan="3">
-              Displaying Events for View
+              <xsl:copy-of select="$bwStr-LsVw-DispEventsForView"/>
               <span class="displayFilterName">
                 <xsl:value-of select="/bedework/selectionState/view/name"/>
               </span><xsl:text> </xsl:text>
-            <a id="allView" href="setSelection.do?b=de{$allGroupsAppVar}">(show all)</a></td>
+            <a id="allView" href="setSelection.do?b=de{$allGroupsAppVar}"><xsl:copy-of select="$bwStr-LsVw-ShowAll"/></a></td>
           </tr>
         </xsl:when>
       </xsl:choose>
@@ -186,22 +186,26 @@
             <xsl:variable name="gDetails" select="summary"/>
 
             <a href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
-              <img title="Add to Google Calendar" src="{$resourcesRoot}/images/gcal_small.gif" alt="Add to Google Calendar"/>
+              <img title="{$bwStr-SgEv-AddToGoogleCalendar}" src="{$resourcesRoot}/images/gcal_small.gif" alt="Add to Google Calendar"/>
             </a>
             <xsl:choose>
               <xsl:when test="string-length($recurrenceId)">
-                <a href="http://www.facebook.com/share.php?u=http://calendar.duke.edu/feed/event/cal/html/Public/{$recurrenceId}/{$guidEsc}"><img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="Add to Facebook"/></a>
+                <a href="http://www.facebook.com/share.php?u=http://calendar.duke.edu/feed/event/cal/html/Public/{$recurrenceId}/{$guidEsc}" title="{$bwStr-SgEv-AddToFacebook}">
+                  <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="{$bwStr-SgEv-AddToFacebook}"/>
+                </a>
               </xsl:when>
               <xsl:otherwise>
-                <a href="http://www.facebook.com/share.php?u=http://calendar.duke.edu/feed/event/cal/html/Public/0/{$guidEsc}"><img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="Add to Facebook"/></a>
+                <a href="http://www.facebook.com/share.php?u=http://calendar.duke.edu/feed/event/cal/html/Public/0/{$guidEsc}" title="{$bwStr-SgEv-AddToFacebook}">
+                  <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="{$bwStr-SgEv-AddToFacebook}"/>
+                </a>
               </xsl:otherwise>
             </xsl:choose>
             <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
               <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
             </a>
             <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download .ics file for import to other calendars">
-              <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" alt="Download event                       as ical - for Outlook, PDAs, iCal,                       and other desktop                       calendars"/>
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-Download}">
+              <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" alt="{$bwStr-SgEv-Download}"/>
             </a>
           </span>
 
@@ -220,7 +224,7 @@
           <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
             <xsl:if test="location/address != ''">
               <li>
-                Location:<xsl:text> </xsl:text>
+                <xsl:copy-of select="$bwStr-LsVw-Location"/><xsl:text> </xsl:text>
                 <xsl:value-of select="location/address"/>
                 <xsl:if test="location/subaddress != ''">
                   , <xsl:value-of select="location/subaddress"/>
@@ -230,7 +234,7 @@
 
             <xsl:if test="cost!=''">
               <li>
-                Cost:<xsl:text> </xsl:text>
+                <xsl:copy-of select="$bwStr-LsVw-Cost"/><xsl:text> </xsl:text>
                 <xsl:value-of select="cost"/>
               </li>
             </xsl:if>
@@ -243,13 +247,13 @@
             </xsl:if>
 
             <li>
-              Description:<xsl:text> </xsl:text>
+              <xsl:copy-of select="$bwStr-LsVw-Description"/><xsl:text> </xsl:text>
               <xsl:value-of select="description"/>
             </li>
 
             <xsl:if test="link != ''">
               <li>
-                Link:<xsl:text> </xsl:text>
+                <xsl:copy-of select="$bwStr-LsVw-Link"/><xsl:text> </xsl:text>
                 <a>
                   <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
                   <xsl:value-of select="link"/>
@@ -259,7 +263,7 @@
 
             <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
               <li>
-                Topical Areas:<xsl:text> </xsl:text>
+                <xsl:copy-of select="$bwStr-LsVw-TopicalArea"/><xsl:text> </xsl:text>
                 <span class="eventSubscription">
                   <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
                     <xsl:call-template name="substring-afterLastInstanceOf">
@@ -276,13 +280,13 @@
           <xsl:otherwise>
 
             <li>
-              Location:<xsl:text> </xsl:text>
+              <xsl:copy-of select="$bwStr-LsVw-Location"/><xsl:text> </xsl:text>
               <xsl:value-of select="location/address" />
             </li>
 
             <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
               <li>
-                Topical Areas:<xsl:text> </xsl:text>
+                <xsl:copy-of select="$bwStr-TopicalArea"/><xsl:text> </xsl:text>
                 <span class="eventSubscription">
                   <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
                     <xsl:call-template name="substring-afterLastInstanceOf">

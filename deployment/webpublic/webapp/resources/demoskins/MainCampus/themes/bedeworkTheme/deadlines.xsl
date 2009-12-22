@@ -53,8 +53,7 @@
         <xsl:if test="summary = ''">
           <xsl:copy-of select="$bwStr-SgEv-NoTitle" />
         </xsl:if>
-      </a>
-      , Due By
+      </a>, <xsl:copy-of select="$bwStr-SgEv-DueBy" />
       <xsl:text> </xsl:text>
       <xsl:value-of select="end/shortdate" />
       <xsl:text> </xsl:text>

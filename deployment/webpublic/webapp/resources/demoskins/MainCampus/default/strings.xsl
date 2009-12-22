@@ -101,6 +101,7 @@
   <xsl:variable name="bwStr-SgEv-LocalTime">Local time</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Start">Start:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-End">End:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-DueBy">Due By</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToMyCalendar">add to my calendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToGoogleCalendar">Add to Google Calendar</xsl:variable>
@@ -137,6 +138,14 @@
   <xsl:variable name="bwStr-LsVw-Canceled">CANCELED:</xsl:variable>
   <xsl:variable name="bwStr-LsVw-NoTitle">no title</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Contact">Contact:</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-DispEventsForCal">Displaying Events for Calendar</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-DispEventsForView">Displaying Events for View</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-ShowAll">(show all)</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-TopicalArea">Topical Areas:</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-Location">Location:</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-Cost">Cost:</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-Description">Description:</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-Link">Link:</xsl:variable>
 
   <!--  xsl:template match="events" mode="eventList" -->
   <xsl:variable name="bwStr-LsEv-Next7Days">Next 7 Days</xsl:variable>
