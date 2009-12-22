@@ -101,6 +101,7 @@
   <xsl:variable name="bwStr-SgEv-LocalTime">Local time</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Start">Start:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-End">End:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-Ends">Ends</xsl:variable>
   <xsl:variable name="bwStr-SgEv-DueBy">Due By</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToMyCalendar">add to my calendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>

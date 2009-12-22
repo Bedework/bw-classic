@@ -37,7 +37,7 @@
 
    <!-- use the specified category to mark an event as ongoing -->
    <xsl:variable name="ongoingEventsUseCategory">true</xsl:variable>
-   <xsl:variable name="ongoingEventsCatName">Ongoing</xsl:variable>
+   <xsl:variable name="ongoingEventsCatName">sys/Ongoing</xsl:variable>
 
    <!-- always display sidebar, even if no events are ongoing? -->
    <xsl:variable name="ongoingEventsAlwaysDisplayed">true</xsl:variable>
@@ -48,6 +48,11 @@
    <!-- if deadlines sidebar is enabled, deadlines will appear
         in the sidebar under ongoing events -->
    <xsl:variable name="deadlinesEnabled">true</xsl:variable>
+
+   <!-- use the specified category to mark an event as deadline -->
+   <!-- we will likely switch to using tasks in the future for this -->
+   <xsl:variable name="ongoingEventsUseCategory">true</xsl:variable>
+   <xsl:variable name="ongoingEventsCatName">sys/Deadline</xsl:variable>
 
    <!-- always display sidebar, even if no deadlines are present? -->
    <xsl:variable name="deadlinesAlwaysDisplayed">true</xsl:variable>
