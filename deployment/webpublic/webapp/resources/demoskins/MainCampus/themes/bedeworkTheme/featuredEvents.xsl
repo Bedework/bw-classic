@@ -14,7 +14,7 @@
                    ($featuredEventsForYear = 'true' and /bedework/periodname = 'Year')))">
       <div id="feature">
         <!-- pulls in the first three images from the FeaturedEvent.xml document -->
-        <xsl:apply-templates select="document('../../themes/bedeworkTheme/data/FeaturedEvent.xml')/featuredEvents/image[position() &lt; 4]" mode="featuredEvents" />
+        <xsl:apply-templates select="document('../../themes/bedeworkTheme/featured/FeaturedEvent.xml')/featuredEvents/image[position() &lt; 4]" mode="featuredEvents" />
       </div>
     </xsl:if>
   </xsl:template>
@@ -23,7 +23,7 @@
     <xsl:choose>
       <xsl:when test="link = ''">
         <img width="241" height="189">
-          <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/data/<xsl:value-of select="name"/></xsl:attribute>
+          <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/featured/<xsl:value-of select="name"/></xsl:attribute>
           <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
         </img>
       </xsl:when>
@@ -31,7 +31,7 @@
         <a>
           <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
           <img width="241" height="189">
-            <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/data/<xsl:value-of select="name"/></xsl:attribute>
+            <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/featured/<xsl:value-of select="name"/></xsl:attribute>
             <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
           </img>
         </a>
