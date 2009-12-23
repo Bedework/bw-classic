@@ -54,8 +54,16 @@
   <xsl:variable name="bwStr-Util-AllTopicalAreas">all topical areas</xsl:variable>
   <xsl:variable name="bwStr-Util-Search">Search</xsl:variable>
   <xsl:variable name="bwStr-Util-Go">go</xsl:variable>
+  <xsl:variable name="bwStr-Util-List">LIST</xsl:variable>
+  <xsl:variable name="bwStr-Util-Cal">CAL</xsl:variable>
   <xsl:variable name="bwStr-Util-ToggleListCalView">toggle list/calendar view</xsl:variable>
+  <xsl:variable name="bwStr-Util-Summary">SUMMARY</xsl:variable>
+  <xsl:variable name="bwStr-Util-Details">DETAILS</xsl:variable>
   <xsl:variable name="bwStr-Util-ToggleSummDetView">toggle summary/detailed view</xsl:variable>
+  <xsl:variable name="bwStr-Util-ShowEvents">Show Events</xsl:variable>
+  <xsl:variable name="bwStr-Util-Events">EVENTS</xsl:variable>
+  <xsl:variable name="bwStr-Util-ShowFreebusy">Show Free/Busy</xsl:variable>
+  <xsl:variable name="bwStr-Util-Freebusy">FREE/BUSY</xsl:variable>
 
   <!--  xsl:template name="actionIcons" -->
   <xsl:variable name="bwStr-Actn-AddEvent">add event</xsl:variable>

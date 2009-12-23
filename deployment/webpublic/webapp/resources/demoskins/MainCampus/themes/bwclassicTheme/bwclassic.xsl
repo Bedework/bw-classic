@@ -442,21 +442,21 @@
             </xsl:if>
             <xsl:choose>
               <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
-                <img src="{$resourcesRoot}/images/std-button-listview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-List"/></span>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Year'">
-                <img src="{$resourcesRoot}/images/std-button-calview-off.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Cal"/></span>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Month'">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                    <a href="{$setup}&amp;setappvar=monthViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                    <a class="utilButton" href="{$setup}&amp;setappvar=monthViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <xsl:copy-of select="$bwStr-Util-Cal"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=monthViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0" alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                    <a class="utilButton" href="{$setup}&amp;setappvar=monthViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <xsl:copy-of select="$bwStr-Util-List"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -464,13 +464,13 @@
               <xsl:otherwise>
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                    <a href="{$setup}&amp;setappvar=weekViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-calview.gif" width="46" height="21" border="0"  alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                    <a class="utilButton" href="{$setup}&amp;setappvar=weekViewMode(cal)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <xsl:copy-of select="$bwStr-Util-Cal"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=weekViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
-                      <img src="{$resourcesRoot}/images/std-button-listview.gif" width="46" height="21" border="0"  alt="{$bwStr-SrcB-ToggleListCalView}"/>
+                    <a class="utilButton" href="{$setup}&amp;setappvar=weekViewMode(list)" title="{$bwStr-SrcB-ToggleListCalView}">
+                      <xsl:copy-of select="$bwStr-Util-List"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -480,13 +480,13 @@
               <xsl:when test="/bedework/page = 'eventList'">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
-                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                    <a class="utilButton" href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <xsl:copy-of select="$bwStr-Util-Summary"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                    <a class="utilButton" href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <xsl:copy-of select="$bwStr-Util-Details"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -500,34 +500,36 @@
                                not(/bedework/appvar[key='weekViewMode'])))">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <img src="{$resourcesRoot}/images/std-button-summary-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Summary"/></span>
                   </xsl:when>
                   <xsl:otherwise>
-                    <img src="{$resourcesRoot}/images/std-button-details-off.gif" width="62" height="21" border="0" alt="only summaries of events supported in this view"/>
+                    <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Details"/></span>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-summary.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                    <a class="utilButton" href="{$setup}&amp;setappvar=summaryMode(summary)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <xsl:copy-of select="$bwStr-Util-Summary"/>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$setup}&amp;setappvar=summaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
-                      <img src="{$resourcesRoot}/images/std-button-details.gif" width="62" height="21" border="0" alt="{$bwStr-SrcB-ToggleSummDetView}"/>
+                    <a class="utilButton" href="{$setup}&amp;setappvar=summaryMode(details)" title="{$bwStr-SrcB-ToggleSummDetView}">
+                      <xsl:copy-of select="$bwStr-Util-Details"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
+            <!--
             <a href="{$setup}">
               <xsl:if test="/bedework/page='eventList'">
                 <xsl:attribute name="href"><xsl:value-of select="$listEvents"/></xsl:attribute>
               </xsl:if>
               <img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/>
             </a>
+            -->
           </td>
        </tr>
     </table>

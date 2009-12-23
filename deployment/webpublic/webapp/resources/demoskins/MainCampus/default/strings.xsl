@@ -53,7 +53,11 @@
   <xsl:variable name="bwStr-SrcB-AllTopicalAreas">all topical areas</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Search">Search:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Go">go</xsl:variable>
+  <xsl:variable name="bwStr-Util-List">LIST</xsl:variable>
+  <xsl:variable name="bwStr-Util-Cal">CAL</xsl:variable>
   <xsl:variable name="bwStr-SrcB-ToggleListCalView">toggle list/calendar view</xsl:variable>
+  <xsl:variable name="bwStr-Util-Summary">SUMMARY</xsl:variable>
+  <xsl:variable name="bwStr-Util-Details">DETAILS</xsl:variable>
   <xsl:variable name="bwStr-SrcB-ToggleSummDetView">toggle summary/detailed view</xsl:variable>
   <xsl:variable name="bwStr-SrcB-ShowDetails">Show Details</xsl:variable>
   <xsl:variable name="bwStr-SrcB-HideDetails">Hide Details</xsl:variable>
