@@ -23,6 +23,7 @@
   </xsl:variable>
 
   <!-- look for existence of deadlines -->
+  <!--
   <xsl:variable name="deadlines">
     <xsl:choose>
       <xsl:when test="$deadlinesEnabled = 'true' and
@@ -37,5 +38,6 @@
       <xsl:otherwise>false</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+  -->
 
 </xsl:stylesheet>

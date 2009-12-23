@@ -17,6 +17,7 @@
           <tr>
             <td class="eventFilterInfo" colspan="3">
               <xsl:copy-of select="$bwStr-LsVw-DispEventsForCal"/>
+              <xsl:text> </xsl:text>
               <span class="displayFilterName">
                 <xsl:call-template name="substring-afterLastInstanceOf">
                   <xsl:with-param name="string" select="/bedework/selectionState/collection/virtualpath"/>
@@ -30,6 +31,7 @@
           <tr>
             <td class="eventFilterInfo" colspan="3">
               <xsl:copy-of select="$bwStr-LsVw-DispEventsForView"/>
+              <xsl:text> </xsl:text>
               <span class="displayFilterName">
                 <xsl:value-of select="/bedework/selectionState/view/name"/>
               </span><xsl:text> </xsl:text>
@@ -47,16 +49,18 @@
           </tr>
         </xsl:when>
         <xsl:when test="$ongoingEventsEnabled = 'true'
+               and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))
                and not(/bedework/eventscalendar/year/month/week/day/event[not(categories/category/value = $ongoingEventsCatName)])">
             <tr>
               <td class="noEventsCell">
-                <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplay"/>
+                <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplayWithOngoing"/>
               </td>
             </tr>
         </xsl:when>
         <xsl:otherwise>
           <xsl:choose>
-            <xsl:when test="$ongoingEventsEnabled = 'true'">
+            <xsl:when test="$ongoingEventsEnabled = 'true'
+                   and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))">
               <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[event[not(categories/category/value = $ongoingEventsCatName)]]" mode="dayInList"/>
             </xsl:when>
             <xsl:otherwise>
@@ -78,7 +82,8 @@
        </td>
      </tr>
       <xsl:choose>
-       <xsl:when test="$ongoingEventsEnabled = 'true'">
+       <xsl:when test="$ongoingEventsEnabled = 'true'
+                  and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))">
          <xsl:apply-templates select="event[not(categories/category/value = $ongoingEventsCatName)]]" mode="eventInList"/>
        </xsl:when>
        <xsl:otherwise>

@@ -169,15 +169,17 @@
               </div>
             </div>
 
-            <!-- ONGOING EVENTS and DEADLINES, if enabled -->
-            <xsl:if test="$ongoingEvents = 'true' or $deadlines = 'true'">
+            <!-- ONGOING EVENTS if enabled -->
+            <xsl:if test="$ongoingEvents = 'true'">
               <div class="right_column" id="right_column">
                 <xsl:if test="$ongoingEvents = 'true'">
                   <xsl:call-template name="ongoingEventList" />
                 </xsl:if>
+                <!--
                 <xsl:if test="$deadlines = 'true'">
                   <xsl:call-template name="deadlines" />
                 </xsl:if>
+                -->
               </div>
             </xsl:if>
 

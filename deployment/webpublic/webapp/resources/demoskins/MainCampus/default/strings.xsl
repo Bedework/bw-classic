@@ -130,6 +130,7 @@
 
   <!--  xsl:template name="listView" -->
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplay">No events found.  Please try a different view or time period.</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-NoEventsToDisplayWithOngoing">No non-ongoing events found.  Please try a different view or time period or look in the Ongoing events list.</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AllDay">All Day</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Today">Today</xsl:variable>

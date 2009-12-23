@@ -9,6 +9,7 @@
     </h3>
     <ul class="eventList">
       <xsl:choose>
+        <!-- Pick out the tasks -->
         <xsl:when test="/bedework/eventscalendar//event[entityType = 2]">
           <xsl:for-each select="/bedework/eventscalendar/year/month/week/day/event[entityType = 2]">
             <xsl:sort select="start/unformatted" order="ascending" data-type="number" />
