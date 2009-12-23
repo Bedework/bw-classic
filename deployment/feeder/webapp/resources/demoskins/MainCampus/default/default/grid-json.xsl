@@ -28,11 +28,10 @@
     to the maximum extent the law permits.
   -->
 
-  <!-- DEFINE INCLUDES -->
-  <!-- util.xsl belongs in bedework-common on your application server for use
-       by all stylesheets:
-  -->
-  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
+  <!-- Bring in settings and included xsl -->
+  <xsl:include href="./config.xsl"/>
+
+  <!--  global variables --> 
   <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
 
@@ -52,68 +51,81 @@
       }}
   </xsl:template>
 
-  <xsl:template name="processGrpAndCats">
-    <xsl:param name="list" />
-    <xsl:variable name="group" select="substring-before($list, '~')" />
-    <xsl:variable name="remaining" select="substring-after($list, '~')" />
-    <xsl:call-template name="processCategories">
-    <xsl:with-param name="group" select="$group" />
-      <xsl:with-param name="list" select="$remaining" />
+  <xsl:template name="preprocessCats">
+    <xsl:param name="allCats" />
+    <xsl:variable name="andCat" select="substring-before($allCats, '~')" />
+    <xsl:variable name="orList" select="substring-after($allCats, '~')" />
+    <xsl:call-template name="processCats">
+      <xsl:with-param name="andCat" select="$andCat" />
+      <xsl:with-param name="orList" select="$orList" />
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template name="processCategories">
-  <xsl:param name="group" />
-    <xsl:param name="list" />
+  <xsl:template name="processCats">
+    <xsl:param name="andCat" />
+    <xsl:param name="orList" />
     <xsl:choose>
-    <xsl:when test="contains($list, '~')">
-    <!-- Grab the first off the list and process -->
-      <xsl:variable name="catid" select="substring-before($list, '~')" />
-      <xsl:variable name="remaining" select="substring-after($list, '~')" />
-      <xsl:choose>
-      <xsl:when test="$group = 'all'">
-          <xsl:apply-templates select="event[categories/category/id = $catid]" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="event[categories/category/id = $catid]" />
-        </xsl:otherwise>
-      </xsl:choose>
+	
+      <xsl:when test="contains($orList, '~')">   
+        <!-- There are 2 or more on the "or" list.  -->
+        <xsl:variable name="orCat" select="substring-before($orList, '~')" />
+        <xsl:variable name="remainingOrList" select="substring-after($orList, '~')" />
+        <!-- Process the first one -->
+        <xsl:call-template name="processAndOr">
+	      <xsl:with-param name="andCat" select="$andCat"/>
+	      <xsl:with-param name="orCat" select="$orCat"/>
+	    </xsl:call-template>
+        <!-- and use recursion to process the remaining categories -->
+        <xsl:call-template name="processCats">
+	      <xsl:with-param name="andCat" select="$andCat"/>
+          <xsl:with-param name="orList" select="$remainingOrList" />
+        </xsl:call-template>
+      </xsl:when>
 
-    <!-- now use recursion to process the remaining categories -->
-      <xsl:call-template name="processCategories">
-        <xsl:with-param name="list" select="$remaining" />
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:otherwise>
-      <!-- No more tildes, so this is the last category.  Process it -->
-    <xsl:choose>
-      <xsl:when test="$group = 'all'">
-      <xsl:choose>
-        <xsl:when test="$list = 'all'">
-              <xsl:apply-templates select="event" />
-            </xsl:when>
-            <xsl:otherwise>
-            <xsl:apply-templates select="event[categories/category/id = $list]" />
-          </xsl:otherwise>
-          </xsl:choose>
-        </xsl:when>
-        <xsl:otherwise>
+      <xsl:otherwise>
+        <!-- No more tildes, so this is the last or only "or" category.  Call processAndOr to process it -->
+        <xsl:call-template name="processAndOr">
+	      <xsl:with-param name="andCat" select="$andCat"/>
+	      <xsl:with-param name="orCat" select="$orList"/>
+	    </xsl:call-template>
+      </xsl:otherwise>
+
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="processAndOr">
+	<xsl:param name="andCat"/>
+    <xsl:param name="orCat" />
+	<xsl:choose>
+      <xsl:when test="$andCat = 'all'">
         <xsl:choose>
-        <xsl:when test="$list = 'all'">
-              <xsl:apply-templates select="event[creator = $group]" />
-            </xsl:when>
-            <xsl:otherwise>
+          <xsl:when test="$orCat = 'all'">
+          <!-- all categories should be displayed -->
+            <xsl:apply-templates select="event" />
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- nothing being anded; display event if it matches "or" category-->
+            <xsl:apply-templates select="event[categories/category/uid = $orCat]" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="$orCat = 'all'">
+            <!-- no or's; display if it matches "and" category -->
+            <xsl:apply-templates select="event[categories/category/uid = $andCat]" />
+          </xsl:when>
+          <xsl:otherwise>
             <xsl:choose>
-              <xsl:when test="event/creator = $group">
-                <xsl:apply-templates select="event[categories/category/id = $list]" />
+              <!-- an "and" and an "or", so display if they are both present -->
+              <xsl:when test="event/category/uid = $andCat">
+                <xsl:apply-templates select="event[categories/category/uid = $orCat]" />
               </xsl:when>
             </xsl:choose>
           </xsl:otherwise>
-      </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:otherwise>
-  </xsl:choose>
+        </xsl:choose>
+   	  </xsl:otherwise>
+    </xsl:choose>	
   </xsl:template>
 
   <xsl:template match="month">
@@ -140,10 +152,10 @@
           {
             <xsl:choose>
             <xsl:when test="filler = 'true'">
-        "filler" : "<xsl:value-of select='filler'/>"
+            "filler" : "<xsl:value-of select='filler'/>"
             </xsl:when>
             <xsl:otherwise>
-        "filler" : "<xsl:value-of select='filler'/>",
+            "filler" : "<xsl:value-of select='filler'/>",
             "value" : "<xsl:value-of select='value'/>",
             "name" : "<xsl:value-of select='name'/>",
             "date" : "<xsl:value-of select='date'/>",
@@ -157,7 +169,9 @@
                   <!-- Define filters here: -->
                   <xsl:choose>
                     <xsl:when test="$filterName = 'grpAndCats'">
-                      <xsl:call-template name="processGrpAndCats"><xsl:with-param name="list" select="$filterVal"/></xsl:call-template>
+                      <xsl:call-template name="preprocessCats">
+	                    <xsl:with-param name="allCats" select="$filterVal"/>
+	                  </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
                       <!-- Filter name not defined? Turn off filtering. -->
