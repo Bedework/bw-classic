@@ -32,8 +32,10 @@
               value="${app.sou.dir}/war/WEB-INF/web.xml" />
               -->
 
+  	<echo message="XXXXXXXXXXXXXXXXXXXXXXX  app.resources.dir=${app.resources.dir}" />
     <property name="app.resources.dir"
               location="${this.dir}/resources" />
+  	<echo message="app.resources.dir=${app.resources.dir}" />
   </target>
 
   <!-- =================================================================

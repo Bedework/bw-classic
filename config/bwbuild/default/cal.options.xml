@@ -296,7 +296,7 @@
           <autoCreateLocations>false</autoCreateLocations>
           <autoDeleteLocations>false</autoDeleteLocations>
 
-          <appType>webpublic</appType>
+          <appType>feeder</appType>
           <publicAdmin>false</publicAdmin>
           <guestMode>true</guestMode>
 
