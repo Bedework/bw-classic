@@ -721,7 +721,7 @@
         <td>
           <a id="addEventLink" href="{$event-initAddEvent}">
             <xsl:if test="not(/bedework/currentCalSuite/name)">
-              <xsl:attribute name="onclick">alert("{$bwStr-MMnu-YouMustBeOperating}");return false;</xsl:attribute>
+              <xsl:attribute name="onclick">alert("<xsl:copy-of select="$bwStr-MMnu-YouMustBeOperating"/>");return false;</xsl:attribute>
             </xsl:if>
             <img src="{$resourcesRoot}/resources/bwAdminAddEventIcon.jpg" width="140" height="140" alt="Add Event" border="0"/>
             <br/><xsl:copy-of select="$bwStr-MMnu-AddEvent"/>
@@ -757,7 +757,7 @@
         <td>
           <a href="{$event-initUpdateEvent}">
             <xsl:if test="not(/bedework/currentCalSuite/name)">
-              <xsl:attribute name="onclick">alert("{$bwStr-MMnu-YouMustBeOperating}");return false;</xsl:attribute>
+              <xsl:attribute name="onclick">alert("<xsl:copy-of select="$bwStr-MMnu-YouMustBeOperating"/>");return false;</xsl:attribute>
             </xsl:if>
             <img src="{$resourcesRoot}/resources/bwAdminManageEventsIcon.jpg" width="100" height="73" alt="Manage Events" border="0"/>
             <br/><xsl:copy-of select="$bwStr-MMnu-ManageEvents"/>
@@ -6460,9 +6460,11 @@
          <xsl:copy-of select="$bwStr-Grps-HighlightedRowsNote"/>
         </p>
       </xsl:if>
+      <!--
       <xsl:if test="/bedework/userInfo/superUser = 'true'">
         <p class="note"><xsl:copy-of select="$bwStr-Grps-Superuser"/></p>
       </xsl:if>
+      -->
     </div>
 
     <table id="commonListTable">

@@ -283,6 +283,6 @@
   <xsl:variable name="bwStr-Foot-ForMobileBrowsers">for mobile browsers</xsl:variable>
   <xsl:variable name="bwStr-Foot-VideoFeed">video feed</xsl:variable>
   <xsl:variable name="bwStr-Foot-ResetToCalendarDefault">Reset to Bedework Default</xsl:variable>
-  <xsl:variable name="bwStr-Foot-Credits">This theme is based on work by Duke University with thanks also to Yale University and the University of Chicago</xsl:variable>
+  <xsl:variable name="bwStr-Foot-Credits">This theme is based on work by Duke and Yale Universities with thanks also to the University of Chicago</xsl:variable>
 
 </xsl:stylesheet>
