@@ -5,13 +5,13 @@
     <toolTip>De temporum ratione</toolTip>
   </image>
   <image>
-    <name>bede.jpg</name>
-    <link>http://en.wikipedia.org/wiki/De_temporum_ratione</link>
-    <toolTip>De temporum ratione</toolTip>
+    <name>gettingstarted.jpg</name>
+    <link>http://www.bedework.org/bedework/update.do?artcenterkey=36</link>
+    <toolTip>Bedework Documentation</toolTip>
   </image>
   <image>
-    <name>aug_picasso.jpg</name>
-    <link>http://calendar.duke.edu/cal/event/eventView.do?b=de&amp;subid=3753&amp;calPath=%2Fpublic%2FPublic&amp;guid=CAL-18832e99-21b8520e-0122-18732d67-000003acdemobedework@mysite.edu&amp;recurrenceId=</link>
-    <toolTip>Picasso</toolTip>
+    <name>bedework.jpg</name>
+    <link>http://www.bedework.org/bedework/setup.do</link>
+    <toolTip>Bedework Website</toolTip>
   </image>
 </featuredEvents>
