@@ -99,7 +99,7 @@ function alterDateDisplay() {
       };
   };
 }
-
+/*
 function AlterSymbol() { // Alters submenu toggle from one character to another
   this.triggerId = undefined;
   this.symbol = '-';
@@ -154,7 +154,7 @@ Menu.prototype.activate = function(viewId, triggerId, targetHeight) { // Assumes
     try{
       var myId = document.getElementById(this.targetId);
       var menuItemOff = new YAHOO.util.Anim(this.targetId, {
-            height: 	{ to: 0 }
+            height:   { to: 0 }
           }, 1, YAHOO.util.Easing.easeOut);
       var menuItemOn = new YAHOO.util.Anim(this.targetId, {
             height: { to: this.targetHeight }
@@ -279,4 +279,4 @@ AnimateDiv.prototype.actuate = function() {
         };
     return;
 };
-
+*/
