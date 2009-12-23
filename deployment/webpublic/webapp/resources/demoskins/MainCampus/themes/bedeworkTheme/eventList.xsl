@@ -84,7 +84,7 @@
       <xsl:choose>
        <xsl:when test="$ongoingEventsEnabled = 'true'
                   and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))">
-         <xsl:apply-templates select="event[not(categories/category/value = $ongoingEventsCatName)]]" mode="eventInList"/>
+         <xsl:apply-templates select="event[not(categories/category/value = $ongoingEventsCatName)]" mode="eventInList"/>
        </xsl:when>
        <xsl:otherwise>
          <xsl:apply-templates select="event" mode="eventInList"/>
