@@ -1292,7 +1292,7 @@
             </xsl:if>
           </td>
         </tr>
-
+<!--
         <tr>
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
           <td class="fieldName">
@@ -1303,7 +1303,7 @@
             <input type="radio" name="entityType" value="2"/><xsl:copy-of select="$bwStr-AEEF-Deadline"/>
           </td>
         </tr>
-
+-->
         <xsl:if test="count(form/calendar/all/select/option) &gt; 1 and
                       not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
         <!-- check to see if we have more than one publishing calendar
@@ -3631,7 +3631,7 @@
             </a>
           </td>
           <td>
-            <xsl:value-of select="desc"/>
+            <xsl:value-of select="description"/>
           </td>
         </tr>
       </xsl:for-each>
@@ -3689,8 +3689,8 @@
               </td>
               <td>
                 <textarea name="categoryDesc.value" rows="3" cols="60">
-                  <xsl:value-of select="normalize-space(/bedework/currentCategory/category/desc)"/>
-                  <xsl:if test="/bedework/currentCategory/category/desc = ''"><xsl:text> </xsl:text></xsl:if>
+                  <xsl:value-of select="normalize-space(/bedework/currentCategory/category/description)"/>
+                  <xsl:if test="/bedework/currentCategory/category/description = ''"><xsl:text> </xsl:text></xsl:if>
                 </textarea>
               </td>
             </tr>
