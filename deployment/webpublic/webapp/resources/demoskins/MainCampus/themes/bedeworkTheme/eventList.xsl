@@ -286,7 +286,7 @@
 
             <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
               <li>
-                <xsl:copy-of select="$bwStr-TopicalArea"/><xsl:text> </xsl:text>
+                <xsl:copy-of select="$bwStr-LsVw-TopicalArea"/><xsl:text> </xsl:text>
                 <span class="eventSubscription">
                   <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
                     <xsl:call-template name="substring-afterLastInstanceOf">
