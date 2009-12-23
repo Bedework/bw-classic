@@ -14,6 +14,8 @@
   <!-- ===============================================
              BEDEWORK MOBILE STYLESHEET
 
+        THIS WILL SHORTLY BE REPLACED WITH AN IPHONE FRIENDLY SKIN
+
         Renders Bedework public client for mobile
         devices.  Call this stylesheet using:
 
@@ -23,57 +25,9 @@
 
        ==============================================  -->
 
-  <!-- URL of resources common to all bedework apps (javascript, images) -->
-  <xsl:variable name="resourceCommons">../../../bedework-common</xsl:variable>
-
-  <!-- DEFINE INCLUDES -->
-  <!-- cannot use the resourceCommons variable in xsl:include paths -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
-
-  <!-- DEFINE GLOBAL CONSTANTS -->
-
-  <!-- URL of the XSL template directory -->
-  <!-- The approot is an appropriate place to put
-       included stylesheets and xml fragments. These are generally
-       referenced relatively (like errors.xsl and messages.xsl above);
-       this variable is here for your convenience if you choose to
-       reference it explicitly.  It is not used in this stylesheet, however,
-       and can be safely removed if you so choose. -->
-  <xsl:variable name="appRoot" select="/bedework/approot"/>
-
   <!-- URL of html resources (images, css, other html); by default this is
        set to the application root -->
-  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
-
-  <!-- Properly encoded prefixes to the application actions; use these to build
-       urls; allows the application to be used without cookies or within a portal.
-       These urls are rewritten in header.jsp and simply passed through for use
-       here. Every url includes a query string (either ?b=de or a real query
-       string) so that all links constructed in this stylesheet may begin the
-       query string with an ampersand. -->
-  <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
-  <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection"/>
-  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars"/>
-  <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod"/>
-  <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
-  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
-  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export/a/@href"/>
-  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
-  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
-  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
-  <xsl:variable name="showPage" select="/bedework/urlPrefixes/main/showPage"/>
-  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
-
-  <!-- URL of the web application - includes web context -->
-  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
-
-  <!-- Other generally useful global variables -->
-  <xsl:variable name="privateCal">/ucal</xsl:variable>
-  <xsl:variable name="prevdate" select="/bedework/previousdate"/>
-  <xsl:variable name="nextdate" select="/bedework/nextdate"/>
-  <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
-
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="$appRoot"/>/themes/iphone</xsl:variable>
 
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
@@ -83,7 +37,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="Pragma" content="no-cache"/>
         <meta http-equiv="Expires" content="-1"/>
-        <link rel="stylesheet" href="{$resourcesRoot}/default/PDA/pda.css"/>
+        <link rel="stylesheet" href="{$resourcesRoot}/pda.css"/>
       </head>
       <body>
         <h1 id="homeTitle">
@@ -474,6 +428,11 @@
 
   <!--==== LIST VIEW  (for day, week, and month) ====-->
   <xsl:template name="listView">
+    <p>
+      <em>
+        This theme will shortly be replaced by an iphone/smartphone friendly theme.
+      </em>
+    </p>
     <xsl:choose>
       <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
         <p>No events to display.</p>
@@ -676,30 +635,6 @@
         </tr>
       </table>
     </form>
-  </xsl:template>
-
-  <!--==== UTILITY TEMPLATES ====-->
-
-  <!-- search and replace template taken from
-       http://www.biglist.com/lists/xsl-list/archives/200211/msg00337.html -->
-  <xsl:template name="replace">
-    <xsl:param name="string" select="''"/>
-    <xsl:param name="pattern" select="''"/>
-    <xsl:param name="replacement" select="''"/>
-    <xsl:choose>
-      <xsl:when test="$pattern != '' and $string != '' and contains($string, $pattern)">
-        <xsl:value-of select="substring-before($string, $pattern)"/>
-        <xsl:copy-of select="$replacement"/>
-        <xsl:call-template name="replace">
-          <xsl:with-param name="string" select="substring-after($string, $pattern)"/>
-          <xsl:with-param name="pattern" select="$pattern"/>
-          <xsl:with-param name="replacement" select="$replacement"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$string"/>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

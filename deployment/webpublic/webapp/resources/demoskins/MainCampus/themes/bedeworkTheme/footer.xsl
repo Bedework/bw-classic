@@ -23,34 +23,24 @@
                 <xsl:copy-of select="$bwStr-Foot-BwClassic" />
               </option>
               <option
-                value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3">
-                <xsl:copy-of
-                  select="$bwStr-Foot-RSSNext3Days" />
+                value="{$feeder}/main/listEvents.do?skinName=list-rss&amp;days=3">
+                <xsl:copy-of select="$bwStr-Foot-RSSNext3Days" />
               </option>
               <option
-                value="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=js-list&amp;days=3&amp;contentType=text/javascript&amp;contentName=bedework.js">
-                <xsl:copy-of
-                  select="$bwStr-Foot-JavascriptNext3Days" />
-              </option>
-              <option
-                value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=jsToday&amp;contentType=text/javascript&amp;contentName=bedeworkToday.js">
-                <xsl:copy-of
-                  select="$bwStr-Foot-JavascriptTodaysEvents" />
+                value="{$feeder}/main/listEvents.do?skinName=list-json&amp;days=3&amp;contentType=text/javascript&amp;contentName=bedework.js">
+                <xsl:copy-of select="$bwStr-Foot-JavascriptNext3Days" />
               </option>
               <option
                 value="{$setup}&amp;browserTypeSticky=PDA">
-                <xsl:copy-of
-                  select="$bwStr-Foot-ForMobileBrowsers" />
+                <xsl:copy-of select="$bwStr-Foot-ForMobileBrowsers" />
               </option>
               <option
-                value="{$setViewPeriod}&amp;viewType=todayView&amp;skinName=videocal">
-                <xsl:copy-of
-                  select="$bwStr-Foot-VideoFeed" />
+                value="{$setViewPeriod}&amp;viewType=todayView&amp;skinNameSticky=videocal">
+                <xsl:copy-of select="$bwStr-Foot-VideoFeed" />
               </option>
               <option
                 value="{$setup}&amp;skinNameSticky=default">
-                <xsl:copy-of
-                  select="$bwStr-Foot-ResetToCalendarDefault" />
+                <xsl:copy-of select="$bwStr-Foot-ResetToCalendarDefault" />
               </option>
             </select>
           </form>
