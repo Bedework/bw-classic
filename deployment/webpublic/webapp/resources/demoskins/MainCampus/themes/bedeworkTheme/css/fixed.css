@@ -588,7 +588,7 @@ ul#calDisplayOptions {
 }
 ul#calDisplayOptions li {
  float: left;
- list-style: square inside;
+ list-style: none;
  color: #FFF;
  margin: 0 .7em;
 }
