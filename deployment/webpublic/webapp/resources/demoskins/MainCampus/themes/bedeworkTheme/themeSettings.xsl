@@ -53,6 +53,134 @@
   </xsl:template>
 
 
+  <!-- CUSTOM CONTENT: HEADER, LEFT COLUMN, FOOTER -->
+  <!-- The three templates below are pulled into the theme as
+       described and use internationalized strings
+       (found in ../default/strings.xsl).
+
+       If you plan on using only one language, you can safely
+       change the <xsl:copy> blocks to plain text below.
+
+       If you plan on using more than one language, use the
+       strings.xsl file.  See the manual about setting up a
+       strings.xsl for multiple languages. -->
+
+  <!-- HEADER TEXT/LINKS -->
+  <!-- the text and links found (by default) in the
+       lower right of the header.  -->
+  <xsl:template name="headerTextLinks">
+    <h2>
+      <xsl:copy-of select="$bwStr-HdBr-PublicCalendar" />
+    </h2>
+    <ul>
+      <li>
+        <a href="{$privateCal}">
+          <xsl:copy-of select="$bwStr-HdBr-PersonalCalendar" />
+        </a>
+      </li>
+      <li>
+        <a href="/bedework">
+          <xsl:copy-of select="$bwStr-HdBr-UniversityHome" />
+        </a>
+      </li>
+      <li class="last">
+        <a href="?refreshXslt=yes">
+          <xsl:copy-of select="$bwStr-HdBr-OtherLink" />
+        </a>
+      </li>
+    </ul>
+  </xsl:template>
+
+  <!-- FOOTER TEXT/LINKS -->
+  <!-- show the skin select box in the footer?
+  You may also opt to remove the form in footer.xsl. -->
+  <xsl:variable name="showFootForm">true</xsl:variable>
+
+  <!-- text in the footer -->
+  <xsl:template name="footerText">
+    <xsl:copy-of select="$bwStr-Foot-BasedOnThe" />
+    <xsl:text> </xsl:text>
+    <a href="http://www.bedework.org/">
+      <xsl:copy-of select="$bwStr-Foot-BedeworkCalendarSystem" />
+    </a>
+    |
+    <a
+      href="http://www.bedework.org/bedework/update.do?artcenterkey=35">
+      <xsl:copy-of select="$bwStr-Foot-ProductionExamples" />
+    </a>
+    |
+    <a href="?noxslt=yes">
+      <xsl:copy-of select="$bwStr-Foot-ShowXML" />
+    </a>
+    |
+    <a href="?refreshXslt=yes">
+      <xsl:copy-of select="$bwStr-Foot-RefreshXSLT" />
+    </a>
+    <br/>
+    <xsl:copy-of select="$bwStr-Foot-Credits" />
+  </xsl:template>
+
+
+  <!-- LEFT COLUMN TEXT -->
+  <!-- custom text in the left column -->
+  <xsl:template name="leftColumnText">
+    <h4>EVENTS CALENDAR INFO:</h4>
+     <ul class="sideLinks">
+       <li>
+         <a href="/caladmin">Manage Events</a>
+       </li>
+       <li>
+         <a href="/eventsubmit?setappvar=confirmed(no)">
+           Submit an Event
+         </a>
+       </li>
+       <li>
+         <a href="http://calendar.duke.edu/help">Help</a>
+       </li>
+     </ul>
+     <ul class="sideLinksExpand">
+       <li>
+         <h4>OTHER UNIVERSITY CALENDARS</h4>
+         <span id="additionalUnivClicker">+</span>
+         <ul id="additionalUnivSub"
+           style="height:0px;overflow:hidden;">
+           <li>
+             <a href="http://www.bedework.org/">
+               Example link
+             </a>
+           </li>
+           <li>
+             <a href="http://www.bedework.org/">
+               Example link
+             </a>
+           </li>
+           <li>
+             <a href="http://www.bedework.org/">
+               Example link
+             </a>
+           </li>
+         </ul>
+       </li>
+       <li>
+         <h4>OTHER LINKS</h4>
+         <span id="additionalOptionsClicker">+</span>
+         <ul id="additionalOptionsSub"
+           style="height:0px;overflow:hidden">
+           <li>
+             <a href="http://www.bedework.org/">
+               Example link
+             </a>
+           </li>
+           <li>
+             <a href="http://www.bedework.org/">
+               Example link
+             </a>
+           </li>
+         </ul>
+       </li>
+     </ul>
+   </xsl:template>
+
 
 
   <!-- NOT YET ENABLED -->

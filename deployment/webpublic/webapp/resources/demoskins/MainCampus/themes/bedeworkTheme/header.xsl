@@ -12,21 +12,7 @@
         <xsl:text> </xsl:text>
       </div>
       <div id="title-text">
-        <h2>
-          <xsl:copy-of select="$bwStr-HdBr-PublicCalendar" />
-        </h2>
-        <a href="{$privateCal}">
-          <xsl:copy-of select="$bwStr-HdBr-PersonalCalendar" />
-        </a>
-        |
-        <a href="/bedework">
-          <xsl:copy-of select="$bwStr-HdBr-UniversityHome" />
-        </a>
-        |
-        <!-- a href="http://www.bedework.org/"-->
-        <a href="?refreshXslt=yes">
-          <xsl:copy-of select="$bwStr-HdBr-OtherLink" />
-        </a>
+        <xsl:call-template name="headerTextLinks"/>
       </div>
     </div>
   </xsl:template>

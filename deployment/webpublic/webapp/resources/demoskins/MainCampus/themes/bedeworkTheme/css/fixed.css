@@ -87,6 +87,18 @@ div#title-text a:hover {
 div#title-text h2 {
   font-size: 2em;
 }
+div#title-text ul {
+  display: inline;
+}
+div#title-text li {
+  display: inline;
+  padding: 0 0.5em;
+  border-right: 1px solid #bbb;
+}
+div#title-text li.last {
+  padding: 0 0 0 0.5em;
+  border-right: none;
+}
 a#currentDate {
  position: absolute;
  bottom: 33px;
