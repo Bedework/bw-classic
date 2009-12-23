@@ -282,8 +282,8 @@
   <xsl:variable name="bwStr-Foot-Blue">blue</xsl:variable>
   <xsl:variable name="bwStr-Foot-ExampleSkins">example skins</xsl:variable>
   <xsl:variable name="bwStr-Foot-BwClassic">Bedework Classic</xsl:variable>
-  <xsl:variable name="bwStr-Foot-RSSNext3Days">rss: next 3 days</xsl:variable>
-  <xsl:variable name="bwStr-Foot-JavascriptNext3Days">javascript: next 3 days</xsl:variable>
+  <xsl:variable name="bwStr-Foot-RSSNext3Days">RSS: next 3 days</xsl:variable>
+  <xsl:variable name="bwStr-Foot-JavascriptNext3Days">JSON: next 3 days</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptTodaysEvents">javascript: today's events</xsl:variable>
   <xsl:variable name="bwStr-Foot-ForMobileBrowsers">for mobile browsers</xsl:variable>
   <xsl:variable name="bwStr-Foot-VideoFeed">video feed</xsl:variable>

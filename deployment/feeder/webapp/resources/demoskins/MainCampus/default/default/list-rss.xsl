@@ -22,12 +22,8 @@
      Optional parameters that may be added to the query string:
 
      days=n    return n days from today into the future.
-               Example: http://localhost:8080/cal/main/listEvents.do?setappvar=summaryMode(details)&skinName=rss-list&days=5
+               Example: http://localhost:8080/feeder/main/listEvents.do?setappvar=summaryMode(details)&skinName=list-rss&days=5
 
-
-     Note: rss.xsl is an older file used to pull a list of events from the
-     day, week, or month views.  It is maintained for backwards
-     compatibility.
 
      ===============================================================  -->
 <!-- **********************************************************************
