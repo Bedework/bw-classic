@@ -140,10 +140,9 @@
      </ul>
      <ul class="sideLinksExpand">
        <li>
-         <h4>OTHER UNIVERSITY CALENDARS</h4>
-         <span id="additionalUnivClicker">+</span>
-         <ul id="additionalUnivSub"
-           style="height:0px;overflow:hidden;">
+         <h4 class="additionalUnivClicker">OTHER UNIVERSITY CALENDARS</h4>
+         <span class="additionalUnivClicker">+</span>
+         <ul id="additionalUnivSub">
            <li>
              <a href="http://www.bedework.org/">
                Example link
@@ -162,10 +161,9 @@
          </ul>
        </li>
        <li>
-         <h4>OTHER LINKS</h4>
-         <span id="additionalOptionsClicker">+</span>
-         <ul id="additionalOptionsSub"
-           style="height:0px;overflow:hidden">
+         <h4 class="additionalOptionsClicker">OTHER LINKS</h4>
+         <span class="additionalOptionsClicker">+</span>
+         <ul id="additionalOptionsSub">
            <li>
              <a href="http://www.bedework.org/">
                Example link

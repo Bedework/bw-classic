@@ -42,4 +42,10 @@ $(document).ready(function(){
   $("#title-logoArea").click(function(){
     location.href = headerBarLink;
   });
+  $(".additionalUnivClicker").click(function(){
+    $("#additionalUnivSub").toggle("fast");
+  });
+  $(".additionalOptionsClicker").click(function(){
+    $("#additionalOptionsSub").toggle("fast");
+  });
 });

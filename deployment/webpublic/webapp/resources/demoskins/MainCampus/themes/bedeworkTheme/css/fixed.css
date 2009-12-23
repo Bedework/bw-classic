@@ -442,6 +442,10 @@ ul.sideLinksExpand li span {
  font-size: 1.1em;
  cursor: pointer;
 }
+.additionalUnivClicker,
+.additionalOptionsClicker {
+ cursor: pointer;
+}
 div#groupListDiv {
  width: 720px;
  margin-left: 240px;
@@ -914,6 +918,10 @@ ul#groups li span.feeds {
  display: block;
  text-align: right;
  font-size: .9em;
+}
+#additionalUnivSub,
+#additionalOptionsSub {
+  display: none;
 }
 div#footer {
  clear: both;
