@@ -41,11 +41,11 @@
   </target>
 
   <!-- =================================================================
-       The "activemq" target starts the activemq server
+       The "start-indexer" target starts the indexer
        ================================================================= -->
 
   <target name="start-indexer" depends="indexer.init"
-          description="starts the indexer server">
+          description="starts the indexer">
     <echo message="************************************************************"/>
     <echo message=" * Starting indexer"/>
     <echo message="************************************************************"/>
@@ -58,7 +58,10 @@
       <arg value="-appname"/>
       <arg value="${org.bedework.run.appname}"/>
 
-      <arg value="-start"/>
+      <arg value="-listen"/>
+
+      <arg value="-user"/>
+      <arg value="admin"/>
     </java>
   </target>
 </project>

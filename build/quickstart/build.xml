@@ -271,9 +271,8 @@
           <!-- Start the bedework non-web services -->
           <antcall target="start-logger" inheritrefs="true" />
 
-          <!-- Indexer not yet ready
           <antcall target="start-indexer" inheritrefs="true" />
-          -->
+        	
           <antcall target="start-inoutscheduler" inheritrefs="true" />
 
           <antcall target="tomcatstart" inheritrefs="true" />
