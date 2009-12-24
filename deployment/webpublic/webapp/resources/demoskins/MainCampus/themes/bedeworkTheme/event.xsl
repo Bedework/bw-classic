@@ -37,12 +37,12 @@
         </a>
         <xsl:choose>
           <xsl:when test="string-length($recurrenceId)">
-            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feeder}/event/cal/html/Public/{$recurrenceId}/{$guidEsc}" title="{$bwStr-SgEv-AddToFacebook}">
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;t={$gText}" title="{$bwStr-SgEv-AddToFacebook}">
               <img title="{$bwStr-SgEv-AddToFacebook}" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToFacebook}" />
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$feeder}/event/cal/html/Public/0/{$guidEsc}" title="{$bwStr-SgEv-AddToFacebook}">
+            <a class="eventIcons" href="http://www.facebook.com/share.php?u={$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;t={$gText}" title="{$bwStr-SgEv-AddToFacebook}">
               <img title="{$bwStr-SgEv-AddToFacebook}" src="{$resourcesRoot}/images/Facebook_Badge.gif" alt="{$bwStr-SgEv-AddToFacebook}" />
             </a>
           </xsl:otherwise>
