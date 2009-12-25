@@ -39,10 +39,10 @@
 
   <!-- DEFINE INCLUDES -->
   <!-- cannot use the resourceCommons variable in xsl:include paths -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
-  <xsl:include href="./strings.xsl"/>
+  <xsl:include href="../../../../bedework-common/default/default/errors.xsl"/>
+  <xsl:include href="../../../../bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../../../bedework-common/default/default/util.xsl"/>
+  <xsl:include href="../strings.xsl"/>
 
   <!-- URL of the XSL template directory -->
   <xsl:variable name="appRoot" select="/bedework/approot"/>

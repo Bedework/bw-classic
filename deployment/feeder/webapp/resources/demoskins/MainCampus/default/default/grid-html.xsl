@@ -30,7 +30,7 @@
     to the maximum extent the law permits. -->
 
  <!-- Bring in settings -->
-  <xsl:include href="./config.xsl"/>
+  <xsl:include href="./xsl/config.xsl"/>
 
   <!--  global variables -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
@@ -140,7 +140,6 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-<!--      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}"> -->
        <a id="linkToEvent" href="javascript:showLink('{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
        <xsl:copy-of select="$bwStr-SgEv-LinkToThisEvent"/>
      </a>
