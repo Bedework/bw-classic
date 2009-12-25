@@ -118,12 +118,12 @@
 			          </xsl:when>
 			          <xsl:otherwise>
 			            <!-- Filter name not defined? Turn off filtering. -->
-			            <xsl:apply-templates select="processListEvent"/>
+			            <xsl:call-template name="processListEvent" />
 			          </xsl:otherwise>
 			        </xsl:choose>
 			      </xsl:when>
 			      <xsl:otherwise>
-			        <xsl:apply-templates select="processListEvent"/>
+			        <xsl:call-template name="processListEvent" />
 			      </xsl:otherwise>
 			    </xsl:choose>
 	
