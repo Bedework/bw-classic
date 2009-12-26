@@ -39,7 +39,7 @@
   <!-- Provides event template -->
   <xsl:include href="./xsl/jsonEvent.xsl"/>
   <!-- Provides category filter templates -->
-  <xsl:include href="./xsl/jsonCategoryFiltering.xsl"/>
+  <xsl:include href="./xsl/categoryFiltering.xsl"/>
 
   <!--  global variables -->
   <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>

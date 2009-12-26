@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output
-    method="xml"
-    omit-xml-declaration="no"
-    indent="yes"
+  <xsl:output method="xml" omit-xml-declaration="no" indent="yes" 
     doctype-public="'-//Netscape Communications//DTD RSS 0.91//EN' 'http://my.netscape.com/public/formats/rss-0.91.dtd'"
-    media-type="text/xml"
-    encoding="UTF-8"
-   />
+    media-type="text/xml" encoding="UTF-8" />
    <!-- =========================================================
 
                       BEDEWORK RSS FEED
@@ -21,9 +16,7 @@
      _________________________________________________________
      Optional parameters that may be added to the query string:
 
-     days=n    return n days from today into the future.
-               Example: http://localhost:8080/feeder/main/listEvents.do?setappvar=summaryMode(details)&skinName=list-rss&days=5
-
+     days=n    To return n days from today into the future add this to the paramater list: &days=5 
 
      ===============================================================  -->
 <!-- **********************************************************************
@@ -51,6 +44,9 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
 
+   <!-- Provides category filter templates -->
+   <xsl:include href="./xsl/categoryFiltering.xsl"/>
+
    <xsl:template match="/">
      <rss version="2.0">
       <channel>
@@ -74,8 +70,28 @@
            <xsl:when test="/bedework/page='searchResult'">
              <xsl:apply-templates select="/bedework/searchResults/searchResult"/>
            </xsl:when>
-           <xsl:otherwise>
-             <xsl:apply-templates select="/bedework/events/event"/>
+           <xsl:otherwise>	      
+	         <xsl:choose>
+			  <xsl:when test="/bedework/appvar/key = 'filter'">
+				<xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
+				<xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
+				<!-- Define filters here: -->
+				<xsl:choose>
+			      <xsl:when test="$filterName = 'grpAndCats'">
+					<xsl:call-template name="preprocessCats">
+					  <xsl:with-param name="allCats" select="$filterVal"/>
+					</xsl:call-template>
+			      </xsl:when>
+				  <xsl:otherwise>
+					<!-- Filter name not defined? Turn off filtering. -->
+					<xsl:apply-templates select="event"/>
+			      </xsl:otherwise>
+			    </xsl:choose>
+			  </xsl:when>
+			  <xsl:otherwise>
+				<xsl:apply-templates select="event"/>
+			  </xsl:otherwise>
+			 </xsl:choose>
            </xsl:otherwise>
         </xsl:choose>
       </channel>
