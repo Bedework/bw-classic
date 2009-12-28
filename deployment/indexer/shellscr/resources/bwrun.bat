@@ -29,6 +29,7 @@ ECHO.
 
 :branch
   if "%1" == "reindex" GOTO reindex
+  if "%1" == "reindex-nostart" GOTO reindex-nostart
   if "%1" == "start" GOTO start
 
 :usage
@@ -46,19 +47,17 @@ ECHO.
 
 
 :reindex
-  ECHO   Reindexing data:
-  ECHO.
-  ECHO   %RUNCMD% -appname %APPNAME% -reindex %2 %3 %4 %5 %6 %7 %8 %9
-  %RUNCMD% -appname %APPNAME% -reindex %2 %3 %4 %5 %6 %7 %8 %9
+  ECHO   %RUNCMD% -appname %APPNAME% -crawl -listen %2 %3 %4 %5 %6 %7 %8 %9
+  %RUNCMD% -appname %APPNAME% -crawl -listen %2 %3 %4 %5 %6 %7 %8 %9
   GOTO:EOF
-  ::
-:start
-  ECHO   Indexing data:
-  ECHO.
-  ECHO   %RUNCMD% -appname %APPNAME% -start %2 %3 %4 %5 %6 %7 %8 %9
-  %RUNCMD% -appname %APPNAME% -start %2 %3 %4 %5 %6 %7 %8 %9
-  GOTO:EOF
-  ::
 
-ECHO.
-ECHO.
+:reindex-nostart
+  ECHO   %RUNCMD% -appname %APPNAME% -crawl %2 %3 %4 %5 %6 %7 %8 %9
+  %RUNCMD% -appname %APPNAME% -crawl %2 %3 %4 %5 %6 %7 %8 %9
+  GOTO:EOF
+
+:start
+  ECHO   %RUNCMD% -appname %APPNAME% -listen %2 %3 %4 %5 %6 %7 %8 %9
+  %RUNCMD% -appname %APPNAME% -listen %2 %3 %4 %5 %6 %7 %8 %9
+  GOTO:EOF
+
