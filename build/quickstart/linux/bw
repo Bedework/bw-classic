@@ -61,6 +61,8 @@ usage() {
   echo "    deployed application. ACTION may be one of"
   echo "      -reindex - runs the indexer directly out of the quickstart bedework"
   echo "                 dist directory to rebuild the lucene indexes"
+  echo "      -zoneinfo - builds zoneinfo data for the timezomnes server"
+  echo "                  requires -version and -tzdata parameters "
   echo ""
 }
 
@@ -72,6 +74,9 @@ errorUsage() {
   exit 1
 }
 
+# 
+# Reindex the data
+#
 actionReindex() {
   INDEXER=$QUICKSTART_HOME/bedework/dist/temp/shellscr/indexer
   
@@ -86,6 +91,96 @@ actionReindex() {
   exit 0
 }
 
+usageZoneinfo() {
+  echo ""
+  echo "$PRG -zoneinfo -version VERSION -tzdata path-to-data" 
+  exit 1
+}
+
+# ---------------------------------------------------------------------------- 
+# Build zoneinfo - require -version -tzdata
+# ---------------------------------------------------------------------------- 
+actionZoneinfo() {
+  shift
+  
+  if [ "$1" != "-version" ] ; then
+    echo "got $1"
+    echo "Must supply -version parameter for -zoneinfo"
+    usageZoneinfo
+  fi
+  
+  shift
+    echo "got $1"
+#  version="-Dorg.bedework.timezones.version=$1"
+  version=$1
+  shift
+  
+  if [ "$1" != "-tzdata" ] ; then
+    echo "Must supply -tzdata parameter for -zoneinfo"
+    usageZoneinfo
+  fi
+  
+  shift
+#  tzdata="-Dorg.bedework.timezones.data=$1"
+  tzdata=$1
+  shift
+  
+  rm -rf /tmp/bedework
+  mkdir /tmp/bedework
+  mkdir /tmp/bedework/timezones
+  
+  cd /tmp/bedework/timezones
+  
+  wget http://bedework.org/downloads/lib/vzic-1.3.tgz
+  gunzip vzic-1.3.tgz
+  tar -xf vzic-1.3.tar
+
+# copy and unpack the data
+  mkdir olsondata
+  cd olsondata
+  cp $tzdata tzdata.tar.gz
+  gunzip tzdata.tar.gz
+  tar -xf tzdata.tar
+  rm tzdata.tar
+  cd ..
+  
+# Replace lines in the makefile. Sure real unix types can do better  
+  
+  cd vzic-1.3
+  
+  sed "s/\(^OLSON_DIR = \)\(..*$\)/\1\/tmp\/bedework\/timezones\/olsondata/" Makefile > Makefile1
+
+  sed "s/\(^PRODUCT_ID = \)\(..*$\)/\1\/bedework.org\/\/NONSGML Bedework\/\/EN/" Makefile1 > Makefile2
+
+  sed "s/\(^TZID_PREFIX = \)\(..*$\)/\1/" Makefile2 > Makefile
+  
+  make
+  
+# omit the pure for allegedly better outlook compatability - 
+# but not altogether correct timezones  
+  ./vzic --pure
+
+  cd ..
+  
+  mkdir tzdata
+  cp -r vzic-1.3/zoneinfo tzdata
+  cp $QUICKSTART_HOME/bedework/projects/bwtzsvr/resources/aliases.txt tzdata
+  
+  cd tzdata
+  echo "version=$version" > info.txt
+  zip -r tzdata *
+  
+  cp tzdata.zip $QUICKSTART_HOME
+  
+  echo ""
+  echo "------------------------------------------------------------------------------"
+  echo "tzdata.zip has been built and is at $QUICKSTART_HOME/tzdata.zip"
+  echo "------------------------------------------------------------------------------"
+  echo ""
+  
+  exit 0
+}
+
 if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   errorUsage "JAVA_HOME is not defined correctly for bedework."
 fi
@@ -96,6 +191,10 @@ trap 'cd $saveddir' 0
 trap "exit 2" 1 2 3 15
 
 export QUICKSTART_HOME=$saveddir
+
+CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
+CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/build/quickstart/antlib
+CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
 
 # Default some parameters
 
@@ -125,6 +224,10 @@ fi
 
 if [ "$1" = "-reindex" ] ; then
   actionReindex
+fi
+
+if [ "$1" = "-zoneinfo" ] ; then
+  actionZoneinfo $*
 fi
 
 while [ "$1" != "" ]
@@ -214,10 +317,6 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
-
-CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
-CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/build/quickstart/antlib
-CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
 
 if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav

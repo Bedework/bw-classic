@@ -11,7 +11,8 @@
 <project name="quickstart-build-file" default="usage" basedir=".">
   <property environment="env"/>
 
-  <dirname property="bedework.quickstart.basedir" file="${ant.file.quickstart-build-file}"/>
+  <dirname property="bedework.quickstart.basedir" 
+  	       file="${ant.file.quickstart-build-file}"/>
 
   <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
