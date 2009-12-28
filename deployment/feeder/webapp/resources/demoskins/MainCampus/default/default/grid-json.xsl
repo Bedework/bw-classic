@@ -91,30 +91,30 @@
             "longdate" : "<xsl:value-of select='longdate'/>",
             "shortdate" : "<xsl:value-of select='shortdate'/>",
             "events" : [
-                <xsl:choose>
-                <xsl:when test="/bedework/appvar/key = 'filter'">
-                    <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-                  <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-                  <!-- Define filters here: -->
-                  <xsl:choose>
-                    <xsl:when test="$filterName = 'grpAndCats'">
-                      <xsl:call-template name="preprocessCats">
-	                    <xsl:with-param name="allCats" select="$filterVal"/>
-	                  </xsl:call-template>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <!-- Filter name not defined? Turn off filtering. -->
-                      <xsl:apply-templates select="event"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:apply-templates select="event"/>
-                </xsl:otherwise>
-              </xsl:choose>
+               <xsl:choose>
+                 <xsl:when test="/bedework/appvar/key = 'filter'">
+                   <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
+                   <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
+                   <!-- Define filters here: -->
+                   <xsl:choose>
+                     <xsl:when test="$filterName = 'grpAndCats'">
+                       <xsl:call-template name="preprocessCats">
+	                     <xsl:with-param name="allCats" select="$filterVal"/>
+	                   </xsl:call-template>
+                     </xsl:when>
+                     <xsl:otherwise>
+                       <!-- Filter name not defined? Turn off filtering. -->
+                       <xsl:apply-templates select="event"/>
+                     </xsl:otherwise>
+                   </xsl:choose>
+                 </xsl:when>
+                 <xsl:otherwise>
+                   <xsl:apply-templates select="event"/>
+                 </xsl:otherwise>
+               </xsl:choose>
               ]
             </xsl:otherwise>
-          </xsl:choose>
+            </xsl:choose>
         }<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 </xsl:stylesheet>

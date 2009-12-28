@@ -47,8 +47,40 @@
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
   <xsl:variable name="privateCal" select="concat($bwCalendarHostURL,'/ucal')"/>
 
-  <!-- MAIN TEMPLATE -->
+  
   <xsl:template match="/">
+	<!-- grab category filters.  -->	
+    <xsl:choose>
+	  <xsl:when test="/bedework/appvar/key = 'filter'">
+	    <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
+	    <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
+	    <xsl:choose>
+	      <xsl:when test="$filterName = 'grpAndCats'">
+		    <xsl:call-template name="main">
+	          <xsl:with-param name="andCat" select="substring-before($filterVal, '~')"/>
+	          <xsl:with-param name="orCats" select="substring-after($filterVal, '~')"/>
+	        </xsl:call-template>
+	      </xsl:when>
+	      <xsl:otherwise>
+		    <xsl:call-template name="main">
+	          <xsl:with-param name="andCat" select="'all'" />
+		      <xsl:with-param name="orCats" select="'all'" />
+		    </xsl:call-template>
+		  </xsl:otherwise>
+		</xsl:choose>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:call-template name="main">
+          <xsl:with-param name="andCat" select="'all'" />
+	      <xsl:with-param name="orCats" select="'all'" />
+	    </xsl:call-template>
+	  </xsl:otherwise>	      
+	</xsl:choose>
+  </xsl:template>
+
+  <xsl:template name='main'>
+	<xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <html lang="en">
       <head>
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
@@ -97,30 +129,48 @@
         </xsl:if>
         <xsl:choose>
               <xsl:when test="/bedework/periodname='Day'">
-                <xsl:call-template name="listView"/>
+                <xsl:call-template name="listView">
+	              <xsl:with-param name="andCat" select="$andCat" />
+		          <xsl:with-param name="orCats" select="$orCats" />
+		        </xsl:call-template>               
               </xsl:when>
               <xsl:when test="/bedework/periodname='Week' or /bedework/periodname=''">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                    <xsl:call-template name="listView"/>
+                    <xsl:call-template name="listView">
+		              <xsl:with-param name="andCat" select="$andCat" />
+			          <xsl:with-param name="orCats" select="$orCats" />
+			        </xsl:call-template>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:call-template name="weekView"/>
+                    <xsl:call-template name="weekView">
+		              <xsl:with-param name="andCat" select="$andCat" />
+			          <xsl:with-param name="orCats" select="$orCats" />
+			        </xsl:call-template>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
               <xsl:when test="/bedework/periodname='Month'">
                 <xsl:choose>
                   <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                    <xsl:call-template name="listView"/>
+                    <xsl:call-template name="listView">
+		              <xsl:with-param name="andCat" select="$andCat" />
+			          <xsl:with-param name="orCats" select="$orCats" />
+			        </xsl:call-template>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:call-template name="monthView"/>
+                    <xsl:call-template name="monthView">
+		              <xsl:with-param name="andCat" select="$andCat" />
+			          <xsl:with-param name="orCats" select="$orCats" />
+			        </xsl:call-template>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:call-template name="yearView"/>
+                <xsl:call-template name="yearView">
+	              <xsl:with-param name="andCat" select="$andCat" />
+		          <xsl:with-param name="orCats" select="$orCats" />
+		        </xsl:call-template>
               </xsl:otherwise>
         </xsl:choose>
       </body>
@@ -129,6 +179,8 @@
 
   <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
+	<xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -143,7 +195,9 @@
        <a id="linkToEvent" href="javascript:showLink('{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
        <xsl:copy-of select="$bwStr-SgEv-LinkToThisEvent"/>
      </a>
-      <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text></xsl:if>
+      <xsl:if test="status='CANCELLED'">
+	    <xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text>
+	  </xsl:if>
       <xsl:choose>
         <xsl:when test="link != ''">
           <xsl:variable name="link" select="link"/>
@@ -371,16 +425,6 @@
             <xsl:if test="contact/phone!=''">
               <br /><xsl:value-of select="contact/phone"/>
             </xsl:if>
-            <!-- If you want to display email addresses, uncomment the
-                 following 8 lines. -->
-            <!-- <xsl:if test="contact/email!=''">
-              <br />
-              <xsl:variable name="email" select="contact/email"/>
-              <xsl:variable name="subject" select="summary"/>
-              <a href="mailto:{$email}&amp;subject={$subject}">
-                <xsl:value-of select="contact/email"/>
-              </a>
-            </xsl:if> -->
           </td>
         </tr>
       </xsl:if>
@@ -436,6 +480,8 @@
 
   <!--==== LIST VIEW  (for day, week, and month) ====-->
   <xsl:template name="listView">
+	<xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <table id="listTable" border="0" cellpadding="0" cellspacing="0">
       <xsl:choose>
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
@@ -451,36 +497,9 @@
               <tr>
                 <td colspan="5" class="dateRow">
                    <xsl:variable name="date" select="date"/>
-                   <!-- <a href="{$listEvents}&amp;startDate={$date}&amp;endDate={$date}"> -->
-
-                 <xsl:choose>
-                <xsl:when test="/bedework/appvar/key = 'filter'">
-                    <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-                  <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-                  <!-- Define filters here: -->
-                  <xsl:choose>
-                    <xsl:when test="$filterName = 'grpAndCats'">
-                    <xsl:variable name="group" select="substring-before($filterVal, '~')" />
-                <xsl:variable name="cats" select="substring-after($filterVal, '~')" />
-              <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$date}/grid-html/{$group}/{$cats}">
-                      <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
-                    </a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <!-- Filter name not defined? Turn off filtering. -->
-                      <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$date}/grid-html/all/all">
-                      <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
-                    </a>
-                      </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$date}/grid-html/all/all">
-                  <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
-                    </a>
-                </xsl:otherwise>
-               </xsl:choose>
-
+                   <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$date}/grid-html/{$andCat}/{$orCats}">
+                     <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
+                   </a>
                 </td>
               </tr>
             </xsl:if>
@@ -515,18 +534,15 @@
                   <xsl:when test="start/shortdate = end/shortdate and
                                   start/time = end/time">
                     <td class="{$dateRangeStyle} center" colspan="3">
-                      <!--<a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                        <xsl:value-of select="start/time"/> -->
                       <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                       </a>
                     </td>
                   </xsl:when>
                   <xsl:otherwise>
                     <td class="{$dateRangeStyle} right">
-                      <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                       <xsl:choose>
-                        <xsl:when test="start/allday = 'true' and
-                                        parent::day/shortdate = start/shortdate">
+                        <xsl:when test="start/allday = 'true' and parent::day/shortdate = start/shortdate">
                           <xsl:copy-of select="$bwStr-LsVw-Today"/>
                         </xsl:when>
                         <xsl:when test="parent::day/shortdate != start/shortdate">
@@ -540,12 +556,10 @@
                       </a>
                     </td>
                     <td class="{$dateRangeStyle} center">
-                    <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}"></a>
-                      <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">-</a> -->
+                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}"></a>
                     </td>
                     <td class="{$dateRangeStyle} left">
-                    <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
-                      <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"> -->
+                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                       <xsl:choose>
                         <xsl:when test="end/allday = 'true' and
                                         parent::day/shortdate = end/shortdate">
@@ -583,8 +597,7 @@
                   <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
-                      <!-- ><a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"> -->
+                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
                         <strong>
                           <xsl:value-of select="summary"/>:
                         </strong>
@@ -597,22 +610,22 @@
                           <xsl:if test="cost!=''">
                             <xsl:value-of select="cost"/>.&#160;
                           </xsl:if>
-                          <xsl:if test="contact/name!='none'">
-                            <xsl:copy-of select="$bwStr-LsVw-Contact"/><xsl:text> </xsl:text><xsl:value-of select="contact/name"/>
-                          </xsl:if>
-                        </em>
-                        -
-                        <span class="eventSubscription">
-                          <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
-                            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-                              <xsl:call-template name="substring-afterLastInstanceOf">
-                                <xsl:with-param name="string" select="values/text"/>
-                                <xsl:with-param name="char">/</xsl:with-param>
-                              </xsl:call-template>
-                              <xsl:if test="position()!=last()">, </xsl:if>
-                            </xsl:for-each>
-                          </xsl:if>
-                        </span>
+                            <xsl:if test="contact/name!='none'">
+                              <xsl:copy-of select="$bwStr-LsVw-Contact"/><xsl:text> </xsl:text><xsl:value-of select="contact/name"/>
+                            </xsl:if>
+                          </em>
+                          -
+                          <span class="eventSubscription">
+                            <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+                              <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                                <xsl:call-template name="substring-afterLastInstanceOf">
+                                  <xsl:with-param name="string" select="values/text"/>
+                                  <xsl:with-param name="char">/</xsl:with-param>
+                                </xsl:call-template>
+                                <xsl:if test="position()!=last()">, </xsl:if>
+                              </xsl:for-each>
+                            </xsl:if>
+                          </span>
                       </a>
                       <xsl:if test="link != ''">
                         <xsl:variable name="link" select="link"/>
@@ -659,29 +672,9 @@
 
   <!--==== LIST EVENTS - for listing discrete events ====-->
   <xsl:template match="events" mode="eventList">
+	<xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <h2 class="bwStatusConfirmed">
-      <!-- <form name="bwListEventsForm" action="{$listEvents}" method="post">
-        <input type="hidden" name="setappvar"/>-->
-        <xsl:copy-of select="$bwStr-LsEv-Next7Days"/>
-        <!--
-        <span id="bwListEventsFormControls">
-          <select name="catuid" onchange="this.form.submit();">
-            <option value="">filter by category...</option>
-            <xsl:for-each select="/bedework/categories/category">
-              <option>
-                <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                <xsl:value-of select="value"/>
-              </option>
-            </xsl:for-each>
-          </select>
-          <select name="days" onchange="this.form.submit();">
-            <xsl:call-template name="buildListEventsDaysOptions">
-              <xsl:with-param name="i">1</xsl:with-param>
-              <xsl:with-param name="total">31</xsl:with-param>
-            </xsl:call-template>
-          </select>
-        </span>
-      </form>-->
     </h2>
 
     <div id="listEvents">
@@ -715,7 +708,6 @@
                     , <xsl:value-of select="location/subaddress"/>
                   </xsl:if>
                 </xsl:if>
-
                 <xsl:text> </xsl:text>
                 <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
                   <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
@@ -810,6 +802,8 @@
 
   <!--==== WEEK CALENDAR VIEW ====-->
   <xsl:template name="weekView">
+	<xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <table id="monthCalendarTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <xsl:for-each select="/bedework/daynames/val">
@@ -825,38 +819,16 @@
                 <xsl:attribute name="class">today</xsl:attribute>
               </xsl:if>
               <xsl:variable name="dayDate" select="date"/>
-              <!-- ><a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink">  -->
-              <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/all/all" class="dayLink">
+              <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/{$andCat}/{$orCats}" class="dayLink">
                 <xsl:value-of select="value"/>
               </a>
               <xsl:if test="event">
                 <ul>
-                <xsl:choose>
-                  <xsl:when test="/bedework/appvar/key = 'filter'">
-                      <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-                    <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-                    <!-- Define filters here: -->
-                    <xsl:choose>
-                      <xsl:when test="$filterName = 'grpAndCats'">
-                        <xsl:call-template name="processGrpAndCats">
-                        <xsl:with-param name="list" select="$filterVal"/>
-                        <xsl:with-param name="dayPos" select="$dayPos"/>
-                      </xsl:call-template>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <!-- Filter name not defined? Turn off filtering. -->
-                        <xsl:apply-templates select="event" mode="calendarLayout">
-                        <xsl:with-param name="dayPos" select="$dayPos"/>
-                        </xsl:apply-templates>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:apply-templates select="event" mode="calendarLayout">
+                  <xsl:call-template name="processCats">
+	                <xsl:with-param name="andCat" select="$andCat"/>
+                    <xsl:with-param name="orCats" select="$orCats"/>
                     <xsl:with-param name="dayPos" select="$dayPos"/>
-                    </xsl:apply-templates>
-                  </xsl:otherwise>
-            </xsl:choose>
+                  </xsl:call-template> 
                 </ul>
               </xsl:if>
             </td>
@@ -868,6 +840,8 @@
 
   <!--==== MONTH CALENDAR VIEW ====-->
   <xsl:template name="monthView">
+	<xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <table id="monthCalendarTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <xsl:for-each select="/bedework/daynames/val">
@@ -888,61 +862,16 @@
                     <xsl:attribute name="class">today</xsl:attribute>
                   </xsl:if>
                   <xsl:variable name="dayDate" select="date"/>
-                  <xsl:choose>
-            <xsl:when test="/bedework/appvar/key = 'filter'">
-                  <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-                  <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-                  <!-- Define filters here: -->
-                  <xsl:choose>
-                    <xsl:when test="$filterName = 'grpAndCats'">
-                    <xsl:variable name="group" select="substring-before($filterVal, '~')" />
-                <xsl:variable name="cats" select="substring-after($filterVal, '~')" />
-              <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/{$group}/{$cats}">
-                      <xsl:value-of select="value"/>
-                    </a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <!-- Filter name not defined? Turn off filtering. -->
-                      <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/all/all">
-                      <xsl:value-of select="value"/>
-                    </a>
-                      </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/all/all">
-                  <xsl:value-of select="value"/>
-                    </a>
-                </xsl:otherwise>
-              </xsl:choose>
+                  <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/{$andCat}/{$orCats}">
+                    <xsl:value-of select="value"/>
+                  </a>
                   <xsl:if test="event">
                     <ul>
-                    <xsl:choose>
-                  <xsl:when test="/bedework/appvar/key = 'filter'">
-                      <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-                    <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-                    <!-- Define filters here: -->
-                    <xsl:choose>
-                      <xsl:when test="$filterName = 'grpAndCats'">
-                        <xsl:call-template name="processGrpAndCats">
-                        <xsl:with-param name="list" select="$filterVal"/>
+                      <xsl:call-template name="processCats">
+                        <xsl:with-param name="andCat" select="$andCat"/>
+                        <xsl:with-param name="orCats" select="$orCats"/>
                         <xsl:with-param name="dayPos" select="$dayPos"/>
                       </xsl:call-template>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <!-- Filter name not defined? Turn off filtering. -->
-                        <xsl:apply-templates select="event" mode="calendarLayout">
-                        <xsl:with-param name="dayPos" select="$dayPos"/>
-                        </xsl:apply-templates>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:apply-templates select="event" mode="calendarLayout">
-                    <xsl:with-param name="dayPos" select="$dayPos"/>
-                    </xsl:apply-templates>
-                  </xsl:otherwise>
-                </xsl:choose>
                     </ul>
                   </xsl:if>
                 </td>
@@ -1065,6 +994,8 @@
 
   <!--==== YEAR VIEW ====-->
   <xsl:template name="yearView">
+	<xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <table id="yearCalendarTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <xsl:apply-templates select="/bedework/eventscalendar/year/month[position() &lt;= 3]"/>
@@ -1083,15 +1014,16 @@
 
   <!-- year view month tables -->
   <xsl:template match="month">
+    <xsl:param name="andCat" />
+	<xsl:param name="orCats" />
     <td>
       <table class="yearViewMonthTable" border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td colspan="8" class="monthName">
             <xsl:variable name="firstDayOfMonth" select="week/day/date"/>
-            <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/month/{$firstDayOfMonth}/grid-html/all/all">
-            <!-- <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$firstDayOfMonth}">  -->
-              <xsl:value-of select="longname"/>
-            </a>
+            <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/month/{$firstDayOfMonth}/grid-html/{$andCat}/{$orCats}">
+		      <xsl:value-of select="longname"/>
+		    </a>        
           </td>
         </tr>
         <tr>
@@ -1104,8 +1036,7 @@
           <tr>
             <td class="weekCell">
               <xsl:variable name="firstDayOfWeek" select="day/date"/>
-              <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/week/{$firstDayOfWeek}/grid-html/all/all">
-              <!-- <a href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$firstDayOfWeek}"> -->
+              <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/week/{$firstDayOfWeek}/grid-html/{$andCat}/{$orCats}">
                 <xsl:value-of select="value"/>
               </a>
             </td>
@@ -1120,8 +1051,7 @@
                       <xsl:attribute name="class">today</xsl:attribute>
                     </xsl:if>
                     <xsl:variable name="dayDate" select="date"/>
-                    <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/all/all">
-                    <!-- <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}"> -->
+                    <a href="{$bwCacheHostUrl}/v1.0/genFeedPeriod/day/{$dayDate}/grid-html/{$andCat}/{$orCats}">
                       <xsl:attribute name="class">today</xsl:attribute>
                       <xsl:value-of select="value"/>
                     </a>
@@ -1180,83 +1110,82 @@
     </div>
   </xsl:template>
 
-  <xsl:template name="processGrpAndCats">
-    <xsl:param name="list" />
-    <xsl:param name="dayPos" />
-    <xsl:variable name="group" select="substring-before($list, '~')" />
-    <xsl:variable name="remaining" select="substring-after($list, '~')" />
-    <xsl:call-template name="processCategories">
-    <xsl:with-param name="group" select="$group" />
-      <xsl:with-param name="list" select="$remaining" />
-      <xsl:with-param name="dayPos" select="$dayPos" />
-    </xsl:call-template>
-  </xsl:template>
-
-  <xsl:template name="processCategories">
-  <xsl:param name="group" />
-    <xsl:param name="list" />
-    <xsl:param name="dayPos" />
-    <xsl:choose>
-    <xsl:when test="contains($list, '~')">
-    <!-- Grab the first off the list and process -->
-      <xsl:variable name="catid" select="substring-before($list, '~')" />
-      <xsl:variable name="remaining" select="substring-after($list, '~')" />
-      <xsl:choose>
-      <xsl:when test="$group = 'all'">
-> 	        <xsl:apply-templates select="event[categories/category/id = $catid]" mode="calendarLayout">
-            <xsl:with-param name="dayPos" select="$dayPos"/>
-          </xsl:apply-templates>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="event[categories/category/id = $catid]" mode="calendarLayout">
-            <xsl:with-param name="dayPos" select="$dayPos"/>
-          </xsl:apply-templates>
-        </xsl:otherwise>
-      </xsl:choose>
-
-    <!-- now use recursion to process the remaining categories -->
-      <xsl:call-template name="processCategories">
-        <xsl:with-param name="group" select="$group" />
-        <xsl:with-param name="list" select="$remaining" />
-        <xsl:with-param name="dayPos" select="$dayPos" />
+<xsl:template name="processCats">
+  <xsl:param name="andCat" />
+  <xsl:param name="orCats" />
+  <xsl:param name="dayPos" />
+  <xsl:choose>
+    <xsl:when test="contains($orCats, '~')">   
+        <!-- There are 2 or more on the "or" list.  -->
+        <xsl:variable name="orCats" select="substring-before($orCats, '~')" />
+        <xsl:variable name="remainingOrCats" select="substring-after($orCats, '~')" />
+        <!-- Process the first one -->
+        <xsl:call-template name="processAndOr">
+	      <xsl:with-param name="andCat" select="$andCat"/>
+	      <xsl:with-param name="orCats" select="$orCats"/>
+	      <xsl:with-param name="dayPos" select="$dayPos"/>
+	    </xsl:call-template>
+        <!-- and use recursion to process the remaining categories -->
+        <xsl:call-template name="processCats">
+	      <xsl:with-param name="andCat" select="$andCat"/>
+          <xsl:with-param name="orCats" select="$remainingOrCats" />
+          <xsl:with-param name="dayPos" select="$dayPos"/>
       </xsl:call-template>
     </xsl:when>
     <xsl:otherwise>
-      <!-- No more tildes, so this is the last category.  Process it -->
-    <xsl:choose>
-      <xsl:when test="$group = 'all'">
+      <!-- No more tildes, so this is the last or only "or" category.  Call processAndOr to process it -->
+      <xsl:call-template name="processAndOr">
+	      <xsl:with-param name="andCat" select="$andCat"/>
+	      <xsl:with-param name="orCats" select="$orCats"/>
+		  <xsl:with-param name="dayPos" select="$dayPos"/>
+	    </xsl:call-template>
+    </xsl:otherwise>
+
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template name="processAndOr">
+  <xsl:param name="andCat"/>
+  <xsl:param name="orCats" />
+  <xsl:param name="dayPos"/>
+	<xsl:choose>
+    <xsl:when test="$andCat = 'all'">
       <xsl:choose>
-        <xsl:when test="$list = 'all'">
-              <xsl:apply-templates select="event" mode="calendarLayout">
-              <xsl:with-param name="dayPos" select="$dayPos"/>
-            </xsl:apply-templates>
-            </xsl:when>
-            <xsl:otherwise>
-            <xsl:apply-templates select="event[categories/category/id = $list]" mode="calendarLayout">
+        <xsl:when test="$orCats = 'all'">
+        <!-- all categories should be displayed -->
+          <xsl:apply-templates select="event" mode="calendarLayout">
             <xsl:with-param name="dayPos" select="$dayPos"/>
-            </xsl:apply-templates>
-          </xsl:otherwise>
-          </xsl:choose>
+	      </xsl:apply-templates>
         </xsl:when>
         <xsl:otherwise>
-        <xsl:choose>
-        <xsl:when test="$list = 'all'">
-              <xsl:apply-templates select="event[creator = $group]" />
-            </xsl:when>
-            <xsl:otherwise>
-            <xsl:choose>
-              <xsl:when test="event/creator = $group">
-              <xsl:apply-templates select="event[categories/category/id = $list]" mode="calendarLayout">
-              <xsl:with-param name="dayPos" select="$dayPos"/>
-              </xsl:apply-templates>
-              </xsl:when>
-            </xsl:choose>
-          </xsl:otherwise>
-      </xsl:choose>
+          <!-- nothing being anded; display event if it matches "or" category-->
+          <xsl:apply-templates select="event[categories/category/uid = $orCats]" mode="calendarLayout">
+            <xsl:with-param name="dayPos" select="$dayPos"/>
+	      </xsl:apply-templates>
         </xsl:otherwise>
       </xsl:choose>
-    </xsl:otherwise>
-  </xsl:choose>
-  </xsl:template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="$orCats = 'all'">
+          <!-- no or's; display if it matches "and" category -->
+          <xsl:apply-templates select="event[categories/category/uid = $andCat]" mode="calendarLayout">
+            <xsl:with-param name="dayPos" select="$dayPos"/>
+	      </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <!-- an "and" and an "or", so display if they are both present -->
+            <xsl:when test="event/category/uid = $andCat">
+              <xsl:apply-templates select="event[categories/category/uid = $orCats]"	mode="calendarLayout">
+		        <xsl:with-param name="dayPos" select="$dayPos"/>
+			  </xsl:apply-templates>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+ 	  </xsl:otherwise>
+  </xsl:choose>	
+</xsl:template>
 
 </xsl:stylesheet>
