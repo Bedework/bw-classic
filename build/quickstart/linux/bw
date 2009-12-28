@@ -74,9 +74,9 @@ errorUsage() {
   exit 1
 }
 
-# 
+# ---------------------------------------------------------------------------- 
 # Reindex the data
-#
+# ---------------------------------------------------------------------------- 
 actionReindex() {
   INDEXER=$QUICKSTART_HOME/bedework/dist/temp/shellscr/indexer
   
@@ -169,7 +169,7 @@ actionZoneinfo() {
   cd tzdata
   
   echo "version=$version" > info.txt
-  date +builtTime=%D-%T-%N >> info.txt
+  date +buildTime=%D-%T-%N >> info.txt
   
   zip -r tzdata *
   
