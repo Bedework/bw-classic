@@ -101,7 +101,7 @@
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
             </xsl:if>
-            DAY
+            <xsl:copy-of select="$bwStr-Tabs-Day"/>
           </a>
         </li>
         <li>
@@ -112,7 +112,7 @@
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
             </xsl:if>
-            WEEK
+            <xsl:copy-of select="$bwStr-Tabs-Week"/>
           </a>
         </li>
         <li>
@@ -123,7 +123,7 @@
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
             </xsl:if>
-            MONTH
+            <xsl:copy-of select="$bwStr-Tabs-Month"/>
           </a>
         </li>
         <li>
@@ -134,7 +134,7 @@
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
             </xsl:if>
-            YEAR
+            <xsl:copy-of select="$bwStr-Tabs-Year"/>
           </a>
         </li>
         <li>
@@ -145,7 +145,7 @@
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
             </xsl:if>
-            TODAY
+            <xsl:copy-of select="$bwStr-Tabs-Today"/>
           </a>
         </li>
       </ul>

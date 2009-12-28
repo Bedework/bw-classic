@@ -6,22 +6,22 @@
   <!--+++++++++++++++ System Stats ++++++++++++++++++++-->
   <xsl:template name="stats">
     <div id="stats">
-      <h2>System Statistics</h2>
-      <p>Stats collection:</p>
+      <h2><xsl:copy-of select="$bwStr-Stat-SysStats"/></h2>
+      <p><xsl:copy-of select="$bwStr-Stat-StatsCollection"/></p>
       <ul>
         <li>
-          <a href="{$stats}&amp;enable=yes">enable</a>
+          <a href="{$stats}&amp;enable=yes"><xsl:copy-of select="$bwStr-Stat-Enable"/></a>
           |
-          <a href="{$stats}&amp;disable=yes">disable</a>
+          <a href="{$stats}&amp;disable=yes"><xsl:copy-of select="$bwStr-Stat-Disable"/></a>
         </li>
         <li>
           <a href="{$stats}&amp;fetch=yes">
-            fetch statistics
+            <xsl:copy-of select="$bwStr-Stat-FetchStats"/>
           </a>
         </li>
         <li>
           <a href="{$stats}&amp;dump=yes">
-            dump stats to log
+            <xsl:copy-of select="$bwStr-Stat-DumpStats"/>
           </a>
         </li>
       </ul>

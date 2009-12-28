@@ -124,54 +124,54 @@
   <!-- LEFT COLUMN TEXT -->
   <!-- custom text in the left column -->
   <xsl:template name="leftColumnText">
-    <h4>EVENTS CALENDAR INFO:</h4>
+    <h4><xsl:copy-of select="$bwStr-LCol-CalInfo"/></h4>
      <ul class="sideLinks">
        <li>
-         <a href="/caladmin">Manage Events</a>
+         <a href="/caladmin"><xsl:copy-of select="$bwStr-LCol-ManageEvents"/></a>
        </li>
        <li>
-         <a href="/eventsubmit?setappvar=confirmed(no)">
-           Submit an Event
+         <a href="/eventsubmit">
+           <xsl:copy-of select="$bwStr-LCol-Submit"/>
          </a>
        </li>
        <li>
-         <a href="http://calendar.duke.edu/help">Help</a>
+         <a href="/help"><xsl:copy-of select="$bwStr-LCol-Help"/></a>
        </li>
      </ul>
      <ul class="sideLinksExpand">
        <li>
-         <h4 class="additionalUnivClicker">OTHER UNIVERSITY CALENDARS</h4>
+         <h4 class="additionalUnivClicker"><xsl:copy-of select="$bwStr-LCol-OtherCals"/></h4>
          <span class="additionalUnivClicker">+</span>
          <ul id="additionalUnivSub">
            <li>
              <a href="http://www.bedework.org/">
-               Example link
+               <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
            <li>
              <a href="http://www.bedework.org/">
-               Example link
+               <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
            <li>
              <a href="http://www.bedework.org/">
-               Example link
+               <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
          </ul>
        </li>
        <li>
-         <h4 class="additionalOptionsClicker">OTHER LINKS</h4>
+         <h4 class="additionalOptionsClicker"><xsl:copy-of select="$bwStr-LCol-OtherLinks"/></h4>
          <span class="additionalOptionsClicker">+</span>
          <ul id="additionalOptionsSub">
            <li>
              <a href="http://www.bedework.org/">
-               Example link
+               <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
            <li>
              <a href="http://www.bedework.org/">
-               Example link
+               <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
          </ul>

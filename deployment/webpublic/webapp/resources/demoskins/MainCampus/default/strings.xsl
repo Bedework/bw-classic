@@ -36,6 +36,7 @@
   <!--  xsl:template name="tabs" -->
   <xsl:variable name="bwStr-Tabs-LoggedInAs">logged in as</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Logout">logout</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Today">TODAY</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Day">DAY</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Week">WEEK</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Month">MONTH</xsl:variable>
@@ -65,6 +66,21 @@
   <xsl:variable name="bwStr-SrcB-Details">Details</xsl:variable>
   <xsl:variable name="bwStr-SrcB-TopicalArea">Topical Area:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-CurrentSearch">Current search:</xsl:variable>
+
+  <!--  xsl:template name="leftColumn", "viewList", and "sideBar" -->
+  <xsl:variable name="bwStr-LCol-JsMessage">To view the interactive calendar, please enable Javascript on your browser.</xsl:variable>
+  <xsl:variable name="bwStr-LCol-CalendarViews">Calendar Views</xsl:variable>
+  <xsl:variable name="bwStr-LCol-FilterOnCalendars">FILTER ON CALENDARS:</xsl:variable>
+  <xsl:variable name="bwStr-LCol-ViewAllCalendars">View All Calendars</xsl:variable>
+
+  <xsl:variable name="bwStr-LCol-CalInfo">EVENTS CALENDAR INFO:</xsl:variable>
+  <xsl:variable name="bwStr-LCol-ManageEvents">Manage Events</xsl:variable>
+  <xsl:variable name="bwStr-LCol-Submit">Submit an Event</xsl:variable>
+  <xsl:variable name="bwStr-LCol-Help">Help</xsl:variable>
+  <xsl:variable name="bwStr-LCol-OtherCals">OTHER UNIVERSITY CALENDARS</xsl:variable>
+  <xsl:variable name="bwStr-LCol-ExampleLink">Example link</xsl:variable>
+  <xsl:variable name="bwStr-LCol-OtherLinks">OTHER LINKS</xsl:variable>
+
 
   <!--  xsl:template match="event" -->
   <xsl:variable name="bwStr-SgEv-GenerateLinkToThisEvent">generate link to this event</xsl:variable>

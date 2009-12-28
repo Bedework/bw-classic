@@ -18,8 +18,7 @@
     <div id="jsNavCal" class="calContainer">
       <xsl:call-template name="dateSelectForm" />
       <p>
-        To view the interactive calendar, please enable
-        Javascript on your browser.
+        <xsl:copy-of select="$bwStr-LCol-JsMessage"/>
       </p>
     </div>
   </xsl:template>
@@ -27,11 +26,11 @@
   <!--============= Display Side Bar ======-->
   <xsl:template name="displaySideBar">
     <div class="sideBarContainer">
-      <h4>FILTER ON CALENDARS:</h4>
+      <h4><xsl:copy-of select="$bwStr-LCol-FilterOnCalendars"/></h4>
       <ul class="sideLinks">
         <li>
           <a href="{$fetchPublicCalendars}">
-            View All Calendars
+            <xsl:copy-of select="$bwStr-LCol-ViewAllCalendars"/>
           </a>
         </li>
       </ul>

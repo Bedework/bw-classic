@@ -6,16 +6,13 @@
     <!--==== YEAR VIEW ====-->
   <xsl:template name="yearView">
     <div class="yearMonthRow">
-      <xsl:apply-templates
-        select="/bedework/eventscalendar/year/month[position() &lt;= 4]" />
+      <xsl:apply-templates select="/bedework/eventscalendar/year/month[position() &lt;= 4]" />
     </div>
     <div class="yearMonthRow">
-      <xsl:apply-templates
-        select="/bedework/eventscalendar/year/month[(position() &gt; 4) and (position() &lt;= 8)]" />
+      <xsl:apply-templates select="/bedework/eventscalendar/year/month[(position() &gt; 4) and (position() &lt;= 8)]" />
     </div>
     <div class="yearMonthRow">
-      <xsl:apply-templates
-        select="/bedework/eventscalendar/year/month[position() &gt; 8]" />
+      <xsl:apply-templates select="/bedework/eventscalendar/year/month[position() &gt; 8]" />
     </div>
   </xsl:template>
   <!-- year view month tables -->
@@ -24,10 +21,8 @@
       cellpadding="0">
       <tr>
         <td colspan="7" class="monthName">
-          <xsl:variable name="firstDayOfMonth"
-            select="week/day/date" />
-          <a
-            href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$firstDayOfMonth}">
+          <xsl:variable name="firstDayOfMonth" select="week/day/date" />
+          <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$firstDayOfMonth}">
             <xsl:value-of select="longname" />
           </a>
         </td>
@@ -48,14 +43,12 @@
               </xsl:when>
               <xsl:otherwise>
                 <td>
-                  <xsl:if
-                    test="/bedework/now/date = date">
+                  <xsl:if test="/bedework/now/date = date">
                     <xsl:attribute name="class">today</xsl:attribute>
                   </xsl:if>
                   <xsl:variable name="dayDate"
                     select="date" />
-                  <a
-                    href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}">
+                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}">
                     <xsl:attribute name="class">today</xsl:attribute>
                     <xsl:value-of select="value" />
                   </a>
@@ -67,6 +60,6 @@
       </xsl:for-each>
     </table>
   </xsl:template>
-  
+
 
 </xsl:stylesheet>
