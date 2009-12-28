@@ -38,6 +38,7 @@
         <meta http-equiv="Pragma" content="no-cache"/>
         <meta http-equiv="Expires" content="-1"/>
         <link rel="stylesheet" href="{$resourcesRoot}/css/jsphone.css"/>
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/jsphone.js"></script>
       </head>
       <body>
         <h2 id="nav" class="title" onclick="gotourl(this, '{$setup}&amp;browserTypeSticky=default')">
