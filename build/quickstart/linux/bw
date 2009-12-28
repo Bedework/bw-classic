@@ -167,7 +167,10 @@ actionZoneinfo() {
   cp $QUICKSTART_HOME/bedework/projects/bwtzsvr/resources/aliases.txt tzdata
   
   cd tzdata
+  
   echo "version=$version" > info.txt
+  date +builtTime=%D-%T-%N >> info.txt
+  
   zip -r tzdata *
   
   cp tzdata.zip $QUICKSTART_HOME
