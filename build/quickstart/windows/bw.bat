@@ -75,7 +75,7 @@ GOTO doneQB
 :checkBwConfig
 REM  IF "%BWCONFIGS%empty" == "empty" GOTO doneQB
 REM    ECHO *******************************************************
-REM    ECHO Error: Cannot specIFy both -quickstart and -bwchome
+REM    ECHO Error: Cannot specify both -quickstart and -bwchome
 REM    ECHO *******************************************************
 REM    GOTO:EOF
 
