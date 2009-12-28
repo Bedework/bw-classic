@@ -3,7 +3,7 @@
 :: JAVA_HOME needs to be defined
 
 @echo off
-setlocal
+SETLOCAL ENABLEDELAYEDEXPANSION
 
 if not "%JAVA_HOME%"=="" goto noJavaWarn
 ECHO
@@ -15,9 +15,10 @@ ECHO
 ECHO
 :noJavaWarn
 
-SET cp=@CP@
+SET cp=.:./classes:./resources
+FOR /f %%i IN ('dir /b lib\*.jar') DO SET cp=!cp!:./lib/%%i
 
-SET RUNCMD="%JAVA_HOME%/bin/java" -cp %cp% org.bedework.indexer.BwIndexApp
+SET RUNCMD="%JAVA_HOME%\bin\java" -cp %cp% org.bedework.indexer.BwIndexApp
 
 SET APPNAME=indexer
 
