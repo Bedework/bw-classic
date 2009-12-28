@@ -51,6 +51,20 @@ GOTO branch
   SHIFT
   GOTO branch
 
+:reindex
+  ECHO     Calling the reindexer
+  SET INDEXER=%QUICKSTART_HOME%\bedework\dist\temp\shellscr\indexer
+
+  if exist %INDEXER% goto indexerok
+    ECHO The indexer directory %INDEXER% does not exist. You probably need to do a rebuild.
+    GOTO:EOF
+
+  :indexerok
+  cd %INDEXER%
+  bwrun.bat reindex-nostart -user admin -indexlocprefix ..\..\..\..\..\
+
+  GOTO:EOF
+
 :doneWithArgs
 
 IF NOT "%quickstart%empty" == "empty" GOTO checkBwConfig
@@ -112,18 +126,36 @@ IF "%1" == "-quickstart" GOTO quickstart
 IF "%1" == "-bwchome" GOTO bwchome
 IF "%1" == "-bwc" GOTO bwc
 IF "%1" == "-offline" GOTO offline
+IF "%1" == "-reindex" GOTO reindex
+IF "%1" == "-zoneinfo" GOTO zoneinfo
 GOTO doneWithArgs
 
 :usage
   ECHO    Usage:
   ECHO.
-  ECHO    %0 [ -quickstart OR -bwchome path ] [ -bwc configname ] [ -offline ] [ target ]
+  ECHO    bw [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [ target ]
+  ECHO    bw ACTION
   ECHO.
-  ECHO      -quickstart  Use the current quickstart configurations.
-  ECHO      -bwchome     Specify path to configurations
-  ECHO      -bwc         Specify configuration name
-  ECHO      -offline     Build without atempting to retrieve library jars
-  ECHO      target       Ant target to execute
+  ECHO    Where:
+  ECHO.
+  ECHO    CONFIG-SOURCE optionally defines the location of configurations and is one or none of
+  ECHO     -quickstart      to use the configurations within the quickstart
+  ECHO                      e.g. "bw -quickstart start"
+  ECHO     -bwchome path    to specify the location of the bwbuild directory
+  ECHO.
+  ECHO     The default is to look in the user home for the "bwbuild" directory.
+  ECHO.
+  ECHO    CONFIG optionally defines the configuration to build
+  ECHO      -bwc configname      e.g. "-bwc mysql"
+  ECHO.
+  ECHO    -offline     Build without attempting to retrieve library jars
+  ECHO    target       Ant target to execute (e.g. "start")
+  ECHO.
+  ECHO    PROJECT optionally defines the package to build and is none or more of
+  ECHO     -carddav     Target is for the CardDAV build
+  ECHO     -monitor     Target is for the bedework monitor application
+  ECHO     -naming      Target is for the abstract naming api
+  ECHO     The default is a calendar build
   ECHO.
   ECHO    Invokes ant to build or deploy the Bedework system. Uses a configuration
   ECHO    directory which contains one directory per configuration.
@@ -135,5 +167,14 @@ GOTO doneWithArgs
   ECHO    In general these files will be in the same directory as build.properties.
   ECHO    The environment variable BEDEWORK_CONFIG contains the path to the current
   ECHO    configuration directory and can be used to build a path to the other files.
+  ECHO.
+  ECHO   ACTION defines an action to take usually in the context of the quickstart.
+  ECHO    In a deployed system many of these actions are handled directly by a
+  ECHO    deployed application. ACTION may be one of
+  ECHO      -reindex - runs the indexer directly out of the quickstart bedework
+  ECHO                 dist directory to rebuild the lucene indexes
+  ECHO      -zoneinfo - builds zoneinfo data for the timezones server
+  ECHO                  requires -version and -tzdata parameters
+  ECHO.
   ECHO.
   ECHO.
