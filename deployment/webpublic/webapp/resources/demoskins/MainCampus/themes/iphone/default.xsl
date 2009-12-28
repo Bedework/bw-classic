@@ -72,6 +72,7 @@
   <!-- === Date Info and Navigation == -->
   <xsl:template name="infoAndNavigation">
     <div id="mainNav">
+      <a href="{$setViewPeriod}&amp;viewType=todayView&amp;date={$curdate}">today</a> |
       <xsl:choose>
         <xsl:when test="/bedework/page='eventscalendar'">
           <xsl:choose>
@@ -97,7 +98,7 @@
             <xsl:otherwise>
               <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">month</a>
             </xsl:otherwise>
-          </xsl:choose> |
+          </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
           <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">day</a> |
@@ -105,7 +106,7 @@
           <a href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">month</a> |
         </xsl:otherwise>
       </xsl:choose>
-      <a href="{$setViewPeriod}&amp;viewType=todayView&amp;date={$curdate}">today</a><br/>
+      <br/>
       &lt;<a href="{$setViewPeriod}&amp;date={$prevdate}">prev</a>
       <xsl:text> </xsl:text>
       <a href="{$setViewPeriod}&amp;date={$nextdate}">next</a>&gt;
