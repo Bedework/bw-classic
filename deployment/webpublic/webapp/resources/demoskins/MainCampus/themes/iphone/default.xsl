@@ -38,7 +38,7 @@
         <meta http-equiv="Pragma" content="no-cache"/>
         <meta http-equiv="Expires" content="-1"/>
         <link rel="stylesheet" href="{$resourcesRoot}/css/jsphone.css"/>
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/jsphone.js"></script>
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/jsphone.js"><xsl:text> </xsl:text></script>
       </head>
       <body>
         <h2 id="nav" class="title" onclick="gotourl(this, '{$setup}&amp;browserTypeSticky=default')">
@@ -401,7 +401,7 @@
         <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[count(event)!=0]">
           <xsl:if test="/bedework/periodname='Week' or /bedework/periodname='Month' or /bedework/periodname=''">
             <h3>
-              <xsl:attribute name="onclick">gotourl(<xsl:value-of select="$setViewPeriod"/>&amp;viewType=dayView&amp;date=<xsl:value-of select="date"/>)</xsl:attribute>
+              <xsl:attribute name="onclick">gotourl(this,'<xsl:value-of select="$setViewPeriod"/>&amp;viewType=dayView&amp;date=<xsl:value-of select="date"/>')</xsl:attribute>
               <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
             </h3>
           </xsl:if>
@@ -409,7 +409,7 @@
             <xsl:for-each select="event">
               <li>
                 <xsl:attribute name="id"><xsl:value-of select="guid"/></xsl:attribute>
-                <xsl:attribute name="onclick">gotourl(<xsl:value-of select="$eventView"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>)</xsl:attribute>
+                <xsl:attribute name="onclick">gotourl(this,'<xsl:value-of select="$eventView"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>')</xsl:attribute>
                 <xsl:choose>
                   <xsl:when test="position() mod 2 = 0">
                     <xsl:attribute name="class">even</xsl:attribute>
