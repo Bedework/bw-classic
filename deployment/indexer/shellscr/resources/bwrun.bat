@@ -23,8 +23,8 @@ SET APPNAME=indexer
 
 ECHO.
 ECHO.
-ECHO   Bedework Database Tools
-ECHO   -----------------------
+ECHO   Bedework Lucene Reindexer
+ECHO   -------------------------
 ECHO.
 
 :branch
@@ -34,14 +34,15 @@ ECHO.
 :usage
   ECHO   Usage:
   ECHO.
-  ECHO     reindex [(-ndebug | -debug)]
-  ECHO        Reindex the system then process queue events
-  ECHO.
-  ECHO     start [(-ndebug | -debug)]
-  ECHO        Process queue events
+  ECHO  %0 reindex
+  ECHO     Reindex the system then process queue events"
+  ECHO  %0 reindex-nostart
+  ECHO     Reindex the system. Do not process queue events"
+  ECHO  %0 start
+  ECHO     Process queue events"
   ECHO.
 
-  GOTO end
+  GOTO:EOF
 
 
 :reindex
@@ -49,16 +50,15 @@ ECHO.
   ECHO.
   ECHO   %RUNCMD% -appname %APPNAME% -reindex %2 %3 %4 %5 %6 %7 %8 %9
   %RUNCMD% -appname %APPNAME% -reindex %2 %3 %4 %5 %6 %7 %8 %9
-  GOTO end
+  GOTO:EOF
   ::
 :start
   ECHO   Indexing data:
   ECHO.
   ECHO   %RUNCMD% -appname %APPNAME% -start %2 %3 %4 %5 %6 %7 %8 %9
   %RUNCMD% -appname %APPNAME% -start %2 %3 %4 %5 %6 %7 %8 %9
-  GOTO end
+  GOTO:EOF
   ::
 
-:end
 ECHO.
 ECHO.
