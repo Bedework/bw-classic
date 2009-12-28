@@ -72,7 +72,6 @@
   <xsl:include href="search.xsl"/>
   <xsl:include href="ongoing.xsl" />
   <xsl:include href="deadlines.xsl" />
-  <xsl:include href="groups.xsl"/>
   <xsl:include href="systemStats.xsl"/>
   <xsl:include href="footer.xsl" />
 

@@ -9,7 +9,6 @@
       <div class="clear">&#160;</div>
       <xsl:call-template name="viewList" />
       <xsl:call-template name="displaySideBar" />
-      <xsl:call-template name="groupsList" />
     </div>
   </xsl:template>
 
