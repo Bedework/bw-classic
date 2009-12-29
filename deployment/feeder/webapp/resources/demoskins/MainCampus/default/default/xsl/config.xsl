@@ -28,7 +28,7 @@
     repair or correction. In particular, neither Rensselaer Polytechnic
     Institute, nor the authors of the software are liable for any indirect,
     special, consequential, or incidental damages related to the software,
-    to the maximum extent the law permits. 
+    to the maximum extent the law permits.
   -->
 
   <!-- URL of resources common to all bedework apps (javascript, images) -->
@@ -46,7 +46,7 @@
 
   <!-- URL of the XSL template directory -->
   <xsl:variable name="appRoot" select="/bedework/approot"/>
- 
+
   <xsl:variable name="bwCacheHostUrl">http://localhost:3000</xsl:variable>
   <xsl:variable name="bwCalendarHostURL">http://localhost:8080</xsl:variable>
 
@@ -61,10 +61,10 @@
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
-  
+
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
-  
+
 </xsl:stylesheet>

@@ -45,7 +45,7 @@
   <xsl:include href="./xsl/htmlEvent.xsl"/>
   <!-- Provides category filter templates -->
   <xsl:include href="./xsl/htmlCategoryFiltering.xsl"/>
-  
+
 
   <!--  global variables -->
   <xsl:variable name="prevdate" select="/bedework/previousdate"/>
@@ -61,7 +61,6 @@
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <link rel="stylesheet" href="{$resourcesRoot}/css/blue.css"/>
-        <link rel="stylesheet" href="{$resourceCommons}/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event'">
@@ -104,29 +103,29 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:for-each select="event">
-	          
-	          	<xsl:choose>
-			      <xsl:when test="/bedework/appvar/key = 'filter'">
-			        <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
-			        <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
-			        <!-- Define filters here: -->
-			        <xsl:choose>
-			          <xsl:when test="$filterName = 'grpAndCats'">
-			            <xsl:call-template name="preprocessCats">
-			              <xsl:with-param name="allCats" select="$filterVal"/>
-			            </xsl:call-template>
-			          </xsl:when>
-			          <xsl:otherwise>
-			            <!-- Filter name not defined? Turn off filtering. -->
-			            <xsl:call-template name="processListEvent" />
-			          </xsl:otherwise>
-			        </xsl:choose>
-			      </xsl:when>
-			      <xsl:otherwise>
-			        <xsl:call-template name="processListEvent" />
-			      </xsl:otherwise>
-			    </xsl:choose>
-	
+
+              <xsl:choose>
+            <xsl:when test="/bedework/appvar/key = 'filter'">
+              <xsl:variable name="filterName" select="substring-before(/bedework/appvar[key='filter']/value,':')"/>
+              <xsl:variable name="filterVal" select="substring-after(/bedework/appvar[key='filter']/value,':')"/>
+              <!-- Define filters here: -->
+              <xsl:choose>
+                <xsl:when test="$filterName = 'grpAndCats'">
+                  <xsl:call-template name="preprocessCats">
+                    <xsl:with-param name="allCats" select="$filterVal"/>
+                  </xsl:call-template>
+                </xsl:when>
+                <xsl:otherwise>
+                  <!-- Filter name not defined? Turn off filtering. -->
+                  <xsl:call-template name="processListEvent" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:call-template name="processListEvent" />
+            </xsl:otherwise>
+          </xsl:choose>
+
             </xsl:for-each>
           </xsl:otherwise>
         </xsl:choose>
@@ -156,7 +155,7 @@
 
   </xsl:template>
 
-<xsl:template name="processListEvent"> 
+<xsl:template name="processListEvent">
  <xsl:variable name="id" select="id"/>
  <xsl:variable name="calPath" select="calendar/encodedPath"/>
  <xsl:variable name="guid" select="guid"/>
