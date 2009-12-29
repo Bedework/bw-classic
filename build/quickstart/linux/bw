@@ -25,7 +25,7 @@ PRG="$0"
 
 usage() {
   echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [ target ] "
-  echo "  $PRG ACTION "
+  echo "  $PRG ACTION"
   echo ""
   echo " where:"
   echo "   CONFIG-SOURCE optionally defines the location of configurations and"
@@ -59,10 +59,12 @@ usage() {
   echo "   ACTION defines an action to take usually in the context of the quickstart."
   echo "    In a deployed system many of these actions are handled directly by a"
   echo "    deployed application. ACTION may be one of"
-  echo "      -reindex - runs the indexer directly out of the quickstart bedework"
-  echo "                 dist directory to rebuild the lucene indexes"
-  echo "      -zoneinfo - builds zoneinfo data for the timezomnes server"
+  echo "      -reindex    runs the indexer directly out of the quickstart bedework"
+  echo "                  dist directory to rebuild the lucene indexes"
+  echo "      -zoneinfo   builds zoneinfo data for the timezomnes server"
   echo "                  requires -version and -tzdata parameters "
+  echo "      -buildWebCache    builds webcache"
+  echo "      -deployWebCache   builds and deploys webcache"
   echo ""
 }
 
@@ -232,6 +234,19 @@ fi
 if [ "$1" = "-zoneinfo" ] ; then
   actionZoneinfo $*
 fi
+
+if [ "$1" = "-buildwebcache" ] ; then
+  cd $QUICKSTART_HOME/cachedfeeder-1.0
+  ./buildWebCache
+  exit
+fi
+
+if [ "$1" = "-deploywebcache" ] ; then
+   cd $QUICKSTART_HOME/cachedfeeder-1.0
+  ./deployWebCache
+  exit
+fi
+
 
 while [ "$1" != "" ]
 do
