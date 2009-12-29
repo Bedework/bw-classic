@@ -57,6 +57,6 @@
 
   <!-- DEFAULT THEME NAME -->
   <!-- to change the default theme, change this include -->
-  <xsl:include href="../../themes/iphone/iphone.xsl" />
+  <xsl:include href="../../themes/iphoneTheme/iphone.xsl" />
 
 </xsl:stylesheet>

@@ -7,6 +7,6 @@
 
   <!-- URL of html resources (images, css, other html); by default this is
        set to the application root -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="$appRoot"/>/themes/iphone</xsl:variable>
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="$appRoot"/>/themes/iphoneTheme</xsl:variable>
 
 </xsl:stylesheet>
