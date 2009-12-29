@@ -35,7 +35,7 @@
               <span class="displayFilterName">
                 <xsl:value-of select="/bedework/selectionState/view/name"/>
               </span><xsl:text> </xsl:text>
-            <a id="allView" href="setSelection.do?b=de{$allGroupsAppVar}"><xsl:copy-of select="$bwStr-LsVw-ShowAll"/></a></td>
+            <a id="allView" href="{$setSelection}"><xsl:copy-of select="$bwStr-LsVw-ShowAll"/></a></td>
           </tr>
         </xsl:when>
       </xsl:choose>

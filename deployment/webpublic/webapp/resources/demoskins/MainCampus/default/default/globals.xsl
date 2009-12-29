@@ -36,9 +36,6 @@
   <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent" />
   <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats" />
 
-  <!-- a check this ... needed? -->
-  <xsl:variable name="allGroupsAppVar">&amp;setappvar=group(all)</xsl:variable>
-
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix" />
 
