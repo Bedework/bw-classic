@@ -15,8 +15,8 @@ ECHO
 ECHO
 :noJavaWarn
 
-SET cp=.:./classes:./resources
-FOR /f %%i IN ('dir /b lib\*.jar') DO SET cp=!cp!:./lib/%%i
+SET cp=.;./classes;./resources
+FOR /f %%i IN ('dir /b lib\*.jar') DO SET cp=!cp!;./lib/%%i
 
 SET RUNCMD="%JAVA_HOME%\bin\java" -cp %cp% org.bedework.indexer.BwIndexApp
 
