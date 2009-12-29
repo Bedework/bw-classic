@@ -66,6 +66,7 @@
   <xsl:include href="featuredEvents.xsl"/>
   <xsl:include href="navigation.xsl" />
   <xsl:include href="eventList.xsl" />
+  <xsl:include href="eventListDiscrete.xsl" />
   <xsl:include href="event.xsl" />
   <xsl:include href="year.xsl" />
   <xsl:include href="calendarList.xsl" />
@@ -150,6 +151,12 @@
                   <xsl:when test="/bedework/page='searchResult'">
                     <xsl:call-template name="searchResult" />
                     <xsl:call-template name="advancedSearch" />
+                  </xsl:when>
+
+                  <!-- list of discrete events (normally used only for feeds
+                       (see the /feeder app).  Included here for visualization. -->
+                  <xsl:when test="/bedework/page = 'eventList'">
+                    <xsl:apply-templates select="/bedework/events" mode="eventListDiscrete"/>
                   </xsl:when>
 
                   <!-- system statistics -->

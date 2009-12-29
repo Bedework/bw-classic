@@ -245,7 +245,7 @@
         <xsl:call-template name="replace">
           <xsl:with-param name="string" select="description" />
           <xsl:with-param name="pattern" select="'&#xA;'" />
-          <xsl:with-param name="replacement"></xsl:with-param>
+          <xsl:with-param name="replacement"><br/></xsl:with-param>
         </xsl:call-template>
       </div>
 
