@@ -458,7 +458,7 @@
               </form>
              </xsl:otherwise>
            </xsl:choose>
-           <span class="link"><a href="{$setSelection}"><xsl:copy-of select="$bwStr-SrcB-DefaultView"/></a> | <a href="{$fetchPublicCalendars}"><xsl:copy-of select="$bwStr-SrcB-AllTopicalAreas"/></a></span>
+           <span class="link"><a href="{$setSelection}"><xsl:copy-of select="$bwStr-SrcB-DefaultView"/></a> | <a href="{$fetchPublicCalendars}"><xsl:copy-of select="$bwStr-SrcB-AllCalendars"/></a></span>
          </td>
          <td class="rightCell">
             <xsl:if test="/bedework/page!='searchResult'">
@@ -1416,13 +1416,13 @@
     <table id="calPageTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <th colspan="2">
-          <xsl:copy-of select="$bwStr-Cals-AllTopicalAreas"/>
+          <xsl:copy-of select="$bwStr-Cals-AllCalendars"/>
         </th>
       </tr>
       <tr>
         <td colspan="2" class="infoCell">
           <p class="info">
-            <xsl:copy-of select="$bwStr-Cals-SelectTopicalArea"/>
+            <xsl:copy-of select="$bwStr-Cals-SelectCalendar"/>
           </p>
         </td>
       </tr>

@@ -40,7 +40,7 @@
   <xsl:variable name="bwStr-SrcB-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-SrcB-View">View:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-DefaultView">default view</xsl:variable>
-  <xsl:variable name="bwStr-SrcB-AllTopicalAreas">all topical areas</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-AllCalendars">all calendars</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Search">Search</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Go">go</xsl:variable>
   <xsl:variable name="bwStr-Util-List">LIST</xsl:variable>
@@ -188,8 +188,8 @@
   <!--:  xsl:template match="month" -->
 
   <!--:  xsl:template match="calendars" -->
-  <xsl:variable name="bwStr-Cals-AllTopicalAreas">All Topical Areas</xsl:variable>
-  <xsl:variable name="bwStr-Cals-SelectTopicalArea">Select a topical area from the list below to see only its events.</xsl:variable>
+  <xsl:variable name="bwStr-Cals-AllCalendars">All Calendars</xsl:variable>
+  <xsl:variable name="bwStr-Cals-SelectCalendar">Select a calendar from the list below to see only its events.</xsl:variable>
 
   <!--:  xsl:template match="calendar" mode="calTree" -->
   <xsl:variable name="bwStr-Calr-Folder">folder</xsl:variable>

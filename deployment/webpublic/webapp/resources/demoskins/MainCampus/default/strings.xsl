@@ -23,6 +23,7 @@
   <xsl:variable name="bwStr-HdBr-RSSFeed">RSS feed</xsl:variable>
   <xsl:variable name="bwStr-HdBr-EventInformation">Event Information</xsl:variable>
   <xsl:variable name="bwStr-HdBr-BackLink">(return to events)</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-Back">&#8656; back</xsl:variable>
 
   <!-- ongoing events -->
   <xsl:variable name="bwStr-Ongoing-Title">Ongoing</xsl:variable>
@@ -51,7 +52,7 @@
   <xsl:variable name="bwStr-SrcB-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-SrcB-View">View:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-DefaultView">default view</xsl:variable>
-  <xsl:variable name="bwStr-SrcB-AllTopicalAreas">all topical areas</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-AllCalendars">all calendars</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Search">Search:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Go">go</xsl:variable>
   <xsl:variable name="bwStr-Util-List">LIST</xsl:variable>
@@ -64,7 +65,7 @@
   <xsl:variable name="bwStr-SrcB-HideDetails">Hide Details</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Summary">Summary</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Details">Details</xsl:variable>
-  <xsl:variable name="bwStr-SrcB-TopicalArea">Topical Area:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-Calendar">Calendar:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-CurrentSearch">Current search:</xsl:variable>
 
   <!--  xsl:template name="leftColumn", "viewList", and "sideBar" -->
@@ -234,8 +235,8 @@
   <!--  xsl:template match="month" -->
 
   <!--  xsl:template match="calendars" -->
-  <xsl:variable name="bwStr-Cals-AllTopicalAreas">All Calendars</xsl:variable>
-  <xsl:variable name="bwStr-Cals-SelectTopicalArea">Select a calendar to see only its events.</xsl:variable>
+  <xsl:variable name="bwStr-Cals-AllCalendars">All Calendars</xsl:variable>
+  <xsl:variable name="bwStr-Cals-SelectCalendar">Select a calendar to see only its events.</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="calTree" -->
   <xsl:variable name="bwStr-Calr-Folder">folder</xsl:variable>
@@ -296,14 +297,15 @@
   <xsl:variable name="bwStr-Foot-Green">green</xsl:variable>
   <xsl:variable name="bwStr-Foot-Red">red</xsl:variable>
   <xsl:variable name="bwStr-Foot-Blue">blue</xsl:variable>
-  <xsl:variable name="bwStr-Foot-ExampleSkins">example skins</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ResetSkin">Reset Skin</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ExampleSkins">example themes/skins:</xsl:variable>
   <xsl:variable name="bwStr-Foot-BwClassic">Bedework Classic</xsl:variable>
   <xsl:variable name="bwStr-Foot-RSSNext3Days">RSS: next 3 days</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptNext3Days">JSON: next 3 days</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptTodaysEvents">javascript: today's events</xsl:variable>
-  <xsl:variable name="bwStr-Foot-ForMobileBrowsers">for mobile browsers</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ForMobileBrowsers">Bedework iPhone/Mobile</xsl:variable>
   <xsl:variable name="bwStr-Foot-VideoFeed">video feed</xsl:variable>
-  <xsl:variable name="bwStr-Foot-ResetToCalendarDefault">Reset to Bedework Default</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ResetToCalendarDefault">Bedework Default</xsl:variable>
   <xsl:variable name="bwStr-Foot-Credits">This theme is based on work by Duke and Yale Universities with thanks also to the University of Chicago</xsl:variable>
 
 </xsl:stylesheet>

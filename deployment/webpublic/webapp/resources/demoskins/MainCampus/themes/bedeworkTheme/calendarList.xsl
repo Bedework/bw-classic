@@ -9,10 +9,10 @@
     <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[calType != 5 and calType != 6 and name != 'calendar'])"/>
 
     <div class="secondaryColHeader">
-      <h3><xsl:copy-of select="$bwStr-Cals-AllTopicalAreas"/></h3>
+      <h3><xsl:copy-of select="$bwStr-Cals-AllCalendars"/></h3>
     </div>
     <p class="info">
-      <xsl:copy-of select="$bwStr-Cals-SelectTopicalArea"/>
+      <xsl:copy-of select="$bwStr-Cals-SelectCalendar"/>
     </p>
 
     <!-- adjust the following calculations to get a balanced layout between the cells -->

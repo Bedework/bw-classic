@@ -1,4 +1,4 @@
-body{
+body {
   background-color: #2e2c27;
   font-family: verdana;
   font-size: 11px;
@@ -6,23 +6,35 @@ body{
   padding: 0px;
   margin: 0px;
 }
-#nav{
-  /*background: #000 url('icons/back.jpg') no-repeat 3px;*/
-  width:100%;
+#nav {
+  text-align: center;
   margin: 0;
-  padding: 3px;
-  height: 20px;
+  padding: 0;
 }
-#mainNav {
-  margin: 0 0 2em 0;
+.navlink {
+  display: inline;
+  font-weight: normal;
+  padding: 4px;
+  margin: 0 1px;
+  background-color: #454544;
+  color: white;
+}
+.selected {
+  background-color: #999998;
+  color: white;
+}
+.backlink {
+  clear: both;
+  margin: 2em 0;
 }
 h1 {
   font-size: 18px;
   margin: 0;
   padding: 3px;
-  margin-bottom: 10px;
+  margin: 0;
+  clear: both;
 }
-h2,h3,h4,h5 {
+h2,h4,h5 {
   font-size: 12px;
 }
 h2.title {
@@ -33,66 +45,89 @@ h2.title {
   margin: 0 0 6px 0;
   padding: 6px;
 }
-h2.title span {
-  position: relative;
-  top: -5px;
-}
 h3 {
   color: white;
-  background-color: black;
+  background-color: transparent;
   padding: 0.5em 1em;
   margin: 0;
+  font-weight: normal;
+  font-size: 10px;
 }
-.even{
-   background-color: #454544;
+#eventList {
+  clear: both;
+  padding-top: 1em;
 }
-.odd{
+.even {
+  background-color: #454544;
+}
+.odd {
   background-color: #999998;
 }
-ul{
+ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-li{
+li {
   padding: 12px;
   margin-left: 0px;
 }
-td
-{
+#singleEvent {
+  clear: both;
+  margin-bottom: 1em;
+}
+td {
   padding-bottom: 10px;
 }
-p{
+p {
   padding-left: 3px;
 }
-p.footer
-{
+p.noEvents {
+  margin: 1em;
+}
+p.footer {
   clear: both;
   width: 100%;
-  margin: 100px 0 0 0;
+  margin: 1em 0 0 0;
   padding: 0.5em 0;
   text-align: center;
   color: #ccc;
   background-color: #555;
 }
-a{
+.eventDescription {
+  margin: 1em 0;
+}
+img.bwEventImage {
+  float: right;
+}
+#dateSelect {
+  margin: 1em 1em 0 1em;
+}
+a {
   color: #fff;
+  background-color: transparent;
+  text-decoration: none;
+}
+a.underline {
+  text-decoration: underline;
 }
 
 ul.calendarTree {
-  text-align: left;
+  margin: 1em 0 0 0;
 }
 ul.calendarTree li {
   font-weight: bold;
+  padding: 0;
+  margin: 0.5em 0 0.5em 2em;
 }
 ul.calendarTree li ul li {
   font-weight: normal;
 }
+
+/*
 ul.calendarTree li.folder {
-  list-style-image: url(../../images/catIcon.gif);
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
+  list-style-image: url("../images/catIcon.gif");
 }
 ul.calendarTree li.calendar {
-  list-style-image: url(../../images/calIcon-sm.gif);
-}
+  list-style-image: url("../images/calIcon-sm.gif");
+}*/
