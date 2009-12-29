@@ -1,40 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <!--======== list events ==========-->
-  <!-- This formats a list of events from /bedework/eventscalendar, the default
-       day, week, and month views.  Look to eventListDiscrete.xsl for the listing
-       produced by the listEvents.do action -->
-
-
   <!--==== LIST EVENTS - for listing discrete events ====-->
+
+  <!-- The listEvents.do action is used for generating data feeds of events and
+       should be used with the /feeder application.  The feeder application provides
+       a common place to pull events regardless of calendar suite.
+
+       The listing presented here allows developers to call listEvent
+       requests against the system and see the results.  It is not currently
+       linked to the bedeworkTheme web pages directly.  -->
+
   <xsl:template match="events" mode="eventListDiscrete">
-    <h2 class="bwStatusConfirmed">
-      <!-- <form name="bwListEventsForm" action="{$listEvents}" method="post">
-        <input type="hidden" name="setappvar"/>-->
-        <xsl:copy-of select="$bwStr-LsEv-Next7Days"/>
-        <!--
-        <span id="bwListEventsFormControls">
-          <select name="catuid" onchange="this.form.submit();">
-            <option value="">filter by category...</option>
-            <xsl:for-each select="/bedework/categories/category">
-              <option>
-                <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                <xsl:value-of select="value"/>
-              </option>
-            </xsl:for-each>
-          </select>
-          <select name="days" onchange="this.form.submit();">
-            <xsl:call-template name="buildListEventsDaysOptions">
-              <xsl:with-param name="i">1</xsl:with-param>
-              <xsl:with-param name="total">31</xsl:with-param>
-            </xsl:call-template>
-          </select>
-        </span>
-      </form>-->
-    </h2>
 
     <div id="listEvents">
+      <h1><xsl:copy-of select="$bwStr-LsEv-EventList"/></h1>
       <ul>
         <xsl:choose>
           <xsl:when test="not(event)">
@@ -65,7 +45,7 @@
                     , <xsl:value-of select="location/subaddress"/>
                   </xsl:if>
                 </xsl:if>
-
+<!--
                 <xsl:text> </xsl:text>
                 <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
                   <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
@@ -75,7 +55,7 @@
                 <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-LsEv-DownloadEvent}">
                   <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
                 </a>
-
+-->
                 <br/>
 
                 <xsl:value-of select="substring(start/dayname,1,3)"/>,

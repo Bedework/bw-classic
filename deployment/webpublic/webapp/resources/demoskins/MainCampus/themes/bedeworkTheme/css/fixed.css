@@ -988,6 +988,13 @@ div#footer a.rss {
  font-size: 1em;
  display: inline;
 }
+#listEvents {
+  margin: 1em;
+}
+#listEvents li {
+  display: block;
+  margin-bottom: 1em;
+}
 #footForms {
   float: right;
 }

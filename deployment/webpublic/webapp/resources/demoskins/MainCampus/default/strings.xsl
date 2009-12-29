@@ -178,6 +178,7 @@
   <xsl:variable name="bwStr-LsEv-Contact">Contact:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Canceled">CANCELED:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Tentative">TENTATIVE:</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-EventList">Event List</xsl:variable>
 
   <!--  xsl:template name="buildListEventsDaysOptions" -->
 
