@@ -7,57 +7,43 @@
   <!--==== SEARCH RESULT ====-->
   <xsl:template name="searchResult">
     <div class="secondaryColHeader">
-      <h3>Search Results</h3>
+      <h3><xsl:copy-of select="$bwStr-Srch-SearchResults"/></h3>
     </div>
-
-    <!-- <xsl:if test="/bedework/searchResults/numPages &gt; 1">
-      <span class="resultPages">
-      <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
-      <xsl:if test="/bedework/searchResults/curPage != 1">
-      <xsl:variable name="prevPage" select="number($curPage) - 1"/>
-      <a href="{$search-next}&amp;pageNum={$prevPage}">&#171;</a>
-      </xsl:if>
-      <xsl:text> </xsl:text>
-      <xsl:call-template name="searchResultPageNav">
-      <xsl:with-param name="page">
-      <xsl:choose>
-      <xsl:when test="number($curPage) - 10 &lt; 1">1</xsl:when>
-      <xsl:otherwise>
-      <xsl:value-of select="number($curPage) - 6"/>
-      </xsl:otherwise>
-      </xsl:choose>
-      </xsl:with-param>
-      </xsl:call-template>
-      <xsl:text> </xsl:text>
-      <xsl:choose>
-      <xsl:when test="$curPage != /bedework/searchResults/numPages">
-      <xsl:variable name="nextPage" select="number($curPage) + 1"/>
-      <a href="{$search-next}&amp;pageNum={$nextPage}">&#187;</a></xsl:when>
-      <xsl:otherwise>
-      <span class="hidden">&#171;</span>
-      </xsl:otherwise>
-      </xsl:choose>
-      </span>
-      </xsl:if> -->
 
     <xsl:if test="/bedework/searchResults/curPage &lt; 2">
       <span class="numReturnedResults">
         <xsl:value-of select="/bedework/searchResults/resultSize" />
-        <xsl:text> result</xsl:text>
-        <xsl:if test="/bedework/searchResults/resultSize != 1">s</xsl:if>
-        <xsl:text> returned for: </xsl:text>
+        <xsl:text> </xsl:text>
+        <xsl:choose>
+          <xsl:when test="/bedework/searchResults/resultSize != 1">
+            <xsl:copy-of select="$bwStr-Srch-Results"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="$bwStr-Srch-Result"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text> </xsl:text>
+        <xsl:copy-of select="$bwStr-Srch-ReturnedFor"/>
+        <xsl:text> </xsl:text>
         <em>
-          <xsl:value-of select="/bedework/searchResults/query" />
+          <xsl:choose>
+            <xsl:when test="/bedework/searchResults/query=''">
+              <xsl:copy-of select="$bwStr-Srch-NoQuery"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="/bedework/searchResults/query" />
+            </xsl:otherwise>
+          </xsl:choose>
         </em>
       </span>
     </xsl:if>
     <xsl:if test="/bedework/searchResults/searchResult">
       <table id="searchTable">
         <tr>
-          <th class="search_relevance">Rank</th>
-          <th class="search_date">Date</th>
-          <th class="search_summary">Summary</th>
-          <th class="search_location">Location</th>
+          <th class="search_relevance"><xsl:copy-of select="$bwStr-Srch-Rank"/></th>
+          <th class="search_date"><xsl:copy-of select="$bwStr-Srch-Date"/></th>
+          <th class="search_summary"><xsl:copy-of select="$bwStr-Srch-Summary"/></th>
+          <th class="search_location"><xsl:copy-of select="$bwStr-Srch-Location"/></th>
         </tr>
         <xsl:for-each select="/bedework/searchResults/searchResult">
           <xsl:if test="event/summary">
@@ -95,44 +81,39 @@
     </xsl:if>
     <xsl:if test="/bedework/searchResults/numPages &gt; 1">
       <span class="resultPages" id="resultsBottom">
-        Page(s):
+        <xsl:copy-of select="$bwStr-Srch-Pages" />
         <xsl:variable name="curPage"
           select="/bedework/searchResults/curPage" />
         <xsl:if test="/bedework/searchResults/curPage != 1">
           <xsl:variable name="prevPage"
             select="number($curPage) - 1" />
           <a href="{$search-next}&amp;pageNum={$prevPage}">
-            «
+            &#171; <!-- left double arrow -->
           </a>
         </xsl:if>
         <xsl:text> </xsl:text>
         <xsl:call-template name="searchResultPageNav">
           <xsl:with-param name="page">
             <xsl:choose>
-              <xsl:when
-                test="number($curPage) - 10 &lt; 1">
+              <xsl:when test="number($curPage) - 10 &lt; 1">
                 1
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of
-                  select="number($curPage) - 6" />
+                <xsl:value-of select="number($curPage) - 6" />
               </xsl:otherwise>
             </xsl:choose>
           </xsl:with-param>
         </xsl:call-template>
         <xsl:text> </xsl:text>
         <xsl:choose>
-          <xsl:when
-            test="$curPage != /bedework/searchResults/numPages">
-            <xsl:variable name="nextPage"
-              select="number($curPage) + 1" />
-            <a
-              href="{$search-next}&amp;pageNum={$nextPage}">
-              »
+          <xsl:when test="$curPage != /bedework/searchResults/numPages">
+            <xsl:variable name="nextPage" select="number($curPage) + 1" />
+            <a href="{$search-next}&amp;pageNum={$nextPage}">
+              &#187; <!-- right double arrow -->
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <span class="hidden">«</span>
+            <span class="hidden">&#171;<!-- left double arrow --></span>
             <!-- occupy the space to keep the navigation from moving around -->
           </xsl:otherwise>
         </xsl:choose>
@@ -142,84 +123,55 @@
 
   <xsl:template name="advancedSearch">
     <div id="advSearch">
-      <h3>Advanced Search</h3>
+      <h3><xsl:copy-of select="$bwStr-Srch-AdvancedSearch"/></h3>
       <form id="advSearchForm" name="searchForm"
         onsubmit="return initCat()" method="post" action="{$search}">
-        Search:
+        <xsl:copy-of select="$bwStr-Srch-Search"/>
+        <xsl:text> </xsl:text>
         <input type="text" name="query" size="40">
           <xsl:attribute name="value">
             <xsl:value-of select="/bedework/searchResults/query"/>
           </xsl:attribute>
         </input>
+        <input type="submit" name="submit" value="{$bwStr-Srch-Go}" />
         <br />
-        <label>Limit by:</label>
-        <br />
-        <xsl:choose>
-          <xsl:when test="/bedework/searchResults/searchLimits = 'beforeToday'">
-            <input type="radio" name="searchLimits" value="fromToday" />
-            Today forward
-            <br />
-            <input type="radio" name="searchLimits" value="beforeToday" checked="checked" />
-            Past dates
-            <br />
-            <input type="radio" name="searchLimits" value="none" />
-            All dates
-            <br />
-          </xsl:when>
-          <xsl:when  test="/bedework/searchResults/searchLimits = 'none'">
-            <input type="radio" name="searchLimits"
-              value="fromToday" />
-            Today forward
-            <br />
-            <input type="radio" name="searchLimits"
-              value="beforeToday" />
-            Past dates
-            <br />
-            <input type="radio" name="searchLimits"
-              value="none" checked="checked" />
-            All dates
-            <br />
-          </xsl:when>
-          <xsl:otherwise>
-            <input type="radio" name="searchLimits"
-              value="fromToday" checked="checked" />
-            Today forward
-            <br />
-            <input type="radio" name="searchLimits"
-              value="beforeToday" />
-            Past dates
-            <br />
-            <input type="radio" name="searchLimits"
-              value="none" />
-            All dates
-            <br />
-          </xsl:otherwise>
-        </xsl:choose>
-
-        <input type="submit" name="submit" value="Search" />
+        <label><xsl:copy-of select="$bwStr-Srch-Limit"/></label>
+        <xsl:text> </xsl:text>
+        <input type="radio" name="searchLimits" value="fromToday">
+          <xsl:if test="/bedework/searchResults/searchLimits = 'fromToday'">
+            <xsl:attribute name="checked">checked</xsl:attribute>
+          </xsl:if>
+        </input>
+        <xsl:copy-of select="$bwStr-Srch-TodayForward"/>
+        <input type="radio" name="searchLimits" value="beforeToday">
+          <xsl:if test="/bedework/searchResults/searchLimits = 'beforeToday'">
+            <xsl:attribute name="checked">checked</xsl:attribute>
+          </xsl:if>
+        </input>
+        <xsl:copy-of select="$bwStr-Srch-PastDates"/>
+        <input type="radio" name="searchLimits" value="none">
+          <xsl:if test="/bedework/searchResults/searchLimits = 'none'">
+            <xsl:attribute name="checked">checked</xsl:attribute>
+          </xsl:if>
+        </input>
+        <xsl:copy-of select="$bwStr-Srch-AllDates"/>
 
         <div id="searchCats">
-          <h4>Select Categories to Search (Optional)</h4>
+          <h4><xsl:copy-of select="$bwStr-Srch-CatsToSearch"/></h4>
           <p>
-            A search term is not required if at least one
-            category is selected.
+            <xsl:copy-of select="$bwStr-Srch-SearchTermNotice"/>
           </p>
-          <xsl:variable name="catCount"
-            select="count(/bedework/categories/category)" />
+          <xsl:variable name="catCount" select="count(/bedework/categories/category)" />
           <table>
             <tr>
               <td>
                 <ul>
-                  <xsl:for-each
-                    select="/bedework/categories/category[(position() &lt;= ceiling($catCount div 2)) and (value != 'Local') and (creator != 'agrp_public-user') and (value != 'Main') and (value != 'Student') and (value != 'calCrossPublish')]">
-                    <xsl:variable name="currId"
-                      select="value" />
+                  <xsl:for-each select="/bedework/categories/category[position() &lt;= ceiling($catCount div 3)]">
+                    <xsl:variable name="currId" select="value" />
                     <li>
                       <p>
-                        <input type="checkbox"
-                          name="categoryKey" value="{$currId}" />
-                        <xsl:value-of
-                          select="value" />
+                        <input type="checkbox" name="categoryKey" value="{$currId}" />
+                        <xsl:value-of select="value" />
                       </p>
                     </li>
                   </xsl:for-each>
@@ -227,16 +179,25 @@
               </td>
               <td>
                 <ul>
-                  <xsl:for-each
-                    select="/bedework/categories/category[(position() &gt; ceiling($catCount div 2)) and (value != 'Local') and (creator != 'agrp_public-user') and (value != 'Main') and (value != 'Student') and (value != 'calCrossPublish')]">
-                    <xsl:variable name="currId2"
-                      select="value" />
+                  <xsl:for-each select="/bedework/categories/category[(position() &gt; ceiling($catCount div 3)) and (position() &lt;= ceiling($catCount div 3)*2)]">
+                    <xsl:variable name="currId2" select="value" />
                     <li>
                       <p>
-                        <input type="checkbox"
-                          name="categoryKey" value="{$currId2}" />
-                        <xsl:value-of
-                          select="value" />
+                        <input type="checkbox" name="categoryKey" value="{$currId2}" />
+                        <xsl:value-of select="value" />
+                      </p>
+                    </li>
+                  </xsl:for-each>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <xsl:for-each select="/bedework/categories/category[position() &gt; ceiling($catCount div 3)*2]">
+                    <xsl:variable name="currId2" select="value" />
+                    <li>
+                      <p>
+                        <input type="checkbox" name="categoryKey" value="{$currId2}" />
+                        <xsl:value-of select="value" />
                       </p>
                     </li>
                   </xsl:for-each>
@@ -245,15 +206,13 @@
             </tr>
           </table>
         </div>
-        <input type="submit" name="submit" value="Search" />
       </form>
     </div>
   </xsl:template>
 
   <xsl:template name="searchResultPageNav">
     <xsl:param name="page">1</xsl:param>
-    <xsl:variable name="curPage"
-      select="/bedework/searchResults/curPage" />
+    <xsl:variable name="curPage" select="/bedework/searchResults/curPage" />
     <xsl:variable name="numPages"
       select="/bedework/searchResults/numPages" />
     <xsl:variable name="endPage">
@@ -285,6 +244,5 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-
 
 </xsl:stylesheet>

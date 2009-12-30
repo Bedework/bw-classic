@@ -135,7 +135,7 @@
          </a>
        </li>
        <li>
-         <a href="/help"><xsl:copy-of select="$bwStr-LCol-Help"/></a>
+         <a href="http://www.bedework.org/bedework/update.do?artcenterkey=36"><xsl:copy-of select="$bwStr-LCol-Help"/></a>
        </li>
      </ul>
      <ul class="sideLinksExpand">

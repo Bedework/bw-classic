@@ -9,14 +9,11 @@
 
     <head>
       <title>
-        <xsl:choose>
-          <xsl:when test="/bedework/page='event'">
-            <xsl:value-of select="/bedework/event/summary" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:copy-of select="$bwStr-Root-PageTitle" />
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:if test="/bedework/page='event'">
+          <xsl:value-of select="/bedework/event/summary" />
+          <xsl:text> - </xsl:text>
+        </xsl:if>
+        <xsl:copy-of select="$bwStr-Root-PageTitle" />
       </title>
 
       <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />

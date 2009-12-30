@@ -264,7 +264,7 @@
   <xsl:variable name="bwStr-Srch-TodayForward">today forward</xsl:variable>
   <xsl:variable name="bwStr-Srch-PastDates">past dates</xsl:variable>
   <xsl:variable name="bwStr-Srch-AllDates">all dates</xsl:variable>
-  <xsl:variable name="bwStr-Srch-SearchResult">Search Result</xsl:variable>
+  <xsl:variable name="bwStr-Srch-SearchResults">Search Results</xsl:variable>
   <xsl:variable name="bwStr-Srch-Page">page:</xsl:variable>
   <xsl:variable name="bwStr-Srch-Prev">prev</xsl:variable>
   <xsl:variable name="bwStr-Srch-Next">next</xsl:variable>
@@ -275,6 +275,18 @@
   <xsl:variable name="bwStr-Srch-Calendar">calendar</xsl:variable>
   <xsl:variable name="bwStr-Srch-Location">location</xsl:variable>
   <xsl:variable name="bwStr-Srch-NoTitle">no title</xsl:variable>
+  <xsl:variable name="bwStr-Srch-NoQuery">no query</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Result">result</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Results">results</xsl:variable>
+  <xsl:variable name="bwStr-Srch-ReturnedFor">returned for:</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Rank">Rank</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Date">Date</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Summary">Summary</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Location">Location</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Pages">Pages(s):</xsl:variable>
+  <xsl:variable name="bwStr-Srch-AdvancedSearch">Advanced Search</xsl:variable>
+  <xsl:variable name="bwStr-Srch-CatsToSearch">Select Categories to Search (Optional)</xsl:variable>
+  <xsl:variable name="bwStr-Srch-SearchTermNotice">A search term is not required if at least one category is selected.</xsl:variable>
 
   <!--  xsl:template name="searchResultPageNav" -->
 

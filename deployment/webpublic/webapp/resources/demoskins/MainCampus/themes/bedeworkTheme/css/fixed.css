@@ -946,7 +946,7 @@ div#footer a.rss {
 }
 #searchCats {
  padding: 6px;
- margin: 4px;
+ margin: 1em 0;
  border: solid 1px #CCC;
 }
 .bwEventImage {

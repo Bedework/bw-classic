@@ -33,7 +33,7 @@
           </xsl:choose>
         </form>
       </div>
-      <xsl:copy-of select="$bwStr-Srch-SearchResult"/>
+      <xsl:copy-of select="$bwStr-Srch-SearchResults"/>
     </h2>
     <table id="searchTable" cellpadding="0" cellspacing="0">
       <tr>
@@ -84,9 +84,11 @@
           <td>
             <xsl:copy-of select="$bwStr-Srch-DateAndTime"/>
           </td>
+          <!--
           <td>
             <xsl:copy-of select="$bwStr-Srch-Calendar"/>
           </td>
+          -->
           <td>
             <xsl:copy-of select="$bwStr-Srch-Location"/>
           </td>
@@ -123,12 +125,14 @@
               </xsl:when>
             </xsl:choose>
           </td>
+          <!--
           <td>
             <xsl:variable name="calUrl" select="event/calendar/encodedPath"/>
             <a href="{$setSelection}&amp;calUrl={$calUrl}">
               <xsl:value-of select="event/calendar/name"/>
             </a>
           </td>
+          -->
           <td>
             <xsl:value-of select="event/location/address"/>
           </td>
