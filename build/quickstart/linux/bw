@@ -63,8 +63,8 @@ usage() {
   echo "                  dist directory to rebuild the lucene indexes"
   echo "      -zoneinfo   builds zoneinfo data for the timezomnes server"
   echo "                  requires -version and -tzdata parameters "
-  echo "      -buildWebCache    builds webcache"
-  echo "      -deployWebCache   builds and deploys webcache"
+  echo "      -buildwebcache    builds webcache"
+  echo "      -deploywebcache   builds and deploys webcache"
   echo ""
 }
 
