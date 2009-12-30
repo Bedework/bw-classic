@@ -25,6 +25,7 @@
               <option value="style(blue)"><xsl:copy-of select="$bwStr-Foot-Blue"/></option>
             </select>
           </form>
+          <!--
           <form name="skinSelectForm" method="post" action="{$setup}">
             <input type="hidden" name="setappvar" value="summaryMode(details)"/>
             <select name="skinPicker" onchange="window.location = this.value">
@@ -51,6 +52,7 @@
               </option>
             </select>
           </form>
+          -->
         </td>
       </tr>
     </table>
