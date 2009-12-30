@@ -30,24 +30,9 @@
     to the maximum extent the law permits. -->
 
  <!-- Bring in settings -->
-  <xsl:include href="./xsl/config.xsl"/>
+  <xsl:include href="globals.xsl"/>
+  <xsl:include href="../strings.xsl"/>
 
-  <!--  global variables -->
-  <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
-  <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection"/>
-  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars"/>
-  <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod"/>
-  <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents"/>
-  <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
-  <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
-  <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
-  <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
-  <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
-  <xsl:variable name="calendar-fetchForExport" select="/bedework/urlPrefixes/calendar/fetchForExport"/>
-  <xsl:variable name="mailEvent" select="/bedework/urlPrefixes/mail/mailEvent"/>
-  <xsl:variable name="privateCal" select="concat($bwCalendarHostURL,'/ucal')"/>
-
-  
   <xsl:template match="/">
 	<!-- grab category filters.  -->	
     <xsl:choose>
@@ -87,14 +72,14 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <!-- load css -->
         <link rel="stylesheet" href="{$resourcesRoot}/css/blue.css"/>
-        <link rel="stylesheet" href="../../../bedework-common/default/default/subColors.css"/>
+        <link rel="stylesheet" href="/bedework-common/default/default/subColors.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event' or /bedework/page='displayCalendarForExport'">
-          <script type="text/javascript" src="../../../bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
-          <script type="text/javascript" src="../../../bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
           <link rel="stylesheet" href="../../../bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
-          <link rel="stylesheet" href="../../../bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
           <script type="text/javascript" src="{$resourcesRoot}/resources/javascript/bedework.js">&#160;</script>
           <xsl:if test="/bedework/page='displayCalendarForExport'">
             <script type="text/javascript">

@@ -39,20 +39,13 @@
     to the maximum extent the law permits. -->
 
   <!-- Bring in settings and included xsl -->
-  <xsl:include href="./xsl/config.xsl"/>
-  <xsl:include href="./strings.xsl"/>
+  <xsl:include href="globals.xsl"/>
+  <xsl:include href="../strings.xsl"/>
   <!-- Provides event template -->
   <xsl:include href="./xsl/htmlEvent.xsl"/>
   <!-- Provides category filter templates -->
   <xsl:include href="./xsl/htmlCategoryFiltering.xsl"/>
 
-
-  <!--  global variables -->
-  <xsl:variable name="prevdate" select="/bedework/previousdate"/>
-  <xsl:variable name="nextdate" select="/bedework/nextdate"/>
-  <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
-  <xsl:variable name="stats" select="/bedework/urlPrefixes/stats/stats"/>
-  <xsl:variable name="privateCal" select="concat($bwCalendarHostURL,'/ucal')"/>
 
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
@@ -61,14 +54,14 @@
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <link rel="stylesheet" href="{$resourcesRoot}/css/blue.css"/>
-        <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
+        <link rel="stylesheet" type="text/css" media="print" href="/bedework/common/css/print.css" />
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event'">
-          <script type="text/javascript" src="{$resourceCommons}/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
-          <script type="text/javascript" src="{$resourceCommons}/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
-          <link rel="stylesheet" href="{$resourceCommons}/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
-          <link rel="stylesheet" href="{$resourceCommons}/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
-          <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework.js">&#160;</script>
         </xsl:if>
         <!-- address bar icon -->
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />

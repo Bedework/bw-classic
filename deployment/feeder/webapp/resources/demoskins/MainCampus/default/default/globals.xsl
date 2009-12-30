@@ -19,6 +19,9 @@
   <!-- Location of the web cache -->
   <xsl:variable name="bwCacheHostUrl">/webcache</xsl:variable>
 
+  <!-- Location of resources -->
+  <xsl:variable name="resourcesRoot" select="concat($appRoot,'/default/default/theme')"/>
+
   <!-- Properly encoded prefixes to the application actions; use these to build
     urls; allows the application to be used without cookies or within a portal.
     These urls are rewritten in header.jsp and simply passed through for use
@@ -49,5 +52,6 @@
   <xsl:variable name="prevdate" select="/bedework/previousdate" />
   <xsl:variable name="nextdate" select="/bedework/nextdate" />
   <xsl:variable name="curdate" select="/bedework/currentdate/date" />
+  
 
 </xsl:stylesheet>

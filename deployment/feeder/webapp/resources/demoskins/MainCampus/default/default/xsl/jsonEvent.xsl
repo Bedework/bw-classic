@@ -35,7 +35,7 @@
                     "guid" : "<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>",
                     "recurrenceId" : "<xsl:value-of select="recurrenceId"/>",
                     "link" : "<xsl:value-of select='link'/>",
-                    "eventlink" : "<xsl:value-of select="$urlprefix"/><xsl:value-of select="$eventView"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>",
+                    "eventlink" : "<xsl:value-of select="$urlPrefix"/><xsl:value-of select="$eventView"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>",
                     "status" : "<xsl:value-of select='status'/>",
                     "start" : {
                       "allday" : "<xsl:value-of select='start/allday'/>",

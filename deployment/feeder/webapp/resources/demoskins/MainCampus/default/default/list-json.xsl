@@ -35,15 +35,12 @@
   -->
   
   <!-- Bring in settings and included xsl -->
-  <xsl:include href="./xsl/config.xsl"/>
-  <!-- Provides event template -->
+  <xsl:include href="globals.xsl"/>
+  <xsl:include href="../strings.xsl"/>
+
   <xsl:include href="./xsl/jsonEvent.xsl"/>
   <!-- Provides category filter templates -->
   <xsl:include href="./xsl/categoryFiltering.xsl"/>
-
-  <!--  global variables -->
-  <xsl:variable name="urlprefix" select="/bedework/urlprefix"/>
-  <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
 
   <xsl:template match='/'>
     <xsl:choose>
