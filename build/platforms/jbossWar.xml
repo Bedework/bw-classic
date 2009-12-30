@@ -8,6 +8,7 @@
 
 <project name="bedework.platformWar" default="doPlatform" >
   <target name="doPlatform" >
+  	<echo message="$$$$$$$$$$$$$$$ jbossWar.xml $$$$$$$$$$$$$$$$$$$$$$$" />
     <!-- ===============================================================
          We create an updated jboss-web.xml file (for jboss) and a ear
          =============================================================== -->
