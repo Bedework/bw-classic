@@ -12,10 +12,7 @@
 
     DEMONSTRATION CALENDAR STYLESHEET
 
-     MainCampus Calendar Suite
-
-    This stylesheet is devoid of school branding.  It is a good
-    starting point for development of a customized theme.
+     School of Engineering Deparmental Calendar Suite
 
     For detailed instructions on how to work with the XSLT
     stylesheets included with this distribution, please see the

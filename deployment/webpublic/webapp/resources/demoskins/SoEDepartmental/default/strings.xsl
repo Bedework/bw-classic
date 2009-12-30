@@ -6,13 +6,15 @@
   <!-- All text exposed by the stylesheets is set here. -->
   <!-- To change the language of a web client, translate the strings file. -->
 
-  <xsl:variable name="bwStr-Root-PageTitle">Bedework Events Calendar</xsl:variable>
+  <xsl:variable name="bwStr-Root-PageTitle">School of Engineering - Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-Error">Error:</xsl:variable>
 
   <!-- xsl:template name="headBar" -->
   <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PublicCalendar">Public Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PersonalCalendar">Personal Calendar</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-SchoolOfEng">School of Engineering</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-SchoolOfEngHome">School of Engineering Home</xsl:variable>
   <xsl:variable name="bwStr-HdBr-UniversityHome">University Home</xsl:variable>
   <xsl:variable name="bwStr-HdBr-SchoolHome">School Home</xsl:variable>
   <xsl:variable name="bwStr-HdBr-OtherLink">Other Link</xsl:variable>
