@@ -297,7 +297,7 @@
       </xsl:if>
     </div>
 
-    <div id="navlink-back" class="navlink backlink" onclick="gotourl(this,'{$setup}')">
+    <div id="navlink-back" class="navlink backlink" onclick="gotourl(this,'javascript:history.back()')">
       <xsl:copy-of select="$bwStr-HdBr-Back"/>
     </div>
 

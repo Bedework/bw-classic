@@ -8,7 +8,23 @@
     <div id="eventList">
       <xsl:choose>
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
-          <p class="noEvents">No events to display.</p>
+          <p class="noEvents">
+            <xsl:choose>
+              <xsl:when test="/bedework/periodname='Year'">
+                <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
+              </xsl:when>
+              <xsl:when test="/bedework/periodname='Month'">
+                <xsl:value-of select="/bedework/firstday/monthname"/>, <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
+              </xsl:when>
+              <xsl:when test="/bedework/periodname='Week'">
+                <xsl:copy-of select="$bwStr-Navi-WeekOf"/><xsl:text> </xsl:text><xsl:value-of select="substring-after(/bedework/firstday/longdate,', ')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="/bedework/firstday/longdate"/>
+              </xsl:otherwise>
+            </xsl:choose><br/>
+            No events to display.
+          </p>
         </xsl:when>
         <xsl:otherwise>
           <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[count(event)!=0]">
