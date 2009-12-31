@@ -23,7 +23,7 @@
                 <xsl:value-of select="/bedework/firstday/longdate"/>
               </xsl:otherwise>
             </xsl:choose><br/>
-            No events to display.
+            <xsl:copy-of select="$bwStr-LsEv-NoEventsToDisplay"/>
           </p>
         </xsl:when>
         <xsl:otherwise>
@@ -52,12 +52,17 @@
                   </xsl:choose>
                   <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/>
                   <xsl:choose>
-                    <xsl:when test="start/allday = 'true'">(all day)</xsl:when>
-                    <xsl:otherwise> at <xsl:value-of select="start/time"/></xsl:otherwise>
+                    <xsl:when test="start/allday = 'true'"><xsl:copy-of select="$bwStr-LsVw-AllDay"/></xsl:when>
+                    <xsl:otherwise>
+                       <xsl:text> </xsl:text>
+                       <xsl:copy-of select="$bwStr-LsVw-At"/>
+                       <xsl:text> </xsl:text>
+                      <xsl:value-of select="start/time"/>
+                    </xsl:otherwise>
                   </xsl:choose>
                   <br/>
                   <strong>
-                    <xsl:if test="status='CANCELLED'">CANCELED: </xsl:if>
+                    <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></xsl:if>
                     <xsl:value-of select="summary"/>
                   </strong>
                 </li>

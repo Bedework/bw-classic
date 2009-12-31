@@ -5,18 +5,20 @@
 
   <!--==== CALENDAR LIST ====-->
   <xsl:template match="calendars">
-    <h1>All Calendars</h1>
-    <p>Select a calendar from the list below to see only that calendar's events.</p>
-    <p>
-      <a class="linkBack" href="{$setup}"><xsl:copy-of select="$bwStr-HdBr-BackLink"/></a>
-    </p>
+    <h1><xsl:copy-of select="$bwStr-Cals-AllCalendars"/></h1>
+    <p><xsl:copy-of select="$bwStr-Cals-SelectCalendar"/></p>
+
+    <div id="navlink-back" class="navlink backlink" onclick="gotourl(this,'javascript:history.back()')">
+      <xsl:copy-of select="$bwStr-HdBr-Back"/>
+    </div>
+
     <ul class="calendarTree">
-      <xsl:apply-templates select="calendar/calendar" mode="calTree"/>
+      <xsl:apply-templates select="calendar/calendar[calType != 5 and calType != 6 and name != 'calendar']" mode="calTree"/>
     </ul>
   </xsl:template>
 
   <xsl:template match="calendar" mode="calTree">
-    <xsl:variable name="url" select="encodedPath"/>
+    <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
@@ -24,7 +26,10 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <a href="{$setSelection}&amp;calUrl={$url}" title="view calendar"><xsl:value-of select="name"/></a>
+      <xsl:variable name="calPath" select="path"/>
+      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar">
+        <xsl:value-of select="name"/>
+      </a>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar" mode="calTree"/>

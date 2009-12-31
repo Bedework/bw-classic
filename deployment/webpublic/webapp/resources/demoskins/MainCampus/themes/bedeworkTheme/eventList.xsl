@@ -40,6 +40,7 @@
         </xsl:when>
       </xsl:choose>
 
+      <!-- produce the list of events -->
       <xsl:choose>
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
           <tr>

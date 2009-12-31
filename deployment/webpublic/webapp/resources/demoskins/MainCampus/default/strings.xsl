@@ -47,6 +47,7 @@
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
   <xsl:variable name="bwStr-Navi-Go">go</xsl:variable>
+  <xsl:variable name="bwStr-Navi-GoToDate">Go to date:</xsl:variable>
 
   <!--  xsl:template name="searchBar" -->
   <xsl:variable name="bwStr-SrcB-Add">add...</xsl:variable>
@@ -154,6 +155,7 @@
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplayWithOngoing">No non-ongoing events found.  Please try a different view or time period or look in the Ongoing events list.</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AllDay">All Day</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-At">at</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Today">Today</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-LsVw-DownloadEvent">Download ical</xsl:variable>

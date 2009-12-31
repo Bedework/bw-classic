@@ -7,7 +7,8 @@
 
   <xsl:template name="dateSelect">
     <form id="dateSelect" name="calForm" method="post" action="{$setViewPeriod}">
-      Go to date:
+      <xsl:copy-of select="$bwStr-Navi-GoToDate"/>
+      <xsl:text> </xsl:text>
       <table border="0" cellpadding="0" cellspacing="0">
         <tr>
           <xsl:if test="/bedework/periodname!='Year'">
@@ -59,7 +60,7 @@
             <input type="text" name="viewStartDate.year" maxlength="4" size="4" value="{$temp}"/>
           </td>
           <td>
-            <input name="submit" type="submit" value="go"/>
+            <input name="submit" type="submit" value="{$bwStr-Navi-Go}"/>
           </td>
         </tr>
       </table>
