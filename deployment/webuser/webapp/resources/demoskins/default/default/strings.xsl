@@ -278,7 +278,7 @@
   <xsl:variable name="bwStr-AEEF-DateAndTime">Date &amp; Time:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-AllDay">all day</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Floating">floating</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-StoreAsUTC">store at UTC</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-StoreAsUTC">store in UTC</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Start">Start:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Date">Date</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Due">Due:</xsl:variable>
