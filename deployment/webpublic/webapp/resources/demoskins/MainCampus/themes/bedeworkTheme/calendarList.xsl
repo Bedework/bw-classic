@@ -66,7 +66,6 @@
       </p>
 
       <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">
-        <xsl:copy-of select="$bwStr-Cals-EventDateLimits"/><br/>
         <input type="hidden" name="calPath">
           <xsl:attribute name="value"><xsl:value-of select="path"/></xsl:attribute>
         </input>
@@ -87,12 +86,10 @@
         <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Cals-AllDates"/>
         <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Cals-DateRange"/>
         <div id="exportDateRange" class="invisible">
-          <xsl:copy-of select="$bwStr-Cals-Start"/><xsl:text> </xsl:text>
-          <input type="text" name="bwExportCalendarWidgetStartDate" id="bwExportCalendarWidgetStartDate" size="10"/>
-          <span id="bwExportEndField"><xsl:copy-of select="$bwStr-Cals-End"/><xsl:text> </xsl:text>
-          <input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/></span>
+          <xsl:copy-of select="$bwStr-Cals-Start"/><xsl:text> </xsl:text><input type="text" name="bwExportCalendarWidgetStartDate" id="bwExportCalendarWidgetStartDate" size="10"/>
+          <span id="bwExportEndField"><xsl:copy-of select="$bwStr-Cals-End"/><xsl:text> </xsl:text><input type="text" name="bwExportCalendarWidgetEndDate" id="bwExportCalendarWidgetEndDate" size="10"/></span>
         </div>
-        <input type="submit" value="{$bwStr-Cals-Export}" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/>
+        <p><input type="submit" value="{$bwStr-Cals-Export}" class="bwWidgetSubmit" onclick="fillExportFields(this.form)"/></p>
       </form>
     </div>
   </xsl:template>

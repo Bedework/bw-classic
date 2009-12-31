@@ -244,7 +244,7 @@
   <xsl:variable name="bwStr-Calr-Calendar">calendar</xsl:variable>
 
   <!--  xsl:template match="currentCalendar" mode="export" -->
-  <xsl:variable name="bwStr-Cals-ExportCals">Export Calendars as iCal</xsl:variable>
+  <xsl:variable name="bwStr-Cals-ExportCals">Export Calendar as iCal</xsl:variable>
   <xsl:variable name="bwStr-Cals-CalendarToExport">Exporting:</xsl:variable>
   <xsl:variable name="bwStr-Cals-Name">Name:</xsl:variable>
   <xsl:variable name="bwStr-Cals-Path">Path:</xsl:variable>

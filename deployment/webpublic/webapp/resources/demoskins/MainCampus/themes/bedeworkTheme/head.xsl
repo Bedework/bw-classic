@@ -58,6 +58,15 @@
         <xsl:call-template name="jsonDataObject" />
       </script>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/ifs-calendar.js">&#160;</script>
+
+      <xsl:if test="/bedework/page='displayCalendarForExport'">
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+      <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+      <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+        <script type="text/javascript">
+          <xsl:call-template name="setupDatePicker"/>
+        </script>
+      </xsl:if>
     </head>
   </xsl:template>
 
@@ -72,6 +81,26 @@
     <xsl:variable name="rangeEndDay"><xsl:value-of select="substring(/bedework/lastday/date,7,2)" /></xsl:variable>
     <xsl:variable name="rangeEndYear"><xsl:value-of select="substring(/bedework/lastday/date,1,4)" /></xsl:variable>
     navcalendar = [ "<xsl:value-of select="$displayMonthYear" />", "<xsl:value-of select="$rangeStartMo" />", "<xsl:value-of select="$rangeStartDay" />", "<xsl:value-of select="$rangeStartYear" />", "<xsl:value-of select="$rangeEndMo" />", "<xsl:value-of select="$rangeEndDay" />", "<xsl:value-of select="$rangeEndYear" />", ];
+  </xsl:template>
+
+  <xsl:template name="setupDatePicker">
+    <xsl:comment>
+     $.datepicker.setDefaults({
+       constrainInput: true,
+       dateFormat: "yy-mm-dd",
+       showOn: "both",
+       buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
+       buttonImageOnly: true,
+       gotoCurrent: true,
+       duration: ""
+     });
+     $(document).ready(function() {
+       $("#bwExportCalendarWidgetStartDate").datepicker({
+       }).attr("readonly", "readonly");
+       $("#bwExportCalendarWidgetEndDate").datepicker({
+       }).attr("readonly", "readonly");
+     });
+     </xsl:comment>
   </xsl:template>
 
 </xsl:stylesheet>
