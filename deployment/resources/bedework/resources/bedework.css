@@ -92,6 +92,7 @@ fieldset {
   margin: 0 2em 1em 0;
   background-color: #eee;
   color: black;
+  width: 175px;
 }
 div.webclient {
   float: left;
