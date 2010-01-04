@@ -3828,7 +3828,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
+          <xsl:when test="disabled = 'true'">unknown</xsl:when>
+          <xsl:when test="lastRefreshStatus &gt;= 300">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -3879,7 +3880,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
+          <xsl:when test="disabled = 'true'">unknown</xsl:when>
+          <xsl:when test="lastRefreshStatus &gt;= 300">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'"><xsl:copy-of select="$bwStr-Cals-Alias"/></xsl:when>
           <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Cals-Folder"/></xsl:when>
           <xsl:otherwise><xsl:copy-of select="$bwStr-Cals-Calendar"/></xsl:otherwise>
@@ -3902,6 +3904,13 @@
         </xsl:choose>
       </xsl:if>
       <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
+        <xsl:if test="lastRefreshStatus &gt;= 300">
+          <xsl:attribute name="title">
+            <xsl:call-template name="httpStatusCodes">
+              <xsl:with-param name="code"><xsl:value-of  select="lastRefreshStatus"/></xsl:with-param>
+            </xsl:call-template>
+          </xsl:attribute>
+        </xsl:if>
         <xsl:value-of select="name"/>
       </a>
       <xsl:if test="calendar">
@@ -4866,7 +4875,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
+          <xsl:when test="disabled = 'true'">unknown</xsl:when>
+          <xsl:when test="lastRefreshStatus &gt;= 300">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -4898,6 +4908,13 @@
         </xsl:when>
         <xsl:otherwise>
           <a href="{$subscriptions-fetchForUpdate}&amp;calPath={$calPath}" title="update">
+          <xsl:if test="lastRefreshStatus &gt;= 300">
+            <xsl:attribute name="title">
+              <xsl:call-template name="httpStatusCodes">
+                <xsl:with-param name="code"><xsl:value-of  select="lastRefreshStatus"/></xsl:with-param>
+              </xsl:call-template>
+            </xsl:attribute>
+          </xsl:if>
             <xsl:value-of select="name"/>
           </a>
         </xsl:otherwise>
@@ -5096,7 +5113,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
+          <xsl:when test="disabled = 'true'">unknown</xsl:when>
+          <xsl:when test="lastRefreshStatus &gt; 300">unknown</xsl:when>
           <xsl:when test="name='Trash'"><xsl:copy-of select="$bwStr-Cals-Trash"/></xsl:when>
           <xsl:when test="isSubscription = 'true'"><xsl:copy-of select="$bwStr-Cals-Alias"/></xsl:when>
           <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Cals-Folder"/></xsl:when>

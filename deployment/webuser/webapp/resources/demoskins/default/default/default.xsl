@@ -4790,7 +4790,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
+          <xsl:when test="disabled = 'true'">unknown</xsl:when>
+          <xsl:when test="lastRefreshStatus &gt; 300">unknown</xsl:when>
           <xsl:when test="/bedework/selectionState/selectionType = 'collections'
                           and path = /bedework/selectionState/collection/virtualpath">selected</xsl:when>
           <xsl:when test="isSubscription = 'true'">
@@ -4841,7 +4842,7 @@
       <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
       <xsl:variable name="calPath" select="encodedPath"/>
       <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}">
-        <xsl:if test="lastRefreshStatus &gt; 400">
+        <xsl:if test="lastRefreshStatus &gt;= 300">
           <xsl:attribute name="title">
             <xsl:call-template name="httpStatusCodes">
               <xsl:with-param name="code"><xsl:value-of  select="lastRefreshStatus"/></xsl:with-param>
@@ -4927,7 +4928,8 @@
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="lastRefreshStatus &gt; 400">unknown</xsl:when>
+          <xsl:when test="disabled = 'true'">unknown</xsl:when>
+          <xsl:when test="lastRefreshStatus &gt;= 300">unknown</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -5334,7 +5336,7 @@
             <xsl:value-of select="path"/>
           </th>
         </tr>
-        <xsl:if test="lastRefreshStatus &gt; 400">
+        <xsl:if test="lastRefreshStatus &gt;= 300">
           <tr class="httpStatusMsg">
             <th><xsl:copy-of select="$bwStr-CuCa-HttpStatus"/></th>
             <td>
