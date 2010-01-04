@@ -167,6 +167,16 @@
       <xsl:when test="id='org.bedework.client.message.updated.event'">
         Event updated
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.updated.events'">
+        <xsl:choose>
+          <xsl:when test="param='1'">
+            1 event updated.
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="param"/> events updated.
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.message.updated.folder'">
         Folder updated.
       </xsl:when>
