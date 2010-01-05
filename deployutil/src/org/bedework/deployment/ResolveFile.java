@@ -1,33 +1,5 @@
-/*
- Copyright (c) 2000-2005 University of Washington.  All rights reserved.
-
- Redistribution and use of this distribution in source and binary forms,
- with or without modification, are permitted provided that:
-
-   The above copyright notice and this permission notice appear in
-   all copies and supporting documentation;
-
-   The name, identifiers, and trademarks of the University of Washington
-   are not used in advertising or publicity without the express prior
-   written permission of the University of Washington;
-
-   Recipients acknowledge that this distribution is made available as a
-   research courtesy, "as is", potentially with defects, without
-   any obligation on the part of the University of Washington to
-   provide support, services, or repair;
-
-   THE UNIVERSITY OF WASHINGTON DISCLAIMS ALL WARRANTIES, EXPRESS OR
-   IMPLIED, WITH REGARD TO THIS SOFTWARE, INCLUDING WITHOUT LIMITATION
-   ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-   PARTICULAR PURPOSE, AND IN NO EVENT SHALL THE UNIVERSITY OF
-   WASHINGTON BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL
-   DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
-   PROFITS, WHETHER IN AN ACTION OF CONTRACT, TORT (INCLUDING
-   NEGLIGENCE) OR STRICT LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
-   THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
 /* **********************************************************************
-    Copyright 2005 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2010 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -53,12 +25,12 @@
  */
 package org.bedework.deployment;
 
-import java.io.File;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.util.FileUtils;
+
+import java.io.File;
 
 /** Ant task to resolve a file name. This is just a wrapper to the ant FileUtils
  * which calls resolveFile. Surely this can be done another way?
@@ -85,7 +57,7 @@ public class ResolveFile extends Task {
    * The name of the property to set.
    * @param name property name
    */
-  public void setName(String name) {
+  public void setName(final String name) {
       this.name = name;
   }
 
@@ -101,7 +73,7 @@ public class ResolveFile extends Task {
    *
    * @param val filename
    */
-  public void setBase(File val) {
+  public void setBase(final File val) {
       base = val;
   }
 
@@ -118,12 +90,13 @@ public class ResolveFile extends Task {
    *
    * @ant.attribute group="noname"
    */
-  public void setFile(String val) {
+  public void setFile(final String val) {
       file = new File(val);
   }
 
   /** Execute the task
    */
+  @Override
   public void execute() throws BuildException {
     try {
       if (getProject() == null) {

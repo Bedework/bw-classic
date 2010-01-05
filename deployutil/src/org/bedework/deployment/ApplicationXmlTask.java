@@ -1,33 +1,5 @@
-/*
- Copyright (c) 2000-2005 University of Washington.  All rights reserved.
-
- Redistribution and use of this distribution in source and binary forms,
- with or without modification, are permitted provided that:
-
-   The above copyright notice and this permission notice appear in
-   all copies and supporting documentation;
-
-   The name, identifiers, and trademarks of the University of Washington
-   are not used in advertising or publicity without the express prior
-   written permission of the University of Washington;
-
-   Recipients acknowledge that this distribution is made available as a
-   research courtesy, "as is", potentially with defects, without
-   any obligation on the part of the University of Washington to
-   provide support, services, or repair;
-
-   THE UNIVERSITY OF WASHINGTON DISCLAIMS ALL WARRANTIES, EXPRESS OR
-   IMPLIED, WITH REGARD TO THIS SOFTWARE, INCLUDING WITHOUT LIMITATION
-   ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-   PARTICULAR PURPOSE, AND IN NO EVENT SHALL THE UNIVERSITY OF
-   WASHINGTON BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL
-   DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
-   PROFITS, WHETHER IN AN ACTION OF CONTRACT, TORT (INCLUDING
-   NEGLIGENCE) OR STRICT LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
-   THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
 /* **********************************************************************
-    Copyright 2005 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2010 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -53,6 +25,12 @@
  */
 package org.bedework.deployment;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.taskdefs.MatchingTask;
+import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.util.FileUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -61,12 +39,6 @@ import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.DirectoryScanner;
-import org.apache.tools.ant.taskdefs.MatchingTask;
-import org.apache.tools.ant.types.FileSet;
-import org.apache.tools.ant.util.FileUtils;
 
 /** Ant task to build the application.xml file for a ear.
  *
@@ -103,7 +75,7 @@ public class ApplicationXmlTask extends MatchingTask {
    *
    * @param set
    */
-  public void addFileset(FileSet set) {
+  public void addFileset(final FileSet set) {
     filesets.add(set);
   }
 
@@ -111,7 +83,7 @@ public class ApplicationXmlTask extends MatchingTask {
    *
    * @param val   String
    */
-  public void setDisplayName(String val) {
+  public void setDisplayName(final String val) {
     displayName = val;
   }
 
@@ -119,7 +91,7 @@ public class ApplicationXmlTask extends MatchingTask {
    *
    * @param val   String
    */
-  public void setContexts(String val) {
+  public void setContexts(final String val) {
     contexts = val;
   }
 
@@ -127,7 +99,7 @@ public class ApplicationXmlTask extends MatchingTask {
    *
    * @param val   File
    */
-  public void setOutFile(File val) {
+  public void setOutFile(final File val) {
     outFile = val;
   }
 
@@ -135,12 +107,13 @@ public class ApplicationXmlTask extends MatchingTask {
    *
    * @param val   File
    */
-  public void setWarDir(File val) {
+  public void setWarDir(final File val) {
     warDir = val;
   }
 
   /** Executes the task
    */
+  @Override
   public void execute() throws BuildException {
     try {
       getModules();
@@ -217,7 +190,7 @@ public class ApplicationXmlTask extends MatchingTask {
    */
   private void getModules() throws BuildException {
     FilenameFilter fltr = new FilenameFilter() {
-      public boolean accept(File dir, String name) {
+      public boolean accept(final File dir, final String name) {
         return name.endsWith(".war");
       }
     };
@@ -248,7 +221,7 @@ public class ApplicationXmlTask extends MatchingTask {
     }
   }
 
-  private void writeLine(String ln) throws Throwable {
+  private void writeLine(final String ln) throws Throwable {
     wtr.write(ln);
     wtr.write("\n");
   }

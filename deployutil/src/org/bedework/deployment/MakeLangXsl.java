@@ -1,33 +1,5 @@
-/*
- Copyright (c) 2000-2005 University of Washington.  All rights reserved.
-
- Redistribution and use of this distribution in source and binary forms,
- with or without modification, are permitted provided that:
-
-   The above copyright notice and this permission notice appear in
-   all copies and supporting documentation;
-
-   The name, identifiers, and trademarks of the University of Washington
-   are not used in advertising or publicity without the express prior
-   written permission of the University of Washington;
-
-   Recipients acknowledge that this distribution is made available as a
-   research courtesy, "as is", potentially with defects, without
-   any obligation on the part of the University of Washington to
-   provide support, services, or repair;
-
-   THE UNIVERSITY OF WASHINGTON DISCLAIMS ALL WARRANTIES, EXPRESS OR
-   IMPLIED, WITH REGARD TO THIS SOFTWARE, INCLUDING WITHOUT LIMITATION
-   ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-   PARTICULAR PURPOSE, AND IN NO EVENT SHALL THE UNIVERSITY OF
-   WASHINGTON BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL
-   DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
-   PROFITS, WHETHER IN AN ACTION OF CONTRACT, TORT (INCLUDING
-   NEGLIGENCE) OR STRICT LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
-   THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
 /* **********************************************************************
-    Copyright 2005 Rensselaer Polytechnic Institute. All worldwide rights reserved.
+    Copyright 2010 Rensselaer Polytechnic Institute. All worldwide rights reserved.
 
     Redistribution and use of this distribution in source and binary forms,
     with or without modification, are permitted provided that:
@@ -53,6 +25,11 @@
  */
 package org.bedework.deployment;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.PropertyHelper;
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.util.FileUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -65,11 +42,6 @@ import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.PropertyHelper;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.util.FileUtils;
 
 /** Ant task to build the xsl parameters used by the stylesheets for language
  * specific replacement of strings. We assume the directory contains a number of
@@ -106,7 +78,7 @@ public class MakeLangXsl extends Task {
    *
    * @param val   File
    */
-  public void setDir(File val) {
+  public void setDir(final File val) {
     dir = val;
   }
 
@@ -114,7 +86,7 @@ public class MakeLangXsl extends Task {
    *
    * @param val   File
    */
-  public void setResdir(File val) {
+  public void setResdir(final File val) {
     resdir = val;
   }
 
@@ -122,7 +94,7 @@ public class MakeLangXsl extends Task {
    *
    * @param val   File
    */
-  public void setXsldir(File val) {
+  public void setXsldir(final File val) {
     xsldir = val;
   }
 
@@ -130,7 +102,7 @@ public class MakeLangXsl extends Task {
    *
    * @param val   String
    */
-  public void setPrefix(String val) {
+  public void setPrefix(final String val) {
     prefix = val;
     adjustedPrefix = prefix + "_";
   }
@@ -139,7 +111,7 @@ public class MakeLangXsl extends Task {
    * The name of the property to set.
    * @param val property name
    */
-  public void setName(String val) {
+  public void setName(final String val) {
       name = val;
   }
 
@@ -153,12 +125,13 @@ public class MakeLangXsl extends Task {
   /**
    * @param val   true for checking
    */
-  public void setCheck(boolean val) {
+  public void setCheck(final boolean val) {
       check = val;
   }
 
   /** Execute the task
    */
+  @Override
   public void execute() throws BuildException {
     try {
       if (getProject() == null) {
@@ -220,7 +193,7 @@ public class MakeLangXsl extends Task {
     List<String> fnames = new LinkedList<String>();
 
     FilenameFilter fltr = new FilenameFilter() {
-      public boolean accept(File dir, String name) {
+      public boolean accept(final File dir, final String name) {
         return name.startsWith(adjustedPrefix) &&
                name.endsWith(suffix);
       }
@@ -237,14 +210,14 @@ public class MakeLangXsl extends Task {
       makeXsl(name);
     }
 
-    if (check && fnames.size() > 1) {
+    if (check && (fnames.size() > 1)) {
       checkResources(fnames);
     }
 
     return fnames;
   }
 
-  private void makeXsl(String fname) throws BuildException {
+  private void makeXsl(final String fname) throws BuildException {
     try {
       String locale = makeLocale(fname);
 
@@ -275,16 +248,16 @@ public class MakeLangXsl extends Task {
     }
   }
 
-  private String formatLine(String key) {
+  private String formatLine(final String key) {
     return String.format("  <xsl:param name=\"%s\" />", key);
   }
 
-  private void xslLine(String ln) throws Throwable {
+  private void xslLine(final String ln) throws Throwable {
     wtr.write(ln);
     wtr.write("\n");
   }
 
-  private String makeLocale(String fname) {
+  private String makeLocale(final String fname) {
     String s = fname.substring(adjustedPrefix.length());
 
     return s.substring(0, s.length() - suffix.length());
@@ -298,7 +271,7 @@ public class MakeLangXsl extends Task {
     int ct; // Number of files with property
     boolean[] flags;
 
-    int first(boolean val) {
+    int first(final boolean val) {
       for (int i = 0; i < flags.length; i++) {
         if (flags[i] == val) {
           return i;
@@ -309,7 +282,7 @@ public class MakeLangXsl extends Task {
     }
   }
 
-  private Properties getProps(String fname) throws BuildException {
+  private Properties getProps(final String fname) throws BuildException {
     try {
       FileInputStream propFile = new FileInputStream(dir.getAbsolutePath() +
                                                      "/" + fname);
@@ -322,7 +295,7 @@ public class MakeLangXsl extends Task {
     }
   }
 
-  private void checkResources(List<String> fnames) throws BuildException {
+  private void checkResources(final List<String> fnames) throws BuildException {
     List<TreeSet<String>> propNamesList = new LinkedList<TreeSet<String>>();
     int fnamesSz = fnames.size();
 
@@ -388,10 +361,10 @@ public class MakeLangXsl extends Task {
     }
   }
 
-  private void mapPropNames(int i,
-                            List<String> fnames,
-                            TreeSet<String> propNames,
-                            SortedMap<String, FnameMapEntry> nameMap) throws BuildException {
+  private void mapPropNames(final int i,
+                            final List<String> fnames,
+                            final TreeSet<String> propNames,
+                            final SortedMap<String, FnameMapEntry> nameMap) throws BuildException {
     for (String name: propNames) {
       FnameMapEntry fme = nameMap.get(name);
       if (fme == null) {
@@ -406,8 +379,8 @@ public class MakeLangXsl extends Task {
     }
   }
 
-  private boolean inAllOthers(int i, String name,
-                              List<TreeSet<String>> propNamesList) {
+  private boolean inAllOthers(final int i, final String name,
+                              final List<TreeSet<String>> propNamesList) {
     for (int j = 0; j < propNamesList.size(); j++) {
       if (j == i) {
         continue;

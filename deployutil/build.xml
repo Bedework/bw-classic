@@ -30,7 +30,7 @@
   </target>
 
   <target name="build" depends="init"
-          description="Compile bedework logging classes">
+          description="Compile bedework deployutil classes">
     <!-- ==================== Sources and classes ====================== -->
 
     <fileset id="buildjar.java.sources" dir="${source.home}" >
