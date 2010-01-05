@@ -84,28 +84,77 @@ ul.menu li.first {
   font-size: 1.1em;
 }
 #content em {
-  color: #933;
-  background-color: transparent;
+  font-weight: normal;
+  font-style: normal;
+  /*color: #933;
+  background-color: transparent;*/
 }
 fieldset {
   float: left;
-  margin: 0 2em 1em 0;
-  background-color: #eee;
+  margin: 0;
+  background-color: #fafafa;
   color: black;
-  width: 175px;
+}
+fieldset p {
+  margin: 1em 0; 
+}
+legend {
+  font-weight: bold; 
+}
+#clientPublic {
+  width: 380px; 
+  height: 180px;
+  margin: 0 1.5em 1em 0;
+}
+#clientAdmin {
+  width: 440px;
+  height: 180px;
+  margin: 0 0 1em 0;
+}
+#clientSubmission {
+  width: 470px;
+  height: 170px;
+  margin: 0 1.5em 1em 0;
+}
+#clientFeedBuilder {
+  width: 350px; 
+  height: 170px;
+  margin: 0 0 1em 0;
+}
+#clientPersonal {
+  width: 550px;
+  height: 170px;
+  margin: 0 1.5em 2em 0;
 }
 div.webclient {
   float: left;
   margin: 1em;
-  text-align: center;
+}
+div.webclient a.app {
+  float: left;
+  text-align: center;  
+  display: block;
 }
 div.webclient img {
   display: block;
   margin: auto;
+  padding: 0;
+  border: 1px solid #ccc;
+}
+div.webclient img:hover {
+  border: 1px solid #900;
 }
 .loginInfo {
   padding-top: 1em;
   text-align: left;
+}
+div.loginInfo a.title {
+  display: block;
+  font-weight: bold;
+  margin: 0 0 1em 0;
+}
+#resources {
+  float: left; 
 }
 /* Generic Selectors */
 li {
@@ -176,15 +225,15 @@ ul.menu a:hover,
   background-color: transparent;
   text-decoration: none;
 }
-a:link,
-a:active,
-a:visited {
+a {
   color: #3157A5;
   background-color: transparent;
+  text-decoration: none;
 }
 a:hover {
-  color: #e33;
+  color: #900;
   background-color: transparent;
+  text-decoration: underline;
 }
 a#top:link,
 a#top:active,

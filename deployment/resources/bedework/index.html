@@ -21,119 +21,136 @@
           Welcome to Bedework!
         </h1>
         <div id="clientSelect">
-          <fieldset>
+          <fieldset id="clientPublic">
             <legend>
               Public Events Calendar Suites
             </legend>
             <div class="webclient">
-              <a href="/cal">
-                <img src="resources/content/mainCampus.jpg" width="150" height="152" alt="Public calendar suite" border="0"/>Main Campus
+              <a href="/cal" class="app">
+                <img src="resources/content/mainCampus.jpg" width="172" height="130" alt="Public calendar suite" border="0"/>Main Campus
               </a>
             </div>
             <div class="webclient">
-              <a href="/soedept">
-                <img src="resources/content/departmental.gif" width="150" height="175" alt="Departmental calendar suite" border="0"/>Departmental
+              <a href="/soedept" class="app">
+                <img src="resources/content/departmental.gif" width="153" height="130" alt="Departmental calendar suite" border="0"/>Departmental
               </a>
             </div>
           </fieldset>
-          <fieldset>
+          <fieldset id="clientAdmin">
             <legend>
               Public Events Administration
             </legend>
             <div class="webclient">
-              <a href="/caladmin">
-                <img src="resources/content/calAdmin.gif" width="139" height="145" alt="Public events admin client" border="0"/>Admin Client
+              <a href="/caladmin" class="app">
+                <img src="resources/content/calAdmin.gif" width="160" height="130" alt="Public events admin client" border="0"/>
               </a>
-              <div class="loginInfo">
-                Event admin (typical): <em>vbede, mtwain</em>
-                <br/>
-                In multiple groups: <em>ggalilei, bfranklin</em>
-                <br/>
-                Calendar suite owners: <em>ggalilei, bfranklin</em>
-                <br/>
-                Super-user login: <em>admin</em>
-                <br/>
-                Password: <em>bedework</em>
-              </div>
+            </div>
+            <div class="loginInfo">
+              <a href="/caladmin" class="title">
+                Admin Client
+              </a>
+              Event admin (typical): <em>vbede, mtwain</em>
+              <br/>
+              In multiple groups: <em>ggalilei, bfranklin</em>
+              <br/>
+              Calendar suite owners: <em>ggalilei, bfranklin</em>
+              <br/>
+              Super-user login: <em>admin</em>
+              <br/>
+              Password: <em>bedework</em>
             </div>
           </fieldset>
-          <fieldset>
-            <legend>
-              Personal Calendaring
-            </legend>
-            <div class="webclient">
-              <a href="/ucal">
-                <img src="resources/content/personalEvents.gif" width="150" height="145" alt="Personal calendar" border="0"/>User Calendar
-              </a>
-              <div class="loginInfo">
-                Login: <em>vbede, mtwain, ggalilei, or bfanklin</em>
-                <br/>
-                Password: <em>bedework</em>
-                <br/>
-                <br/>
-                See also:
-                <a href="http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.5/UserGuide">
-                  How to configure a CalDAV calendar client (e.g. Apple's iCal or Mozilla Lightening) against the Bedework server
-                </a>
-              </div>
-            </div>
-          </fieldset>
-          <fieldset>
+          <fieldset id="clientSubmission">
             <legend>
               Public Events Submission
             </legend>
             <div class="webclient">
-              <a href="/eventsubmit">
-                <img src="resources/content/submitEvents.gif" width="139" height="145" alt="Public event submission" border="0"/>Submit Events
+              <a href="/eventsubmit" class="app">
+                <img src="resources/content/submitEvents.gif" width="145" height="131" alt="Public event submission" border="0"/>
               </a>
-              <div class="loginInfo">
-                Login: <em>vbede, mtwain, ggalilei, or bfanklin</em>
-                <br/>
-                Password: <em>bedework</em>
-              </div>
+            </div>
+            <div class="loginInfo">
+              <a href="/eventsubmit" class="title">
+                Submit Events
+              </a>
+              Login: <em>vbede, mtwain, ggalilei, or bfanklin</em>
+              <br/>
+              Password: <em>bedework</em>
             </div>
           </fieldset>
-          <fieldset>
+          <fieldset id="clientFeedBuilder">
             <legend>
-              Public Events Feed Builder
+              Public Events Feed URL and Widget Builder
             </legend>
             <div class="webclient">
-              <a href="/urlbuilder">
-                <img src="resources/content/calAdmin.gif" width="139" height="145" alt="Public events admin client" border="0"/>Feed Builder
+              <a href="/urlbuilder" class="app">
+                <img src="resources/content/feedBuilder.gif" width="114" height="131" alt="Public events admin client" border="0"/>
               </a>
+            </div>
+            <div class="loginInfo">
+              <a href="/urlbuilder" class="title">
+                Feed Builder
+              </a>
+              Note: the feed builder can be optionally embedded in the default public events theme.
+            </div>
+          </fieldset>
+          <fieldset id="clientPersonal">
+            <legend>
+              Personal Calendaring
+            </legend>
+            <div class="webclient">
+              <a href="/ucal" class="app">
+                <img src="resources/content/personalEvents.gif" width="200" height="130" alt="Personal calendar" border="0"/>
+              </a>
+            </div>
+            <div class="loginInfo">
+              <a href="/ucal" class="title">
+                User Calendar
+              </a>
+              Login: <em>vbede, mtwain, ggalilei, or bfanklin</em>
+              <br/>
+              Password: <em>bedework</em>
+              <p>
+                See also:
+                <a href="http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.5/UserGuide">
+                  How to configure a CalDAV calendar client against the Bedework server (e.g. Apple's iCal or Mozilla Lightening)
+                </a>
+              </p>
             </div>
           </fieldset>
         </div>
-        <h4>
-          Resources:
-        </h4>
-        <ul>
-          <li>
-            <a href="http://www.bedework.org/bedework/update.do?artcenterkey=21">
-              Getting started
-            </a>
-          </li>
-          <li>
-            <a href="http://www.bedework.org/bedework/update.do?artcenterkey=36">
-              Bedework documentation
-            </a>
-          </li>
-          <li>
-            <a href="http://www.bedework.org">
-              Bedework website
-            </a>
-          </li>
-          <li>
-            <a href="http://www.bedework.org/trac/bedework/">
-              Bedework wiki
-            </a>
-          </li>
-          <li>
-            <a href="http://www.bedework.org/bedework/update.do?artcenterkey=27">
-              Bedework mailing lists
-            </a>
-          </li>
-        </ul>
+        <div id="resources">
+          <h4>
+            Resources:
+          </h4>
+          <ul>
+            <li>
+              <a href="http://www.bedework.org/bedework/update.do?artcenterkey=21">
+                Getting started
+              </a>
+            </li>
+            <li>
+              <a href="http://www.bedework.org/bedework/update.do?artcenterkey=36">
+                Bedework documentation
+              </a>
+            </li>
+            <li>
+              <a href="http://www.bedework.org">
+                Bedework website
+              </a>
+            </li>
+            <li>
+              <a href="http://www.bedework.org/trac/bedework/">
+                Bedework wiki
+              </a>
+            </li>
+            <li>
+              <a href="http://www.bedework.org/bedework/update.do?artcenterkey=27">
+                Bedework mailing lists
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
       <div id="footer">
         <p>
