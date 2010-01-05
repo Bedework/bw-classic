@@ -92,6 +92,7 @@ ul.menu li.first {
 fieldset {
   float: left;
   margin: 0;
+  padding: 0;
   background-color: #fafafa;
   color: black;
 }
@@ -99,36 +100,41 @@ fieldset p {
   margin: 1em 0; 
 }
 legend {
-  font-weight: bold; 
+  color: black;
+  background-color: transparent;
+  font-weight: bold;
 }
 #clientPublic {
   width: 380px; 
-  height: 180px;
+  height: 190px;
   margin: 0 1.5em 1em 0;
 }
 #clientAdmin {
   width: 440px;
-  height: 180px;
+  height: 190px;
   margin: 0 0 1em 0;
 }
 #clientSubmission {
   width: 470px;
-  height: 170px;
+  height: 180px;
   margin: 0 1.5em 1em 0;
 }
 #clientFeedBuilder {
   width: 350px; 
-  height: 170px;
+  height: 180px;
   margin: 0 0 1em 0;
 }
 #clientPersonal {
   width: 550px;
-  height: 170px;
+  height: 180px;
   margin: 0 1.5em 2em 0;
 }
 div.webclient {
   float: left;
-  margin: 1em;
+  margin: 1em 1em 1em 1.5em;
+}
+div.webclient2 {
+  margin-left: 0;
 }
 div.webclient a.app {
   float: left;
@@ -137,8 +143,8 @@ div.webclient a.app {
 }
 div.webclient img {
   display: block;
-  margin: auto;
   padding: 0;
+  margin: 0;
   border: 1px solid #ccc;
 }
 div.webclient img:hover {
