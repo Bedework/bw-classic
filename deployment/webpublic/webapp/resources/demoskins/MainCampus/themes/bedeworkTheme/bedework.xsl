@@ -12,7 +12,7 @@
 
     DEMONSTRATION CALENDAR STYLESHEET
 
-    MainCampus Calendar Suite - Duke/Yale Skin
+    MainCampus Calendar Suite - based on the Duke/Yale Skin
 
     This stylesheet is devoid of school branding.  It is a good
     starting point for development of a customized theme.
@@ -22,8 +22,8 @@
 
     For detailed instructions on how to work with the XSLT
     stylesheets included with this distribution, please see the
-    Bedework Design Guide at
-    http://www.bedework.org/bedework/update.do?artcenterkey=24
+    Bedework Manual at
+    http://www.bedework.org/bedework/update.do?artcenterkey=36
 
     ===============================================================  -->
   <!-- **********************************************************************
@@ -74,6 +74,7 @@
   <xsl:include href="ongoing.xsl" />
   <xsl:include href="deadlines.xsl" />
   <xsl:include href="systemStats.xsl"/>
+  <xsl:include href="showPage.xsl"/>
   <xsl:include href="footer.xsl" />
 
   <!-- MAIN TEMPLATE -->
@@ -152,7 +153,7 @@
                     <xsl:call-template name="searchResult" />
                     <xsl:call-template name="advancedSearch" />
                   </xsl:when>
-                  
+
                   <!-- list of discrete events (normally used only for feeds
                        (see the /feeder app).  Included here for visualization. -->
                   <xsl:when test="/bedework/page = 'eventList'">
@@ -163,10 +164,10 @@
                   <xsl:when test="/bedework/page='showSysStats'">
                     <xsl:call-template name="stats" />
                   </xsl:when>
-                  
+
                   <!-- branch to an arbitrary page (an xsl template) using the
                        "appvar" session variable on a link like so:
-                       /misc/showPage.rdo?setappvar=page(mypage) 
+                       /misc/showPage.rdo?setappvar=page(mypage)
                        Page templates are defined in showPage.xsl -->
                   <xsl:when test="/bedework/page='showPage'">
                     <xsl:choose>
@@ -181,7 +182,7 @@
                     </xsl:choose>
                   </xsl:when>
 
-                  <!-- otherwise, show us what page was requested 
+                  <!-- otherwise, show us what page was requested
                        (if the stylesheet is thorough, you should never see this) -->
                   <xsl:otherwise>
                     <xsl:copy-of select="$bwStr-Error"/>
