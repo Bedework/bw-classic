@@ -89,6 +89,10 @@ ul.menu li.first {
   /*color: #933;
   background-color: transparent;*/
 }
+#clientSelect {
+  width: 850px;
+  margin: 0 auto;
+}
 fieldset {
   float: left;
   margin: 0;
@@ -172,6 +176,9 @@ code {
 }
 p {
   padding-left: 1em;
+}
+.clear {
+  clear: both;
 }
 /* Footer and Links */
 #footMenu {
