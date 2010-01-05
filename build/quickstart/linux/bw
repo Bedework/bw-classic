@@ -42,6 +42,7 @@ usage() {
   echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
   echo "     -carddav     Target is for the CardDAV build"
+  echo "     -client      Target is for the bedework client application build"
   echo "     -monitor     Target is for the bedework monitor application"
   echo "     -naming      Target is for the abstract naming api"
   echo "     -tzsvr       Target is for the timezones server build"
@@ -212,13 +213,14 @@ quickstart=
 
 # Projects we will build
 pkgdefault=yes
+bedework=
 carddav=
 caldav=
-webdav=
-bedework=
-naming=
+client=
 monitor=
+naming=
 tzsvr=
+webdav=
 
 action=
 
@@ -289,6 +291,11 @@ do
       pkgdefault=
       shift
       ;;
+    -client)
+      client="yes"
+      pkgdefault=
+      shift
+      ;;
     -webdav)
       webdav="yes"
       pkgdefault=
@@ -349,6 +356,10 @@ fi
 
 if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav
+fi
+
+if [ "$client" != "" ] ; then
+  cd $QUICKSTART_HOME/bwclient
 fi
 
 if [ "$monitor" != "" ] ; then
