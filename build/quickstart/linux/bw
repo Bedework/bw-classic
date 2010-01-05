@@ -44,6 +44,7 @@ usage() {
   echo "     -carddav     Target is for the CardDAV build"
   echo "     -monitor     Target is for the bedework monitor application"
   echo "     -naming      Target is for the abstract naming api"
+  echo "     -tzsvr       Target is for the timezones server build"
   echo "     The default is a calendar build"
   echo ""
   echo "   Invokes ant to build or deploy the Bedework system. Uses a configuration"
@@ -217,6 +218,7 @@ webdav=
 bedework=
 naming=
 monitor=
+tzsvr=
 
 action=
 
@@ -302,6 +304,11 @@ do
       pkgdefault=
       shift
       ;;
+    -tzsvr)
+      tzsvr="yes"
+      pkgdefault=
+      shift
+      ;;
     -*)
       usage
       exit 1
@@ -336,6 +343,10 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
+if [ "$caldav" != "" ] ; then
+  cd $QUICKSTART_HOME/bedework/projects/caldav
+fi
+
 if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav
 fi
@@ -348,12 +359,12 @@ if [ "$naming" != "" ] ; then
   cd $QUICKSTART_HOME/bwnaming
 fi
 
-if [ "$webdav" != "" ] ; then
-  cd $QUICKSTART_HOME/bedework/projects/webdav
+if [ "$tzsvr" != "" ] ; then
+  cd $QUICKSTART_HOME/bwtzsvr
 fi
 
-if [ "$caldav" != "" ] ; then
-  cd $QUICKSTART_HOME/bedework/projects/caldav
+if [ "$webdav" != "" ] ; then
+  cd $QUICKSTART_HOME/bedework/projects/webdav
 fi
 
 $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $*

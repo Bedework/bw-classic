@@ -11,7 +11,7 @@
   <property name="lib.dir" location="${org.bedework.default.lib}"/>
 
   <target name="init">
-     <delete dir="${lib.dir}" />
+    <delete dir="${lib.dir}" />
     <mkdir dir="${lib.dir}" />
 
     <dirname property="this.dir" file="${ant.file}"/>

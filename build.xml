@@ -28,9 +28,6 @@
   <property name="org.bedework.project.bwtools"
             location="${org.bedework.projects}/bwtools" />
 
-  <property name="org.bedework.project.bwtzsvr"
-            location="${org.bedework.projects}/bwtzsvr" />
-
   <property name="org.bedework.project.caldav"
             location="${org.bedework.projects}/caldav" />
 
@@ -199,7 +196,7 @@
        "build" and "clean" targets for the project
        ================================================================= -->
 
-  <target name="build" depends="init.build,build.rpiutil,build.bwtzsvr,
+  <target name="build" depends="init.build,build.rpiutil,
                                 build.access,build.davutil,
                                 build.webdav,build.caldav,
                                 build.calendarapi,build.dumprestore,
@@ -212,7 +209,7 @@
     </copy>
   </target>
 
-  <target name="clean" depends="init,clean.rpiutil,clean.bwtzsvr,
+  <target name="clean" depends="init,clean.rpiutil,
                                 clean.access,clean.davutil,
                                 clean.calendarapi,clean.dumprestore,
                                 clean.webdav,clean.caldav,clean.caldavTest,
@@ -224,7 +221,7 @@
     <delete dir="${bin.home}" />
   </target>
 
-  <target name="quickstart-clean" depends="init,clean.rpiutil,clean.bwtzsvr,
+  <target name="quickstart-clean" depends="init,clean.rpiutil,
                                            clean.access,clean.davutil,
                                            clean.calendarapi,clean.dumprestore,
                                            clean.webdav,clean.caldav,clean.caldavTest,
@@ -433,27 +430,6 @@
 
   <target name="clean.build.bwtools" depends="clean.bwtools,build.bwtools"
           description="builds the bwtools project"/>
-
-  <!-- .................................................................
-                          bwtzsvr
-       .................................................................. -->
-  <target name="build.bwtzsvr" depends="init"
-          description="builds the bwtzsvr project">
-    <ant antfile="${org.bedework.project.bwtzsvr}/build.xml" inheritall="false"
-           target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.bwtzsvr" depends="init"
-          description="clean the bwtzsvr project">
-    <ant antfile="${org.bedework.project.bwtzsvr}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.bwtzsvr" depends="clean.bwtzsvr,build.bwtzsvr"
-          description="builds the bwtzsvr project"/>
 
   <!-- .................................................................
                           caldav
