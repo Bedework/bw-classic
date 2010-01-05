@@ -11,7 +11,7 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-timezonessvr" version="3.5"
+              name="bw-timezonessvr" version="3.6"
               projecthome="${bw.project.home}/projects/bwtzsvr" />
     </sequential>
  </macrodef>

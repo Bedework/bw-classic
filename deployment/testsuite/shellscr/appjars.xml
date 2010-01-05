@@ -20,12 +20,12 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-appcommon" version="3.5"
+              name="bw-appcommon" version="3.6"
               projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-testsuite" version="3.5"
+              name="bw-testsuite" version="3.6"
               projecthome="${bw.project.home}/projects/testsuite" />
     </sequential>
  </macrodef>

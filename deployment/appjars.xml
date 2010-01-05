@@ -223,19 +223,19 @@
       <!-- Generated bedework jars -->
 
       <getJar lib="${org.bedework.app.lib}"
-              name="rpiaccess" version="3.5"
+              name="rpiaccess" version="3.6"
               projecthome="${bw.project.home}/projects/access" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-tools" version="3.5"
+              name="bw-tools" version="3.6"
               projecthome="${bw.project.home}/projects/bwtools" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="rpiutil" version="3.5"
+              name="rpiutil" version="3.6"
               projecthome="${bw.project.home}/projects/rpiutil" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-davio" version="3.5"
+              name="bw-davio" version="3.6"
               projecthome="${bw.project.home}/projects/davutil" />
 
       <getJar lib="${org.bedework.app.lib}"
@@ -287,15 +287,15 @@
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-appcommon" version="3.5"
+              name="bw-appcommon" version="3.6"
               projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-liferay" version="3.5"
+              name="bw-liferay" version="3.6"
               projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-uportal" version="3.5"
+              name="bw-uportal" version="3.6"
               projecthome="${bw.project.home}/projects/webapps" />
 
       <!-- Included jars for eclipse -->
