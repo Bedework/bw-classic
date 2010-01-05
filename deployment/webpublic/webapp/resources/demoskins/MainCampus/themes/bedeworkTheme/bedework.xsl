@@ -152,7 +152,7 @@
                     <xsl:call-template name="searchResult" />
                     <xsl:call-template name="advancedSearch" />
                   </xsl:when>
-
+                  
                   <!-- list of discrete events (normally used only for feeds
                        (see the /feeder app).  Included here for visualization. -->
                   <xsl:when test="/bedework/page = 'eventList'">
@@ -163,8 +163,26 @@
                   <xsl:when test="/bedework/page='showSysStats'">
                     <xsl:call-template name="stats" />
                   </xsl:when>
+                  
+                  <!-- branch to an arbitrary page (an xsl template) using the
+                       "appvar" session variable on a link like so:
+                       /misc/showPage.rdo?setappvar=page(mypage) 
+                       Page templates are defined in showPage.xsl -->
+                  <xsl:when test="/bedework/page='showPage'">
+                    <xsl:choose>
+                      <xsl:when test="/bedework/appvar[key='page']">
+                        <xsl:call-template name="showPage">
+                          <xsl:with-param name="pageName"><xsl:value-of select="/bedework/appvar[key='page']/value"/></xsl:with-param>
+                        </xsl:call-template>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:copy-of select="$bwStr-Error-NoPage"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:when>
 
-                  <!-- show us what page was requested... -->
+                  <!-- otherwise, show us what page was requested 
+                       (if the stylesheet is thorough, you should never see this) -->
                   <xsl:otherwise>
                     <xsl:copy-of select="$bwStr-Error"/>
                     <xsl:text> </xsl:text>

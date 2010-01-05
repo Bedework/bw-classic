@@ -8,6 +8,7 @@
 
   <xsl:variable name="bwStr-Root-PageTitle">Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-Error">Error:</xsl:variable>
+  <xsl:variable name="bwStr-Error-NoPage">No page to display</xsl:variable>
 
   <!-- xsl:template name="headBar" -->
   <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Events Calendar</xsl:variable>
