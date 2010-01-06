@@ -367,11 +367,12 @@
                 </xsl:choose>
               </td>
               <xsl:choose>
-                <xsl:when test="/bedework/schedulingMessages/events/event">
+                <xsl:when test="/bedework/schedulingMessages/events/event[scheduleState = 1]">
                   <td id="msgTaskBar" class="sideMenus">
                     <h3>messages</h3>
                     <ul>
-                      <xsl:apply-templates select="/bedework/schedulingMessages/events/event" mode="schedNotifications"/>
+                      <!-- only show processed messages (scheduleState = 1) -->
+                      <xsl:apply-templates select="/bedework/schedulingMessages/events/event[scheduleState = 1]" mode="schedNotifications"/>
                     </ul>
                   </td>
                 </xsl:when>
@@ -6584,7 +6585,7 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:copy-of select="$bwStr-AtRe-MeetingRequest"/>
-            <xsl:if test="guidcals/calendar"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-Update"/>(update)</xsl:if>
+            <xsl:if test="guidcals/calendar"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-Update"/></xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </h2>
