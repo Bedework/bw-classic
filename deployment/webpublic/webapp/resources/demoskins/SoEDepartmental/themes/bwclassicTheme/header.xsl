@@ -57,7 +57,7 @@
           <a href="javascript:window.print()" title="{$bwStr-HdBr-PrintThisView}">
             <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-HdBr-Print"/>
           </a>
-          <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="{$bwStr-HdBr-RSSFeed}"><xsl:copy-of select="$bwStr-HdBr-RSS"/></a>
+          <a class="rss" href="{$urlbuilder}" title="{$bwStr-HdBr-RSSFeed}"><xsl:copy-of select="$bwStr-HdBr-RSS"/></a>
         </td>
       </tr>
     </table>

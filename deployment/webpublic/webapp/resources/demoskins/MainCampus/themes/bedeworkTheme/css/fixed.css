@@ -998,6 +998,9 @@ div#footer a.rss {
   display: block;
   margin-bottom: 1em;
 }
+#page {
+  margin: 1em;
+}
 #footForms {
   float: right;
 }

@@ -23,6 +23,12 @@
         </li>
       </ul>
       <a id="rssRequest" class="rss" href="/feeder/showMain.rdo?skinName=list-rss" title="RSS feed">
+        <xsl:attribute name="href">
+          <xsl:choose>
+            <xsl:when test="$embedUrlBuilder = 'true'"><xsl:value-of select="$showPage"/>&amp;setappvar=page(urlbuilder)</xsl:when>
+            <xsl:otherwise><xsl:value-of select="$urlbuilder"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <img src="{$resourcesRoot}/images/feed-icon-14x14.png" alt="RSS Feed Icon" />
       </a>
     </xsl:if>

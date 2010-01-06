@@ -8,18 +8,26 @@
        /misc/showPage.rdo?setappvar=page(mypage) -->
 
   <xsl:template name="showPage">
-    <xsl:param name="page"/>
+    <xsl:param name="pageName"/>
     <!-- branch here by adding xsl:when statements -->
     <xsl:choose>
-      <xsl:when test="$page = 'urlbuilder'">
+      <xsl:when test="$pageName = 'urlbuilder'">
         <xsl:call-template name="urlbuilder"/>
       </xsl:when>
+      <xsl:otherwise>
+        <div id="page">
+          <xsl:copy-of select="$bwStr-Error-PageNotDefined"/>
+        </div>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
   <xsl:template name="urlbuilder">
     <!-- call the urlbuilder by its globally defined prefix -->
-    <iframe id="feedBuilder" src="{$urlbuilder}">
+    <iframe id="feedBuilder" src="{$urlbuilder}" width="1100" height="1800">
+      <p>
+        <xsl:copy-of select="$bwStr-Error-IframeUnsupported"/>
+      </p>
     </iframe>
   </xsl:template>
 

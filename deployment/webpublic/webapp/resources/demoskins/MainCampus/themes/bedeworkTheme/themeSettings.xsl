@@ -46,6 +46,14 @@
   <xsl:variable name="ongoingEventsShowForCollection">true</xsl:variable>
 
 
+  <!-- EMBED THE FEED URL AND WIDGET BUILDER? -->
+  <!-- If true, the urlbuilder will be rendered in an iframe.
+       If false, it will be treated as an external link.
+       The urlbuilder constructs filtered feeds (e.g. json, rss, xml)
+       and widgets and points to the cached feeder application for delivery. -->
+  <xsl:variable name="embedUrlBuilder">true</xsl:variable>
+
+
   <!-- JAVASCRIPT CONSTANTS -->
   <xsl:template name="themeJavascriptVariables">
     // URL for the header/logo area

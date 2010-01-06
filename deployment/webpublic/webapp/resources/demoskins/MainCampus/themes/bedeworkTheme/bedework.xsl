@@ -177,7 +177,9 @@
                         </xsl:call-template>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:copy-of select="$bwStr-Error-NoPage"/>
+                        <div id="page">
+                          <xsl:copy-of select="$bwStr-Error-NoPage"/>
+                        </div>
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:when>
