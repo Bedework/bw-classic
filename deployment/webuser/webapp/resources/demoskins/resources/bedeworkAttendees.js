@@ -1,4 +1,4 @@
-var options = {
+var bwAutoCompleteOptions = {
   minChars: 0,
   width: 310,
   matchContains: false,
@@ -45,5 +45,5 @@ var options = {
 
 // carddavUrl supplied in bedeworkProperties.js
 jQuery(document).ready(function($) {
-  $('#bwRaUri').autocomplete(carddavUrl, options)
+  $('#bwRaUri').autocomplete(carddavUrl, bwAutoCompleteOptions)
 });
