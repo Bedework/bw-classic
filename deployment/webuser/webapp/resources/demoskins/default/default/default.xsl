@@ -6619,6 +6619,7 @@
             </tr>
           </xsl:when>
         </xsl:choose>
+        <!-- 
         <tr>
           <td class="fieldname">
             <xsl:copy-of select="$bwStr-AtRe-Calendar"/>
@@ -6626,10 +6627,10 @@
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="not(guidcals/calendar)">
-              <!-- the event has not been added to a calendar, so this is the
-                   first request -->
+              <!- - the event has not been added to a calendar, so this is the
+                   first request - - >
 
-                <!-- the string "user/" should not be hard coded; fix this -->
+                <!- - the string "user/" should not be hard coded; fix this - - >
                 <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
                 <xsl:variable name="writableCalendars">
                   <xsl:value-of select="
@@ -6641,7 +6642,7 @@
                 </xsl:variable>
                 <xsl:choose>
                   <xsl:when test="$writableCalendars = 1">
-                    <!-- there is only 1 writable calendar, so find it by looking down both trees at once -->
+                    <!- - there is only 1 writable calendar, so find it by looking down both trees at once - - >
                     <xsl:variable name="newCalPath"><xsl:value-of select="/bedework/myCalendars//calendar[calType = '1' and
                              currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
                            currentAccess/current-user-privilege-set/privilege/write-content and
@@ -6663,9 +6664,9 @@
                   </xsl:when>
                   <xsl:otherwise>
                     <input type="hidden" name="newCalPath" id="bwNewCalPathField" value=""/>
-                    <!--
+                    <!- -
                       <xsl:if test="form/calendar/calType = '1'"><xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute></xsl:if>
-                    </input>-->
+                    </input>- - >
 
                     <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
 
@@ -6681,8 +6682,8 @@
                         </xsl:choose>
                       </xsl:if>
                       <xsl:text> </xsl:text>
-                      <!-- this final text element is required to avoid an empty
-                           span element which is improperly rendered in the browser -->
+                      <!- - this final text element is required to avoid an empty
+                           span element which is improperly rendered in the browser - - >
                     </span>
 
                     <xsl:call-template name="selectCalForEvent"/>
@@ -6692,13 +6693,13 @@
 
               </xsl:when>
               <xsl:otherwise>
-                <!-- the event exists in calendars already, so this is a
+                <!- - the event exists in calendars already, so this is a
                      subsequent follow-up.  Let the user choose which copies
                      of the event to update.  For now, we'll just list them
                      and add calPath request parameters.
 
                      This should be changed - we will only have one of these so
-                     the for-each is not needed -->
+                     the for-each is not needed - - >
                 <ul>
                   <xsl:for-each select="guidcals/calendar">
                     <li class="calendar">
@@ -6713,6 +6714,7 @@
             </xsl:choose>
           </td>
         </tr>
+        -->
         <xsl:if test="scheduleMethod != '8'">
           <tr>
             <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-Action"/></td>
