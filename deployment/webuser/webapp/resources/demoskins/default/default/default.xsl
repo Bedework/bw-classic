@@ -6585,7 +6585,6 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:copy-of select="$bwStr-AtRe-MeetingRequest"/>
-            <xsl:if test="guidcals/calendar"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-Update"/></xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </h2>
