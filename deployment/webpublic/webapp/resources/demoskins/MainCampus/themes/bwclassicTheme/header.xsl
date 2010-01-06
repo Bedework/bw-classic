@@ -8,8 +8,8 @@
       <tr>
         <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/images/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
-          <h2><xsl:copy-of select="$bwStr-HdBr-SchoolOfEng"/></h2>
-          <a href="http://www.youruniversityhere.edu/engineering/"><xsl:copy-of select="$bwStr-HdBr-SchoolOfEngHome"/></a> |
+          <h2><xsl:copy-of select="$bwStr-HdBr-PublicCalendar"/></h2>
+          <a href="{$privateCal}"><xsl:copy-of select="$bwStr-HdBr-PersonalCalendar"/></a> |
           <a href="http://www.youruniversityhere.edu"><xsl:copy-of select="$bwStr-HdBr-UniversityHome"/></a> |
           <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a>
         </td>
