@@ -70,6 +70,7 @@
                       <xsl:for-each select='categories/category'>"<xsl:value-of select='value'/>"<xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>
                     ],
                     "description" : "<xsl:value-of select='$strippedDescription'/>",
+                    "cost" : "<xsl:value-of select='cost'/>",
                     "xproperties" : [
                       <xsl:for-each select="xproperties/node()[name() != '']">
                       {
