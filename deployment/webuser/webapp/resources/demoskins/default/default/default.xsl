@@ -1873,6 +1873,7 @@
     </xsl:variable>
     <li>
       <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
+        <xsl:if test="scheduleMethod=3"><xsl:copy-of select="$bwStr-ScN-Re"/><xsl:text> </xsl:text></xsl:if>
         <xsl:value-of select="summary"/>
       </a>
     </li>
@@ -2505,8 +2506,7 @@
     <form name="eventForm" method="post" action="{$addEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="{$bwStr-AddE-Save}"/>
-          <input name="cancelled" type="submit" value="{$bwStr-AddE-Cancel}"/>
+          <xsl:apply-templates select="form" mode="addEditEventFormButtons" />
         </span>
         <xsl:choose>
           <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-AddE-AddTask"/></xsl:when>
@@ -2531,8 +2531,7 @@
     <form name="eventForm" method="post" action="{$updateEvent}" id="standardForm" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <h2>
         <span class="formButtons">
-          <input name="submit" type="submit" value="{$bwStr-EdtE-Save}"/>
-          <input name="cancelled" type="submit" value="{$bwStr-EdtE-Cancel}"/>
+          <xsl:apply-templates select="form" mode="addEditEventFormButtons" />
         </span>
         <xsl:choose>
           <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-EdtE-EditTask"/></xsl:when>
@@ -3960,20 +3959,23 @@
     </div>
 
     <div class="eventSubmitButtons">
-      <xsl:choose>
-        <xsl:when test="form/scheduleMethod = '2'">
-          <input name="submit" type="submit" value="{$bwStr-AEEF-Save}"/>
-          <!-- the following test is not good - will need to fix -->
-          <xsl:if test="form/organizerSchedulingObject">
-            <input name="submitAndSend" type="submit" value="{$bwStr-AEEF-SaveAndSendInvites}"/>
-          </xsl:if>
-        </xsl:when>
-        <xsl:otherwise>
-          <input name="submit" type="submit" value="{$bwStr-AEEF-Save}"/>
-        </xsl:otherwise>
-      </xsl:choose>
-      <input name="cancelled" type="submit" value="{$bwStr-AEEF-Cancel}"/>
+      <xsl:apply-templates select="form" mode="addEditEventFormButtons" />
     </div>
+  </xsl:template>
+  
+  <xsl:template match="form" mode="addEditEventFormButtons">
+    <xsl:choose>
+      <!-- the following test on the organizerSchedulingObject is not good - will need to fix -->
+      <xsl:when test="scheduleMethod = '2' and organizerSchedulingObject">
+        <input name="submitAndSend" type="submit" value="{$bwStr-AEEF-SaveAndSendInvites}"/>
+        <!-- dissalow: at the moment there's no way to send invitations after the first save
+        <input name="submit" type="submit" value="{$bwStr-AEEF-SaveDraft}"/> -->
+      </xsl:when>
+      <xsl:otherwise>
+        <input name="submit" type="submit" value="{$bwStr-AEEF-Save}"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <input name="cancelled" type="submit" value="{$bwStr-AEEF-Cancel}"/>
   </xsl:template>
 
   <xsl:template match="val" mode="weekMonthYearNumbers">

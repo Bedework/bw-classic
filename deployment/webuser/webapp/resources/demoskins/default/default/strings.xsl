@@ -242,15 +242,11 @@
   <xsl:variable name="bwStr-AddE-AddTask">Add Task</xsl:variable>
   <xsl:variable name="bwStr-AddE-AddEvent">Add Event</xsl:variable>
   <xsl:variable name="bwStr-AddE-AddMeeting">Add Meeting</xsl:variable>
-  <xsl:variable name="bwStr-AddE-Save">save</xsl:variable>
-  <xsl:variable name="bwStr-AddE-Cancel">cancel</xsl:variable>
 
   <!--  <xsl:template match="formElements" mode="editEvent" -->
   <xsl:variable name="bwStr-EdtE-EditTask">Edit task</xsl:variable>
   <xsl:variable name="bwStr-EdtE-EditEvent">Edit Event</xsl:variable>
   <xsl:variable name="bwStr-EdtE-EditMeeting">Edit Meeting</xsl:variable>
-  <xsl:variable name="bwStr-EdtE-Save">save</xsl:variable>
-  <xsl:variable name="bwStr-EdtE-Cancel">cancel</xsl:variable>
 
   <!--  <xsl:template match="formElements" mode="eventForm" -->
   <xsl:variable name="bwStr-AEEF-Delete">Delete</xsl:variable>
@@ -388,8 +384,9 @@
   <xsl:variable name="bwStr-AEEF-ChangeMyStatus">change my status</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ScheduleThisTask">schedule this task with other users</xsl:variable>
   <xsl:variable name="bwStr-AEEF-MakeIntoMeeting">make into meeting - invite attendees</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Save">Save</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-SaveAndSendInvites">save &amp; send invitations</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Save">save</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-SaveDraft">save draft</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-SaveAndSendInvites">send</xsl:variable>
 
   <!-- xsl:template match="val" mode="weekMonthYearNumbers" -->
 
@@ -991,6 +988,8 @@
   <xsl:variable name="bwStr-ScAF-FreeBusyReqs">free-busy requests</xsl:variable>
   <xsl:variable name="bwStr-ScAF-Update">update</xsl:variable>
 
+  <!--  xsl:template match="event" mode="schedNotifications" -->
+  <xsl:variable name="bwStr-ScN-Re">Re:</xsl:variable>
 
   <!--  xsl:template name="searchResult" -->
   <xsl:variable name="bwStr-Srch-Search">Search:</xsl:variable>
