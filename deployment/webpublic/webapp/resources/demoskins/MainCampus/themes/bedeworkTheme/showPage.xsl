@@ -24,7 +24,7 @@
 
   <xsl:template name="urlbuilder">
     <!-- call the urlbuilder by its globally defined prefix -->
-    <iframe id="feedBuilder" src="{$urlbuilder}" width="1100" height="1800">
+    <iframe id="feedBuilder" src="{$urlbuilder}" width="790" height="2200">
       <p>
         <xsl:copy-of select="$bwStr-Error-IframeUnsupported"/>
       </p>
