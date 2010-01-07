@@ -422,7 +422,8 @@
           <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');"
              onclick="return validateStep1();">
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -434,16 +435,19 @@
       <div id="bwHelp-Location" class="invisible">
         <div class="navButtons">
           <a href="javascript:show('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a> |
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a> |
           <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');"
              onclick="return validateStep2();">
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -455,16 +459,19 @@
       <div id="bwHelp-Contact" class="invisible">
         <div class="navButtons">
           <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a> |
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a> |
           <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');"
              onclick="return validateStep3();">
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -477,15 +484,18 @@
         <!-- this tab is now "topical areas - we will leave the ids named "categories" for now. -->
         <div class="navButtons">
           <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories');">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a> |
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a> |
           <a href="javascript:show('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories'); ">
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -497,16 +507,20 @@
       <div id="bwHelp-Review" class="invisible">
         <div class="navButtons">
           <a href="javascript:show('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories'); hide('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); ">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a>
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a>
           <span class="hidden">
             <!-- this is here just to take up the appropriate space  -->
-            <xsl:text> </xsl:text>|<xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>|<xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Next"/>
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -1025,7 +1039,7 @@
             <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-PleaseLimitContacts"/></span>
           </p>
           <p>
-            <label for="commentContactPhone"><em><xsl:copy-of select="$bwStr-FoEl-Phone"/>Phone:</em> </label>
+            <label for="commentContactPhone"><em><xsl:copy-of select="$bwStr-FoEl-Phone"/></em> </label>
             <input type="text" name="commentContactPhone">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']"/></xsl:attribute>
             </input>
@@ -1065,7 +1079,7 @@
         </p>
         <div class="subForm">
           <p>
-            <label for="commentCategories">xsl:copy-of select="$bwStr-FoEl-TypeOfEvent"/><xsl:text> </xsl:text></label>
+            <label for="commentCategories"><xsl:copy-of select="$bwStr-FoEl-TypeOfEvent"/><xsl:text> </xsl:text></label>
             <input type="text" name="commentCategories" size="80">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:attribute>
             </input>
@@ -1157,7 +1171,8 @@
           <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details');"
              onclick="return validateStep1();">
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -1168,16 +1183,19 @@
       <div id="bwBottomNav-Location" class="invisible">
         <div class="navButtons">
           <a href="javascript:show('bwEventTab-Details','bwHelp-Details','bwBottomNav-Details'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a> |
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a> |
           <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location');"
              onclick="return validateStep2();">
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -1188,16 +1206,19 @@
       <div id="bwBottomNav-Contact" class="invisible">
         <div class="navButtons">
           <a href="javascript:show('bwEventTab-Location','bwHelp-Location','bwBottomNav-Location'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a> |
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a> |
           <a href="javascript:show('bwEventTab-Categories','bwHelp-Categories','bwBottomNav-Categories'); hide('bwHelp-Contact','bwEventTab-Contact','bwBottomNav-Contact');"
              onclick="return validateStep3();">
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -1208,16 +1229,19 @@
       <div id="bwBottomNav-Categories" class="invisible">
         <div class="navButtons">
           <a href="javascript:show('bwEventTab-Contact','bwHelp-Contact','bwBottomNav-Contact'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories');">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a> |
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a> |
           <a href="javascript:show('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); hide('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories');">
             <!-- displayReview('standardForm','bwEventSubmitReview',1) -->
             <xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
@@ -1228,15 +1252,19 @@
       <div id="bwBottomNav-Review" class="invisible">
         <div class="navButtons">
           <a href="javascript:show('bwHelp-Categories','bwEventTab-Categories','bwBottomNav-Categories'); hide('bwHelp-Review','bwEventTab-Review','bwBottomNav-Review'); ">
-            <img alt="previous"
+            <img alt="{$bwStr-FoEl-Previous}"
               src="{$resourcesRoot}/resources/arrowLeft.gif"
               width="13"
               height="13"
               border="0"/>
-          <xsl:copy-of select="$bwStr-FoEl-Previous"/></a>
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Previous"/>
+          </a>
           <span class="hidden">
-            <xsl:text> </xsl:text>|<xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-Next"/>
-            <img alt="previous"
+            <xsl:text> </xsl:text>|<xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-FoEl-Next"/>
+            <xsl:text> </xsl:text>
+            <img alt="{$bwStr-FoEl-Next}"
               src="{$resourcesRoot}/resources/arrowRight.gif"
               width="13"
               height="13"
