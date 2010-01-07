@@ -23,6 +23,13 @@
         <xsl:with-param name="replacement" select='"\&apos;"'/>
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="aposStrippedContactName">
+      <xsl:call-template name="replace">
+        <xsl:with-param name="string" select="contact/name"/>
+        <xsl:with-param name="pattern" select='"&apos;"'/>
+        <xsl:with-param name="replacement" select='"\&apos;"'/>
+      </xsl:call-template>
+    </xsl:variable>
     <!-- second, strip line breaks -->
     <xsl:variable name="strippedSummary" select='translate($aposStrippedSummary,"&#xA;"," ")'/>
     <xsl:variable name="strippedDescription" select='translate($aposStrippedDescription,"&#xA;"," ")'/>
@@ -60,6 +67,12 @@
                     "location" : {
                       "address" : "<xsl:value-of select="$strippedLocAddress"/>",
                       "link" : "<xsl:value-of select='location/link'/>"
+                    },
+                    "contact" : {
+                      "name" : "<xsl:value-of select="$aposStrippedContactName"/>",
+                      "phone" : "<xsl:value-of select="contact/phone"/>",<!--
+                      "email" : "<xsl:value-of select="contact/email"/>", -->
+                      "link" : "<xsl:value-of select='contact/link'/>"
                     },
                     "calendar" : {
                       "name" : "<xsl:value-of select='calendar/name'/>",
