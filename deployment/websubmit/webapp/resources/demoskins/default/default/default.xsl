@@ -84,8 +84,8 @@
   <xsl:variable name="gotoEditEvent" select="/bedework/urlPrefixes/event/gotoEditEvent"/>
   <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/event/updateEvent"/>
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/event/delEvent"/>
-  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload/a/@href"/>
-  <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload/a/@href"/>
+  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload"/>
+  <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload"/>
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
