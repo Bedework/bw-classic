@@ -88,12 +88,12 @@
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/event/addEvent"/>
-  <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent/a/@href"/>
-  <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent/a/@href"/>
+  <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent"/>
+  <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent"/>
   <xsl:variable name="event-initMeeting" select="/bedework/urlPrefixes/event/initMeeting"/>
-  <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete/a/@href"/>
-  <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess/a/@href"/>
-  <!-- <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess/a/@href"/>-->
+  <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete"/>
+  <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess"/>
+  <!-- <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess"/>-->
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
   <xsl:variable name="gotoEditEvent" select="/bedework/urlPrefixes/event/gotoEditEvent"/>
   <xsl:variable name="updateEvent" select="/bedework/urlPrefixes/event/updateEvent"/>
@@ -101,63 +101,64 @@
   <xsl:variable name="delInboxEvent" select="/bedework/urlPrefixes/event/delInboxEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
   <!-- locations -->
-  <xsl:variable name="location-initAdd" select="/bedework/urlPrefixes/location/initAdd/a/@href"/>
-  <xsl:variable name="location-initUpdate" select="/bedework/urlPrefixes/location/initUpdate/a/@href"/>
-  <xsl:variable name="location-fetchForUpdate" select="/bedework/urlPrefixes/location/fetchForUpdate/a/@href"/>
-  <xsl:variable name="location-update" select="/bedework/urlPrefixes/location/update/a/@href"/>
-  <xsl:variable name="location-delete" select="/bedework/urlPrefixes/location/delete/a/@href"/>
+  <xsl:variable name="location-initAdd" select="/bedework/urlPrefixes/location/initAdd"/>
+  <xsl:variable name="location-initUpdate" select="/bedework/urlPrefixes/location/initUpdate"/>
+  <xsl:variable name="location-fetchForUpdate" select="/bedework/urlPrefixes/location/fetchForUpdate"/>
+  <xsl:variable name="location-update" select="/bedework/urlPrefixes/location/update"/>
+  <xsl:variable name="location-delete" select="/bedework/urlPrefixes/location/delete"/>
   <!-- categories -->
-  <xsl:variable name="category-initAdd" select="/bedework/urlPrefixes/category/initAdd/a/@href"/>
-  <xsl:variable name="category-initUpdate" select="/bedework/urlPrefixes/category/initUpdate/a/@href"/>
-  <xsl:variable name="category-fetchForUpdate" select="/bedework/urlPrefixes/category/fetchForUpdate/a/@href"/>
-  <xsl:variable name="category-update" select="/bedework/urlPrefixes/category/update/a/@href"/>
-  <xsl:variable name="category-delete" select="/bedework/urlPrefixes/category/delete/a/@href"/>
+  <xsl:variable name="category-initAdd" select="/bedework/urlPrefixes/category/initAdd"/>
+  <xsl:variable name="category-initUpdate" select="/bedework/urlPrefixes/category/initUpdate"/>
+  <xsl:variable name="category-fetchForUpdate" select="/bedework/urlPrefixes/category/fetchForUpdate"/>
+  <xsl:variable name="category-update" select="/bedework/urlPrefixes/category/update"/>
+  <xsl:variable name="category-delete" select="/bedework/urlPrefixes/category/delete"/>
   <!-- calendars -->
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars"/>
-  <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch/a/@href"/>
-  <xsl:variable name="calendar-fetchDescriptions" select="/bedework/urlPrefixes/calendar/fetchDescriptions/a/@href"/>
-  <xsl:variable name="calendar-initAdd" select="/bedework/urlPrefixes/calendar/initAdd/a/@href"/>
-  <xsl:variable name="calendar-initAddExternal" select="/bedework/urlPrefixes/calendar/initAddExternal/a/@href"/>
-  <xsl:variable name="calendar-initAddAlias" select="/bedework/urlPrefixes/calendar/initAddAlias/a/@href"/>
-  <xsl:variable name="calendar-initAddPublicAlias" select="/bedework/urlPrefixes/calendar/initAddPublicAlias/a/@href"/>
-  <xsl:variable name="calendar-delete" select="/bedework/urlPrefixes/calendar/delete/a/@href"/>
-  <xsl:variable name="calendar-fetchForDisplay" select="/bedework/urlPrefixes/calendar/fetchForDisplay/a/@href"/>
-  <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate/a/@href"/>
-  <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update/a/@href"/>
-  <!-- <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess/a/@href"/>-->
-  <xsl:variable name="calendar-trash" select="/bedework/urlPrefixes/calendar/trash/a/@href"/>
-  <xsl:variable name="calendar-emptyTrash" select="/bedework/urlPrefixes/calendar/emptyTrash/a/@href"/>
-  <xsl:variable name="calendar-listForExport" select="/bedework/urlPrefixes/calendar/listForExport/a/@href"/>
+  <xsl:variable name="calendar-fetch" select="/bedework/urlPrefixes/calendar/fetch"/>
+  <xsl:variable name="calendar-fetchDescriptions" select="/bedework/urlPrefixes/calendar/fetchDescriptions"/>
+  <xsl:variable name="calendar-initAdd" select="/bedework/urlPrefixes/calendar/initAdd"/>
+  <xsl:variable name="calendar-initAddExternal" select="/bedework/urlPrefixes/calendar/initAddExternal"/>
+  <xsl:variable name="calendar-initAddAlias" select="/bedework/urlPrefixes/calendar/initAddAlias"/>
+  <xsl:variable name="calendar-initAddPublicAlias" select="/bedework/urlPrefixes/calendar/initAddPublicAlias"/>
+  <xsl:variable name="calendar-delete" select="/bedework/urlPrefixes/calendar/delete"/>
+  <xsl:variable name="calendar-fetchForDisplay" select="/bedework/urlPrefixes/calendar/fetchForDisplay"/>
+  <xsl:variable name="calendar-fetchForUpdate" select="/bedework/urlPrefixes/calendar/fetchForUpdate"/>
+  <xsl:variable name="calendar-update" select="/bedework/urlPrefixes/calendar/update"/>
+  <!-- <xsl:variable name="calendar-setAccess" select="/bedework/urlPrefixes/calendar/setAccess"/>-->
+  <xsl:variable name="calendar-trash" select="/bedework/urlPrefixes/calendar/trash"/>
+  <xsl:variable name="calendar-emptyTrash" select="/bedework/urlPrefixes/calendar/emptyTrash"/>
+  <xsl:variable name="calendar-listForExport" select="/bedework/urlPrefixes/calendar/listForExport"/>
   <xsl:variable name="calendar-setPropsInGrid" select="/bedework/urlPrefixes/calendar/setPropsInGrid"/>
   <xsl:variable name="calendar-setPropsInList" select="/bedework/urlPrefixes/calendar/setPropsInList"/>
   <!-- subscriptions -->
-  <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu/a/@href"/>
-  <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch/a/@href"/>
-  <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate/a/@href"/>
-  <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd/a/@href"/>
-  <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe/a/@href"/>
-  <xsl:variable name="subscriptions-inaccessible" select="/bedework/urlPrefixes/subscriptions/inaccessible/a/@href"/>
+  <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu"/>
+  <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch"/>
+  <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate"/>
+  <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd"/>
+  <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe"/>
+  <xsl:variable name="subscriptions-inaccessible" select="/bedework/urlPrefixes/subscriptions/inaccessible"/>
   <!-- preferences -->
-  <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate/a/@href"/>
-  <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update/a/@href"/>
-  <xsl:variable name="prefs-fetchSchedulingForUpdate" select="/bedework/urlPrefixes/prefs/fetchSchedulingForUpdate/a/@href"/>
-  <!-- <xsl:variable name="prefs-setAccess" select="/bedework/urlPrefixes/prefs/setAccess/a/@href"/>-->
-  <xsl:variable name="prefs-updateSchedulingPrefs" select="/bedework/urlPrefixes/prefs/updateSchedulingPrefs/a/@href"/>
+  <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate"/>
+  <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update"/>
+  <xsl:variable name="prefs-fetchSchedulingForUpdate" select="/bedework/urlPrefixes/prefs/fetchSchedulingForUpdate"/>
+  <!-- <xsl:variable name="prefs-setAccess" select="/bedework/urlPrefixes/prefs/setAccess"/>-->
+  <xsl:variable name="prefs-updateSchedulingPrefs" select="/bedework/urlPrefixes/prefs/updateSchedulingPrefs"/>
   <!-- scheduling -->
-  <xsl:variable name="showInbox" select="/bedework/urlPrefixes/schedule/showInbox/a/@href"/>
-  <xsl:variable name="showOutbox" select="/bedework/urlPrefixes/schedule/showOutbox/a/@href"/>
-  <xsl:variable name="schedule-initAttendeeRespond" select="/bedework/urlPrefixes/schedule/initAttendeeRespond/a/@href"/>
-  <xsl:variable name="schedule-attendeeRespond" select="/bedework/urlPrefixes/schedule/attendeeRespond/a/@href"/>
-  <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply/a/@href"/>
-  <xsl:variable name="schedule-initAttendeeUpdate" select="/bedework/urlPrefixes/schedule/initAttendeeUpdate/a/@href"/>
-  <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply/a/@href"/>
-  <xsl:variable name="schedule-processRefresh" select="/bedework/urlPrefixes/schedule/processRefresh/a/@href"/>
-  <xsl:variable name="schedule-refresh" select="/bedework/urlPrefixes/schedule/refresh/a/@href"/>
+  <xsl:variable name="showInbox" select="/bedework/urlPrefixes/schedule/showInbox"/>
+  <xsl:variable name="showOutbox" select="/bedework/urlPrefixes/schedule/showOutbox"/>
+  <xsl:variable name="schedule-initAttendeeRespond" select="/bedework/urlPrefixes/schedule/initAttendeeRespond"/>
+  <xsl:variable name="schedule-attendeeRespond" select="/bedework/urlPrefixes/schedule/attendeeRespond"/>
+  <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply"/>
+  <xsl:variable name="schedule-initAttendeeUpdate" select="/bedework/urlPrefixes/schedule/initAttendeeUpdate"/>
+  <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply"/>
+  <xsl:variable name="schedule-clearReply" select="/bedework/urlPrefixes/schedule/clearReply"/>
+  <xsl:variable name="schedule-processRefresh" select="/bedework/urlPrefixes/schedule/processRefresh"/>
+  <xsl:variable name="schedule-refresh" select="/bedework/urlPrefixes/schedule/refresh"/>
   <!-- misc (mostly import and export) -->
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export"/>
   <xsl:variable name="calendar-export" select="/bedework/urlPrefixes/calendar/export"/>
-  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload/a/@href"/>
-  <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload/a/@href"/>
+  <xsl:variable name="initUpload" select="/bedework/urlPrefixes/misc/initUpload"/>
+  <xsl:variable name="upload" select="/bedework/urlPrefixes/misc/upload"/>
   <!-- search -->
   <xsl:variable name="search" select="/bedework/urlPrefixes/search/search"/>
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next"/>
@@ -167,8 +168,8 @@
   <xsl:variable name="initEventAlarm" select="/bedework/urlPrefixes/alarm/initEventAlarm"/>
   <xsl:variable name="setAlarm" select="/bedework/urlPrefixes/alarm/setAlarm"/>
   <!-- free/busy -->
-  <xsl:variable name="freeBusy-fetch" select="/bedework/urlPrefixes/freeBusy/fetch/a/@href"/>
-  <!-- <xsl:variable name="freeBusy-setAccess" select="/bedework/urlPrefixes/freeBusy/setAccess/a/@href"/>-->
+  <xsl:variable name="freeBusy-fetch" select="/bedework/urlPrefixes/freeBusy/fetch"/>
+  <!-- <xsl:variable name="freeBusy-setAccess" select="/bedework/urlPrefixes/freeBusy/setAccess"/>-->
 
   <!-- URL of the web application - includes web context -->
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
@@ -2483,6 +2484,14 @@
             <xsl:for-each select="comments/comment">
               <p><xsl:value-of select="value"/></p>
             </xsl:for-each>
+          </td>
+        </tr>
+      </xsl:if>
+      <xsl:if test="scheduleMethod = 3 and calendar/name = 'Inbox'">
+        <tr>
+          <td class="fieldname"></td>
+          <td class="fieldval">
+            <input name="submit" type="button" value="{$bwStr-AEEF-Clear}" onclick="window.location='{$schedule-clearReply}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}'"/>
           </td>
         </tr>
       </xsl:if>
