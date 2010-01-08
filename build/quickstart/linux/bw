@@ -241,19 +241,19 @@ if [ "$1" = "-zoneinfo" ] ; then
 fi
 
 if [ "$1" = "-buildwebcache" ] ; then
-  cd $QUICKSTART_HOME/cachedfeeder-1.0
+  cd $QUICKSTART_HOME/cachedfeeder
   ./buildWebCache
   exit
 fi
 
 if [ "$1" = "-deploywebcache" ] ; then
-   cd $QUICKSTART_HOME/cachedfeeder-1.0
+   cd $QUICKSTART_HOME/cachedfeeder
   ./deployWebCache
   exit
 fi
 
 if [ "$1" = "-deployurlbuilder" ] ; then
-   cd $QUICKSTART_HOME/cachedfeeder-1.0/
+   cd $QUICKSTART_HOME/cachedfeeder
   ./deployUrlBuilder
   exit
 fi
