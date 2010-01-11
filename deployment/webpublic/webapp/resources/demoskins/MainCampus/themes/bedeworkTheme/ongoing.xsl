@@ -9,9 +9,9 @@
     </h3>
     <ul class="eventList">
       <xsl:choose>
-        <xsl:when test="/bedework/eventscalendar//event[categories/category[value = $ongoingEventsCatName]]">
+        <xsl:when test="/bedework/eventscalendar//event[categories/category[uid = $ongoingEventsCatUid]]">
           <xsl:for-each
-            select="/bedework/eventscalendar/year/month/week/day/event[categories/category[value = $ongoingEventsCatName]]">
+            select="/bedework/eventscalendar/year/month/week/day/event[categories/category[uid = $ongoingEventsCatUid]]">
             <xsl:sort select="start/unformatted" order="ascending" data-type="number" />
             <xsl:sort select="id" data-type="number" />
             <xsl:variable name="lastId" select="id" />

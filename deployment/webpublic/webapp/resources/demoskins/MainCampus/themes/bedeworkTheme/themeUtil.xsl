@@ -14,7 +14,7 @@
         <xsl:choose>
           <xsl:when test="$ongoingEventsAlwaysDisplayed = 'true'">true</xsl:when>
           <xsl:when test="$ongoingEventsUseCategory = 'true' and
-                          /bedework/eventscalendar//event/categories//category/value = $ongoingEventsCatName">true</xsl:when>
+                          /bedework/eventscalendar//event/categories//category/uid = $ongoingEventsCatUid">true</xsl:when>
           <xsl:otherwise>false</xsl:otherwise>
         </xsl:choose>
       </xsl:when>
