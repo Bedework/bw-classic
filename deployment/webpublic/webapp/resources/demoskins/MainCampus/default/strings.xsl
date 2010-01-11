@@ -132,6 +132,7 @@
   <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToGoogleCalendar">Add to Google Calendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToFacebook">Add to Facebook</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-ShareThis">Share This - must be configured explicitly for your site.</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Where">Where:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Complete">Complete:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-ORGANIZER">Organizer:</xsl:variable>

@@ -54,7 +54,7 @@
         </xsl:when>
         <xsl:when test="$ongoingEventsEnabled = 'true'
                and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))
-               and not(/bedework/eventscalendar/year/month/week/day/event[not(categories/category/value = $ongoingEventsCatName)])">
+               and not(/bedework/eventscalendar/year/month/week/day/event[not(categories/category/uid = $ongoingEventsCatUid)])">
             <tr>
               <td class="noEventsCell">
                 <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplayWithOngoing"/>
@@ -65,7 +65,7 @@
           <xsl:choose>
             <xsl:when test="$ongoingEventsEnabled = 'true'
                    and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))">
-              <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[event[not(categories/category/value = $ongoingEventsCatName)]]" mode="dayInList"/>
+              <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[event[not(categories/category/uid = $ongoingEventsCatUid)]]" mode="dayInList"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[event]" mode="dayInList"/>
@@ -88,7 +88,7 @@
       <xsl:choose>
        <xsl:when test="$ongoingEventsEnabled = 'true'
                   and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))">
-         <xsl:apply-templates select="event[not(categories/category/value = $ongoingEventsCatName)]" mode="eventInList"/>
+         <xsl:apply-templates select="event[not(categories/category/uid = $ongoingEventsCatUid)]" mode="eventInList"/>
        </xsl:when>
        <xsl:otherwise>
          <xsl:apply-templates select="event" mode="eventInList"/>
@@ -165,23 +165,15 @@
 
 
     <!-- Event Description Column -->
-    <xsl:variable name="descriptionClass">
-      <xsl:choose>
-        <xsl:when test="status='CANCELLED'">description bwStatusCancelled</xsl:when>
-        <xsl:when test="status='TENTATIVE'">description bwStatusTentative</xsl:when>
-        <xsl:otherwise><xsl:copy-of select="$bwStr-LsVw-Description"/></xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <!-- Subscription styles.
-         These are set in the add/modify subscription forms in the admin client;
-         if present, these override the background-color set by eventClass. The
-         subscription styles should not be used for canceled events (tentative is ok). -->
-    <xsl:variable name="subscriptionClass">
-      <xsl:if test="status != 'CANCELLED'">
-        <xsl:apply-templates select="categories" mode="customEventColor"/>
-      </xsl:if>
-    </xsl:variable>
-    <td class="{$descriptionClass} {$subscriptionClass}">
+    
+    <td>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="status='CANCELLED'">description bwStatusCancelled</xsl:when>
+          <xsl:when test="status='TENTATIVE'">description bwStatusTentative</xsl:when>
+          <xsl:otherwise><xsl:copy-of select="$bwStr-LsVw-Description"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
 
       <ul>
         <li class="titleEvent">
@@ -194,28 +186,41 @@
             <xsl:variable name="gText" select="summary"/>
             <xsl:variable name="gDetails" select="summary"/>
 
-            <a href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
-              <img title="{$bwStr-SgEv-AddToGoogleCalendar}" src="{$resourcesRoot}/images/gcal_small.gif" alt="Add to Google Calendar"/>
-            </a>
-            <xsl:choose>
-              <xsl:when test="string-length($recurrenceId)">
-                <a href="http://www.facebook.com/share.php?u={$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;t={$gText}" title="{$bwStr-SgEv-AddToFacebook}">
-                  <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="{$bwStr-SgEv-AddToFacebook}"/>
-                </a>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="http://www.facebook.com/share.php?u={$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;t={$gText}" title="{$bwStr-SgEv-AddToFacebook}">
-                  <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="{$bwStr-SgEv-AddToFacebook}"/>
-                </a>
-              </xsl:otherwise>
-            </xsl:choose>
-            <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
-              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
-            </a>
-            <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-Download}">
-              <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" alt="{$bwStr-SgEv-Download}"/>
-            </a>
+            <xsl:if test="$eventIconDownloadIcs = 'true'">
+              <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+              <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-Download}">
+                <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" alt="{$bwStr-SgEv-Download}"/>
+              </a>
+            </xsl:if>
+            <xsl:if test="$eventIconAddToMyCal = 'true'">
+              <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
+                <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
+              </a>
+            </xsl:if>
+            <xsl:if test="$eventIconFacebook = 'true'">
+              <xsl:choose>
+                <xsl:when test="string-length($recurrenceId)">
+                  <a href="http://www.facebook.com/share.php?u={$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;t={$gText}" title="{$bwStr-SgEv-AddToFacebook}">
+                    <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="{$bwStr-SgEv-AddToFacebook}"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="http://www.facebook.com/share.php?u={$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;t={$gText}" title="{$bwStr-SgEv-AddToFacebook}">
+                    <img title="Add to Facebook" src="{$resourcesRoot}/images/Facebook_Badge_small.gif" alt="{$bwStr-SgEv-AddToFacebook}"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+            <xsl:if test="$eventIconGoogleCal = 'true'">
+              <a href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
+                <img title="{$bwStr-SgEv-AddToGoogleCalendar}" src="{$resourcesRoot}/images/gcal_small.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}"/>
+              </a>
+            </xsl:if>
+            <xsl:if test="$eventIconShareThis = 'true'">
+              <a href="http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.6/ShareThis">
+                <img title="{$bwStr-SgEv-ShareThis}" src="{$resourcesRoot}/images/share-icon-16x16.png" alt="{$bwStr-SgEv-ShareThis}"/>
+              </a>
+            </xsl:if>
           </span>
 
           <!-- event title -->

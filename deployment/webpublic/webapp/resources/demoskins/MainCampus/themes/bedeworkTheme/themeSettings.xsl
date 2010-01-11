@@ -15,6 +15,35 @@
   <!-- FAVICON -->
   <!-- address bar icon -->
   <xsl:variable name="favicon"><xsl:value-of select="$resourcesRoot"/>/images/bedework.ico</xsl:variable>
+  
+  
+  <!-- EVENT ACTION ICONS -->
+  <!-- which services to include for event actions in list and detail view: -->
+  
+  <!-- download ics file -->
+  <xsl:variable name="eventIconDownloadIcs">true</xsl:variable>
+  
+  <!-- download event to my personal Bedework calendar ... use only
+       if you plan on running the Bedework personal client  --> 
+  <xsl:variable name="eventIconAddToMyCal">true</xsl:variable>
+  
+  <!-- add to Google calendar --> 
+  <xsl:variable name="eventIconGoogleCal">true</xsl:variable>
+  
+  <!-- add to Facebook... works once the site is hosted at 
+       an accessible web address --> 
+  <xsl:variable name="eventIconFacebook">true</xsl:variable> 
+  
+  <!-- "Share This" - included here as a suggestion only.  
+       To use the Share This service you must configure it
+       explicitly for your site.  You will need to update 
+       listEvents.xsl and event.xsl to include 
+       the javascript code expected. If you use the Share This
+       service, you will likely want to turn off the Facebook 
+       icon (above) as it is included in the service. 
+       See http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.6/ShareThis -->
+  <xsl:variable name="eventIconShareThis">true</xsl:variable> 
+    
 
   <!-- FEATURED EVENTS -->
   <!-- display the featured event images? -->
@@ -34,9 +63,12 @@
    you must set UseCategory for ongoing events to appear. -->
   <xsl:variable name="ongoingEventsEnabled">true</xsl:variable>
 
-  <!-- use the specified category to mark an event as ongoing -->
+  <!-- use the specified category to mark an event as ongoing.
+       the CatName is for reference and is optional. The CatUid 
+       is used for filtering out the ongoing events.  -->
   <xsl:variable name="ongoingEventsUseCategory">true</xsl:variable>
   <xsl:variable name="ongoingEventsCatName">sys/Ongoing</xsl:variable>
+  <xsl:variable name="ongoingEventsCatUid">402881e7-25b99d14-0125-b9a50c22-00000002</xsl:variable>
 
   <!-- always display sidebar, even if no events are ongoing? -->
   <xsl:variable name="ongoingEventsAlwaysDisplayed">true</xsl:variable>
