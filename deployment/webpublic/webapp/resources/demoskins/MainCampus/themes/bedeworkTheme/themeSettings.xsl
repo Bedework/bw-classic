@@ -3,18 +3,24 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
 
-  <!-- THEME SPECIFIC SETTINGS -->
+  <!-- BEDEWORK THEME SETTINGS -->
 
   <!-- URL of html resources (images, css, other html) for the current theme -->
   <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/themes/bedeworkTheme</xsl:variable>
 
+
+  <!-- ============================== -->
   <!-- Features for the current theme -->
+  <!-- ============================== -->
   <!-- Note: Set the global calendar suite preferences
        in the administrative web client (default view, default viewPeriod, etc) -->
+
 
   <!-- FAVICON -->
   <!-- address bar icon -->
   <xsl:variable name="favicon"><xsl:value-of select="$resourcesRoot"/>/images/bedework.ico</xsl:variable>
+  
+
   
   
   <!-- EVENT ACTION ICONS -->
@@ -44,6 +50,8 @@
        See http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.6/ShareThis -->
   <xsl:variable name="eventIconShareThis">true</xsl:variable> 
     
+    
+    
 
   <!-- FEATURED EVENTS -->
   <!-- Display the featured event images? -->
@@ -57,6 +65,8 @@
   <xsl:variable name="featuredEventsForCalList">false</xsl:variable>
 
 
+
+
   <!-- ONGOING EVENTS -->
   <!-- Use the ongoing events sidebar? -->
   <!-- If ongoing events sidebar is enabled,
@@ -65,15 +75,18 @@
 
   <!-- Use the specified category to mark an event as ongoing.  -->
   <xsl:variable name="ongoingEventsUseCategory">true</xsl:variable>
-  <!-- the following CatUid represents category "sys/Ongoing" -->
+  <!-- The following CatUid represents category "sys/Ongoing" -->
   <xsl:variable name="ongoingEventsCatUid">402881e7-25b99d14-0125-b9a50c22-00000002</xsl:variable>
 
-  <!-- always display sidebar, even if no events are ongoing? -->
+  <!-- Always display sidebar, even if no events are ongoing? -->
   <xsl:variable name="ongoingEventsAlwaysDisplayed">true</xsl:variable>
 
-  <!-- reveal ongoing events in the main event list
+  <!-- Reveal ongoing events in the main event list
        when a collection (e.g calendar "Exhibits") is directly selected? -->
   <xsl:variable name="ongoingEventsShowForCollection">true</xsl:variable>
+
+
+
 
 
   <!-- EMBED THE FEED URL AND WIDGET BUILDER? -->
@@ -84,6 +97,8 @@
   <xsl:variable name="embedUrlBuilder">true</xsl:variable>
 
 
+
+
   <!-- JAVASCRIPT CONSTANTS -->
   <xsl:template name="themeJavascriptVariables">
     // URL for the header/logo area
@@ -91,9 +106,11 @@
   </xsl:template>
 
 
+
+
   <!-- CUSTOM CONTENT: HEADER, LEFT COLUMN, FOOTER -->
-  <!-- The three templates below are pulled into the theme as
-       described and use internationalized strings
+  <!-- The three templates below are pulled into the theme 
+       and use internationalized strings
        (found in ../default/strings.xsl).
 
        If you plan on using only one language, you can safely
@@ -130,7 +147,7 @@
   </xsl:template>
 
   <!-- FOOTER TEXT/LINKS -->
-  <!-- show the skin select box in the footer?
+  <!-- Show the skin select box in the footer?
   You may also opt to remove the form in footer.xsl. -->
   <xsl:variable name="showFootForm">true</xsl:variable>
 
@@ -216,6 +233,7 @@
        </li>
      </ul>
    </xsl:template>
+
 
 
 
