@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<!-- ============= build classes build Targets ============
+     This is the ant build file for the builder classes for bedework.
+
+     Authors: Mike Douglass   douglm rpi.edu
+     =================================================================== -->
+
+<project name="bedework.build" default="build">
+  <property name="base.name" value="build"/>
+  <property name="lib.dir" location="${org.bedework.default.lib}"/>
+
+  <target name="init">
+  	<!--
+    <delete dir="${lib.dir}" />
+    <mkdir dir="${lib.dir}" />
+    -->
+
+    <dirname property="this.dir" file="${ant.file}"/>
+    <property name="source.home" location="${this.dir}/src"/>
+
+    <!-- ==================== Compilation Classpath ==================== -->
+
+    <path id="compile.classpath">
+      <fileset dir="${lib.dir}">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${this.dir}/quickstart/antlib">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${dist.home}">
+         <include name="*.jar"/>
+      </fileset>
+    </path>
+  </target>
+
+  <target name="build" depends="init"
+          description="Compile bedework deployutil classes">
+    <!-- ==================== Sources and classes ====================== -->
+
+    <fileset id="buildjar.java.sources" dir="${source.home}" >
+      <include name="org/bedework/*/*.java"/>
+    </fileset>
+
+    <patternset id="base.class.patternset">
+      <include name="org/bedework/*/*.class"/>
+    </patternset>
+
+    <ant antfile="${buildjar}" inheritRefs="true" target="build" />
+  </target>
+</project>

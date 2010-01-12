@@ -180,6 +180,9 @@
     <property name="org.bedework.deployment.base"
               location="${org.bedework.project.bedework}/deployment" />
 
+    <property name="org.bedework.build.jar"
+              location="${bin.home}/${org.bedework.build.jar.name}-${project.version}.jar" />
+
     <property name="org.bedework.deployutil.jar"
               location="${bin.home}/${org.bedework.deployutil.jar.name}-${project.version}.jar" />
   </target>
@@ -196,7 +199,7 @@
        "build" and "clean" targets for the project
        ================================================================= -->
 
-  <target name="build" depends="init.build,build.rpiutil,
+  <target name="build" depends="init.build,build.rpiutil,build.build,
                                 build.access,build.davutil,
                                 build.webdav,build.caldav,
                                 build.calendarapi,build.dumprestore,
@@ -665,6 +668,14 @@
   <!-- =================================================================
        Targets to build sub-components of this project.
        ================================================================= -->
+
+  <target name="build.build" depends="init"
+          description="builds the java build configuration component">
+    <ant antfile="${org.bedework.project.bedework}/build/build.xml" inheritrefs="true"
+           target="build" >
+      <property name="build.jar.file" location="${org.bedework.build.jar}" />
+    </ant>
+  </target>
 
   <target name="build.deployutil" depends="init"
           description="builds the deployutil component">

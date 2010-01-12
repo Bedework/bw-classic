@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copy the current trunk to a new location and adjust the externals property
+# Copy the current trunk to a new location and adjust the bedework externals property
 
 usage() {
   echo "This script will copy the trunk (or named location) to a new location and"
@@ -69,7 +69,8 @@ check() {
 }
 
 # ------------------------------------------------------------------
-# copyproject - copy a single project
+# copyproject - copy a single project. At the same time build up an
+#               externals property file
 #
 # par 1 - project name
 # par 2 - destination
@@ -81,8 +82,21 @@ copyproject() {
   if [ "${1}" = "buildTools" ]
   then
     echo "build/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "bwtzsvr" ]
+  then
+#      Not linked
+    echo ""
   elif [ "${1}" = "carddav" ]
   then
+#      Not linked
+    echo ""
+  elif [ "${1}" = "clientapp" ]
+  then
+#      Not linked
+    echo ""
+  elif [ "${1}" = "naming" ]
+  then
+#      Not linked
     echo ""
   elif [ "${1}" != "bedework" ]
   then
@@ -118,9 +132,11 @@ PROJECTS="$PROJECTS caldav"
 PROJECTS="$PROJECTS caldavTest"
 PROJECTS="$PROJECTS calendarapi"
 PROJECTS="$PROJECTS carddav"
+PROJECTS="$PROJECTS clientapp"
 PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
+PROJECTS="$PROJECTS naming"
 PROJECTS="$PROJECTS rpiutil"
 PROJECTS="$PROJECTS testsuite"
 PROJECTS="$PROJECTS webapps"

@@ -2,7 +2,7 @@
 
 <!-- ===================================================================
      This file is imported by buildwar.xml and adds a target
-        doPortal
+        doPlatform
      which will be invoked by the buildwar targets.
      =================================================================== -->
 
