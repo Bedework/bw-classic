@@ -397,7 +397,7 @@
       <body>
         <xsl:choose>
           <xsl:when test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
-            <xsl:attribute name="onload"><xsl:if test="recurrenceId != ''">initRXDates();</xsl:if>initXProperties();focusFirstElement();bwSetupDatePickers();</xsl:attribute>
+            <xsl:attribute name="onload"><xsl:if test="/bedework/formElements/recurrenceId = ''">initRXDates();</xsl:if>initXProperties();focusFirstElement();bwSetupDatePickers();</xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="onload">focusFirstElement();</xsl:attribute>
