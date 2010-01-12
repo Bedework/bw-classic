@@ -1153,13 +1153,17 @@ display: inline;
   padding: 4px 6px 4px 4px;
 }
 #bedework table.common table#attendees {
-  font-size: 0.9em;
 }
 #bedework table.common #attendees th {
-  padding: 0 0.5em 0 0;
+  padding: 2px 20px 2px 6px;
+  font-size: 0.9em;
 }
 #bedework table.common #attendees td {
-  padding: 0 0.5em 0 0;
+  padding: 2px 20px 2px 6px;
+  font-size: 1.1em;
+}
+#bedework table.common #attendees td.status {
+  font-weight: bold;
 }
 #bedework #recipientsAndAttendees {
   margin: 0;

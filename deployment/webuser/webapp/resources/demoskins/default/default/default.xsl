@@ -150,6 +150,7 @@
   <xsl:variable name="schedule-attendeeRespond" select="/bedework/urlPrefixes/schedule/attendeeRespond"/>
   <xsl:variable name="schedule-initAttendeeReply" select="/bedework/urlPrefixes/schedule/initAttendeeReply"/>
   <xsl:variable name="schedule-initAttendeeUpdate" select="/bedework/urlPrefixes/schedule/initAttendeeUpdate"/>
+  <xsl:variable name="schedule-changeStatus" select="/bedework/urlPrefixes/schedule/changeStatus"/>
   <xsl:variable name="schedule-processAttendeeReply" select="/bedework/urlPrefixes/schedule/processAttendeeReply"/>
   <xsl:variable name="schedule-clearReply" select="/bedework/urlPrefixes/schedule/clearReply"/>
   <xsl:variable name="schedule-processRefresh" select="/bedework/urlPrefixes/schedule/processRefresh"/>
@@ -2277,20 +2278,22 @@
           </td>
         </tr>
       </xsl:if>
-      <tr>
-        <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Description"/><xsl:text> </xsl:text></td>
-        <td class="fieldval">
-          <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
-            <xsl:variable name="bwImage"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:variable>
-            <img src="{$bwImage}" class="bwEventImage"/>
-          </xsl:if>
-          <xsl:call-template name="replace">
-            <xsl:with-param name="string" select="description"/>
-            <xsl:with-param name="pattern" select="'&#xA;'"/>
-            <xsl:with-param name="replacement"><br/></xsl:with-param>
-          </xsl:call-template>
-        </td>
-      </tr>
+      <xsl:if test="scheduleMethod != 3">
+        <tr>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Description"/><xsl:text> </xsl:text></td>
+          <td class="fieldval">
+            <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+              <xsl:variable name="bwImage"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:variable>
+              <img src="{$bwImage}" class="bwEventImage"/>
+            </xsl:if>
+            <xsl:call-template name="replace">
+              <xsl:with-param name="string" select="description"/>
+              <xsl:with-param name="pattern" select="'&#xA;'"/>
+              <xsl:with-param name="replacement"><br/></xsl:with-param>
+            </xsl:call-template>
+          </td>
+        </tr>
+      </xsl:if>
       <xsl:if test="status !='' and status != 'CONFIRMED'">
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-STATUS"/></td>
@@ -2360,7 +2363,7 @@
             <xsl:if test="not(organizerSchedulingObject)">
               <p>
                 <em>
-                  <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
+                  <a href="{$schedule-changeStatus}&amp;initUpdate=yes">
                     <xsl:copy-of select="$bwStr-SgEv-ChangeMyStatus"/>
                   </a>
                 </em>
@@ -3946,7 +3949,7 @@
             <xsl:when test="form/attendeeSchedulingObject">
               <p>
                 <em>
-                  <a href="{$schedule-initAttendeeUpdate}&amp;initUpdate=yes">
+                  <a href="{$schedule-changeStatus}&amp;initUpdate=yes">
                     <xsl:copy-of select="$bwStr-AEEF-ChangeMyStatus"/>
                   </a>
                 </em>
@@ -6958,6 +6961,7 @@
               <input type="text" name="locationAddress.value" value="" />
             </td>
           </tr>
+          <!-- hide ability to set comments in v.3.6 (will restore in v.3.7)
           <xsl:if test="scheduleMethod != '5'">
             <tr>
               <td class="fieldname"><xsl:copy-of select="$bwStr-AtRe-Comment"/></td>
@@ -6968,6 +6972,7 @@
               </td>
             </tr>
           </xsl:if>
+          -->
         </xsl:if>
         <tr>
           <td class="fieldname">&#160;</td>

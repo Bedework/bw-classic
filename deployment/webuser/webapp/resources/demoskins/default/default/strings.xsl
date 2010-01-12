@@ -387,7 +387,7 @@
   <xsl:variable name="bwStr-AEEF-Save">save</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SaveDraft">save draft</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SaveAndSendInvites">send</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Clear">clear</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Clear">clear message from Inbox</xsl:variable>
 
   <!-- xsl:template match="val" mode="weekMonthYearNumbers" -->
 
