@@ -139,7 +139,6 @@
       <xsl:when test="id='org.bedework.error.timezones.readerror'">
         Timzone error: could not read file.
       </xsl:when>
-
       <!-- things we cannot find -->
       <xsl:when test="id='org.bedework.client.error.unknown.attendee'">
           Unknown attendee <em><xsl:value-of select="param"/></em>
