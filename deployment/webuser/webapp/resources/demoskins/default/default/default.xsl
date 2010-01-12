@@ -209,7 +209,7 @@
             <xsl:attribute name="onload">focusElement('bwEventTitle');bwSetupDatePickers();</xsl:attribute>
           </xsl:when>
           <xsl:when test="/bedework/page = 'editEvent'">
-            <xsl:attribute name="onload">initRXDates();initXProperties();focusElement('bwEventTitle');bwSetupDatePickers();</xsl:attribute>
+            <xsl:attribute name="onload"><xsl:if test="recurrenceId != ''">initRXDates();</xsl:if>initXProperties();focusElement('bwEventTitle');bwSetupDatePickers();</xsl:attribute>
           </xsl:when>
           <xsl:when test="/bedework/page = 'attendees'">
             <xsl:attribute name="onload">focusElement('bwRaUri');</xsl:attribute>

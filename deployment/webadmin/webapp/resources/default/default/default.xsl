@@ -397,7 +397,7 @@
       <body>
         <xsl:choose>
           <xsl:when test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
-            <xsl:attribute name="onload">initRXDates();initXProperties();focusFirstElement();bwSetupDatePickers();</xsl:attribute>
+            <xsl:attribute name="onload"><xsl:if test="recurrenceId != ''">initRXDates();</xsl:if>initXProperties();focusFirstElement();bwSetupDatePickers();</xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="onload">focusFirstElement();</xsl:attribute>
@@ -463,6 +463,9 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='deleteCategoryConfirm'">
                   <xsl:call-template name="deleteCategoryConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='categoryReferenced'">
+                  <xsl:call-template name="categoryReferenced"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='calendarList' or
                                 /bedework/page='calendarDescriptions' or
@@ -3712,6 +3715,35 @@
 
   <xsl:template name="deleteCategoryConfirm">
     <h2><xsl:copy-of select="$bwStr-DeCC-CategoryDeleteOK"/></h2>
+
+
+    <table class="eventFormTable">
+      <tr>
+        <td class="fieldName">
+          <xsl:copy-of select="$bwStr-DeCC-Keyword"/>
+        </td>
+        <td>
+          <xsl:value-of select="/bedework/currentCategory/category/value"/>
+        </td>
+      </tr>
+      <tr class="optional">
+        <td>
+          <xsl:copy-of select="$bwStr-DeCC-Description"/>
+        </td>
+        <td>
+          <xsl:value-of select="/bedework/currentCategory/category/desc"/>
+        </td>
+      </tr>
+    </table>
+
+    <form action="{$category-delete}" method="post">
+      <input type="submit" name="updateCategory" value="{$bwStr-DeCC-YesDelete}"/>
+      <input type="submit" name="cancelled" value="{$bwStr-DeCC-NoCancel}"/>
+    </form>
+  </xsl:template>
+  
+  <xsl:template name="categoryReferenced">
+    <h2>Category Referenced by Events or Collections</h2>
 
 
     <table class="eventFormTable">
