@@ -124,7 +124,7 @@
         Cannot delete: the calendar is not empty.
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.referenced.category'">
-        Cannot delete: the category is referenced by events or calendars.
+        Cannot delete: the category is referenced by events or collections.
       </xsl:when>
       <xsl:when test="id='org.bedework.client.error.referenced.contact'">
         Cannot delete: the contact is referenced by events.
