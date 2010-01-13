@@ -177,7 +177,7 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-       <a id="linkToEvent" href="javascript:showLink('{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
+       <a id="linkToEvent" href="javascript:showLink('{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
        <xsl:copy-of select="$bwStr-SgEv-LinkToThisEvent"/>
      </a>
       <xsl:if test="status='CANCELLED'">
@@ -519,13 +519,13 @@
                   <xsl:when test="start/shortdate = end/shortdate and
                                   start/time = end/time">
                     <td class="{$dateRangeStyle} center" colspan="3">
-                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
+                      <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
                       </a>
                     </td>
                   </xsl:when>
                   <xsl:otherwise>
                     <td class="{$dateRangeStyle} right">
-                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
+                      <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
                       <xsl:choose>
                         <xsl:when test="start/allday = 'true' and parent::day/shortdate = start/shortdate">
                           <xsl:copy-of select="$bwStr-LsVw-Today"/>
@@ -541,10 +541,10 @@
                       </a>
                     </td>
                     <td class="{$dateRangeStyle} center">
-                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}"></a>
+                      <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html"></a>
                     </td>
                     <td class="{$dateRangeStyle} left">
-                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
+                      <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
                       <xsl:choose>
                         <xsl:when test="end/allday = 'true' and
                                         parent::day/shortdate = end/shortdate">
@@ -582,7 +582,7 @@
                   <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                   <xsl:choose>
                     <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                      <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
+                      <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
                         <strong>
                           <xsl:value-of select="summary"/>:
                         </strong>
@@ -619,7 +619,7 @@
                     </xsl:when>
                     <xsl:otherwise>
                       <!-- ><a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}"> -->
-                    <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
+                    <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
                         <xsl:value-of select="summary"/>
                         <xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                          -
@@ -684,7 +684,7 @@
 
                 <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsEv-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><em><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></em></xsl:if>
-                <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
+                <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
                 <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">  -->
                   <xsl:value-of select="summary"/>
                 </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
@@ -895,7 +895,7 @@
     </xsl:variable>
     <li>
       <!-- <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="{$eventClass} {$subscriptionClass}"> -->
-    <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}" class="{$eventClass} {$subscriptionClass}">
+    <a "href={$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html" class="{$eventClass} {$subscriptionClass}">
       <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-EvCG-CanceledColon"/><xsl:text> </xsl:text></xsl:if>
       <xsl:choose>
         <xsl:when test="start/shortdate != ../shortdate">

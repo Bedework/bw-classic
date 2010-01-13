@@ -163,7 +163,7 @@
 
    <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsEv-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
    <xsl:if test="status='TENTATIVE'"><em><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></em></xsl:if>
-   <a href="{$bwCacheHostUrl}/v1.0/event/list-html/{$recurrenceId}/{$guid}">
+   <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
      <xsl:value-of select="summary"/>
    </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
    <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
