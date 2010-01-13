@@ -3858,7 +3858,7 @@
                 <xsl:text> </xsl:text>
                 <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
                 <input type="button" name="rdate" value="{$bwStr-AEEF-AddRecurance}" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
-                <input type="button" name="exdate" value="{$bwStr-AEEF-AddException}" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
+                <!-- input type="button" name="exdate" value="{$bwStr-AEEF-AddException}" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/-->
                 <br class="clear"/>
                 <input type="hidden" name="rdates" value="" id="bwRdatesField" />
                 <!-- if there are no recurrence dates, the following table will show -->
@@ -3974,7 +3974,7 @@
       <xsl:apply-templates select="form" mode="addEditEventFormButtons" />
     </div>
   </xsl:template>
-  
+
   <xsl:template match="form" mode="addEditEventFormButtons">
     <xsl:choose>
       <!-- the following test on the organizerSchedulingObject is not good - will need to fix -->
@@ -6632,7 +6632,7 @@
             </tr>
           </xsl:when>
         </xsl:choose>
-        <!-- 
+        <!--
         <tr>
           <td class="fieldname">
             <xsl:copy-of select="$bwStr-AtRe-Calendar"/>

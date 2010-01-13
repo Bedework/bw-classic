@@ -215,7 +215,7 @@
   <xsl:variable name="bwStr-AEEF-TZid">TZid</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ExceptionDates">Exception Dates</xsl:variable>
   <xsl:variable name="bwStr-AEEF-NoExceptionDates">No exception dates</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-ExceptionDatesMayBeCreated">Exception dates may also be created by deleting an instance of a recurring event.</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ExceptionDatesMayBeCreated">Exception dates may be created by deleting an instance of a recurring event.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-AddRecurance">add recurrence</xsl:variable>
   <xsl:variable name="bwStr-AEEF-AddException">add exception</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Status">Status:</xsl:variable>
