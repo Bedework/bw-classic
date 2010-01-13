@@ -1185,6 +1185,25 @@ img.folderForAliasTree {
   text-align: right;
   padding-right: 2em;
 }
+#superUserMenu {
+  padding: 1em;
+  border: 1px solid #ccc;
+  font-size: 0.9em;
+}
+.suTitle {
+  padding: 4px 8px;
+  color: black;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-bottom: none;
+}
+#superUserMenu h4 {
+  margin: 0; 
+  padding: 0;
+}
+#superUserMenu ul {
+  margin-top: 0.5em; 
+}
 #logoutButton  {
   display: inline;
 }

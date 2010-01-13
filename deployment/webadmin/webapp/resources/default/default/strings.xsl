@@ -393,7 +393,11 @@
 
   <!--  xsl:template name="categoryReferenced" -->
   <xsl:variable name="bwStr-DeCR-CategoryInUse">Category In Use</xsl:variable>
-  <xsl:variable name="bwStr-DeCR-CategoryInUseBy">The category is in use by the following events and collections:</xsl:variable>
+  <xsl:variable name="bwStr-DeCR-CategoryInUseBy">The category is in use by collections and/or events and cannot be deleted. Please contact a superuser.</xsl:variable>
+  <xsl:variable name="bwStr-DeCR-Collections">Collections:</xsl:variable>
+  <xsl:variable name="bwStr-DeCR-Events">Events:</xsl:variable>
+  <xsl:variable name="bwStr-DeCR-EventsNote">Note: if you do not edit the event from the original calendar suite, you may not see the associated topical area that sets the category on the event.</xsl:variable>
+  <xsl:variable name="bwStr-DeCR-SuperUserMsg">The categories are referenced by the items below (<em>superusers only</em>)</xsl:variable>
 
   <!--  xsl:template name="categorySelectionWidget" -->
   <xsl:variable name="bwStr-CaSW-ShowHideUnusedCategories">show/hide unused categories</xsl:variable>

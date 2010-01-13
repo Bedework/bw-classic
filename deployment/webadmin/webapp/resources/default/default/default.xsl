@@ -3765,10 +3765,46 @@
       </tr>
     </table>
 
-   <p>
-     <xsl:copy-of select="$bwStr-DeCR-CategoryInUseBy"/>
-   </p>
-
+    <p>
+      <xsl:copy-of select="$bwStr-DeCR-CategoryInUseBy"/>
+    </p>
+    
+    <xsl:if test="/bedework/userInfo/superUser = 'true'">
+      <div class="suTitle"><xsl:copy-of select="$bwStr-DeCR-SuperUserMsg"/></div>
+      <div id="superUserMenu">
+        <!-- List collections that reference the category -->
+        <xsl:if test="/bedework/propRefs/propRef[isCollection = 'true']">
+          <h4><xsl:copy-of select="$bwStr-DeCR-Collections"/></h4>
+          <ul>
+            <xsl:for-each select="/bedework/propRefs/propRef[isCollection = 'true']">
+              <li>
+                <xsl:variable name="calPath" select="path"/>
+                <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}">
+                  <xsl:value-of select="path"/>
+                </a>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </xsl:if>
+        <!-- List events that reference the category -->
+        <xsl:if test="/bedework/propRefs/propRef[isCollection = 'false']">
+          <h4><xsl:copy-of select="$bwStr-DeCR-Events"/></h4>
+          <p><em><xsl:copy-of select="$bwStr-DeCR-EventsNote"/></em></p>
+          <ul>
+            <xsl:for-each select="/bedework/propRefs/propRef[isCollection = 'false']">
+              <li>
+                <xsl:variable name="calPath" select="path"/>
+                <xsl:variable name="guid" select="uid"/>
+                <!-- only returns the master event -->
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId=">
+                  <xsl:value-of select="uid"/>
+                </a>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </xsl:if>
+      </div>
+    </xsl:if>
 
   </xsl:template>
 
