@@ -3719,17 +3719,17 @@
 
     <table class="eventFormTable">
       <tr>
-        <td class="fieldName">
+        <th>
           <xsl:copy-of select="$bwStr-DeCC-Keyword"/>
-        </td>
+        </th>
         <td>
           <xsl:value-of select="/bedework/currentCategory/category/value"/>
         </td>
       </tr>
-      <tr class="optional">
-        <td>
+      <tr>
+        <th>
           <xsl:copy-of select="$bwStr-DeCC-Description"/>
-        </td>
+        </th>
         <td>
           <xsl:value-of select="/bedework/currentCategory/category/desc"/>
         </td>
@@ -3741,34 +3741,35 @@
       <input type="submit" name="cancelled" value="{$bwStr-DeCC-NoCancel}"/>
     </form>
   </xsl:template>
-  
+
   <xsl:template name="categoryReferenced">
-    <h2>Category Referenced by Events or Collections</h2>
+    <h2><xsl:copy-of select="$bwStr-DeCR-CategoryInUse"/></h2>
 
 
     <table class="eventFormTable">
       <tr>
-        <td class="fieldName">
+        <th>
           <xsl:copy-of select="$bwStr-DeCC-Keyword"/>
-        </td>
+        </th>
         <td>
           <xsl:value-of select="/bedework/currentCategory/category/value"/>
         </td>
       </tr>
-      <tr class="optional">
-        <td>
+      <tr>
+        <th>
           <xsl:copy-of select="$bwStr-DeCC-Description"/>
-        </td>
+        </th>
         <td>
           <xsl:value-of select="/bedework/currentCategory/category/desc"/>
         </td>
       </tr>
     </table>
 
-    <form action="{$category-delete}" method="post">
-      <input type="submit" name="updateCategory" value="{$bwStr-DeCC-YesDelete}"/>
-      <input type="submit" name="cancelled" value="{$bwStr-DeCC-NoCancel}"/>
-    </form>
+   <p>
+     <xsl:copy-of select="$bwStr-DeCR-CategoryInUseBy"/>
+   </p>
+
+
   </xsl:template>
 
   <!-- form used for selecting categories in calendar and pref forms -->

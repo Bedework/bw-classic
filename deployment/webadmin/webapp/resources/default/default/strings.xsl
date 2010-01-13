@@ -391,6 +391,10 @@
   <xsl:variable name="bwStr-DeCC-YesDelete">Yes: Delete Category</xsl:variable>
   <xsl:variable name="bwStr-DeCC-NoCancel">No: Cancel</xsl:variable>
 
+  <!--  xsl:template name="categoryReferenced" -->
+  <xsl:variable name="bwStr-DeCR-CategoryInUse">Category In Use</xsl:variable>
+  <xsl:variable name="bwStr-DeCR-CategoryInUseBy">The category is in use by the following events and collections:</xsl:variable>
+
   <!--  xsl:template name="categorySelectionWidget" -->
   <xsl:variable name="bwStr-CaSW-ShowHideUnusedCategories">show/hide unused categories</xsl:variable>
 
