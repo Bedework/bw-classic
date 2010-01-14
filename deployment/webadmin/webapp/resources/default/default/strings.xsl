@@ -345,6 +345,13 @@
   <xsl:variable name="bwStr-DCoC-AddContact">Add Contact</xsl:variable>
   <xsl:variable name="bwStr-DCoC-Cancel">Cancel</xsl:variable>
 
+  <!--  xsl:template name="contactReferenced" -->
+  <xsl:variable name="bwStr-DCoR-ContactInUse">Contact In Use</xsl:variable>
+  <xsl:variable name="bwStr-DCoR-ContactInUseBy">The contact is in use by events and cannot be deleted. Please contact a superuser.</xsl:variable>
+  <xsl:variable name="bwStr-DCoR-Collections">Collections:</xsl:variable>
+  <xsl:variable name="bwStr-DCoR-Events">Events:</xsl:variable>
+  <xsl:variable name="bwStr-DCoR-SuperUserMsg">The contact is referenced by the items below (<em>superusers only</em>)</xsl:variable>
+
   <!--  xsl:template name="locationList" -->
   <xsl:variable name="bwStr-LoLi-ManageLocations">Manage Locations</xsl:variable>
   <xsl:variable name="bwStr-LoLi-SelectLocationToUpdate">Select the location that you would like to update:</xsl:variable>
@@ -368,6 +375,13 @@
   <xsl:variable name="bwStr-DeLC-Address">Address:</xsl:variable>
   <xsl:variable name="bwStr-DeLC-SubAddress">Subaddress:</xsl:variable>
   <xsl:variable name="bwStr-DeLC-LocationURL">Location's URL:</xsl:variable>
+
+  <!--  xsl:template name="locationReferenced" -->
+  <xsl:variable name="bwStr-DeLR-LocationInUse">Location In Use</xsl:variable>
+  <xsl:variable name="bwStr-DeLR-LocationInUseBy">The location is in use by events and cannot be deleted. Please contact a superuser.</xsl:variable>
+  <xsl:variable name="bwStr-DeLR-Collections">Collections:</xsl:variable>
+  <xsl:variable name="bwStr-DeLR-Events">Events:</xsl:variable>
+  <xsl:variable name="bwStr-DeLR-SuperUserMsg">The location is referenced by the items below (<em>superusers only</em>)</xsl:variable>
 
   <!--  xsl:template name="categoryList" -->
   <xsl:variable name="bwStr-CtgL-ManageCategories">Manage Categories</xsl:variable>

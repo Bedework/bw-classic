@@ -442,9 +442,11 @@
                 <xsl:when test="/bedework/page='modContact'">
                   <xsl:call-template name="modContact"/>
                 </xsl:when>
-                <xsl:when test="/bedework/page='deleteContactConfirm' or
-                                /bedework/page='contactReferenced'">
+                <xsl:when test="/bedework/page='deleteContactConfirm'">
                   <xsl:call-template name="deleteContactConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='contactReferenced'">
+                  <xsl:call-template name="contactReferenced"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='locationList'">
                   <xsl:call-template name="locationList"/>
@@ -454,6 +456,9 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='deleteLocationConfirm'">
                   <xsl:call-template name="deleteLocationConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='locationReferenced'">
+                  <xsl:call-template name="locationReferenced"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='categoryList'">
                   <xsl:call-template name="categoryList"/>
@@ -3480,6 +3485,78 @@
     </table>
   </xsl:template>
 
+  <xsl:template name="contactReferenced">
+    <h2><xsl:copy-of select="$bwStr-DCoR-ContactInUse"/></h2>
+
+    <table class="eventFormTable">
+      <tr>
+        <th><xsl:copy-of select="$bwStr-DCoC-Name"/></th>
+        <td>
+          <xsl:value-of select="/bedework/contact/name" />
+        </td>
+      </tr>
+      <tr>
+        <th><xsl:copy-of select="$bwStr-DCoC-Phone"/></th>
+        <td>
+          <xsl:value-of select="/bedework/contact/phone" />
+        </td>
+      </tr>
+      <tr>
+        <th><xsl:copy-of select="$bwStr-DCoC-Email"/></th>
+        <td>
+          <xsl:value-of select="/bedework/contact/email" />
+        </td>
+      </tr>
+      <tr>
+        <th><xsl:copy-of select="$bwStr-DCoC-URL"/></th>
+        <td>
+          <xsl:value-of select="/bedework/contact/link" />
+        </td>
+      </tr>
+    </table>
+
+    <p>
+      <xsl:copy-of select="$bwStr-DCoR-ContactInUseBy"/>
+    </p>
+
+    <xsl:if test="/bedework/userInfo/superUser = 'true'">
+      <div class="suTitle"><xsl:copy-of select="$bwStr-DCoR-SuperUserMsg"/></div>
+      <div id="superUserMenu">
+        <!-- List collections that reference the contact -->
+        <xsl:if test="/bedework/propRefs/propRef[isCollection = 'true']">
+          <h4><xsl:copy-of select="$bwStr-DCoR-Collections"/></h4>
+          <ul>
+            <xsl:for-each select="/bedework/propRefs/propRef[isCollection = 'true']">
+              <li>
+                <xsl:variable name="calPath" select="path"/>
+                <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}">
+                  <xsl:value-of select="path"/>
+                </a>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </xsl:if>
+        <!-- List events that reference the contact -->
+        <xsl:if test="/bedework/propRefs/propRef[isCollection = 'false']">
+          <h4><xsl:copy-of select="$bwStr-DCoR-Events"/></h4>
+          <ul>
+            <xsl:for-each select="/bedework/propRefs/propRef[isCollection = 'false']">
+              <li>
+                <xsl:variable name="calPath" select="path"/>
+                <xsl:variable name="guid" select="uid"/>
+                <!-- only returns the master event -->
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId=">
+                  <xsl:value-of select="uid"/>
+                </a>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </xsl:if>
+      </div>
+    </xsl:if>
+
+  </xsl:template>
+
    <!--+++++++++++++++ Locations ++++++++++++++++++++-->
   <xsl:template name="locationList">
     <h2><xsl:copy-of select="$bwStr-LoLi-ManageLocations"/></h2>
@@ -3609,6 +3686,84 @@
       </tr>
     </table>
   </xsl:template>
+
+  <xsl:template name="locationReferenced">
+    <h2><xsl:copy-of select="$bwStr-DeLR-LocationInUse"/></h2>
+    <p id="confirmButtons">
+      <xsl:copy-of select="/bedework/formElements/*"/>
+    </p>
+
+    <table class="eventFormTable">
+      <tr>
+        <td class="fieldName">
+            <xsl:copy-of select="$bwStr-DeLC-Address"/>
+          </td>
+        <td>
+          <xsl:value-of select="/bedework/location/address"/>
+        </td>
+      </tr>
+      <tr class="optional">
+        <td>
+            <xsl:copy-of select="$bwStr-DeLC-SubAddress"/>
+          </td>
+        <td>
+          <xsl:value-of select="/bedework/location/subaddress"/>
+        </td>
+      </tr>
+      <tr class="optional">
+        <td>
+            <xsl:copy-of select="$bwStr-DeLC-LocationURL"/>
+          </td>
+        <td>
+          <xsl:variable name="link" select="/bedework/location/link"/>
+          <a href="{$link}">
+            <xsl:value-of select="/bedework/location/link"/>
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <p>
+      <xsl:copy-of select="$bwStr-DeLR-LocationInUseBy"/>
+    </p>
+
+    <xsl:if test="/bedework/userInfo/superUser = 'true'">
+      <div class="suTitle"><xsl:copy-of select="$bwStr-DeLR-SuperUserMsg"/></div>
+      <div id="superUserMenu">
+        <!-- List collections that reference the location -->
+        <xsl:if test="/bedework/propRefs/propRef[isCollection = 'true']">
+          <h4><xsl:copy-of select="$bwStr-DeLR-Collections"/></h4>
+          <ul>
+            <xsl:for-each select="/bedework/propRefs/propRef[isCollection = 'true']">
+              <li>
+                <xsl:variable name="calPath" select="path"/>
+                <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}">
+                  <xsl:value-of select="path"/>
+                </a>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </xsl:if>
+        <!-- List events that reference the location -->
+        <xsl:if test="/bedework/propRefs/propRef[isCollection = 'false']">
+          <h4><xsl:copy-of select="$bwStr-DeLR-Events"/></h4>
+          <ul>
+            <xsl:for-each select="/bedework/propRefs/propRef[isCollection = 'false']">
+              <li>
+                <xsl:variable name="calPath" select="path"/>
+                <xsl:variable name="guid" select="uid"/>
+                <!-- only returns the master event -->
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId=">
+                  <xsl:value-of select="uid"/>
+                </a>
+              </li>
+            </xsl:for-each>
+          </ul>
+        </xsl:if>
+      </div>
+    </xsl:if>
+  </xsl:template>
+
 
   <!--+++++++++++++++ Categories ++++++++++++++++++++-->
   <xsl:template name="categoryList">
@@ -3768,7 +3923,7 @@
     <p>
       <xsl:copy-of select="$bwStr-DeCR-CategoryInUseBy"/>
     </p>
-    
+
     <xsl:if test="/bedework/userInfo/superUser = 'true'">
       <div class="suTitle"><xsl:copy-of select="$bwStr-DeCR-SuperUserMsg"/></div>
       <div id="superUserMenu">
