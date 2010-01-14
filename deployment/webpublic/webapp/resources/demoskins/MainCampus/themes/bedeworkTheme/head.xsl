@@ -22,7 +22,7 @@
       <link rel="icon" type="image/ico" href="{$favicon}" />
 
       <!-- load css -->
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/fixed.css" />
+      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwTheme.css" />
       <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
 
       <!-- Dependencies -->
