@@ -14,6 +14,11 @@
   <!-- ============================== -->
   <!-- Note: Set the global calendar suite preferences
        in the administrative web client (default view, default viewPeriod, etc) -->
+       
+  <!-- To see changes to this file (or any xslt file) reflected on a running system, 
+       append "refreshXslt=yes" to the query string in your browser's address bar.
+       For example: "http://localhost:8080/cal/showMain.rdo?refreshXslt=yes 
+       For more information about theming, see the Bedework Manual -->
 
 
   <!-- FAVICON -->
