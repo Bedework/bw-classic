@@ -13,8 +13,8 @@
   <target name="init">
   	<!--
     <delete dir="${lib.dir}" />
-    <mkdir dir="${lib.dir}" />
     -->
+    <mkdir dir="${lib.dir}" />
 
     <dirname property="this.dir" file="${ant.file}"/>
     <property name="source.home" location="${this.dir}/src"/>
