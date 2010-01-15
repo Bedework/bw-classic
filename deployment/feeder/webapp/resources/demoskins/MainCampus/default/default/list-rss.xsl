@@ -65,7 +65,7 @@
           --><xsl:value-of select="substring(/bedework/now/utc,7,2)"/><xsl:text> </xsl:text><!--
           --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(/bedework/now/utc,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--
           --><xsl:value-of select="substring(/bedework/now/utc,1,4)"/><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="substring(/bedework/now/utc,10,2)"/>:<xsl:value-of select="substring(/bedework/now/utc,11,2)"/>:00 UT</pubDate>
+          --><xsl:value-of select="substring(/bedework/now/utc,10,2)"/>:<xsl:value-of select="substring(/bedework/now/utc,12,2)"/>:00 UT</pubDate>
         <language>en-US</language>
         <copyright>Copyright <xsl:value-of select="substring(/bedework/now/utc,1,4)"/>, Bedework</copyright>
         <managingEditor>editor@mysite.edu (Editor Name)</managingEditor>
@@ -110,7 +110,7 @@
         --><xsl:value-of select="substring(start/utcdate,7,2)"/><xsl:text> </xsl:text><!--
         --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(start/utcdate,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--
         --><xsl:value-of select="substring(start/utcdate,1,4)"/><xsl:text> </xsl:text><!--
-        --><xsl:value-of select="substring(start/utcdate,10,2)"/>:<xsl:value-of select="substring(start/utcdate,11,2)"/>:00 UT</pubDate>
+        --><xsl:value-of select="substring(start/utcdate,10,2)"/>:<xsl:value-of select="substring(start/utcdate,12,2)"/>:00 UT</pubDate>
       <description>
         <xsl:value-of select="start/dayname" />,
         <xsl:value-of select="start/longdate" />
