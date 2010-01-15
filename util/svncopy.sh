@@ -86,11 +86,19 @@ copyproject() {
   then
 #      Not linked
     echo ""
+  elif [ "${1}" = "cachedfeeder" ]
+  then
+#      Not linked
+    echo ""
   elif [ "${1}" = "carddav" ]
   then
 #      Not linked
     echo ""
   elif [ "${1}" = "clientapp" ]
+  then
+#      Not linked
+    echo ""
+  elif [ "${1}" = "monitor" ]
   then
 #      Not linked
     echo ""
@@ -128,7 +136,9 @@ PROJECTS="$PROJECTS bedework"
 PROJECTS="$PROJECTS buildTools"
 PROJECTS="$PROJECTS bwtools"
 PROJECTS="$PROJECTS bwtzsvr"
+PROJECTS="$PROJECTS cachedfeeder"
 PROJECTS="$PROJECTS caldav"
+PROJECTS="$PROJECTS caldavimpl"
 PROJECTS="$PROJECTS caldavTest"
 PROJECTS="$PROJECTS calendarapi"
 PROJECTS="$PROJECTS carddav"
@@ -136,6 +146,8 @@ PROJECTS="$PROJECTS clientapp"
 PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
+PROJECTS="$PROJECTS indexer"
+PROJECTS="$PROJECTS monitor"
 PROJECTS="$PROJECTS naming"
 PROJECTS="$PROJECTS rpiutil"
 PROJECTS="$PROJECTS testsuite"
