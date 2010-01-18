@@ -53,6 +53,12 @@
           </xsl:if>
           <xsl:copy-of select="$bwStr-HdBr-PageTitle"/>
         </h2>
+        <!-- ERROR MESSAGES -->
+        <xsl:if test="/bedework/error">
+          <div id="errors">
+            <xsl:apply-templates select="/bedework/error" />
+          </div>
+        </xsl:if>
         <xsl:choose>
           <xsl:when test="/bedework/page='event'">
             <!-- show an event -->
