@@ -165,7 +165,7 @@
 
 
     <!-- Event Description Column -->
-    
+
     <td>
       <xsl:attribute name="class">
         <xsl:choose>
@@ -187,7 +187,7 @@
             <xsl:variable name="gDetails" select="summary"/>
 
             <xsl:if test="$eventIconDownloadIcs = 'true'">
-              <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+              <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
               <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-Download}">
                 <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" alt="{$bwStr-SgEv-Download}"/>
               </a>
