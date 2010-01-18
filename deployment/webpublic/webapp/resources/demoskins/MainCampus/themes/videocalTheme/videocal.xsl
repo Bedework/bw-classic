@@ -34,16 +34,9 @@
     special, consequential, or incidental damages related to the software,
     to the maximum extent the law permits. -->
 
-  <!-- DEFINE GLOBAL CONSTANTS -->
-  <xsl:variable name="appRoot" select="/bedework/approot"/>
-  <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
-  <xsl:variable name="prevDate" select="/bedework/previousdate"/>
-  <xsl:variable name="nextDate" select="/bedework/nextdate"/>
-  <xsl:variable name="curDate" select="/bedework/currentdate/date"/>
-
   <!-- URL of html resources (images, css, other html); by default this is
        set to the current theme directory  -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot"/>/default/default/videocalTheme</xsl:variable>
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot"/>/themes/videocalTheme</xsl:variable>
 
   <!-- Duration of each slide in seconds; set this to your preference -->
   <xsl:variable name="slideDuration">10</xsl:variable>
@@ -73,7 +66,7 @@
   <xsl:variable name="nextDay" select="number($day)+1"/>
 
   <!-- Event count for the current day -->
-  <xsl:variable name="eventCount" select="count(/bedework/eventscalendar/year/month/week/day[date=$curDate]/event)"/>
+  <xsl:variable name="eventCount" select="count(/bedework/eventscalendar/year/month/week/day[date=$curdate]/event)"/>
 
   <!-- Position of the current event being displayed -->
   <xsl:variable name="event">
@@ -117,21 +110,21 @@
           <xsl:when test="/bedework/periodname!='Day'">
             <!-- we're starting up on the wrong view; go to today and begin with the first event;
                  the title slide will display during this switch. -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/main/setViewPeriod.do?viewType=todayView&amp;setappvar=event(1)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$setViewPeriod}&amp;viewType=todayView&amp;setappvar=event(1)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:when test="($nextDay > $dayCount) and ($nextEvent > $eventCount)">
             <!-- passed the last day, and all events have been displayed,
                  so start over: go to today, set day=1 and *event=0* to allow
                  for the title slide "calPlug" -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/main/setViewPeriod.do?viewType=todayView&amp;setappvar=event(0)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$setViewPeriod}&amp;viewType=todayView&amp;setappvar=event(0)&amp;setappvar=day(1)&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:when test="$nextEvent > $eventCount">
             <!-- passed the last event for the day; go to the next day and set event=1 -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/main/setViewPeriod.do?date={$nextDate}&amp;viewType=dayView&amp;setappvar=event(1)&amp;setappvar=day({$nextDay})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$setViewPeriod}&amp;date={$nextdate}&amp;viewType=dayView&amp;setappvar=event(1)&amp;setappvar=day({$nextDay})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- otherwise, go to the next event on the same day -->
-            <meta http-equiv="refresh" content="{$slideDuration};url={$urlPrefix}/setup.do?viewType=dayView&amp;setappvar=event({$nextEvent})&amp;setappvar=day({$day})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
+            <meta http-equiv="refresh" content="{$slideDuration};url={$setup}&amp;viewType=dayView&amp;setappvar=event({$nextEvent})&amp;setappvar=day({$day})&amp;skinNameSticky={$skinName}&amp;setappvar=summaryMode(details)"/>
           </xsl:otherwise>
         </xsl:choose>
       </head>
@@ -155,12 +148,12 @@
               <br/>Events: <xsl:value-of select="$event"/> of <xsl:value-of select="$eventCount"/>
               <br/>Days: <xsl:value-of select="$day"/> of <xsl:value-of select="$dayCount"/> -->
             </h2>
-            <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[date=$curDate]/event[position()=$event]"/>
+            <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[date=$curdate]/event[position()=$event]"/>
           </xsl:otherwise>
         </xsl:choose>
         <!-- remove the following two divs if used for video -->
         <div id="getBack">
-          (<a href="{$urlPrefix}/setup.do?skinNameSticky=default">restore normal calendar</a>)
+          (<a href="{$setup}&amp;skinNameSticky=default">restore normal calendar</a>)
         </div>
         <div id="info">
           This stylesheet will rotate through five days of events at ten
