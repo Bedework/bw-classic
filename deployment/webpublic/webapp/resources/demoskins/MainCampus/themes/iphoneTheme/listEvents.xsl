@@ -66,6 +66,7 @@
                   <br/>
                   <strong>
                     <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></xsl:if>
+                    <xsl:if test="status='TENTATIVE'"><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></xsl:if>
                     <xsl:value-of select="summary"/>
                   </strong>
                 </li>
