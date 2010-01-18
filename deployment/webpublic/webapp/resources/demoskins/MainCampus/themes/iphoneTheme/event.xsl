@@ -50,6 +50,7 @@
         </xsl:if>
         <xsl:choose>
           <xsl:when test="start/allday = 'true'">
+            <xsl:text> </xsl:text>
             <span class="time">
               <em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em>
             </span>

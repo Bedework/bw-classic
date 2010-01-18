@@ -52,7 +52,10 @@
                   </xsl:choose>
                   <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/>
                   <xsl:choose>
-                    <xsl:when test="start/allday = 'true'"><xsl:copy-of select="$bwStr-LsVw-AllDay"/></xsl:when>
+                    <xsl:when test="start/allday = 'true'">
+                      <xsl:text> </xsl:text>
+                      <xsl:copy-of select="$bwStr-LsVw-AllDay"/>
+                    </xsl:when>
                     <xsl:otherwise>
                        <xsl:text> </xsl:text>
                        <xsl:copy-of select="$bwStr-LsVw-At"/>
