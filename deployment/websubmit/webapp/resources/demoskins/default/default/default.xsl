@@ -1140,8 +1140,8 @@
 
         <div id="bwCommentNotes">
           <!-- holders for validation notes -->
-          <div id="xBwEmailHolderNotice" class="invisible">xsl:copy-of select="$bwStr-FoEl-MustIncludeEmail"/></div>
-          <div id="xBwEmailHolderInvalidNotice" class="invisible">xsl:copy-of select="$bwStr-FoEl-InvalidEmailAddress"/></div>
+          <div id="xBwEmailHolderNotice" class="invisible"><xsl:copy-of select="$bwStr-FoEl-MustIncludeEmail"/></div>
+          <div id="xBwEmailHolderInvalidNotice" class="invisible"><xsl:copy-of select="$bwStr-FoEl-InvalidEmailAddress"/></div>
           <p>
             <label for="xBwEmailHolder"><xsl:copy-of select="$bwStr-FoEl-EnterEmailAddress"/><xsl:text> </xsl:text></label><br/>
             <input type="text" name="xBwEmailHolder" id="xBwEmailHolder" size="80">
