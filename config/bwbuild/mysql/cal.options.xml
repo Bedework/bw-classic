@@ -212,7 +212,11 @@
           <minIncrement>5</minIncrement>
 
           <logPrefix>PubEventsAdmin</logPrefix>
-
+          
+          <!-- Where the browser finds css and other resources -->    
+          <browserResourceRoot>http://localhost:8080/caladminrsrc</browserResourceRoot>
+          
+          <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/caladminrsrc</appRoot>
         </CalAdmin>
 
@@ -242,6 +246,10 @@
 
           <logPrefix>EventSubmit</logPrefix>
 
+          <!-- Where the browser finds css and other resources -->    
+          <browserResourceRoot>http://localhost:8080/eventsubmitrsrc</browserResourceRoot>
+          
+          <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
 
           <refreshAction>setup.do</refreshAction>
@@ -274,6 +282,10 @@
 
           <logPrefix>PubEvents</logPrefix>
 
+          <!-- Where the browser finds css and other resources -->    
+          <browserResourceRoot>http://localhost:8080/calrsrc</browserResourceRoot>
+          
+          <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calrsrc</appRoot>
 
           <refreshAction>setup.do</refreshAction>
@@ -310,6 +322,10 @@
 
           <logPrefix>Feeder</logPrefix>
 
+          <!-- Where the browser finds css and other resources -->    
+          <browserResourceRoot>http://localhost:8080/calfeedrsrc</browserResourceRoot>
+          
+          <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calfeedrsrc</appRoot>
 
           <refreshAction>setup.do</refreshAction>
@@ -344,6 +360,10 @@
 
           <logPrefix>SoEDept</logPrefix>
 
+          <!-- Where the browser finds css and other resources -->    
+          <browserResourceRoot>http://localhost:8080/calrsrc</browserResourceRoot>
+          
+          <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calrsrc</appRoot>
 
           <refreshAction>setup.do</refreshAction>
@@ -375,6 +395,10 @@
 
           <logPrefix>PersonalCalendar</logPrefix>
 
+          <!-- Where the browser finds css and other resources -->    
+          <browserResourceRoot>http://localhost:8080/ucalrsrc</browserResourceRoot>
+          
+          <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/ucalrsrc</appRoot>
 
           <refreshAction>setup.do</refreshAction>

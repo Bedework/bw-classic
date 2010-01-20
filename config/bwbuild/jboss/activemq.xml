@@ -43,7 +43,7 @@
   </bean>
 
   <broker xmlns="http://activemq.apache.org/schema/core"
-    brokerName="localhost" dataDirectory="${activemq.base}/data">
+    brokerName="bedework" dataDirectory="${activemq.base}/data">
     <!--
       MikeD Queues for various bedework services. These are all fed by
       the virtual queue bedework.sysevents
@@ -140,31 +140,28 @@
       -->
     </networkConnectors>
 
+    <!-- High throughput but scalability problems - perhaps OK with <=500 connections
     <persistenceAdapter>
       <amqPersistenceAdapter syncOnWrite="false"
-        directory="${activemq.base}/data" maxFileLength="20 mb" />
-    </persistenceAdapter>
-
-    <!-- Use the following if you wish to configure the journal with JDBC -->
-    <!--
-    <persistenceAdapter>
-        <journaledJDBC dataDirectory="${activemq.base}/data" dataSource="#postgres-ds"/>
+        directory="../activemq-data" maxFileLength="20 mb" />
     </persistenceAdapter>
     -->
 
-        <!-- Or if you want to use pure JDBC without a journal -->
-        <!--
-        <persistenceAdapter>
-            <jdbcPersistenceAdapter dataSource="#postgres-ds"/>
-        </persistenceAdapter>
-          -->
+    <!-- Newer adapter - handles 1000s of connections -->
+    <persistenceAdapter>
+      <kahaDB directory="../data/activemq-data" journalMaxFileLength="32mb"/>
+    </persistenceAdapter>
 
+    <!-- older and slower is jdbcPersistenceAdapter -->
+
+    <!--
     <sslContext>
       <sslContext keyStore="file:${activemq.base}/conf/broker.ks"
                   keyStorePassword="password"
                   trustStore="file:${activemq.base}/conf/broker.ts"
                   trustStorePassword="password" />
     </sslContext>
+    -->
 
     <!--
       The maximum amount of space the broker will use before slowing down
@@ -187,10 +184,10 @@
 
     <!-- The transport connectors ActiveMQ will listen to -->
     <transportConnectors>
-      <transportConnector name="openwire" uri="tcp://localhost:61616" discoveryUri="multicast://default"/>
-      <transportConnector name="ssl" uri="ssl://localhost:61617"/>
-      <transportConnector name="stomp" uri="stomp://localhost:61613"/>
+      <transportConnector name="bedework" uri="tcp://localhost:61616" discoveryUri="multicast://default"/>
+      <!--
       <transportConnector name="xmpp" uri="xmpp://localhost:61222"/>
+      -->
     </transportConnectors>
 
   </broker>
@@ -258,61 +255,5 @@
   <!--  This xbean configuration file supports all the standard spring xml configuration options
 -->
 
-  <!-- Postgres DataSource Sample Setup -->
-  <!--
-  <bean id="postgres-ds" class="org.postgresql.ds.PGPoolingDataSource">
-    <property name="serverName" value="localhost"/>
-    <property name="databaseName" value="activemq"/>
-    <property name="portNumber" value="0"/>
-    <property name="user" value="activemq"/>
-    <property name="password" value="activemq"/>
-    <property name="dataSourceName" value="postgres"/>
-    <property name="initialConnections" value="1"/>
-    <property name="maxConnections" value="10"/>
-  </bean>
-  -->
-
-  <!-- MySql DataSource Sample Setup -->
-  <!--
-  <bean id="mysql-ds" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-    <property name="url" value="jdbc:mysql://localhost/activemq?relaxAutoCommit=true"/>
-    <property name="username" value="activemq"/>
-    <property name="password" value="activemq"/>
-    <property name="maxActive" value="200"/>
-    <property name="poolPreparedStatements" value="true"/>
-  </bean>
-  -->
-
-  <!-- Oracle DataSource Sample Setup -->
-  <!--
-  <bean id="oracle-ds" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-    <property name="url" value="jdbc:oracle:thin:@localhost:1521:AMQDB"/>
-    <property name="username" value="scott"/>
-    <property name="password" value="tiger"/>
-    <property name="maxActive" value="200"/>
-    <property name="poolPreparedStatements" value="true"/>
-  </bean>
-  -->
-
-  <!-- Embedded Derby DataSource Sample Setup -->
-  <!--
-  <bean id="derby-ds" class="org.apache.derby.jdbc.EmbeddedDataSource">
-    <property name="databaseName" value="derbydb"/>
-    <property name="createDatabase" value="create"/>
-  </bean>
-  -->
-
-  <!-- MikeD - other speed up tips: Async Sends
-queueConnectionFactory = new ActiveMQConnectionFactory(queue_user, queue_password, queue_url);
-queueConnectionPool = new PooledConnectionFactory(queueConnectionFactory);
-queueConnectionPool.setMaxConnections(200);
-
-// This line is used to make your connection async
-((ActiveMQConnectionFactory)queueConnectionFactory).setUseAsyncSend(true);
-  -->
-
 </beans>
-<!-- END SNIPPET: example
--->
+

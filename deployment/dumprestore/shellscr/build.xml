@@ -42,34 +42,13 @@
   </target>
 
   <target name="build.configured" depends="init" >
-    <!-- ===============================================================
-         Libraries for this application
-         =============================================================== -->
-
-    <!-- Extra resources -->
     <property name="app.temp.home"
               location="${org.bedework.temp.shellscr.home}/bldtemp/${propval.app.zip.name}" />
     <mkdir dir="${app.temp.home}"/>
-    <mkdir dir="${app.temp.home}/resources"/>
-    <echo file="${app.temp.home}/resources/hibernate.properties">
-hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
-hibernate.dialect=${org.bedework.global.hibernate.dialect}
-hibernate.connection.driver_class=${org.bedework.global.jdbcdriver}
-hibernate.connection.username=${org.bedework.global.jdbcid}
-hibernate.connection.password=${org.bedework.global.jdbcpw}
-hibernate.connection.url=${org.bedework.global.jdbcurl}
-hibernate.bytecode.use_reflection_optimizer=false
-hibernate.cache.use_second_level_cache=false
-#
-# Here for better debugging
-#
-hibernate.jdbc.batch_size=0
-    </echo>
 
     <mkdir dir="${app.temp.home}/data"/>
     <copy todir="${app.temp.home}/data" file="${app.sou.dir}/resources/initbedework.xml" />
 
-    <fileset id="org.bedework.extra.resources" dir="${app.temp.home}/resources" />
     <fileset id="org.bedework.shellscr.data" dir="${app.temp.home}/data" />
 
     <!-- ===============================================================

@@ -2,13 +2,12 @@
 
 <!-- ===================================================================
      This file is imported by buildwar.xml and adds a target
-        doPortal
+        doPlatform
      which will be invoked by the buildwar targets.
      =================================================================== -->
 
 <project name="bedework.platformWar" default="doPlatform" >
   <target name="doPlatform" >
-  	<echo message="$$$$$$$$$$$$$$$ jbossWar.xml $$$$$$$$$$$$$$$$$$$$$$$" />
     <!-- ===============================================================
          We create an updated jboss-web.xml file (for jboss) and a ear
          =============================================================== -->
