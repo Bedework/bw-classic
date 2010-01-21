@@ -47,7 +47,10 @@
     <mkdir dir="${app.temp.home}"/>
 
     <mkdir dir="${app.temp.home}/data"/>
-    <copy todir="${app.temp.home}/data" file="${app.sou.dir}/resources/initbedework.xml" />
+    <copy todir="${app.temp.home}/data" 
+    	    file="${app.sou.dir}/resources/initbedework.xml" />
+    <copy todir="${app.temp.home}/data" 
+    	    file="${app.sou.dir}/resources/initbedework-sparse.xml" />
 
     <fileset id="org.bedework.shellscr.data" dir="${app.temp.home}/data" />
 
