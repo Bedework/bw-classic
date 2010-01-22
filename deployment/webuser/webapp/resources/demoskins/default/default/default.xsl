@@ -2279,7 +2279,7 @@
       <xsl:if test="percentComplete != ''">
         <tr>
           <td class="fieldname">
-            % <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Complete"/><xsl:text> </xsl:text></td>
+            <xsl:copy-of select="$bwStr-SgEv-Complete"/><xsl:text> </xsl:text>
           </td>
           <td class="fieldval">
             <xsl:value-of select="percentComplete"/>%
@@ -3109,7 +3109,7 @@
         <xsl:if test="form/entityType = '2'">
           <tr>
             <td class="fieldname">
-              % <xsl:copy-of select="$bwStr-AEEF-Complete"/><xsl:text> </xsl:text>
+              <xsl:copy-of select="$bwStr-AEEF-Complete"/><xsl:text> </xsl:text>
             </td>
             <td class="fieldval" align="left">
               <input type="text" name="percentComplete" size="3" maxlength="3">

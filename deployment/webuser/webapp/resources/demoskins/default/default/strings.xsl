@@ -221,7 +221,7 @@
   <xsl:variable name="bwStr-SgEv-AddToMyCalendar">add to my calendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Add event to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Where">Where:</xsl:variable>
-  <xsl:variable name="bwStr-SgEv-Complete">Complete:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-Complete">% Complete:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-ORGANIZER">Organizer:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Description">Description:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-STATUS">Status:</xsl:variable>
@@ -289,7 +289,7 @@
   <xsl:variable name="bwStr-AEEF-Task">task</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Event">event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-HasNoDurationEndDate">has no duration / end date</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Complete">Complete:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Complete">% Complete:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-AffectsFreeBusy">Affects free/busy:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Yes">yes</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Transparent">(transparent: event status does not affect your free/busy)</xsl:variable>
