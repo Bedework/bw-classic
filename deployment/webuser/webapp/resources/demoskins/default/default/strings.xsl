@@ -708,7 +708,7 @@
   <xsl:variable name="bwStr-Upld-AffectsFreeBusy">Affects free/busy:</xsl:variable>
   <xsl:variable name="bwStr-Upld-Yes">yes</xsl:variable>
   <xsl:variable name="bwStr-Upld-Transparent">(transparent: event status does not affect your free/busy)</xsl:variable>
-  <xsl:variable name="bwStr-Upld-StripAlarms">StripAlarms:</xsl:variable>
+  <xsl:variable name="bwStr-Upld-StripAlarms">Strip alarms:</xsl:variable>
   <xsl:variable name="bwStr-Upld-No">no</xsl:variable>
   <xsl:variable name="bwStr-Upld-Opaque">(opaque: event status affects your free/busy)</xsl:variable>
   <xsl:variable name="bwStr-Upld-UploadICalFile">Upload iCAL File</xsl:variable>
