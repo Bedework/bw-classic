@@ -3,9 +3,38 @@
 <!-- ===================== Deployment build file =======================
      This directory and the files within it are to be part of the config
      and deployment process.
+     
+     ======================== new comment ========================
+     Modules are of type and kind.
+     
+     The type is for example, webadmin, usercaldav etc.
+     
+     The kind is webapp, shellscr etc.
+     
+     We cycle over the information we have for each application we want to 
+     build and for each application use ants property mapping to map the 
+     properties onto a constant set of names, e.g. the application specific 
+     name 
+         org.bedework.app.CalAdmin.deploy.dir
+     would be mapped onto 
+         propval.app.deploy.dir
+         
+     We then look for build.xml files on a path given by the type and kind, 
+     for example 
+         webadmin/webapp/build.xml
+     or
+         indexer/shellscr/build.xml
+         
+     The intent was to allow certain modules to be built in different forms.
+     At one point it was also the case that we tried to deal with platform
+     specific issues through this scheme. Now that is handled by importing
+     platform specific build files into a generic build file.
+     
+     That may allow for some simplification. 
+     ======================== old comment ========================
 
      A number of properties of the form org.bedework.install.XXX will be
-     defined, each indicating that a particualr component is to be deployed.
+     defined, each indicating that a particular component is to be deployed.
 
      Targets below will be executed only if that property is defined.
 
@@ -22,7 +51,7 @@
 
         Add an antcall for each component and a corresponding target
 
-     Authors: Mike Douglass   douglm@rpi.edu
+     Authors: Mike Douglass   douglm rpi.edu
      =================================================================== -->
 
 <project name="deploy.bedework" default="init">
@@ -38,6 +67,10 @@
   <property name="org.bedework.temp.extrajars.dir"
             location="${org.bedework.temp.dir}/extrajars" />
 
+  <!-- Preserve extra jars for ear builds -->
+  <property name="org.bedework.temp.ear.extrajars.dir"
+            location="${org.bedework.temp.dir}/earextrajars" />
+	
   <dirname property="this.build.dir" file="${ant.file}"/>
   <property name="bedework.deployment.base" location="this.build.dir" />
 
@@ -87,12 +120,6 @@
           </else>
         </if>
 
-        <!--
-        <property name="org.bedework.ear.templib"
-                  location="${org.bedework.ear.dir}/lib" />
-                  -->
-        <property name="org.bedework.ear.templib"
-                  location="${org.bedework.temp.dir}/earlib" />
         <property name="org.bedework.ear.properties.dir"
                   location="${org.bedework.temp.dir}/ear-properties" />
 

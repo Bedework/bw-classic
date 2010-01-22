@@ -7,9 +7,11 @@
 <project name="bwdeploy.termination" default="deploy" >
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
 
-  <target name="init">
-    <dirname property="this.dir" file="${ant.file}"/>
+  <import file="${build.dir}/platforms/${org.bedework.global.deploy.platform}War.xml" />
 
+  <dirname property="this.dir" file="${ant.file}"/>
+
+  <target name="init">
   </target>
 
   <target name="deploy" depends="init,build.configured" >
@@ -20,81 +22,8 @@
     <if>
       <isset property="org.bedework.global.build.ear" />
       <then>
-        <echo message="***************************************************************" />
-        <echo message="Building ear file for jboss deployment" />
-        <echo message="***************************************************************" />
-
-        <jar jarfile="${org.bedework.ear.properties.jar}">
-          <fileset dir="${org.bedework.ear.properties.dir}"/>
-        </jar>
-
-        <path id="app.xml.cp">
-          <pathelement location="${org.bedework.deployutil.jar}"/>
-        </path>
-
-        <taskdef name="applicationXml"
-                 classname="org.bedework.deployment.ApplicationXmlTask">
-          <classpath refid="app.xml.cp"/>
-        </taskdef>
-
-        <!-- We have to drop some of the libraries so they don't conflict -->
-        <copy toDir="${org.bedework.ear.dir}">
-          <fileset dir="${org.bedework.ear.templib}"
-                   excludes="${org.bedework.global.ear.lib.excludes}" />
-        </copy>
-
-        <echo message="outFile=${org.bedework.ear.dir}/META-INF/application.xml
-                        warDir=${org.bedework.temp.dir}/wars
-                        contexts=${org.bedework.global.context.roots}" />
-
-        <applicationXml displayName="Bedework calendar suite"
-                        outFile="${org.bedework.ear.dir}/META-INF/application.xml"
-                        warDir="${org.bedework.temp.dir}/wars"
-                        contexts="${org.bedework.global.context.roots}">
-          <fileset dir="${org.bedework.ear.dir}">
-            <include name="*.jar"/>
-          </fileset>
-        </applicationXml>
-
-        <manifest file="${org.bedework.ear.dir}/META-INF/MANIFEST.MF" />
-
-        <if>
-          <equals arg1="${org.bedework.global.ear.wars.zipped}"
-                  arg2="yes" />
-          <then>
-            <copy toDir="${org.bedework.ear.dir}">
-              <fileset dir="${dist.home}"
-                       includes="*.war" />
-            </copy>
-          </then>
-          <else>
-            <copy toDir="${org.bedework.ear.dir}">
-              <fileset dir="${org.bedework.temp.wars.home}"/>
-            </copy>
-          </else>
-        </if>
-
-        <if>
-          <equals arg1="${org.bedework.global.ear.zipped}"
-                  arg2="yes" />
-          <then>
-             <zip destfile="${org.bedework.ear.file}"
-                 basedir="${org.bedework.ear.dir}"/>
-          </then>
-        </if>
-
-        <!-- copy the ear - at the moment copy the uncompressed. -->
-
-        <if>
-          <isset property="org.bedework.appserver.deploy.dir" />
-          <then>
-            <delete dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
-            <mkdir dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
-            <copy todir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}">
-              <fileset dir="${org.bedework.ear.dir}"/>
-            </copy>
-          </then>
-        </if>
+        <!-- Platform specific -->
+        <antcall target="deployEar" inheritRefs="true" />
       </then>
     </if>
   </target>

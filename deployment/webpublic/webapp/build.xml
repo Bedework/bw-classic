@@ -7,6 +7,8 @@
 <project name="bwpublic.deploy" default="deploy" >
   <import file="${org.bedework.deployment.base}/deployprops.xml" />
 
+  <import file="${build.dir}/platforms/${org.bedework.global.deploy.platform}War.xml" />
+
   <dirname property="this.dir" file="${ant.file}"/>
 
   <import file="${this.dir}/appjars.xml" />
@@ -32,7 +34,6 @@
               value="${app.sou.dir}/war/WEB-INF/web.xml" />
               -->
 
-  	<echo message="XXXXXXXXXXXXXXXXXXXXXXX  app.resources.dir=${app.resources.dir}" />
     <property name="app.resources.dir"
               location="${this.dir}/resources" />
   	<echo message="app.resources.dir=${app.resources.dir}" />
@@ -77,27 +78,8 @@
       </then>
     </if>
 
-    <if>
-      <not>
-        <isset property="org.bedework.global.build.ear" />
-      </not>
-      <then>
-        <echo message="***************************************************************" />
-        <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
-        <echo message="***************************************************************" />
-
-        <!-- Delete expanded version -->
-        <delete dir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}/${propval.app.war.name}" />
-
-        <!-- copy the war file. -->
-        <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}"
-              file="${app.war.file}"
-              overwrite="yes" />
-
-        <!-- Delete the quickstart context def -->
-        <delete file="${org.bedework.appserver.dir}/conf/Catalina/localhost/${propval.app.war.name}.xml" />
-      </then>
-    </if>
+    <!-- Platform specific -->
+    <antcall target="deployWar" inheritRefs="true" />
   </target>
 
   <target name="build.configured" depends="init" >

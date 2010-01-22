@@ -52,19 +52,11 @@
     <if>
       <isset property="org.bedework.global.build.ear" />
       <then>
-        <!-- Common library in ear file -->
-        <property name="app.dest.lib"
-                  location="${org.bedework.ear.templib}" />
-
         <!-- Properties all go into a single jar file at termination -->
         <property name="app.dest.classes"
                   location="${org.bedework.ear.properties.dir}" />
       </then>
       <else>
-        <!-- Library in war file -->
-        <property name="app.dest.lib"
-                  location="${app.dest.webinf}/lib" />
-
         <!-- Properties in the war file -->
         <property name="app.dest.classes"
                   location="${app.dest.webinf}/classes" />
@@ -241,103 +233,46 @@
 
     <delete file="${app.temp.web.xml}" />
 
-    <!-- Add the contex root to the file. Note that newline is required -->
+    <!-- Add the context root to the file. Note that newline is required -->
     <echo file="${org.bedework.global.context.roots}" append="yes">
 ${propval.app.war.name}.context=${propval.app.context.root}
     </echo>
 
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.antlr}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.asm-attrs}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.asm}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.cglib}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.dom4j}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ehcache}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.hibernate}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.javassist}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jgroups}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jta}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-api}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-log4j12}" />
-
-    <!-- jms support -->
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.activemq-core}" />
-    <copy todir="${app.dest.lib}"
-          file="${org.bedework.appjar.geronimo-j2ee-management_1.0_spec}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jms}" />
-
-    <antcall target="bexchange-stuff" inheritRefs="true" />
-    <antcall target="domino-stuff" inheritRefs="true" />
-    <antcall target="google-stuff" inheritRefs="true" />
-
-    <!-- ===============================================================
-         Any jar files required
-         =============================================================== -->
-
-    <echo message="+++++++++++  bw-logging at ${org.bedework.appjar.bw-logging}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-annotations}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.rpiaccess}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.rpiutil}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-davio}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-apiutil}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcore}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calcorei}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calfacade}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvc}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-calsvci}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-client}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-icalendar}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-logging}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-mail}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-sysevents}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.bw-appcommon}" />
-
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-core}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-misc}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ical4j}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-codec}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-collections}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-httpclient}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-lang}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-ssl}"/>
-
-    <!-- Mail related stuff -->
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.activation}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.dsn}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.imap}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.mailapi}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.pop3}" />
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.smtp}" />
-
-    <!-- any extra files-->
-    <copy todir="${app.dest.lib}" >
-      <fileset dir="${org.bedework.temp.extrajars.dir}" />
-    </copy>
+    <!-- Add libraries: Platform specific -->
+    <antcall target="addLibs" inheritRefs="true" />
 
     <!-- Platform specific -->
     <antcall target="doPlatform" inheritRefs="true" />
 
-    <!-- build the war file -->
+    <!-- build the war file or directory -->
     <mkdir dir="${dist.home}" />
+  	
+  	<!-- may be there as a file or a directory -->
     <delete file="${app.war.file}" />
-
-    <war warfile="${app.war.file}"
-         webxml="${app.dest.web.xml}"
-         basedir="${app.dest.war}"
-         excludes="WEB-INF/web.xml" />
-  </target>
-
-  <target name="bexchange-stuff" if="org.bedework.build.caldav.bexchange">
-  </target>
-
-  <target name="domino-stuff" if="org.bedework.build.caldav.domino">
-  </target>
-
-  <target name="google-stuff" if="org.bedework.build.caldav.google">
-    <copy todir="${app.dest.lib}">
-      <fileset dir="${google.dir}">
-        <include name="*.jar"/>
-      </fileset>
-    </copy>
+    <delete dir="${app.war.file}" />
+  	
+    <if>
+    	<or>
+    		<not>
+          <isset property="org.bedework.global.wars.zipped" />
+    		</not>
+    		<istrue value="${org.bedework.global.wars.zipped}"/>
+      </or>
+      <then>
+      	<!-- Build a zipped war file -->
+        <war warfile="${app.war.file}"
+             webxml="${app.dest.web.xml}"
+             basedir="${app.dest.war}"
+             excludes="WEB-INF/web.xml" />
+      </then>
+      <else>
+        <!-- Unzipped war file -->
+        <copy todir="${app.war.file}">
+          <fileset dir="${app.dest.war}"  includes="*"/>
+          <filterset refid="property.filters" />
+        </copy>
+      </else>
+    </if>
   </target>
 
   <!-- =================================================================
@@ -431,18 +366,5 @@ edu.rpi.sss.util.action.logprefix=@APP-NAME@
       </then>
     </if>
 
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.serializer}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.xalan}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.struts}"/>
-
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.antlr}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-beanutils}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-digester}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-fileupload}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-logging}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-validator}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jakarta-oro}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jstl}"/>
-    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jstl-standard}"/>
   </target>
 </project>

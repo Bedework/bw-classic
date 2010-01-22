@@ -4,7 +4,7 @@
      shellscr terminations tasks.
      =================================================================== -->
 
-<project name="bwpubcaldav.deploy" default="deploy" >
+<project name="bwdeploy.termination" default="deploy" >
   <target name="init">
   </target>
 
