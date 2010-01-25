@@ -46,6 +46,8 @@
   <xsl:variable name="bwStr-Tabs-Month">MONTH</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Year">YEAR</xsl:variable>
   <xsl:variable name="bwStr-Tabs-List">LIST</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Search">Search</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-AdvSearch">Advanced Search</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
@@ -117,6 +119,7 @@
   <xsl:variable name="bwStr-SgEv-Task">Task</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Meeting">Meeting</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Recurring">Recurring</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-EventLink">Event Link:</xsl:variable>
   <!--public, private -->
   <xsl:variable name="bwStr-SgEv-Organizer">organizer:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-RecurrenceMaster">recurrence master</xsl:variable>

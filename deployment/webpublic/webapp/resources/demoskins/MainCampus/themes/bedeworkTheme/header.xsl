@@ -83,12 +83,12 @@
         onsubmit="if (this.query.value == '') return false;"
         action="{$search}">
         <!--advance search link  -->
-        <a href="{$search-next}">Advanced Search</a>
+        <a href="{$search-next}"><xsl:copy-of select="$bwStr-Tabs-AdvSearch"/></a>
         <input type="text" name="query" id="basicsearchbox">
           <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query" /></xsl:attribute>
         </input>
         <input id="searchSubmit" type="submit" name="submit"
-          value="Search" onmouseover="this.style.backgroundColor = '#273E6D'"
+          value="{$bwStr-Tabs-Search}" onmouseover="this.style.backgroundColor = '#273E6D'"
           onmouseout="this.style.backgroundColor = '#85C13D'" />
       </form>
       <ul id="nav-main">

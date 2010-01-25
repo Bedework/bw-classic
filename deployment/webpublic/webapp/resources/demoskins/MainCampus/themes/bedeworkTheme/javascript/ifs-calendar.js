@@ -1,4 +1,4 @@
-YAHOO.namespace("ifs");
+YAHOO.namespace("bw");
 
 var navCalSelectHandler = function(type,args,obj) {
   var selected = args[0];
@@ -9,21 +9,35 @@ var navCalSelectHandler = function(type,args,obj) {
   window.location.href = newUrl;
 };
 
-YAHOO.ifs.init = function() {
+YAHOO.bw.init = function() {
 // Mini Calendar
-  YAHOO.ifs.jsNavCal = new YAHOO.widget.Calendar("jsNavCal","jsNavCal", {pagedate: navcalendar[0], selected: navcalendar[1]
-        +"/"+ navcalendar[2] +"/"+ navcalendar[3] +"-"+ navcalendar[4]+"/"+ navcalendar[5] +"/"+ navcalendar[6]});
-  YAHOO.ifs.jsNavCal.selectEvent.subscribe(navCalSelectHandler, YAHOO.ifs.jsNavCal, true);
-  YAHOO.ifs.jsNavCal.render();
-// Hide unnecessary date rows
+  YAHOO.bw.jsNavCal = new YAHOO.widget.Calendar("jsNavCal","jsNavCal", {
+    pagedate: navcalendar[0], 
+    selected: navcalendar[1] +"/"+ navcalendar[2] +"/"+ navcalendar[3] +"-"+ navcalendar[4]+"/"+ navcalendar[5] +"/"+ navcalendar[6]
+  });
+  YAHOO.bw.jsNavCal.selectEvent.subscribe(navCalSelectHandler, YAHOO.bw.jsNavCal, true);
+  
+  // LOCALE SETTINGS:
+  // The following function is found in the locale directory in file jsCalendarLocale.xsl
+  // (in the same location as strings.xsl, where the template language strings are stored).
+  // It is included by the default.xsl file.  The template inside this file is 
+  // called by head.xsl making the js function available here.  You can therefore have
+  // as many locale settings files as you have locales.
+  setJsCalendarLocale(); 
+  
+  YAHOO.bw.jsNavCal.render();
+
+  // Hide unnecessary date rows
+  // ...not currently in use. 
+  /*
   try {
     alterDateDisplay();
   } catch (e) {
-    alert('There was a problem altering the display of dates.');
   }
+  */
 };
 
-YAHOO.util.Event.onDOMReady(YAHOO.ifs.init);
+YAHOO.util.Event.onDOMReady(YAHOO.bw.init);
 
 // Hide date rows
 function alterDateDisplay() {
