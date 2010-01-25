@@ -5,15 +5,14 @@
     org.bedework:archive=indexer-service 
   </loader-repository> 
   
-  <mbean code="org.bedework.indexer.BwIndexer"
-         name="org.bedework:service=Indexer">
+  <mbean code="org.bedework.sysevents.listeners.BwSysevLogger"
+         name="org.bedework:service=BwSysevLogger">
+    <!--  No attributes for the moment
     <attribute name="Account">admin</attribute>
     <attribute name="SkipPaths">/public/unbrowsable:/public/aliases</attribute>
+     -->
 
     <!-- We need activemq -->    
     <depends>jboss.jca:service=ConnectionFactoryBinding,name=activemq/QueueConnectionFactory</depends>
-    
-    <!-- We also need the bedework database -->
-    <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
   </mbean>
 </server>

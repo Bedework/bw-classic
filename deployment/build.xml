@@ -226,9 +226,11 @@
     </antcall>
 
     <!-- copy startup website that sends you to the applications -->
-    <delete dir="${webapp.root.dir}/bedework"/>
-    <mkdir dir="${webapp.root.dir}/bedework"/>
-    <copy todir="${webapp.root.dir}/bedework">
+  	<property name="startup.website.dir"
+  	          locations="${org.bedework.appserver.dir}/${org.bedework.server.resource.root.dir}" />
+    <delete dir="${startup.website.dir}"/>
+    <mkdir dir="${startup.website.dir}"/>
+    <copy todir="${startup.website.dir}">
       <fileset dir="${app.root.dir}/resources/bedework"/>
     </copy>
 

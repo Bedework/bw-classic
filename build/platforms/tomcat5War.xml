@@ -29,6 +29,10 @@
        ================================================================ -->
 
   <target name="addLibs">
+    <!-- Library in war file -->
+    <property name="app.dest.lib"
+              location="${app.dest.webinf}/lib" />
+
     <!-- hibernate jars -->
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.antlr}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.asm-attrs}" />
