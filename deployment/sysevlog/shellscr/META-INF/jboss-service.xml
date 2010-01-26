@@ -2,7 +2,7 @@
 <server>
   <!--  guarantee separate classloader -->
   <loader-repository> 
-    org.bedework:archive=indexer-service 
+    org.bedework:archive=sysevlog-service 
   </loader-repository> 
   
   <mbean code="org.bedework.sysevents.listeners.BwSysevLogger"
