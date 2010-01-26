@@ -7,6 +7,7 @@
         addResources: add anything we want in the resources directory 
         addExtras: add scripts for runnable versions and META-INF for
                    jboss services etc.
+        deployService: deploy the service
      =================================================================== -->
 
 <project name="bedework.platformService" default="doHibProps" >
@@ -119,5 +120,23 @@ hibernate.jdbc.batch_size=0
   	  <fileset dir="${metainf.dir}" />
       <filterset refid="property.filters" />
     </copy>
+  </target>
+
+  <target name="deployService">
+    <!-- copy the sar - at the moment copy the uncompressed. -->
+
+    <if>
+      <isset property="org.bedework.appserver.deploy.dir" />
+      <then>
+        <property name="app.dest.home"
+                  location="${org.bedework.temp.shellscr.home}/${propval.app.zip.name}" />
+
+      	<delete dir="${org.bedework.appserver.deploy.dir}/${propval.app.zip.name}.sar" />
+        <mkdir dir="${org.bedework.appserver.deploy.dir}/${propval.app.zip.name}.sar" />
+        <copy todir="${org.bedework.appserver.deploy.dir}/${propval.app.zip.name}.sar">
+          <fileset dir="${app.dest.home}"/>
+        </copy>
+      </then>
+    </if>
   </target>
 </project>
