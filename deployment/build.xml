@@ -227,7 +227,7 @@
 
     <!-- copy startup website that sends you to the applications -->
   	<property name="startup.website.dir"
-  	          location="${org.bedework.appserver.dir}/${org.bedework.server.resource.root.dir}" />
+  	          location="${org.bedework.appserver.dir}/${org.bedework.server.resource.root.dir}/bedework" />
     <delete dir="${startup.website.dir}"/>
     <mkdir dir="${startup.website.dir}"/>
     <copy todir="${startup.website.dir}">
