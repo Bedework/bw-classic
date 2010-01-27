@@ -36,14 +36,16 @@
 -->
   <bean
     class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  <!--
     <property name="locations">
       <value>file:///${activemq.base}/conf/credentials.properties
       </value>
     </property>
+  -->
   </bean>
 
   <broker xmlns="http://activemq.apache.org/schema/core"
-    brokerName="bedework" dataDirectory="${activemq.base}/data">
+          brokerName="bedework">
     <!--
       MikeD Queues for various bedework services. These are all fed by
       the virtual queue bedework.sysevents
@@ -140,16 +142,15 @@
       -->
     </networkConnectors>
 
-    <!-- High throughput but scalability problems - perhaps OK with <=500 connections
+    <!-- High throughput but scalability problems - perhaps OK with <=500 connections 
     <persistenceAdapter>
       <amqPersistenceAdapter syncOnWrite="false"
-        directory="../activemq-data" maxFileLength="20 mb" />
-    </persistenceAdapter>
-    -->
+        directory="${jboss.server.data.dir}/activemq-data" maxFileLength="20 mb" />
+    </persistenceAdapter> -->
 
     <!-- Newer adapter - handles 1000s of connections -->
     <persistenceAdapter>
-      <kahaDB directory="../data/activemq-data" journalMaxFileLength="32mb"/>
+      <kahaPersistenceAdapter directory="${jboss.server.data.dir}/activemq" maxDataFileLength="33554432"/>
     </persistenceAdapter>
 
     <!-- older and slower is jdbcPersistenceAdapter -->
@@ -239,7 +240,7 @@
                 password="${activemq.password}"/>
   -->
 
-  <!-- An embedded servlet engine for serving up the Admin console -->
+  <!-- An embedded servlet engine for serving up the Admin console
   <jetty xmlns="http://mortbay.com/schemas/jetty/1.0">
     <connectors>
       <nioConnector port="8161"/>
@@ -251,9 +252,10 @@
       <webAppContext contextPath="/fileserver" resourceBase="${activemq.base}/webapps/fileserver" logUrlOnStart="true"/>
     </handlers>
   </jetty>
-
+ -->
   <!--  This xbean configuration file supports all the standard spring xml configuration options
 -->
+
 
 </beans>
 

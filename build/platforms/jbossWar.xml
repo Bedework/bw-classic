@@ -179,6 +179,23 @@
         <copy todir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}">
           <fileset dir="${org.bedework.ear.dir}"/>
         </copy>
+
+        <!-- If requested we also copy in the activemq configuration. -->
+
+        <if>
+          <istrue value="${org.bedework.global.copy.activemq.config}" />
+          <then>
+            <copy file="${org.bedework.config.home}/activemq-ra.xml"
+            	    tofile="${org.bedework.global.activemq.dir}/META-INF/ra.xml"
+                  overwrite="yes" />
+            <copy file="${org.bedework.config.home}/activemq-broker-config.xml"
+                  tofile="${org.bedework.global.activemq.dir}/broker-config.xml"
+                  overwrite="yes" />
+            <copy file="${org.bedework.config.home}/activemq-jms-ds.xml"
+                  tofile="${org.bedework.appserver.deploy.dir}/activemq-jms-ds.xml"
+                  overwrite="yes" />
+          </then>
+        </if>
       </then>
     </if>
   </target>
