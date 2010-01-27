@@ -128,7 +128,20 @@
         <include name="*.jar"/>
       </fileset>
     </applicationXml>
-
+  	
+    <echo file="${org.bedework.ear.dir}/META-INF/jboss-app.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<jboss-app>
+   <loader-repository> 
+     org.bedework:archive=@EAR_NAME@ 
+     <loader-repository-config>java2ParentDelegation=false</loader-repository-config> 
+   </loader-repository> 
+</jboss-app>
+]]></echo>
+    	
+    <replace file="${org.bedework.ear.dir}/META-INF/jboss-app.xml"
+    	       token="@EAR_NAME@" 
+    	       value="${app.ear.file.name}"/>
+    	    
     <manifest file="${org.bedework.ear.dir}/META-INF/MANIFEST.MF" />
 
     <if>
