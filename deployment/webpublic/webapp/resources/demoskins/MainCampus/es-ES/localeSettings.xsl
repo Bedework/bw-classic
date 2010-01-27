@@ -20,7 +20,7 @@
     -->
     <script type="text/javascript">
       function setJsCalendarLocale() {
-        // GERMAN EXAMPLE:
+        // SPANISH:
         // Correct formats for locale: dd.mm.yyyy, dd.mm, mm.yyyy 
         YAHOO.bw.jsNavCal.cfg.setProperty("DATE_FIELD_DELIMITER", "."); 
         YAHOO.bw.jsNavCal.cfg.setProperty("MDY_DAY_POSITION", 1); 
@@ -31,12 +31,12 @@
         YAHOO.bw.jsNavCal.cfg.setProperty("MD_MONTH_POSITION", 2); 
 
         // Date labels for locale 
-        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_SHORT",   ["Jan", "Feb", "M\u00E4r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]); 
-        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_LONG",    ["Januar", "Februar", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]); 
-        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_1CHAR", ["S", "M", "D", "M", "D", "F", "S"]); 
-        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_SHORT", ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]); 
-        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_MEDIUM",["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"]); 
-        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_LONG",  ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]); 
+        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_SHORT",   ["enero", "feb", "marzo", "abr", "mayo", "jun", "jul", "augosto", "set", "oct", "nov", "dic"]); 
+        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_LONG",    ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "augosto", "septiembre", "octubre", "noviembre", "diciembre"]); 
+        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_1CHAR", ["D", "L", "M", "K", "J", "V", "S"]); 
+        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_SHORT", ["do", "lu", "ma", "mi", "ju", "vi", "sá"]); 
+        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_MEDIUM",["Dom", "Lun", "Mar", "Miér", "Jue", "Viér", "Sáb"]); 
+        YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_LONG",  ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]); 
       }
      </script>
   </xsl:template>
