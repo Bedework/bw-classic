@@ -627,7 +627,7 @@
   <xsl:variable name="bwStr-Upld-Tentative">tentative</xsl:variable>
   <xsl:variable name="bwStr-Upld-Canceled">canceled</xsl:variable>
   <xsl:variable name="bwStr-Upld-Continue">Continue</xsl:variable>
-  <xsl:variable name="bwStr-Upld-Cancel">C00ancel</xsl:variable>
+  <xsl:variable name="bwStr-Upld-Cancel">Cancel</xsl:variable>
   <xsl:variable name="bwStr-Upld-DefaultCalendar">default calendar</xsl:variable>
   <xsl:variable name="bwStr-Upld-Status">Status:</xsl:variable>
 
