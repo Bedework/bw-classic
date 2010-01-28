@@ -31,8 +31,8 @@
         YAHOO.bw.jsNavCal.cfg.setProperty("MD_MONTH_POSITION", 2); 
 
         // Date labels for locale 
-        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_SHORT",   ["enero", "feb", "marzo", "abr", "mayo", "jun", "jul", "augosto", "set", "oct", "nov", "dic"]); 
-        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_LONG",    ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "augosto", "septiembre", "octubre", "noviembre", "diciembre"]); 
+        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_SHORT",   ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "set", "oct", "nov", "dic"]);
+        YAHOO.bw.jsNavCal.cfg.setProperty("MONTHS_LONG",    ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]);
         YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_1CHAR", ["D", "L", "M", "K", "J", "V", "S"]); 
         YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_SHORT", ["do", "lu", "ma", "mi", "ju", "vi", "sá"]); 
         YAHOO.bw.jsNavCal.cfg.setProperty("WEEKDAYS_MEDIUM",["Dom", "Lun", "Mar", "Miér", "Jue", "Viér", "Sáb"]); 
