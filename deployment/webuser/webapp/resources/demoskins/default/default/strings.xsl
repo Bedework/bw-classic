@@ -42,6 +42,7 @@
   <xsl:variable name="bwStr-Tabs-Month">MONTH</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Year">YEAR</xsl:variable>
   <xsl:variable name="bwStr-Tabs-List">LIST</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Agenda">AGENDA</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
@@ -425,9 +426,9 @@
   <xsl:variable name="bwStr-Atnd-Recipients">Recipients</xsl:variable>
   <xsl:variable name="bwStr-Atnd-Attendee">attendee</xsl:variable>
   <xsl:variable name="bwStr-Atnd-Attendees">Attendees</xsl:variable>
-  <xsl:variable name="bwStr-Atnd-RoleColon">Role:</xsl:variable>
+  <xsl:variable name="bwStr-Atnd-RoleColon">role:</xsl:variable>
   <xsl:variable name="bwStr-Atnd-Role">role</xsl:variable>
-  <xsl:variable name="bwStr-Atnd-StatusColon">Status:</xsl:variable>
+  <xsl:variable name="bwStr-Atnd-StatusColon">status:</xsl:variable>
   <xsl:variable name="bwStr-Atnd-Status">status</xsl:variable>
   <xsl:variable name="bwStr-Atnd-RequiredParticipant">required participant</xsl:variable>
   <xsl:variable name="bwStr-Atnd-OptionalParticipant">optional participant</xsl:variable>

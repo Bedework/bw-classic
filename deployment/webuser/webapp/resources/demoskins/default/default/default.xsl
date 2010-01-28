@@ -719,6 +719,7 @@
           <img height="13" border="0" width="13"
             src="{$resourcesRoot}/resources/prefsIcon.gif"
             alt="upload event" />
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-SdBr-Preferences"/>
         </a>
       </li>
@@ -727,6 +728,7 @@
           <img height="16" border="0" width="12"
             src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
             alt="upload ical" />
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
         </a>
       </li>
@@ -735,6 +737,7 @@
           <img height="16" border="0" width="12"
             src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif"
             alt="upload event" />
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-SdBr-ExportCalendars"/>
         </a>
       </li>
@@ -783,7 +786,7 @@
         <li>
           <xsl:if test="/bedework/page='eventList'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-List"/></a>
+          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-Agenda"/></a>
         </li>
       </ul>
     </div>
@@ -1044,22 +1047,27 @@
     <div id="{$actionIconsId}" class="bwActionIcons">
        <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
        </a>
        <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleMeeting"/>
        </a>
        <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="add task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddTask"/>
        </a>
        <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleTask"/>
        </a>
        <a href="{$initUpload}" title="upload event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
+          <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-Upload"/>
        </a>
      </div>
@@ -1321,6 +1329,8 @@
                   <xsl:choose>
                     <xsl:when test="status='CANCELLED'">bwStatusCancelled</xsl:when>
                     <xsl:when test="status='TENTATIVE'">bwStatusTentative</xsl:when>
+                    <xsl:when test="position() mod 2 = 0">even</xsl:when>
+                    <xsl:otherwise>odd</xsl:otherwise>
                   </xsl:choose>
                 </xsl:attribute>
 
@@ -1384,14 +1394,19 @@
                     </xsl:for-each>
                   </xsl:if>
                   <br/>
-                  <em>
-                    <xsl:if test="cost!=''">
-                      <xsl:value-of select="cost"/>.&#160;
-                    </xsl:if>
-                    <xsl:if test="contact/name!='none'">
-                      <xsl:copy-of select="$bwStr-LsEv-Contact"/><xsl:text> </xsl:text><xsl:value-of select="contact/name"/>
-                    </xsl:if>
-                  </em>
+                  <xsl:if test="cost!=''">
+                    <span class="cost">
+                      <xsl:value-of select="cost"/>
+                      <xsl:text> </xsl:text>
+                    </span>
+                  </xsl:if>
+                  <xsl:if test="contact/name!='none'">
+                    <span class="contact">
+                      <xsl:copy-of select="$bwStr-LsEv-Contact"/>
+                      <xsl:text> </xsl:text>
+                      <xsl:value-of select="contact/name"/>
+                    </span>
+                  </xsl:if>
                 </xsl:if>
 
               </li>
@@ -1738,6 +1753,7 @@
                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                   <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-EvCG-DeleteColon"/>
+                  <xsl:text> </xsl:text>
                   <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-DeleteMaster}" onclick="return confirm('{$bwStr-EvCG-DeleteAllRecurrences}');">
                     <xsl:copy-of select="$bwStr-EvCG-All"/>
                   </a>,
@@ -2915,6 +2931,7 @@
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:copy-of select="$bwStr-AEEF-Date"/>
+              <xsl:text> </xsl:text>
               <xsl:variable name="endDateTimeClass">
                 <xsl:choose>
                   <xsl:when test="form/end/type='E'">shown</xsl:when>
@@ -3035,7 +3052,9 @@
                               <xsl:otherwise><xsl:value-of select="form/end/duration/days/input/@value"/></xsl:otherwise>
                             </xsl:choose>
                           </xsl:attribute>
-                        </input><xsl:copy-of select="$bwStr-AEEF-Days"/>
+                        </input>
+                        <xsl:copy-of select="$bwStr-AEEF-Days"/>
+                        <xsl:text> </xsl:text>
                         <span id="durationHrMin" class="{$durationHrMinClass}">
                           <input type="text" name="eventDuration.hoursStr" size="2" id="durationHours">
                             <xsl:attribute name="value">
@@ -3044,7 +3063,9 @@
                                 <xsl:otherwise><xsl:value-of select="form/end/duration/hours/input/@value"/></xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
-                          </input><xsl:copy-of select="$bwStr-AEEF-Hours"/>
+                          </input>
+                          <xsl:copy-of select="$bwStr-AEEF-Hours"/>
+                          <xsl:text> </xsl:text>
                           <input type="text" name="eventDuration.minutesStr" size="2" id="durationMinutes">
                             <xsl:attribute name="value">
                               <xsl:choose>
@@ -3052,7 +3073,8 @@
                                 <xsl:otherwise><xsl:value-of select="form/end/duration/minutes/input/@value"/></xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
-                          </input><xsl:copy-of select="$bwStr-AEEF-Minutes"/>
+                          </input>
+                          <xsl:copy-of select="$bwStr-AEEF-Minutes"/>
                         </span>
                       </div>
                       <span class="durationSpacerText"><xsl:copy-of select="$bwStr-AEEF-Or"/></span>
@@ -4186,7 +4208,7 @@
             <!-- Recipients are deprecated: default all to attendees -->
             <input type="hidden" name="recipient" value="true"/>
             <input type="hidden" name="attendee"  value="true"/>
-            &#160;
+            <xsl:text> </xsl:text>
             <xsl:copy-of select="$bwStr-Atnd-RoleColon"/>
             <select name="role">
               <option value="REQ-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-RequiredParticipant"/></option>
@@ -4194,7 +4216,7 @@
               <option value="CHAIR"><xsl:copy-of select="$bwStr-Atnd-Chair"/></option>
               <option value="NON-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-NonParticipant"/></option>
             </select>
-            &#160;
+            <xsl:text> </xsl:text>
             <xsl:copy-of select="$bwStr-Atnd-StatusColon"/>
             <select name="partstat">
               <option value="NEEDS-ACTION"><xsl:copy-of select="$bwStr-Atnd-NeedsAction"/></option>

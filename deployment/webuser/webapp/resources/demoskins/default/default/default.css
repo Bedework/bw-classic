@@ -1595,6 +1595,26 @@ display: inline;
 #bedework .noEventsCell {
   padding: 1em;
 }
+#bedework #listEvents ul {
+  font-size: 0.9em; 
+  margin: 0;
+  padding: 0;
+}
+#bedework #listEvents li {
+  padding: 1em;
+  list-style: none;
+}
+#bedework #listEvents li.even {
+  background-color: #f2f2f2;
+  color: black;
+}
+#bedework #listEvents .cost,
+#bedework #listEvents .contact {
+  font-style: italic;
+}
+#bedework #listEvents .title {
+  font-weight: bold;
+}
 #bedework #tasks {
   margin: 0;
   padding: 0;
