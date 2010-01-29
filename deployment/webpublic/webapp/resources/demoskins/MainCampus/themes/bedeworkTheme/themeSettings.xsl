@@ -94,12 +94,21 @@
 
 
 
-  <!-- EMBED THE FEED URL AND WIDGET BUILDER? -->
-  <!-- If true, the urlbuilder will be rendered in an iframe.
-       If false, it will be treated as an external link.
-       The urlbuilder constructs filtered feeds (e.g. json, rss, xml)
+  <!-- FEED URL AND WIDGET BUILDER -->
+  <!-- The urlbuilder constructs filtered feeds (e.g. json, rss, xml)
        and widgets and points to the cached feeder application for delivery. -->
+  
+  <!-- Location of the urlbuilder application; this is set to the 
+       default quickstart location. If you move it, you must change this
+       value. -->
+  <xsl:variable name="urlbuilder">http://localhost:9090/urlbuilder</xsl:variable>
+  
+  <!-- Embed the urlbuilder??
+       If true, the urlbuilder will be rendered in an iframe.
+       If false, it will be treated as an external link.  -->
   <xsl:variable name="embedUrlBuilder">true</xsl:variable>
+  
+
 
 
 
