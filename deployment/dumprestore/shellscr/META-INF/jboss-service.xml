@@ -39,7 +39,7 @@
     <attribute name="SqlIn">not-a-file.sql</attribute>
     
     <!-- XML data input file name - full path. Used for data restore -->
-    <attribute name="DataIn">data/initbedework.xml</attribute>
+    <attribute name="DataIn">${jboss.server.data.dir}/bedework/dumprestore/initbedework.xml</attribute>
 
     <!-- We need activemq -->    
     <depends>jboss.jca:service=ConnectionFactoryBinding,name=activemq/QueueConnectionFactory</depends>

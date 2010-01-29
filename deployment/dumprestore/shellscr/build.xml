@@ -34,10 +34,6 @@
   <!-- =================================================================
        The "deploy" target first builds a configured component then copies
        all required files to the appropriate servlet container directories.
-
-       Currently this only works for the quickstart distribution.
-       For example, it does not handle deploying into jboss and copying
-       resource files (images, stylesheets) to external locations.
        ================================================================= -->
 
   <target name="deploy" depends="init,build.configured" >
@@ -49,11 +45,23 @@
               location="${org.bedework.temp.shellscr.home}/bldtemp/${propval.app.zip.name}" />
     <mkdir dir="${app.temp.home}"/>
 
-    <mkdir dir="${app.temp.home}/data"/>
-    <copy todir="${app.temp.home}/data" 
-    	    file="${app.sou.dir}/resources/initbedework.xml" />
-    <copy todir="${app.temp.home}/data" 
-    	    file="${app.sou.dir}/resources/initbedework-sparse.xml" />
+  	<if>
+  		<equals arg1="jboss" arg2="${org.bedework.global.deploy.platform}"/>
+  		<then>
+        <mkdir dir="${org.bedework.jboss.data.dir}/dumprestore"/>
+        <copy todir="${org.bedework.jboss.data.dir}/dumprestore" 
+              file="${app.sou.dir}/resources/initbedework.xml" />
+        <copy todir="${org.bedework.jboss.data.dir}/dumprestore" 
+              file="${app.sou.dir}/resources/initbedework-sparse.xml" />
+  	  </then>
+  		<else>
+        <mkdir dir="${app.temp.home}/data"/>
+        <copy todir="${app.temp.home}/data" 
+        	    file="${app.sou.dir}/resources/initbedework.xml" />
+        <copy todir="${app.temp.home}/data" 
+        	    file="${app.sou.dir}/resources/initbedework-sparse.xml" />
+  		</else>
+    </if>
 
     <fileset id="org.bedework.shellscr.data" dir="${app.temp.home}/data" />
 

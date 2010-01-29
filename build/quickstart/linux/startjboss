@@ -20,13 +20,7 @@ JBOSS_BIND="-b 0.0.0.0"
 #
 
 # standard ports
-JBOSS_PORTS=
-
-# standard ports + 100
-#JBOSS_PORTS="-Djboss.service.binding.set=ports-01"
-
-# standard ports + 200
-#JBOSS_PORTS="-Djboss.service.binding.set=ports-02"
+JBOSS_PORTS=-Dorg.bedework.system.ports.offset=0
 
 # standard ports + defined value
 #JBOSS_PORTS="-Dorg.bedework.system.ports.offset=505 -Djboss.service.binding.set=ports-syspar"
