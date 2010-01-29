@@ -42,7 +42,6 @@
   <!-- Other generally useful global variables -->
   <xsl:variable name="privateCal">/ucal</xsl:variable>
   <xsl:variable name="feeder">/feeder</xsl:variable>
-  <xsl:variable name="urlbuilder">/urlbuilder</xsl:variable>
   <xsl:variable name="prevdate" select="/bedework/previousdate" />
   <xsl:variable name="nextdate" select="/bedework/nextdate" />
   <xsl:variable name="curdate" select="/bedework/currentdate/date" />
