@@ -49,8 +49,6 @@
     <!-- Extra resources -->
     <fileset id="org.bedework.extra.resources" dir="${org.bedework.empty.dir}" >
     </fileset>
-    <fileset id="org.bedework.shellscr.data" dir="${org.bedework.empty.dir}" >
-    </fileset>
 
     <!-- ===============================================================
          Build the shell script

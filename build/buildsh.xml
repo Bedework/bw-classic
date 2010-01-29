@@ -94,7 +94,7 @@
          =============================================================== -->
 
     <if>
-      <isreference refid="org.bedework.shellscr.data" />
+      <istrue value="${org.bedework.shellscr.copy.data}" />
       <then>
         <mkdir dir="${app.dest.data}" />
     

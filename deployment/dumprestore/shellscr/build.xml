@@ -60,10 +60,11 @@
         	    file="${app.sou.dir}/resources/initbedework.xml" />
         <copy todir="${app.temp.home}/data" 
         	    file="${app.sou.dir}/resources/initbedework-sparse.xml" />
+
+        <property name="org.bedework.shellscr.copy.data" value="true" />
+        <fileset id="org.bedework.shellscr.data" dir="${app.temp.home}/data" />
   		</else>
     </if>
-
-    <fileset id="org.bedework.shellscr.data" dir="${app.temp.home}/data" />
 
     <!-- ===============================================================
          Build the shell script
