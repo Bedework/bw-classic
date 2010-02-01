@@ -171,6 +171,9 @@
     <property name="org.bedework.temp.dir"
               location="${dist.home}/temp" />
 
+    <property name="org.bedework.ear.properties.dir"
+              location="${org.bedework.temp.dir}/ear-properties" />
+
     <property name="org.bedework.config.base"
               location="${org.bedework.project.bedework}/config" />
 
