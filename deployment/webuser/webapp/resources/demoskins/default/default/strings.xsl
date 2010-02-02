@@ -33,6 +33,7 @@
   <xsl:variable name="bwStr-SdBr-Preferences">Preferences</xsl:variable>
   <xsl:variable name="bwStr-SdBr-UploadICal">Upload iCAL</xsl:variable>
   <xsl:variable name="bwStr-SdBr-ExportCalendars">Export Calendars</xsl:variable>
+  <xsl:variable name="bwStr-SdBr-UploadEvent">Upload Event</xsl:variable>
 
   <!--  xsl:template name="tabs" -->
   <xsl:variable name="bwStr-Tabs-LoggedInAs">logged in as</xsl:variable>
@@ -72,6 +73,7 @@
   <xsl:variable name="bwStr-Actn-AddTask">add task</xsl:variable>
   <xsl:variable name="bwStr-Actn-ScheduleTask">schedule task</xsl:variable>
   <xsl:variable name="bwStr-Actn-Upload">upload</xsl:variable>
+  <xsl:variable name="bwStr-Actn-UploadEvent">upload event</xsl:variable>
 
   <!--  xsl:template name="listView" -->
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplay">No events to display.</xsl:variable>
@@ -100,6 +102,8 @@
   <xsl:variable name="bwStr-EvLn-DeleteAllRecurrences">Delete all recurrences of this event?</xsl:variable>
   <xsl:variable name="bwStr-EvLn-DeleteInstance">delete instance (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-EvLn-Delete">Delete</xsl:variable>
+  <xsl:variable name="bwStr-EvLn-AddEventReference">add event reference to a calendar</xsl:variable>
+  
 
   <!-- xsl:template match="events" mode="eventList" -->
   <xsl:variable name="bwStr-LsEv-Next7Days">Next 7 Days</xsl:variable>
@@ -109,6 +113,7 @@
   <xsl:variable name="bwStr-LsEv-Contact">Contact:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Canceled">CANCELED:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Tentative">TENTATIVE:</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-GoToDay">go to day</xsl:variable>
 
   <!-- xsl:template name="weekView" -->
 
@@ -158,6 +163,9 @@
   <xsl:variable name="bwStr-EvCG-DeleteThisInstance">delete this instance (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-EvCG-DeleteEvent">delete event</xsl:variable>
   <xsl:variable name="bwStr-EvCG-Delete">Delete</xsl:variable>
+  <xsl:variable name="bwStr-EvCG-AddMasterEventReference">add master event reference to a calendar</xsl:variable>
+  <xsl:variable name="bwStr-EvCG-AddThisEventReference">add this event reference to a calendar</xsl:variable>
+  <xsl:variable name="bwStr-EvCG-AddEventReference">add event reference to a calendar</xsl:variable>
 
   <!-- <xsl:template name="yearView" -->
 
@@ -238,6 +246,7 @@
   <xsl:variable name="bwStr-SgEv-Categories">Categories:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Comments">Comments:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-TopicalArea">Topical Area:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-Email">email</xsl:variable>
 
   <!-- <xsl:template match="formElements" mode="addEvent" -->
   <xsl:variable name="bwStr-AddE-AddTask">Add Task</xsl:variable>
@@ -417,6 +426,8 @@
   <xsl:variable name="bwStr-Cloc-SelectTime">select time</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Switch">switch</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">close</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-CloseClock">close clock</xsl:variable>
+  
 
   <!-- xsl:template name="attendees" -->
   <xsl:variable name="bwStr-Atnd-Continue">continue</xsl:variable>
@@ -520,19 +531,26 @@
   <!--  xsl:template match="calendar" mode="myCalendars"  -->
 
   <!--  xsl:template match="calendar" mode="mySpecialCalendars" -->
+  <xsl:variable name="bwStr-Cals-IncomingSchedulingRequests">incoming scheduling requests</xsl:variable>
+  <xsl:variable name="bwStr-Cals-OutgoingSchedulingRequests">outgoing scheduling requests</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="listForUpdate"  -->
+  <xsl:variable name="bwStr-Cals-Update">update</xsl:variable>
+  <xsl:variable name="bwStr-Cals-AddCalendarOrFolder">add a calendar or folder</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="listForDisplay"  -->
+  <xsl:variable name="bwStr-Cals-Display">display</xsl:variable>
 
   <!--  xsl:template name="selectCalForEvent" -->
   <xsl:variable name="bwStr-SCfE-SelectACalendar">select a calendar</xsl:variable>
   <xsl:variable name="bwStr-SCfE-NoWritableCals">no writable calendars</xsl:variable>
+  <xsl:variable name="bwStr-SCfE-Close">close</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="selectCalForEventCalTree" -->
 
   <!--  xsl:template name="selectCalForPublicAlias" -->
   <xsl:variable name="bwStr-SCPA-SelectACalendar">select a calendar</xsl:variable>
+  <xsl:variable name="bwStr-SCPA-Close">close</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="selectCalForPublicAliasCalTree" -->
 
@@ -586,6 +604,7 @@
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">pick</xsl:variable>
   <xsl:variable name="bwStr-CoPi-UseDefaultColors">use default colors</xsl:variable>
+  <xsl:variable name="bwStr-CoPi-SelectColor">Select a color</xsl:variable>
 
 <!--  xsl:template name="calendarList"  -->
   <xsl:variable name="bwStr-CaLi-ManagingCalendars">Managing Calendars &amp; Subscriptions</xsl:variable>
@@ -637,6 +656,9 @@
   <xsl:variable name="bwStr-SuMe-PublicCal">a public calendar (in this system)</xsl:variable>
   <xsl:variable name="bwStr-SuMe-UserCal">a user calendar (in this system)</xsl:variable>
   <xsl:variable name="bwStr-SuMe-ExternalFeed">an external iCal feed (e.g. Google, Eventful, etc)</xsl:variable>
+  <xsl:variable name="bwStr-SuMe-SubscribeToPublicCalendar">subscribe to a public calendar</xsl:variable>
+  <xsl:variable name="bwStr-SuMe-SubscribeToUserCalendar">subscribe to a user calendar</xsl:variable>
+  <xsl:variable name="bwStr-SuMe-SubscribeToExternalCalendar">subscribe to an external calendar</xsl:variable>
 
   <!--  xsl:template name="addPublicAlias"  -->
   <xsl:variable name="bwStr-AdPA-SubscribeToPublicCal">Subscribe to a Public Calendar</xsl:variable>
@@ -781,7 +803,11 @@
   <xsl:variable name="bwStr-Inbx-Cancel">cancel</xsl:variable>
   <xsl:variable name="bwStr-Inbx-Counter">counter</xsl:variable>
   <xsl:variable name="bwStr-Inbx-Processed">processed</xsl:variable>
-
+  <xsl:variable name="bwStr-Inbx-CheckMessage">check message</xsl:variable>
+  <xsl:variable name="bwStr-Inbx-Email">email</xsl:variable>
+  <xsl:variable name="bwStr-Inbx-Download">download</xsl:variable>
+  <xsl:variable name="bwStr-Inbx-Delete">delete</xsl:variable>
+  
   <!--  xsl:template match="outbox" -->
   <xsl:variable name="bwStr-Oubx-Outbox">Outbox</xsl:variable>
   <xsl:variable name="bwStr-Oubx-Sent">sent</xsl:variable>
@@ -797,6 +823,10 @@
   <xsl:variable name="bwStr-Oubx-Counter">counter</xsl:variable>
   <xsl:variable name="bwStr-Oubx-Unprocessed">unprocessed</xsl:variable>
   <xsl:variable name="bwStr-Oubx-Processed">processed</xsl:variable>
+  <xsl:variable name="bwStr-Oubx-CheckMessage">check message</xsl:variable>
+  <xsl:variable name="bwStr-Oubx-Email">email</xsl:variable>
+  <xsl:variable name="bwStr-Oubx-Download">download</xsl:variable>
+  <xsl:variable name="bwStr-Oubx-Delete">delete</xsl:variable>
 
   <!--  xsl:template match="scheduleMethod" -->
   <xsl:variable name="bwStr-ScMe-Publish">publish</xsl:variable>

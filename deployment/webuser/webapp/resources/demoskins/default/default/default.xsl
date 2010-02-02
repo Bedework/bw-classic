@@ -724,7 +724,16 @@
         </a>
       </li>
       <li>
-        <a href="{$initUpload}" title="upload event">
+	    <a href="{$initUpload}" title="{$bwStr-SdBr-UploadEvent}">
+	      <img height="16" border="0" width="12"
+	        src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
+	        alt="upload ical" />
+	      <xsl:text> </xsl:text>
+	      <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
+	    </a>
+	  </li>
+	  <li>
+	    <a href="{$calendar-listForExport}" title="{$bwStr-SdBr-ExportCalendars}">
           <img height="16" border="0" width="12"
             src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
             alt="upload ical" />
@@ -1045,7 +1054,7 @@
     </xsl:variable>
     <br/>
     <div id="{$actionIconsId}" class="bwActionIcons">
-       <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="add event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddEvent}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
@@ -1055,17 +1064,17 @@
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleMeeting"/>
        </a>
-       <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="add task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddTask"/>
        </a>
-       <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a task" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="{$bwStr-Actn-ScheduleTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleTask"/>
        </a>
-       <a href="{$initUpload}" title="upload event" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+       <a href="{$initUpload}" title="{$bwStr-Actn-UploadEvent}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-Upload"/>
@@ -1281,7 +1290,7 @@
     </xsl:if>
     <xsl:if test="not(currentAccess/current-user-privilege-set/privilege/write-content) and not(recurring='true' or recurrenceId != '')">
       <!-- temporarily hide from Recurring events -->
-      <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+      <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvLn-AddEventReference}">
         <xsl:copy-of select="$bwStr-EvLn-Link"/>
       </a>
       <xsl:text> </xsl:text>
@@ -1435,7 +1444,7 @@
               </xsl:if>
               <xsl:variable name="dayDate" select="date"/>
               <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
-              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
+              <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="{$bwStr-LsEv-GoToDay}">
                 <xsl:value-of select="value"/>
               </a>
               <div class="gridAdd">
@@ -1486,7 +1495,7 @@
                   </xsl:if>
                   <xsl:variable name="dayDate" select="date"/>
                   <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
-                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="go to day">
+                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$dayDate}" class="dayLink" title="{$bwStr-LsEv-GoToDay}">
                     <xsl:value-of select="value"/>
                   </a>
                   <div class="gridAdd">
@@ -1729,15 +1738,15 @@
                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                   <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-EvCG-LinkColon"/><xsl:text> </xsl:text>
-                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add master event reference to a calendar">
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-AddMasterEventReference}">
                     <xsl:copy-of select="$bwStr-EvCG-All"/>
                   </a>,
-                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="add this event reference to a calendar">
+                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvCG-AddThisEventReference}">
                     <xsl:copy-of select="$bwStr-EvCG-Instance"/>
                   </a>
                </xsl:when>
                <xsl:otherwise>
-                 <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="add event reference to a calendar">
+                 <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-AddEventReference}">
                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                    <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Link"/>
                  </a>
@@ -2340,7 +2349,7 @@
               </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="organizer/organizerUri != ''">
-              <a href="{$organizerUri}" class="emailIcon" title="email">
+              <a href="{$organizerUri}" class="emailIcon" title="{$bwStr-SgEv-Email}">
                 <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
               </a>
             </xsl:if>
@@ -2363,7 +2372,7 @@
                 <tr>
                   <td>
                     <xsl:variable name="attendeeUri" select="attendeeUri"/>
-                    <a href="{$attendeeUri}" class="emailIcon" title="email">
+                    <a href="{$attendeeUri}" class="emailIcon" title="{$bwStr-SgEv-Email}">
                       <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
                     </a>
                     <xsl:choose>
@@ -4151,7 +4160,7 @@
         </div>
       </div>
       <map name="bwClockMap" id="bwClockMap">
-        <area shape="rect" alt="close clock" title="close clock" coords="160,167, 200,200" href="javascript:bwClockClose()"/>
+        <area shape="rect" alt="close clock" title="{$bwStr-Cloc-CloseClock}" coords="160,167, 200,200" href="javascript:bwClockClose()"/>
         <area shape="poly" alt="minute 00:55" title="minute 00:55" coords="156,164, 169,155, 156,107, 123,128" href="javascript:bwClockUpdateDateTimeForm('minute','55')" />
         <area shape="poly" alt="minute 00:50" title="minute 00:50" coords="150,175, 156,164, 123,128, 103,161" href="javascript:bwClockUpdateDateTimeForm('minute','50')" />
         <area shape="poly" alt="minute 00:45" title="minute 00:45" coords="150,191, 150,175, 103,161, 103,206" href="javascript:bwClockUpdateDateTimeForm('minute','45')" />
@@ -4929,7 +4938,7 @@
       <xsl:variable name="calPath" select="encodedPath"/>
       <xsl:choose>
         <xsl:when test="calType='5'">
-          <a href="{$showInbox}" title="incoming scheduling requests">
+          <a href="{$showInbox}" title="{$bwStr-Cals-IncomingSchedulingRequests}">
             <xsl:value-of select="name"/>
           </a>
           <xsl:text> </xsl:text>
@@ -4938,7 +4947,7 @@
           </xsl:if>
         </xsl:when>
         <xsl:when test="calType='6'">
-          <a href="{$showOutbox}" title="outgoing scheduling requests">
+          <a href="{$showOutbox}" title="{$bwStr-Cals-OutgoingSchedulingRequests}">
             <xsl:value-of select="name"/>
           </a>
           <xsl:text> </xsl:text>
@@ -4988,12 +4997,12 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
+      <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="{$bwStr-Cals-Update}">
         <xsl:value-of select="name"/>
       </a>
       <xsl:if test="calType = '0' and isSubscription = 'false'">
         <xsl:text> </xsl:text>
-        <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
+        <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="{$bwStr-Cals-AddCalendarOrFolder}">
           <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
         </a>
       </xsl:if>
@@ -5018,7 +5027,7 @@
           <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="display">
+      <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="{$bwStr-Cals-Display}">
         <xsl:value-of select="name"/>
       </a>
       <xsl:if test="calendar">
@@ -5049,7 +5058,7 @@
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
       <h2><xsl:copy-of select="$bwStr-SCfE-SelectACalendar"/></h2>
-      <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
+      <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="{$bwStr-SCfE-Close}">x</a>
       <ul class="calendarTree">
         <xsl:choose>
           <xsl:when test="/bedework/formElements/form/calendars/select/option">
@@ -5118,7 +5127,7 @@
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
       <h2><xsl:copy-of select="$bwStr-SCPA-SelectACalendar"/></h2>
-      <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="close">x</a>
+      <a href="javascript:changeClass('calSelectWidget','invisible')" id="calSelectWidgetCloser" title="{$bwStr-SCPA-Close}">x</a>
       <ul class="calendarTree">
         <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
       </ul>
@@ -5588,7 +5597,7 @@
     </script>
     <button type="button" id="bwColorPickerButton" value="{$bwStr-CoPi-Pick}"><img src="{$resourcesRoot}/resources/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
 
-    <div id="bwColorPicker" title="Select a color">
+    <div id="bwColorPicker" title="{$bwStr-CoPi-SelectColor}">
       <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
         <xsl:variable name="color" select="."/>
         <xsl:variable name="colorName" select="@name"/>
@@ -5858,17 +5867,17 @@
       <h4><xsl:copy-of select="$bwStr-SuMe-SubscribeTo"/></h4>
       <ul id="subsMenu">
         <li>
-          <a href="{$calendar-initAddPublicAlias}&amp;calPath=/user/{$userid}" title="subscribe to a public calendar">
+          <a href="{$calendar-initAddPublicAlias}&amp;calPath=/user/{$userid}" title="{$bwStr-SuMe-SubscribeToPublicCalendar}">
             <xsl:copy-of select="$bwStr-SuMe-PublicCal"/>
           </a>
         </li>
         <li>
-          <a href="{$calendar-initAddAlias}&amp;calPath=/user/{$userid}" title="subscribe to a user calendar">
+          <a href="{$calendar-initAddAlias}&amp;calPath=/user/{$userid}" title="{$bwStr-SuMe-SubscribeToUserCalendar}">
             <xsl:copy-of select="$bwStr-SuMe-UserCal"/>
           </a>
         </li>
         <li>
-          <a href="{$calendar-initAddExternal}&amp;calPath=/user/{$userid}" title="subscribe to an external calendar">
+          <a href="{$calendar-initAddExternal}&amp;calPath=/user/{$userid}" title="{$bwStr-SuMe-SubscribeToExternalCalendar}">
             <xsl:copy-of select="$bwStr-SuMe-ExternalFeed"/>
           </a>
         </li>
@@ -6400,8 +6409,8 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
-              <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="check message"/>
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Inbx-CheckMessage}">
+              <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-CheckMessage}"/>
             </a>
           </td>
           <td>
@@ -6433,7 +6442,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                   <xsl:if test="organizer/organizerUri != ''">
-                    <a href="{$organizerUri}" class="emailIcon" title="email">
+                    <a href="{$organizerUri}" class="emailIcon" title="{$bwStr-Inbx-Email}">
                       <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
                     </a>
                   </xsl:if>
@@ -6452,7 +6461,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                   <xsl:if test="$attendeeUri != ''">
-                    <a href="{$attendeeUri}" class="emailIcon" title="email">
+                    <a href="{$attendeeUri}" class="emailIcon" title="{$bwStr-Inbx-Email}">
                       <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
                     </a>
                   </xsl:if>
@@ -6461,7 +6470,7 @@
             </xsl:choose>
           </td>
           <td>
-            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Inbx-CheckMessage}">
               <xsl:value-of select="title"/>
             </a>
           </td>
@@ -6469,7 +6478,7 @@
           <td><xsl:value-of select="end/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="end/time"/></td>
           <td><xsl:apply-templates select="scheduleMethod"/></td>
           <td>
-            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Inbx-CheckMessage}">
               <xsl:choose>
                 <xsl:when test="scheduleState=0"><em><xsl:copy-of select="$bwStr-Inbx-Unprocessed"/></em></xsl:when>
                 <xsl:otherwise><xsl:copy-of select="$bwStr-Inbx-Processed"/></xsl:otherwise>
@@ -6478,13 +6487,13 @@
           </td>
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
-              <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
+            <a href="{$export}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-Inbx-Download}">
+              <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-Inbx-Download}"/>
             </a>
           </td>
           <td>
-            <a href="{$delInboxEvent}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="delete">
-              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+            <a href="{$delInboxEvent}&amp;calPath={$calPath}&amp;&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Inbx-Delete}">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/>
             </a>
           </td>
         </tr>
@@ -6530,12 +6539,12 @@
             </xsl:choose>
           </xsl:attribute>
           <td>
-            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
-              <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="check message"/>
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Oubx-CheckMessage}">
+              <img src="{$resourcesRoot}/resources/calIconSchedule-sm.gif" width="13" height="13" border="0" alt="{$bwStr-Oubx-CheckMessage}"/>
             </a>
           </td>
           <td>
-            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="check message">
+            <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Oubx-CheckMessage}">
               <!-- <xsl:value-of select="dtstamp/shortdate"/><xsl:text> </xsl:text><xsl:value-of select="dtstamp/time"/>-->
               <!--<xsl:value-of select="lastmod"/>-->
               <xsl:variable name="dt" select="substring-before(lastmod,'T')"/>
@@ -6557,8 +6566,8 @@
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:if test="organizer/organizerUri != ''">
-                <a href="{$organizerUri}" class="emailIcon" title="email">
-                  <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                <a href="{$organizerUri}" class="emailIcon" title="{$bwStr-Oubx-Email}">
+                  <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="{$bwStr-Oubx-Email}"/>
                 </a>
               </xsl:if>
             </xsl:if>
@@ -6581,13 +6590,13 @@
           </td>
           <td>
             <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="download">
-              <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="download"/>
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-Oubx-Download}">
+              <img src="{$resourcesRoot}/resources/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-Oubx-Download}"/>
             </a>
           </td>
           <td>
-            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="delete">
-              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Oubx-Delete}">
+              <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Oubx-Delete}"/>
             </a>
           </td>
         </tr>
