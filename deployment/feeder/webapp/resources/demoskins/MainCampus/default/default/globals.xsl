@@ -20,7 +20,7 @@
   <xsl:variable name="bwCacheHostUrl">/webcache</xsl:variable>
 
   <!-- Location of resources -->
-  <xsl:variable name="resourcesRoot" select="concat($appRoot,'/default/default/theme')"/>
+  <xsl:variable name="resourcesRoot" select="concat(/bedework/browserResourceRoot,'/default/default/theme')"/>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
     urls; allows the application to be used without cookies or within a portal.

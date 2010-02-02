@@ -51,7 +51,7 @@
        web server over https to avoid mixed content errors, e.g.,
   <xsl:variable name="resourcesRoot">https://mywebserver.edu/myresourcesdir</xsl:variable>
     -->
-  <xsl:variable name="resourcesRoot" select="/bedework/approot"/>
+  <xsl:variable name="resourcesRoot" select="/bedework/browserResourceRoot"/>
 
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put

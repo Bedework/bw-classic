@@ -6,7 +6,7 @@
   <!-- BEDEWORK THEME SETTINGS -->
 
   <!-- URL of html resources (images, css, other html) for the current theme -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot" />/themes/bedeworkTheme</xsl:variable>
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/browserResourceRoot" />/themes/bedeworkTheme</xsl:variable>
 
 
   <!-- ============================== -->

@@ -17,7 +17,7 @@
        web server over https to avoid mixed content errors, e.g.,
   <xsl:variable name="resourcesRoot" select="'https://mywebserver.edu/myresourcesdir'"/>
     -->
-  <xsl:variable name="resourcesRoot" select="/ucalendar/approot"/>
+  <xsl:variable name="resourcesRoot" select="/ucalendar/browserResourceRoot"/>
 
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put

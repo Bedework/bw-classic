@@ -36,7 +36,7 @@
 
   <!-- URL of html resources (images, css, other html); by default this is
        set to the current theme directory  -->
-  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/approot"/>/themes/videocalTheme</xsl:variable>
+  <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/browserResourceRoot"/>/themes/videocalTheme</xsl:variable>
 
   <!-- Duration of each slide in seconds; set this to your preference -->
   <xsl:variable name="slideDuration">10</xsl:variable>
