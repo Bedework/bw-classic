@@ -15,12 +15,31 @@ SET PRG=%0
 SET saveddir=%CD%
 SET QUICKSTART_HOME=%saveddir%
 
+SET ANT_HOME=%QUICKSTART_HOME%\apache-ant-1.7.0
+
+SET CLASSPATH="%ANT_HOME%\lib\ant-launcher.jar"
+SET CLASSPATH=%CLASSPATH%;"%QUICKSTART_HOME%\bedework\build\quickstart\antlib"
+SET CLASSPATH=%CLASSPATH%;"%QUICKSTART_HOME%\bedework\applib\log4j-1.2.8.jar"
+
 :: Default some parameters
 SET BWCONFIGS=
 SET bwc=default
 SET BWCONFIG=
 SET offline=
 SET quickstart=
+
+:: Projects we will build
+SET pkgdefault=yes
+SET bedework=
+SET carddav=
+SET caldav=
+SET client=
+SET monitor=
+SET naming=
+SET tzsvr=
+SET webdav=
+
+SET action=
 
 :: check for command-line arguments and branch on them
 IF "%1noargs" == "noargs" GOTO usage
@@ -50,6 +69,51 @@ GOTO branch
   SET offline="-Dorg.bedework.offline.build=yes"
   SHIFT
   GOTO branch
+  
+
+:: PROJECTS
+
+:carddav
+  SET carddav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:caldav
+  SET caldav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:client
+  SET client="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:webdav
+  SET webdav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:monitor
+  SET monitor="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:naming
+  SET naming="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:tzsvr
+  SET tzsvr="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
 
 :reindex
   ECHO     Calling the reindexer
@@ -64,6 +128,10 @@ GOTO branch
   bwrun.bat reindex-nostart -user admin -indexlocprefix ..\..\..\..\..\
 
   GOTO:EOF
+
+:zoneinfo
+   ECHO    zoneinfo target is not supported on Windows
+   GOTO:EOF
 
 :doneWithArgs
 
@@ -109,9 +177,13 @@ REM    GOTO:EOF
   ECHO     BWCONFIG = %BWCONFIG%
   ECHO.
 
-  SET ANT_HOME=%QUICKSTART_HOME%\apache-ant-1.7.0
-
-  SET CLASSPATH="%ANT_HOME%\lib\ant-launcher.jar"
+  IF NOT "%caldav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\caldav
+  IF NOT "%carddav%empty" == "empty" cd %QUICKSTART_HOME%\bedework-carddav
+  IF NOT "%client%empty" == "empty"  cd %QUICKSTART_HOME%\bwclient
+  IF NOT "%monitor%empty" == "empty" cd %QUICKSTART_HOME%\MonitorApp
+  IF NOT "%naming%empty" == "empty"  cd %QUICKSTART_HOME%\bwnaming
+  IF NOT "%tzsvr%empty" == "empty"   cd %QUICKSTART_HOME%\bwtzsvr
+  IF NOT "%webdav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\webdav
 
   "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %1
 
@@ -128,6 +200,13 @@ IF "%1" == "-bwc" GOTO bwc
 IF "%1" == "-offline" GOTO offline
 IF "%1" == "-reindex" GOTO reindex
 IF "%1" == "-zoneinfo" GOTO zoneinfo
+IF "%1" == "-carddav" GOTO carddav 
+IF "%1" == "-caldav" GOTO caldav
+IF "%1" == "-client" GOTO client
+IF "%1" == "-webdav" GOTO webdav
+IF "%1" == "-monitor" GOTO monitor
+IF "%1" == "-naming" GOTO naming
+IF "%1" == "-tzsvr" GOTO tzsvr
 GOTO doneWithArgs
 
 :usage
@@ -151,6 +230,8 @@ GOTO doneWithArgs
   ECHO    -offline     Build without attempting to retrieve library jars
   ECHO    target       Ant target to execute (e.g. "start")
   ECHO.
+  ECHO.
+  ECHO.
   ECHO    PROJECT optionally defines the package to build and is none or more of
   ECHO     -carddav     Target is for the CardDAV build
   ECHO     -monitor     Target is for the bedework monitor application
@@ -173,8 +254,9 @@ GOTO doneWithArgs
   ECHO    deployed application. ACTION may be one of
   ECHO      -reindex - runs the indexer directly out of the quickstart bedework
   ECHO                 dist directory to rebuild the lucene indexes
-  ECHO      -zoneinfo - builds zoneinfo data for the timezones server
-  ECHO                  requires -version and -tzdata parameters
+REM   Don't support zoneinfo command on Windows for now
+REM   ECHO      -zoneinfo - builds zoneinfo data for the timezones server
+REM   ECHO                  requires -version and -tzdata parameters
   ECHO.
   ECHO.
   ECHO.
