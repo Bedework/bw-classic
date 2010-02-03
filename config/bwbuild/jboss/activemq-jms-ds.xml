@@ -73,6 +73,14 @@
       <attribute name="Properties">PhysicalName=bedework.sysevents.logger</attribute>
    </mbean>
 
+   <!-- Bedework system monitor queue -->
+   <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.queue:name=monitor">
+      <attribute name="JNDIName">activemq/queue/monitor</attribute>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <attribute name="Type">javax.jms.Queue</attribute>
+      <attribute name="Properties">PhysicalName=bedework.sysevents.monitor</attribute>
+   </mbean>
+
    <!-- Bedework index crawler notifications queue -->
    <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.queue:name=crawler">
       <attribute name="JNDIName">activemq/queue/crawler</attribute>

@@ -55,6 +55,10 @@
       <queue name="logger"
              physicalName="bedework.sysevents.logger" />
 
+      <!-- The listener monitors system activity -->
+      <queue name="monitor"
+             physicalName="bedework.sysevents.monitor" />
+
       <!-- The listener is the crawler which (re)indexes the system -->
       <queue name="crawler"
              physicalName="bedework.crawler" />
@@ -78,6 +82,7 @@
           <compositeQueue name="bedework.sysevents">
             <forwardTo>
               <queue physicalName="bedework.sysevents.logger" />
+              <queue physicalName="bedework.sysevents.monitor" />
               <queue physicalName="bedework.crawler" />
               <filteredDestination selector="inbox = 'true'"
                                    queue="bedework.scheduleIn"/>
