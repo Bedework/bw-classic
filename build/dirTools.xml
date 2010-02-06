@@ -11,15 +11,15 @@
        Build and run the directory tools
        ================================================================= -->
 
-  <target name="dirToolInit" depends="init">
+  <target name="dirToolInit" >
     <property name="app.dest.classes"
-              location="${dist.home}/temp/dirTool/classes" />
+              location="${org.bedework.project.bedework}/dist/tools/classes" />
 
     <delete dir="${app.dest.classes}" />
     <mkdir dir="${app.dest.classes}" />
 
     <path id="run.classpath">
-      <fileset dir="${org.bedework.project.bedework}/applib">
+      <fileset dir="${org.bedework.project.bedework}/dist/tools">
          <include name="*.jar"/>
       </fileset>
       <pathelement location="${org.bedework.project.bwtools}/resources" />
@@ -34,7 +34,7 @@
                  targetos="unix"  pathsep=":" />
   </target>
 
-  <target name="initDir" depends="init"
+  <target name="initDir" 
           description="Build and run directory init">
     <antfetch antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
               target="initDir"

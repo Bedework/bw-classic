@@ -210,8 +210,10 @@
                                 build.bwtools,build.webapps,build.indexer,
                                 build.testsuite,build.deployutil"
           description="builds the project">
-    <copy toDir="${dist.home}" >
+    <mkdir dir="${dist.home}/tools" />
+    <copy toDir="${dist.home}/tools" >
       <fileset dir="${org.bedework.project.bwtools}/dist" includes="*.jar" />
+      <fileset dir="${org.bedework.project.bwtools}/lib" includes="*.jar" />
     </copy>
   </target>
 
