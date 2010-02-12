@@ -9,7 +9,7 @@ BASE_DIR=`pwd`
 PRG="$0"
 
 usage() {
-  echo "  $PRG [-heap size] [-newsize size] "
+  echo "  $PRG [-heap size] [-newsize size] [-permgen size] "
   echo ""
   echo " where:"
   echo ""
