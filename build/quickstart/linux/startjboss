@@ -9,33 +9,41 @@ BASE_DIR=`pwd`
 PRG="$0"
 
 usage() {
-  echo "  $PRG [-heap size] [-newsize size] [-permsize size] "
+  echo "  $PRG [-heap size] [-newsize size] [-permgen size] [-debug]"
+  echo "       [-debugmodule name]"
   echo ""
   echo " Where:"
   echo ""
   echo " -heap sets the heap size and should be n for bytes"
-  echo "                                        nK for kilo-bytes (e.g. 256K)"
-  echo "                                        nM for mega-bytes (e.g. 256M)"
+  echo "                                        nK for kilo-bytes (e.g. 2560000K)"
+  echo "                                        nM for mega-bytes (e.g. 2560M)"
   echo "                                        nG for giga-bytes (e.g. 1G)"
   echo ""
   echo " -newsize sets the new generation size and has the same form as -heap"
   echo "  the value should be around one third of the heap"
   echo ""
   echo " -permsize sets the permgen size and has the same form as -heap"
-  echo "   The value should probably not be less than 256M"
+  echo "  The value should probably not be less than 256M"
   echo ""
+  echo " -debug sets the logging level to DEBUG"
+  echo ""
+  echo " -debugmodule sets the logging level for module name to DEBUG"
+  echo "  This sets a system variable org.bedework.loglevel.<name> which"
+  echo "  may be referenced by the log4j configuration"
   echo ""
   echo "Default settings:"
   echo "heap     = $heap" 
   echo "newsize  = $newsize"
   echo "permsize = $permsize"
   echo ""
-  echo ""
 }
 
 heap="1G"
 newsize="330M"
 permsize="256M"
+
+LOG_THRESHOLD="-Djboss.server.log.threshold=INFO"
+LOG_LEVELS=""
 
 while [ "$1" != "" ]
 do
@@ -60,6 +68,15 @@ do
     -permsize)
       shift
       permsize="$1"
+      shift
+      ;;
+    -debug)
+      shift
+      LOG_THRESHOLD="-Djboss.server.log.threshold=DEBUG"
+      ;;
+    -debugmodule)
+      shift
+      LOG_LEVELS="$LOG_LEVELS -Dorg.bedework.loglevel.$1=DEBUG"
       shift
       ;;
     *)
@@ -90,8 +107,6 @@ JBOSS_PORTS=-Dorg.bedework.system.ports.offset=0
 
 ACTIVEMQ_DIRPREFIX="-Dorg.apache.activemq.default.directory.prefix=$JBOSS_DATA_DIR/"
 
-LOG_THRESHOLD="-Djboss.server.log.threshold=DEBUG"
-
 BW_DATA_DIR=$JBOSS_DATA_DIR/bedework
 BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=$BW_DATA_DIR/
 
@@ -99,7 +114,7 @@ JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 JAVA_OPTS="$JAVA_OPTS -XX:NewSize=$newsize -XX:MaxNewSize=$newsize"
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
-RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $ACTIVEMQ_DIRPREFIX $BW_DATA_DIR_DEF"
+RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $BW_DATA_DIR_DEF"
 
 echo $RUN_CMD
 
