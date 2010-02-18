@@ -83,7 +83,8 @@
             <forwardTo>
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
-              <queue physicalName="bedework.crawler" />
+              <filteredDestination selector="indexable = 'true'"
+                                   queue="bedework.crawler"/>
               <filteredDestination selector="inbox = 'true'"
                                    queue="bedework.scheduleIn"/>
               <filteredDestination selector="outbox = 'true'"
