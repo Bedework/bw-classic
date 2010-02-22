@@ -205,9 +205,10 @@
   <target name="build" depends="init.build,build.rpiutil,build.build,
                                 build.access,build.davutil,
                                 build.webdav,build.caldav,
-                                build.calendarapi,build.dumprestore,
+                                build.calendarapi,
                                 build.caldavTest,build.caldavimpl,
                                 build.bwtools,build.webapps,build.indexer,
+                              	build.dumprestore,
                                 build.testsuite,build.deployutil"
           description="builds the project">
     <mkdir dir="${dist.home}/tools" />
@@ -219,11 +220,11 @@
 
   <target name="clean" depends="init,clean.rpiutil,
                                 clean.access,clean.davutil,
-                                clean.calendarapi,clean.dumprestore,
+                                clean.calendarapi,
                                 clean.webdav,clean.caldav,clean.caldavTest,
                                 clean.caldavimpl,
                                 clean.bwtools,clean.webapps,clean.indexer,
-                                clean.testsuite"
+                              	clean.dumprestore,clean.testsuite"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
     <delete dir="${bin.home}" />
@@ -231,11 +232,11 @@
 
   <target name="quickstart-clean" depends="init,clean.rpiutil,
                                            clean.access,clean.davutil,
-                                           clean.calendarapi,clean.dumprestore,
+                                           clean.calendarapi,
                                            clean.webdav,clean.caldav,clean.caldavTest,
                                            clean.caldavimpl,
                                            clean.bwtools,clean.webapps,clean.indexer,
-                                           clean.testsuite"
+  	                                       clean.dumprestore,clean.testsuite"
           description="partial clean up for quickstart.">
     <delete dir="${bin.home}" />
     <delete dir="${org.bedework.temp.dir}" />
