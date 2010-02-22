@@ -510,6 +510,16 @@
         </sysevlog>
 
         <!-- ==================================================================
+                          System events monitor program
+             ================================================================== -->
+        <monitor classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>monitor</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </monitor>
+
+        <!-- ==================================================================
                           In/outbox scheduler program
              ================================================================== -->
         <iosched classname="org.bedework.calfacade.configs.BwCrawlerConfig">
