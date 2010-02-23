@@ -756,7 +756,9 @@ hibernate.jdbc.batch_size=0
                  refid="run.classpath"
                  targetos="unix"  pathsep=":" />
   	
+  	<!--
   	<echo message="classpath=${run.txt.classpath}"/>
+  	-->
 
     <input message="Enter administrative user account:"
            addproperty="org.bedework.cmdutil.arg.account" />
