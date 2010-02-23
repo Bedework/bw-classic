@@ -713,6 +713,9 @@
     <copy tofile="${app.dest.properties}/options.xml"
           file="${org.bedework.config.options}" />
 
+    <copy tofile="${app.dest.properties}/sysevents.properties"
+          file="${org.bedework.config.sysevents.properties}" />
+
     <path id="run.classpath">
       <fileset dir="${org.bedework.project.bedework}/applib">
          <include name="*.jar"/>
