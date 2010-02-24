@@ -713,11 +713,17 @@
     <copy tofile="${app.dest.properties}/options.xml"
           file="${org.bedework.config.options}" />
 
-    <copy tofile="${app.dest.properties}/sysevents.properties"
-          file="${org.bedework.config.sysevents.properties}" />
+    <copy tofile="${app.dest.classes}/sysevents.properties"
+          file="${org.bedework.config.home}/application.sysevents.properties" />
 
     <path id="run.classpath">
       <fileset dir="${org.bedework.project.bedework}/applib">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${org.bedework.config.home}/lib/server">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${org.bedework.project.bwtools}/dist">
          <include name="*.jar"/>
       </fileset>
       <fileset dir="${org.bedework.project.bwtools}/lib">
