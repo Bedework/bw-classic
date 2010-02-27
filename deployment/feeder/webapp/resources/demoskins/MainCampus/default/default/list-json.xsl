@@ -45,13 +45,13 @@
   <xsl:template match='/'>
     <xsl:choose>
       <xsl:when test="/bedework/appvar/key = 'objName'">
-        var <xsl:value-of select="/bedework/appvar[key='objName']/value"/> = {'bwEventList': {
+        var <xsl:value-of select="/bedework/appvar[key='objName']/value"/> = {"bwEventList": {
       </xsl:when>
       <xsl:otherwise>
-        {'bwEventList': {
+        {"bwEventList": {
       </xsl:otherwise>
     </xsl:choose>
-        'events': [
+        "events": [
            <xsl:apply-templates select="/bedework/events" />
         ]
     }}

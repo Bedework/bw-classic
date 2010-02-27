@@ -58,17 +58,13 @@
   </xsl:template>
 
   <xsl:template match="category">
-    <!-- first, escape apostrophes -->
-    <xsl:variable name="aposStrippedKeyword">
-      <xsl:call-template name="replace">
+    <!-- escape keywords -->
+    <xsl:variable name="strippedKeyword">
+      <xsl:call-template name="escapeJson">
         <xsl:with-param name="string" select="value"/>
-        <xsl:with-param name="pattern" select='"&apos;"'/>
-        <xsl:with-param name="replacement" select='"\&apos;"'/>
       </xsl:call-template>
     </xsl:variable>
-    <!-- second, strip line breaks -->
-    <xsl:variable name="strippedKeyword" select='translate($aposStrippedKeyword,"&#xA;"," ")'/>
-    <!-- finally, produce the JSON output -->
+    <!-- produce the JSON output -->
             {
                 "value" : "<xsl:value-of select="$strippedKeyword"/>",
                 "uid" : "<xsl:value-of select="uid"/>",
