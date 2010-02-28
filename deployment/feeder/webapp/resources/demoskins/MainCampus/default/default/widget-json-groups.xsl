@@ -57,39 +57,10 @@
   </xsl:template>
 
   <xsl:template match="group">
-    <!-- escape apostrophes from group name -->
-    <xsl:variable name="aposStrippedName">
-      <xsl:call-template name="replace">
-        <xsl:with-param name="string" select="name"/>
-        <xsl:with-param name="pattern" select='"&apos;"'/>
-        <xsl:with-param name="replacement" select='"\&apos;"'/>
-      </xsl:call-template>
-    </xsl:variable>
-    <!-- first, escape apostrophes from group description -->
-    <xsl:variable name="aposStrippedDescription">
-      <xsl:call-template name="replace">
-        <xsl:with-param name="string" select="description"/>
-        <xsl:with-param name="pattern" select='"&apos;"'/>
-        <xsl:with-param name="replacement" select='"\&apos;"'/>
-      </xsl:call-template>
-    </xsl:variable>
-    <!-- second, escape quotes -->
-    <xsl:variable name="aposAndQuotesStrippedDescription">
-      <xsl:variable name="quote">&quot;</xsl:variable>
-      <xsl:variable name="escQuote"><xsl:text>\</xsl:text>&quot;</xsl:variable>  
-      <xsl:call-template name="replace">
-        <xsl:with-param name="string" select="$aposStrippedDescription"/>
-        <xsl:with-param name="pattern" select="$quote"/>
-        <xsl:with-param name="replacement" select="$escQuote"/>
-      </xsl:call-template>
-    </xsl:variable>
-    <!-- third, strip line breaks -->
-    <xsl:variable name="strippedDescription" select='translate($aposAndQuotesStrippedDescription,"&#xA;"," ")'/>
-    <!-- finally, produce the JSON output -->
     {
       "eventOwner" : "<xsl:value-of select="eventOwner"/>",
-       "name" : "<xsl:value-of select="$aposStrippedName"/>",
-       "description" : "<xsl:value-of select="$strippedDescription"/>",
+       "name" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="name"/></xsl:call-template>",
+       "description" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="description"/></xsl:call-template>",
        "memberOf" : [
                       {
                       <xsl:apply-templates select="memberof"/>
@@ -99,14 +70,6 @@
   </xsl:template>
    
   <xsl:template match="memberof">
-    <!-- escape apostrophes from name -->
-    <xsl:variable name="aposStrippedMemberOfName">
-      <xsl:call-template name="replace">
-        <xsl:with-param name="string" select="name"/>
-        <xsl:with-param name="pattern" select='"&apos;"'/>
-        <xsl:with-param name="replacement" select='"\&apos;"'/>
-      </xsl:call-template>
-    </xsl:variable>
-                         "name" : "<xsl:value-of select="$aposStrippedMemberOfName"/>"<xsl:if test="position() != last()">,</xsl:if>
+                         "name" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="name"/></xsl:call-template>"<xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 </xsl:stylesheet>

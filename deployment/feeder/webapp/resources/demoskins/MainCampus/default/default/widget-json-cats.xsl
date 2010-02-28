@@ -58,15 +58,8 @@
   </xsl:template>
 
   <xsl:template match="category">
-    <!-- escape keywords -->
-    <xsl:variable name="strippedKeyword">
-      <xsl:call-template name="escapeJson">
-        <xsl:with-param name="string" select="value"/>
-      </xsl:call-template>
-    </xsl:variable>
-    <!-- produce the JSON output -->
             {
-                "value" : "<xsl:value-of select="$strippedKeyword"/>",
+                "value" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="value"/></xsl:call-template>",
                 "uid" : "<xsl:value-of select="uid"/>",
                 "creator" : "<xsl:value-of select="creator"/>"
             }<xsl:if test="position() != last()">,</xsl:if>
