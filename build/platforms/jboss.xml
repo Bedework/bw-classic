@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+     This file is imported by termination/build.xml and adds the targets
+     which will be invoked by that file.
+        doPlatform - misc stuff
+     =================================================================== -->
+
+<project name="bedework.platformTermination" default="doPlatform" >
+  <target name="doPlatform" >
+    <if>
+      <isset property="org.bedework.appserver.deploy.dir" />
+      <then>
+        <!-- If requested copy in the activemq configuration. -->
+
+        <if>
+          <istrue value="${org.bedework.global.copy.activemq.config}" />
+          <then>
+            <copy file="${org.bedework.config.home}/activemq-ra.xml"
+                  tofile="${org.bedework.global.activemq.dir}/META-INF/ra.xml"
+                  overwrite="yes" />
+            <copy file="${org.bedework.config.home}/activemq-broker-config.xml"
+                  tofile="${org.bedework.global.activemq.dir}/broker-config.xml"
+                  overwrite="yes" />
+            <copy file="${org.bedework.config.home}/activemq-jms-ds.xml"
+                  tofile="${org.bedework.appserver.deploy.dir}/activemq-jms-ds.xml"
+                  overwrite="yes" />
+          </then>
+        </if>
+        <!-- If requested copy in the activemq configuration. -->
+
+        <if>
+          <istrue value="${org.bedework.global.copy.bedeworkds.config}" />
+          <then>
+            <copy file="${org.bedework.config.home}/bedework-ds.xml"
+                  tofile="${org.bedework.appserver.deploy.dir}/bedework-ds.xml"
+                  overwrite="yes" />
+          </then>
+        </if>
+      </then>
+    </if>
+  </target>
+</project>

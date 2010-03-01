@@ -225,51 +225,11 @@
       <param name="org.bedework.deploy.kind" value="shellscr" />
     </antcall>
 
-    <!-- copy startup website that sends you to the applications -->
-  	<property name="startup.website.dir"
-  	          location="${org.bedework.appserver.dir}/${org.bedework.server.resource.root.dir}/bedework" />
-    <delete dir="${startup.website.dir}"/>
-    <mkdir dir="${startup.website.dir}"/>
-    <copy todir="${startup.website.dir}">
-      <fileset dir="${app.root.dir}/resources/bedework"/>
-    </copy>
+    <!-- ================= termination tasks for deployment ================ -->
 
-    <!-- copy jdbc jar so datasources work -->
-    <if>
-      <available file="${org.bedework.global.ext.lib}/server" type="dir" />
-      <then>
-        <!-- jdbc drivers -->
-        <copy todir="${appserver.lib.dir}" flatten="yes" >
-          <!-- local jdbc drivers -->
-          <fileset dir="${org.bedework.global.ext.lib}/server">
-            <include name="*.jar"/>
-          </fileset>
-        </copy>
-      </then>
-    </if>
-  	
-  	<if>
-      <isset property="org.bedework.global.extra.jars" />
-      <then>
-      	<foreach list="${org.bedework.global.extra.jars}"
-      	         target="copyToServer"
-      	         param="org.bedework.extra.jar"
-      	         inheritall="true"
-      	         trim="true" />
-      </then>
-    </if>
-
-    <if>
-      <available file="${java.tools.jar}" />
-      <then>
-        <copy todir="${appserver.lib.dir}" file="${java.tools.jar}"/>
-      </then>
-    </if>
+    <ant antfile="${org.bedework.deployment.base}/termination/build.xml"
+         inheritrefs="true" target="deploy" />
   </target>
-	
-	<target name="copyToServer">
-    <copy todir="${appserver.lib.dir}" file="${org.bedework.extra.jar}" />
-	</target>
 
   <!-- =================================================================
        Targets called by the deploy target. Each is conditional on a
@@ -299,9 +259,9 @@
       </sequential>
     </forEachApp>
 
-    <!-- ======================= termination tasks ================= -->
+    <!-- ==================== termination tasks for apps ================= -->
 
-    <ant antfile="${org.bedework.deployment.base}/termination/build.xml"
+    <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="build.configured" />
   </target>
 
@@ -341,7 +301,7 @@
       </sequential>
     </forEachApp>
 
-    <!-- ======================= termination tasks ================= -->
+    <!-- =================== termination tasks for apps ================= -->
 
     <ant antfile="${org.bedework.deployment.base}/termination/${org.bedework.deploy.kind}/build.xml"
          inheritrefs="true" target="deploy" />
