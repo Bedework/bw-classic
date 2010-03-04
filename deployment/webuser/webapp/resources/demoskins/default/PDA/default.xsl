@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Licensed to Jasig under one or more contributor license
+    agreements. See the NOTICE file distributed with this work
+    for additional information regarding copyright ownership.
+    Jasig licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file
+    except in compliance with the License. You may obtain a
+    copy of the License at:
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output
   method="html"
@@ -39,8 +57,7 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>Rensselaer Calendar of Events</title>
-        <link rel="icon" type="image/ico" href="http://www.rpi.edu/x/favicon.ico" />
+        <title>Bedework Calendar of Events</title>
       </head>
       <body>
         <xsl:call-template name="headBar"/>
@@ -316,9 +333,9 @@
 
   <xsl:template name="headBar">
     <p align="center">
-      <b>Rensselaer Events Calendar</b><br />
+      <b>Bedework Events Calendar</b><br />
       <xsl:if test="/ucalendar/page!='calendars' and /ucalendar/page!='event'">
-        <a href="{$urlPrefix}/setView.do?date={$prevdate}"><img src="{$resourcesRoot}/images/rensselaer/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
+        <a href="{$urlPrefix}/setView.do?date={$prevdate}"><img src="{$resourcesRoot}/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
         <xsl:text> </xsl:text>
         <xsl:choose>
           <xsl:when test="/ucalendar/periodname='Day'">
@@ -335,7 +352,7 @@
           </xsl:otherwise>
         </xsl:choose>
         <xsl:text> </xsl:text>
-        <a href="{$urlPrefix}/setView.do?date={$nextdate}"><img src="{$resourcesRoot}/images/rensselaer/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a><br />
+        <a href="{$urlPrefix}/setView.do?date={$nextdate}"><img src="{$resourcesRoot}/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a><br />
       </xsl:if>
       <xsl:choose>
         <xsl:when test="/ucalendar/page='eventscalendar'">
@@ -465,8 +482,8 @@
 
   <xsl:template name="footer">
     <p align="center">
-      <a href="http://www.rpi.edu/pda/">Return to the Portable Rensselaer</a><br />
-      <small>Maintained by C&amp;CT, DotCIO<br />Rensselaer Polytechnic Institute</small>
+	  <!-- use to point them back to a portable site, perhaps-->
+      <a href="http://localhost:8080/ucal/">Return to your calendar</a><br />
     </p>
   </xsl:template>
 </xsl:stylesheet>
