@@ -9,8 +9,8 @@ SET BASE_DIR=%CD%
 SET PRG=%0
 
 :: Set defaults
-SET heap=1G
-SET newsize=330M
+SET heap=600M
+SET newsize=200M
 SET permsize=256M
 
 GOTO branch
@@ -96,8 +96,8 @@ ECHO.
 ECHO Where:
 ECHO.
 ECHO -heap sets the heap size and should be n for bytes
-ECHO                                        nK for kilo-bytes (e.g. 256K)
-ECHO                                        nM for mega-bytes (e.g. 256M)
+ECHO                                        nK for kilo-bytes (e.g. 2560000K)
+ECHO                                        nM for mega-bytes (e.g. 256oM)
 ECHO                                        nG for giga-bytes (e.g. 1G)
 ECHO.
 ECHO -newsize sets the new generation size and has the same form as -heap

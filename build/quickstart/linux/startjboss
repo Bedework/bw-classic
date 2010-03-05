@@ -38,8 +38,8 @@ usage() {
   echo ""
 }
 
-heap="1G"
-newsize="330M"
+heap="600M"
+newsize="200M"
 permsize="256M"
 
 LOG_THRESHOLD="-Djboss.server.log.threshold=INFO"
