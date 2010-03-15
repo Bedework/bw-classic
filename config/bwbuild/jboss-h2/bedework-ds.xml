@@ -11,7 +11,7 @@
     <!-- Server mode needs the mbean -->
     <driver-class>org.h2.Driver</driver-class>
 
-    <connection-url>jdbc:h2:tcp://localhost:9092/${jboss.server.data.dir}/bedework/h2/CalDb3p6</connection-url>
+    <connection-url>jdbc:h2:tcp://localhost:9092/${jboss.server.data.dir}/bedework/h2/CalDb3p6;MVCC=TRUE</connection-url>
 
     <depends>org.bedework:service=H2Db</depends>
 
@@ -23,8 +23,10 @@
     <track-statements/>
 
     <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+    
+    <!-- Note there is no H2 mapping (yet). H2 is apparently compatible with postgres -->
     <metadata>
-      <type-mapping>Derby</type-mapping>
+      <type-mapping>PostgreSQL</type-mapping>
     </metadata>
   </local-tx-datasource>
 
