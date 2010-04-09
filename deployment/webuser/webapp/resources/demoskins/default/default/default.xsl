@@ -7906,13 +7906,13 @@
                 <xsl:if test="scheduleAutoProcessResponses = '0'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                <xsl:copy-of select="$bwStr-ScPr-LeaveInInbox"/>
+                <xsl:copy-of select="$bwStr-ScPr-ProcessAccepts"/>
               </option>
               <option value="1">
                 <xsl:if test="scheduleAutoProcessResponses = '1'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                <xsl:copy-of select="$bwStr-ScPr-ProcessAccepts"/>
+                <xsl:copy-of select="$bwStr-ScPr-LeaveInInbox"/>
               </option>
               <option value="2">
                 <xsl:if test="scheduleAutoProcessResponses = '2'">
