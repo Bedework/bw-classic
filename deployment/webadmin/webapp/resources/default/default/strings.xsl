@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
@@ -16,7 +17,6 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <!--  xsl:template match="/" -->
