@@ -39,24 +39,33 @@ var bwAttendee = function(name, uid, freebusy, role, status) {
 }
 
 /* Object to model the freebusy grid
- * displayId:  ID of html block for display output
- * startRange: js date string - start of date range for grid
- * endRange:   js date string - end of date range for grid
- * startDate:  js date string - start date/time for meeting
- * endDate:    date string - end date/time for meeting
- * attendees:  array   - array of attendee objects; MUST include organizer on first instantiation
- * workday:    boolean - true to display workday hours only, false to display all 24 hours
- * zoom:       integer - scalar value for zooming the grid
+ * displayId:       ID of html block for display output
+ * startRange:      js date string - start of date range for grid
+ * endRange:        js date string - end of date range for grid
+ * startHoursRange: integer, 0-23 - hours of range start time (we'll use all minutes in an hour)
+ * endHoursRange:   integer, 0-23 - hours of range end time  (we'll use all minutes in an hour)
+ * startDate:       js date string - start date/time for meeting
+ * endDate:         date string - end date/time for meeting
+ * attendees:       array   - array of attendee objects; MUST include organizer on first instantiation
+ * workday:         boolean - true to display workday hours only, false to display all 24 hours
+ * zoom:            integer - scalar value for zooming the grid
  */
-var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, attendees, workday, zoom) {
+var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom) {
   this.displayId = displayId;
   this.startRange = new Date(startRange);
   this.endRange = new Date(endRange);
+  this.startHoursRange = startHoursRange;
+  this.endHoursRange = endHoursRange; 
   this.startDate = new Date(startDate);
   this.endDate = new Date(endDate);
   this.zoom = zoom;
   this.workday = workday;
   this.attendees = attendees;
+  
+  // how much will we divide the hour in the grid?
+  // this is a constant for now, but could be variable.
+  // ALWAYS set as a factor of 60
+  this.hourDivision = 12;
   
   this.addAttendee = function(name, uid, freebusy, role, status) {
     var newAttendee = new bwAttendee(name, uid, freebusy, role, status);
@@ -72,32 +81,40 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, a
   
   this.display = function() {
     try {
-      // number of days in the range
+      // number of days and hours each day to display
       var range = dayRange(this.startRange, this.endRange);
-      alert(range);
-      
+      var hourRange = this.endHoursRange - this.startHoursRange;
+      var cellsInDay = hourRange * this.hourDivision;
     
       // build the entire free/busy table first
       var fbDisplay = document.createElement("table");
       fbDisplay.id = "bwScheduleTable";
       
-      // generate the date row
+      // generate the date row - includes top left empty corner 
       fbDisplayDateRow = fbDisplay.insertRow(0);
+      $(fbDisplayDateRow).html('<td rowspan="2" colspan="3" class="corner"></td><td class="fbBoundry"></td>');
+      for (i=0; i < range; i++) {
+        var curDate = new Date(this.startRange); 
+        curDate.addDays(i);
+        $(fbDisplayDateRow).append('<td class="date" colspan="' + cellsInDay + '">' + curDate.getDayName() + ', ' + curDate.getMonthName() + ' ' + curDate.getDate() + ', ' + curDate.getFullYear() + '</td><td class="dayBoundry"></td>');
+      }
       
-      
-      var td1 = document.createElement("td");
-      var txt1 = document.createTextNode(this.startRange.getDay());
-      var td2 = document.createElement("td");
-      var txt2 = document.createTextNode(this.startRange.getDay() + 1);
-      var td3 = document.createElement("td");
-      var txt3 = document.createTextNode(this.startRange.getDay() + 2);
-      td1.appendChild(txt1);
-      td2.appendChild(txt2);
-      td3.appendChild(txt3);
-      fbDisplayDateRow.appendChild(td1);
-      fbDisplayDateRow.appendChild(td2);
-      fbDisplayDateRow.appendChild(td3);
-      
+      // generate the times row - each cell spans over the day divisions
+      fbDisplayTimesRow = fbDisplay.insertRow(1);
+      $(fbDisplayTimesRow).html('<td class="fbBoundry"></td>');
+      for (i=0; i < range; i++) {
+        var curDate = new Date(this.startRange); 
+        curDate.setHours(this.startHoursRange);
+        curDate.addDays(i);
+        // add the time cells by iterating over the hours
+        for (j = 0; j < hourRange; j++) {
+          if (this.zoom == 100) {
+            $(fbDisplayTimesRow).append('<td class="hourBoundry" id="' + curDate.getTime() + '" colspan="' + this.hourDivision + '">' + curDate.getHours12() + ':' + curDate.getMinutesFull() + '</td>');
+            curDate.addHours(1);
+          }
+        }
+        $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
+      }
       
       // finally, write the table back to the display
       $("#" + displayId).html(fbDisplay);
@@ -108,13 +125,61 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, a
     
   }
 }
+
+
+/* code for calculating the time cells
+          for (k = 0; k < hourDivision; k++) {
+            if (curDate.getMinutes() == 0) {
+              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + 'class="hourBoundry"></td>');
+            } else {
+              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '"></td>');
+            }
+            curDate.addMinutes(60/hourDivision);
+          }
+          */
+
+
 var dayRange = function(startDate, endDate) {  
   // find difference in milliseconds and return number of days.
   // 86400000 is the number of milliseconds in a day;
   return Math.round((Math.abs(startDate.getTime() - endDate.getTime())) / 86400000)
 }
 
-
+// DATE PROTOTYPE OVERRIDES - should be pulled into a library
+// the following need to call internationalized strings - from a localeSettings file
+Date.prototype.getMonthName = function() {
+  var m = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return m[this.getMonth()];
+}
+Date.prototype.getDayName = function() {
+  var d = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return d[this.getDay()];
+} 
+Date.prototype.addDays = function(days) {
+  this.setDate(this.getDate() + days);
+} 
+Date.prototype.addHours = function(hours) {
+  this.setHours(this.getHours() + hours);
+}
+Date.prototype.addMinutes = function(minutes) {
+  this.setMinutes(this.getMinutes() + minutes);
+}
+// return a twelve-hour hour
+Date.prototype.getHours12 = function() {
+  var hours12 = this.getHours();
+  if (hours12 > 12) {
+    hours12 = hours12 - 12;
+  } 
+  return hours12;
+}
+// prepend minutes with zero if needed
+Date.prototype.getMinutesFull = function() {
+  var minutesFull = this.getMinutes();
+  if (minutesFull < 10) {
+    return "0" + minutesFull;
+  }  
+  return hours12;
+}
 
 /*
 
