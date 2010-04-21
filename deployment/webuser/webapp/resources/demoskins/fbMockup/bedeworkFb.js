@@ -80,11 +80,9 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, a
       // build the entire free/busy table first
       var fbDisplay = document.createElement("table");
       fbDisplay.id = "bwScheduleTable";
-      var fbDisplayTBody = document.createElement("tbody");
-      fbDisplay.appendChild(fbDisplayTBody);
       
       // generate the date row
-      fbDisplayDateRow = fbDisplay.fbDisplayTBody.insertRow(0);
+      fbDisplayDateRow = fbDisplay.insertRow(0);
       
       
       var td1 = document.createElement("td");
