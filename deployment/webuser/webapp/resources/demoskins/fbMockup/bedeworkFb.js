@@ -72,7 +72,9 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, a
   
   this.display = function() {
     try {
-      // set up parameters
+      // number of days in the range
+      var range = dayRange(this.startRange, this.endRange);
+      alert(range);
       
     
       // build the entire free/busy table first
@@ -94,9 +96,9 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, a
       td1.appendChild(txt1);
       td2.appendChild(txt2);
       td3.appendChild(txt3);
-      fbDisplayTBody.appendChild(td1);
-      fbDisplayTBody.appendChild(td2);
-      fbDisplayTBody.appendChild(td3);
+      fbDisplayDateRow.appendChild(td1);
+      fbDisplayDateRow.appendChild(td2);
+      fbDisplayDateRow.appendChild(td3);
       
       
       // finally, write the table back to the display
