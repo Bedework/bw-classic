@@ -698,9 +698,8 @@ var bwAcl = new function() {
       var txt1 = document.createTextNode(bwAclWidgetEntryStr);
       var th2 = document.createElement("th");
       var txt2 = document.createTextNode(bwAclWidgetAccessStr);
-      var th2 = document.createElement("th");
-      var txt3 = document.createTextNode(bwAclWidgetInheritedStr);
       var th3 = document.createElement("th");
+      var txt3 = document.createTextNode(bwAclWidgetInheritedStr);
       var th4 = document.createElement("th");
       th1.appendChild(txt1);
       th2.appendChild(txt2);
