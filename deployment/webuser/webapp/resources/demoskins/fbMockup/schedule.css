@@ -1,0 +1,99 @@
+body {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+#bwSchedule {
+  position: relative;
+  margin: 2em;
+  padding: 0;
+  overflow: scroll;
+}
+#bwScheduleTable {
+  border-collapse: collapse; 
+  border: 1px solid #ccc;
+}
+#bwScheduleTable td {
+  border-bottom: 1px solid #e5e5e5;
+  white-space: nowrap;
+  padding: 2px 2px 2px 4px;
+  width: 50px !important;
+  height: 25px;
+}
+#bwScheduleTable td.date {
+  padding: 0 2px;
+  background-color: #f6f6f6;
+  border: none;
+}
+#bwScheduleTable td.corner {
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  text-align: right;
+  padding-right: 16px;
+}
+#bwScheduleTable td.status,
+#bwScheduleTable td.role {
+  font-size: 1.4em;
+  color: #333;
+  background-color: transparent;
+}
+#bwScheduleTable td.checkmark {
+  color: #0c0;
+  background-color: transparent;
+}
+#bwScheduleTable td.questionmark {
+  color: black;
+  background-color: transparent;
+  font-weight: bold;
+  font-family: Paladino, Times, serif;
+}
+#bwScheduleTable input.addAttendee {
+  margin-top: 4px;
+  border: none;
+  font-size: 0.9em;
+  color: #bbb;
+  background-color: transparent;
+}
+#bwScheduleTable td.busy {
+  background-color: #b1cbfa !important;
+  color: black;
+}
+#bwScheduleTable td.tentative {
+  background: url("tentativeLines.gif");
+  color: black;
+}
+#bwScheduleTable td.fbBoundry {
+  padding: 0 2px;
+  background-color: #e5e5e5 !important;
+  border: none;
+}
+#bwScheduleTable td.dayBoundry {
+  padding: 0 2px;
+  background-color: #e5e5e5 !important;
+  border: none;
+}
+#bwScheduleTable td.hourBoundry {
+  border-left: 1px dashed #ddd;
+}
+#bwScheduleTable tr.allAttendees td {
+  background-color: #eee;
+}
+#bwScheduleControls {
+  margin: 1.5em 1em;
+}
+#bwScheduleControls td.zoom {
+  text-align: center;
+}
+.zoomControl {
+  font-size: 1.2em;
+}
+#bwScheduleControls td.dateLabel {
+  padding-left: 3em;
+}
+#bwScheduleControls td.time {
+  padding-left: 1em;
+}
+#bwScheduleControls input.alldayFlag {
+  margin-left: 1em;
+}
+
