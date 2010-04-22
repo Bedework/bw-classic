@@ -23,19 +23,31 @@
 // free/busy functions
 // ========================================================================
 
+// Constant values and display strings
+// Should be internationalized
+var bwAttendeePersonType = "person";
+var bwAttendeeLocationType = "location";
+var bwAttendeeResourceType = "resource";
+
 /* An attendee
  * name:     String - name of attendee, e.g. "Venerable Bede"
  * uid:      String - attendee's uid with mailto included, e.g. "mailto:vbede@example.com"
  * freebusy: Array of rfc5545 freebusy reply values for the current attendee in the current date range
  * role:     String - Attendee role, e.g. CHAIR, REQ-PARTICIPANT, etc
  * status:   String - participation status (PARTSTAT)
+ * type:     String - person, location, other resource
  */
-var bwAttendee = function(name, uid, freebusy, role, status) {
+var bwAttendee = function(name, uid, freebusy, role, status, type) {
   this.name = name;
   this.uid = uid;
   this.freebusy = freebusy;
   this.role = role;
   this.status = status;
+  this.type = type;
+  
+  if (this.type == null || this.type == "") {
+    this.type == bwAttendeePersonType;
+  }
 }
 
 /* Object to model the freebusy grid
@@ -65,7 +77,7 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
   // how much will we divide the hour in the grid?
   // this is a constant for now, but could be variable.
   // ALWAYS set as a factor of 60
-  this.hourDivision = 12;
+  this.hourDivision = 4;
   
   this.addAttendee = function(name, uid, freebusy, role, status) {
     var newAttendee = new bwAttendee(name, uid, freebusy, role, status);
@@ -91,7 +103,7 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
       fbDisplay.id = "bwScheduleTable";
       
       // generate the date row - includes top left empty corner 
-      fbDisplayDateRow = fbDisplay.insertRow(0);
+      var fbDisplayDateRow = fbDisplay.insertRow(0);
       $(fbDisplayDateRow).html('<td rowspan="2" colspan="3" class="corner"></td><td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
@@ -108,12 +120,62 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
         curDate.addDays(i);
         // add the time cells by iterating over the hours
         for (j = 0; j < hourRange; j++) {
+          // this is where we could use zoom to increase or decrease tick marks and time labels on the grid
           if (this.zoom == 100) {
-            $(fbDisplayTimesRow).append('<td class="hourBoundry" id="' + curDate.getTime() + '" colspan="' + this.hourDivision + '">' + curDate.getHours12() + ':' + curDate.getMinutesFull() + '</td>');
+            $(fbDisplayTimesRow).append('<td class="hourBoundry" id="' + curDate.getTime() + '-TimeRow" colspan="' + this.hourDivision + '">' + curDate.getHours12() + ':' + curDate.getMinutesFull() + '</td>');
             curDate.addHours(1);
           }
         }
         $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
+      }
+      
+      // generate the "All Attendees" row
+      fbDisplayTimesRow = fbDisplay.insertRow(2);
+      $(fbDisplayTimesRow).addClass("allAttendees");
+      $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">All Attendees</td><td class="fbBoundry"></td>');
+      for (i=0; i < range; i++) {
+        var curDate = new Date(this.startRange); 
+        curDate.setHours(this.startHoursRange);
+        curDate.addDays(i);
+        // add the time cells by iterating over the hours
+        for (j = 0; j < hourRange; j++) {
+          for (k = 0; k < this.hourDivision; k++) {
+            if (curDate.getMinutes() == 0) {
+              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="hourBoundry"></td>');
+            } else {
+              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees"></td>');
+            }
+            curDate.addMinutes(60/this.hourDivision);
+          }
+        }
+        $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
+      }
+      
+      // generate the regular attendees rows
+      for (attendee = 0; attendee < attendees.length; attendee++) {
+        fbDisplayTimesRow = fbDisplay.insertRow(attendee + 3); // offset by three to account for previous special rows
+        var curAttendee = attendees[attendee];
+        $(fbDisplayTimesRow).html('<td class="status">' + curAttendee.status + '</td>');
+        $(fbDisplayTimesRow).append('<td class="role">' + curAttendee.role + '</td>');
+        $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
+        for (i = 0; i < range; i++) {
+          var curDate = new Date(this.startRange);
+          curDate.setHours(this.startHoursRange);
+          curDate.addDays(i);
+          // add the time cells by iterating over the hours
+          for (j = 0; j < hourRange; j++) {
+            for (k = 0; k < this.hourDivision; k++) {
+              if (curDate.getMinutes() == 0) {
+                $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="hourBoundry"></td>');
+              } else {
+                $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees"></td>');
+              }
+              // increment by the number of minutes in the hour division
+              curDate.addMinutes(60 / this.hourDivision);
+            }
+          }
+          $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
+        }
       }
       
       // finally, write the table back to the display
@@ -126,17 +188,6 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
   }
 }
 
-
-/* code for calculating the time cells
-          for (k = 0; k < hourDivision; k++) {
-            if (curDate.getMinutes() == 0) {
-              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + 'class="hourBoundry"></td>');
-            } else {
-              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '"></td>');
-            }
-            curDate.addMinutes(60/hourDivision);
-          }
-          */
 
 
 var dayRange = function(startDate, endDate) {  
