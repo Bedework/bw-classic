@@ -200,6 +200,11 @@ public class ApplicationXmlTask extends MatchingTask {
     }
 
     String[] warnames = warDir.list(fltr);
+
+    if (warnames == null) {
+      throw new BuildException("No wars found at " + warDir);
+    }
+
     for (int wi = 0; wi < warnames.length; wi++) {
       wars.add(warnames[wi]);
     }
