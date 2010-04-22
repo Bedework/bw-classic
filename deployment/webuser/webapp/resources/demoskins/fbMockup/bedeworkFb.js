@@ -28,7 +28,7 @@
 var bwAttendeeRoleChair = "CHAIR";
 var bwAttendeeRoleRequired = "REQ-PARTICIPANT";
 var bwAttendeeRoleOptional = "OPT-PARTICIPANT";
-var bwAttendeeRoleNon = "NON-PARTICIPANT";
+var bwAttendeeRoleNonParticipant = "NON-PARTICIPANT";
 var bwAttendeeStatusNeedsAction = "NEEDS-ACTION";
 var bwAttendeeStatusAccepted = "ACCEPTED";
 var bwAttendeeStatusDeclined = "DECLINED";
@@ -39,6 +39,24 @@ var bwAttendeeStatusInProcess = "IN-PROCESS";
 var bwAttendeeTypePerson = "person";
 var bwAttendeeTypeLocation = "location";
 var bwAttendeeTypeResource = "resource";
+
+// display strings for the values above
+// should be put with other internationalized strings
+// can be translated
+var bwAttendeeDispRoleChair = "chair";
+var bwAttendeeDispRoleRequired = "required participant";
+var bwAttendeeDispRoleOptional = "optional participant";
+var bwAttendeeDispRoleNonParticipant = "non-participant";
+var bwAttendeeDispStatusNeedsAction = "needs action";
+var bwAttendeeDispStatusAccepted = "accepted";
+var bwAttendeeDispStatusDeclined = "declined";
+var bwAttendeeDispStatusTentative = "tentative";
+var bwAttendeeDispStatusDelegated = "delegated";
+var bwAttendeeDispStatusCompleted = "completed";
+var bwAttendeeDispStatusInProcess = "in-process";
+var bwAttendeeDispTypePerson = "person";
+var bwAttendeeDispTypeLocation = "location";
+var bwAttendeeDispTypeResource = "resource";
 
 /* An attendee
  * name:     String - name of attendee, e.g. "Venerable Bede"
@@ -152,9 +170,9 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
         for (j = 0; j < hourRange; j++) {
           for (k = 0; k < this.hourDivision; k++) {
             if (curDate.getMinutes() == 0) {
-              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="hourBoundry"></td>');
+              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="hourBoundry fbcell"></td>');
             } else {
-              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees"></td>');
+              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="fbcell"></td>');
             }
             curDate.addMinutes(60/this.hourDivision);
           }
@@ -170,24 +188,42 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
           case bwAttendeeStatusAccepted : 
-            $(fbDisplayTimesRow).html('<td class="status checkmark">&#10004;</td>');
+            $(fbDisplayTimesRow).html('<td class="status accepted">&#10004;</td>');
             break;
-          default : // bwAttendeeStatusNeedsAction - display question mark
-            $(fbDisplayTimesRow).html('<td class="status questionmark">?</td>');
+          case bwAttendeeStatusDeclined : 
+            $(fbDisplayTimesRow).html('<td class="status declined">x</td>');
+            break;
+          case bwAttendeeStatusTentative : 
+            $(fbDisplayTimesRow).html('<td class="status tentative">-</td>');
+            break;
+          case bwAttendeeStatusDelegated : 
+            $(fbDisplayTimesRow).html('<td class="status delegated"></td>');
+            break;
+          case bwAttendeeStatusCompleted : 
+            $(fbDisplayTimesRow).html('<td class="status completed"></td>');
+            break;
+          case bwAttendeeStatusInProcess : 
+            $(fbDisplayTimesRow).html('<td class="status inprocess"></td>');
+            break;
+          default : // default to bwAttendeeStatusNeedsAction - display question mark
+            $(fbDisplayTimesRow).html('<td class="status needsaction">?</td>');
         }
+
         // set the role icon
         // the role class is used for rollover descriptions of the icon
         switch (curAttendee.role) {
-          case bwAttendeeRoleRequired : // displays right-pointing arrow icon
-            $(fbDisplayTimesRow).append('<td class="role">&#10137;</td>');
-            break;
           case bwAttendeeRoleChair : // displays writing hand icon
-            $(fbDisplayTimesRow).append('<td class="role">&#9997;</td>');
+            $(fbDisplayTimesRow).append('<td class="role chair"><span class="icon">&#9997;</span><span class="text">' + bwAttendeeDispRoleChair + '</span></td>');
             break;
-          default : // display no icon for other roles
-            $(fbDisplayTimesRow).append('<td class="role"></td>');
+          case bwAttendeeRoleRequired : // displays right-pointing arrow icon
+            $(fbDisplayTimesRow).append('<td class="role required"><span class="icon">&#10137;</span><span class="text">' + bwAttendeeDispRoleRequired + '</span></td>');
+            break;
+          case bwAttendeeRoleNonParticipant : // non-participant
+            $(fbDisplayTimesRow).append('<td class="role nonparticipant"><span class="icon">x</span><span class="text">' + bwAttendeeDispRoleNonParticipant + '</span></td>');
+            break;
+          default : // bwAttendeeRoleOptional - no icon (use a space to provide a rollover)
+            $(fbDisplayTimesRow).append('<td class="role optional"><span class="icon">&#160;</span><span class="text">' + bwAttendeeDispRoleOptional + '</span></td>');
         }
-        //$(fbDisplayTimesRow).append('<td class="role">' + curAttendee.role + '</td>');
         $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
         for (i = 0; i < range; i++) {
           var curDate = new Date(this.startRange);
@@ -199,7 +235,7 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
               if (curDate.getMinutes() == 0) {
                 $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="hourBoundry"></td>');
               } else {
-                $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees"></td>');
+                $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees fbcell"></td>');
               }
               // increment by the number of minutes in the hour division
               curDate.addMinutes(60 / this.hourDivision);
@@ -211,6 +247,17 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
       
       // finally, write the table back to the display
       $("#" + displayId).html(fbDisplay);
+      
+      
+      // now add some rollovers to the elements of the freebusy grid
+      $("#bwScheduleTable .icon").hover(
+        function () {
+          $(this).next(".text").fadeIn(100);
+        }, 
+        function () {
+          $(this).next(".text").fadeOut(100);
+        }
+      );  
       
     } catch (e) {
       alert(e);

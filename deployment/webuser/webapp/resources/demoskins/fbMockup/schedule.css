@@ -2,8 +2,7 @@ body {
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
-
-#bwSchedule {
+s#bwSchedule {
   position: relative;
   margin: 2em;
   padding: 0;
@@ -31,20 +30,38 @@ body {
   text-align: right;
   padding-right: 16px;
 }
+#bwScheduleTable .icon {
+  cursor: default; 
+}
+#bwScheduleTable .text {
+  /* this is the default rollover for most icons */
+  position: absolute;
+  margin: -8px 0 0 0;
+  padding: 4px;
+  font-size: 10px;
+  background-color: #ffe;
+  color: black;
+  border: 1px solid #eee;
+  display: none; 
+}
 #bwScheduleTable td.status,
 #bwScheduleTable td.role {
-  font-size: 1.4em;
   color: #333;
   background-color: transparent;
-}
-#bwScheduleTable td.checkmark {
-  color: #0c0;
-  background-color: transparent;
-}
-#bwScheduleTable td.questionmark {
-  color: black;
-  background-color: transparent;
   font-weight: bold;
+}
+#bwScheduleTable td.status {
+  font-size: 1.4em;
+}
+#bwScheduleTable td.role {
+  font-size: 1.6em;
+}
+#bwScheduleTable td.accepted {
+  color: #5a0;
+  background-color: transparent;
+  font-size: 1.8em;
+}
+#bwScheduleTable td.needsaction {
   font-family: Paladino, Times, serif;
 }
 #bwScheduleTable input.addAttendee {
