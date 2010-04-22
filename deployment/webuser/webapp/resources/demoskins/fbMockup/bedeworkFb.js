@@ -23,11 +23,22 @@
 // free/busy functions
 // ========================================================================
 
-// Constant values and display strings
-// Should be internationalized
-var bwAttendeePersonType = "person";
-var bwAttendeeLocationType = "location";
-var bwAttendeeResourceType = "resource";
+// Constants and RFC-5445 values 
+// These should be put some place permanent
+var bwAttendeeRoleChair = "CHAIR";
+var bwAttendeeRoleRequired = "REQ-PARTICIPANT";
+var bwAttendeeRoleOptional = "OPT-PARTICIPANT";
+var bwAttendeeRoleNon = "NON-PARTICIPANT";
+var bwAttendeeStatusNeedsAction = "NEEDS-ACTION";
+var bwAttendeeStatusAccepted = "ACCEPTED";
+var bwAttendeeStatusDeclined = "DECLINED";
+var bwAttendeeStatusTentative = "TENTATIVE";
+var bwAttendeeStatusDelegated = "DELEGATED";
+var bwAttendeeStatusCompleted = "COMPLETED";
+var bwAttendeeStatusInProcess = "IN-PROCESS";
+var bwAttendeeTypePerson = "person";
+var bwAttendeeTypeLocation = "location";
+var bwAttendeeTypeResource = "resource";
 
 /* An attendee
  * name:     String - name of attendee, e.g. "Venerable Bede"
@@ -46,7 +57,7 @@ var bwAttendee = function(name, uid, freebusy, role, status, type) {
   this.type = type;
   
   if (this.type == null || this.type == "") {
-    this.type == bwAttendeePersonType;
+    this.type == bwAttendeeTypePerson;
   }
 }
 
@@ -155,8 +166,28 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
       for (attendee = 0; attendee < attendees.length; attendee++) {
         fbDisplayTimesRow = fbDisplay.insertRow(attendee + 3); // offset by three to account for previous special rows
         var curAttendee = attendees[attendee];
-        $(fbDisplayTimesRow).html('<td class="status">' + curAttendee.status + '</td>');
-        $(fbDisplayTimesRow).append('<td class="role">' + curAttendee.role + '</td>');
+        // set the status icon and class 
+        // the status class is used for rollover descriptions of the icon
+        switch (curAttendee.status) {
+          case bwAttendeeStatusAccepted : 
+            $(fbDisplayTimesRow).html('<td class="status checkmark">&#10004;</td>');
+            break;
+          default : // bwAttendeeStatusNeedsAction - display question mark
+            $(fbDisplayTimesRow).html('<td class="status questionmark">?</td>');
+        }
+        // set the role icon
+        // the role class is used for rollover descriptions of the icon
+        switch (curAttendee.role) {
+          case bwAttendeeRoleRequired : // displays right-pointing arrow icon
+            $(fbDisplayTimesRow).append('<td class="role">&#10137;</td>');
+            break;
+          case bwAttendeeRoleChair : // displays writing hand icon
+            $(fbDisplayTimesRow).append('<td class="role">&#9997;</td>');
+            break;
+          default : // display no icon for other roles
+            $(fbDisplayTimesRow).append('<td class="role"></td>');
+        }
+        //$(fbDisplayTimesRow).append('<td class="role">' + curAttendee.role + '</td>');
         $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
         for (i = 0; i < range; i++) {
           var curDate = new Date(this.startRange);

@@ -18,6 +18,7 @@
       // initialize the free/busy grid
       // send params: displayId, startRange, endRange, startDate, endDate, attendees, workday, zoom
       var fbGrid = new bwFreeBusy("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",freebusy:[],role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100);
+      fbGrid.addAttendee("Gary Schwartz", "mailto:schwag@rpi.edu", [], "REQ-PARTICIPANT", "NEEDS-ACTION");
 
       // set datepicker defaults
       $.datepicker.setDefaults({
