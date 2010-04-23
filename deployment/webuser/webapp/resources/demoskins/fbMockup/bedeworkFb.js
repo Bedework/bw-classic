@@ -69,7 +69,7 @@ var bwAttendeeDispTypeResource = "resource";
 var bwAttendee = function(name, uid, freebusy, role, status, type) {
   this.name = name;
   this.uid = uid;
-  this.freebusy = freebusy;
+  this.freebusy = new bwFreeBusy(freebusy);
   this.role = role;
   this.status = status;
   this.type = type;
@@ -77,6 +77,61 @@ var bwAttendee = function(name, uid, freebusy, role, status, type) {
   if (this.type == null || this.type == "") {
     this.type == bwAttendeeTypePerson;
   }
+}
+/* Freebusy data
+ * Provides methods to work on freebusy values
+ * fbvals: Array of rfc5545 freebusy values 
+ */
+var bwFreeBusy = function(fbVals) {
+  this.fbVals = fbVals;  
+  
+  // create a hash table to reference useful information about the freebusy values
+  // specifically, store start and end in milliseconds
+  this.fbHash = new Array();
+  
+  for (i = 0; i < fbVals.length; i++) {
+    // set the freebusy start date
+    var startDate = new Date();
+    startDate.setUTCFullYear(fbVals[i].substring(0,4),fbVals[i].substring(4,6)-1,fbVals[i].substring(6,8));
+    startDate.setUTCHours(fbVals[i].substring(9,11),fbVals[i].substring(11,13),fbVals[i].substring(13,15));
+
+    if (fbVals[i].indexOf("P") > -1) {
+      // freebusy value is of the form: 19971015T223000Z/PT6H30M
+      // get the start date in milliseconds
+      var startMills = startDate.getTime();
+      // extract the hours and minutes from the strings and cast as numbers  
+      var durationHours = new Number(fbVals[i].substring(fbVals[i].indexOf("T")+1,fbVals[i].indexOf("H")));
+      var durationMins = new Number(fbVals[i].substring(fbVals[i].indexOf("H")+1,fbVals[i].indexOf("M")));
+      // calculate the duration
+      var duration = (durationHours * 3600000) + (durationMins * 60000);
+      // set start and end in milliseconds 
+      this.fbHash[fbVals[i]] = {start:startMills,end:startMills+duration};
+    } else { 
+      // freebusy value is of the form: 19980314T233000Z/19980315T003000Z
+      // set the freebusy end date
+      var endDate = new Date();
+      endDate.setUTCFullYear(fbVals[i].substring(17,21),fbVals[i].substring(21,23)-1,fbVals[i].substring(23,25));
+      endDate.setUTCHours(fbVals[i].substring(26,28),fbVals[i].substring(28,30),fbVals[i].substring(30,32));
+      // set the start and end date in milliseconds
+      this.fbHash[fbVals[i]] = {start:startDate.getTime(),end:endDate.getTime()};
+    }
+  }
+  
+  // example of how to generate a date from the millisecond UTC value  
+  // var testDate = new Date(this.fbHash[fbVals[0]].start); //fbVals[0] = a freebusy string
+  // alert(testDate.toLocaleString());
+    
+  /* returns true if dateString is contained in a freebusy value
+   * mills: date/time in milliseconds
+   */  
+  /*this.contains = function(mills) {
+    for (i = 0; i < this.fbHash.length; i++) {
+      if (mills >= this.fbHash[i].start || mills <= this.fbHash[i].end) {
+        return true;
+      }
+    }
+    return false;
+  }*/
 }
 
 /* Object to model the freebusy grid
@@ -101,22 +156,28 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.endDate = new Date(endDate);
   this.zoom = zoom;
   this.workday = workday;
-  this.attendees = attendees;
+  this.attendees = new Array();  // array of bwAttendee objects
   
+  // initialize any incoming attendees on first load
+  for (i = 0; i < attendees.length; i++) {
+    var newAttendee = new bwAttendee(attendees[i].name,attendees[i].uid ,attendees[i].freebusy,attendees[i].role,attendees[i].status,attendees[i].type);
+    this.attendees.push(newAttendee); 
+  }
+    
   // how much will we divide the hour in the grid?
   // this is a constant for now, but could be variable.
   // ALWAYS set as a factor of 60
   this.hourDivision = 4;
-  
-  this.addAttendee = function(name, uid, freebusy, role, status) {
-    var newAttendee = new bwAttendee(name, uid, freebusy, role, status);
-    attendees.push(newAttendee);
+
+  this.addAttendee = function(name, uid, freebusy, role, status, type) {
+    var newAttendee = new bwAttendee(name, uid, freebusy, role, status, type);
+    this.attendees.push(newAttendee);
     
     this.display();
   }
   
   this.deleteAttendee = function(index) {
-    attendees.splice(index, 1);
+    this.attendees.splice(index, 1);
     this.diplay();
   }
   
@@ -172,7 +233,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
             var fbCell = document.createElement("td");
             fbCell.id = curDate.getTime() + "-AllAttendees";
             $(fbCell).addClass("fbcell");
-            if (curDate.getMinutes() == 0) {
+            if (curDate.getMinutes() == 0 && j != 0) {
               $(fbCell).addClass("hourBoundry");
             } 
             $(fbDisplayTimesRow).append(fbCell);
@@ -183,9 +244,9 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       }
       
       // generate the regular attendees rows
-      for (attendee = 0; attendee < attendees.length; attendee++) {
+      for (attendee = 0; attendee < this.attendees.length; attendee++) {
         fbDisplayTimesRow = fbDisplay.insertRow(attendee + 3); // offset by three to account for previous special rows
-        var curAttendee = attendees[attendee];
+        var curAttendee = this.attendees[attendee];
         // set the status icon and class 
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
@@ -245,10 +306,12 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
               var fbCell = document.createElement("td");
               fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
               $(fbCell).addClass("fbcell");
-              if (curDate.getMinutes() == 0) {
+              if (curDate.getMinutes() == 0 && j != 0) {
                 $(fbCell).addClass("hourBoundry");
               } 
-              //switch (bwFreeBusycurDate.getTime())
+              //if (curAttendee.freebusy.contains(curDate.getTime())) {
+              //  $(fbCell).addClass("busy");
+             // }
               $(fbDisplayTimesRow).append(fbCell);
               curDate.addMinutes(60/this.hourDivision);
             }
