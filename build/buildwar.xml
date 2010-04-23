@@ -181,6 +181,7 @@
       <filterset refid="property.filters" />
     </copy>
 
+  	<!--
     <if>
       <available file="${app.sou.dir}/war/WEB-INF/classes" type="dir" />
       <then>
@@ -191,6 +192,7 @@
 		    </copy>
       </then>
     </if>
+    -->
 
   	<!-- Make our own servlet.properties file for struts applications
     <copy tofile="${app.dest.classes}/servlet.properties" file="${app.sou.properties}">
