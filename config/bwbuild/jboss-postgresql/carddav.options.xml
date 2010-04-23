@@ -110,7 +110,7 @@
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
 
-            <baseDn>ou=addrbooks,ou=users,dc=bedework,dc=org</baseDn>
+            <baseDn>ou=users,ou=addrbooks,dc=bedework,dc=org</baseDn>
 
             <queryLimit>1000</queryLimit>
 
@@ -138,7 +138,7 @@
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
 
-            <baseDn>ou=ou=addrbooks,public,dc=bedework,dc=org</baseDn>
+            <baseDn>ou=public,ou=addrbooks,dc=bedework,dc=org</baseDn>
 
             <queryLimit>1000</queryLimit>
 
