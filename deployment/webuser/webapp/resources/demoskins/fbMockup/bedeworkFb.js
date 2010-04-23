@@ -91,7 +91,7 @@ var bwAttendee = function(name, uid, freebusy, role, status, type) {
  * workday:         boolean - true to display workday hours only, false to display all 24 hours
  * zoom:            integer - scalar value for zooming the grid
  */
-var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom) {
+var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom) {
   this.displayId = displayId;
   this.startRange = new Date(startRange);
   this.endRange = new Date(endRange);
@@ -169,11 +169,13 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
         // add the time cells by iterating over the hours
         for (j = 0; j < hourRange; j++) {
           for (k = 0; k < this.hourDivision; k++) {
+            var fbCell = document.createElement("td");
+            fbCell.id = curDate.getTime() + "-AllAttendees";
+            $(fbCell).addClass("fbcell");
             if (curDate.getMinutes() == 0) {
-              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="hourBoundry fbcell"></td>');
-            } else {
-              $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="fbcell"></td>');
-            }
+              $(fbCell).addClass("hourBoundry");
+            } 
+            $(fbDisplayTimesRow).append(fbCell);
             curDate.addMinutes(60/this.hourDivision);
           }
         }
@@ -224,7 +226,15 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
           default : // bwAttendeeRoleOptional - no icon (use a space to provide a rollover)
             $(fbDisplayTimesRow).append('<td class="role optional"><span class="icon">&#160;</span><span class="text">' + bwAttendeeDispRoleOptional + '</span></td>');
         }
-        $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
+        
+        // output the attendee name or address (depending on which we have available)
+        if (curAttendee.name && curAttendee.name != "") {
+          $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
+        } else {
+          $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1) + '</td><td class="fbBoundry"></td>');
+        }
+        
+        // build the time row for an attendee
         for (i = 0; i < range; i++) {
           var curDate = new Date(this.startRange);
           curDate.setHours(this.startHoursRange);
@@ -232,18 +242,22 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
           // add the time cells by iterating over the hours
           for (j = 0; j < hourRange; j++) {
             for (k = 0; k < this.hourDivision; k++) {
+              var fbCell = document.createElement("td");
+              fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
+              $(fbCell).addClass("fbcell");
               if (curDate.getMinutes() == 0) {
-                $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees" class="hourBoundry"></td>');
-              } else {
-                $(fbDisplayTimesRow).append('<td id="' + curDate.getTime() + '-AllAttendees fbcell"></td>');
-              }
-              // increment by the number of minutes in the hour division
-              curDate.addMinutes(60 / this.hourDivision);
+                $(fbCell).addClass("hourBoundry");
+              } 
+              //switch (bwFreeBusycurDate.getTime())
+              $(fbDisplayTimesRow).append(fbCell);
+              curDate.addMinutes(60/this.hourDivision);
             }
           }
           $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
         }
       }
+      
+      // 
       
       // finally, write the table back to the display
       $("#" + displayId).html(fbDisplay);
@@ -311,118 +325,35 @@ Date.prototype.getMinutesFull = function() {
 }
 
 /*
-
-
-
+ * From RFC 5545
  * The following is an example of a "VFREEBUSY" calendar component
-
-
-
  used to reply to the request with busy time information:
-
-
-
+ 
  BEGIN:VFREEBUSY
-
-
-
  UID:19970901T095957Z-76A912@example.com
-
-
-
  ORGANIZER:mailto:jane_doe@example.com
-
-
-
  ATTENDEE:mailto:john_public@example.com
-
-
-
  DTSTAMP:19970901T100000Z
-
-
-
  FREEBUSY:19971015T050000Z/PT8H30M,
-
-
-
  19971015T160000Z/PT5H30M,19971015T223000Z/PT6H30M
-
-
-
  URL:http://example.com/pub/busy/jpublic-01.ifb
-
-
-
  COMMENT:This iCalendar file contains busy time information for
-
-
-
  the next three months.
-
-
-
  END:VFREEBUSY
-
-
 
  The following is an example of a "VFREEBUSY" calendar component
-
-
-
  used to publish busy time information:
 
-
-
  BEGIN:VFREEBUSY
-
-
-
  UID:19970901T115957Z-76A912@example.com
-
-
-
  DTSTAMP:19970901T120000Z
-
-
-
  ORGANIZER:jsmith@example.com
-
-
-
  DTSTART:19980313T141711Z
-
-
-
  DTEND:19980410T141711Z
-
-
-
  FREEBUSY:19980314T233000Z/19980315T003000Z
-
-
-
  FREEBUSY:19980316T153000Z/19980316T163000Z
-
-
-
  FREEBUSY:19980318T030000Z/19980318T040000Z
-
-
-
  URL:http://www.example.com/calendar/busytime/jsmith.ifb
-
-
-
  END:VFREEBUSY
-
-
-
  *
-
-
-
  */
-
-
-
