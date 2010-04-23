@@ -188,25 +188,25 @@ var bwFreeBusy = function(displayId, startRange, endRange, startDate, endDate, s
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
           case bwAttendeeStatusAccepted : 
-            $(fbDisplayTimesRow).html('<td class="status accepted">&#10004;</td>');
+            $(fbDisplayTimesRow).html('<td class="status accepted"><span class="icon">&#10004;</span><span class="text">' + bwAttendeeDispStatusAccepted + '</span></td>');
             break;
           case bwAttendeeStatusDeclined : 
-            $(fbDisplayTimesRow).html('<td class="status declined">x</td>');
+            $(fbDisplayTimesRow).html('<td class="status declined"><span class="icon">x</span><span class="text">' + bwAttendeeDispStatusDeclined + '</span></td>');
             break;
           case bwAttendeeStatusTentative : 
-            $(fbDisplayTimesRow).html('<td class="status tentative">-</td>');
+            $(fbDisplayTimesRow).html('<td class="status tentative"><span class="icon">-</span><span class="text">' + bwAttendeeDispStatusTentative + '</span></td>');
             break;
           case bwAttendeeStatusDelegated : 
-            $(fbDisplayTimesRow).html('<td class="status delegated"></td>');
+            $(fbDisplayTimesRow).html('<td class="status delegated"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusDelegated + '</span></td>');
             break;
           case bwAttendeeStatusCompleted : 
-            $(fbDisplayTimesRow).html('<td class="status completed"></td>');
+            $(fbDisplayTimesRow).html('<td class="status completed"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusCompleted + '</span></td>');
             break;
           case bwAttendeeStatusInProcess : 
-            $(fbDisplayTimesRow).html('<td class="status inprocess"></td>');
+            $(fbDisplayTimesRow).html('<td class="status inprocess"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusInProcess + '</span></td>');
             break;
           default : // default to bwAttendeeStatusNeedsAction - display question mark
-            $(fbDisplayTimesRow).html('<td class="status needsaction">?</td>');
+            $(fbDisplayTimesRow).html('<td class="status needsaction"><span class="icon">?</span><span class="text">' + bwAttendeeDispStatusNeedsAction + '</span></td>');
         }
 
         // set the role icon
