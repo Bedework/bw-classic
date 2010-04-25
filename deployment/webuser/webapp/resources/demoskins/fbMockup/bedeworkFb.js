@@ -59,20 +59,26 @@ var bwAttendeeDispTypeLocation = "location";
 var bwAttendeeDispTypeResource = "resource";
 
 /* An attendee
- * name:     String - name of attendee, e.g. "Venerable Bede"
- * uid:      String - attendee's uid with mailto included, e.g. "mailto:vbede@example.com"
- * freebusy: Array of rfc5545 freebusy reply values for the current attendee in the current date range
- * role:     String - Attendee role, e.g. CHAIR, REQ-PARTICIPANT, etc
- * status:   String - participation status (PARTSTAT)
- * type:     String - person, location, other resource
+ * name:            String - name of attendee, e.g. "Venerable Bede"
+ * uid:             String - attendee's uid with mailto included, e.g. "mailto:vbede@example.com"
+ * freebusyStrings: Array of rfc5545 freebusy reply values for the current attendee in the current date range
+ * role:            String - Attendee role, e.g. CHAIR, REQ-PARTICIPANT, etc
+ * status:          String - participation status (PARTSTAT)
+ * type:            String - person, location, other resource
  */
-var bwAttendee = function(name, uid, freebusy, role, status, type) {
+var bwAttendee = function(name, uid, freebusyStrings, role, status, type) {
   this.name = name;
   this.uid = uid;
-  this.freebusy = new bwFreeBusy(freebusy);
+  this.freebusy = new Array();
   this.role = role;
   this.status = status;
   this.type = type;
+  
+  //populate the freebusy objects
+  for (i = 0; i<freebusyStrings.length; i++) {
+    var fb = new bwFreeBusy(freebusyStrings[i]);
+    this.freebusy.push(fb);
+  }
   
   if (this.type == null || this.type == "") {
     this.type == bwAttendeeTypePerson;
@@ -82,56 +88,54 @@ var bwAttendee = function(name, uid, freebusy, role, status, type) {
  * Provides methods to work on freebusy values
  * fbvals: Array of rfc5545 freebusy values 
  */
-var bwFreeBusy = function(fbVals) {
-  this.fbVals = fbVals;  
+var bwFreeBusy = function(fbString) {
+  this.name = fbString;  
   
-  // create a hash table to reference useful information about the freebusy values
-  // specifically, store start and end in milliseconds
-  this.fbHash = new Array();
+  // set the freebusy start date
+  var startDate = new Date();
+  startDate.setUTCFullYear(this.name.substring(0,4),this.name.substring(4,6)-1,this.name.substring(6,8));
+  startDate.setUTCHours(this.name.substring(9,11),this.name.substring(11,13),this.name.substring(13,15));
   
-  for (i = 0; i < fbVals.length; i++) {
-    // set the freebusy start date
-    var startDate = new Date();
-    startDate.setUTCFullYear(fbVals[i].substring(0,4),fbVals[i].substring(4,6)-1,fbVals[i].substring(6,8));
-    startDate.setUTCHours(fbVals[i].substring(9,11),fbVals[i].substring(11,13),fbVals[i].substring(13,15));
+  // set the start in milliseconds
+  this.start = startDate.getTime();
 
-    if (fbVals[i].indexOf("P") > -1) {
-      // freebusy value is of the form: 19971015T223000Z/PT6H30M
-      // get the start date in milliseconds
-      var startMills = startDate.getTime();
-      // extract the hours and minutes from the strings and cast as numbers  
-      var durationHours = new Number(fbVals[i].substring(fbVals[i].indexOf("T")+1,fbVals[i].indexOf("H")));
-      var durationMins = new Number(fbVals[i].substring(fbVals[i].indexOf("H")+1,fbVals[i].indexOf("M")));
-      // calculate the duration
-      var duration = (durationHours * 3600000) + (durationMins * 60000);
-      // set start and end in milliseconds 
-      this.fbHash[fbVals[i]] = {start:startMills,end:startMills+duration};
-    } else { 
-      // freebusy value is of the form: 19980314T233000Z/19980315T003000Z
-      // set the freebusy end date
-      var endDate = new Date();
-      endDate.setUTCFullYear(fbVals[i].substring(17,21),fbVals[i].substring(21,23)-1,fbVals[i].substring(23,25));
-      endDate.setUTCHours(fbVals[i].substring(26,28),fbVals[i].substring(28,30),fbVals[i].substring(30,32));
-      // set the start and end date in milliseconds
-      this.fbHash[fbVals[i]] = {start:startDate.getTime(),end:endDate.getTime()};
-    }
+  var endMs; // end in milliseconds
+  if (this.name.indexOf("P") > -1) {
+    // freebusy value is of the form: 19971015T223000Z/PT6H30M
+    // extract the hours and minutes from the strings and cast as numbers  
+    var durationHours = this.name.substring(this.name.lastIndexOf("T")+1,this.name.indexOf("H"));
+    var durationMins = this.name.substring(this.name.indexOf("H")+1,this.name.indexOf("M"));
+    // calculate the duration
+    var duration = (Number(durationHours) * 3600000) + (Number(durationMins) * 60000);
+    // set start and end in milliseconds 
+    endMs = this.start + duration;
+  } else { 
+    // freebusy value is of the form: 19980314T233000Z/19980315T003000Z
+    // set the freebusy end date
+    var endDate = new Date();
+    endDate.setUTCFullYear(this.name.substring(17,21),this.name.substring(21,23)-1,this.name.substring(23,25));
+    endDate.setUTCHours(this.name.substring(26,28),this.name.substring(28,30),this.name.substring(30,32));
+    endMs = endDate.getTime();
   }
+  
+  // set the end in milliseconds
+  this.end = endMs;
+
   
   // example of how to generate a date from the millisecond UTC value  
   // var testDate = new Date(this.fbHash[fbVals[0]].start); //fbVals[0] = a freebusy string
   // alert(testDate.toLocaleString());
     
-  /* returns true if dateString is contained in a freebusy value
-   * mills: date/time in milliseconds
+  /* returns true if date is contained in this freebusy value
+   * mils: date/time in milliseconds
    */  
-  /*this.contains = function(mills) {
-    for (i = 0; i < this.fbHash.length; i++) {
-      if (mills >= this.fbHash[i].start || mills <= this.fbHash[i].end) {
-        return true;
-      }
+  this.contains = function(mils) {
+    if (mils >= this.start && mils < this.end) {
+      // should return type of freebusy if available
+      return true;
     }
     return false;
-  }*/
+  }
 }
 
 /* Object to model the freebusy grid
@@ -183,12 +187,21 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   
   this.display = function() {
     try {
-      // number of days and hours each day to display
+      // number of days to display
       var range = dayRange(this.startRange, this.endRange);
+      // number of hours to display
       var hourRange = this.endHoursRange - this.startHoursRange;
+      var startHour = this.startHoursRange;
+      
+      if (!workday) {
+        // show full 24 hours in grid
+        hourRange = 24;
+        startHour = 0;
+      }
+      
       var cellsInDay = hourRange * this.hourDivision;
     
-      // build the entire free/busy table first
+      // build the entire free/busy table
       var fbDisplay = document.createElement("table");
       fbDisplay.id = "bwScheduleTable";
       
@@ -206,7 +219,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       $(fbDisplayTimesRow).html('<td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
-        curDate.setHours(this.startHoursRange);
+        curDate.setHours(startHour);
         curDate.addDays(i);
         // add the time cells by iterating over the hours
         for (j = 0; j < hourRange; j++) {
@@ -225,7 +238,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">All Attendees</td><td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
-        curDate.setHours(this.startHoursRange);
+        curDate.setHours(startHour);
         curDate.addDays(i);
         // add the time cells by iterating over the hours
         for (j = 0; j < hourRange; j++) {
@@ -247,6 +260,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       for (attendee = 0; attendee < this.attendees.length; attendee++) {
         fbDisplayTimesRow = fbDisplay.insertRow(attendee + 3); // offset by three to account for previous special rows
         var curAttendee = this.attendees[attendee];
+        
         // set the status icon and class 
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
@@ -298,7 +312,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         // build the time row for an attendee
         for (i = 0; i < range; i++) {
           var curDate = new Date(this.startRange);
-          curDate.setHours(this.startHoursRange);
+          curDate.setHours(startHour);
           curDate.addDays(i);
           // add the time cells by iterating over the hours
           for (j = 0; j < hourRange; j++) {
@@ -309,9 +323,16 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
               if (curDate.getMinutes() == 0 && j != 0) {
                 $(fbCell).addClass("hourBoundry");
               } 
-              //if (curAttendee.freebusy.contains(curDate.getTime())) {
-              //  $(fbCell).addClass("busy");
-             // }
+              for (m = 0; m < curAttendee.freebusy.length; m++) {
+                var tzoffset = -curDate.getTimezoneOffset() * 60000; // in milliseconds
+                // adding the hourdivision increment in the calculation below is to correct for a bug
+                // in which the class was always offset by one table cell - should find cause
+                var curDateUTC = curDate.getTime() + tzoffset + (60/this.hourDivision*60000);                
+                if (curAttendee.freebusy[m].contains(curDateUTC)) {
+                  $(fbCell).addClass("busy");
+                  break;
+                }
+              }
               $(fbDisplayTimesRow).append(fbCell);
               curDate.addMinutes(60/this.hourDivision);
             }
