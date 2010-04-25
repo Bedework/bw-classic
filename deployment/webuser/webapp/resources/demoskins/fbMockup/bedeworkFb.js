@@ -206,7 +206,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       fbDisplay.id = "bwScheduleTable";
       
       // generate the date row - includes top left empty corner 
-      var fbDisplayDateRow = fbDisplay.insertRow(0);
+      var fbDisplayDateRow = fbDisplay.insertRow(fbDisplay.rows.length);
       $(fbDisplayDateRow).html('<td rowspan="2" colspan="3" class="corner"></td><td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
@@ -215,7 +215,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       }
       
       // generate the times row - each cell spans over the day divisions
-      fbDisplayTimesRow = fbDisplay.insertRow(1);
+      fbDisplayTimesRow = fbDisplay.insertRow(fbDisplay.rows.length);
       $(fbDisplayTimesRow).html('<td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
@@ -233,7 +233,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       }
       
       // generate the "All Attendees" row
-      fbDisplayTimesRow = fbDisplay.insertRow(2);
+      fbDisplayTimesRow = fbDisplay.insertRow(fbDisplay.rows.length);
       $(fbDisplayTimesRow).addClass("allAttendees");
       $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">All Attendees</td><td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
@@ -272,55 +272,55 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       
       // generate the regular attendees rows
       for (attendee = 0; attendee < this.attendees.length; attendee++) {
-        fbDisplayTimesRow = fbDisplay.insertRow(attendee + 3); // offset by three to account for previous special rows
+        fbDisplayAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length); 
         var curAttendee = this.attendees[attendee];
         
         // set the status icon and class 
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
           case bwAttendeeStatusAccepted : 
-            $(fbDisplayTimesRow).html('<td class="status accepted"><span class="icon">&#10004;</span><span class="text">' + bwAttendeeDispStatusAccepted + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status accepted"><span class="icon">&#10004;</span><span class="text">' + bwAttendeeDispStatusAccepted + '</span></td>');
             break;
           case bwAttendeeStatusDeclined : 
-            $(fbDisplayTimesRow).html('<td class="status declined"><span class="icon">x</span><span class="text">' + bwAttendeeDispStatusDeclined + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status declined"><span class="icon">x</span><span class="text">' + bwAttendeeDispStatusDeclined + '</span></td>');
             break;
           case bwAttendeeStatusTentative : 
-            $(fbDisplayTimesRow).html('<td class="status tentative"><span class="icon">-</span><span class="text">' + bwAttendeeDispStatusTentative + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status tentative"><span class="icon">-</span><span class="text">' + bwAttendeeDispStatusTentative + '</span></td>');
             break;
           case bwAttendeeStatusDelegated : 
-            $(fbDisplayTimesRow).html('<td class="status delegated"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusDelegated + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status delegated"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusDelegated + '</span></td>');
             break;
           case bwAttendeeStatusCompleted : 
-            $(fbDisplayTimesRow).html('<td class="status completed"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusCompleted + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status completed"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusCompleted + '</span></td>');
             break;
           case bwAttendeeStatusInProcess : 
-            $(fbDisplayTimesRow).html('<td class="status inprocess"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusInProcess + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status inprocess"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusInProcess + '</span></td>');
             break;
           default : // default to bwAttendeeStatusNeedsAction - display question mark
-            $(fbDisplayTimesRow).html('<td class="status needsaction"><span class="icon">?</span><span class="text">' + bwAttendeeDispStatusNeedsAction + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status needsaction"><span class="icon">?</span><span class="text">' + bwAttendeeDispStatusNeedsAction + '</span></td>');
         }
 
         // set the role icon
         // the role class is used for rollover descriptions of the icon
         switch (curAttendee.role) {
           case bwAttendeeRoleChair : // displays writing hand icon
-            $(fbDisplayTimesRow).append('<td class="role chair"><span class="icon">&#9997;</span><span class="text">' + bwAttendeeDispRoleChair + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role chair"><span class="icon">&#9997;</span><span class="text">' + bwAttendeeDispRoleChair + '</span></td>');
             break;
           case bwAttendeeRoleRequired : // displays right-pointing arrow icon
-            $(fbDisplayTimesRow).append('<td class="role required"><span class="icon">&#10137;</span><span class="text">' + bwAttendeeDispRoleRequired + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role required"><span class="icon">&#10137;</span><span class="text">' + bwAttendeeDispRoleRequired + '</span></td>');
             break;
           case bwAttendeeRoleNonParticipant : // non-participant
-            $(fbDisplayTimesRow).append('<td class="role nonparticipant"><span class="icon">x</span><span class="text">' + bwAttendeeDispRoleNonParticipant + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role nonparticipant"><span class="icon">x</span><span class="text">' + bwAttendeeDispRoleNonParticipant + '</span></td>');
             break;
           default : // bwAttendeeRoleOptional - no icon (use a space to provide a rollover)
-            $(fbDisplayTimesRow).append('<td class="role optional"><span class="icon">&#160;</span><span class="text">' + bwAttendeeDispRoleOptional + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role optional"><span class="icon">&#160;</span><span class="text">' + bwAttendeeDispRoleOptional + '</span></td>');
         }
         
         // output the attendee name or address (depending on which we have available)
         if (curAttendee.name && curAttendee.name != "") {
-          $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
+          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
         } else {
-          $(fbDisplayTimesRow).append('<td class="name">' + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1) + '</td><td class="fbBoundry"></td>');
+          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1) + '</td><td class="fbBoundry"></td>');
         }
         
         // build the time row for an attendee
@@ -341,27 +341,73 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
                 var tzoffset = -curDate.getTimezoneOffset() * 60000; // in milliseconds
                 // adding the hourdivision increment in the calculation below is to correct for a bug
                 // in which the class was always offset by one table cell - should find cause
-                var curDateUTC = curDate.getTime() + tzoffset + (60/this.hourDivision*60000);                
+                var curDateUTC = curDate.getTime() + tzoffset + (60 / this.hourDivision * 60000);                
                 if (curAttendee.freebusy[m].contains(curDateUTC)) {
                   $(fbCell).addClass("busy");
                   break;
                 }
               }
-              $(fbDisplayTimesRow).append(fbCell);
+              $(fbDisplayAttendeeRow).append(fbCell);
               curDate.addMinutes(60/this.hourDivision);
             }
           }
-          $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
+          $(fbDisplayAttendeeRow).append('<td class="dayBoundry"></td>');
         }
       }
       
-      // 
+      // generate the "add attendee" row
+      fbDisplayAddAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
+      $(fbDisplayAddAttendeeRow).html('<td class="status"></td><td class="role"></td><td class="name" id="addAttendee">add attendee...</td><td class="fbBoundry"></td>');
+      for (i = 0; i < range; i++) {
+        var curDate = new Date(this.startRange);
+        curDate.setHours(startHour);
+        curDate.addDays(i);
+        // add the time cells by iterating over the hours
+        for (j = 0; j < hourRange; j++) {
+          for (k = 0; k < this.hourDivision; k++) {
+            var fbCell = document.createElement("td");
+            fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
+            $(fbCell).addClass("fbcell");
+            if (curDate.getMinutes() == 0 && j != 0) {
+              $(fbCell).addClass("hourBoundry");
+            } 
+            $(fbDisplayAddAttendeeRow).append(fbCell);
+            curDate.addMinutes(60/this.hourDivision);
+          }
+        }
+        $(fbDisplayAddAttendeeRow).append('<td class="dayBoundry"></td>');
+      }
       
-      // finally, write the table back to the display
+      // generate a blank row at the end (this is just for visual padding)
+      fbDisplayBlankRow = fbDisplay.insertRow(fbDisplay.rows.length);
+      $(fbDisplayBlankRow).html('<td class="status"></td><td class="role"></td><td class="name"></td><td class="fbBoundry"></td>');
+      for (i = 0; i < range; i++) {
+        var curDate = new Date(this.startRange);
+        curDate.setHours(startHour);
+        curDate.addDays(i);
+        // add the time cells by iterating over the hours
+        for (j = 0; j < hourRange; j++) {
+          for (k = 0; k < this.hourDivision; k++) {
+            var fbCell = document.createElement("td");
+            fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
+            $(fbCell).addClass("fbcell");
+            if (curDate.getMinutes() == 0 && j != 0) {
+              $(fbCell).addClass("hourBoundry");
+            } 
+            $(fbDisplayBlankRow).append(fbCell);
+            curDate.addMinutes(60/this.hourDivision);
+          }
+        }
+        $(fbDisplayBlankRow).append('<td class="dayBoundry"></td>');
+      }
+      
+      
+      // write the table back to the display
       $("#" + displayId).html(fbDisplay);
       
       
-      // now add some rollovers to the elements of the freebusy grid
+      // now add some rollovers and onclick actions 
+      // to the elements of the freebusy grid
       $("#bwScheduleTable .icon").hover(
         function () {
           $(this).next(".text").fadeIn(100);

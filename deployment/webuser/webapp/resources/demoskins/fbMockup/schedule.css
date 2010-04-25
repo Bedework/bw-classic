@@ -3,10 +3,11 @@ body {
   font-size: 14px;
 }
 s#bwSchedule {
-  position: relative;
-  margin: 2em;
-  padding: 0;
-  overflow: scroll;
+}
+#bwFreeBusyDisplay {
+  margin: 2em 2em 0 2em;
+  width: 90%;
+  overflow: scroll;  
 }
 #bwScheduleTable {
   border-collapse: collapse; 
@@ -57,6 +58,9 @@ s#bwSchedule {
 #bwScheduleTable td.role {
   font-size: 1.6em;
 }
+#bwScheduleTable td.name {
+  padding-right: 1em;
+}
 #bwScheduleTable td.accepted {
   color: #5a0;
   background-color: transparent;
@@ -65,12 +69,11 @@ s#bwSchedule {
 #bwScheduleTable td.needsaction {
   font-family: Paladino, Times, serif;
 }
-#bwScheduleTable input.addAttendee {
-  margin-top: 4px;
-  border: none;
-  font-size: 0.9em;
+#bwScheduleTable #addAttendee {
   color: #bbb;
   background-color: transparent;
+  cursor: pointer;
+  padding: 8px 0 8px 4px;
 }
 #bwScheduleTable td.busy {
   background-color: #b1cbfa !important;
