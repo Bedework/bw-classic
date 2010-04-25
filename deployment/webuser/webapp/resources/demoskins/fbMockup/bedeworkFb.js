@@ -249,6 +249,20 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
             if (curDate.getMinutes() == 0 && j != 0) {
               $(fbCell).addClass("hourBoundry");
             } 
+            // set busy if any freebusy in this timeperiod
+            loop1: // since we only need to know if anyone is busy, provide a simple means of breaking from the inner loop
+            for (att = 0; att < this.attendees.length; att++) {
+              for (m = 0; m < this.attendees[att].freebusy.length; m++) {
+                var tzoffset = -curDate.getTimezoneOffset() * 60000; // in milliseconds
+                // adding the hourdivision increment in the calculation below is to correct for a bug
+                // in which the class was always offset by one table cell - should find cause
+                var curDateUTC = curDate.getTime() + tzoffset + (60 / this.hourDivision * 60000);
+                if (this.attendees[att].freebusy[m].contains(curDateUTC)) {
+                  $(fbCell).addClass("busy");
+                  break loop1;
+                }
+              }
+            }
             $(fbDisplayTimesRow).append(fbCell);
             curDate.addMinutes(60/this.hourDivision);
           }

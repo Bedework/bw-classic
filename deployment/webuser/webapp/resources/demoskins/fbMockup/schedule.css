@@ -96,6 +96,10 @@ s#bwSchedule {
 #bwScheduleTable tr.allAttendees td {
   background-color: #eee;
 }
+#bwScheduleTable tr.allAttendees td.busy {
+  background-color: #93A9CF !important;
+  color: black;
+}
 #bwScheduleControls {
   margin: 1.5em 1em;
 }
