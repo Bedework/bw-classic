@@ -246,6 +246,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
             var fbCell = document.createElement("td");
             fbCell.id = curDate.getTime() + "-AllAttendees";
             $(fbCell).addClass("fbcell");
+              $(fbCell).addClass(curDate.getTime().toString());
             if (curDate.getMinutes() == 0 && j != 0) {
               $(fbCell).addClass("hourBoundry");
             } 
@@ -334,6 +335,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
               var fbCell = document.createElement("td");
               fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
               $(fbCell).addClass("fbcell");
+              $(fbCell).addClass(curDate.getTime().toString());
               if (curDate.getMinutes() == 0 && j != 0) {
                 $(fbCell).addClass("hourBoundry");
               } 
@@ -368,6 +370,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
             var fbCell = document.createElement("td");
             fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
             $(fbCell).addClass("fbcell");
+            $(fbCell).addClass(curDate.getTime().toString());
             if (curDate.getMinutes() == 0 && j != 0) {
               $(fbCell).addClass("hourBoundry");
             } 
@@ -391,6 +394,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
             var fbCell = document.createElement("td");
             fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
             $(fbCell).addClass("fbcell");
+            $(fbCell).addClass(curDate.getTime().toString());
             if (curDate.getMinutes() == 0 && j != 0) {
               $(fbCell).addClass("hourBoundry");
             } 
@@ -416,6 +420,15 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
           $(this).next(".text").fadeOut(100);
         }
       );  
+      
+      $("#bwScheduleTable .fbcell").click (
+        function () {
+          var curClass = $(this).attr("class");
+          alert(curClass);
+          $("#bwScheduleTable ." + curClass).addClass("highlight");
+          alert($(this).attr("class"));
+        }
+      );
       
     } catch (e) {
       alert(e);

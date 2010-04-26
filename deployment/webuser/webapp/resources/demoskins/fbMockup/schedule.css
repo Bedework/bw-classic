@@ -83,6 +83,10 @@ s#bwSchedule {
   background: url("tentativeLines.gif");
   color: black;
 }
+#bwScheduleTable td.highlight {
+  background-color: #faa !important;
+  color: black;
+}
 #bwScheduleTable td.fbBoundry {
   padding: 0 2px;
   background-color: #e5e5e5 !important;
