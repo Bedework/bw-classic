@@ -17,7 +17,7 @@
     
       // initialize the free/busy grid - values taken directly from the xml
       // send params: displayId, startRange, endRange, startDate, endDate, startHourRange, endHourRange, attendees, workday, zoom
-      var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",freebusy:["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"],role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100);
+      var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",freebusy:["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"],role:"CHAIR",status:"ACCEPTED",type:"person"}],false,100);
       
       // send in some attendees - these will come from interaction with the form
       bwGrid.addAttendee("Gary Schwartz", "mailto:schwag@rpi.edu", ["20100422T090000Z/PT1H00M"], "REQ-PARTICIPANT", "NEEDS-ACTION");

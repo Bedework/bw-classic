@@ -172,6 +172,11 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   // this is a constant for now, but could be variable.
   // ALWAYS set as a factor of 60
   this.hourDivision = 4;
+  
+  // internal variables
+  var startSelectionMils;  // where a mouse selection begins, milliseconds parsed from the first half of a fbcell's ID
+  var endSelectionMils;    // where a mouse selection ends, milliseconds parsed from the first half of a fbcell's ID
+  var selecting = false;   // are we currently selecting?  If true, we'll highlight as we hover
 
   this.addAttendee = function(name, uid, freebusy, role, status, type) {
     var newAttendee = new bwAttendee(name, uid, freebusy, role, status, type);
@@ -207,7 +212,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       
       // generate the date row - includes top left empty corner 
       var fbDisplayDateRow = fbDisplay.insertRow(fbDisplay.rows.length);
-      $(fbDisplayDateRow).html('<td rowspan="2" colspan="3" class="corner"></td><td class="fbBoundry"></td>');
+      $(fbDisplayDateRow).html('<td rowspan="2" colspan="4" class="corner"></td><td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
         curDate.addDays(i);
@@ -235,7 +240,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       // generate the "All Attendees" row
       fbDisplayTimesRow = fbDisplay.insertRow(fbDisplay.rows.length);
       $(fbDisplayTimesRow).addClass("allAttendees");
-      $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">All Attendees</td><td class="fbBoundry"></td>');
+      $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">All Attendees</td><td class="check"><input type="checkbox" checked="checked" name="selectAllToggle" class="selectAllToggle"/></td><td class="fbBoundry"></td>');
       for (i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
         curDate.setHours(startHour);
@@ -279,8 +284,8 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         // set the status icon and class 
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
-          case bwAttendeeStatusAccepted : 
-            $(fbDisplayAttendeeRow).html('<td class="status accepted"><span class="icon">&#10004;</span><span class="text">' + bwAttendeeDispStatusAccepted + '</span></td>');
+          case bwAttendeeStatusAccepted : // &#10004; - make an image to avoid font issues
+            $(fbDisplayAttendeeRow).html('<td class="status accepted"><span class="icon"><img src="check.gif" alt="accepted" width="15" height="15"/></span><span class="text">' + bwAttendeeDispStatusAccepted + '</span></td>');
             break;
           case bwAttendeeStatusDeclined : 
             $(fbDisplayAttendeeRow).html('<td class="status declined"><span class="icon">x</span><span class="text">' + bwAttendeeDispStatusDeclined + '</span></td>');
@@ -304,11 +309,11 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         // set the role icon
         // the role class is used for rollover descriptions of the icon
         switch (curAttendee.role) {
-          case bwAttendeeRoleChair : // displays writing hand icon
-            $(fbDisplayAttendeeRow).append('<td class="role chair"><span class="icon">&#9997;</span><span class="text">' + bwAttendeeDispRoleChair + '</span></td>');
+          case bwAttendeeRoleChair : // displays writing hand icon - &#9997;
+            $(fbDisplayAttendeeRow).append('<td class="role chair"><span class="icon"><img src="chair.gif" alt="chair" width="17" height="15"/></span><span class="text">' + bwAttendeeDispRoleChair + '</span></td>');
             break;
-          case bwAttendeeRoleRequired : // displays right-pointing arrow icon
-            $(fbDisplayAttendeeRow).append('<td class="role required"><span class="icon">&#10137;</span><span class="text">' + bwAttendeeDispRoleRequired + '</span></td>');
+          case bwAttendeeRoleRequired : // displays right-pointing arrow icon - &#10137;
+            $(fbDisplayAttendeeRow).append('<td class="role required"><span class="icon"><img src="reqArrow.gif" alt="required" width="17" height="12"/></span><span class="text">' + bwAttendeeDispRoleRequired + '</span></td>');
             break;
           case bwAttendeeRoleNonParticipant : // non-participant
             $(fbDisplayAttendeeRow).append('<td class="role nonparticipant"><span class="icon">x</span><span class="text">' + bwAttendeeDispRoleNonParticipant + '</span></td>');
@@ -319,10 +324,14 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         
         // output the attendee name or address (depending on which we have available)
         if (curAttendee.name && curAttendee.name != "") {
-          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.name + '</td><td class="fbBoundry"></td>');
+          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.name + '</td>');
         } else {
-          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1) + '</td><td class="fbBoundry"></td>');
+          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1) + '</td>');
         }
+        
+        // output checkbox for attendee
+        $(fbDisplayAttendeeRow).append('<td class="check"><input type="checkbox" checked="checked" name="selectAllToggle" class="selectAllToggle"/></td><td class="fbBoundry"></td>');
+       
         
         // build the time row for an attendee
         for (i = 0; i < range; i++) {
@@ -359,7 +368,18 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       
       // generate the "add attendee" row
       fbDisplayAddAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
-      $(fbDisplayAddAttendeeRow).html('<td class="status"></td><td class="role"></td><td class="name" id="addAttendee">add attendee...</td><td class="fbBoundry"></td>');
+      
+      // create the add attendee form 
+      var addAttendeeHtml = '<td class="status"></td><td class="role"></td><td class="name">';
+      addAttendeeHtml += '<input type="text" value="add attendee..." name="attendee" id="addAttendee" class="pending" size="14"/>';
+      addAttendeeHtml += '<div id="addAttendeeFields">';
+      addAttendeeHtml += '<select><option>person</option><option>group</option><option>resource</option></select>';
+      addAttendeeHtml += '<input type="checkbox"/>personal <input type="checkbox"/>public';
+      addAttendeeHtml += '</div>';
+      addAttendeeHtml += '</td><td></td><td class="fbBoundry"></td>';
+      
+      $(fbDisplayAddAttendeeRow).html(addAttendeeHtml);
+      
       for (i = 0; i < range; i++) {
         var curDate = new Date(this.startRange);
         curDate.setHours(startHour);
@@ -383,7 +403,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       
       // generate a blank row at the end (this is just for visual padding)
       fbDisplayBlankRow = fbDisplay.insertRow(fbDisplay.rows.length);
-      $(fbDisplayBlankRow).html('<td class="status"></td><td class="role"></td><td class="name"></td><td class="fbBoundry"></td>');
+      $(fbDisplayBlankRow).html('<td class="status"></td><td class="role"></td><td class="name"></td><td></td><td class="fbBoundry"></td>');
       for (i = 0; i < range; i++) {
         var curDate = new Date(this.startRange);
         curDate.setHours(startHour);
@@ -421,15 +441,65 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         }
       );  
       
-      $("#bwScheduleTable .fbcell").click (
+      $("#bwScheduleTable .fbcell").mousedown (
         function () {
-          var curClass = $(this).attr("class");
-          alert(curClass);
-          $("#bwScheduleTable ." + curClass).addClass("highlight");
-          alert($(this).attr("class"));
+          // clear all previous highlighting
+          $("#bwScheduleTable .highlight").removeClass("highlight");
+          
+          // get the id of the current cell - takes the form "1271947500000-attendeestring"
+          // we want the first half, which is the same as the time class associated with the column
+          var splitId = $(this).attr("id").split("-");
+          
+          // set the start of the selection range in milliseconds (first half of the ID)
+          // we will use this to set the start time and to find cells in the same column
+          startSelectionMils = splitId[0];
+          
+          // find the cells (the column) that share the same class
+          $("#bwScheduleTable ." + startSelectionMils).addClass("highlight");
+          
+          // we are now selecting, so highlight as we go
+          selecting = true;          
+        }
+      );
+
+      $("#bwScheduleTable .fbcell").mouseover (
+        function () {
+          if (selecting) {
+            // get the id of the current cell - takes the form "1271947500000-attendeestring"
+            // we want the first half, which is the same as the time class associated with the column
+            var splitId = $(this).attr("id").split("-");
+
+            // find the cells (the column) that contain the first half as a class
+            $("#bwScheduleTable ." + splitId[0]).addClass("highlight");
+          }          
         }
       );
       
+      $("#bwScheduleTable .fbcell").mouseup (
+        function () {
+          // we are no longer selecting
+          selecting = false;
+          
+          // get the id of the current cell - takes the form "1271947500000-attendeestring"
+          // we want the first half, which is the same as the time class associated with the column
+          var splitId = $(this).attr("id").split("-");
+          
+          // set the end of the selection range in milliseconds (first half of the ID)
+          // we will use this to set the end time / duration
+          endSelectionMils = splitId[0];
+          
+        }
+      );
+      
+      $("#bwScheduleTable #addAttendee").click (
+        function () {
+          this.value = "";
+          this.size = 32;
+          $(this).removeClass("pending");
+          $("#addAttendeeFields").show("slow");
+        }
+      );
+
     } catch (e) {
       alert(e);
     }

@@ -70,10 +70,23 @@ s#bwSchedule {
   font-family: Paladino, Times, serif;
 }
 #bwScheduleTable #addAttendee {
+  cursor: pointer;
+  padding: 4px 0;
+}
+#bwScheduleTable #addAttendee.pending {
   color: #bbb;
   background-color: transparent;
-  cursor: pointer;
-  padding: 8px 0 8px 4px;
+  border: none;
+}
+#bwScheduleTable #addAttendeeFields,
+#bwScheduleTable #attType {
+  display: none;
+  font-size: 0.8em;
+}
+#bwScheduleTable input.selectAllToggle {
+}
+#bwScheduleTable td.fbcell {
+  cursor: crosshair;
 }
 #bwScheduleTable td.busy {
   background-color: #b1cbfa !important;
@@ -84,7 +97,7 @@ s#bwSchedule {
   color: black;
 }
 #bwScheduleTable td.highlight {
-  background-color: #faa !important;
+  background-color: #ffa !important;
   color: black;
 }
 #bwScheduleTable td.fbBoundry {
