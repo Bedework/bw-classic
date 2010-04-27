@@ -31,10 +31,11 @@ s#bwSchedule {
   text-align: right;
   padding-right: 16px;
 }
-#bwScheduleTable .icon {
-  cursor: default; 
+#bwScheduleTable .icon,
+#bwScheduleTable .activeCell {
+  cursor: default !important; 
 }
-#bwScheduleTable .text {
+#bwScheduleTable .tip {
   /* this is the default rollover for most icons */
   position: absolute;
   margin: -8px 0 0 0;
@@ -78,6 +79,16 @@ s#bwSchedule {
   background-color: transparent;
   border: none;
 }
+#bwScheduleTable #addAttendee.active {
+  color: black;
+  background-color: transparent;
+  border: none;
+}
+#bwScheduleTable .addAttendeeAdvanced {
+  color: #bbb;
+  background-color: transparent;
+  font-size: 0.8em;
+}
 #bwScheduleTable #addAttendeeFields,
 #bwScheduleTable #attType {
   display: none;
@@ -86,18 +97,18 @@ s#bwSchedule {
 #bwScheduleTable input.selectAllToggle {
 }
 #bwScheduleTable td.fbcell {
-  cursor: crosshair;
+  /*cursor: crosshair;*/
 }
 #bwScheduleTable td.busy {
   background-color: #b1cbfa !important;
   color: black;
 }
 #bwScheduleTable td.tentative {
-  background: url("tentativeLines.gif");
+  background: #eef url("tentativeLines.gif") !important;
   color: black;
 }
 #bwScheduleTable td.highlight {
-  background-color: #ffa !important;
+  background-color: #ffa;
   color: black;
 }
 #bwScheduleTable td.fbBoundry {

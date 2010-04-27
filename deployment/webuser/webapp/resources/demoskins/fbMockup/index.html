@@ -17,11 +17,11 @@
     
       // initialize the free/busy grid - values taken directly from the xml
       // send params: displayId, startRange, endRange, startDate, endDate, startHourRange, endHourRange, attendees, workday, zoom
-      var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",freebusy:["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"],role:"CHAIR",status:"ACCEPTED",type:"person"}],false,100);
+      var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",freebusy:["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"],role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100);
       
       // send in some attendees - these will come from interaction with the form
       bwGrid.addAttendee("Gary Schwartz", "mailto:schwag@rpi.edu", ["20100422T090000Z/PT1H00M"], "REQ-PARTICIPANT", "NEEDS-ACTION");
-      bwGrid.addAttendee("", "mailto:douglm@rpi.edu", ["20100421T120000Z/20100421T130000Z","20100422T050000Z/20100422T060000Z"], "OPT-PARTICIPANT", "DECLINED");
+      bwGrid.addAttendee("", "mailto:douglm@rpi.edu", ["FBTYPE=BUSY-TENTATIVE:20100421T120000Z/20100421T130000Z","20100422T050000Z/20100422T060000Z"], "OPT-PARTICIPANT", "DECLINED");
 
       // set datepicker defaults
       $.datepicker.setDefaults({
@@ -62,10 +62,10 @@
         <tr>
         
           <td>
-            <button>&laquo; Pick Previous</button>
+            <button id="bwPickPrevious" onclick="bwGrid.pickPrevious();">&laquo; Pick Previous</button>
           </td>
           <td>
-            <button>Pick Next &raquo;</button>
+            <button id="bwPickNext" onclick="bwGrid.pickNext();">Pick Next &raquo;</button>
           </td>
           <td class="dateLabel">
             Start:
@@ -169,6 +169,7 @@
           </td>
         </tr>  
       </table>
+      <button onclick="bwGrid.display();">redraw</button>
     </div>
   </body>
 </html>

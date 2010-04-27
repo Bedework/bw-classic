@@ -58,6 +58,10 @@ var bwAttendeeDispTypePerson = "person";
 var bwAttendeeDispTypeLocation = "location";
 var bwAttendeeDispTypeResource = "resource";
 
+var bwFreeBusyDispTypeBusy = "BUSY";
+var bwFreeBusyDispTypeTentative = "TENTATIVE";
+var bwAddAttendeeDisp = "add attendee...";
+
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
  * uid:             String - attendee's uid with mailto included, e.g. "mailto:vbede@example.com"
@@ -84,12 +88,27 @@ var bwAttendee = function(name, uid, freebusyStrings, role, status, type) {
     this.type == bwAttendeeTypePerson;
   }
 }
-/* Freebusy data
+/* A Freebusy object
  * Provides methods to work on freebusy values
- * fbvals: Array of rfc5545 freebusy values 
+ * fbString: an rfc5545 freebusy string, including FBTYPE parameter if present 
  */
 var bwFreeBusy = function(fbString) {
   this.name = fbString;  
+  this.params = "";    // if there are parameters, we will split them from the name and put them here
+  this.type = bwFreeBusyDispTypeBusy; // default rfc5545 FBTYPE, "BUSY"
+  this.start = "";    // will hold the UTC start value in milliseconds 
+  this.end = "";      // will hold the UTC end value in milliseconds
+  
+  if (this.name.match(":")) {
+    // parameters are included with the freebusy string
+    // e.g. FBTYPE=BUSY:19980415T133000Z/19980415T170000Z 
+    this.name = fbString.substr(fbString.indexOf(":")+1);
+    this.params = fbString.substring(0,fbString.indexOf(":"));
+  }
+  
+  if (this.params.match("FBTYPE=BUSY-TENTATIVE")) {
+    this.type = bwFreeBusyDispTypeTentative;
+  }
   
   // set the freebusy start date
   var startDate = new Date();
@@ -120,18 +139,12 @@ var bwFreeBusy = function(fbString) {
   
   // set the end in milliseconds
   this.end = endMs;
-
-  
-  // example of how to generate a date from the millisecond UTC value  
-  // var testDate = new Date(this.fbHash[fbVals[0]].start); //fbVals[0] = a freebusy string
-  // alert(testDate.toLocaleString());
     
-  /* returns true if date is contained in this freebusy value
+  /* returns true if a date is contained in this freebusy value
    * mils: date/time in milliseconds
    */  
   this.contains = function(mils) {
     if (mils >= this.start && mils < this.end) {
-      // should return type of freebusy if available
       return true;
     }
     return false;
@@ -174,9 +187,12 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.hourDivision = 4;
   
   // internal variables
-  var startSelectionMils;  // where a mouse selection begins, milliseconds parsed from the first half of a fbcell's ID
-  var endSelectionMils;    // where a mouse selection ends, milliseconds parsed from the first half of a fbcell's ID
-  var selecting = false;   // are we currently selecting?  If true, we'll highlight as we hover
+  var startMils = Number(this.startRange.getTime()) + Number(this.startHoursRange * 3600000); // the start of the grid
+  var durationMils = 3600000; // value used to calculate default endSelectionMils, defaults to 1 hour in milliseconds 
+  var incrementMils = 3600000 / this.hourDivision; // increment for the pick next/previous buttons
+  var startSelectionMils = startMils;  // where a mouse selection begins, milliseconds parsed from the first half of a fbcell's ID, default to beginning of grid
+  var endSelectionMils;       // where a mouse selection ends, milliseconds parsed from the first half of a fbcell's ID
+  var selecting = false;      // are we currently selecting?  If true, we'll highlight as we hover
 
   this.addAttendee = function(name, uid, freebusy, role, status, type) {
     var newAttendee = new bwAttendee(name, uid, freebusy, role, status, type);
@@ -188,6 +204,47 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.deleteAttendee = function(index) {
     this.attendees.splice(index, 1);
     this.diplay();
+  }
+  
+  this.pickNext = function(gridObj) {
+    // clear highlighting
+    $("#bwScheduleTable .fbcell").removeClass("highlight");
+    
+    // increment the start time
+    startSelectionMils = Number(startSelectionMils) + Number(incrementMils);
+    // set the end time based on duration
+    endSelectionMils = Number(startSelectionMils) + Number(durationMils);
+    
+    // highlight the cells if no collision, otherwise try the next spot
+    $("#bwScheduleTable .fbcell").each(function(index) {
+      var splId = $(this).attr("id").split("-");
+      if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
+        if ($(this).hasClass("busy")) {
+           alert("hit a busytime!");
+           //this.pickNext();
+        } else {
+          $(this).addClass("highlight");
+        }
+      }
+    });
+  } 
+  
+  this.pickPrevious = function(gridObj) {
+    // clear highlighting
+    $("#bwScheduleTable .fbcell").removeClass("highlight");
+    
+    // decrement the start time
+    startSelectionMils = Number(startSelectionMils) - Number(incrementMils);
+    // set the end time based on duration
+    endSelectionMils = Number(startSelectionMils) + Number(durationMils);
+    
+    // highlight the cells if no collision, otherwise try the next spot
+    $("#bwScheduleTable .fbcell").each(function(index) {
+      var splId = $(this).attr("id").split("-");
+      if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
+        $(this).addClass("highlight");
+      }
+    });
   }
   
   this.display = function() {
@@ -285,49 +342,54 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
           case bwAttendeeStatusAccepted : // &#10004; - make an image to avoid font issues
-            $(fbDisplayAttendeeRow).html('<td class="status accepted"><span class="icon"><img src="check.gif" alt="accepted" width="15" height="15"/></span><span class="text">' + bwAttendeeDispStatusAccepted + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status accepted"><span class="icon"><img src="check.gif" alt="accepted" width="15" height="15"/></span><span class="tip">' + bwAttendeeDispStatusAccepted + '</span></td>');
             break;
           case bwAttendeeStatusDeclined : 
-            $(fbDisplayAttendeeRow).html('<td class="status declined"><span class="icon">x</span><span class="text">' + bwAttendeeDispStatusDeclined + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status declined"><span class="icon">x</span><span class="tip">' + bwAttendeeDispStatusDeclined + '</span></td>');
             break;
           case bwAttendeeStatusTentative : 
-            $(fbDisplayAttendeeRow).html('<td class="status tentative"><span class="icon">-</span><span class="text">' + bwAttendeeDispStatusTentative + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status tentative"><span class="icon">-</span><span class="tip">' + bwAttendeeDispStatusTentative + '</span></td>');
             break;
           case bwAttendeeStatusDelegated : 
-            $(fbDisplayAttendeeRow).html('<td class="status delegated"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusDelegated + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status delegated"><span class="icon"></span><span class="tip">' + bwAttendeeDispStatusDelegated + '</span></td>');
             break;
           case bwAttendeeStatusCompleted : 
-            $(fbDisplayAttendeeRow).html('<td class="status completed"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusCompleted + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status completed"><span class="icon"></span><span class="tip">' + bwAttendeeDispStatusCompleted + '</span></td>');
             break;
           case bwAttendeeStatusInProcess : 
-            $(fbDisplayAttendeeRow).html('<td class="status inprocess"><span class="icon"></span><span class="text">' + bwAttendeeDispStatusInProcess + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status inprocess"><span class="icon"></span><span class="tip">' + bwAttendeeDispStatusInProcess + '</span></td>');
             break;
           default : // default to bwAttendeeStatusNeedsAction - display question mark
-            $(fbDisplayAttendeeRow).html('<td class="status needsaction"><span class="icon">?</span><span class="text">' + bwAttendeeDispStatusNeedsAction + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status needsaction"><span class="icon">?</span><span class="tip">' + bwAttendeeDispStatusNeedsAction + '</span></td>');
         }
 
         // set the role icon
         // the role class is used for rollover descriptions of the icon
         switch (curAttendee.role) {
           case bwAttendeeRoleChair : // displays writing hand icon - &#9997;
-            $(fbDisplayAttendeeRow).append('<td class="role chair"><span class="icon"><img src="chair.gif" alt="chair" width="17" height="15"/></span><span class="text">' + bwAttendeeDispRoleChair + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role chair"><span class="icon"><img src="chair.gif" alt="chair" width="17" height="15"/></span><span class="tip">' + bwAttendeeDispRoleChair + '</span></td>');
             break;
           case bwAttendeeRoleRequired : // displays right-pointing arrow icon - &#10137;
-            $(fbDisplayAttendeeRow).append('<td class="role required"><span class="icon"><img src="reqArrow.gif" alt="required" width="17" height="12"/></span><span class="text">' + bwAttendeeDispRoleRequired + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role required"><span class="icon"><img src="reqArrow.gif" alt="required" width="17" height="12"/></span><span class="tip">' + bwAttendeeDispRoleRequired + '</span></td>');
             break;
           case bwAttendeeRoleNonParticipant : // non-participant
-            $(fbDisplayAttendeeRow).append('<td class="role nonparticipant"><span class="icon">x</span><span class="text">' + bwAttendeeDispRoleNonParticipant + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role nonparticipant"><span class="icon">x</span><span class="tip">' + bwAttendeeDispRoleNonParticipant + '</span></td>');
             break;
           default : // bwAttendeeRoleOptional - no icon (use a space to provide a rollover)
-            $(fbDisplayAttendeeRow).append('<td class="role optional"><span class="icon">&#160;</span><span class="text">' + bwAttendeeDispRoleOptional + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role optional"><span class="icon">&#160;</span><span class="tip">' + bwAttendeeDispRoleOptional + '</span></td>');
         }
         
+        
         // output the attendee name or address (depending on which we have available)
+        // and add attendee functions
+        var attendeeNameHtml = '<td class="name">';
         if (curAttendee.name && curAttendee.name != "") {
-          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.name + '</td>');
+          attendeeNameHtml +=  curAttendee.name;
         } else {
-          $(fbDisplayAttendeeRow).append('<td class="name">' + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1) + '</td>');
+          attendeeNameHtml +=  curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":")+1);
         }
+        attendeeNameHtml += '</td>';
+        $(fbDisplayAttendeeRow).append(attendeeNameHtml);
         
         // output checkbox for attendee
         $(fbDisplayAttendeeRow).append('<td class="check"><input type="checkbox" checked="checked" name="selectAllToggle" class="selectAllToggle"/></td><td class="fbBoundry"></td>');
@@ -354,7 +416,13 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
                 // in which the class was always offset by one table cell - should find cause
                 var curDateUTC = curDate.getTime() + tzoffset + (60 / this.hourDivision * 60000);                
                 if (curAttendee.freebusy[m].contains(curDateUTC)) {
-                  $(fbCell).addClass("busy");
+                  if (curAttendee.freebusy[m].type.match("TENTATIVE")) {
+                    $(fbCell).addClass("tentative");
+                  } else {
+                    $(fbCell).addClass("busy");                    
+                  }
+                  $(fbCell).addClass("activeCell");
+                  $(fbCell).append('<span class="tip">' + curAttendee.freebusy[m].type + '</span>');
                   break;
                 }
               }
@@ -370,13 +438,14 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       fbDisplayAddAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
       
       // create the add attendee form 
-      var addAttendeeHtml = '<td class="status"></td><td class="role"></td><td class="name">';
-      addAttendeeHtml += '<input type="text" value="add attendee..." name="attendee" id="addAttendee" class="pending" size="14"/>';
-      addAttendeeHtml += '<div id="addAttendeeFields">';
-      addAttendeeHtml += '<select><option>person</option><option>group</option><option>resource</option></select>';
-      addAttendeeHtml += '<input type="checkbox"/>personal <input type="checkbox"/>public';
-      addAttendeeHtml += '</div>';
-      addAttendeeHtml += '</td><td></td><td class="fbBoundry"></td>';
+      var addAttendeeHtml = '<td class="status"></td><td class="role"></td><td class="addAttendee" colspan="2">';
+      addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="attendee" id="addAttendee" class="pending" size="14"/>';
+      addAttendeeHtml += '<span class="addAttendeeAdvanced">advanced</span>';
+      //addAttendeeHtml += '<div id="addAttendeeFields">';
+      //addAttendeeHtml += '<select><option>person</option><option>group</option><option>resource</option></select>';
+      //addAttendeeHtml += '<input type="checkbox"/>personal <input type="checkbox"/>public';
+      //addAttendeeHtml += '</div>';
+      addAttendeeHtml += '</td><td class="fbBoundry"></td>';
       
       $(fbDisplayAddAttendeeRow).html(addAttendeeHtml);
       
@@ -434,13 +503,48 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       // to the elements of the freebusy grid
       $("#bwScheduleTable .icon").hover(
         function () {
-          $(this).next(".text").fadeIn(100);
+          $(this).next(".tip").fadeIn(100);
         }, 
         function () {
-          $(this).next(".text").fadeOut(100);
+          $(this).next(".tip").fadeOut(100);
         }
       );  
       
+      $("#bwScheduleTable .activeCell").hover(
+        function () {
+          $(this).children(".tip").fadeIn(20);
+        }, 
+        function () {
+          $(this).children(".tip").fadeOut(20);
+        }
+      );
+      
+      $("#bwScheduleTable .fbcell").click (
+        function () {
+          // clear all previous highlighting
+          $("#bwScheduleTable .highlight").removeClass("highlight");
+          
+          // get the id of the current cell - takes the form "1271947500000-attendeestring"
+          // we want the first half, which is the same as the time class associated with the column
+          var splitId = $(this).attr("id").split("-");
+          
+          // set the start of the selection range in milliseconds (first half of the ID)
+          // we will use this to set the start time and to find cells in the same column
+          startSelectionMils = splitId[0];
+          endSelectionMils = Number(startSelectionMils) + Number(durationMils);
+          
+          // now do the highlighting
+          $("#bwScheduleTable .fbcell").each(function(index) {
+            var splId = $(this).attr("id").split("-");
+            if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
+              $(this).addClass("highlight");
+            }
+          });
+  
+        }
+      );
+      
+      /*
       $("#bwScheduleTable .fbcell").mousedown (
         function () {
           // clear all previous highlighting
@@ -490,15 +594,18 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
           
         }
       );
+      */
       
       $("#bwScheduleTable #addAttendee").click (
         function () {
-          this.value = "";
-          this.size = 32;
+          if (this.value == bwAddAttendeeDisp) {
+            this.value = "";
+          }
+          $(this).addClass("active");
           $(this).removeClass("pending");
-          $("#addAttendeeFields").show("slow");
         }
       );
+      
 
     } catch (e) {
       alert(e);
