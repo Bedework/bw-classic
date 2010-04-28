@@ -175,6 +175,14 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.workday = workday;
   this.attendees = new Array();  // array of bwAttendee objects
   
+  // 2D array of time and busy state for all attendees
+  // [millisecond value,true/false if busy]
+  // this value is initialized when we draw the allAttendees row
+  this.fb = new Array();  
+  // a lookup table of free times based on the duration of the meeting, calculated from the fb array
+  this.freeTime = new Array();
+  this.freeTimeIndex = 0;
+  
   // initialize any incoming attendees on first load
   for (i = 0; i < attendees.length; i++) {
     var newAttendee = new bwAttendee(attendees[i].name,attendees[i].uid ,attendees[i].freebusy,attendees[i].role,attendees[i].status,attendees[i].type);
@@ -206,26 +214,19 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     this.diplay();
   }
   
-  this.pickNext = function(gridObj) {
+  this.pickNext = function() {
     // clear highlighting
     $("#bwScheduleTable .fbcell").removeClass("highlight");
     
-    // increment the start time
-    startSelectionMils = Number(startSelectionMils) + Number(incrementMils);
-    // set the end time based on duration
-    endSelectionMils = Number(startSelectionMils) + Number(durationMils);
-    
-    // highlight the cells if no collision, otherwise try the next spot
-    $("#bwScheduleTable .fbcell").each(function(index) {
-      var splId = $(this).attr("id").split("-");
-      if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
-        if ($(this).hasClass("busy")) {
-           alert("hit a busytime!");
-           //this.pickNext();
-        } else {
-          $(this).addClass("highlight");
-        }
-      }
+    // go to the next freeTime if available and highlight it
+    if (this.freeTimeIndex < this.freeTime.length - 1) {
+      this.freeTimeIndex += 1;
+    }
+    var curSelectionTime = Number(this.freeTime[this.freeTimeIndex]);
+    $("#bwScheduleTable ." + curSelectionTime).each(function(index) {
+      //if (curSelectionTime >= startSelectionMils && curSelectionTime < endSelectionMils) {
+        $(this).addClass("highlight");
+      //}
     });
   } 
   
@@ -233,18 +234,38 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     // clear highlighting
     $("#bwScheduleTable .fbcell").removeClass("highlight");
     
-    // decrement the start time
-    startSelectionMils = Number(startSelectionMils) - Number(incrementMils);
-    // set the end time based on duration
-    endSelectionMils = Number(startSelectionMils) + Number(durationMils);
-    
-    // highlight the cells if no collision, otherwise try the next spot
-    $("#bwScheduleTable .fbcell").each(function(index) {
-      var splId = $(this).attr("id").split("-");
-      if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
+    // go to the previous freeTime if available and highlight it
+    if (this.freeTimeIndex > 0) {
+      this.freeTimeIndex -= 1;
+    }
+    var curSelectionTime = Number(this.freeTime[this.freeTimeIndex]);
+    $("#bwScheduleTable ." + curSelectionTime).each(function(index) {
+      //if (curSelectionTime >= startSelectionMils && curSelectionTime < endSelectionMils) {
         $(this).addClass("highlight");
-      }
+      //}
     });
+  }
+  
+  // create the lookup values for a free window for use with picknext/previous
+  this.setFreeTime = function() {
+    // this assumes we have a properly populated fb array
+    
+    // empty the array
+    this.freeTime.length = 0;
+    
+    // now look over the next group of cells to see if the range
+    // we want to select is busy.  If not, store the value for lookup.
+    for (i=0; i < this.fb.length - this.hourDivision; i++) {
+      var rangeNotBusy = true;
+      for (j = i; j < i + this.hourDivision; j++) {
+        if (this.fb[j][1]) { // we hit a busy cell
+          rangeNotBusy = false; 
+        }         
+      }
+      if (rangeNotBusy) {
+        this.freeTime.push(this.fb[i][0]);  
+      }
+    }
   }
   
   this.display = function() {
@@ -294,7 +315,10 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
       }
       
-      // generate the "All Attendees" row
+      // empty out the fb array so we can refill it
+      this.fb.length = 0;
+
+      // generate the "All Attendees" row, and populate the (now empty) fb array
       fbDisplayTimesRow = fbDisplay.insertRow(fbDisplay.rows.length);
       $(fbDisplayTimesRow).addClass("allAttendees");
       $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">All Attendees</td><td class="check"><input type="checkbox" checked="checked" name="selectAllToggle" class="selectAllToggle"/></td><td class="fbBoundry"></td>');
@@ -306,12 +330,15 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         for (j = 0; j < hourRange; j++) {
           for (k = 0; k < this.hourDivision; k++) {
             var fbCell = document.createElement("td");
-            fbCell.id = curDate.getTime() + "-AllAttendees";
+            var timeClass = curDate.getTime().toString();
+            fbCell.id = timeClass + "-AllAttendees";
             $(fbCell).addClass("fbcell");
-              $(fbCell).addClass(curDate.getTime().toString());
+            $(fbCell).addClass(timeClass);
             if (curDate.getMinutes() == 0 && j != 0) {
               $(fbCell).addClass("hourBoundry");
             } 
+            // create a hash of the freebusy time/busy state, default to false
+            this.fb.push([timeClass,false]);     
             // set busy if any freebusy in this timeperiod
             loop1: // since we only need to know if anyone is busy, provide a simple means of breaking from the inner loop
             for (att = 0; att < this.attendees.length; att++) {
@@ -322,9 +349,12 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
                 var curDateUTC = curDate.getTime() + tzoffset + (60 / this.hourDivision * 60000);
                 if (this.attendees[att].freebusy[m].contains(curDateUTC)) {
                   $(fbCell).addClass("busy");
+                  // change the last added fb in the hash to true
+                  this.fb[this.fb.length - 1][1] = true;             
                   break loop1;
                 }
               }
+                          
             }
             $(fbDisplayTimesRow).append(fbCell);
             curDate.addMinutes(60/this.hourDivision);
@@ -494,6 +524,8 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         $(fbDisplayBlankRow).append('<td class="dayBoundry"></td>');
       }
       
+      // populate the freeTime lookup array from the newly created fb array
+      this.setFreeTime();
       
       // write the table back to the display
       $("#" + displayId).html(fbDisplay);
@@ -540,6 +572,15 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
               $(this).addClass("highlight");
             }
           });
+          
+          // set the freeTimeIndex to the nearest index for the pickNext/previous buttons
+          for (i = 0; i < this.freeTime.length; i++) {
+            if (Number(this.freeTime[i]) >= Number(startSelectionMils)) {
+              alert(i);
+              this.freeTimeIndex = i;
+              break;
+            }
+          }
   
         }
       );
@@ -611,6 +652,12 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       alert(e);
     }
     
+    /*var myString = "";
+    for(i=0; i < this.fb.length; i++) {
+      myString += this.fb[i][0]+ " " + this.fb[i][1] +"\n";
+    }
+    alert("Fb values:\n" + myString);
+    */
   }
 }
 
