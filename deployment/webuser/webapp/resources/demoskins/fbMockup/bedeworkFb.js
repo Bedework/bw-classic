@@ -195,12 +195,15 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.hourDivision = 4;
   
   // internal variables
-  var startMils = Number(this.startRange.getTime()) + Number(this.startHoursRange * 3600000); // the start of the grid
-  var durationMils = 3600000; // value used to calculate default endSelectionMils, defaults to 1 hour in milliseconds 
-  var incrementMils = 3600000 / this.hourDivision; // increment for the pick next/previous buttons
+  var hourMils = 3600000;
+  var startMils = Number(this.startRange.getTime()) + Number(this.startHoursRange * hourMils); // the start of the grid
+  var durationMils = hourMils; // value used to calculate default endSelectionMils, defaults to 1 hour in milliseconds 
+  var incrementMils = hourMils / this.hourDivision; // increment for the pick next/previous buttons
   var startSelectionMils = startMils;  // where a mouse selection begins, milliseconds parsed from the first half of a fbcell's ID, default to beginning of grid
   var endSelectionMils;       // where a mouse selection ends, milliseconds parsed from the first half of a fbcell's ID
   var selecting = false;      // are we currently selecting?  If true, we'll highlight as we hover
+  var cellsInDuration = durationMils / incrementMils; // calculate the number of cells in the duration for use in setting freeTime lookup
+  
 
   this.addAttendee = function(name, uid, freebusy, role, status, type) {
     var newAttendee = new bwAttendee(name, uid, freebusy, role, status, type);
@@ -222,11 +225,18 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     if (this.freeTimeIndex < this.freeTime.length - 1) {
       this.freeTimeIndex += 1;
     }
+
+    // set the start of the selection range using the freeTimeIndex
     var curSelectionTime = Number(this.freeTime[this.freeTimeIndex]);
-    $("#bwScheduleTable ." + curSelectionTime).each(function(index) {
-      //if (curSelectionTime >= startSelectionMils && curSelectionTime < endSelectionMils) {
+    // set the end time by adding the duration
+    endSelectionMils = Number(curSelectionTime) + Number(durationMils);
+    
+    // now do the highlighting
+    $("#bwScheduleTable .fbcell").each(function(index) {
+      var splId = $(this).attr("id").split("-");
+      if (splId[0] >= curSelectionTime && splId[0] < endSelectionMils) {
         $(this).addClass("highlight");
-      //}
+      }
     });
   } 
   
@@ -238,11 +248,17 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     if (this.freeTimeIndex > 0) {
       this.freeTimeIndex -= 1;
     }
+    // set the start of the selection range using the freeTimeIndex
     var curSelectionTime = Number(this.freeTime[this.freeTimeIndex]);
-    $("#bwScheduleTable ." + curSelectionTime).each(function(index) {
-      //if (curSelectionTime >= startSelectionMils && curSelectionTime < endSelectionMils) {
+    // set the end time by adding the duration
+    endSelectionMils = Number(curSelectionTime) + Number(durationMils);
+    
+    // now do the highlighting
+    $("#bwScheduleTable .fbcell").each(function(index) {
+      var splId = $(this).attr("id").split("-");
+      if (splId[0] >= curSelectionTime && splId[0] < endSelectionMils) {
         $(this).addClass("highlight");
-      //}
+      }
     });
   }
   
@@ -255,9 +271,9 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     
     // now look over the next group of cells to see if the range
     // we want to select is busy.  If not, store the value for lookup.
-    for (i=0; i < this.fb.length - this.hourDivision; i++) {
+    for (i=0; i <= this.fb.length - cellsInDuration; i++) {
       var rangeNotBusy = true;
-      for (j = i; j < i + this.hourDivision; j++) {
+      for (j = i; j < i + cellsInDuration; j++) {
         if (this.fb[j][1]) { // we hit a busy cell
           rangeNotBusy = false; 
         }         
@@ -574,10 +590,9 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
           });
           
           // set the freeTimeIndex to the nearest index for the pickNext/previous buttons
-          for (i = 0; i < this.freeTime.length; i++) {
-            if (Number(this.freeTime[i]) >= Number(startSelectionMils)) {
-              alert(i);
-              this.freeTimeIndex = i;
+          for (i = 0; i < bwGrid.freeTime.length; i++) {
+            if (Number(bwGrid.freeTime[i]) >= Number(startSelectionMils)) {
+              bwGrid.freeTimeIndex = i;
               break;
             }
           }
