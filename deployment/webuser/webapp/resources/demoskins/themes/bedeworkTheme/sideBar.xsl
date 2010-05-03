@@ -1,0 +1,132 @@
+<!-- 
+    Licensed to Jasig under one or more contributor license
+    agreements. See the NOTICE file distributed with this work
+    for additional information regarding copyright ownership.
+    Jasig licenses this file to you under the Apache License,
+    Version 2.0 (the "License"); you may not use this file
+    except in compliance with the License. You may obtain a
+    copy of the License at:
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<xsl:stylesheet
+  version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns="http://www.w3.org/1999/xhtml">
+  
+  <xsl:template name="sideBar">
+    <h3>
+      <!--<img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>-->
+      <xsl:copy-of select="$bwStr-SdBr-Views"/>
+    </h3>
+    <ul id="myViews">
+      <xsl:choose>
+        <xsl:when test="/bedework/views/view">
+          <xsl:for-each select="/bedework/views/view">
+            <xsl:variable name="viewName" select="name"/>
+            <xsl:choose>
+              <xsl:when test="/bedework/selectionState/selectionType = 'view'
+                              and name=/bedework/selectionState/view/name">
+                <li class="selected"><a href="{$setSelection}&amp;viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+              </xsl:when>
+              <xsl:otherwise>
+                <li><a href="{$setSelection}&amp;viewName={$viewName}"><xsl:value-of select="name"/></a></li>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise>
+          <li class="none"><xsl:copy-of select="$bwStr-SdBr-NoViews"/></li>
+        </xsl:otherwise>
+      </xsl:choose>
+    </ul>
+
+    <h3>
+      <!--a href="{$subscriptions-showSubsMenu}" title="{$bwStr-SdBr-SubscribeToCalendarsOrICalFeeds}">
+        <xsl:copy-of select="$bwStr-SdBr-Subscribe"/>
+      </a-->
+      <a href="{$calendar-fetch}" title="{$bwStr-SdBr-ManageCalendarsAndSubscriptions}" class="calManageLink">
+        <xsl:copy-of select="$bwStr-SdBr-Manage"/>
+      </a>
+      <xsl:copy-of select="$bwStr-SdBr-Calendars"/>
+    </h3>
+    <!-- normal calendars -->
+    <ul class="calendarTree">
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3]" mode="myCalendars"/>
+    </ul>
+    <!-- special calendars: inbox, outbox, and trash -->
+    <ul class="calendarTree">
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 5]" mode="mySpecialCalendars"/> <!-- inbox -->
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 6]" mode="mySpecialCalendars"/> <!-- outbox -->
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 2]" mode="mySpecialCalendars"/> <!-- trash -->
+      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 3]" mode="mySpecialCalendars"/> <!-- deleted -->
+    </ul>
+
+    <!--
+    <h3>
+      <a href="{$subscriptions-fetch}" title="manage subscriptions">
+        manage
+      </a>
+      subscriptions
+    </h3>
+    <ul class="calendarTree">
+      <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+      <xsl:choose>
+        <xsl:when test="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]">
+          <xsl:apply-templates select="/bedework/mySubscriptions/subscription[not(contains(uri,$userPath))]" mode="mySubscriptions"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <li class="none">no subscriptions</li>
+        </xsl:otherwise>
+      </xsl:choose>
+    </ul>-->
+
+    <h3><xsl:copy-of select="$bwStr-SdBr-Options"/></h3>
+    <ul id="sideBarMenu">
+      <li class="prefs">
+        <a href="{$prefs-fetchForUpdate}">
+          <img height="13" border="0" width="13"
+            src="{$resourcesRoot}/resources/prefsIcon.gif"
+            alt="upload event" />
+          <xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-SdBr-Preferences"/>
+        </a>
+      </li>
+      <li>
+      <a href="{$initUpload}" title="{$bwStr-SdBr-UploadEvent}">
+        <img height="16" border="0" width="12"
+          src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
+          alt="upload ical" />
+        <xsl:text> </xsl:text>
+        <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
+      </a>
+    </li>
+    <li>
+      <a href="{$calendar-listForExport}" title="{$bwStr-SdBr-ExportCalendars}">
+          <img height="16" border="0" width="12"
+            src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
+            alt="upload ical" />
+          <xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
+        </a>
+      </li>
+      <li>
+        <a href="{$calendar-listForExport}" title="upload event">
+          <img height="16" border="0" width="12"
+            src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif"
+            alt="upload event" />
+          <xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-SdBr-ExportCalendars"/>
+        </a>
+      </li>
+    </ul>
+  </xsl:template>
+  
+</xsl:stylesheet>
