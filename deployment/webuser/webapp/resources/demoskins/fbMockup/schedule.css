@@ -31,6 +31,11 @@ s#bwSchedule {
   text-align: right;
   padding-right: 16px;
 }
+#bwScheduleTable tr.deselected {
+  background-color: #f8f8f8;
+  color: #aaa;
+}
+
 #bwScheduleTable .icon,
 #bwScheduleTable .activeCell {
   cursor: default !important; 
@@ -100,11 +105,15 @@ s#bwSchedule {
   /*cursor: crosshair;*/
 }
 #bwScheduleTable td.busy {
-  background-color: #b1cbfa !important;
+  background-color: #b1cbfa;
   color: black;
 }
+#bwScheduleTable tr.deselected td.busy {
+  background-color: #D8E4FA;
+  color: black;
+} 
 #bwScheduleTable td.tentative {
-  background: #eef url("tentativeLines.gif") !important;
+  background: #eef url("tentativeLines.gif");
   color: black;
 }
 #bwScheduleTable td.highlight {
@@ -130,6 +139,21 @@ s#bwSchedule {
 #bwScheduleTable tr.allAttendees td.busy {
   background-color: #93A9CF !important;
   color: black;
+}
+#bwScheduleTable .removeAttendee {
+  cursor: pointer; 
+  font-weight: bold;
+  color: #999;
+  background-color: transparent;
+} 
+#bwScheduleTable .attendeeMenu {
+  position: absolute; 
+  margin: 0 0 0 1em;
+  background-color: #ffe;
+  color: black;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  display: none;
 }
 #bwScheduleControls {
   margin: 1.5em 1em;
