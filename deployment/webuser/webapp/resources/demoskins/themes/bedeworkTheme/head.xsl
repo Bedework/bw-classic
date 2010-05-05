@@ -26,9 +26,9 @@
     <title><xsl:copy-of select="$bwStr-Head-PageTitle"/></title>
     <meta name="robots" content="noindex,nofollow"/>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
-    <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/default/default/print.css" />
-    <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
+    <link rel="stylesheet" href="{$resourcesRoot}/css/bedeworkTheme.css"/>
+    <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
+    <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
 
     <!-- set globals that must be passed in from the XSLT -->
     <script type="text/javascript">
@@ -47,13 +47,13 @@
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
     <!-- load bedework personal client javascript libraries -->
-    <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-    <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkSetup.js">&#160;</script>
+    <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
+    <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkSetup.js">&#160;</script>
 
     <xsl:if test="/bedework/page='modSchedulingPrefs' or
                   /bedework/page='modPrefs' or
                   /bedework/page='attendeeRespond'">
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkPrefs.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkPrefs.js">&#160;</script>
     </xsl:if>
 
     <xsl:if test="/bedework/page='modCalendar' or
@@ -72,7 +72,7 @@
       <!-- script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script -->
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js">&#160;</script>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkAttendees.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkAttendees.js">&#160;</script>
       <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
     </xsl:if>
 
@@ -83,8 +83,8 @@
 
       <xsl:choose>
         <xsl:when test="$portalFriendly = 'true'">
-          <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
-          <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
+          <script type="text/javascript" src="{$resourcesRoot}/javascript/dynCalendarWidget.js">&#160;</script>
+          <link rel="stylesheet" href="{$resourcesRoot}/css/dynCalendarWidget.css"/>
         </xsl:when>
         <xsl:otherwise>
           <script type="text/javascript">
@@ -138,9 +138,9 @@
           </script>
         </xsl:otherwise>
       </xsl:choose>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
-      <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bwClock.js">&#160;</script>
+      <link rel="stylesheet" href="{$resourcesRoot}/css/bwClock.css"/>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkEventForm.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
@@ -176,11 +176,11 @@
     <!-- page based jquery initializations -->
     <xsl:if test="/bedework/page='event'">
       <!-- jQuery functions for detailed event view -->
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEvent.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkEvent.js">&#160;</script>
     </xsl:if>
     <xsl:if test="/bedework/page='eventscalendar'">
       <!-- jQuery functions for detailed event view -->
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkCalendarGrid.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkCalendarGrid.js">&#160;</script>
     </xsl:if>
 
     <script type="text/javascript">
