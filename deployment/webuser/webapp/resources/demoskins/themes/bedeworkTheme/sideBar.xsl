@@ -23,7 +23,7 @@
   
   <xsl:template name="sideBar">
     <h3>
-      <!--<img alt="manage views" src="{$resourcesRoot}/resources/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>-->
+      <!--<img alt="manage views" src="{$resourcesRoot}/images/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>-->
       <xsl:copy-of select="$bwStr-SdBr-Views"/>
     </h3>
     <ul id="myViews">
@@ -93,7 +93,7 @@
       <li class="prefs">
         <a href="{$prefs-fetchForUpdate}">
           <img height="13" border="0" width="13"
-            src="{$resourcesRoot}/resources/prefsIcon.gif"
+            src="{$resourcesRoot}/images/prefsIcon.gif"
             alt="upload event" />
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-SdBr-Preferences"/>
@@ -102,7 +102,7 @@
       <li>
       <a href="{$initUpload}" title="{$bwStr-SdBr-UploadEvent}">
         <img height="16" border="0" width="12"
-          src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
+          src="{$resourcesRoot}/images/std-icalUpload-icon-small.gif"
           alt="upload ical" />
         <xsl:text> </xsl:text>
         <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
@@ -111,7 +111,7 @@
     <li>
       <a href="{$calendar-listForExport}" title="{$bwStr-SdBr-ExportCalendars}">
           <img height="16" border="0" width="12"
-            src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif"
+            src="{$resourcesRoot}/images/std-icalUpload-icon-small.gif"
             alt="upload ical" />
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
@@ -120,7 +120,7 @@
       <li>
         <a href="{$calendar-listForExport}" title="upload event">
           <img height="16" border="0" width="12"
-            src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif"
+            src="{$resourcesRoot}/images/std-icalDownload-icon-small.gif"
             alt="upload event" />
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-SdBr-ExportCalendars"/>

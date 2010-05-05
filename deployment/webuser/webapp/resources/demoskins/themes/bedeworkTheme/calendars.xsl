@@ -154,7 +154,7 @@
       <xsl:if test="color != '' and color != 'null'">
         <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
         <xsl:variable name="color" select="color"/>
-        <img src="{$resourcesRoot}/resources/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
+        <img src="{$resourcesRoot}/images/spacer.gif" width="6" height="6" alt="calendar color" class="bwCalendarColor" style="background-color: {$color}; color:black;"/>
       </xsl:if>
       <xsl:if test="calendar">
         <ul>
@@ -249,7 +249,7 @@
       <xsl:if test="calType = '0' and isSubscription = 'false'">
         <xsl:text> </xsl:text>
         <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="{$bwStr-Cals-AddCalendarOrFolder}">
-          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
+          <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
         </a>
       </xsl:if>
       <xsl:if test="calendar and isSubscription='false'">
@@ -841,7 +841,7 @@
         });
       });
     </script>
-    <button type="button" id="bwColorPickerButton" value="{$bwStr-CoPi-Pick}"><img src="{$resourcesRoot}/resources/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
+    <button type="button" id="bwColorPickerButton" value="{$bwStr-CoPi-Pick}"><img src="{$resourcesRoot}/images/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
 
     <div id="bwColorPicker" title="{$bwStr-CoPi-SelectColor}">
       <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
@@ -851,7 +851,7 @@
            style="display:block;float:left;background-color:{$color};color:black;width=25px;height=25px;margin:0;padding:0;"
            title="{$colorName}"
            onclick="$('#bwColorPicker').dialog('close');">
-          <img src="{$resourcesRoot}/resources/spacer.gif" width="25" height="25" style="border:1px solid #333;margin:0;padding:0;" alt="{$colorName}"/>
+          <img src="{$resourcesRoot}/images/spacer.gif" width="25" height="25" style="border:1px solid #333;margin:0;padding:0;" alt="{$colorName}"/>
         </a>
         <xsl:if test="position() mod 6 = 0"><br style="clear:both;"/></xsl:if>
       </xsl:for-each>
@@ -862,10 +862,10 @@
   <xsl:template name="calendarList">
     <h3><xsl:copy-of select="$bwStr-CaLi-ManagingCalendars"/></h3>
     <ul>
-      <li><xsl:copy-of select="$bwStr-CaLi-SelectFromCalendar"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/resources/calIcon-sm.gif" width="13" height="13" alt="true" border="0"/>),
-      <xsl:copy-of select="$bwStr-CaLi-Subscription"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/resources/calIconAlias2-sm.gif" width="17" height="13" alt="true" border="0"/>)<xsl:copy-of select="$bwStr-CaLi-OrFolder"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="true" border="0"/>).</li>
+      <li><xsl:copy-of select="$bwStr-CaLi-SelectFromCalendar"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/calIcon-sm.gif" width="13" height="13" alt="true" border="0"/>),
+      <xsl:copy-of select="$bwStr-CaLi-Subscription"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/calIconAlias2-sm.gif" width="17" height="13" alt="true" border="0"/>)<xsl:copy-of select="$bwStr-CaLi-OrFolder"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/catIcon.gif" width="13" height="13" alt="true" border="0"/>).</li>
       <li><xsl:copy-of select="$bwStr-CaLi-Select"/><xsl:text> </xsl:text>
-      <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
+      <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
       <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CaLi-Icon"/>
         <ul>
           <li><xsl:copy-of select="$bwStr-CaLi-Folders"/></li>

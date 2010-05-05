@@ -25,7 +25,7 @@ body {
   /* this is the main wrapper div used to encapsulate all Bedework CSS; we
      will prepend each selector below with this ID - this helps encapsulate
      the css for use in portal environments (though it does imply that only
-     one instance should be running on a portal page) */
+     one instance should be running on a portal page") */
   font-family : Arial, Helvetica, sans-serif;
   font-size: 100%; /* to make IE behave */
   background-color : white;
@@ -64,7 +64,7 @@ body {
   color: black;
 }
 #bedework h2.bwStatusTentative {
-  background: #eee url('../../resources/tentativeLines.gif') top !important;
+  background: #eee url("../images/tentativeLines.gif") top !important;
   color: black;
 }
 #bedework .formButtons {
@@ -145,7 +145,7 @@ body {
 #bedework #curDateRangeTable {
   width: 100%;
   height: 26px;
-  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
+  background: #233979 url("../images/glassFill-02.gif") repeat-x bottom;
   color : #eee;
   margin: 0em;
   font-weight : bold;
@@ -160,7 +160,7 @@ body {
   vertical-align: middle;
 }
 #bedework #curDateRangeTable td.sideBarOpenCloseIcon {
-  background: url(../../resources/glassFill-02-leftBorder.gif) no-repeat top left;
+  background: url("../images/glassFill-02-leftBorder.gif") no-repeat top left;
   color: inherit;
   width: 200px;
 }
@@ -170,7 +170,7 @@ body {
   white-space: nowrap;
 }
 #bedework #curDateRangeTable td.rssPrint {
-  background: url(../../resources/glassFill-02-rightBorder.gif) no-repeat top right;
+  background: url("../images/glassFill-02-rightBorder.gif") no-repeat top right;
   color: inherit;
   width: 200px;
   font-weight : bold;
@@ -228,7 +228,7 @@ body {
   width: 200px;
   font-size: 0.8em;
   color: black;
-  background: white url(../../resources/sideBarGrayGrad.gif) repeat-y right;
+  background: white url("../images/sideBarGrayGrad.gif") repeat-y right;
   border-left: 2px solid #333;
   border-right: 1px solid #333;
   border-bottom: 2px solid #aaa;
@@ -242,7 +242,7 @@ body {
   width: 150px;
   font-size: 0.8em;
   color: black;
-  background: white url(../../resources/sideBarGrayGradRight.gif) repeat-y left;
+  background: white url("../images/sideBarGrayGradRight.gif") repeat-y left;
   border-right: 2px solid #333;
   border-bottom: 2px solid #aaa;
   /*border-top: 24px solid #333;*/
@@ -255,7 +255,7 @@ body {
   padding-left: 0;
 }
 #bedework #bodyBlock td#msgTaskBar li {
-  list-style-image: url(../../resources/calIconSchedule-sm.gif);
+  list-style-image: url("../images/calIconSchedule-sm.gif");
 }
 #bedework #bodyBlock td#msgTaskBarPlaceholder {
   border-right: 2px solid #333;
@@ -265,14 +265,14 @@ body {
 }
 #bedework #bodyBlock td#sideBar h3 {
   color: #eee;
-  background: #4164AE url(../../resources/sideBarBlueGrad.gif) repeat-y right;
+  background: #4164AE url("../images/sideBarBlueGrad.gif") repeat-y right;
   font-weight: normal;
   margin: 0;
   padding: 2px 4px;
 }
 #bedework #bodyBlock td#msgTaskBar h3 {
   color: #eee;
-  background: #4164AE url(../../resources/sideBarBlueGradRight.gif) repeat-y left;
+  background: #4164AE url("../images/sideBarBlueGradRight.gif") repeat-y left;
   font-weight: normal;
   margin: 0;
   padding: 2px 4px 2px 8px;
@@ -331,7 +331,7 @@ body {
   list-style: none;
 }
 #bedework #myViews li.selected {
-  list-style-image: url(../../resources/glassFill-icon-view.gif);
+  list-style-image: url("../images/glassFill-icon-view.gif");
   font-weight: bold;
 }
 #bedework #bodyBlock td#bodyContent {
@@ -495,11 +495,11 @@ body {
   list-style: none;
   list-style-image: none;
   color: black;
-  background: #eee url("../../resources/std-tab-off-80x20.gif") no-repeat bottom;
+  background: #eee url("../images/std-tab-off-80x20.gif") no-repeat bottom;
 }
 #bedework #bwTabs li.selected {
   color: black;
-  background: #eee url("../../resources/std-tab-on-80x20.gif") no-repeat top;
+  background: #eee url("../images/std-tab-on-80x20.gif") no-repeat top;
 }
 #bedework #bwTabs a {
   text-decoration: none;
@@ -594,7 +594,7 @@ body {
   border-right : 2px solid #333;
   border-bottom: 1px solid Gray;
   color: black;
-  background: #ff0 url(../../resources/glassFill-message.gif) repeat-x top;
+  background: #ff0 url("../images/glassFill-message.gif") repeat-x top;
 }
 #bedework #errors {
   border-top: 2px solid red;
@@ -673,7 +673,7 @@ body {
   font-weight: normal;
   margin: 0 -2em 0 0;
   padding: 4px 0 4px 12px;
-  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
+  background: #233979 url("../images/glassFill-02.gif") repeat-x bottom;
   color : #eee;
 }
 #bedework #calSelectWidget #calSelectWidgetCloser {
@@ -1198,7 +1198,7 @@ display: inline;
   margin: 0;
   text-align: center;
   color: #eee;
-  background: #233979 url(../../resources/glassFill-02.gif) repeat-x bottom;
+  background: #233979 url("../images/glassFill-02.gif") repeat-x bottom;
   border: 2px solid #233979;
 }
 #bedework #bwDialogBox #errors,
@@ -1317,7 +1317,7 @@ display: inline;
 #bedework #monthCalendarTable a.eventTentative:active  {
   border-bottom: 1px solid #ccc;
   border-top: 1px solid #ccc;
-  background: #eee url('../../resources/tentativeLines.gif') top;
+  background: #eee url("../images/tentativeLines.gif") top;
   color: black;
 }
 #bedework #monthCalendarTable a:hover {
@@ -1380,7 +1380,7 @@ display: inline;
 #bedework #monthCalendarTable .eventTipStatusTentative {
   display: block;
   color: black;
-  background: #eee url('../../resources/tentativeLines.gif') top;
+  background: #eee url("../images/tentativeLines.gif") top;
   padding: 2px;
   margin-bottom: 6px;
   border: 1px solid #ccc;
@@ -1540,7 +1540,7 @@ display: inline;
   color: black;
 }
 #bedework #listTable td.bwStatusTentative {
-  background: white url('../../resources/tentativeLines.gif') top;
+  background: white url("../images/tentativeLines.gif") top;
   color: black;
 }
 #bedework #listTable td.description a {
@@ -1677,23 +1677,23 @@ display: inline;
   margin: 0;
 }
 #bedework li.folder {
-  list-style-image: url(../../resources/catIcon.gif);
+  list-style-image: url("../images/catIcon.gif");
 }
 #bedework  li.calendar {
-  list-style-image: url(../../resources/calIcon-sm.gif);
+  list-style-image: url("../images/calIcon-sm.gif");
 }
 #bedework  li.trash {
-  list-style-image: url(../../resources/trashIcon.gif);
+  list-style-image: url("../images/trashIcon.gif");
 }
 #bedework  li.inbox {
-  list-style-image: url(../../resources/inboxIcon.gif);
+  list-style-image: url("../images/inboxIcon.gif");
 }
 #bedework  li.outbox {
-  list-style-image: url(../../resources/outboxIcon.gif);
+  list-style-image: url("../images/outboxIcon.gif");
 }
 #bedework  li.unknown,
 #bedework  li.deleted {
-  list-style-image: url(../../resources/calIconDeleted-sm.gif);
+  list-style-image: url("../images/calIconDeleted-sm.gif");
   font-style: italic;
 }
 #bedework  li.unknown a,
@@ -1702,17 +1702,17 @@ display: inline;
   background-color: transparent;
 }
 #bedework  li.selected {
-  list-style-image: url(../../resources/glassFill-icon-view.gif);
+  list-style-image: url("../images/glassFill-icon-view.gif");
   font-weight: bold;
 }
 #bedework  li.alias {
-  list-style-image: url(../../resources/calIconAlias-sm.gif);
+  list-style-image: url("../images/calIconAlias-sm.gif");
   font-style: italic;
   margin-left: 0;
   padding-left: 0;
 }
 #bedework  li.aliasFolder {
-  list-style-image: url(../../resources/catIconAlias.gif);
+  list-style-image: url("../images/catIconAlias.gif");
   font-style: italic;
   margin-left: 0;
   padding-left: 0;
@@ -1863,7 +1863,7 @@ display: inline;
 #freeBusy td.tentative,
 #freeBusyKey td.tentative {
   color: #DFE7FB;
-  background: #DFE7FB url('../../resources/tentativeLines.gif') top;
+  background: #DFE7FB url("../images/tentativeLines.gif") top;
   border: 1px solid #ddd;
 }
 #freeBusyKey {

@@ -100,7 +100,7 @@
           <xsl:if test="$trash = 'yes'">
             <td class="trash">
               <a href="{$event-attendeesForEvent}&amp;uri={$attendeeUri}&amp;attendee=true&amp;delete=true" title="{$bwStr-Atnd-Remove}">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
               </a>
             </td>
           </xsl:if>
@@ -165,7 +165,7 @@
           <xsl:if test="$trash = 'yes'">
             <td class="trash">
               <a href="{$event-attendeesForEvent}&amp;uri={$recipientUri}&amp;recipient=true&amp;delete=true" title="{$bwStr-Rcpt-Remove}">
-                <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
               </a>
             </td>
           </xsl:if>

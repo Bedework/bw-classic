@@ -44,7 +44,7 @@
               </a>
               <div class="gridAdd">
                 <!-- a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
-                  <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
+                  <img src="{$resourcesRoot}/images/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                 </a-->
                 <xsl:call-template name="actionIcons">
                   <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
@@ -95,7 +95,7 @@
                   </a>
                   <div class="gridAdd">
                     <!-- a href="javascript:toggleActionIcons('{$actionIconsId}','bwActionIcons bwActionIconsInGrid')" title="add...">
-                      <img src="{$resourcesRoot}/resources/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
+                      <img src="{$resourcesRoot}/images/addEvent-forGrid-icon.gif" width="10" height="10" border="0" alt="add..."/>
                     </a -->
                    <xsl:call-template name="actionIcons">
                      <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
@@ -250,7 +250,7 @@
         <ul class="eventActionsInGrid">
           <li>
            <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-             <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
+             <img src="{$resourcesRoot}/images/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
              <xsl:text> </xsl:text>
              <xsl:copy-of select="$bwStr-EvCG-ViewDetails"/>
            </a>
@@ -260,7 +260,7 @@
            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
            <xsl:choose>
              <xsl:when test="recurring='true' or recurrenceId != ''">
-                <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-EvCG-DownloadEvent}"/>
+                <img src="{$resourcesRoot}/images/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-EvCG-DownloadEvent}"/>
                 <xsl:text> </xsl:text>
                 <xsl:copy-of select="$bwStr-EvCG-Download"/><xsl:text> </xsl:text>
                 <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-EvCG-DownloadMaster}">
@@ -272,7 +272,7 @@
              </xsl:when>
              <xsl:otherwise>
                <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-EvCG-DownloadEvent}">
-                 <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-EvCG-DownloadEvent}"/>
+                 <img src="{$resourcesRoot}/images/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-EvCG-DownloadEvent}"/>
                  <xsl:text> </xsl:text>
                  <xsl:copy-of select="$bwStr-EvCG-Download"/>
                </a>
@@ -283,7 +283,7 @@
            <li>
              <xsl:choose>
                <xsl:when test="recurring='true' or recurrenceId != ''">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                  <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                   <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-EvCG-EditColon"/><xsl:text> </xsl:text>
                   <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-EditMaster}">
@@ -295,7 +295,7 @@
                </xsl:when>
                <xsl:otherwise>
                  <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-EditEvent}">
-                   <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                   <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                    <xsl:text> </xsl:text>
                    <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Edit"/>
                  </a>
@@ -306,7 +306,7 @@
           <li>
            <xsl:choose>
              <xsl:when test="recurring='true' or recurrenceId != ''">
-                <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                 <xsl:text> </xsl:text>
                 <xsl:copy-of select="$bwStr-EvCG-CopyColon"/><xsl:text> </xsl:text>
                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="{$bwStr-EvCG-CopyMaster}">
@@ -318,7 +318,7 @@
              </xsl:when>
              <xsl:otherwise>
                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="{$bwStr-EvCG-CopyEvent}">
-                 <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                 <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                  <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Copy"/>
                </a>
              </xsl:otherwise>
@@ -330,7 +330,7 @@
              <!-- temporarily hide from Recurring events -->
              <xsl:choose>
                <xsl:when test="recurring='true' or recurrenceId != ''">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                  <img src="{$resourcesRoot}/images/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                   <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-EvCG-LinkColon"/><xsl:text> </xsl:text>
                   <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-AddMasterEventReference}">
@@ -342,7 +342,7 @@
                </xsl:when>
                <xsl:otherwise>
                  <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvCG-AddEventReference}">
-                   <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                   <img src="{$resourcesRoot}/images/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                    <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Link"/>
                  </a>
                </xsl:otherwise>
@@ -354,7 +354,7 @@
            <li>
              <xsl:choose>
                <xsl:when test="recurring='true' or recurrenceId != ''">
-                  <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                  <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                   <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-EvCG-DeleteColon"/>
                   <xsl:text> </xsl:text>
@@ -367,7 +367,7 @@
                </xsl:when>
                <xsl:otherwise>
                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvCG-DeleteEvent}" onclick="return confirm('{$bwStr-EvCG-DeleteThisEvent}');">
-                   <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                   <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                    <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-EvCG-Delete"/>
                  </a>
                </xsl:otherwise>

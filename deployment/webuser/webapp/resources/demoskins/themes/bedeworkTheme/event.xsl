@@ -59,7 +59,7 @@
               <xsl:choose>
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <div id="bwDeleteRecurButton" class="bwMenuButton">
-                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                    <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     <xsl:copy-of select="$bwStr-SgEv-Delete"/>
                     <div id="bwDeleteRecurWidget" class="bwMenuWidget">
                       <ul>
@@ -79,7 +79,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-DeleteEvent}" class="bwMenuButton" onclick="return confirm('{$bwStr-SgEv-DeleteThisEvent}');">
-                    <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                    <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     <xsl:copy-of select="$bwStr-SgEv-Delete"/><xsl:text> </xsl:text>
                   </a>
                 </xsl:otherwise>
@@ -91,7 +91,7 @@
               <xsl:choose>
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <div id="bwLinkRecurButton" class="bwMenuButton">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                    <img src="{$resourcesRoot}/images/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                     <xsl:copy-of select="$bwStr-SgEv-Link"/>
                     <div id="bwLinkRecurWidget" class="bwMenuWidget">
                       <ul>
@@ -111,7 +111,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="{$addEventRef}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-AddEventReference}" class="bwMenuButton">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
+                    <img src="{$resourcesRoot}/images/std-ical_iconLinkDkGray.gif" width="12" height="16" border="0" alt="add event reference"/>
                     <xsl:copy-of select="$bwStr-SgEv-Link"/>
                   </a>
                 </xsl:otherwise>
@@ -121,7 +121,7 @@
             <xsl:choose>
               <xsl:when test="recurring='true' or recurrenceId != ''">
                 <div id="bwCopyRecurButton" class="bwMenuButton">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                  <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                   <xsl:copy-of select="$bwStr-SgEv-Copy"/>
                   <div id="bwCopyRecurWidget" class="bwMenuWidget">
                     <ul>
@@ -141,7 +141,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;copy=true" title="{$bwStr-SgEv-CopyEvent}" class="bwMenuButton">
-                  <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                  <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                   <xsl:copy-of select="$bwStr-SgEv-Copy"/>
                 </a>
               </xsl:otherwise>
@@ -151,7 +151,7 @@
               <xsl:choose>
                 <xsl:when test="recurring='true' or recurrenceId != ''">
                   <div id="bwEditRecurButton" class="bwMenuButton">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
+                    <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit master"/>
                     <xsl:copy-of select="$bwStr-SgEv-Edit"/>
                     <div id="bwEditRecurWidget" class="bwMenuWidget">
                       <ul>
@@ -171,7 +171,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-EditEvent}" class="bwMenuButton">
-                    <img src="{$resourcesRoot}/resources/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
+                    <img src="{$resourcesRoot}/images/std-ical_iconEditDkGray.gif" width="12" height="16" border="0" alt="edit"/>
                     <xsl:copy-of select="$bwStr-SgEv-Edit"/>
                   </a>
                 </xsl:otherwise>
@@ -183,7 +183,7 @@
             <xsl:choose>
               <xsl:when test="recurring='true' or recurrenceId != ''">
                 <div id="bwDownloadButton" class="bwMenuButton">
-                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-SgEv-DownloadEvent}"/>
+                  <img src="{$resourcesRoot}/images/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-SgEv-DownloadEvent}"/>
                   <xsl:copy-of select="$bwStr-SgEv-Download"/>
                   <div id="bwDownloadWidget" class="bwMenuWidget">
                     <ul>
@@ -203,7 +203,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" class="bwMenuButton" title="{$bwStr-SgEv-DownloadEvent}">
-                  <img src="{$resourcesRoot}/resources/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
+                  <img src="{$resourcesRoot}/images/std-icalDownload-icon-small.gif" width="12" height="16" border="0" alt="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars"/>
                   <xsl:copy-of select="$bwStr-SgEv-Download"/>
                 </a>
               </xsl:otherwise>
@@ -245,7 +245,7 @@
                 NOTE: we need to actually output the organizer account for testing, rather
                  than testing against the organizerUri...might not be the same */
             <a href="{$schedule-refresh}&amp;method=REFRESH" id="refreshEventAction">
-              <img src="{$resourcesRoot}/resources/std-icalRefresh-icon-small.gif" width="12" height="16" border="0" alt="send a request to refresh this scheduled event"/>
+              <img src="{$resourcesRoot}/images/std-icalRefresh-icon-small.gif" width="12" height="16" border="0" alt="send a request to refresh this scheduled event"/>
               Request refresh
             </a>
           </xsl:if>
@@ -382,7 +382,7 @@
         <!--<th class="icon" rowspan="2">
           <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
           <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars">
-            <img src="{$resourcesRoot}/resources/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
+            <img src="{$resourcesRoot}/images/std-ical-icon.gif" width="20" height="26" border="0" align="left" alt="Download this event"/>
           </a>
         </th>-->
       </tr>
@@ -457,7 +457,7 @@
             </xsl:choose>
             <xsl:if test="organizer/organizerUri != ''">
               <a href="{$organizerUri}" class="emailIcon" title="{$bwStr-SgEv-Email}">
-                <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                <img src="{$resourcesRoot}/images/email.gif" width="16" height="10" border="0" alt="email"/>
               </a>
             </xsl:if>
           </td>
@@ -480,7 +480,7 @@
                   <td>
                     <xsl:variable name="attendeeUri" select="attendeeUri"/>
                     <a href="{$attendeeUri}" class="emailIcon" title="{$bwStr-SgEv-Email}">
-                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                      <img src="{$resourcesRoot}/images/email.gif" width="16" height="10" border="0" alt="email"/>
                     </a>
                     <xsl:choose>
                       <xsl:when test="cn != ''">
@@ -535,7 +535,7 @@
                     </xsl:choose>
                     <xsl:variable name="recipientUri" select="."/>
                     <a href="{$recipientUri}" class="emailIcon" title="email">
-                      <img src="{$resourcesRoot}/resources/email.gif" width="16" height="10" border="0" alt="email"/>
+                      <img src="{$resourcesRoot}/images/email.gif" width="16" height="10" border="0" alt="email"/>
                     </a>
                   </td>
                 </tr>

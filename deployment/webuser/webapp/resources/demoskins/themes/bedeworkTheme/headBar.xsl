@@ -24,7 +24,7 @@
   <xsl:template name="headBar">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
-        <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/resources/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
+        <td colspan="3" id="logoCell"><a href="/bedework/"><img src="{$resourcesRoot}/images/bedeworkLogo.gif" width="292" height="75" border="0" alt="Bedework"/></a></td>
         <td colspan="2" id="schoolLinksCell">
           <h2><xsl:copy-of select="$bwStr-HdBr-PersonalCalendar"/></h2>
           <a href="{$publicCal}"><xsl:copy-of select="$bwStr-HdBr-PublicCalendar"/></a> |
@@ -42,12 +42,12 @@
           <xsl:choose>
             <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
               <a href="?setappvar=sidebar(opened)">
-                <img alt="open sidebar" src="{$resourcesRoot}/resources/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
+                <img alt="open sidebar" src="{$resourcesRoot}/images/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
               </a>
             </xsl:when>
             <xsl:otherwise>
               <a href="?setappvar=sidebar(closed)">
-                <img alt="close sidebar" src="{$resourcesRoot}/resources/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
+                <img alt="close sidebar" src="{$resourcesRoot}/images/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
               </a>
             </xsl:otherwise>
           </xsl:choose>
@@ -61,7 +61,7 @@
         </td>
         <td class="rssPrint">
           <a href="javascript:window.print()" title="{$bwStr-HdBr-PrintThisView}">
-            <img alt="print this view" src="{$resourcesRoot}/resources/std-print-icon.gif" width="20" height="14" border="0"/> <xsl:copy-of select="$bwStr-HdBr-Print"/>
+            <img alt="print this view" src="{$resourcesRoot}/images/std-print-icon.gif" width="20" height="14" border="0"/> <xsl:copy-of select="$bwStr-HdBr-Print"/>
           </a>
           <a class="rss" href="{$listEvents}&amp;setappvar=summaryMode(details)&amp;skinName=rss-list&amp;days=3" title="{$bwStr-HdBr-RSSFeed}"><xsl:copy-of select="$bwStr-HdBr-RSS"/></a>
         </td>

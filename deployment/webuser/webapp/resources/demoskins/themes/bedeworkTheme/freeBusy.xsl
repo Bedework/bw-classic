@@ -38,11 +38,11 @@
       </div>
       <span class="contextHelp">
         <a href="javascript:launchHelpWidget('bwHelpWidget-shareFreeBusy')">
-          <img src="{$resourcesRoot}/resources/std-button-help.gif" width="13" height="13" border="0" alt="help"/>
+          <img src="{$resourcesRoot}/images/std-button-help.gif" width="13" height="13" border="0" alt="help"/>
         </a>
       </span>-->
       <span class="contextHelp">
-        <img src="{$resourcesRoot}/resources/std-button-help.gif" width="13" height="13" alt="help" onmouseover="changeClass('helpShareFreeBusy','visible helpBox');" onmouseout="changeClass('helpShareFreeBusy','invisible');"/>
+        <img src="{$resourcesRoot}/images/std-button-help.gif" width="13" height="13" alt="help" onmouseover="changeClass('helpShareFreeBusy','visible helpBox');" onmouseout="changeClass('helpShareFreeBusy','invisible');"/>
       </span>
       <div id="helpShareFreeBusy" class="helpBox invisible">
           <xsl:copy-of select="$bwStr-FrBu-YouMayShareYourFreeBusy"/>
@@ -158,7 +158,7 @@
                     <xsl:when test="((numBusy &gt; 0) and (numBusy &lt; 9)) or ((numTentative &gt; 0) and (numTentative &lt; 9)) and (number(numBusy) + number(numTentative) &lt; 9)">
                       <xsl:value-of select="number(numBusy) + number(numTentative)"/>
                     </xsl:when>
-                    <xsl:otherwise><img src="{$resourcesRoot}/resources/spacer.gif" width="10" height="20" border="0" alt="f"/></xsl:otherwise>
+                    <xsl:otherwise><img src="{$resourcesRoot}/images/spacer.gif" width="10" height="20" border="0" alt="f"/></xsl:otherwise>
                   </xsl:choose>
                   <span class="eventTip">
                     <xsl:value-of select="substring(../dateString,1,4)"/>-<xsl:value-of select="number(substring(../dateString,5,2))"/>-<xsl:value-of select="number(substring(../dateString,7,2))"/>

@@ -101,7 +101,7 @@
               <xsl:choose>
                 <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
                   <td id="sideBarClosed">
-                    <img src="{$resourcesRoot}/resources/spacer.gif" width="1" height="1" border="0" alt="*"/>
+                    <img src="{$resourcesRoot}/images/spacer.gif" width="1" height="1" border="0" alt="*"/>
                   </td>
                 </xsl:when>
                 <xsl:otherwise>

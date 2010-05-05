@@ -93,7 +93,7 @@
                 <xsl:choose>
                   <xsl:when test="recurrenceId != ''">
                     <div id="bwDeleteRecurButton" class="bwMenuButton">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                      <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                       <xsl:copy-of select="$bwStr-AEEF-Delete"/>
                       <div id="bwDeleteRecurWidget" class="bwMenuWidget">
                         <ul>
@@ -113,7 +113,7 @@
                   </xsl:when>
                   <xsl:otherwise>
                     <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-AEEF-DeleteEvent}" class="bwMenuButton" onclick="return confirm('{$bwStr-AEEF-DeleteThisEvent}');">
-                      <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
+                      <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                        <xsl:copy-of select="$bwStr-AEEF-Delete"/>
                       <xsl:if test="form/recurringEntity='true'">
                         <xsl:copy-of select="$bwStr-AEEF-All"/>
@@ -124,7 +124,7 @@
                 <xsl:if test="not(form/recurringEntity = 'true' and recurrenceId = '')">
                   <!-- don't display if a master recurring event (because the master can't be viewed) -->
                   <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="bwMenuButton">
-                    <img src="{$resourcesRoot}/resources/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
+                    <img src="{$resourcesRoot}/images/glassFill-icon-viewGray.gif" width="13" height="13" border="0" alt="view"/>
                      <xsl:copy-of select="$bwStr-AEEF-View"/>
                   </a>
                 </xsl:if>
@@ -387,7 +387,7 @@
                     <xsl:copy-of select="form/start/ampm/*"/>
                   </xsl:if>
                   <xsl:text> </xsl:text>
-                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
+                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -451,7 +451,7 @@
                       </script>
                     </xsl:when>
                     <xsl:otherwise>
-                      <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                      <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/images/calIcon.gif">
                         <xsl:attribute name="value"><xsl:value-of select="form/end/rfc3339DateTime"/></xsl:attribute>
                         <xsl:text> </xsl:text>
                       </span-->
@@ -484,7 +484,7 @@
                       <xsl:copy-of select="form/end/dateTime/ampm/*"/>
                     </xsl:if>
                     <xsl:text> </xsl:text>
-                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
+                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1044,7 +1044,7 @@
                       </input>
                       <xsl:copy-of select="$bwStr-AEEF-Until"/>
                       <span id="untilHolder">
-                        <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/resources/calIcon.gif">
+                        <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/images/calIcon.gif">
                           <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
                           <xsl:text> </xsl:text>
                         </span -->
@@ -1305,7 +1305,7 @@
                          value="today"
                          saveFormat="yyyyMMdd"
                          id="bwEventWidgetRdate"
-                         iconURL="{$resourcesRoot}/resources/calIcon.gif"/-->
+                         iconURL="{$resourcesRoot}/images/calIcon.gif"/-->
                   <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
                   <script type="text/javascript">
                     <xsl:comment>
@@ -1615,7 +1615,7 @@
            used with resources/bwClock.js and resources/bwClock.css -->
       <xsl:variable name="hour24" select="/bedework/hour24"/><!-- true or false -->
       <div id="bwClockClock">
-        <img id="clockMap" src="{$resourcesRoot}/resources/clockMap.gif" width="368" height="368" border="0" alt="bwClock" usemap="#bwClockMap" />
+        <img id="clockMap" src="{$resourcesRoot}/images/clockMap.gif" width="368" height="368" border="0" alt="bwClock" usemap="#bwClockMap" />
       </div>
       <div id="bwClockCover">
         &#160;

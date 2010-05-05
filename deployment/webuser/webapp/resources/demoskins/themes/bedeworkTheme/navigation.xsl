@@ -80,8 +80,8 @@
     <table border="0" cellpadding="0" cellspacing="0" id="navigationBarTable">
       <tr>
         <td class="leftCell">
-          <a href="{$navAction}&amp;date={$prevdate}"><img src="{$resourcesRoot}/resources/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
-          <a href="{$navAction}&amp;date={$nextdate}"><img src="{$resourcesRoot}/resources/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
+          <a href="{$navAction}&amp;date={$prevdate}"><img src="{$resourcesRoot}/images/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
+          <a href="{$navAction}&amp;date={$nextdate}"><img src="{$resourcesRoot}/images/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
           <xsl:choose>
             <xsl:when test="/bedework/periodname='Year'">
               <xsl:value-of select="substring(/bedework/firstday/date,1,4)"/>
@@ -99,7 +99,7 @@
         </td>
         <td class="todayButton">
           <a href="{$navAction}&amp;viewType=todayView&amp;date={$curdate}">
-            <img src="{$resourcesRoot}/resources/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
+            <img src="{$resourcesRoot}/images/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
           </a>
         </td>
         <td align="right" class="gotoForm">
@@ -304,7 +304,7 @@
 
            <!-- refresh button -->
            <!-- deprecate? -->
-           <!-- <a href="{$setup}"><img src="{$resourcesRoot}/resources/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a> -->
+           <!-- <a href="{$setup}"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a> -->
          </td>
        </tr>
     </table>
@@ -323,27 +323,27 @@
     <br/>
     <div id="{$actionIconsId}" class="bwActionIcons">
        <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddEvent}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
-          <img src="{$resourcesRoot}/resources/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
+          <img src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
        </a>
        <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
-          <img src="{$resourcesRoot}/resources/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
+          <img src="{$resourcesRoot}/images/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleMeeting"/>
        </a>
        <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
-          <img src="{$resourcesRoot}/resources/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
+          <img src="{$resourcesRoot}/images/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddTask"/>
        </a>
        <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="{$bwStr-Actn-ScheduleTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
-          <img src="{$resourcesRoot}/resources/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
+          <img src="{$resourcesRoot}/images/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleTask"/>
        </a>
        <a href="{$initUpload}" title="{$bwStr-Actn-UploadEvent}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
-          <img src="{$resourcesRoot}/resources/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
+          <img src="{$resourcesRoot}/images/std-icalUpload-icon-small.gif" width="12" height="16" border="0" alt="upload event"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-Upload"/>
        </a>

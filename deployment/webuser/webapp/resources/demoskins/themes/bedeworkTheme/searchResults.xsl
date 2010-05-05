@@ -117,7 +117,7 @@
         <tr>
           <td class="relevance">
             <xsl:value-of select="ceiling(number(score)*100)"/>%
-            <img src="{$resourcesRoot}/resources/spacer.gif" height="4" class="searchRelevance">
+            <img src="{$resourcesRoot}/images/spacer.gif" height="4" class="searchRelevance">
               <xsl:attribute name="width"><xsl:value-of select="ceiling((number(score)*100) div 1.5)"/></xsl:attribute>
             </img>
           </td>
