@@ -43,7 +43,7 @@
   <xsl:include href="tasks.xsl" />
   <xsl:include href="year.xsl" />
   <xsl:include href="notifications.xsl" />
-  <xsl:include href="addEditEvent.xsl" />
+  <xsl:include href="eventForm.xsl" />
   <xsl:include href="addRef.xsl" />
   <xsl:include href="attendees.xsl" />
   <xsl:include href="categories.xsl" />
