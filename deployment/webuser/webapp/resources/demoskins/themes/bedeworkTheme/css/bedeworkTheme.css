@@ -873,6 +873,9 @@ display: inline;
 #bedework table.common .padMeTop {
   padding-top: 1em !important;
 }
+#bedework table.common .padMeTopMore {
+  padding-top: 2em !important;
+}
 #bedework table.common .padMe {
   padding: 1em !important;
 }

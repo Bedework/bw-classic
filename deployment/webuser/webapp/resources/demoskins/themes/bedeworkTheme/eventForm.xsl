@@ -197,7 +197,8 @@
     <!-- this tab is visible by default -->
     <div id="bwEventTab-Basic">
       <table cellspacing="0" class="common dottedBorder">
-        <!--  Calendar in which to place event  -->
+      
+        <!--  Calendar  -->
         <tr>
           <td class="fieldname">
             <xsl:copy-of select="$bwStr-AEEF-Calendar"/><xsl:text> </xsl:text>
@@ -261,6 +262,7 @@
             </xsl:choose>
           </td>
         </tr>
+        
         <!--  Summary (title) of event  -->
         <tr>
           <td class="fieldname">
@@ -353,7 +355,7 @@
                     </xsl:choose>
                     <script type="text/javascript">
                       <xsl:comment>
-                      startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
+                      startDateDynCalWidget = new dynCalendar('startDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'startDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/images/');
                       </xsl:comment>
                     </script>
                   </xsl:when>
@@ -446,7 +448,7 @@
                       </xsl:choose>
                       <script type="text/javascript">
                       <xsl:comment>
-                        endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/resources/');
+                        endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(/bedework/formElements/form/start/yearText/input/@value)"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(/bedework/formElements/form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback', '<xsl:value-of select="$resourcesRoot"/>/images/');
                       </xsl:comment>
                       </script>
                     </xsl:when>
@@ -619,6 +621,38 @@
           </td>
         </tr>
 
+        <!--  Location  -->
+        <tr>
+          <td class="fieldname"><xsl:copy-of select="$bwStr-AEEF-Location"/></td>
+          <td class="fieldval">
+            <span class="std-text"><xsl:copy-of select="$bwStr-AEEF-Choose"/><xsl:text> </xsl:text></span>
+            <span id="eventFormLocationList">
+              <!--
+              <xsl:choose>
+                <xsl:when test="/bedework/creating = 'true'">
+                  <select name="locationUid">
+                    <option value="-1">select...</option>
+                    <xsl:copy-of select="form/location/locationmenu/select/*"/>
+                  </select>
+                </xsl:when>
+                <xsl:otherwise>
+                  <select name="eventLocationUid">
+                    <option value="-1">select...</option>
+                    <xsl:copy-of select="form/location/locationmenu/select/*"/>
+                  </select>
+                </xsl:otherwise>
+              </xsl:choose>
+              -->
+              <select name="locationUid">
+                <option value=""><xsl:copy-of select="$bwStr-AEEF-Select"/></option>
+                <xsl:copy-of select="form/location/locationmenu/select/*"/>
+              </select>
+            </span>
+            <span class="std-text"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-OrAddNew"/><xsl:text> </xsl:text></span>
+            <input type="text" name="locationAddress.value" value="" />
+          </td>
+        </tr>
+        
         <!--  Percent Complete (only for Tasks)  -->
         <xsl:if test="form/entityType = '2'">
           <tr>
@@ -633,34 +667,12 @@
           </tr>
         </xsl:if>
 
-        <!--  Transparency  -->
-        <tr>
-          <td class="fieldname padMeTop">
-            <xsl:copy-of select="$bwStr-AEEF-AffectsFreeBusy"/><xsl:text> </xsl:text>
-          </td>
-          <td align="left" class="padMeTop">
-            <input type="radio" value="OPAQUE" name="transparency">
-              <xsl:if test="form/transparency = 'OPAQUE'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-            </input>
-            <xsl:copy-of select="$bwStr-AEEF-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
-
-            <input type="radio" value="TRANSPARENT" name="transparency">
-              <xsl:if test="form/transparency = 'TRANSPARENT'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-            </input>
-            <xsl:copy-of select="$bwStr-AEEF-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span><br/>
-          </td>
-        </tr>
-
         <!--  Category  -->
         <tr>
           <td class="fieldname">
             <xsl:copy-of select="$bwStr-AEEF-Categories"/><xsl:text> </xsl:text>
           </td>
-          <td class="fieldval" align="left">
+          <td class="fieldval">
             <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
             <xsl:choose>
               <xsl:when test="not(form/categories/all/category)">
@@ -702,37 +714,7 @@
     <!-- ============== -->
     <div id="bwEventTab-Details" class="invisible">
       <table cellspacing="0" class="common dottedBorder">
-        <!--  Location  -->
-        <tr>
-          <td class="fieldname"><xsl:copy-of select="$bwStr-AEEF-Location"/></td>
-          <td class="fieldval" align="left">
-            <span class="std-text"><xsl:copy-of select="$bwStr-AEEF-Choose"/><xsl:text> </xsl:text></span>
-            <span id="eventFormLocationList">
-              <!--
-              <xsl:choose>
-                <xsl:when test="/bedework/creating = 'true'">
-                  <select name="locationUid">
-                    <option value="-1">select...</option>
-                    <xsl:copy-of select="form/location/locationmenu/select/*"/>
-                  </select>
-                </xsl:when>
-                <xsl:otherwise>
-                  <select name="eventLocationUid">
-                    <option value="-1">select...</option>
-                    <xsl:copy-of select="form/location/locationmenu/select/*"/>
-                  </select>
-                </xsl:otherwise>
-              </xsl:choose>
-              -->
-              <select name="locationUid">
-                <option value=""><xsl:copy-of select="$bwStr-AEEF-Select"/></option>
-                <xsl:copy-of select="form/location/locationmenu/select/*"/>
-              </select>
-            </span>
-            <span class="std-text"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-OrAddNew"/><xsl:text> </xsl:text></span>
-            <input type="text" name="locationAddress.value" value="" />
-          </td>
-        </tr>
+
         <!--  Link (url associated with event)  -->
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-AEEF-EventLink"/><xsl:text> </xsl:text></td>
@@ -741,6 +723,7 @@
             <input type="text" name="eventLink" size="80" value="{$link}"/>
           </td>
         </tr>
+
         <!--  Description  -->
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-AEEF-Description"/><xsl:text> </xsl:text></td>
@@ -761,6 +744,7 @@
             </xsl:choose>
           </td>
         </tr>
+
         <!--<tr>
           <td class="fieldname">
             Type:
@@ -793,6 +777,7 @@
             <input type="button" value="Manage recipients and attendees" onclick="launchSizedWindow('{$event-showAttendeesForEvent}','500','400')" class="small"/>
           </td>
         </tr>-->
+
         <!--  Status  -->
         <tr>
           <td class="fieldname">
@@ -813,23 +798,27 @@
             <xsl:copy-of select="$bwStr-AEEF-Canceled"/>
           </td>
         </tr>
-        <!--  Transparency  -->
-        <xsl:if test="entityType != '2'"><!-- no transparency for Tasks -->
+
+        <!--  Transparency ("Affects free/busy")  -->
+        <xsl:if test="form/entityType != '2'"><!-- no transparency for Tasks -->
           <tr>
-            <td class="fieldname">
-              <xsl:copy-of select="$bwStr-AEEF-AffectsFreeBusy"/>
+            <td class="fieldname padMeTop">
+              <xsl:copy-of select="$bwStr-AEEF-AffectsFreeBusy"/><xsl:text> </xsl:text>
             </td>
-            <td class="fieldval">
-              <xsl:choose>
-                <xsl:when test="form/transparency = 'TRANSPARENT'">
-                  <input type="radio" name="transparency" value="OPAQUE"/><xsl:copy-of select="$bwStr-AEEF-Yes"/> <span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
-                  <input type="radio" name="transparency" value="TRANSPARENT" checked="checked"/><xsl:copy-of select="$bwStr-AEEF-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span>
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="radio" name="transparency" value="OPAQUE" checked="checked"/><xsl:copy-of select="$bwStr-AEEF-Yes"/> <span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
-                  <input type="radio" name="transparency" value="TRANSPARENT"/><xsl:copy-of select="$bwStr-AEEF-No"/> <span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span>
-                </xsl:otherwise>
-              </xsl:choose>
+            <td class="fieldval padMeTop">
+              <input type="radio" value="OPAQUE" name="transparency">
+                <xsl:if test="form/transparency = 'OPAQUE'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+              </input>
+              <xsl:copy-of select="$bwStr-AEEF-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
+  
+              <input type="radio" value="TRANSPARENT" name="transparency">
+                <xsl:if test="form/transparency = 'TRANSPARENT'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+              </input>
+              <xsl:copy-of select="$bwStr-AEEF-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Transparent"/></span><br/>
             </td>
           </tr>
         </xsl:if>
@@ -849,19 +838,9 @@
         </xsl:when>
         <xsl:otherwise>
           <!-- has recurrenceId, so is master -->
-
-          <div id="recurringSwitch">
-            <!-- set or remove "recurring" and show or hide all recurrence fields: -->
-            <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
-              <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-            </input> <xsl:copy-of select="$bwStr-AEEF-EventRecurs"/>
-            <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
-              <xsl:if test="form/recurringEntity = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-            </input> <xsl:copy-of select="$bwStr-AEEF-EventDoesNotRecur"/>
-          </div>
-
+          
           <!-- wrapper for all recurrence fields (rrules and rdates): -->
-          <div id="recurrenceFields" class="invisible">
+          <div id="recurrenceFields">
             <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 
             <h4><xsl:copy-of select="$bwStr-AEEF-RecurrenceRules"/></h4>
@@ -1612,7 +1591,7 @@
   <xsl:template name="clock">
     <div id="bwClock">
       <!-- Bedework 24-Hour Clock time selection widget
-           used with resources/bwClock.js and resources/bwClock.css -->
+           used with bwClock.js and bwClock.css -->
       <xsl:variable name="hour24" select="/bedework/hour24"/><!-- true or false -->
       <div id="bwClockClock">
         <img id="clockMap" src="{$resourcesRoot}/images/clockMap.gif" width="368" height="368" border="0" alt="bwClock" usemap="#bwClockMap" />
