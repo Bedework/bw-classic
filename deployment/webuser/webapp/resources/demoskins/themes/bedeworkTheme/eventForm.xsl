@@ -1425,8 +1425,8 @@
       </div>
     </div>
 
-    <!-- Scheduling tab -->
-    <!-- ============== -->
+    <!-- Meeting / Scheduling tab -->
+    <!-- ======================== -->
     <div id="bwEventTab-Scheduling" class="invisible">
       <div id="scheduling">
         <xsl:if test="form/attendees/attendee">
@@ -1469,6 +1469,57 @@
           </xsl:choose>
         </div>
       </div>
+      
+      
+	    <div id="bwSchedule">
+	      <div id="bwFreeBusyDisplay">
+	        loading...
+	      </div>
+	      
+	      <table id="bwScheduleControls">
+	        <tr>
+	          <td>
+	            <button id="bwPickPrevious" onclick="bwGrid.pickPrevious();">&#171; Pick Previous</button>
+	          </td>
+	          <td>
+	            <button id="bwPickNext" onclick="bwGrid.pickNext();">Pick Next &#187;</button>
+	          </td>
+	          <td class="dateLabel">
+	            Start:
+	          </td>
+	          <td>
+	            
+	          </td>
+	          <td class="time">
+	            
+	          </td>
+	        </tr>
+	        <tr>
+	          <td class="zoom">            
+	            <span class="zoomControl">-</span>
+	            <select name="zoom">
+	              <option>300%</option>
+	              <option>200%</option>
+	              <option>150%</option>
+	              <option selected="selected">100%</option>
+	              <option>75%</option>
+	              <option>50%</option>
+	            </select>
+	            <span class="zoomControl">+</span>
+	          </td>
+	          <td>
+	            <button>Options &#x25BC;</button>
+	          </td>
+	          <td class="dateLabel">
+	            End:
+	          </td>
+	          <td>
+	          </td>
+	          <td class="time">
+	          </td>
+	        </tr>  
+	      </table>
+	    </div>
     </div>
 
     <div class="eventSubmitButtons">
