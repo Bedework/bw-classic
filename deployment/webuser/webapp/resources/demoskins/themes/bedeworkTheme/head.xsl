@@ -142,6 +142,8 @@
       <link rel="stylesheet" href="{$resourcesRoot}/css/bwClock.css"/>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkEventForm.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
+      <link rel="stylesheet" href="{$resourcesRoot}/css/bwScheduling.css"/>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkScheduling.js">&#160;</script>
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
       <!-- initialize event acls, if present -->
@@ -186,6 +188,7 @@
     <script type="text/javascript">
       <xsl:comment>
       <![CDATA[
+      /*
       function checkStatus(inboxCount,changed,url) {
       // Check status of inbox and outbox and alert user appropriately.
       // Just take care of inbox for now.
@@ -198,7 +201,7 @@
             window.location.replace(url);
           }
         }
-      }
+      }*/
       function focusElement(id) {
       // focuses element by id
         document.getElementById(id).focus();
