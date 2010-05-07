@@ -296,7 +296,8 @@
   <xsl:variable name="bwStr-AEEF-Basic">basic</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Details">details</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Recurrence">recurrence</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Scheduling">meeting</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Scheduling">scheduling</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Meetingtab">meeting</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Calendar">Calendar:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Title">Title:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-DateAndTime">Date &amp; Time:</xsl:variable>

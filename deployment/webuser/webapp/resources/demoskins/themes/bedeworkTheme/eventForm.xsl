@@ -132,8 +132,8 @@
               <!-- Display type of event -->
               <xsl:variable name="entityType">
                 <xsl:choose>
-                  <xsl:when test="entityType = '2'"><xsl:copy-of select="$bwStr-AEEF-TASK"/></xsl:when>
-                  <xsl:when test="scheduleMethod = '2'"><xsl:copy-of select="$bwStr-AEEF-Meeting"/></xsl:when>
+                  <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-AEEF-TASK"/></xsl:when>
+                  <xsl:when test="form/scheduleMethod = '2'"><xsl:copy-of select="$bwStr-AEEF-Meeting"/></xsl:when>
                   <xsl:otherwise><xsl:copy-of select="$bwStr-AEEF-EVENT"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
@@ -180,7 +180,14 @@
         </li>
         <li>
           <a href="javascript:setTab('eventFormTabs',3); show('bwEventTab-Scheduling'); hide('bwEventTab-Basic','bwEventTab-Details','bwEventTab-Recurrence','bwEventTab-Access');">
-            <xsl:copy-of select="$bwStr-AEEF-Scheduling"/>
+            <xsl:choose>
+              <xsl:when test="form/entityType = '2'"> <!-- "scheduling" for a task -->
+                <xsl:copy-of select="$bwStr-AEEF-Scheduling"/>
+              </xsl:when>
+              <xsl:otherwise> <!-- "meeting" for a normal event -->
+                <xsl:copy-of select="$bwStr-AEEF-Meetingtab"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </a>
         </li>
         <!-- Hide from use.  If you wish to enable the access control form for
@@ -1394,7 +1401,7 @@
                     <th colspan="4"><xsl:copy-of select="$bwStr-AEEF-ExceptionDates"/></th>
                   </tr>
                   <tr class="colNames">
-          <td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
+                    <td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
                     <td><xsl:copy-of select="$bwStr-AEEF-Time"/></td>
                     <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
                     <td></td>
@@ -1479,10 +1486,10 @@
 	      <table id="bwScheduleControls">
 	        <tr>
 	          <td>
-	            <button id="bwPickPrevious" onclick="bwGrid.pickPrevious();">&#171; Pick Previous</button>
+	            <input type="button" id="bwPickPrevious" onclick="bwGrid.pickPrevious();" value="&#171; Pick Previous"/>
 	          </td>
 	          <td>
-	            <button id="bwPickNext" onclick="bwGrid.pickNext();">Pick Next &#187;</button>
+	            <input type="button" id="bwPickNext" onclick="bwGrid.pickNext();" value="Pick Next &#187;"/>
 	          </td>
 	          <td class="dateLabel">
 	            Start:
@@ -1508,7 +1515,7 @@
 	            <span class="zoomControl">+</span>
 	          </td>
 	          <td>
-	            <button>Options &#x25BC;</button>
+	            <input type="button" id="bwSchedOptions" value="Options &#x25BC;"/>
 	          </td>
 	          <td class="dateLabel">
 	            End:

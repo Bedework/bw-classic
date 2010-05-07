@@ -23,7 +23,6 @@
   
   <xsl:template name="sideBar">
     <h3>
-      <!--<img alt="manage views" src="{$resourcesRoot}/images/glassFill-icon-menuButton.gif" width="12" height="11" border="0"/>-->
       <xsl:copy-of select="$bwStr-SdBr-Views"/>
     </h3>
     <ul id="myViews">
@@ -49,9 +48,6 @@
     </ul>
 
     <h3>
-      <!--a href="{$subscriptions-showSubsMenu}" title="{$bwStr-SdBr-SubscribeToCalendarsOrICalFeeds}">
-        <xsl:copy-of select="$bwStr-SdBr-Subscribe"/>
-      </a-->
       <a href="{$calendar-fetch}" title="{$bwStr-SdBr-ManageCalendarsAndSubscriptions}" class="calManageLink">
         <xsl:copy-of select="$bwStr-SdBr-Manage"/>
       </a>
@@ -100,16 +96,7 @@
         </a>
       </li>
       <li>
-      <a href="{$initUpload}" title="{$bwStr-SdBr-UploadEvent}">
-        <img height="16" border="0" width="12"
-          src="{$resourcesRoot}/images/std-icalUpload-icon-small.gif"
-          alt="upload ical" />
-        <xsl:text> </xsl:text>
-        <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
-      </a>
-    </li>
-    <li>
-      <a href="{$calendar-listForExport}" title="{$bwStr-SdBr-ExportCalendars}">
+        <a href="{$initUpload}" title="{$bwStr-SdBr-UploadEvent}">
           <img height="16" border="0" width="12"
             src="{$resourcesRoot}/images/std-icalUpload-icon-small.gif"
             alt="upload ical" />
@@ -118,7 +105,7 @@
         </a>
       </li>
       <li>
-        <a href="{$calendar-listForExport}" title="upload event">
+        <a href="{$calendar-listForExport}" title="{$bwStr-SdBr-ExportCalendars}">
           <img height="16" border="0" width="12"
             src="{$resourcesRoot}/images/std-icalDownload-icon-small.gif"
             alt="upload event" />

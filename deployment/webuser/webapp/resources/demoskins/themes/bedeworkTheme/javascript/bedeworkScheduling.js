@@ -165,7 +165,7 @@ var bwFreeBusy = function(fbString) {
  * workday:         boolean - true to display workday hours only, false to display all 24 hours
  * zoom:            integer - scalar value for zooming the grid
  */
-var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom) {
+var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot) {
   this.displayId = displayId;
   this.startRange = new Date(startRange);
   this.endRange = new Date(endRange);
@@ -176,6 +176,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.zoom = zoom;
   this.workday = workday;
   this.attendees = new Array();  // array of bwAttendee objects
+  this.resourcesRoot = browserResourcesRoot;
   
   // 2D array of time and busy state for all attendees
   // [millisecond value,true/false if busy]
@@ -213,9 +214,22 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   var pickNextClicked = false; // false until the first time we click "pick next" - allows us to show the first free time window on first click
   
 
-  this.addAttendee = function(name, uid, freebusy, role, status, type) {
+  this.updateAttendee = function(name, uid, freebusy, role, status, type) {
     var newAttendee = new bwAttendee(name, uid, freebusy, role, status, type);
-    this.attendees.push(newAttendee);
+    /*var attendeeIsNew = true;
+    
+    // check to see if attendee already exists
+    for (i=0; i < this.attendees.length; i++) {
+      alert(newAttendee.uid + " -- " + attendees[i].uid);
+      if (newAttendee.uid == attendees[i].uid) {
+        attendeeIsNew = false;
+        break;
+      } 
+    }
+    
+    if (attendeeIsNew) {*/
+      this.attendees.push(newAttendee);      
+    //}
     
     this.display();
   }
@@ -411,7 +425,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         // the status class is used for rollover descriptions of the icon
         switch (curAttendee.status) {
           case bwAttendeeStatusAccepted: // &#10004; - make an image to avoid font issues
-            $(fbDisplayAttendeeRow).html('<td class="status accepted"><span class="icon"><img src="../check.gif" alt="accepted" width="15" height="15"/></span><span class="tip">' + bwAttendeeDispStatusAccepted + '</span></td>');
+            $(fbDisplayAttendeeRow).html('<td class="status accepted"><span class="icon"><img src="' + resourcesRoot + '/images/check.gif" alt="accepted" width="15" height="15"/></span><span class="tip">' + bwAttendeeDispStatusAccepted + '</span></td>');
             break;
           case bwAttendeeStatusDeclined:
             $(fbDisplayAttendeeRow).html('<td class="status declined"><span class="icon">x</span><span class="tip">' + bwAttendeeDispStatusDeclined + '</span></td>');
@@ -436,10 +450,10 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         // the role class is used for rollover descriptions of the icon
         switch (curAttendee.role) {
           case bwAttendeeRoleChair: // displays writing hand icon - &#9997;
-            $(fbDisplayAttendeeRow).append('<td class="role chair"><span class="icon"><img src="../chair.gif" alt="chair" width="17" height="15"/></span><span class="tip">' + bwAttendeeDispRoleChair + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role chair"><span class="icon"><img src="' + resourcesRoot + '/images/chair.gif" alt="chair" width="17" height="15"/></span><span class="tip">' + bwAttendeeDispRoleChair + '</span></td>');
             break;
           case bwAttendeeRoleRequired: // displays right-pointing arrow icon - &#10137;
-            $(fbDisplayAttendeeRow).append('<td class="role required"><span class="icon"><img src="../reqArrow.gif" alt="required" width="17" height="12"/></span><span class="tip">' + bwAttendeeDispRoleRequired + '</span></td>');
+            $(fbDisplayAttendeeRow).append('<td class="role required"><span class="icon"><img src="' + resourcesRoot + '/images/reqArrow.gif" alt="required" width="17" height="12"/></span><span class="tip">' + bwAttendeeDispRoleRequired + '</span></td>');
             break;
           case bwAttendeeRoleNonParticipant: // non-participant
             $(fbDisplayAttendeeRow).append('<td class="role nonparticipant"><span class="icon">x</span><span class="tip">' + bwAttendeeDispRoleNonParticipant + '</span></td>');

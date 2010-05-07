@@ -335,6 +335,7 @@ body {
   font-weight: bold;
 }
 #bedework #bodyBlock td#bodyContent {
+  position: relative;
   border-bottom: 2px solid #aaa;
   vertical-align: top;
   padding: 0;

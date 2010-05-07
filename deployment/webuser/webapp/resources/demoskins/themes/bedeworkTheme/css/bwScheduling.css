@@ -1,8 +1,10 @@
-s#bwSchedule {
+#bwSchedule {
+  position: relative;
+  font-size: 0.8em;
 }
 #bwFreeBusyDisplay {
   margin: 2em 2em 0 2em;
-  width: 90%;
+  width: 80%;
   overflow: scroll;  
 }
 #bwScheduleTable {

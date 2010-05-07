@@ -138,20 +138,46 @@
           </script>
         </xsl:otherwise>
       </xsl:choose>
+    </xsl:if>
+    
+    <xsl:if test="/bedework/page='addEvent' or
+                  /bedework/page='editEvent'">
+      
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bwClock.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/css/bwClock.css"/>
+      
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkEventForm.js">&#160;</script>
+      
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
-      <link rel="stylesheet" href="{$resourcesRoot}/css/bwScheduling.css"/>
+      
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkScheduling.js">&#160;</script>
-      <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
+      <link rel="stylesheet" href="{$resourcesRoot}/css/bwScheduling.css"/>
+      
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
+      <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
+      
       <!-- initialize event acls, if present -->
       <xsl:if test="/bedework/editableAccess/access/acl/ace">
         <script type="text/javascript">
           <xsl:apply-templates select="/bedework/editableAccess/access/acl/ace" mode="initJS"/>
         </script>
       </xsl:if>
+      
+      <script type="text/javascript">
+        <xsl:comment>
+        // initialize the free/busy grid - values taken directly from the xml
+        // send params: displayId, startRange, endRange, startDate, endDate, startHourRange, endHourRange, attendees, workday, zoom
+        // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",freebusy:["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"],role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>");
+        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[],true,100,"<xsl:value-of select="$resourcesRoot"/>");
+        
+        // send in some attendees - these will come from interaction with the form
+        bwGrid.updateAttendee("Arlen Johnson", "mailto:johnsa@rpi.edu", ["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"], "CHAIR", "ACCEPTED", "person");
+        bwGrid.updateAttendee("Gary Schwartz", "mailto:schwag@rpi.edu", ["20100422T090000Z/PT1H00M"], "REQ-PARTICIPANT", "NEEDS-ACTION");
+        bwGrid.updateAttendee("", "mailto:douglm@rpi.edu", ["FBTYPE=BUSY-TENTATIVE:20100421T120000Z/20100421T130000Z","20100422T050000Z/20100422T060000Z"], "OPT-PARTICIPANT", "DECLINED");
+        </xsl:comment>
+      </script>
+      
+      
     </xsl:if>
     <xsl:if test="/bedework/page='editEvent'">
       <script type="text/javascript">
@@ -187,26 +213,34 @@
 
     <script type="text/javascript">
       <xsl:comment>
-      <![CDATA[
-      /*
-      function checkStatus(inboxCount,changed,url) {
-      // Check status of inbox and outbox and alert user appropriately.
-      // Just take care of inbox for now.
-        if (inboxCount && changed) {
-          var itemStr = "item";
-          if (inboxCount > 1) {
-            itemStr = "items";
-          }
-          if (confirm("You have " + inboxCount + " pending " + itemStr + " in your inbox.\nGo to inbox?")) {
-            window.location.replace(url);
-          }
-        }
-      }*/
+      
+      // focuses an element by id
       function focusElement(id) {
-      // focuses element by id
         document.getElementById(id).focus();
       }
-      ]]>
+      
+      $(document).ready(function() {
+        <xsl:choose>
+          <xsl:when test="/bedework/page = 'addEvent' or bedework/page = 'editEvent'">
+            focusElement('bwEventTitle');
+            bwSetupDatePickers();
+            bwGrid.display();
+          </xsl:when>
+          <xsl:when test="/bedework/page = 'editEvent'">
+            <xsl:if test="/bedework/formElements/recurrenceId = ''">
+              initRXDates();
+            </xsl:if>
+            initXProperties();
+          </xsl:when>
+          <xsl:when test="/bedework/page = 'attendees'">
+            focusElement('bwRaUri');
+          </xsl:when>
+          <xsl:when test="/bedework/page = 'modLocation'">
+            focusElement('bwLocMainAddress');
+          </xsl:when>
+        </xsl:choose>
+      });
+        
       </xsl:comment>
     </script>
   </xsl:template>

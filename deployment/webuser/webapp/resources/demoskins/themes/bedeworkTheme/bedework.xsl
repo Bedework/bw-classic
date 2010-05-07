@@ -68,30 +68,6 @@
         <xsl:call-template name="head"/>
       </head>
       <body>
-        <!--
-        <xsl:choose>
-          <xsl:when test="/bedework/page != 'inbox' and
-                          /bedework/page != 'outbox' and
-                          /bedework/page != 'attendeeRespond' and
-                          /bedework/page != 'attendeeReply'">
-            <xsl:attribute name="onload">checkStatus(<xsl:value-of select="/bedework/inboxState/numActive"/>,<xsl:value-of select="/bedework/inboxState/changed"/>,'<xsl:value-of select="$showInbox"/>')</xsl:attribute>
-          </xsl:when>
-        </xsl:choose>
-        -->
-        <xsl:choose>
-          <xsl:when test="/bedework/page = 'addEvent'">
-            <xsl:attribute name="onload">focusElement('bwEventTitle');bwSetupDatePickers();</xsl:attribute>
-          </xsl:when>
-          <xsl:when test="/bedework/page = 'editEvent'">
-            <xsl:attribute name="onload"><xsl:if test="/bedework/formElements/recurrenceId = ''">initRXDates();</xsl:if>initXProperties();focusElement('bwEventTitle');bwSetupDatePickers();</xsl:attribute>
-          </xsl:when>
-          <xsl:when test="/bedework/page = 'attendees'">
-            <xsl:attribute name="onload">focusElement('bwRaUri');</xsl:attribute>
-          </xsl:when>
-          <xsl:when test="/bedework/page = 'modLocation'">
-            <xsl:attribute name="onload">focusElement('bwLocMainAddress');</xsl:attribute>
-          </xsl:when>
-        </xsl:choose>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated -->
           <xsl:call-template name="headBar"/>
           <xsl:call-template name="messagesAndErrors"/>
