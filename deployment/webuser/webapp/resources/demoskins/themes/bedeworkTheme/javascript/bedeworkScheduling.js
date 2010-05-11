@@ -65,13 +65,12 @@ var bwAddAttendeeDisp = "add attendee...";
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
  * uid:             String - attendee's uid with mailto included, e.g. "mailto:vbede@example.com"
- * freebusyStrings: Array of rfc5545 freebusy reply values for the current attendee in the current date range
  * role:            String - Attendee role, e.g. CHAIR, REQ-PARTICIPANT, etc
  * status:          String - participation status (PARTSTAT)
  * type:            String - person, location, other resource
  * selected:        Boolean - if attendee is included in picknext selections (checkbox next to attendee in grid) 
  */
-var bwAttendee = function(name, uid, freebusyStrings, role, status, type) {
+var bwAttendee = function(name, uid, role, status, type) {
   this.name = name;
   this.uid = uid;
   this.freebusy = new Array();
@@ -80,16 +79,24 @@ var bwAttendee = function(name, uid, freebusyStrings, role, status, type) {
   this.type = type;
   this.selected = true;
   
-  //populate the freebusy objects
-  for (i = 0; i<freebusyStrings.length; i++) {
-    var fb = new bwFreeBusy(freebusyStrings[i]);
-    this.freebusy.push(fb);
-  }
-  
+  // set the default type if needed
   if (this.type == null || this.type == "") {
     this.type == bwAttendeeTypePerson;
   }
+    
+  // function to populate the freebusy objects
+  // freebusyStrings: Array of rfc5545 freebusy reply values for the current attendee in the current date range 
+  this.updateFreeBusy = function(fbStrings) {
+    // empty the freebusy array (to refresh on updates)
+    this.freebusy.length = 0;
+    // push the new freebusy strings into the array
+    for (i = 0; i<fbStrings.length; i++) {
+      var fb = new bwFreeBusy(fbStrings[i]);
+      this.freebusy.push(fb);
+    }
+  } 
 }
+
 /* A Freebusy object
  * Provides methods to work on freebusy values
  * fbString: an rfc5545 freebusy string, including FBTYPE parameter if present 
@@ -164,8 +171,11 @@ var bwFreeBusy = function(fbString) {
  * attendees:       array   - array of attendee objects; MUST include organizer on first instantiation
  * workday:         boolean - true to display workday hours only, false to display all 24 hours
  * zoom:            integer - scalar value for zooming the grid
+ * browserResourcesRoot: string - URL of browser resources (for displaying images, etc)
+ * fbUrl:           string - URL for making freebusy requests 
+ * organizerUri     string - e.g. "someone@mysite.edu" 
  */
-var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot) {
+var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot, fbUrl, organizerUri) {
   this.displayId = displayId;
   this.startRange = new Date(startRange);
   this.endRange = new Date(endRange);
@@ -177,6 +187,8 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.workday = workday;
   this.attendees = new Array();  // array of bwAttendee objects
   this.resourcesRoot = browserResourcesRoot;
+  this.fbUrl = fbUrl;
+  this.organizer = organizerUri;
   
   // 2D array of time and busy state for all attendees
   // [millisecond value,true/false if busy]
@@ -186,12 +198,6 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   this.freeTime = new Array();
   this.freeTimeIndex = 0;
   
-  // initialize any incoming attendees on first load
-  for (i = 0; i < attendees.length; i++) {
-    var newAttendee = new bwAttendee(attendees[i].name,attendees[i].uid ,attendees[i].freebusy,attendees[i].role,attendees[i].status,attendees[i].type);
-    this.attendees.push(newAttendee); 
-  }
-    
   // how much will we divide the hour in the grid?
   // ALWAYS set as a factor of 60 and never below 1
   // Be forewarned: changing this value quantizes the set of
@@ -213,29 +219,71 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   var cellsInDuration = durationMils / incrementMils; // calculate the number of cells in the duration for use in setting freeTime lookup
   var pickNextClicked = false; // false until the first time we click "pick next" - allows us to show the first free time window on first click
   
-
-  this.updateAttendee = function(name, uid, freebusy, role, status, type) {
-    var newAttendee = new bwAttendee(name, uid, freebusy, role, status, type);
-    /*var attendeeIsNew = true;
+  
+  // initialize the grid
+  this.init = function() {
+    // initialize any incoming attendees on first load
+    // while iterating, build up the array of requests 
+    for (i = 0; i < attendees.length; i++) {
+      var newAttendee = new bwAttendee(attendees[i].name,attendees[i].uid, attendees[i].role,attendees[i].status,attendees[i].type);
+      this.attendees.push(newAttendee); 
+    }
+    
+    // now go get the freebusy information for the attendees
+    this.requestFreeBusy(this.fbUrl);
+  }
+  
+  // add/update attendees
+  /* examples:
+     bwGrid.updateAttendee("Venerable Bede", "mailto:vbede@mysite.edu", ["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"], "CHAIR", "ACCEPTED", "person");
+     bwGrid.updateAttendee("Samual Clemens", "mailto:sclemens@mysite.edu", ["20100422T090000Z/PT1H00M"], "REQ-PARTICIPANT", "NEEDS-ACTION");
+     bwGrid.updateAttendee("", "mailto:noname@mysite.edu", ["FBTYPE=BUSY-TENTATIVE:20100421T120000Z/20100421T130000Z","20100422T050000Z/20100422T060000Z"], "OPT-PARTICIPANT", "DECLINED");
+   */
+  this.updateAttendee = function(name, uid, role, status, type) {
+    var newAttendee = new bwAttendee(name, uid, role, status, type);
+    var attendeeIsNew = true;
     
     // check to see if attendee already exists
     for (i=0; i < this.attendees.length; i++) {
-      alert(newAttendee.uid + " -- " + attendees[i].uid);
-      if (newAttendee.uid == attendees[i].uid) {
+      //alert(newAttendee.uid + " -- " + this.attendees[i].uid);
+      if (newAttendee.uid == this.attendees[i].uid) {
         attendeeIsNew = false;
         break;
       } 
     }
     
-    if (attendeeIsNew) {*/
+    if (attendeeIsNew) {
       this.attendees.push(newAttendee);      
-    //}
+    }
     
     this.display();
   }
   
   this.removeAttendee = function(index) {
     this.attendees.splice(index, 1);
+    this.display();
+  }
+  
+  this.requestFreeBusy = function(fburl) {
+    $.getJSON(fburl, function(fb) {
+      for (i=0; i < fb.microformats["schedule-response"].length; i++) {
+        var r = fb.microformats["schedule-response"][i]; // reference the current response
+
+        // prepare the freebusy strings for the attendee
+        var fbStrings = new Array();
+        for (j=0; j < r["calendar-data"].freebusy.periods.length; j++) {
+          fbStrings[j] = r["calendar-data"].freebusy.periods[j].value;
+        }
+
+        // find the attendee and update freebusy
+        for (j=0; j < bwGrid.attendees.length; j++) {
+          //alert(r["calendar-data"].attendee[0].value + " : " + bwGrid.attendees[j].uid);
+          if (r["calendar-data"].attendee[0].value == bwGrid.attendees[j].uid) {
+            bwGrid.attendees[j].updateFreeBusy(fbStrings);
+          }
+        }
+      }
+    });
     this.display();
   }
   
@@ -742,8 +790,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   }
 }
 
-
-
+// Utilities
 var dayRange = function(startDate, endDate) {  
   // find difference in milliseconds and return number of days.
   // 86400000 is the number of milliseconds in a day;

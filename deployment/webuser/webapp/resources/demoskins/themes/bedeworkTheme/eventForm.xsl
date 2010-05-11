@@ -1435,48 +1435,34 @@
     <!-- Meeting / Scheduling tab -->
     <!-- ======================== -->
     <div id="bwEventTab-Scheduling" class="invisible">
-      <div id="scheduling">
-        <xsl:if test="form/attendees/attendee">
-          <xsl:apply-templates select="form/attendees">
-            <xsl:with-param name="trash">no</xsl:with-param>
-          </xsl:apply-templates>
-        </xsl:if>
-        <!-- Recipients are deprecated -->
-        <!--
-        <xsl:if test="form/recipients/recipient">
-          <xsl:apply-templates select="form/recipients">
-            <xsl:with-param name="trash">no</xsl:with-param>
-          </xsl:apply-templates>
-        </xsl:if>
-        -->
-        <div class="editAttendees">
-          <xsl:choose>
-            <xsl:when test="form/organizerSchedulingObject">
-              <input name="editEventAttendees" type="submit" value="{$bwStr-AEEF-EditAttendees}"/>
-            </xsl:when>
-            <xsl:when test="form/attendeeSchedulingObject">
-              <p>
-                <em>
-                  <a href="{$schedule-changeStatus}&amp;initUpdate=yes">
-                    <xsl:copy-of select="$bwStr-AEEF-ChangeMyStatus"/>
-                  </a>
-                </em>
-              </p>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="form/entityType = '2'">
-                  <input name="makeEventIntoMeeting" type="submit" value="{$bwStr-AEEF-ScheduleThisTask}"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <input name="makeEventIntoMeeting" type="submit" value="{$bwStr-AEEF-MakeIntoMeeting}"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
+      <!-- 
+      <h4><xsl:copy-of select="$bwStr-Atnd-AddAttendees"/></h4>
+      <form name="raForm" id="recipientsAndAttendeesForm" action="{$requestFreeBusy}" method="post">
+        <div id="raFields">
+          <input type="text" name="uri" width="40" id="bwRaUri"/>
+          <input type="submit" value="{$bwStr-Atnd-Add}" />
+          <input type="hidden" name="recipient" value="true"/>
+          <input type="hidden" name="attendee"  value="true"/>
+          <xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-Atnd-RoleColon"/>
+          <select name="role">
+            <option value="REQ-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-RequiredParticipant"/></option>
+            <option value="OPT-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-OptionalParticipant"/></option>
+            <option value="CHAIR"><xsl:copy-of select="$bwStr-Atnd-Chair"/></option>
+            <option value="NON-PARTICIPANT"><xsl:copy-of select="$bwStr-Atnd-NonParticipant"/></option>
+          </select>
+          <xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-Atnd-StatusColon"/>
+          <select name="partstat">
+            <option value="NEEDS-ACTION"><xsl:copy-of select="$bwStr-Atnd-NeedsAction"/></option>
+            <option value="ACCEPTED"><xsl:copy-of select="$bwStr-Atnd-Accepted"/></option>
+            <option value="DECLINED"><xsl:copy-of select="$bwStr-Atnd-Declined"/></option>
+            <option value="TENTATIVE"><xsl:copy-of select="$bwStr-Atnd-Tentative"/></option>
+            <option value="DELEGATED"><xsl:copy-of select="$bwStr-Atnd-Delegated"/></option>
+          </select>
         </div>
-      </div>
-      
+      </form>
+      -->
       
 	    <div id="bwSchedule">
 	      <div id="bwFreeBusyDisplay">
@@ -1526,6 +1512,7 @@
 	          </td>
 	        </tr>  
 	      </table>
+        <input type="button" id="getJson" onclick="bwGrid.requestFreeBusy('{$resourcesRoot}/javascript/freebusy.js');" value="development: get freebusy"/>
 	    </div>
     </div>
 

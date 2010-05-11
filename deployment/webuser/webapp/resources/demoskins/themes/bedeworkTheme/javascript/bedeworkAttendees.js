@@ -58,6 +58,7 @@ var bwAutoCompleteOptions = {
       return " \"" + item.fn + "\" [" + item.email + "]";
   },
   formatResult: function(item) {
+    alert("here!");
     return item.email;
   }
 };

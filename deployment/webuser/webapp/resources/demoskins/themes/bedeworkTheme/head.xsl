@@ -153,6 +153,11 @@
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkScheduling.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/css/bwScheduling.css"/>
       
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js">&#160;</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkAttendees.js">&#160;</script>
+      <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
+      
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
       
@@ -166,14 +171,17 @@
       <script type="text/javascript">
         <xsl:comment>
         // initialize the free/busy grid - values taken directly from the xml
-        // send params: displayId, startRange, endRange, startDate, endDate, startHourRange, endHourRange, attendees, workday, zoom
-        // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",freebusy:["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"],role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>");
-        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","April 21, 2010","April 27, 2010","April 21, 2010 11:00:00","April 21, 2010 11:30:00",8,17,[],true,100,"<xsl:value-of select="$resourcesRoot"/>");
+        // send params: displayId, startRange, endRange, startDate, endDate, startHourRange, endHourRange, attendees, workday, zoom, browserResourcesRoot, fbUrl, organizerUri
+        // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010","May 17, 2010","May 10, 2010 11:00:00","May 10, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","");
+        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010","May 17, 2010","May 10, 2010 11:00:00","May 10, 2010 11:30:00",8,17,[],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$resourcesRoot"/>/javascript/freebusy.js","");
         
         // send in some attendees - these will come from interaction with the form
-        bwGrid.updateAttendee("Arlen Johnson", "mailto:johnsa@rpi.edu", ["20100421T093000Z/PT2H00M","20100423T174500Z/PT8H30M"], "CHAIR", "ACCEPTED", "person");
-        bwGrid.updateAttendee("Gary Schwartz", "mailto:schwag@rpi.edu", ["20100422T090000Z/PT1H00M"], "REQ-PARTICIPANT", "NEEDS-ACTION");
-        bwGrid.updateAttendee("", "mailto:douglm@rpi.edu", ["FBTYPE=BUSY-TENTATIVE:20100421T120000Z/20100421T130000Z","20100422T050000Z/20100422T060000Z"], "OPT-PARTICIPANT", "DECLINED");
+        bwGrid.updateAttendee("Arlen Johnson", "mailto:johnsa@mysite.edu", "CHAIR", "ACCEPTED", "person");
+        bwGrid.updateAttendee("Gary Schwartz", "mailto:schwag@mysite.edu", "REQ-PARTICIPANT", "NEEDS-ACTION");
+        bwGrid.updateAttendee("", "mailto:douglm@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
+        
+        // now initialize the grid
+        bwGrid.init();
         </xsl:comment>
       </script>
       

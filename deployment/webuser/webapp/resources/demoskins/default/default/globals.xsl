@@ -74,6 +74,7 @@
   <xsl:variable name="delEvent" select="/bedework/urlPrefixes/event/delEvent"/>
   <xsl:variable name="delInboxEvent" select="/bedework/urlPrefixes/event/delInboxEvent"/>
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef"/>
+  <xsl:variable name="requestFreeBusy" select="/bedework/urlPrefixes/event/requestFreeBusy"/>
   <!-- locations -->
   <xsl:variable name="location-initAdd" select="/bedework/urlPrefixes/location/initAdd"/>
   <xsl:variable name="location-initUpdate" select="/bedework/urlPrefixes/location/initUpdate"/>
