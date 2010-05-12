@@ -173,12 +173,10 @@
         // initialize the free/busy grid - values taken directly from the xml
         // send params: displayId, startRange, endRange, startDate, endDate, startHourRange, endHourRange, attendees, workday, zoom, browserResourcesRoot, fbUrl, organizerUri
         // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010","May 17, 2010","May 10, 2010 11:00:00","May 10, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","");
-        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010","May 17, 2010","May 10, 2010 11:00:00","May 10, 2010 11:30:00",8,17,[],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$resourcesRoot"/>/javascript/freebusy.js","");
+        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 11, 2010","May 17, 2010","May 13, 2010 11:00:00","May 13, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@mysite.edu",role:"CHAIR",status:"ACCEPTED",type:"person"},{name:"",uid:"mailto:douglm@mysite.edu",role:"REQ-PARTICIPANT",status:"NEEDS-ACTION",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$resourcesRoot"/>/javascript/freebusy.js","");
         
         // send in some attendees - these will come from interaction with the form
-        bwGrid.updateAttendee("Arlen Johnson", "mailto:johnsa@mysite.edu", "CHAIR", "ACCEPTED", "person");
-        bwGrid.updateAttendee("Gary Schwartz", "mailto:schwag@mysite.edu", "REQ-PARTICIPANT", "NEEDS-ACTION");
-        bwGrid.updateAttendee("", "mailto:douglm@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
+        // bwGrid.updateAttendee("Gary Schwartz", "mailto:schwag@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
         
         // now initialize the grid
         bwGrid.init();
