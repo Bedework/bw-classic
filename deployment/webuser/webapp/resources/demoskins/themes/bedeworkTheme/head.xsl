@@ -171,15 +171,19 @@
       <script type="text/javascript">
         <xsl:comment>
         // initialize the free/busy grid - values taken directly from the xml
-        // send params: displayId, startRange, endRange, startDate, endDate, startHourRange, endHourRange, attendees, workday, zoom, browserResourcesRoot, fbUrl, organizerUri
-        // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010","May 17, 2010","May 10, 2010 11:00:00","May 10, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@rpi.edu",role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","");
-        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 11, 2010","May 17, 2010","May 13, 2010 11:00:00","May 13, 2010 11:30:00",8,17,[{name:"Arlen Johnson",uid:"mailto:johnsa@mysite.edu",role:"CHAIR",status:"ACCEPTED",type:"person"},{name:"",uid:"mailto:douglm@mysite.edu",role:"REQ-PARTICIPANT",status:"NEEDS-ACTION",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$resourcesRoot"/>/javascript/freebusy.js","");
+        // send params: displayId, startRange, startHourRange, endHourRange, attendees, workday, zoom, browserResourcesRoot, fbUrl, organizerUri
+        // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010",8,17,[{name:"Venerable Bede",uid:"vbede@mysite.edu",role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","");
         
-        // send in some attendees - these will come from interaction with the form
-        // bwGrid.updateAttendee("Gary Schwartz", "mailto:schwag@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
+        var bwGridSDate = new Date("<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>/<xsl:value-of select="/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value"/>/<xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>");
+        var bwGridAttees = new Array({name:"Arlen Johnson",uid:"johnsa@mysite.edu",role:"CHAIR",status:"ACCEPTED",type:"person"},{name:"",uid:"douglm@mysite.edu",role:"REQ-PARTICIPANT",status:"NEEDS-ACTION",type:"person"});
+        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay",bwGridSDate,8,17,bwGridAttees,true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","johnsa@mysite.edu");
         
-        // now initialize the grid
-        bwGrid.init();
+        // set the grid size
+        function bwGridSetSize() {
+          var fbWidth = $("#bwEventTab-Basic").width() - 52;
+          $("#bwFreeBusyDisplay").css("width", fbWidth + "px");
+        };
+        
         </xsl:comment>
       </script>
       
@@ -230,7 +234,8 @@
           <xsl:when test="/bedework/page = 'addEvent' or bedework/page = 'editEvent'">
             focusElement('bwEventTitle');
             bwSetupDatePickers();
-            bwGrid.display();
+            bwGrid.init();
+            bwGridSetSize();
           </xsl:when>
           <xsl:when test="/bedework/page = 'editEvent'">
             <xsl:if test="/bedework/formElements/recurrenceId = ''">

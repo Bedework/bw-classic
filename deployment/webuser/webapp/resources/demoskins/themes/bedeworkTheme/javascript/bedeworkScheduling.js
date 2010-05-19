@@ -64,7 +64,7 @@ var bwAddAttendeeDisp = "add attendee...";
 
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
- * uid:             String - attendee's uid with mailto included, e.g. "mailto:vbede@example.com"
+ * uid:             String - attendee's uid, e.g. "vbede@example.com"
  * role:            String - Attendee role, e.g. CHAIR, REQ-PARTICIPANT, etc
  * status:          String - participation status (PARTSTAT)
  * type:            String - person, location, other resource
@@ -117,7 +117,7 @@ var bwFreeBusy = function(fbString, fbType) {
   this.start = "";    // will hold the UTC start value in milliseconds 
   this.end = "";      // will hold the UTC end value in milliseconds
   
-  if (this.type = "BUSY-TENTATIVE") {
+  if (this.type == "BUSY-TENTATIVE") {
     this.typeDisplay = bwFreeBusyDispTypeTentative;
   }
   
@@ -131,7 +131,7 @@ var bwFreeBusy = function(fbString, fbType) {
 
   var endMs; // end in milliseconds
   if (this.value.indexOf("P") > -1) {
-    // freebusy value is of the form: 19971015T223000Z/PT6H30M
+    // freebusy value is of the form: 19971015T223000Z\/PT6H30M
     // extract the hours and minutes from the strings and cast as numbers  
     var durationHours = this.value.substring(this.value.lastIndexOf("T")+1,this.value.indexOf("H"));
     var durationMins = 0;
@@ -143,11 +143,11 @@ var bwFreeBusy = function(fbString, fbType) {
     // set start and end in milliseconds 
     endMs = this.start + duration;
   } else { 
-    // freebusy value is of the form: 19980314T233000Z/19980315T003000Z
+    // freebusy value is of the form: 19980314T233000Z\/19980315T003000Z
     // set the freebusy end date
     var endDate = new Date();
-    endDate.setUTCFullYear(this.value.substring(17,21),this.value.substring(21,23)-1,this.value.substring(23,25));
-    endDate.setUTCHours(this.value.substring(26,28),this.value.substring(28,30),this.value.substring(30,32));
+    endDate.setUTCFullYear(this.value.substring(18,22),this.value.substring(22,24)-1,this.value.substring(24,26));
+    endDate.setUTCHours(this.value.substring(27,29),this.value.substring(29,31),this.value.substring(31,33));
     endMs = endDate.getTime();
   }
   
@@ -168,33 +168,31 @@ var bwFreeBusy = function(fbString, fbType) {
 /* Object to model the freebusy grid
  * displayId:       ID of html block for display output
  * startRange:      js date string - start of date range for grid
- * endRange:        js date string - end of date range for grid
- * startHoursRange: integer, 0-23 - hours of range start time (we'll use all minutes in an hour)
- * endHoursRange:   integer, 0-23 - hours of range end time  (we'll use all minutes in an hour)
- * startDate:       js date string - start date/time for meeting
- * endDate:         date string - end date/time for meeting
+ * startHoursRange: integer, 0-23 - hours of range start time 
+ * endHoursRange:   integer, 0-23 - hours of range end time  
  * attendees:       array   - array of attendee objects; MUST include organizer on first instantiation
  * workday:         boolean - true to display workday hours only, false to display all 24 hours
  * zoom:            integer - scalar value for zooming the grid
  * browserResourcesRoot: string - URL of browser resources (for displaying images, etc)
- * fbUrl:           string - URL for making freebusy requests 
- * organizerUri     string - e.g. "someone@mysite.edu" 
+ * fbUrlPrefix:     string - URL prefix for making freebusy requests 
+ * organizerUri:    string - e.g. "someone@mysite.edu" 
  */
-var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endDate, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot, fbUrl, organizerUri) {
+var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot, fbUrlPrefix, organizerUri) {
   this.displayId = displayId;
   this.startRange = new Date(startRange);
-  this.endRange = new Date(endRange);
+  this.endRange = new Date(startRange); 
   this.startHoursRange = startHoursRange;
   this.endHoursRange = endHoursRange; 
-  this.startDate = new Date(startDate);
-  this.endDate = new Date(endDate);
   this.zoom = zoom;
   this.workday = workday;
   this.attendees = new Array();  // array of bwAttendee objects
   this.resourcesRoot = browserResourcesRoot;
-  this.fbUrl = fbUrl;
+  this.fbUrlPrefix = fbUrlPrefix;
   this.organizer = organizerUri;
   
+  // format the endRange
+  this.endRange.addDays(5);
+    
   // 2D array of time and busy state for all attendees
   // [millisecond value,true/false if busy]
   // this value is initialized when we draw the allAttendees row
@@ -224,19 +222,17 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
   var cellsInDuration = durationMils / incrementMils; // calculate the number of cells in the duration for use in setting freeTime lookup
   var pickNextClicked = false; // false until the first time we click "pick next" - allows us to show the first free time window on first click
   
-  
   // initialize the grid
   this.init = function() {
     // initialize any incoming attendees on first load
-    // while iterating, build up the array of requests 
     for (var i = 0; i < attendees.length; i++) {
-      var newAttendee = new bwAttendee(attendees[i].name,attendees[i].uid, attendees[i].role,attendees[i].status,attendees[i].type);
+      var newAttendee = new bwAttendee(attendees[i].name, attendees[i].uid, attendees[i].role, attendees[i].status, attendees[i].type);
       this.attendees.push(newAttendee); 
     }
     
     // now go get the freebusy information for the attendees
-    if (this.attendees.length) {
-      this.requestFreeBusy(this.fbUrl);
+    if (this.attendees.length > 0) {
+      this.requestFreeBusy();
     }
   }
   
@@ -260,30 +256,43 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     
     if (attendeeIsNew) {
       this.attendees.push(newAttendee); 
-      this.requestFreeBusy(this.fbUrl);      
+      this.requestFreeBusy();      
     }
     
   }
   
   this.removeAttendee = function(index) {
     this.attendees.splice(index, 1);
-    this.requestFreeBusy(this.fbUrl); 
+    this.requestFreeBusy(); 
   }
   
-  this.requestFreeBusy = function(fburl) {
-    $.getJSON(fburl, function(fb) {
+  this.requestFreeBusy = function() {
+    // set up the freebusy URL based on current parameters
+    // e.g. http://localhost:8080/ucal/event/requestFreeBusy.gdo?b=de&start=20100510T050000Z&end=20100517T050000Z&organizerUri=douglm@mysite.edu&attendeeUri=douglm@mysite.edu&attendeeUri=johnsa@mysite.edu
+    var fbUrlStart = "&start=" + this.startRange.getUTCFullYear() + this.startRange.getUTCMonthFull() + this.startRange.getUTCDateFull() + "T" + this.startRange.getUTCHoursFull() + this.startRange.getUTCMinutesFull() + "00Z";
+    var fbUrlEnd = "&end=" + this.endRange.getUTCFullYear() + this.endRange.getUTCMonthFull() + this.endRange.getUTCDateFull() + "T" + this.endRange.getUTCHoursFull() + this.endRange.getUTCMinutesFull() + "00Z";;
+    var fbOrganizer = "&organizerUri=" + this.organizer;
+    var fbAttendees = "";
+    for (var i=0; i < bwGrid.attendees.length; i++) {
+      fbAttendees += "&attendeeUri=" + bwGrid.attendees[i].uid;
+    }
+    var fbUrl = this.fbUrlPrefix + fbUrlStart + fbUrlEnd + fbOrganizer + fbAttendees;
+    
+    $.getJSON(fbUrl, function(fb) {
       for (var i=0; i < fb.microformats["schedule-response"].length; i++) {
         var r = fb.microformats["schedule-response"][i]; // reference the current response
         
-        // find the attendee and pass in the freebusy object
+        // find the attendee and pass in the freebusy object if the attendee has any
         for (var j=0; j < bwGrid.attendees.length; j++) {
-          if (bwGrid.attendees[j].uid == r["calendar-data"].attendee[0].value) {
-            bwGrid.attendees[j].updateFreeBusy(r["calendar-data"].freebusy);
+          if (bwGrid.attendees[j].uid == r["calendar-data"].attendee[0].value.substr(r["calendar-data"].attendee[0].value.lastIndexOf(":") + 1)) {
+            if (r["calendar-data"].freebusy) {
+              bwGrid.attendees[j].updateFreeBusy(r["calendar-data"].freebusy);
+            }
           }
         }
       }
+      bwGrid.display();
     });
-    this.display();
   }
   
   this.pickNext = function() {
@@ -314,7 +323,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     pickNextClicked = true;
   } 
   
-  this.pickPrevious = function(gridObj) {
+  this.pickPrevious = function() {
     // clear highlighting
     $("#bwScheduleTable .fbcell").removeClass("highlight");
     
@@ -363,7 +372,11 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
     this.display();
   }
   
-  this.display = function() {
+  this.showOptions = function() {
+    $("#bwFbOptionsMenu").show("slow");
+  }
+  
+  this.display = function(width) {
     try {
       // number of days to display
       var range = dayRange(this.startRange, this.endRange);
@@ -383,9 +396,21 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
       var fbDisplay = document.createElement("table");
       fbDisplay.id = "bwScheduleTable";
       
-      // generate the date row - includes top left empty corner 
+      // create the add attendee html
+      var addAttendeeHtml = '';
+      /*addAttendeeHtml += '<input type="text" name="uri" width="30" id="bwRaUri"/>';
+      addAttendeeHtml += '<input type="button" value="add" />';
+      addAttendeeHtml += '<br/>role:';
+      addAttendeeHtml += '<select name="role">';
+      addAttendeeHtml += '<option value="REQ-PARTICIPANT">required participant</option>';
+      addAttendeeHtml += '<option value="OPT-PARTICIPANT">optional participant</option>';
+      addAttendeeHtml += '<option value="CHAIR">chair</option>';
+      addAttendeeHtml += '<option value="NON-PARTICIPANT">non-participant</option>';
+      addAttendeeHtml += '</select>';*/
+      
+      // generate the date row - includes top left corner for "add attendee" 
       var fbDisplayDateRow = fbDisplay.insertRow(fbDisplay.rows.length);
-      $(fbDisplayDateRow).html('<td rowspan="2" colspan="4" class="corner"></td><td class="fbBoundry"></td>');
+      $(fbDisplayDateRow).html('<td rowspan="2" colspan="4" class="corner">' + addAttendeeHtml + '</td><td class="fbBoundry"></td>');
       for (var i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
         curDate.addDays(i);
@@ -438,10 +463,10 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
             loop1: // since we only need to know if anyone is busy, provide a simple means of breaking from the inner loop
             for (var att = 0; att < this.attendees.length; att++) {
               for (var m = 0; m < this.attendees[att].freebusy.length; m++) {
-                var tzoffset = -curDate.getTimezoneOffset() * 60000; // in milliseconds
+                // keep for reference: var tzoffset = -curDate.getTimezoneOffset() * 60000; // in milliseconds
                 // adding the hourdivision increment in the calculation below is to correct for a bug
                 // in which the class was always offset by one table cell - should find cause
-                var curDateUTC = curDate.getTime() + tzoffset + (60 / this.hourDivision * 60000);
+                var curDateUTC = curDate.getTime() + (60 / this.hourDivision * 60000);
                 if (this.attendees[att].freebusy[m].contains(curDateUTC) && this.attendees[att].selected) {
                   $(fbCell).addClass("busy");
                   // change the last added fb in the hash to true
@@ -512,7 +537,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         
         // output the attendee name or address (depending on which we have available)
         // and add attendee functions
-        var attendeeAddress = curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":") + 1);
+        var attendeeAddress = curAttendee.uid;
         var attendeeNameHtml = '<td class="name"><span class="bwAttendee" id="' + attendeeAddress + '">';
         if (curAttendee.name && curAttendee.name != "") {
           attendeeNameHtml += curAttendee.name;
@@ -541,19 +566,19 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
           for (var j = 0; j < hourRange; j++) {
             for (var k = 0; k < this.hourDivision; k++) {
               var fbCell = document.createElement("td");
-              fbCell.id = curDate.getTime() + "-" + curAttendee.uid.substr(curAttendee.uid.lastIndexOf(":") + 1);
+              fbCell.id = curDate.getTime() + "-" + curAttendee.uid;
               $(fbCell).addClass("fbcell");
               $(fbCell).addClass(curDate.getTime().toString());
               if (curDate.getMinutes() == 0 && j != 0) {
                 $(fbCell).addClass("hourBoundry");
               }
               for (var m = 0; m < curAttendee.freebusy.length; m++) {
-                var tzoffset = -curDate.getTimezoneOffset() * 60000; // in milliseconds
+                // keep for reference: var tzoffset = -curDate.getTimezoneOffset() * 60000; // in milliseconds
                 // adding the hourdivision increment in the calculation below is to correct for a bug
                 // in which the class was always offset by one table cell - should find cause
-                var curDateUTC = curDate.getTime() + tzoffset + (60 / this.hourDivision * 60000);
+                var curDateUTC = curDate.getTime() + (60 / this.hourDivision * 60000);
                 if (curAttendee.freebusy[m].contains(curDateUTC)) {
-                  if (curAttendee.freebusy[m].typeDisplay.match("TENTATIVE")) {
+                  if (curAttendee.freebusy[m].typeDisplay == bwFreeBusyDispTypeTentative) {
                     $(fbCell).addClass("tentative");
                   } else {
                     $(fbCell).addClass("busy");
@@ -571,7 +596,6 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
         }
       }
       
-      /* DEPRECATED - don't put in grid
       // generate the "add attendee" row
       fbDisplayAddAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
       
@@ -606,7 +630,7 @@ var bwSchedulingGrid = function(displayId, startRange, endRange, startDate, endD
           }
         }
         $(fbDisplayAddAttendeeRow).append('<td class="dayBoundry"></td>');
-      } */
+      } 
       
       // generate a blank row at the end (this is just for visual padding)
       fbDisplayBlankRow = fbDisplay.insertRow(fbDisplay.rows.length);
@@ -831,6 +855,41 @@ Date.prototype.getMinutesFull = function() {
     return "0" + minutesFull;
   }  
   return hours12;
+}
+
+/* UTC FORMATTERS */
+
+// return a formatted UTC month, prepended with zero if needed
+Date.prototype.getUTCMonthFull = function() {
+  var monthFull = this.getUTCMonth() + 1;
+  if (monthFull < 10) {
+    return "0" + monthFull;
+  }  
+  return monthFull;
+}
+// return a formatted UTC day date, prepended with zero if needed
+Date.prototype.getUTCDateFull = function() {
+  var dateFull = this.getUTCDate();
+  if (dateFull < 10) {
+    return "0" + dateFull;
+  }  
+  return dateFull;
+}
+// return formatted UTC hours, prepended with zero if needed
+Date.prototype.getUTCHoursFull = function() {
+  var hoursFull = this.getUTCHours();
+  if (hoursFull < 10) {
+    return "0" + hoursFull;
+  }  
+  return hoursFull;
+}
+// return formatted UTC minutes, prepended with zero if needed
+Date.prototype.getUTCMinutesFull = function() {
+  var minutesFull = this.getUTCMinutes();
+  if (minutesFull < 10) {
+    return "0" + minutesFull;
+  }  
+  return minutesFull;
 }
 
 /*

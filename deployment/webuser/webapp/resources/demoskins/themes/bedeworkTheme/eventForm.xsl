@@ -1501,7 +1501,10 @@
 	            <span class="zoomControl">+</span>
 	          </td>
 	          <td>
-	            <input type="button" id="bwSchedOptions" value="Options &#x25BC;"/>
+	            <input type="button" id="bwSchedOptions" onclick="bwGrid.showOptions();" value="Options &#x25BC;"/>
+              <ul id="bwFbOptionsMenu">
+                <li>24 Hours</li>
+              </ul>
 	          </td>
 	          <td class="dateLabel">
 	            End:
@@ -1512,7 +1515,7 @@
 	          </td>
 	        </tr>  
 	      </table>
-        <input type="button" id="getJson" onclick="bwGrid.requestFreeBusy('{$resourcesRoot}/javascript/freebusy.js');" value="development: get freebusy"/>
+        <input type="button" id="getJson" onclick="bwGrid.requestFreeBusy('{$requestFreeBusy}');" value="development: get freebusy"/>
 	    </div>
     </div>
 

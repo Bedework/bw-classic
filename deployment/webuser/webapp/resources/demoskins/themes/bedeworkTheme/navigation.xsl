@@ -196,6 +196,8 @@
            </xsl:if>
 
            <!-- show free / busy -->
+           <!-- DEPRECATED as of Bedework 3.7: the feature is left in place for backwards compatibility -->
+           <!-- 
            <xsl:choose>
              <xsl:when test="/bedework/periodname!='Year'">
                <xsl:choose>
@@ -215,6 +217,7 @@
                <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Freebusy"/></span>
              </xsl:otherwise>
            </xsl:choose>
+           -->
 
            <!-- toggle list / calendar view -->
            <xsl:choose>
@@ -327,16 +330,19 @@
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
        </a>
+       <!-- 
        <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/images/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleMeeting"/>
        </a>
+       -->
        <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/images/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddTask"/>
        </a>
+       <!-- 
        <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="{$bwStr-Actn-ScheduleTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/images/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
           <xsl:text> </xsl:text>
@@ -347,6 +353,7 @@
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-Upload"/>
        </a>
+       -->
      </div>
   </xsl:template>
 
