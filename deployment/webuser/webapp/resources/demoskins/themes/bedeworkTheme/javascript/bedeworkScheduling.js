@@ -233,6 +233,9 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     // now go get the freebusy information for the attendees
     if (this.attendees.length > 0) {
       this.requestFreeBusy();
+    } else {
+      // no attendees - just display the widget
+      this.display();
     }
   }
   

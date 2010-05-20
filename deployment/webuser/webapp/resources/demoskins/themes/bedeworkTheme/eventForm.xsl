@@ -191,7 +191,7 @@
           </a>
         </li>
         <!-- Hide from use.  If you wish to enable the access control form for
-         events, uncomment this block.
+         events, uncomment this block and the access control block further down in this file.
         <li>
           <a href="javascript:setTab('eventFormTabs',4); show('bwEventTab-Access'); hide('bwEventTab-Details','bwEventTab-Basic','bwEventTab-Recurrence','bwEventTab-Scheduling');">
             access
@@ -1418,6 +1418,8 @@
     </div>
 
     <!-- Access tab -->
+    <!-- if you want to expose access control on events, uncomment
+         the tab in the event form submenu at the top of this file -->
     <!-- ========== -->
     <div id="bwEventTab-Access" class="invisible">
       <div id="sharingBox">
