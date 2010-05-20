@@ -14,6 +14,8 @@
                However, we may need to merge in subsidiary information to handle
                principal properties. That may mean maintaining a shadow
                principal hierarchy in the local server.
+               
+               Each element name below must be unique.
             -->
           <principal-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/principals</pathPrefix>
@@ -129,6 +131,35 @@
             <authPw>secret</authPw>
             <debug>true</debug>
           </user-dirHandler>
+
+          <public-locations-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
+            <pathPrefix>/public/locations</pathPrefix>
+
+            <className>org.bedework.carddav.server.dirHandlers.LdapAddrBookDirHandler</className>
+
+            <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
+            <providerUrl>ldap://localhost:10389/</providerUrl>
+            <baseDn>ou=locations,dc=bedework,dc=org</baseDn>
+
+            <queryLimit>1000</queryLimit>
+
+            <attrIds></attrIds>
+
+            <cardKind>location</cardKind>
+
+            <addressbookObjectClass>organizationalUnit</addressbookObjectClass>
+            <addressbookIdAttr>ou</addressbookIdAttr>
+
+            <addressbookEntryObjectClass>CalendarResource</addressbookEntryObjectClass>
+            <addressbookEntryIdAttr>cn</addressbookEntryIdAttr>
+
+            <principalIdAttr>calcaladruri</principalIdAttr>
+
+            <authDn>uid=admin,ou=system</authDn>
+            <authPw>secret</authPw>
+
+            <debug>true</debug>
+          </public-locations-dirHandler>
 
           <!-- handle the public (enterprise) address book hierarchy -->
           <public-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
