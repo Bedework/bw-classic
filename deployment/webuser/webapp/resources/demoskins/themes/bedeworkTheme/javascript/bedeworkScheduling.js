@@ -282,10 +282,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       for (var i=0; i < fb.microformats["schedule-response"].length; i++) {
         var r = fb.microformats["schedule-response"][i]; // reference the current response
         
-        // find the attendee and pass in the freebusy object if the attendee has any
-        for (var j=0; j < bwGrid.attendees.length; j++) {
-          if (bwGrid.attendees[j].uid == r["calendar-data"].attendee[0].value.substr(r["calendar-data"].attendee[0].value.lastIndexOf(":") + 1)) {
-            if (r["calendar-data"].freebusy) {
+        if (r["calendar-data"].freebusy) {
+          // find the attendee and pass in the freebusy object if the attendee has any
+          for (var j=0; j < bwGrid.attendees.length; j++) {
+            if (bwGrid.attendees[j].uid == r["calendar-data"].attendee[0].value.substr(r["calendar-data"].attendee[0].value.lastIndexOf(":") + 1)) {
               bwGrid.attendees[j].updateFreeBusy(r["calendar-data"].freebusy);
             }
           }
