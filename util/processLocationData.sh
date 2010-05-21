@@ -4,26 +4,30 @@
 # to get records that are likely to be a building and a room number.
 #
 
+# field seperator used in input file
 FS='|'
+
+# input and output files
 INFILE=BerkeleyLocRecords.txt
-LDAPOUT=ldapOut
-VCARDOUT=vcardOut
+LDAPLOC=ldapLoc
+VCARDLOC=vcardLoc
+LDAPPEOPLE=ldapPeople
+VCARDPEOPLE=vcardPeople
+
 LDAPSetLines="objectclass: top
 objectclass: calendarresource
-objectclass: admittanceinfo
-objectclass: inventoryinfo
 objectclass: schedapprovalinfo
-objectclass: calendarresourcecost"
+objectclass: organizationalUnit"
 VCARDHeader="BEGIN:VCARD
    VERSION:4.0"
 VCARDFooter="   END:VCARD"
 uidPrefix="bw"
 uidSuffix="@berkeley.edu"
 
-cp /dev/null $LDAPOUT
-cp /dev/null $VCARDOUT
-
-
+cp /dev/null $LDAPLOC
+cp /dev/null $VCARDLOC
+cp /dev/null $LDAPPEOPLE
+cp /dev/null $VCARDPEOPLE
 
 counter=0
 while read line; do
@@ -46,25 +50,28 @@ while read line; do
 	F4=$(echo $line|cut -d $FS -f 4)
 	#F5 => first name of room manager
 	F5=$(echo $line|cut -d $FS -f 5)
-	if [ $F5 != "" ]; then
-		buildPersion="true"
+	if [ "$F5" != "" ]; then
+		buildPerson="true"
 		roomManager=${F5}${F4}
     fi
 	#F6 => phone number of room manager
 	F6=$(echo $line|cut -d $FS -f 6)
+	contactPhone=$F6
 	#F7 => fax number of room manager
 	F7=$(echo $line|cut -d $FS -f 7)
+	contactFax=$F7
 	#F8 => email of room manager
 	F8=$(echo $line|cut -d $FS -f 8)
+	contactEmail=$F8
 	#F9 => 
 	F9=$(echo $line|cut -d $FS -f 9)
 	F10=$(echo $line|cut -d $FS -f10)
 	#F11 Requires Approval
 	F11=$(echo $line|cut -d $FS -f11)
 	if [ "$F11" = "" ]; then
-	  autoaccept=true
+	  autoaccept=TRUE
 	else
-	  autoaccept=false
+	  autoaccept=FALSE
 	fi
 	F12=$(echo $line|cut -d $FS -f12)
 	F13=$(echo $line|cut -d $FS -f13)
@@ -82,7 +89,7 @@ while read line; do
 
     # If no info on autoaccept, turn it on.	
 	if [ "$F12" = "" ]; then 
-		F12="true"
+		F12="TRUE"
 	fi
 	
 #### locations
@@ -94,12 +101,12 @@ calresourcekind: location
 uid: $uid
 cn: $cn
 ou: locations
-description: $F1" >> $LDAPOUT
+description: $F1" >> $LDAPLOC
   if [ "$F3" != "" ]; then
-    echo "capacity: $F3" >> $LDAPOUT
+    echo "capacity: $F3" >> $LDAPLOC
   fi
   echo "autoaccept: $autoaccept
-" >> $LDAPOUT
+" >> $LDAPLOC
 
     #VCARD
   echo "$VCARDHeader
@@ -111,12 +118,11 @@ description: $F1" >> $LDAPOUT
    CAPACITY: $F3
    AUTOACCEPT: $autoaccept
 $VCARDFooter
-" >> $VCARDOUT
+" >> $VCARDLOC
 
-  ### people
+### people
   if [ $buildPerson = "true" ]; then
-	name="$F"
-	echo "dn: cn=${roomManager}, ou=people,dc=berkeley,dc=edu	
+	echo "dn: cn=${roomManager}, ou=people,dc=berkeley,dc=edu" >> $LDAPPEOPLE 
   fi
 
 done < $INFILE
