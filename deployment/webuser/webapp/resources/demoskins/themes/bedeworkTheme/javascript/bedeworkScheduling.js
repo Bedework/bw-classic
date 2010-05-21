@@ -241,9 +241,9 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   
   // add/update attendees
   /* examples:
-     bwGrid.updateAttendee("Venerable Bede", "mailto:vbede@mysite.edu", "CHAIR", "ACCEPTED", "person");
-     bwGrid.updateAttendee("Samual Clemens", "mailto:sclemens@mysite.edu", "REQ-PARTICIPANT", "NEEDS-ACTION");
-     bwGrid.updateAttendee("", "mailto:noname@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
+     bwGrid.updateAttendee("Venerable Bede", "vbede@mysite.edu", "CHAIR", "ACCEPTED", "person");
+     bwGrid.updateAttendee("Samual Clemens", "sclemens@mysite.edu", "REQ-PARTICIPANT", "NEEDS-ACTION");
+     bwGrid.updateAttendee("", "noname@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
    */
   this.updateAttendee = function(name, uid, role, status, type) {
     var newAttendee = new bwAttendee(name, uid, role, status, type);
@@ -285,7 +285,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       for (var i=0; i < fb.microformats["schedule-response"].length; i++) {
         var r = fb.microformats["schedule-response"][i]; // reference the current response
         
-        if (r["calendar-data"].freebusy) {
+        if (r["calendar-data"] != undefined && r["calendar-data"].freebusy != undefined) {
           // find the attendee and pass in the freebusy object if the attendee has any
           for (var j=0; j < bwGrid.attendees.length; j++) {
             if (bwGrid.attendees[j].uid == r["calendar-data"].attendee[0].value.substr(r["calendar-data"].attendee[0].value.lastIndexOf(":") + 1)) {
