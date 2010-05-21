@@ -133,6 +133,13 @@
                 dateFormat: "yymmdd"
               }).attr("readonly", "readonly");
               $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+              
+              // meeting startdate widget
+              $("#bwEventWidgetStartDateSched").datepicker({
+                defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+              }).attr("readonly", "readonly");
+              $("#bwEventWidgetStartDateSched").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+              
             }
             </xsl:comment>
           </script>

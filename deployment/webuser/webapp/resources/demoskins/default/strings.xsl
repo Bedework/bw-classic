@@ -309,6 +309,7 @@
   <xsl:variable name="bwStr-AEEF-Due">Due:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-End">End:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Duration">Duration</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Duration-Sched">Duration:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Days">days</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Hours">hours</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Minutes">minutes</xsl:variable>

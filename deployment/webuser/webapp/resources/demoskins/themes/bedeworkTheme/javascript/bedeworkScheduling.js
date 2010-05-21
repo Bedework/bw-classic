@@ -375,10 +375,6 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     this.display();
   }
   
-  this.showOptions = function() {
-    $("#bwFbOptionsMenu").show("slow");
-  }
-  
   this.display = function(width) {
     try {
       // number of days to display
@@ -802,6 +798,16 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
           bwGrid.display();
         }
       );
+      
+      // now add some actions 
+      // to the elements of the freebusy control buttons ...
+      // while these are not actually part of the grid, the
+      // actions exposed interact with it
+      
+      $("#bwSchedOptions").click(function() {
+        alert("?");
+        $("bwFbOptionsMenu").show("fast");
+      });
       
 
     } catch (e) {

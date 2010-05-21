@@ -180,3 +180,9 @@
   padding: 0.5em;
   margin: 0;
 }
+#bwScheduleControls #bwFbOptionsMenu li {
+  margin: 0.5em;
+}
+#bwScheduleControls .schedTime {
+  padding-left: 1em;
+}

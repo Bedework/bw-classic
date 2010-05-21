@@ -1480,13 +1480,18 @@
 	            <input type="button" id="bwPickNext" onclick="bwGrid.pickNext();" value="Pick Next &#187;"/>
 	          </td>
 	          <td class="dateLabel">
-	            Start:
+	            <strong><xsl:copy-of select="$bwStr-AEEF-Start"/></strong>
 	          </td>
-	          <td>
-	            
-	          </td>
-	          <td class="time">
-	            
+	          <td class="schedDate">
+	            <input type="text" name="bwEventWidgetStartDateSched" id="bwEventWidgetStartDateSched" size="10"/>
+              <xsl:text> </xsl:text>
+              <span class="schedTime">
+                <xsl:copy-of select="form/start/hour/*"/>
+                <xsl:copy-of select="form/start/minute/*"/>
+                <xsl:if test="form/start/ampm">
+                  <xsl:copy-of select="form/start/ampm/*"/>
+                </xsl:if>
+              </span>
 	          </td>
 	        </tr>
 	        <tr>
@@ -1503,21 +1508,53 @@
 	            <span class="zoomControl">+</span>
 	          </td>
 	          <td>
-	            <input type="button" id="bwSchedOptions" onclick="bwGrid.showOptions();" value="Options &#x25BC;"/>
+	            <input type="button" id="bwSchedOptions" value="Options &#x25BC;"/>
               <ul id="bwFbOptionsMenu">
                 <li>24 Hours</li>
               </ul>
 	          </td>
 	          <td class="dateLabel">
-	            End:
+	            <strong><xsl:copy-of select="$bwStr-AEEF-Duration-Sched"/></strong>
 	          </td>
-	          <td>
-	          </td>
-	          <td class="time">
+	          <td class="schedDate">
+              <!-- force day, hour, minute format -->
+              <input type="text" name="eventDuration.daysStr" size="2" id="durationDaysSched">
+                <xsl:attribute name="value">
+                  <xsl:choose>
+                    <xsl:when test="/bedework/creating='true' and form/allDay/input/@checked='checked'">1</xsl:when>
+                    <xsl:when test="/bedework/creating='true' and form/allDay/input/@checked!='checked'">0</xsl:when>
+                    <xsl:otherwise><xsl:value-of select="form/end/duration/days/input/@value"/></xsl:otherwise>
+                  </xsl:choose>
+                </xsl:attribute>
+              </input>
+              <xsl:copy-of select="$bwStr-AEEF-Days"/>
+              <xsl:text> </xsl:text>
+              <span id="durationHrMinSched">
+                <input type="text" name="eventDuration.hoursStr" size="2" id="durationHoursSched">
+                  <xsl:attribute name="value">
+                    <xsl:choose>
+                      <xsl:when test="/bedework/creating='true'">1</xsl:when>
+                      <xsl:otherwise><xsl:value-of select="form/end/duration/hours/input/@value"/></xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
+                </input>
+                <xsl:copy-of select="$bwStr-AEEF-Hours"/>
+                <xsl:text> </xsl:text>
+                <input type="text" name="eventDuration.minutesStr" size="2" id="durationMinutesSched">
+                  <xsl:attribute name="value">
+                    <xsl:choose>
+                      <xsl:when test="/bedework/creating='true'">0</xsl:when>
+                      <xsl:otherwise><xsl:value-of select="form/end/duration/minutes/input/@value"/></xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
+                </input>
+                <xsl:copy-of select="$bwStr-AEEF-Minutes"/>
+              </span>
 	          </td>
 	        </tr>  
 	      </table>
-        <input type="button" id="getJson" onclick="bwGrid.requestFreeBusy('{$requestFreeBusy}');" value="development: get freebusy"/>
+                        
+        <!-- input type="button" id="getJson" onclick="bwGrid.requestFreeBusy('{$requestFreeBusy}');" value="development: get freebusy"/-->
 	    </div>
     </div>
 
