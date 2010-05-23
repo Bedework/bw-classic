@@ -434,32 +434,29 @@
             </input>
           </td>
         </tr>
-        <tr class="subField">
+        <tr>
+          <td colspan="2">&#160;</td>
+        </tr>
+        <tr>
           <td class="fieldname">
             <xsl:copy-of select="$bwStr-ScPr-CancelProcessing"/>
           </td>
           <td>
             <select name="scheduleAutoCancelAction" id="scheduleAutoCancelAction">
-              <xsl:if test="scheduleAutoRespond = 'false'">
-                <xsl:attribute name="disabled">disabled</xsl:attribute>
-              </xsl:if>
               <option value="0">
                 <xsl:if test="scheduleAutoCancelAction = '0'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                <xsl:copy-of select="$bwStr-ScPr-SetToCanceled"/>
+                <xsl:copy-of select="$bwStr-ScPr-DeleteEvent"/>
               </option>
               <option value="1">
                 <xsl:if test="scheduleAutoCancelAction = '1'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                <xsl:copy-of select="$bwStr-ScPr-DeleteEvent"/>
+                <xsl:copy-of select="$bwStr-ScPr-SetToCanceled"/>
               </option>
             </select>
           </td>
-        </tr>
-        <tr>
-          <td colspan="2">&#160;</td>
         </tr>
         <tr>
           <td class="fieldname">
