@@ -425,10 +425,10 @@
               </strong>
               <xsl:choose>
                 <xsl:when test="form/end/type='E'">
-                  <input type="radio" name="eventEndType" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="eventEndTypeDateTime" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="eventEndType" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="eventEndTypeDateTime" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:copy-of select="$bwStr-AEEF-Date"/>
@@ -519,10 +519,10 @@
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="form/end/type='D'">
-                    <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" id="eventEndTypeDuration" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" id="eventEndTypeDuration" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 <xsl:copy-of select="$bwStr-AEEF-Duration"/>
@@ -611,10 +611,10 @@
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="form/end/type='N'">
-                    <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" id="eventEndTypeNone" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" id="eventEndTypeNone" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 <xsl:copy-of select="$bwStr-AEEF-This"/><xsl:text> </xsl:text>

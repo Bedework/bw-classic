@@ -101,8 +101,8 @@ var bwAttendee = function(name, uid, role, status, type) {
         }
       }  
     }
-  }
-}
+  };
+};
 
 /* A Freebusy object
  * Provides methods to work on freebusy values
@@ -162,8 +162,8 @@ var bwFreeBusy = function(fbString, fbType) {
       return true;
     }
     return false;
-  }
-}
+  };
+};
 
 /* Object to model the freebusy grid
  * displayId:       ID of html block for display output
@@ -237,7 +237,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // no attendees - just display the widget
       this.display();
     }
-  }
+  };
   
   // add/update attendees
   /* examples:
@@ -262,12 +262,12 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       this.requestFreeBusy();      
     }
     
-  }
+  };
   
   this.removeAttendee = function(index) {
     this.attendees.splice(index, 1);
     this.requestFreeBusy(); 
-  }
+  };
   
   this.requestFreeBusy = function() {
     // set up the freebusy URL based on current parameters
@@ -296,7 +296,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       }
       bwGrid.display();
     });
-  }
+  };
   
   this.pickNext = function() {
     // clear highlighting
@@ -324,7 +324,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     // we've clicked pickedNext - so set the pickNextClicked flag to true
     // this flag lets us highlight the very first free time window on first click
     pickNextClicked = true;
-  } 
+  };
   
   this.pickPrevious = function() {
     // clear highlighting
@@ -346,7 +346,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         $(this).addClass("highlight");
       }
     });
-  }
+  };
   
   // create the lookup values for a free window for use with picknext/previous
   this.setFreeTime = function() {
@@ -368,14 +368,53 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         this.freeTime.push(this.fb[i][0]);  
       }
     }
-  }
+  };
   
   this.setIncrement = function(val) {
     this.hourDivision = val;
     this.display();
-  }
+  };
   
-  this.display = function(width) {
+  // The scheduling duration fields have been modified.
+  // Update the corresponding form elements and set the 
+  // duration for selection in the grid.
+  this.bwSchedChangeDuration = function(inputId) {        
+    var days = parseInt($("#durationDaysSched").val());
+    var hours = parseInt($("#durationHoursSched").val());
+    var mins = parseInt($("#durationMinutesSched").val());
+        
+    //do some form validation - make sure the durations are integers
+    if (isNaN(days) || isNaN(hours) || isNaN(mins)) {
+      alert("Please enter an integer value for durations.")
+      //$(inputId).focus(); // this doesn't work at the moment...
+      return false;
+    }
+    
+    // force duration on the basic tab
+    $("#standardForm input[name='eventEndType']").val("D");
+    $("#eventEndTypeDuration").attr("checked","checked");
+    changeClass('endDateTime','invisible');
+    changeClass('endDuration','shown');
+    
+    // set the basic tab's duration values
+    $("#durationDays").val(days);
+    $("#durationHours").val(hours);
+    $("#durationMinutes").val(mins);
+    
+    // set the scheduling duration field values from the parsed values
+    // -- this strips any floating point values from user input
+    $("#durationDaysSched").val(days);
+    $("#durationHoursSched").val(hours);
+    $("#durationMinutesSched").val(mins);
+    
+    // set the duration in the bwGrid and recalculate cells 
+    durationMils = (days * 86400000) + (hours * 3600000) + (mins * 60000);
+    cellsInDuration = durationMils / incrementMils;
+    // repopulate the free time lookup
+    this.setFreeTime();
+  };
+  
+  this.display = function() {
     try {
       // number of days to display
       var range = dayRange(this.startRange, this.endRange);
@@ -799,14 +838,23 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         }
       );
       
-      // now add some actions 
-      // to the elements of the freebusy control buttons ...
-      // while these are not actually part of the grid, the
-      // actions exposed interact with it
+      // now add some interactions between the freebusy control buttons,
+      // the scheduling widget, and the rest of the form.
       
       $("#bwSchedOptions").click(function() {
-        alert("?");
         $("bwFbOptionsMenu").show("fast");
+      });
+      
+      $("#durationDaysSched").change(function() {
+        bwGrid.bwSchedChangeDuration("#durationDaysSched");
+      });
+      
+      $("#durationHoursSched").change(function() {
+        bwGrid.bwSchedChangeDuration("#durationHoursSched");
+      });
+      
+      $("#durationMinutesSched").change(function() {
+        bwGrid.bwSchedChangeDuration("#durationMinutesSched");
       });
       
 
@@ -820,35 +868,35 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     }
     alert("Fb values:\n" + myString);
     */
-  }
-}
+  };
+};
 
 // Utilities
 var dayRange = function(startDate, endDate) {  
   // find difference in milliseconds and return number of days.
   // 86400000 is the number of milliseconds in a day;
   return Math.round((Math.abs(startDate.getTime() - endDate.getTime())) / 86400000)
-}
+};
 
 // DATE PROTOTYPE OVERRIDES - should be pulled into a library
 // the following need to call internationalized strings - from a localeSettings file
 Date.prototype.getMonthName = function() {
   var m = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   return m[this.getMonth()];
-}
+};
 Date.prototype.getDayName = function() {
   var d = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   return d[this.getDay()];
-} 
+}; 
 Date.prototype.addDays = function(days) {
   this.setDate(this.getDate() + days);
-} 
+}; 
 Date.prototype.addHours = function(hours) {
   this.setHours(this.getHours() + hours);
-}
+};
 Date.prototype.addMinutes = function(minutes) {
   this.setMinutes(this.getMinutes() + minutes);
-}
+};
 // return a twelve-hour hour
 Date.prototype.getHours12 = function() {
   var hours12 = this.getHours();
@@ -856,7 +904,7 @@ Date.prototype.getHours12 = function() {
     hours12 = hours12 - 12;
   } 
   return hours12;
-}
+};
 // prepend minutes with zero if needed
 Date.prototype.getMinutesFull = function() {
   var minutesFull = this.getMinutes();
@@ -864,7 +912,7 @@ Date.prototype.getMinutesFull = function() {
     return "0" + minutesFull;
   }  
   return hours12;
-}
+};
 
 /* UTC FORMATTERS */
 
@@ -875,7 +923,7 @@ Date.prototype.getUTCMonthFull = function() {
     return "0" + monthFull;
   }  
   return monthFull;
-}
+};
 // return a formatted UTC day date, prepended with zero if needed
 Date.prototype.getUTCDateFull = function() {
   var dateFull = this.getUTCDate();
@@ -883,7 +931,7 @@ Date.prototype.getUTCDateFull = function() {
     return "0" + dateFull;
   }  
   return dateFull;
-}
+};
 // return formatted UTC hours, prepended with zero if needed
 Date.prototype.getUTCHoursFull = function() {
   var hoursFull = this.getUTCHours();
@@ -891,7 +939,7 @@ Date.prototype.getUTCHoursFull = function() {
     return "0" + hoursFull;
   }  
   return hoursFull;
-}
+};
 // return formatted UTC minutes, prepended with zero if needed
 Date.prototype.getUTCMinutesFull = function() {
   var minutesFull = this.getUTCMinutes();
@@ -899,7 +947,7 @@ Date.prototype.getUTCMinutesFull = function() {
     return "0" + minutesFull;
   }  
   return minutesFull;
-}
+};
 
 /*
  * From RFC 5545
