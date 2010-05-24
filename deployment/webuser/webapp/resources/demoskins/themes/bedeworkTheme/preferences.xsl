@@ -447,13 +447,13 @@
                 <xsl:if test="scheduleAutoCancelAction = '0'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                <xsl:copy-of select="$bwStr-ScPr-DeleteEvent"/>
+                <xsl:copy-of select="$bwStr-ScPr-SetToCanceled"/>
               </option>
               <option value="1">
                 <xsl:if test="scheduleAutoCancelAction = '1'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
-                <xsl:copy-of select="$bwStr-ScPr-SetToCanceled"/>
+                <xsl:copy-of select="$bwStr-ScPr-DeleteEvent"/>
               </option>
             </select>
           </td>
