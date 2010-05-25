@@ -181,6 +181,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   this.displayId = displayId;
   this.startRange = new Date(startRange);
   this.endRange = new Date(startRange); 
+  this.dayRange = 5; // number of days to increment the end range
   this.startHoursRange = startHoursRange;
   this.endHoursRange = endHoursRange; 
   this.zoom = zoom;
@@ -190,8 +191,8 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   this.fbUrlPrefix = fbUrlPrefix;
   this.organizer = organizerUri;
   
-  // format the endRange
-  this.endRange.addDays(5);
+  // increment the endRange
+  this.endRange.addDays(this.dayRange);  
     
   // 2D array of time and busy state for all attendees
   // [millisecond value,true/false if busy]
@@ -319,11 +320,14 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       if (splId[0] >= curSelectionTime && splId[0] < endSelectionMils) {
         $(this).addClass("highlight");
       }
+      
     });
     
     // we've clicked pickedNext - so set the pickNextClicked flag to true
     // this flag lets us highlight the very first free time window on first click
     pickNextClicked = true;
+    
+    bwGrid.setDateTimeWidgets(curSelectionTime);
   };
   
   this.pickPrevious = function() {
@@ -346,6 +350,8 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         $(this).addClass("highlight");
       }
     });
+    
+    bwGrid.setDateTimeWidgets(curSelectionTime);
   };
   
   // create the lookup values for a free window for use with picknext/previous
@@ -378,11 +384,23 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   // The scheduling duration fields have been modified.
   // Update the corresponding form elements and set the 
   // duration for selection in the grid.
-  this.bwSchedChangeDuration = function(inputId) {        
-    var days = parseInt($("#durationDaysSched").val());
-    var hours = parseInt($("#durationHoursSched").val());
-    var mins = parseInt($("#durationMinutesSched").val());
-        
+  this.bwSchedChangeDuration = function(inputId) {     
+    var days;
+    var hours;
+    var mins;
+    
+    if (inputId.indexOf("Sched") > -1) {
+      // we changed a duration on the meeting tab       
+      days = parseInt($("#durationDaysSched").val());
+      hours = parseInt($("#durationHoursSched").val());
+      mins = parseInt($("#durationMinutesSched").val());
+    } else {
+      // we changed a duration on the main tab     
+      days = parseInt($("#durationDays").val());
+      hours = parseInt($("#durationHours").val());
+      mins = parseInt($("#durationMinutes").val());
+    }
+    
     //do some form validation - make sure the durations are integers
     if (isNaN(days) || isNaN(hours) || isNaN(mins)) {
       alert("Please enter an integer value for durations.")
@@ -402,7 +420,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     $("#durationMinutes").val(mins);
     
     // set the scheduling duration field values from the parsed values
-    // -- this strips any floating point values from user input
+    // -- this also strips any floating point values from user input
     $("#durationDaysSched").val(days);
     $("#durationHoursSched").val(hours);
     $("#durationMinutesSched").val(mins);
@@ -732,8 +750,8 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
           
           // set the start of the selection range in milliseconds (first half of the ID)
           // we will use this to set the start time and to find cells in the same column
-          startSelectionMils = splitId[0];
-          endSelectionMils = Number(startSelectionMils) + Number(durationMils);
+          var startSelectionMils = splitId[0];
+          var endSelectionMils = Number(startSelectionMils) + Number(durationMils);
           
           // now do the highlighting
           $("#bwScheduleTable .fbcell").each(function(index) {
@@ -753,9 +771,35 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
               break;
             }
           }
+          
+          bwGrid.setDateTimeWidgets(startSelectionMils);
   
         }
       );
+
+      this.setDateTimeWidgets = function(startMils) {
+        // set the values of the date/time widgets on the main and meeting tabs
+        var selectedDate = new Date(Number(startMils));
+        var selectedDateStr = selectedDate.getFullYear() + "-" + selectedDate.getMonthFull() + "-" + selectedDate.getDateFull();
+        $("#bwEventWidgetStartDate").val(selectedDateStr);
+        $("#bwEventWidgetStartDateSched").val(selectedDateStr);
+        // check for ampm or hour24
+        if ($("#eventStartDateSchedAmpm").length) {
+          // we are using am/pm
+          $("#eventStartDateHour").val(selectedDate.getHours12());
+          $("#eventStartDateMinute").val(selectedDate.getMinutesFull());
+          $("#eventStartDateAmpm").val(selectedDate.getAmpm());
+          $("#eventStartDateSchedHour").val(selectedDate.getHours12());
+          $("#eventStartDateSchedMinute").val(selectedDate.getMinutesFull());
+          $("#eventStartDateSchedAmpm").val(selectedDate.getAmpm());
+        } else {
+          // we are using hour24
+          $("#eventStartDateHour").val(selectedDate.getHours());
+          $("#eventStartDateMinute").val(selectedDate.getMinutesFull());
+          $("#eventStartDateSchedHour").val(selectedDate.getHours());
+          $("#eventStartDateSchedMinute").val(selectedDate.getMinutesFull());
+        }
+      } 
       
       /*
       $("#bwScheduleTable .fbcell").mousedown (
@@ -845,6 +889,38 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         $("bwFbOptionsMenu").show("fast");
       });
       
+      // if we change the main tab's start date and duration, update the meeting tab
+      // and reset the range of the scheduling grid
+      $("#bwEventWidgetStartDate").change(function() {
+        $("#bwEventWidgetStartDateSched").val($("#bwEventWidgetStartDate").val());
+        bwGrid.startRange = $("#bwEventWidgetStartDate").datepicker("getDate");
+        bwGrid.endRange = $("#bwEventWidgetStartDate").datepicker("getDate");
+        bwGrid.endRange.addDays(bwGrid.dayRange);
+        bwGrid.requestFreeBusy(); 
+      });
+
+      $("#durationDays").change(function() {
+        bwGrid.bwSchedChangeDuration("#durationDays");
+      });
+      
+      $("#durationHours").change(function() {
+        bwGrid.bwSchedChangeDuration("#durationHours");
+      });
+      
+      $("#durationMinutes").change(function() {
+        bwGrid.bwSchedChangeDuration("#durationMinutes");
+      });
+
+      // if we change the meeting tab's date and duration, update the main tab
+      // and reset the range of the scheduling grid
+      $("#bwEventWidgetStartDateSched").change(function() {
+        $("#bwEventWidgetStartDate").val($("#bwEventWidgetStartDateSched").val());
+        bwGrid.startRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
+        bwGrid.endRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
+        bwGrid.endRange.addDays(bwGrid.dayRange);
+        bwGrid.requestFreeBusy(); 
+      });
+      
       $("#durationDaysSched").change(function() {
         bwGrid.bwSchedChangeDuration("#durationDaysSched");
       });
@@ -905,14 +981,39 @@ Date.prototype.getHours12 = function() {
   } 
   return hours12;
 };
+Date.prototype.getAmpm = function() {
+  var ampm = "am";
+  var hours = this.getHours();
+  if (hours > 11) {
+    ampm = "pm";
+  }
+  return ampm;
+};
+// prepend months with zero if needed
+Date.prototype.getMonthFull = function() {
+  var monthFull = this.getMonth() + 1;
+  if (monthFull < 10) {
+    return "0" + monthFull;
+  }  
+  return monthFull;
+};
+// return a formatted day date, prepended with zero if needed
+Date.prototype.getDateFull = function() {
+  var dateFull = this.getDate();
+  if (dateFull < 10) {
+    return "0" + dateFull;
+  }  
+  return dateFull;
+};
 // prepend minutes with zero if needed
 Date.prototype.getMinutesFull = function() {
   var minutesFull = this.getMinutes();
   if (minutesFull < 10) {
     return "0" + minutesFull;
   }  
-  return hours12;
+  return minutesFull;
 };
+
 
 /* UTC FORMATTERS */
 

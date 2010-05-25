@@ -368,14 +368,6 @@
                   </xsl:when>
                   <xsl:otherwise>
                     <input type="text" name="bwEventWidgetStartDate" id="bwEventWidgetStartDate" size="10"/>
-                    <script type="text/javascript">
-                      <xsl:comment>
-                      /*$("#bwEventWidgetStartDate").datepicker({
-                        defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>)
-                      }).attr("readonly", "readonly");
-                      $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');*/
-                      </xsl:comment>
-                    </script>
                     <input type="hidden" name="eventStartDate.year">
                       <xsl:attribute name="value"><xsl:value-of select="form/start/yearText/input/@value"/></xsl:attribute>
                     </input>
@@ -390,28 +382,24 @@
               </div>
               <div class="{$timeFieldsClass}" id="startTimeFields">
                 <span id="calWidgetStartTimeHider" class="show">
-                  <xsl:copy-of select="form/start/hour/*"/>
-                  <xsl:copy-of select="form/start/minute/*"/>
-                  <xsl:if test="form/start/ampm">
-                    <xsl:copy-of select="form/start/ampm/*"/>
-                  </xsl:if>
+	                <select name="eventStartDate.hour" id="eventStartDateHour">
+	                  <xsl:copy-of select="form/start/hour/select/*"/>
+	                </select>
+	                <select name="eventStartDate.minute" id="eventStartDateMinute">
+	                  <xsl:copy-of select="form/start/minute/select/*"/>
+	                </select>
+	                <xsl:if test="form/start/ampm">
+	                  <select name="eventStartDate.ampm" id="eventStartDateAmpm">
+	                    <xsl:copy-of select="form/start/ampm/select/*"/>
+	                  </select>
+	                </xsl:if>
                   <xsl:text> </xsl:text>
                   <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                     <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
-                    <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
-                    <!--
-                    <xsl:variable name="startTzId" select="form/start/tzid"/>
-                    <xsl:for-each select="/bedework/timezones/timezone">
-                      <option>
-                        <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                        <xsl:if test="$startTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                        <xsl:value-of select="name"/>
-                      </option>
-                    </xsl:for-each>
-                    -->
+                    <!-- options filled from timezone server.  See bedeworkEventForm.js -->
                   </select>
                 </span>
               </div>
@@ -1486,10 +1474,16 @@
 	            <input type="text" name="bwEventWidgetStartDateSched" id="bwEventWidgetStartDateSched" size="10"/>
               <xsl:text> </xsl:text>
               <span class="schedTime">
-                <xsl:copy-of select="form/start/hour/*"/>
-                <xsl:copy-of select="form/start/minute/*"/>
+                <select name="eventStartDateSched.hour" id="eventStartDateSchedHour">
+                  <xsl:copy-of select="form/start/hour/select/*"/>
+                </select>
+                <select name="eventStartDateSched.minute" id="eventStartDateSchedMinute">
+                  <xsl:copy-of select="form/start/minute/select/*"/>
+                </select>
                 <xsl:if test="form/start/ampm">
-                  <xsl:copy-of select="form/start/ampm/*"/>
+                  <select name="eventStartDateSched.ampm" id="eventStartDateSchedAmpm">
+                    <xsl:copy-of select="form/start/ampm/select/*"/>
+                  </select>
                 </xsl:if>
               </span>
 	          </td>
