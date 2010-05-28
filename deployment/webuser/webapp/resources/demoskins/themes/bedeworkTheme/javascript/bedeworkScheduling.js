@@ -452,21 +452,20 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       var fbDisplay = document.createElement("table");
       fbDisplay.id = "bwScheduleTable";
       
-      // create the add attendee html
-      var addAttendeeHtml = '';
-      /*addAttendeeHtml += '<input type="text" name="uri" width="30" id="bwRaUri"/>';
-      addAttendeeHtml += '<input type="button" value="add" />';
-      addAttendeeHtml += '<br/>role:';
-      addAttendeeHtml += '<select name="role">';
-      addAttendeeHtml += '<option value="REQ-PARTICIPANT">required participant</option>';
-      addAttendeeHtml += '<option value="OPT-PARTICIPANT">optional participant</option>';
-      addAttendeeHtml += '<option value="CHAIR">chair</option>';
-      addAttendeeHtml += '<option value="NON-PARTICIPANT">non-participant</option>';
-      addAttendeeHtml += '</select>';*/
+      // create navigation buttons
+      var navigationHtml = '';
+      navigationHtml += '<div id="bwGridNav">';
+      navigationHtml += '  <a href="javascript:bwGrid.gotoPreviousRange()" title="previous date range">';
+      navigationHtml += '    <img src="' + this.resourcesRoot + '/images/std-arrow-left.gif" width="13" height="16" alt="previous date range" border="0"/>';
+      navigationHtml += '  </a>';
+      navigationHtml += '  <a href="javascript:bwGrid.gotoNextRange()" title="next date range">';
+      navigationHtml += '    <img src="' + this.resourcesRoot + '/images/std-arrow-right.gif" width="13" height="16" alt="next date range" border="0"/>';
+      navigationHtml += '  </a>';
+      navigationHtml += '</div>';
       
-      // generate the date row - includes top left corner for "add attendee" 
+      // generate the date row - includes top left corner navigation buttons 
       var fbDisplayDateRow = fbDisplay.insertRow(fbDisplay.rows.length);
-      $(fbDisplayDateRow).html('<td rowspan="2" colspan="4" class="corner">' + addAttendeeHtml + '</td><td class="fbBoundry"></td>');
+      $(fbDisplayDateRow).html('<td rowspan="2" colspan="4" class="corner">' + navigationHtml + '</td><td class="fbBoundry"></td>');
       for (var i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
         curDate.addDays(i);
