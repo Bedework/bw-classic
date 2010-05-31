@@ -361,6 +361,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     // empty the array
     this.freeTime.length = 0;
     
+    // reset the freetime index and the pickNextClicked value 
+    this.freeTimeIndex = 0;
+    pickNextClicked = false;
+    
     // now look over the next group of cells to see if the range
     // we want to select is busy.  If not, store the value for lookup.
     for (var i=0; i <= this.fb.length - cellsInDuration; i++) {
