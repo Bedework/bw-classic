@@ -157,6 +157,11 @@
   border: 1px solid #ccc;
   display: none;
 }
+#bwSchedProcessingMsg {
+  font-style: italic;
+  color: #666;
+  background-color: white;
+}
 #bwScheduleControls {
   margin: 1.5em 1em;
 }

@@ -456,12 +456,13 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       var navigationHtml = '';
       navigationHtml += '<div id="bwGridNav">';
       navigationHtml += '  <a href="javascript:bwGrid.gotoPreviousRange()" title="previous date range">';
-      navigationHtml += '    <img src="' + this.resourcesRoot + '/images/std-arrow-left.gif" width="13" height="16" alt="previous date range" border="0"/>';
+      navigationHtml += '    <img src="' + this.resourcesRoot + '/images/std-arrow-left-sched.gif" width="13" height="16" alt="previous date range" border="0"/>';
       navigationHtml += '  </a>';
       navigationHtml += '  <a href="javascript:bwGrid.gotoNextRange()" title="next date range">';
-      navigationHtml += '    <img src="' + this.resourcesRoot + '/images/std-arrow-right.gif" width="13" height="16" alt="next date range" border="0"/>';
+      navigationHtml += '    <img src="' + this.resourcesRoot + '/images/std-arrow-right-sched.gif" width="13" height="16" alt="next date range" border="0"/>';
       navigationHtml += '  </a>';
       navigationHtml += '</div>';
+      navigationHtml += '<div id="bwSchedProcessingMsg">processing...</div>';
       
       // generate the date row - includes top left corner navigation buttons 
       var fbDisplayDateRow = fbDisplay.insertRow(fbDisplay.rows.length);
@@ -775,6 +776,20 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   
         }
       );
+      
+      this.gotoNextRange = function() {
+        $("#bwSchedProcessingMsg").show();
+        bwGrid.startRange.addDays(bwGrid.dayRange);
+        bwGrid.endRange.addDays(bwGrid.dayRange);
+        bwGrid.requestFreeBusy(); 
+      }
+      
+      this.gotoPreviousRange = function() {
+        $("#bwSchedProcessingMsg").show();
+        bwGrid.startRange.subtractDays(bwGrid.dayRange);
+        bwGrid.endRange.subtractDays(bwGrid.dayRange);
+        bwGrid.requestFreeBusy(); 
+      }
 
       this.setDateTimeWidgets = function(startMils) {
         // set the values of the date/time widgets on the main and meeting tabs
@@ -932,17 +947,13 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         bwGrid.bwSchedChangeDuration("#durationMinutesSched");
       });
       
+      // hide the processing message
+      $("#bwSchedProcessingMsg").fadeOut(100);
 
     } catch (e) {
       alert(e);
     }
     
-    /*var myString = "";
-    for(i=0; i < this.fb.length; i++) {
-      myString += this.fb[i][0]+ " " + this.fb[i][1] +"\n";
-    }
-    alert("Fb values:\n" + myString);
-    */
   };
 };
 
@@ -965,6 +976,9 @@ Date.prototype.getDayName = function() {
 }; 
 Date.prototype.addDays = function(days) {
   this.setDate(this.getDate() + days);
+}; 
+Date.prototype.subtractDays = function(days) {
+  this.setDate(this.getDate() - days);
 }; 
 Date.prototype.addHours = function(hours) {
   this.setHours(this.getHours() + hours);
