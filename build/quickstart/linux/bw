@@ -205,7 +205,7 @@ export QUICKSTART_HOME=$saveddir
 
 CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
 CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/build/quickstart/antlib
-CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
+#CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/applib/log4j-1.2.8.jar
 
 # Default some parameters
 
