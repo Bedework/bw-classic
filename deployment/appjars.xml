@@ -212,7 +212,10 @@
               name="lucene-misc" version="2.0.0" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="ical4j" version="head-dev" />
+              name="backport-util-concurrent" />
+
+      <getJar lib="${org.bedework.app.lib}"
+              name="ical4j" version="head-20100601" />
 
       <getJar lib="${org.bedework.app.lib}"
               name="portals-bridges-common" version="1.0" />
