@@ -436,6 +436,35 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     this.setFreeTime();
   };
   
+  // if the "all day" checkbox is clicked, 
+  // change the duration widgets, the duration in the grid,
+  // and recalculate the freetime lookup
+  this.allDay = function(isAllDay) {
+    if (isAllDay) {
+      $(".schedTime").hide();
+      $("#durationHrMinSched").hide();
+      $("#durationDaysSched").val(1);
+      $("#durationHoursSched").val(0);
+      $("#durationMinutesSched").val(0);
+      // set the duration in the bwGrid and recalculate cells 
+      durationMils = 86400000;
+      cellsInDuration = durationMils / incrementMils;
+      // repopulate the free time lookup
+      this.setFreeTime();
+    } else {
+      $(".schedTime").show();
+      $("#durationHrMinSched").show();
+      $("#durationDaysSched").val(0);
+      $("#durationHoursSched").val(1);
+      $("#durationMinutesSched").val(0);
+      // set the duration in the bwGrid and recalculate cells 
+      durationMils = 3600000;
+      cellsInDuration = durationMils / incrementMils;
+      // repopulate the free time lookup
+      this.setFreeTime();
+    }
+  }
+  
   this.display = function() {
     try {
       // number of days to display

@@ -1512,7 +1512,7 @@
 	          </td>
 	          <td class="schedDate">
               <!-- force day, hour, minute format -->
-              <input type="text" name="eventDuration.daysStr" size="2" id="durationDaysSched">
+              <input type="text" name="eventDurationSched.daysStr" size="2" id="durationDaysSched">
                 <xsl:attribute name="value">
                   <xsl:choose>
                     <xsl:when test="/bedework/creating='true' and form/allDay/input/@checked='checked'">1</xsl:when>
@@ -1524,7 +1524,7 @@
               <xsl:copy-of select="$bwStr-AEEF-Days"/>
               <xsl:text> </xsl:text>
               <span id="durationHrMinSched">
-                <input type="text" name="eventDuration.hoursStr" size="2" id="durationHoursSched">
+                <input type="text" name="eventDurationSched.hoursStr" size="2" id="durationHoursSched">
                   <xsl:attribute name="value">
                     <xsl:choose>
                       <xsl:when test="/bedework/creating='true'">1</xsl:when>
@@ -1534,7 +1534,7 @@
                 </input>
                 <xsl:copy-of select="$bwStr-AEEF-Hours"/>
                 <xsl:text> </xsl:text>
-                <input type="text" name="eventDuration.minutesStr" size="2" id="durationMinutesSched">
+                <input type="text" name="eventDurationSched.minutesStr" size="2" id="durationMinutesSched">
                   <xsl:attribute name="value">
                     <xsl:choose>
                       <xsl:when test="/bedework/creating='true'">0</xsl:when>

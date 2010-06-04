@@ -284,6 +284,7 @@ function swapAllDayEvent(obj) {
     allDayStartDateField.value = "true";
     allDayEndDateField.value = "true";
     durDays.value = 1;
+    bwGrid.allDay(true);
   } else {
     changeClass('startTimeFields','timeFields');
     changeClass('endTimeFields','timeFields');
@@ -291,6 +292,7 @@ function swapAllDayEvent(obj) {
     allDayStartDateField.value = "false";
     allDayEndDateField.value = "false";
     durDays.value = 0;
+    bwGrid.allDay(false);
   }
 }
 function swapFloatingTime(obj) {
