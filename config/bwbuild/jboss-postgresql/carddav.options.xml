@@ -30,7 +30,7 @@
             <!-- We need to get operational attributes from the directory.
                This requires us to explicitly name all attributes on fetch.
                This element allows us to name EXTRA attributes from the default
-               list provided by the impleemntation.
+               list provided by the implementation.
               -->
             <attrIds></attrIds>
 
@@ -193,7 +193,9 @@
       <app>
         <usercarddav classname="org.bedework.carddav.util.CardDAVConfig" >
           <sysintfImpl>org.bedework.carddav.bwserver.BwSysIntfImpl</sysintfImpl>
+          
           <webaddrServiceURI>/find</webaddrServiceURI>
+          <webaddrServicePropertiesList>fn,email,note,org</webaddrServicePropertiesList>
           <webaddrPublicAddrbook>/principals/users</webaddrPublicAddrbook>
 
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
@@ -213,7 +215,9 @@
 
         <pubcarddav classname="org.bedework.carddav.util.CardDAVConfig" >
           <sysintfImpl>org.bedework.carddav.bwserver.BwSysIntfImpl</sysintfImpl>
+          
           <webaddrServiceURI>/find</webaddrServiceURI>
+          <webaddrServicePropertiesList>fn,note,org</webaddrServicePropertiesList>
           <webaddrPublicAddrbook>/principals/users</webaddrPublicAddrbook>
 
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
