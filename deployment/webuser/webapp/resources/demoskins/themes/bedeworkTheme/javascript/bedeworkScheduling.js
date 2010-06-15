@@ -690,9 +690,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       
       // create the add attendee form 
       var addAttendeeHtml = '<td class="status"></td><td class="role"></td><td class="addAttendee" colspan="2">';
-      addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="attendee" id="addAttendee" class="pending" size="14"/>';
-      addAttendeeHtml += '<span class="addAttendeeAdvanced">advanced</span>';
-      //addAttendeeHtml += '<div id="addAttendeeFields">';
+      addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="attendee" id="bwAddAttendee" class="pending" size="14"/>';
+      addAttendeeHtml += '<span id="bwAddAttendeeAdd" class="invisible">add</span>';
+      addAttendeeHtml += '<span id="bwAddAttendeeAdvanced">advanced</span>';
+      //addAttendeeHtml += '<div id="bwAddAttendeeFields">';
       //addAttendeeHtml += '<select><option>person</option><option>group</option><option>resource</option></select>';
       //addAttendeeHtml += '<input type="checkbox"/>personal <input type="checkbox"/>public';
       //addAttendeeHtml += '</div>';
@@ -900,13 +901,23 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       );
       */
       
-      $("#bwScheduleTable #addAttendee").click (
+      $("#bwScheduleTable #bwAddAttendee").click (
         function () {
           if (this.value == bwAddAttendeeDisp) {
             this.value = "";
           }
           $(this).addClass("active");
           $(this).removeClass("pending");
+          
+          // hide advanced switch, show add button
+          $("#bwAddAttendeeAdvanced").hide();
+          changeClass("bwAddAttendeeAdd","visible");
+        }
+      );
+      
+      $("#bwScheduleTable #bwAddAttendeeAdd").click (
+        function () {
+          alert("adding " + $("#bwAddAttendee").val());
         }
       );
       

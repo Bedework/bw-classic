@@ -77,26 +77,32 @@
 #bwScheduleTable td.needsaction {
   font-family: Paladino, Times, serif;
 }
-#bwScheduleTable #addAttendee {
+#bwScheduleTable #bwAddAttendee {
   cursor: pointer;
   padding: 4px 0;
 }
-#bwScheduleTable #addAttendee.pending {
+#bwScheduleTable #bwAddAttendee.pending {
   color: #bbb;
   background-color: transparent;
   border: none;
 }
-#bwScheduleTable #addAttendee.active {
+#bwScheduleTable #bwAddAttendee.active {
   color: black;
   background-color: transparent;
   border: none;
 }
-#bwScheduleTable .addAttendeeAdvanced {
+#bwScheduleTable #bwAddAttendeeAdvanced {
   color: #bbb;
   background-color: transparent;
   font-size: 0.8em;
 }
-#bwScheduleTable #addAttendeeFields,
+#bwScheduleTable #bwAddAttendeeAdd {
+  color: #fff;
+  background-color: #666;
+  font-size: 0.8em;
+  padding: 2px;
+}
+#bwScheduleTable #bwAddAttendeeFields,
 #bwScheduleTable #attType {
   display: none;
   font-size: 0.8em;
