@@ -19,7 +19,7 @@
             -->
           <principal-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/principals</pathPrefix>
-            <className>org.bedework.carddav.server.dirHandlers.LdapPrincipalDirHandler</className>
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
@@ -47,7 +47,7 @@
             <pathPrefix>/principals/users</pathPrefix>
             <addressBook>true</addressBook>
 
-            <className>org.bedework.carddav.server.dirHandlers.LdapPrincipalDirHandler</className>
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
@@ -77,7 +77,7 @@
             <pathPrefix>/principals/groups</pathPrefix>
             <addressBook>true</addressBook>
 
-            <className>org.bedework.carddav.server.dirHandlers.LdapPrincipalDirHandler</className>
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
@@ -107,7 +107,7 @@
           <!-- handle the user address book hierarchy -->
           <user-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/user</pathPrefix>
-            <className>org.bedework.carddav.server.dirHandlers.LdapAddrBookDirHandler</className>
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapAddrBookDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
@@ -135,7 +135,10 @@
           <public-locations-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/public/locations</pathPrefix>
 
-            <className>org.bedework.carddav.server.dirHandlers.LdapAddrBookDirHandler</className>
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapAddrBookDirHandler</className>
+
+            <!-- manufacture an owner for public entities -->
+            <ownerHref>/principals/users/admin</ownerHref>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
@@ -164,12 +167,15 @@
           <!-- handle the public (enterprise) address book hierarchy -->
           <public-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/public</pathPrefix>
-            <className>org.bedework.carddav.server.dirHandlers.LdapAddrBookDirHandler</className>
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapAddrBookDirHandler</className>
+
+            <!-- manufacture an owner for public entities -->
+            <ownerHref>/principals/users/admin</ownerHref>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
 
-            <baseDn>ou=public,ou=addrbooks,dc=bedework,dc=org</baseDn>
+            <baseDn>ou=public,dc=bedework,dc=org</baseDn>
 
             <queryLimit>1000</queryLimit>
 
