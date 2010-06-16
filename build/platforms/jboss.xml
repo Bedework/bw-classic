@@ -27,7 +27,7 @@
                   overwrite="yes" />
           </then>
         </if>
-        <!-- If requested copy in the activemq configuration. -->
+        <!-- If requested copy in the db configuration. -->
 
         <if>
           <istrue value="${org.bedework.global.copy.bedeworkds.config}" />
