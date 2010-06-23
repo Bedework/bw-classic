@@ -928,6 +928,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         }
       );
       
+      // enable or disable an attendee
       $("#bwScheduleTable input.selectedToggle").click (
         function () {
           var i = $("#bwScheduleTable input.selectedToggle").index(this);
@@ -936,6 +937,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
           } else {
              bwGrid.attendees[i].selected = false;
           }
+          
           bwGrid.display();
         }
       );
@@ -991,7 +993,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         bwGrid.bwSchedChangeDuration("#durationMinutesSched");
       });
       
-      // hide the processing message
+      // after all else, hide the processing message
       $("#bwSchedProcessingMsg").fadeOut(100);
 
     } catch (e) {

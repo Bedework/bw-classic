@@ -164,6 +164,7 @@
   display: none;
 }
 #bwSchedProcessingMsg {
+  display: none;
   font-style: italic;
   color: #666;
   background-color: white;
