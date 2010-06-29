@@ -152,8 +152,10 @@ hibernate.jdbc.batch_size=0
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.dom4j}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ehcache}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.hibernate}" />
+  	<!--
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.javassist}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jgroups}" />
+    -->
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.jta}" />
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-collections}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.slf4j-api}" />
