@@ -100,7 +100,7 @@
     <item>
       <title><xsl:if test="status = 'CANCELLED'">CANCELED: </xsl:if><xsl:value-of select="summary"/></title>
       <link><xsl:value-of select="substring-before($urlPrefix,$feeder)"/><xsl:value-of select="$publicCal"/>/event/eventView.do?calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
-      <guid><xsl:value-of select="substring-before($urlPrefix,$feeder)"/><xsl:value-of select="$publicCal"/>/event/eventView.do?calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></guid>
+      <guid>calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></guid>
       <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
         --><xsl:value-of select="substring(start/utcdate,7,2)"/><xsl:text> </xsl:text><!--
         --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(start/utcdate,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--
