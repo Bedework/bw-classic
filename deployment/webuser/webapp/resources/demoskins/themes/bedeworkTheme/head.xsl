@@ -182,8 +182,8 @@
         // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010",8,17,[{name:"Venerable Bede",uid:"vbede@mysite.edu",role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","");
         
         var bwGridSDate = new Date("<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>/<xsl:value-of select="/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value"/>/<xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>");
-        var bwGridAttees = new Array({name:"Arlen Johnson",uid:"johnsa@mysite.edu",role:"CHAIR",status:"ACCEPTED",type:"person"},{name:"",uid:"douglm@mysite.edu",role:"REQ-PARTICIPANT",status:"NEEDS-ACTION",type:"person"});
-        var bwGridOrganizer = "<xsl:value-of select="substring-after(/bedework/formElements/form/organizer/organizerUri,'mailto:')"/>";
+        var bwGridAttees = new Array(<xsl:apply-templates select="/bedework/formElements/form/attendees" mode="loadBwGrid"/>);
+        var bwGridOrganizer = "<xsl:value-of select="/bedework/formElements/form/organizer/organizerUri"/>";
         var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay",bwGridSDate,8,17,bwGridAttees,true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>",bwGridOrganizer);
         
         // set the grid size

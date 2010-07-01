@@ -16,7 +16,6 @@
  specific language governing permissions and limitations
  under the License.
  */
-// THE CONTENTS OF THIS FILE WILL MOVE INTO bedeworkAttendees.js
 
 
 // ========================================================================
@@ -266,8 +265,28 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   };
   
   this.removeAttendee = function(index) {
+    var uid = bwGrid.attendees[index].uid;
+    
+    // try to remove the attendee from the back end
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/ucal/event/attendeesForEvent.do",
+      data: "uri=" + uid + "&attendee=true&delete=true",
+      success: function(){
+      },
+      error: function(msg) {
+        // there was a problem
+        alert(msg.statusText);
+      }
+    });
+    
+    /* remove the attendee from the local array. */
     this.attendees.splice(index, 1);
-    this.requestFreeBusy(); 
+    if (this.attendees.length) {
+      bwGrid.requestFreeBusy();
+    } else {
+      bwGrid.display();
+    }
   };
   
   this.requestFreeBusy = function() {
@@ -631,7 +650,11 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         if (curAttendee.name && curAttendee.name != "") {
           attendeeNameHtml += curAttendee.name;
         } else {
-          attendeeNameHtml += attendeeAddress;
+          if (attendeeAddress.indexOf("mailto:") != -1) {
+            attendeeNameHtml += attendeeAddress.substring(7);
+          } else {
+            attendeeNameHtml += attendeeAddress;
+          } 
         }
         attendeeNameHtml += '</span>';
         //attendeeNameHtml += '<div id="' + attendeeAddress + '-menu" class="attendeeMenu">hi</div>';

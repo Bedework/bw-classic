@@ -21,7 +21,17 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
   
-    <xsl:template name="attendees">
+  <!-- transform the attendees into an array of json objects 
+       for use in the BwGrid -->
+  <xsl:template match="attendees" mode="loadBwGrid">
+    <xsl:for-each select="attendee">
+      {name:"<xsl:value-of select="cn"/>",uid:"<xsl:value-of select="attendeeUri"/>",role:"<xsl:value-of select="role"/>",status:"<xsl:value-of select="partstat"/>",type:"person"}<xsl:if test="position()!=last()">,</xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+  
+  
+  <!-- THE FOLLOWING TEMPLATE IS DEPRECATED, BUT MUST REMAIN FOR NOW  -->
+  <xsl:template name="attendees">
     <h2>
       <span class="formButtons"><input type="button" value="{$bwStr-Atnd-Continue}" onclick="window.location='{$gotoEditEvent}'"/></span>
         <xsl:copy-of select="$bwStr-Atnd-SchedulMeetingOrTask"/>
