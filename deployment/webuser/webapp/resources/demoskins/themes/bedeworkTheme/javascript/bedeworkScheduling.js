@@ -273,6 +273,13 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       url: "http://localhost:8080/ucal/event/attendeesForEvent.do",
       data: "uri=" + uid + "&attendee=true&delete=true",
       success: function(){
+        // remove the attendee from the local array
+        bwGrid.attendees.splice(index, 1);
+        if (bwGrid.attendees.length) {
+          bwGrid.requestFreeBusy();
+        } else {
+          bwGrid.display();
+        }
       },
       error: function(msg) {
         // there was a problem
@@ -280,13 +287,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       }
     });
     
-    /* remove the attendee from the local array. */
-    this.attendees.splice(index, 1);
-    if (this.attendees.length) {
-      bwGrid.requestFreeBusy();
-    } else {
-      bwGrid.display();
-    }
+    
   };
   
   this.requestFreeBusy = function() {
