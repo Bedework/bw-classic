@@ -60,6 +60,7 @@ var bwAttendeeDispTypeResource = "resource";
 var bwFreeBusyDispTypeBusy = "BUSY";
 var bwFreeBusyDispTypeTentative = "TENTATIVE";
 var bwAddAttendeeDisp = "add attendee...";
+var bwAttendeeExistsDisp = "attendee exists";
 
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
@@ -176,7 +177,7 @@ var bwFreeBusy = function(fbString, fbType) {
  * fbUrlPrefix:     string - URL prefix for making freebusy requests 
  * organizerUri:    string - e.g. "someone@mysite.edu" 
  */
-var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot, fbUrlPrefix, organizerUri) {
+var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot, fbUrlPrefix, attUrlPrefix, organizerUri) {
   this.displayId = displayId;
   this.startRange = new Date(startRange);
   this.endRange = new Date(startRange); 
@@ -188,6 +189,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   this.attendees = new Array();  // array of bwAttendee objects
   this.resourcesRoot = browserResourcesRoot;
   this.fbUrlPrefix = fbUrlPrefix;
+  this.attUrlPrefix = attUrlPrefix;
   this.organizer = organizerUri;
   
   // increment the endRange
@@ -239,7 +241,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     }
   };
   
-  // add/update attendees
+  // update attendees when loading an event - data comes from event XML
   /* examples:
      bwGrid.updateAttendee("Venerable Bede", "vbede@mysite.edu", "CHAIR", "ACCEPTED", "person");
      bwGrid.updateAttendee("Samual Clemens", "sclemens@mysite.edu", "REQ-PARTICIPANT", "NEEDS-ACTION");
@@ -250,16 +252,56 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     var attendeeIsNew = true;
     
     // check to see if attendee already exists
-    for (var i=0; i < this.attendees.length; i++) {
-      if (newAttendee.uid == this.attendees[i].uid) {
+    for (var i=0; i < bwGrid.attendees.length; i++) {
+      if (newAttendee.uid == bwGrid.attendees[i].uid) {
         attendeeIsNew = false;
         break;
       } 
     }
     
     if (attendeeIsNew) {
-      this.attendees.push(newAttendee); 
-      this.requestFreeBusy();      
+      // add the attendee to the local array
+      bwGrid.attendees.push(newAttendee); 
+      bwGrid.requestFreeBusy();      
+    }
+  };
+  
+  // add attendee in the bwGrid
+  this.addAttendee = function(name, uid, role, status, type) {
+    var attendeeIsNew = true;
+    
+    // display the processing message
+    $("#bwSchedProcessingMsg").show();
+    
+    // check to see if attendee already exists
+    for (var i=0; i < bwGrid.attendees.length; i++) {
+      if (uid == bwGrid.attendees[i].uid) {
+        attendeeIsNew = false;
+        alert(bwAttendeeExistsDisp);
+        // hide the processing message
+        $("#bwSchedProcessingMsg").hide();
+        break;
+      } 
+    }
+    
+    if (attendeeIsNew) {
+      // try to add attendee to the back end
+      $.ajax({
+        type: "POST",
+        url: bwGrid.attUrlPrefix,
+        data: "uri=" + uid + "&attendee=true&submit=add",
+        success: function(){
+          // add the attendee to the local array
+          // this data must be completed by the ajax call (coming)
+          var newAttendee = new bwAttendee(name, uid, role, status, type);
+          bwGrid.attendees.push(newAttendee); 
+          bwGrid.requestFreeBusy();
+        },
+        error: function(msg) {
+          // there was a problem
+          alert(msg.statusText);
+        }
+      });
     }
     
   };
@@ -267,10 +309,13 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   this.removeAttendee = function(index) {
     var uid = bwGrid.attendees[index].uid;
     
+    // display the processing message
+    $("#bwSchedProcessingMsg").show();
+    
     // try to remove the attendee from the back end
     $.ajax({
       type: "POST",
-      url: "http://localhost:8080/ucal/event/attendeesForEvent.do",
+      url: bwGrid.attUrlPrefix,
       data: "uri=" + uid + "&attendee=true&delete=true",
       success: function(){
         // remove the attendee from the local array
@@ -713,14 +758,15 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       fbDisplayAddAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
       
       // create the add attendee form 
-      var addAttendeeHtml = '<td class="status"></td><td class="role"></td><td class="addAttendee" colspan="2">';
-      addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="attendee" id="bwAddAttendee" class="pending" size="14"/>';
+      var addAttendeeHtml = '<td class="addAttendee" colspan="4">';
+      addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="attendee" id="bwAddAttendee" class="pending" size="30"/>';
       addAttendeeHtml += '<span id="bwAddAttendeeAdd" class="invisible">add</span>';
       addAttendeeHtml += '<span id="bwAddAttendeeAdvanced">advanced</span>';
-      //addAttendeeHtml += '<div id="bwAddAttendeeFields">';
+      addAttendeeHtml += '<div id="bwAddAttendeeFields">';
+      addAttendeeHtml += '';
       //addAttendeeHtml += '<select><option>person</option><option>group</option><option>resource</option></select>';
       //addAttendeeHtml += '<input type="checkbox"/>personal <input type="checkbox"/>public';
-      //addAttendeeHtml += '</div>';
+      addAttendeeHtml += '</div>';
       addAttendeeHtml += '</td><td class="fbBoundry"></td>';
       
       $(fbDisplayAddAttendeeRow).html(addAttendeeHtml);
@@ -941,7 +987,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       
       $("#bwScheduleTable #bwAddAttendeeAdd").click (
         function () {
-          alert("adding " + $("#bwAddAttendee").val());
+          var uid = $("#bwAddAttendee").val();
+          var role = bwAttendeeRoleRequired;
+          // these are preliminary values - will get more from backend after ajax call
+          bwGrid.addAttendee("",uid,role,"","person");
         }
       );
       

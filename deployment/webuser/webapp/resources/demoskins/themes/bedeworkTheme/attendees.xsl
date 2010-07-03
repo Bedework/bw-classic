@@ -25,6 +25,7 @@
        for use in the BwGrid -->
   <xsl:template match="attendees" mode="loadBwGrid">
     <xsl:for-each select="attendee">
+      <xsl:sort select="attendeeUri"/>
       {name:"<xsl:value-of select="cn"/>",uid:"<xsl:value-of select="attendeeUri"/>",role:"<xsl:value-of select="role"/>",status:"<xsl:value-of select="partstat"/>",type:"person"}<xsl:if test="position()!=last()">,</xsl:if>
     </xsl:for-each>
   </xsl:template>
