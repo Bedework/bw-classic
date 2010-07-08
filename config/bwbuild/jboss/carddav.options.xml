@@ -103,8 +103,27 @@
 
             <debug>true</debug>
           </group-principal-dirHandler>
-
+          
           <!-- handle the user address book hierarchy -->
+          
+          <user-dirHandler classname="org.bedework.carddav.util.DbDirHandlerConfig" >
+            <pathPrefix>/user</pathPrefix>
+            
+            <className>org.bedework.carddav.server.dirHandlers.db.DbAddrBookDirHandler</className>
+
+            <queryLimit>1000</queryLimit> <!-- unimplemented -->
+          
+            <!-- This is the access set at the root. I'll do this as XML soon -->
+            <rootAccess>WONyA WANyFyS </rootAccess>
+          
+            <!-- This is the owner of the user root and user home -->
+            <rootOwner>/principals/users/root</rootOwner>
+            
+            <debug>true</debug>
+          </user-dirHandler>
+
+          <!-- handle the user address book hierarchy
+               How it might be done with ldap 
           <user-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/user</pathPrefix>
             <className>org.bedework.carddav.server.dirHandlers.ldap.LdapAddrBookDirHandler</className>
@@ -131,7 +150,8 @@
             <authPw>secret</authPw>
             <debug>true</debug>
           </user-dirHandler>
-
+          -->
+ 
           <public-locations-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/public/locations</pathPrefix>
 
@@ -206,9 +226,13 @@
 
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
 
-          <defaultAddressbook>address-book</defaultAddressbook>
+          <defaultAddressbook>addressbook</defaultAddressbook>
 
+          <!-- This will act as the root for the file system -->
           <addressBookHandlerPrefix>/user</addressBookHandlerPrefix>
+          
+          <!-- Needed for access calculations -->
+          <userHomeRoot>/user</userHomeRoot>
 
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
@@ -228,9 +252,12 @@
 
           <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
 
-          <defaultAddressbook>address-book</defaultAddressbook>
+          <defaultAddressbook>addressbook</defaultAddressbook>
 
           <addressBookHandlerPrefix>/public</addressBookHandlerPrefix>
+          
+          <!-- Needed for access calculations -->
+          <userHomeRoot>/user</userHomeRoot>
 
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
