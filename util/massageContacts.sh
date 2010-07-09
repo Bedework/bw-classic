@@ -36,7 +36,7 @@ while read line; do
        #process what we have
        # echo out the begin line
        echo $beginLine
-       if [ "$fnLine" == "" ]; then
+       if [ x"$fnLine" == x ]; then
           # mock up an FN and spit it out
           if [ "$nLine" != "N:;;;;" ]; then
             newFnLine=`echo $nLine | sed 's/N://'`
