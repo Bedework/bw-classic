@@ -237,55 +237,42 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   
   // initialize the grid
   this.init = function() {
-    // initialize any incoming attendees on first load
+    // initialize all incoming attendees on first load
     for (var i = 0; i < attendees.length; i++) {
-      var newAttendee = new bwAttendee(attendees[i].name, attendees[i].uid, attendees[i].role, attendees[i].status, attendees[i].type);
-      this.attendees.push(newAttendee); 
+      // strip off "mailto:" if present
+      var attUri = attendees[i].uid;
+      if (attUri.indexOf("mailto:") != -1) {
+        attUri = attUri.substr(7); 
+      }
+      var newAttendee = new bwAttendee(attendees[i].name, attUri, attendees[i].role, attendees[i].status, attendees[i].type);
+      bwGrid.attendees.push(newAttendee); 
     }
     
     // now go get the freebusy information for the attendees
     if (this.attendees.length > 0) {
-      this.requestFreeBusy();
+      bwGrid.requestFreeBusy();
     } else {
       // no attendees - just display the widget
-      this.display();
-    }
-  };
-  
-  // update attendees when loading an event - data comes from event XML
-  /* examples:
-     bwGrid.updateAttendee("Venerable Bede", "vbede@mysite.edu", "CHAIR", "ACCEPTED", "person");
-     bwGrid.updateAttendee("Samual Clemens", "sclemens@mysite.edu", "REQ-PARTICIPANT", "NEEDS-ACTION");
-     bwGrid.updateAttendee("", "noname@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
-   */
-  this.updateAttendee = function(name, uid, role, status, type) {
-    var newAttendee = new bwAttendee(name, uid, role, status, type);
-    var attendeeIsNew = true;
-    
-    // check to see if attendee already exists
-    for (var i=0; i < bwGrid.attendees.length; i++) {
-      if (newAttendee.uid == bwGrid.attendees[i].uid) {
-        attendeeIsNew = false;
-        break;
-      } 
-    }
-    
-    if (attendeeIsNew) {
-      // add the attendee to the local array
-      bwGrid.attendees.push(newAttendee); 
-      bwGrid.requestFreeBusy();      
+      bwGrid.display();
     }
   };
   
   // add attendee in the bwGrid
+  /* examples:
+    bwGrid.addAttendee("Venerable Bede", "vbede@mysite.edu", "CHAIR", "ACCEPTED", "person");
+    bwGrid.addAttendee("Samual Clemens", "sclemens@mysite.edu", "REQ-PARTICIPANT", "NEEDS-ACTION");
+    bwGrid.addAttendee("", "noname@mysite.edu", "OPT-PARTICIPANT", "DECLINED");
+  */
   this.addAttendee = function(name, uid, role, status, type) {
     var attendeeIsNew = true;
     
     // display the processing message
     $("#bwSchedProcessingMsg").show();
     
+    //var showAtts = "";
     // check to see if attendee already exists
     for (var i=0; i < bwGrid.attendees.length; i++) {
+      //showAtts += bwGrid.attendees[i].uid + "\n";
       if (uid == bwGrid.attendees[i].uid) {
         attendeeIsNew = false;
         alert(bwAttendeeExistsDisp);
@@ -294,6 +281,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         break;
       } 
     }
+    //alert(showAtts);
     
     if (attendeeIsNew) {
       // try to add attendee to the back end
@@ -315,6 +303,14 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       });
     }
     
+  };
+  
+  this.addAttendeeFromGrid = function() {
+    var uid = $("#bwAddAttendee").val();
+    var role = $("#bwAddAttendeeRole").val();
+    var partstat = $("#bwAddAttendeePartstat").val();
+    // these are preliminary values - will get more from server after ajax call
+    bwGrid.addAttendee("",uid,role,partstat,"person");
   };
   
   this.removeAttendee = function(index) {
@@ -343,12 +339,11 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       }
     });
     
-    
   };
   
   this.requestFreeBusy = function() {
     // set up the freebusy URL based on current parameters
-    // e.g. http://localhost:8080/ucal/event/requestFreeBusy.gdo?b=de&start=20100510T050000Z&end=20100517T050000Z&organizerUri=douglm@mysite.edu&attendeeUri=douglm@mysite.edu&attendeeUri=johnsa@mysite.edu
+    // e.g. http://localhost:8080/ucal/event/requestFreeBusy.gdo?b=de&start=20100510T050000Z&end=20100517T050000Z&organizerUri=mailto:douglm@mysite.edu&attendeeUri=douglm@mysite.edu&attendeeUri=johnsa@mysite.edu
     var fbUrlStart = "&start=" + this.startRange.getUTCFullYear() + this.startRange.getUTCMonthFull() + this.startRange.getUTCDateFull() + "T" + this.startRange.getUTCHoursFull() + this.startRange.getUTCMinutesFull() + "00Z";
     var fbUrlEnd = "&end=" + this.endRange.getUTCFullYear() + this.endRange.getUTCMonthFull() + this.endRange.getUTCDateFull() + "T" + this.endRange.getUTCHoursFull() + this.endRange.getUTCMinutesFull() + "00Z";;
     var fbOrganizer = "&organizerUri=" + this.organizer;
@@ -701,7 +696,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         
         
         // output the attendee name or address (depending on which we have available)
-        // and add attendee functions
+        // and output attendee functions
         var attendeeAddress = curAttendee.uid;
         var attendeeNameHtml = '<td class="name"><span class="bwAttendee" id="' + attendeeAddress + '">';
         if (curAttendee.name && curAttendee.name != "") {
@@ -772,7 +767,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       var addAttendeeHtml = '<td class="addAttendee" colspan="4">';
       addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="attendee" id="bwAddAttendee" class="pending" size="30"/>';
       addAttendeeHtml += '<span id="bwAddAttendeeAdd" class="invisible">' + bwAddDisp +'</span>';
-      addAttendeeHtml += '<span id="bwAddAttendeeAdvanced">advanced</span>';
+      //addAttendeeHtml += '<span id="bwAddAttendeeAdvanced">advanced</span>';
       addAttendeeHtml += '<div id="bwAddAttendeeFields" class="invisible">';
       addAttendeeHtml += '<select name="role" id="bwAddAttendeeRole">';
       addAttendeeHtml += '  <option value="REQ-PARTICIPANT">' + bwReqParticipantDisp + '</option>';
@@ -842,10 +837,12 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // populate the freeTime lookup array from the newly created fb array
       this.setFreeTime();
       
+      // **** OUTPUT *****
       // write the table back to the display
       $("#" + displayId).html(fbDisplay);
       
       
+      // **** ACTIONS ****
       // now add some rollovers and onclick actions 
       // to the elements of the freebusy grid
       $("#bwScheduleTable .icon").hover(
@@ -1003,21 +1000,28 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
           $(this).removeClass("pending");
           
           // hide advanced switch, show add button
-          $("#bwAddAttendeeAdvanced").hide();
+          // $("#bwAddAttendeeAdvanced").hide();
           changeClass("bwAddAttendeeAdd","visible");
           changeClass("bwAddAttendeeFields", "visible");
         }
       );
       
+      // capture the enter key when entering an attendee;
+      // do not submit the form; add the attendee.
+      $("#bwScheduleTable #bwAddAttendee").keyup(
+          function (e) {
+            if(e.keyCode == 13) {
+              bwGrid.addAttendeeFromGrid();
+            }
+          }
+        );
+      
       $("#bwScheduleTable #bwAddAttendeeAdd").click (
         function () {
-          var uid = $("#bwAddAttendee").val();
-          var role = $("#bwAddAttendeeRole").val();
-          var partstat = $("#bwAddAttendeePartstat").val();
-          // these are preliminary values - will get more from backend after ajax call
-          bwGrid.addAttendee("",uid,role,partstat,"person");
+          bwGrid.addAttendeeFromGrid();
         }
       );
+      
       
       $("#bwScheduleTable .removeAttendee").click (
         function () {

@@ -77,6 +77,8 @@
 }
 #bwScheduleTable td.needsaction {
   font-family: Paladino, Times, serif;
+  color: #999;
+  background-color: transparent;
 }
 #bwScheduleTable #bwAddAttendee {
   cursor: pointer;
