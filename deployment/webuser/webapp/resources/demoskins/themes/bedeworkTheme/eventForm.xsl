@@ -1561,12 +1561,12 @@
     <xsl:choose>
       <!-- the following test on the organizerSchedulingObject is not good - will need to fix -->
       <xsl:when test="scheduleMethod = '2' and organizerSchedulingObject">
-        <input name="submitAndSend" type="submit" value="{$bwStr-AEEF-SaveAndSendInvites}"/>
+        <input name="submitAndSend" type="submit" value="{$bwStr-AEEF-SaveAndSendInvites}" class="bwEventFormSubmit"/>
         <!-- dissalow: at the moment there's no way to send invitations after the first save
         <input name="submit" type="submit" value="{$bwStr-AEEF-SaveDraft}"/> -->
       </xsl:when>
       <xsl:otherwise>
-        <input name="submit" type="submit" value="{$bwStr-AEEF-Save}"/>
+        <input name="submit" type="submit" value="{$bwStr-AEEF-Save}" class="bwEventFormSubmit"/>
       </xsl:otherwise>
     </xsl:choose>
     <input name="cancelled" type="submit" value="{$bwStr-AEEF-Cancel}"/>

@@ -26,6 +26,7 @@ var bwAutoCompleteOptions = {
   extraParams: {
     format: 'json',
     addrbook: '/public/locations'
+    //addrbook: '/user/johnsa/addressbook'
   },
 
   dataType: 'json',
@@ -37,33 +38,55 @@ var bwAutoCompleteOptions = {
     var parsed = [];
     data = data.microformats.vcard;
     for (var i = 0; i < data.length; i++) {
-      dataRow = {
-        fn: (data[i].fn.value)?data[i].fn.value:"",
-        email: (data[i].email[0].value)?data[i].email[0].value:"",
-        uri: (data[i].caladruri.value)?data[i].caladruri.value:"",
-        type: (data[i].kind.value)?data[i].kind.value:""
-      };
-      parsed[i] = {
-        data: dataRow,
-        value: data[i].fn.value,
-        result: data[i].email[0].value
-      };
+      
+      // pick out the best uri if one is available
+      // caladruri is first choice, email second
+      var cururi = "";
+      if (data[i].caladruri != undefined && data[i].caladruri.value != undefined) {
+        cururi = data[i].caladruri.value;
+      }
+      if (cururi == "" && data[i].email[0] != undefined && data[i].email[0].value != undefined) {
+        var curEmail = data[i].email[0].value;
+        if (curEmail != "") {
+          cururi = "mailto:" + curEmail;
+        }
+      }      
+      // check for the existence of fn
+      var curfn = "";
+      if (data[i].fn != undefined && data[i].fn.value != undefined) {
+        curfn = data[i].fn.value;
+      }
+      
+      // check for the existence of kind
+      var curkind = "";
+      if (data[i].kind != undefined && data[i].kind.value != undefined) {
+        curkind = data[i].kind.value;
+      }
+      
+      // skip if no uri 
+      if (cururi != "") {
+        dataRow = {
+          fn: curfn,
+          uri: cururi, 
+          type: curkind
+        };
+        parsed[i] = {
+          data: dataRow,
+          value: curfn,
+          result: cururi
+        };
+      }
     }
     return parsed;
   },
   formatItem: function(item) {
-      return " \"" + item.fn + "\" [" + item.email + "]";
+      return " \"" + item.fn + "\" [" + item.uri.substring(7) + "]";
   },
 
   formatMatch: function(item) {
-      return " \"" + item.fn + "\" [" + item.email + "]";
+      return " \"" + item.fn + "\" [" + item.uri.substring(7) + "]";
   },
   formatResult: function(item) {
-    return item.email;
+    return item.uri;
   }
 };
-
-// carddavUrl supplied in bedework.js
-jQuery(document).ready(function($) {
-  $('#bwAddAttendee').autocomplete(carddavUrl, bwAutoCompleteOptions)
-});

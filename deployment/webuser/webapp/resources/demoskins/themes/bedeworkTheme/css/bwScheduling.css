@@ -82,7 +82,7 @@
 }
 #bwScheduleTable #bwAddAttendee {
   cursor: pointer;
-  padding: 4px 0;
+  margin: 4px 0;
 }
 #bwScheduleTable #bwAddAttendee.pending {
   color: #bbb;
@@ -92,7 +92,7 @@
 #bwScheduleTable #bwAddAttendee.active {
   color: black;
   background-color: transparent;
-  border: none;
+  border: 1px solid #ddd;
 }
 #bwScheduleTable #bwAddAttendeeAdvanced {
   color: #bbb;
@@ -106,6 +106,20 @@
   padding: 2px;
   cursor: pointer;
 }
+#bwScheduleTable #bwAddAttendeeFields {
+	margin: auto;
+	width: 170px;
+}
+#bwScheduleTable .bwAddAttendeeSubField {
+	float: left;
+	font-size: 0.9em;
+  margin: 0.5em 0.25em;
+}
+#bwScheduleTable .bwAddAttendeeSubFieldHead {
+  text-align: center;
+  background-color: #eee;
+  color: black;
+}
 #bwScheduleTable #attType {
   display: none;
   font-size: 0.8em;
@@ -116,7 +130,7 @@
   /*cursor: crosshair;*/
 }
 #bwScheduleTable td.busy {
-  background-color: #b1cbfa;
+  background-color: #b1cbfa !important;
   color: black;
 }
 #bwScheduleTable tr.deselected td.busy {
@@ -124,7 +138,7 @@
   color: black;
 } 
 #bwScheduleTable td.tentative {
-  background: #eef url("../images/tentativeLines.gif");
+  background: #eef url("../images/tentativeLines.gif") !important;
   color: black;
 }
 #bwScheduleTable td.highlight {
