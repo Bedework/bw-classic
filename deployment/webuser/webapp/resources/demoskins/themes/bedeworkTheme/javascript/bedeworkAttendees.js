@@ -24,7 +24,8 @@ var bwAutoCompleteOptions = {
   autoFill: false,
 
   extraParams: {
-    format: 'json'
+    format: 'json',
+    addrbook: '/public/locations'
   },
 
   dataType: 'json',
@@ -58,12 +59,11 @@ var bwAutoCompleteOptions = {
       return " \"" + item.fn + "\" [" + item.email + "]";
   },
   formatResult: function(item) {
-    alert("here!");
     return item.email;
   }
 };
 
-// carddavUrl supplied in bedeworkProperties.js
+// carddavUrl supplied in bedework.js
 jQuery(document).ready(function($) {
-  $('#bwRaUri').autocomplete(carddavUrl, bwAutoCompleteOptions)
+  $('#bwAddAttendee').autocomplete(carddavUrl, bwAutoCompleteOptions)
 });

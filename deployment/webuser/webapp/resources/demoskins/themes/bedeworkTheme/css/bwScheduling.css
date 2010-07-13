@@ -4,7 +4,8 @@
 }
 #bwFreeBusyDisplay {
   margin: 2em 2em 0 2em;
-  overflow: scroll;  
+  height: auto;
+  overflow: auto;  
 }
 #bwScheduleTable {
   border-collapse: collapse; 
@@ -101,8 +102,8 @@
   background-color: #666;
   font-size: 0.8em;
   padding: 2px;
+  cursor: pointer;
 }
-#bwScheduleTable #bwAddAttendeeFields,
 #bwScheduleTable #attType {
   display: none;
   font-size: 0.8em;

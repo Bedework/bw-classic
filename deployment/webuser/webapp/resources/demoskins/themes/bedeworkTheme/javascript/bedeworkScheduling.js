@@ -60,7 +60,18 @@ var bwAttendeeDispTypeResource = "resource";
 var bwFreeBusyDispTypeBusy = "BUSY";
 var bwFreeBusyDispTypeTentative = "TENTATIVE";
 var bwAddAttendeeDisp = "add attendee...";
+var bwAddDisp = "add";
 var bwAttendeeExistsDisp = "attendee exists";
+
+var bwReqParticipantDisp = "required";
+var bwOptParticipantDisp = "optional";
+var bwChairDisp = "chair";
+var bwNonParticipant = "non-participant";
+var bwNeedsAction = "needs action";
+var bwAccepted = "accepted";
+var bwDeclined = "declined";
+var bwTentative = "tentative";
+var bwDelegated = "delegated";
 
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
@@ -289,7 +300,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       $.ajax({
         type: "POST",
         url: bwGrid.attUrlPrefix,
-        data: "uri=" + uid + "&attendee=true&submit=add",
+        data: "uri=" + uid + "&role=" + role + "&partstat=" + status + "&attendee=true&submit=add",
         success: function(){
           // add the attendee to the local array
           // this data must be completed by the ajax call (coming)
@@ -760,10 +771,22 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // create the add attendee form 
       var addAttendeeHtml = '<td class="addAttendee" colspan="4">';
       addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="attendee" id="bwAddAttendee" class="pending" size="30"/>';
-      addAttendeeHtml += '<span id="bwAddAttendeeAdd" class="invisible">add</span>';
+      addAttendeeHtml += '<span id="bwAddAttendeeAdd" class="invisible">' + bwAddDisp +'</span>';
       addAttendeeHtml += '<span id="bwAddAttendeeAdvanced">advanced</span>';
-      addAttendeeHtml += '<div id="bwAddAttendeeFields">';
-      addAttendeeHtml += '';
+      addAttendeeHtml += '<div id="bwAddAttendeeFields" class="invisible">';
+      addAttendeeHtml += '<select name="role" id="bwAddAttendeeRole">';
+      addAttendeeHtml += '  <option value="REQ-PARTICIPANT">' + bwReqParticipantDisp + '</option>';
+      addAttendeeHtml += '  <option value="OPT-PARTICIPANT">' + bwOptParticipantDisp + '</option>';
+      addAttendeeHtml += '  <option value="CHAIR">' + bwChairDisp + '</option>';
+      addAttendeeHtml += '  <option value="NON-PARTICIPANT">' + bwNonParticipant + '</option>';
+      addAttendeeHtml += '</select>';
+      addAttendeeHtml += '<select name="partstat" id="bwAddAttendeePartstat">';
+      addAttendeeHtml += '  <option value="NEEDS-ACTION">' + bwNeedsAction + '</option>';
+      addAttendeeHtml += '  <option value="ACCEPTED">' + bwAccepted + '</option>';
+      addAttendeeHtml += '  <option value="DECLINED">' + bwDeclined + '</option>';
+      addAttendeeHtml += '  <option value="TENTATIVE">' + bwTentative + '</option>';
+      addAttendeeHtml += '  <option value="DELEGATED">' + bwDelegated + '</option>';
+      addAttendeeHtml += '</select>';
       //addAttendeeHtml += '<select><option>person</option><option>group</option><option>resource</option></select>';
       //addAttendeeHtml += '<input type="checkbox"/>personal <input type="checkbox"/>public';
       addAttendeeHtml += '</div>';
@@ -982,15 +1005,17 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
           // hide advanced switch, show add button
           $("#bwAddAttendeeAdvanced").hide();
           changeClass("bwAddAttendeeAdd","visible");
+          changeClass("bwAddAttendeeFields", "visible");
         }
       );
       
       $("#bwScheduleTable #bwAddAttendeeAdd").click (
         function () {
           var uid = $("#bwAddAttendee").val();
-          var role = bwAttendeeRoleRequired;
+          var role = $("#bwAddAttendeeRole").val();
+          var partstat = $("#bwAddAttendeePartstat").val();
           // these are preliminary values - will get more from backend after ajax call
-          bwGrid.addAttendee("",uid,role,"","person");
+          bwGrid.addAttendee("",uid,role,partstat,"person");
         }
       );
       

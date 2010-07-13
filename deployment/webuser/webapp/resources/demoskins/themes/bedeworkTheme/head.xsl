@@ -69,7 +69,8 @@
     </xsl:if>
 
     <xsl:if test="/bedework/page='attendees'">
-      <!-- script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script -->
+      <!--  Note: this page is deprecated, but is still maintained for testing.
+            The following files are included in the add/edit event pages now as well. -->
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkAttendees.js">&#160;</script>
