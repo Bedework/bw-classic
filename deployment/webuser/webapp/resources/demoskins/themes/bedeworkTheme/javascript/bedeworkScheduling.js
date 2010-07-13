@@ -1008,9 +1008,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       
       // capture the enter key when entering an attendee;
       // do not submit the form; add the attendee.
-      $("#bwScheduleTable #bwAddAttendee").keyup(
+      $("#bwScheduleTable #bwAddAttendee").keypress (
           function (e) {
             if(e.keyCode == 13) {
+              e.preventDefault();
               bwGrid.addAttendeeFromGrid();
             }
           }
