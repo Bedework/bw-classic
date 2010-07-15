@@ -25,7 +25,7 @@ LDAPSetLines="objectclass: top
 objectclass: calendarresource
 objectclass: schedapprovalinfo
 objectclass: calEntry
-objectclass: organizationalUnit"
+objectclass: room"
 
 VCARDHeader="BEGIN:VCARD
    VERSION:4.0"
