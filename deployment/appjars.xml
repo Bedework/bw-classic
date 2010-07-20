@@ -218,6 +218,9 @@
               name="ical4j" version="head-20100601" />
 
       <getJar lib="${org.bedework.app.lib}"
+              name="ical4j-vcard" version="0.9.3-SNAPSHOT" />
+
+      <getJar lib="${org.bedework.app.lib}"
               name="portals-bridges-common" version="1.0" />
 
       <getJar lib="${org.bedework.app.lib}"

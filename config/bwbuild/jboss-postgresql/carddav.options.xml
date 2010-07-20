@@ -46,6 +46,23 @@
           <user-principal-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
             <pathPrefix>/principals/users</pathPrefix>
             <addressBook>true</addressBook>
+            
+            <!-- The cardPathPrefix is used to manufacture a path to a card for 
+                 the principal. If it is set we take the path
+                 
+                 <principal-root>/<account>
+                 
+                 and transform it to 
+                 
+                 <cardPathPrefix>/<account>.vcf
+                 
+                 If it is not set we try the cardPathPrefixes supplied globally.
+                 If they are not supplied we don't give any path. The client will
+                 have to fall back to a query.
+                 -->
+            <cardPathPrefix>/public/people</cardPathPrefix>
+
+            <cardPathPrefixes>/public/people,loc_:/public/locations</cardPathPrefixes>
 
             <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
@@ -103,6 +120,38 @@
 
             <debug>true</debug>
           </group-principal-dirHandler>
+          
+          <location-principal-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
+            <pathPrefix>/principals/locations</pathPrefix>
+            <addressBook>true</addressBook>
+            <cardPathPrefix>/public/locations</cardPathPrefix>
+
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
+
+            <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
+            <providerUrl>ldap://localhost:10389/</providerUrl>
+
+            <baseDn>ou=locations,dc=bedework,dc=org</baseDn>
+
+            <queryLimit>1000</queryLimit>
+
+            <attrIds></attrIds>
+
+            <cardKind>location</cardKind>
+
+            <addressbookObjectClass>organizationalUnit</addressbookObjectClass>
+            <addressbookIdAttr>ou</addressbookIdAttr>
+
+            <addressbookEntryObjectClass>groupOfUniqueNames</addressbookEntryObjectClass>
+            <addressbookEntryIdAttr>cn</addressbookEntryIdAttr>
+
+            <principalIdAttr>cn</principalIdAttr>
+
+            <authDn>uid=admin,ou=system</authDn>
+            <authPw>secret</authPw>
+
+            <debug>true</debug>
+          </location-principal-dirHandler>
           
           <!-- handle the user address book hierarchy -->
           
@@ -162,7 +211,7 @@
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
             <providerUrl>ldap://localhost:10389/</providerUrl>
-            <baseDn>ou=locations,dc=bedework,dc=org</baseDn>
+            <baseDn>ou=locations,ou=public,dc=bedework,dc=org</baseDn>
 
             <queryLimit>1000</queryLimit>
 

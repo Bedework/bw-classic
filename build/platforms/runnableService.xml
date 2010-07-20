@@ -85,6 +85,7 @@ hibernate.jdbc.batch_size=0
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.lucene-misc}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.backport-util-concurrent}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ical4j}"/>
+    <copy todir="${app.dest.lib}" file="${org.bedework.appjar.ical4j-vcard}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-codec}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-digester}"/>
     <copy todir="${app.dest.lib}" file="${org.bedework.appjar.commons-httpclient}"/>
