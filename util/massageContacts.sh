@@ -1,10 +1,12 @@
 #! /bin/bash -f
 
-inputFile=MimisContacts.txt
+rejectList=("Davidr*n Taylor" unnamed)
+inputFile=$1
+#inputFile=MimisContacts.txt
 tmpFile=/tmp/MimisContactsMassaged$$.txt
 # the resulting file is pumped out via stdout
 
-sed '/ADR;TYPE=WORK:;;;;;;$/d' $inputFile | sed '/ADR;TYPE=HOME:;;;;;;$/d' | sed '/ADR;TYPE=X-ORACLE-OTHER:;;;;;;$/d' | sed 's/VERSION:3.0$/VERSION:4.0/' > $tmpFile
+sed -e '/ADR;TYPE=WORK:;;;;;;$/d' -e 's/$//' -e '/ADR;TYPE=HOME:;;;;;;$/d' -e '/ADR;TYPE=X-ORACLE-OTHER:;;;;;;$/d' -e 's/VERSION:3.0$/VERSION:4.0/' $inputFile > $tmpFile
 
 
 while read line; do 
@@ -36,7 +38,13 @@ while read line; do
        #process what we have
        # echo out the begin line
        echo $beginLine
-       if [ x"$fnLine" == x ]; then
+       if [ x"$fnLine" = x ]; then
+          # skip over the rejects
+          for x in $rejectList; do
+            if [ `grep "$x" $fnLine` ] ; then
+              continue
+            fi
+          done
           # mock up an FN and spit it out
           if [ "$nLine" != "N:;;;;" ]; then
             newFnLine=`echo $nLine | sed 's/N://'`
