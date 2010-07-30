@@ -108,7 +108,7 @@ echo "dn: cn=$cn,$locLdapContainer
 $LDAPSetLines
 kind: location
 uid: $uid
-calCalAdrURL: mailto:loc_${cn}${uidSuffix}
+calCalAdrURI: mailto:loc_${cn}${uidSuffix}
 mail: loc_${cn}${uidSuffix}
 cn: $cn
 ou: locations
