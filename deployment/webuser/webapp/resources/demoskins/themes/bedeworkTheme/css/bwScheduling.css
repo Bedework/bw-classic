@@ -107,18 +107,13 @@
   cursor: pointer;
 }
 #bwScheduleTable #bwAddAttendeeFields {
-	margin: auto;
-	width: 170px;
+	white-space: nowrap;
 }
 #bwScheduleTable .bwAddAttendeeSubField {
-	float: left;
 	font-size: 0.9em;
   margin: 0.5em 0.25em;
 }
 #bwScheduleTable .bwAddAttendeeSubFieldHead {
-  text-align: center;
-  background-color: #eee;
-  color: black;
 }
 #bwScheduleTable #attType {
   display: none;

@@ -313,7 +313,7 @@ $.Autocompleter = function(input, options) {
   };
 
   function receiveData(q, data) {
-    if ( data && data.length && hasFocus ) {
+    if ( data && data.length && hasFocus && data[0] != undefined) {
       stopLoading();
       select.display(data, q);
       autoFill(q, data[0].value);

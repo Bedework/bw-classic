@@ -17,10 +17,12 @@
  under the License.
  */
 
-
-// ========================================================================
-// free/busy functions
-// ========================================================================
+/* ========================================================================
+   This file builds a scheduling widget for the "meeting" tab of the 
+   add/edit event form used for adding and removing attendees, observing
+   free/busy, and for picking available time in a free/busy grid. 
+   ========================================================================
+*/
 
 // Constants and RFC-5445 values 
 // These should be put some place permanent
@@ -63,8 +65,8 @@ var bwAddAttendeeDisp = "add attendee...";
 var bwAddDisp = "add";
 var bwAttendeeExistsDisp = "attendee exists";
 var bwAddAttendeeRoleDisp = "Role:";
-var bwAddAttendeeTypeDisp = "Type";
-var bwAddAttendeeBookDisp = "Book";
+var bwAddAttendeeTypeDisp = "Type:";
+var bwAddAttendeeBookDisp = "Book:";
 var bwEventSubmitMeetingDisp = "send";
 
 var bwReqParticipantDisp = "required";
@@ -192,7 +194,7 @@ var bwFreeBusy = function(fbString, fbType) {
  * fbUrlPrefix:     string - URL prefix for making freebusy requests 
  * organizerUri:    string - e.g. "someone@mysite.edu" 
  */
-var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot, fbUrlPrefix, attUrlPrefix, organizerUri) {
+var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHoursRange, attendees, workday, zoom, browserResourcesRoot, fbUrlPrefix, attUrlPrefix, organizerUri, curUserId) {
   this.displayId = displayId;
   this.startRange = new Date(startRange);
   this.endRange = new Date(startRange); 
@@ -206,6 +208,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   this.fbUrlPrefix = fbUrlPrefix;
   this.attUrlPrefix = attUrlPrefix;
   this.organizer = organizerUri;
+  this.curUser = curUserId;
   
   // increment the endRange
   this.endRange.addDays(this.dayRange);  
@@ -662,6 +665,70 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         $(fbDisplayTimesRow).append('<td class="dayBoundry"></td>');
       }
       
+   // generate the "add attendee" row
+      fbDisplayAddAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
+      
+      // create the add attendee form 
+      var addAttendeeHtml = '<td class="addAttendee" colspan="4">';
+      addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="q" id="bwAddAttendee" class="pending" size="30"/>';
+      addAttendeeHtml += '<span id="bwAddAttendeeAdd" class="invisible">' + bwAddDisp +'</span>';
+      //addAttendeeHtml += '<span id="bwAddAttendeeAdvanced">advanced</span>';
+      addAttendeeHtml += '<div id="bwAddAttendeeFields" class="invisible">';
+      addAttendeeHtml += '  <div class="bwAddAttendeeSubField" id="bwAddAttendeeRoleBlock">';
+      addAttendeeHtml += '    <span class="bwAddAttendeeSubFieldHead">' + bwAddAttendeeRoleDisp + '</span>';
+      addAttendeeHtml += '    <select name="role" id="bwAddAttendeeRole">';
+      addAttendeeHtml += '      <option value="REQ-PARTICIPANT">' + bwReqParticipantDisp + '</option>';
+      addAttendeeHtml += '      <option value="OPT-PARTICIPANT">' + bwOptParticipantDisp + '</option>';
+      addAttendeeHtml += '      <option value="CHAIR">' + bwChairDisp + '</option>';
+      addAttendeeHtml += '      <option value="NON-PARTICIPANT">' + bwNonParticipant + '</option>';
+      addAttendeeHtml += '    </select>';
+      addAttendeeHtml += '  </div>';
+      // DON'T include partstat except for testing.  This value should be determined by actual participants.
+      //addAttendeeHtml += '<select name="partstat" id="bwAddAttendeePartstat">';
+      //addAttendeeHtml += '  <option value="NEEDS-ACTION">' + bwNeedsAction + '</option>';
+      //addAttendeeHtml += '  <option value="ACCEPTED">' + bwAccepted + '</option>';
+      //addAttendeeHtml += '  <option value="DECLINED">' + bwDeclined + '</option>';
+      //addAttendeeHtml += '  <option value="TENTATIVE">' + bwTentative + '</option>';
+      //addAttendeeHtml += '  <option value="DELEGATED">' + bwDelegated + '</option>';
+      //addAttendeeHtml += '</select>';
+      addAttendeeHtml += '  <div class="bwAddAttendeeSubField" id="bwAddAttendeeBookBlock">';
+      addAttendeeHtml += '    <span class="bwAddAttendeeSubFieldHead">' + bwAddAttendeeBookDisp + '</span>';
+      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeAddrBk" value="/user/' + bwGrid.curUser + '/addressbook" checked="checked" onclick="changeClass(\'bwAddAttendeeTypeBlock\',\'invisible\');bwGrid.updateBookPath(this.value);">personal';
+      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeAddrBk" value="/public" onclick="changeClass(\'bwAddAttendeeTypeBlock\',\'bwAddAttendeeSubField\');bwGrid.updateBookPath(this.form.bwAddAttendeeType.value);">public';
+      addAttendeeHtml += '  </div>';
+      addAttendeeHtml += '  <div class="invisible" id="bwAddAttendeeTypeBlock">';
+      addAttendeeHtml += '    <span class="bwAddAttendeeSubFieldHead">' + bwAddAttendeeTypeDisp + '</span>';
+      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeType" value="/public/people" checked="checked" onclick="bwGrid.updateBookPath(this.value);"/>person';
+      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeType" value="/public/groups" disabled="disabled" onclick="bwGrid.updateBookPath(this.value);"/>group';
+      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeType" value="/public/locations" onclick="bwGrid.updateBookPath(this.value);"/>location';
+      addAttendeeHtml += '  </div>';
+      addAttendeeHtml += '  <input type="hidden" name="bwCardDavBookPath" id="bwCardDavBookPath" value="/user/' + bwGrid.curUser + '/addressbook"/>';
+      addAttendeeHtml += '</div>';
+      addAttendeeHtml += '</td><td class="fbBoundry"></td>';
+      
+      $(fbDisplayAddAttendeeRow).html(addAttendeeHtml);
+      
+      for (i = 0; i < range; i++) {
+        var curDate = new Date(this.startRange);
+        curDate.setHours(startHour);
+        curDate.addDays(i);
+        // add the time cells by iterating over the hours
+        for (j = 0; j < hourRange; j++) {
+          for (k = 0; k < this.hourDivision; k++) {
+            var fbCell = document.createElement("td");
+            fbCell.id = curDate.getTime() + "-add";
+            $(fbCell).addClass("fbcell");
+            $(fbCell).addClass(curDate.getTime().toString());
+            if (curDate.getMinutes() == 0 && j != 0) {
+              $(fbCell).addClass("hourBoundry");
+            } 
+            $(fbDisplayAddAttendeeRow).append(fbCell);
+            curDate.addMinutes(60/this.hourDivision);
+          }
+        }
+        $(fbDisplayAddAttendeeRow).append('<td class="dayBoundry"></td>');
+      }
+      
       // generate the regular attendees rows
       for (attendee = 0; attendee < this.attendees.length; attendee++) {
         fbDisplayAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
@@ -779,67 +846,6 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         }
       }
       
-      // generate the "add attendee" row
-      fbDisplayAddAttendeeRow = fbDisplay.insertRow(fbDisplay.rows.length);
-      
-      // create the add attendee form 
-      var addAttendeeHtml = '<td class="addAttendee" colspan="4">';
-      addAttendeeHtml += '<input type="text" value="' + bwAddAttendeeDisp +'" name="q" id="bwAddAttendee" class="pending" size="30"/>';
-      addAttendeeHtml += '<span id="bwAddAttendeeAdd" class="invisible">' + bwAddDisp +'</span>';
-      //addAttendeeHtml += '<span id="bwAddAttendeeAdvanced">advanced</span>';
-      addAttendeeHtml += '<div id="bwAddAttendeeFields" class="invisible">';
-      addAttendeeHtml += '  ' + bwAddAttendeeRoleDisp + ' ';
-      addAttendeeHtml += '  <select name="role" id="bwAddAttendeeRole">';
-      addAttendeeHtml += '    <option value="REQ-PARTICIPANT">' + bwReqParticipantDisp + '</option>';
-      addAttendeeHtml += '    <option value="OPT-PARTICIPANT">' + bwOptParticipantDisp + '</option>';
-      addAttendeeHtml += '    <option value="CHAIR">' + bwChairDisp + '</option>';
-      addAttendeeHtml += '    <option value="NON-PARTICIPANT">' + bwNonParticipant + '</option>';
-      addAttendeeHtml += '  </select>';
-      // DON'T include partstat except for testing.  This value should be determined by actual participants.
-      //addAttendeeHtml += '<select name="partstat" id="bwAddAttendeePartstat">';
-      //addAttendeeHtml += '  <option value="NEEDS-ACTION">' + bwNeedsAction + '</option>';
-      //addAttendeeHtml += '  <option value="ACCEPTED">' + bwAccepted + '</option>';
-      //addAttendeeHtml += '  <option value="DECLINED">' + bwDeclined + '</option>';
-      //addAttendeeHtml += '  <option value="TENTATIVE">' + bwTentative + '</option>';
-      //addAttendeeHtml += '  <option value="DELEGATED">' + bwDelegated + '</option>';
-      //addAttendeeHtml += '</select>';
-      addAttendeeHtml += '  <div class="bwAddAttendeeSubField">';
-      addAttendeeHtml += '    <div class="bwAddAttendeeSubFieldHead">' + bwAddAttendeeTypeDisp + '</div>';
-      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeType" value="person" checked="checked">person<br/>';
-      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeType" value="group" disabled="disabled">group<br/>';
-      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeType" value="location"/>location';
-      addAttendeeHtml += '  </div>';
-      addAttendeeHtml += '  <div class="bwAddAttendeeSubField">';
-      addAttendeeHtml += '    <div class="bwAddAttendeeSubFieldHead">' + bwAddAttendeeBookDisp + '</div>';
-      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeAddrBk" value="person" checked="checked">personal<br/>';
-      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeAddrBk" value="group">public<br/>';
-      addAttendeeHtml += '  </div>';
-      addAttendeeHtml += '</div>';
-      addAttendeeHtml += '</td><td class="fbBoundry"></td>';
-      
-      $(fbDisplayAddAttendeeRow).html(addAttendeeHtml);
-      
-      for (i = 0; i < range; i++) {
-        var curDate = new Date(this.startRange);
-        curDate.setHours(startHour);
-        curDate.addDays(i);
-        // add the time cells by iterating over the hours
-        for (j = 0; j < hourRange; j++) {
-          for (k = 0; k < this.hourDivision; k++) {
-            var fbCell = document.createElement("td");
-            fbCell.id = curDate.getTime() + "-add";
-            $(fbCell).addClass("fbcell");
-            $(fbCell).addClass(curDate.getTime().toString());
-            if (curDate.getMinutes() == 0 && j != 0) {
-              $(fbCell).addClass("hourBoundry");
-            } 
-            $(fbDisplayAddAttendeeRow).append(fbCell);
-            curDate.addMinutes(60/this.hourDivision);
-          }
-        }
-        $(fbDisplayAddAttendeeRow).append('<td class="dayBoundry"></td>');
-      } 
-      
       // generate a blank row at the end (this is just for visual padding)
       fbDisplayBlankRow = fbDisplay.insertRow(fbDisplay.rows.length);
       $(fbDisplayBlankRow).html('<td class="status"></td><td class="role"></td><td class="name"></td><td></td><td class="fbBoundry"></td>');
@@ -937,6 +943,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   
         }
       );
+      
+      this.updateBookPath = function(path) {
+        $("#bwCardDavBookPath").val(path);
+      }
       
       this.gotoNextRange = function() {
         $("#bwSchedProcessingMsg").show();
@@ -1047,13 +1057,13 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // carddavUrl supplied in bedework.js
        var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
        //var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
-      $("#bwScheduleTable #bwAddAttendee").autocomplete(carddavUrlTemp, bwAutoCompleteOptions);
+      $("#bwScheduleTable #bwAddAttendee").autocomplete(carddavUrl, bwAutoCompleteOptions);
       
       // capture the enter key when entering an attendee;
       // do not submit the form; add the attendee.
       $("#bwScheduleTable #bwAddAttendee").keypress (
           function (e) {
-            if(e.keyCode == 13) {
+            if(e.keyCode == 13) { // enter
               e.preventDefault();
               bwGrid.addAttendeeFromGrid();
             }
