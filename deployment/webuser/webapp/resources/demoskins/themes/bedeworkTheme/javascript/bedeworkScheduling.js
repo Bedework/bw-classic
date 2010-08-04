@@ -298,9 +298,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         type: "POST",
         url: bwGrid.attUrlPrefix,
         data: "uri=" + uid + "&role=" + role + "&partstat=" + status + "&attendee=true&submit=add&list=yes",
-        success: function(){
-          // add the attendee to the local array
-          // this data must be completed by the ajax call (coming)
+        success: function(responseData){
+          // add the attendee to the local array (temporary)
+          // the local array should be overwritten with data from the ajax call (coming)
+          // alert(responseData);
         
           // take off "mailto:" for local storage
           if (uid.indexOf("mailto:") != -1) {
@@ -322,7 +323,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         },
         error: function(msg) {
           // there was a problem
-          alert(msg.statusText);
+          alert("Error: " + msg.statusText);
         }
       });
     }

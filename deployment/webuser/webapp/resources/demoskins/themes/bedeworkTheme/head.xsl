@@ -186,7 +186,7 @@
         var bwGridAttees = new Array(<xsl:apply-templates select="/bedework/formElements/form/attendees" mode="loadBwGrid"/>);
         var bwGridOrganizer = "<xsl:value-of select="/bedework/formElements/form/organizer/organizerUri"/>";
         var bwGridCurUser = "<xsl:value-of select="/bedework/userid"/>";
-        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay",bwGridSDate,8,17,bwGridAttees,true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","<xsl:value-of select="$event-attendeesForEvent"/>",bwGridOrganizer,bwGridCurUser);
+        var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay",bwGridSDate,8,17,bwGridAttees,true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","<xsl:value-of select="$widget-attendees"/>",bwGridOrganizer,bwGridCurUser);
         
         // set the grid size
         function bwGridSetSize() {

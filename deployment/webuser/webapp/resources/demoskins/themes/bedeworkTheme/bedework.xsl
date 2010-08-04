@@ -104,6 +104,10 @@
                   <xsl:when test="/bedework/page='attendees'">
                     <xsl:call-template name="attendees"/>
                   </xsl:when>
+                  <xsl:when test="/bedework/page='attendeeWidget'">
+                    <!-- generate json list of attendees after modifying the scheduling widget -->
+                    {<xsl:apply-templates select="/bedework/attendees" mode="loadBwGrid"/>}
+                  </xsl:when>
                   <xsl:when test="/bedework/page='editEvent'">
                     <xsl:apply-templates select="/bedework/formElements" mode="editEvent"/>
                   </xsl:when>

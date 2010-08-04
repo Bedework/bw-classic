@@ -21,12 +21,13 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
   
-  <!-- transform the attendees into an array of json objects 
-       for use in the BwGrid -->
+  <!-- Transform the attendees into an array of json objects 
+       for use in the BwGrid.  This is called on edit event and after each update to 
+       the attendees using xml from the attendee widget.  -->
   <xsl:template match="attendees" mode="loadBwGrid">
     <xsl:for-each select="attendee">
       <xsl:sort select="attendeeUri"/>
-      {name:"<xsl:value-of select="cn"/>",uid:"<xsl:value-of select="attendeeUri"/>",role:"<xsl:value-of select="role"/>",status:"<xsl:value-of select="partstat"/>",type:"person"}<xsl:if test="position()!=last()">,</xsl:if>
+      {name:"<xsl:value-of select="cn"/>",uid:"<xsl:value-of select="attendeeUri"/>",role:"<xsl:value-of select="role"/>",status:"<xsl:value-of select="partstat"/>",type:"<xsl:value-of select="cuType"/>"}<xsl:if test="position()!=last()">,</xsl:if>
     </xsl:for-each>
   </xsl:template>
   

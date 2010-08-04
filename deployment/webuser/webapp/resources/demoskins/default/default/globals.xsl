@@ -63,6 +63,7 @@
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>
   <xsl:variable name="addEvent" select="/bedework/urlPrefixes/event/addEvent"/>
   <xsl:variable name="event-attendeesForEvent" select="/bedework/urlPrefixes/event/attendeesForEvent"/>
+  <xsl:variable name="widget-attendees" select="/bedework/urlPrefixes/widget/attendees"/>
   <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent"/>
   <xsl:variable name="event-initMeeting" select="/bedework/urlPrefixes/event/initMeeting"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete"/>
