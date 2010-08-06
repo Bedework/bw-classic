@@ -1054,11 +1054,48 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         }
       );
       
-      // auto-completion for add attendee input field 
+      // auto-completion for add attendee input field - DEPRECATED 
       // carddavUrl supplied in bedework.js
-       var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
-       //var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
-      $("#bwScheduleTable #bwAddAttendee").autocomplete(carddavUrl, bwAutoCompleteOptions);
+      // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
+      // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
+      //$("#bwScheduleTable #bwAddAttendee").autocomplete(carddavUrl, bwAutoCompleteOptions);
+      
+      // below is the newer jquery UI autocomplete
+      $("#bwScheduleTable #bwAddAttendee").autocomplete({
+        minLength: 1,
+        // set the data source, call it, and format the results:
+        source: function(req, include) {
+          // build the address book url; the path to the addressbook is determined by the
+          // radio button choices in the "add attendee" widget
+          addrBookUrl = carddavUrl + "?format=json&addrbook=" + $("#bwCardDavBookPath").val();
+          
+          // call the server and format the results into an array "items"
+          $.getJSON(addrBookUrl, req, function(data) {
+            var acResults = data.microformats.vcard;
+            var items = [];
+            $.each(acResults, function(i,entry) {
+              var curlabel = entry.fn.value + ", " + entry.email[0].value;
+              var cururi = "";
+              if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
+                cururi = entry.caladruri.value;
+              }
+              if (cururi == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+                var curEmail = entry.email[0].value;
+                if (curEmail != "") {
+                  cururi = "mailto:" + curEmail;
+                }
+              }
+              if (cururi != "") {
+                var curItem = {label: curlabel, value: cururi};
+                items.push(curItem);
+              }
+            });
+            
+            // pass items to the callback function for display in the autocomplete pulldown
+            include(items);
+          });
+        }
+      });
       
       // capture the enter key when entering an attendee;
       // do not submit the form; add the attendee.

@@ -42,10 +42,19 @@
 
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
+    <!-- 
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
     <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
     <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
-    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/> 
+    -->
+    
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.4.2.min.js">&#160;</script>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.8.2.custom.min.js">&#160;</script>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/bw-theme-3p7/jquery-ui-1.8.2.custom.css"/>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/bw-theme-3p7/bedeworkJquery.css"/> 
+    
+    
     <!-- load bedework personal client javascript libraries -->
     <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
     <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkSetup.js">&#160;</script>
@@ -160,12 +169,12 @@
       
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkScheduling.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/css/bwScheduling.css"/>
-      
+      <!-- 
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
       <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js">&#160;</script>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkAttendees.js">&#160;</script>
       <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
-      
+      -->
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
       
