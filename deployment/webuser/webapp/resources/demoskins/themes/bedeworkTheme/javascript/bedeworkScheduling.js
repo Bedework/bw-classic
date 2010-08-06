@@ -1071,7 +1071,10 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
           
           // call the server and format the results into an array "items"
           $.getJSON(addrBookUrl, req, function(data) {
-            var acResults = data.microformats.vcard;
+            var acResults;
+            if (data.microformats != undefined && data.microformats.vcard != undefined) {
+              acResults = data.microformats.vcard;
+            }
             var items = [];
             $.each(acResults, function(i,entry) {
               
