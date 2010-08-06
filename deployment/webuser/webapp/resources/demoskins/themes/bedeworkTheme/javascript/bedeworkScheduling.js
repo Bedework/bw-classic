@@ -1060,7 +1060,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
       //$("#bwScheduleTable #bwAddAttendee").autocomplete(carddavUrl, bwAutoCompleteOptions);
       
-      // below is the newer jquery UI autocomplete
+      // add attendee box - use jquery UI autocomplete
       $("#bwScheduleTable #bwAddAttendee").autocomplete({
         minLength: 1,
         // set the data source, call it, and format the results:
@@ -1074,19 +1074,39 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
             var acResults = data.microformats.vcard;
             var items = [];
             $.each(acResults, function(i,entry) {
-              var curlabel = entry.fn.value + ", " + entry.email[0].value;
-              var cururi = "";
-              if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
-                cururi = entry.caladruri.value;
+              
+              // build the label from the full name and email address
+              var curFn = "";
+              var curEmail = "";
+              var curLabel = "";
+              if (entry.fn != undefined && entry.fn.value != undefined) {
+                curFn = entry.fn.value;
+              } 
+              // this is probably not enough: we should account for all email addresses if there is no calendar uri
+              if (entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+                curEmail = entry.email[0].value;
               }
-              if (cururi == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+              if (curFn != "") {
+                curLabel = curFn + ", " + curEmail;
+              } else {
+                curLabel = curEmail;
+              }
+              
+              // use the calendar address uri if available, otherwise use email
+              var curUri = "";
+              if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
+                curUri = entry.caladruri.value;
+              }
+              if (curUri == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
                 var curEmail = entry.email[0].value;
                 if (curEmail != "") {
-                  cururi = "mailto:" + curEmail;
+                  curUri = "mailto:" + curEmail;
                 }
               }
-              if (cururi != "") {
-                var curItem = {label: curlabel, value: cururi};
+              
+              // only add the entry if there is a uri and a lable to use
+              if (curUri != "" && curLabel != "") {
+                var curItem = {label: curLabel, value: curUri};
                 items.push(curItem);
               }
             });
