@@ -80,7 +80,12 @@
     <mkdir dir="${app.dest.properties}" />
 
     <copy tofile="${app.dest.properties}/options.xml"
-          file="${org.bedework.config.options}" />
+          file="${org.bedework.config.options}" >
+      <filterset>
+        <filter token="RPI-DEBUG" value="${app.debug.val}"/>
+      </filterset>
+      <filterset refid="property.filters" />
+    </copy>
 
     <!-- ===============================================================
                        Add any resource files
