@@ -1054,22 +1054,20 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         }
       );
       
-      // auto-completion for add attendee input field - DEPRECATED 
+      // add attendee box - use jquery UI autocomplete
       // carddavUrl supplied in bedework.js
       // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
       // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
-      //$("#bwScheduleTable #bwAddAttendee").autocomplete(carddavUrl, bwAutoCompleteOptions);
-      
-      // add attendee box - use jquery UI autocomplete
       $("#bwScheduleTable #bwAddAttendee").autocomplete({
         minLength: 1,
         // set the data source, call it, and format the results:
         source: function(req, include) {
-          // build the address book url; the path to the addressbook is determined by the
-          // radio button choices in the "add attendee" widget
+          // build the address book url; the path to the address book is determined by the
+          // radio button choices in the "add attendee" widget - these are stored on the fly
+          // in the hidden field with id bwCardDavBookPath
           addrBookUrl = carddavUrl + "?format=json&addrbook=" + $("#bwCardDavBookPath").val();
           
-          // call the server and format the results into an array "items"
+          // call the server and push the results into an array "items"
           $.getJSON(addrBookUrl, req, function(data) {
             var acResults;
             if (data.microformats != undefined && data.microformats.vcard != undefined) {
@@ -1107,7 +1105,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
                 }
               }
               
-              // only add the entry if there is a uri and a lable to use
+              // only add the entry if there is a uri and a label to use
               if (curUri != "" && curLabel != "") {
                 var curItem = {label: curLabel, value: curUri};
                 items.push(curItem);

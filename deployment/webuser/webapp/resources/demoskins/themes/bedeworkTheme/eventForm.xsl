@@ -198,6 +198,7 @@
           </a>
         </li>-->
       </ul>
+      
 
     <!-- Basic tab -->
     <!-- ============== -->
@@ -834,8 +835,19 @@
         <xsl:otherwise>
           <!-- has recurrenceId, so is master -->
           
+          <!-- the switch is current required to turn recurrence on or off - we can probably infer this instead -->
+          <div id="recurringSwitch">
+            <!-- set or remove "recurring" and show or hide all recurrence fields: -->
+            <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
+              <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input> <xsl:copy-of select="$bwStr-AEEF-EventRecurs"/>
+            <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
+              <xsl:if test="form/recurringEntity = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input> <xsl:copy-of select="$bwStr-AEEF-EventDoesNotRecur"/>
+          </div>
+          
           <!-- wrapper for all recurrence fields (rrules and rdates): -->
-          <div id="recurrenceFields">
+          <div id="recurrenceFields" class="invisible">
             <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 
             <h4><xsl:copy-of select="$bwStr-AEEF-RecurrenceRules"/></h4>
