@@ -12,7 +12,11 @@
       <track-connection-by-tx/>
       <rar-name>activemq-rar-5.3.0.rar</rar-name>
       <connection-definition>javax.jms.QueueConnectionFactory</connection-definition>
-      <ServerUrl>tcp://localhost:61616</ServerUrl>
+
+      <ServerUrl>failover:(tcp://primary:61616)</ServerUrl>
+      <!-- 
+      <ServerUrl>failover:(tcp://primary:61616)?timeout=3000</ServerUrl>
+      -->      
       <!--
       <UserName>sa</UserName>
       <Password></Password>
