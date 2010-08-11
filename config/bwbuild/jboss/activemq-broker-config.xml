@@ -83,8 +83,7 @@
             <forwardTo>
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
-              <filteredDestination selector="indexable = 'true'"
-                                   queue="bedework.crawler"/>
+              <queue physicalName="bedework.crawler" />
               <filteredDestination selector="inbox = 'true'"
                                    queue="bedework.scheduleIn"/>
               <filteredDestination selector="outbox = 'true'"
@@ -196,8 +195,12 @@
 
     <!-- The transport connectors ActiveMQ will listen to -->
     <transportConnectors>
-      <transportConnector name="bedework" uri="tcp://localhost:61616" discoveryUri="multicast://default"/>
+      <transportConnector name="bedework" uri="tcp://localhost:61616" />
       <!--
+        According to the book we shouldn't specify a discoveryUri - can lead to
+        multiple activemq brokers eating each others messages, At the very least
+        it leads to exceptions when I close the lid of my laptop.
+      <transportConnector name="bedework" uri="tcp://localhost:61616" discoveryUri="multicast://default"/>
       <transportConnector name="xmpp" uri="xmpp://localhost:61222"/>
       -->
     </transportConnectors>
