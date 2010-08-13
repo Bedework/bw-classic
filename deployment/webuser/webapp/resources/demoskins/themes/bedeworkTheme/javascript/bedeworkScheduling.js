@@ -68,6 +68,7 @@ var bwAddAttendeeRoleDisp = "Role:";
 var bwAddAttendeeTypeDisp = "Type:";
 var bwAddAttendeeBookDisp = "Book:";
 var bwEventSubmitMeetingDisp = "send";
+var bwEventSubmitDisp = "save";
 
 var bwReqParticipantDisp = "required";
 var bwOptParticipantDisp = "optional";
@@ -78,6 +79,8 @@ var bwAccepted = "accepted";
 var bwDeclined = "declined";
 var bwTentative = "tentative";
 var bwDelegated = "delegated";
+
+var bwErrorAttendees = "Error: attendees not returned";
 
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
@@ -280,8 +283,8 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     
     // check to see if attendee already exists
     for (var i=0; i < bwGrid.attendees.length; i++) {
-      if (uid.indexOf("mailto:") != -1) {
-         uid = uid.substring(7); 
+      if (uid.indexOf("mailto:") == -1) {
+         uid = "mailto:" + uid; 
       }
       if (uid == bwGrid.attendees[i].uid) {
         attendeeIsNew = false;
@@ -297,19 +300,22 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       $.ajax({
         type: "POST",
         url: bwGrid.attUrlPrefix,
-        data: "uri=" + uid + "&role=" + role + "&partstat=" + status + "&attendee=true&submit=add&list=yes",
+        data: "uri=" + uid + "&role=" + role + "&partstat=" + status + "&attendee=true&submit=add&list=yes&skinName=widget",
+        dataType: "json",
         success: function(responseData){
-          // add the attendee to the local array (temporary)
-          // the local array should be overwritten with data from the ajax call (coming)
-          // alert(responseData);
-        
-          // take off "mailto:" for local storage
-          if (uid.indexOf("mailto:") != -1) {
-             uid = uid.substring(7); 
+
+          // the local array is overwritten with attendee data returned from the ajax call
+          if (responseData.attendees != undefined && responseData.attendees.length) {
+            bwGrid.attendees.length = 0;
+            for (var i=0; i < responseData.attendees.length; i++) {
+              var att = responseData.attendees[i];
+              var newAttendee = new bwAttendee(att.name, att.uid, att.role, att.status, att.type);
+              bwGrid.attendees.push(newAttendee); 
+            }
+            bwGrid.requestFreeBusy();
+          } else { // no attendees were returned
+            alert(bwErrorAttendees);
           }
-          var newAttendee = new bwAttendee(name, uid, role, status, type);
-          bwGrid.attendees.push(newAttendee); 
-          bwGrid.requestFreeBusy();
           
           // got attendees??  send the param that will trigger a
           // scheduling request. For now, just set this every time
@@ -348,7 +354,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     $.ajax({
       type: "POST",
       url: bwGrid.attUrlPrefix,
-      data: "uri=" + uid + "&attendee=true&delete=true",
+      data: "uri=" + uid + "&attendee=true&delete=true&list=yes&skinName=widget",
       success: function(){
         // remove the attendee from the local array
         bwGrid.attendees.splice(index, 1);
@@ -357,6 +363,15 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         } else {
           bwGrid.display();
         }
+        
+        // no more attendees??  change back to a normal event.
+        if (!bwGrid.attendees.length) {
+          $("input.bwEventFormSubmit").each(function(i) {
+             $(this).attr("name","submit");
+             $(this).val(bwEventSubmitDisp);
+          });
+        }
+        
       },
       error: function(msg) {
         // there was a problem

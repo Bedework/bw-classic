@@ -21,7 +21,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
   
-  <!-- Transform the attendees into an array of json objects 
+  
+   <!-- Transform the attendees into an array of json objects 
        for use in the BwGrid.  This is called on edit event and after each update to 
        the attendees using xml from the attendee widget.  -->
   <xsl:template match="attendees" mode="loadBwGrid">
@@ -30,9 +31,12 @@
       {name:"<xsl:value-of select="cn"/>",uid:"<xsl:value-of select="attendeeUri"/>",role:"<xsl:value-of select="role"/>",status:"<xsl:value-of select="partstat"/>",type:"<xsl:value-of select="cuType"/>"}<xsl:if test="position()!=last()">,</xsl:if>
     </xsl:for-each>
   </xsl:template>
-  
-  
+
+
   <!-- THE FOLLOWING TEMPLATE IS DEPRECATED, BUT MUST REMAIN FOR NOW  -->
+  <!-- Recipients and attendees are handled by the json widgets in the newer versions.
+       This template remains for both backward compatibility and testing.
+   -->
   <xsl:template name="attendees">
     <h2>
       <span class="formButtons"><input type="button" value="{$bwStr-Atnd-Continue}" onclick="window.location='{$gotoEditEvent}'"/></span>
