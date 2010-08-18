@@ -281,21 +281,15 @@
             <xsl:text> </xsl:text>
             <xsl:value-of select="contact/phone" />
           </xsl:if>
-          <![CDATA[
-            <br/>
-          ]]>
-        </xsl:if>
-
-        <xsl:if test="categories[1]/category">
-          <xsl:copy-of select="$bwStr-SgEv-Categories"/><xsl:text> </xsl:text>
-          <xsl:for-each select="categories/category">
-            <xsl:value-of select="value"/><xsl:if test="position() != last()">, </xsl:if>
-          </xsl:for-each>
-          <![CDATA[
-            <br/>
-          ]]>
         </xsl:if>
       </description>
+      
+      <xsl:if test="categories[1]/category">
+        <xsl:for-each select="categories/category">
+          <category><xsl:value-of select="value"/></category>
+        </xsl:for-each>
+      </xsl:if>
+
     </item>
   </xsl:template>
 

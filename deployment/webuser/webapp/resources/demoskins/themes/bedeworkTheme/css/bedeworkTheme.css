@@ -1130,7 +1130,7 @@ display: inline;
   color: black;
 }
 #bedework a.emailIcon {
-  margin-left: 0.5em;
+  margin: 0 0.5em;
 }
 #bedework form#subscriptions {
   margin: 0;
@@ -1185,7 +1185,6 @@ display: inline;
 }
 #bedework table.common #attendees td {
   padding: 2px 20px 2px 6px;
-  font-size: 1.1em;
 }
 #bedework table.common #attendees td.status {
   font-weight: bold;

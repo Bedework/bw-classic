@@ -23,8 +23,8 @@
   
   
    <!-- Transform the attendees into an array of json objects 
-       for use in the BwGrid.  This is called on edit event and after each update to 
-       the attendees using xml from the attendee widget.  -->
+       for use in the BwGrid.  This is called on edit event to process 
+       attendees from the xml.  -->
   <xsl:template match="attendees" mode="loadBwGrid">
     <xsl:for-each select="attendee">
       <xsl:sort select="attendeeUri"/>
@@ -96,7 +96,7 @@
     </div>
   </xsl:template>
   
-    <xsl:template match="attendees">
+  <xsl:template match="attendees">
     <xsl:param name="trash">yes</xsl:param>
     <table id="attendees" class="widget" cellspacing="0">
       <tr>

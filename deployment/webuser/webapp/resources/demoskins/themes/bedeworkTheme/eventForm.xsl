@@ -835,16 +835,24 @@
         <xsl:otherwise>
           <!-- has recurrenceId, so is master -->
           
-          <!-- the switch is current required to turn recurrence on or off - we can probably infer this instead -->
-          <div id="recurringSwitch">
-            <!-- set or remove "recurring" and show or hide all recurrence fields: -->
-            <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
-              <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-            </input> <xsl:copy-of select="$bwStr-AEEF-EventRecurs"/>
-            <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
-              <xsl:if test="form/recurringEntity = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-            </input> <xsl:copy-of select="$bwStr-AEEF-EventDoesNotRecur"/>
-          </div>
+          <xsl:choose>
+            <xsl:when test="form/recurringEntity = 'false'">
+		          <!-- the switch is required to turn recurrence on - maybe we can infer this instead? -->
+		          <div id="recurringSwitch">
+		            <!-- set or remove "recurring" and show or hide all recurrence fields: -->
+		            <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
+		              <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		            </input> <xsl:copy-of select="$bwStr-AEEF-EventRecurs"/>
+		            <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
+		              <xsl:if test="form/recurringEntity = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		            </input> <xsl:copy-of select="$bwStr-AEEF-EventDoesNotRecur"/>
+		          </div>
+		        </xsl:when>
+		        <xsl:otherwise>
+		          <!-- is a recurring event; once created as such, it can no longer be made non-recurring. -->
+		          <input type="hidden" name="recurring" value="true"/>
+		        </xsl:otherwise>
+          </xsl:choose>
           
           <!-- wrapper for all recurrence fields (rrules and rdates): -->
           <div id="recurrenceFields" class="invisible">
@@ -852,12 +860,13 @@
 
             <h4><xsl:copy-of select="$bwStr-AEEF-RecurrenceRules"/></h4>
             <!-- show or hide rrules fields when editing: -->
+            <!-- DEPRECATED: No longer allow the changing of recurrence information once created.
             <xsl:if test="form/recurrence">
               <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
               <span id="rrulesSwitch">
                 <xsl:copy-of select="$bwStr-AEEF-ChangeRecurrenceRules"/>
               </span>
-            </xsl:if>
+            </xsl:if> -->
             <span id="rrulesUiSwitch">
               <xsl:if test="form/recurrence">
                 <xsl:attribute name="class">invisible</xsl:attribute>
@@ -1501,7 +1510,9 @@
 	          </td>
 	        </tr>
 	        <tr>
-	          <td class="zoom">            
+	          <td class="zoom">
+	            <!--  hid the zoom for now - may not use it. -->
+	            <!--             
 	            <span class="zoomControl">-</span>
 	            <select name="zoom">
 	              <option>300%</option>
@@ -1512,6 +1523,7 @@
 	              <option>50%</option>
 	            </select>
 	            <span class="zoomControl">+</span>
+	            -->
 	          </td>
 	          <td>
 	            <input type="button" id="bwSchedOptions" value="Options &#x25BC;"/>
