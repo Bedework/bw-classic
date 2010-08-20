@@ -242,7 +242,7 @@
             </description>
             <config-property-name>ServerUrl</config-property-name>
             <config-property-type>java.lang.String</config-property-type>
-            <config-property-value>tcp://localhost:61616</config-property-value>
+            <config-property-value>${org.bedework.activemq.uri}</config-property-value>
         </config-property>
         <config-property>
             <description>The default user name that will be used to establish connections to the ActiveMQ server.</description>

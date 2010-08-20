@@ -10,7 +10,7 @@ PRG="$0"
 
 usage() {
   echo "  $PRG [-heap size] [-newsize size] [-permgen size] [-debug]"
-  echo "       [-debugmodule name]"
+  echo "       [-debugmodule name] [-activemquri uri]"
   echo ""
   echo " Where:"
   echo ""
@@ -18,12 +18,15 @@ usage() {
   echo "                                        nK for kilo-bytes (e.g. 2560000K)"
   echo "                                        nM for mega-bytes (e.g. 2560M)"
   echo "                                        nG for giga-bytes (e.g. 1G)"
+  echo "  Default: $heap"
   echo ""
   echo " -newsize sets the new generation size and has the same form as -heap"
   echo "  the value should be around one third of the heap"
+  echo "  Default: $newsize"
   echo ""
   echo " -permsize sets the permgen size and has the same form as -heap"
   echo "  The value should probably not be less than 256M"
+  echo "  Default: $permsize"
   echo ""
   echo " -debug sets the logging level to DEBUG"
   echo ""
@@ -31,16 +34,27 @@ usage() {
   echo "  This sets a system variable org.bedework.loglevel.<name> which"
   echo "  may be referenced by the log4j configuration"
   echo ""
-  echo "Default settings:"
-  echo "heap     = $heap" 
-  echo "newsize  = $newsize"
-  echo "permsize = $permsize"
+  echo " -activemquri sets the uri used by the activemq broker for bedework"
+  echo "  Some possibilities: vm://localhost tcp://localhost:61616"
+  echo "  Default: $activemquri"
+  echo ""
+  echo " -portoffset sets the offset for the standard jboss ports allowing"
+  echo "  multiple instances to be run on the same machine. The activemquri"
+  echo "  value may need to be set explicitly if it uses a port."
+  echo "  Default: $portoffset"
   echo ""
 }
 
+# ===================== Defaults =================================
 heap="600M"
 newsize="200M"
 permsize="256M"
+
+portoffset=0
+
+activemquri="vm://localhost"
+
+# =================== End defaults ===============================
 
 LOG_THRESHOLD="-Djboss.server.log.threshold=INFO"
 LOG_LEVELS=""
@@ -53,7 +67,6 @@ do
     -usage | -help | -? | ?)
       usage
       exit
-      shift
       ;;
     -heap)         # Heap size bytes or nK, nM, nG
       shift
@@ -79,6 +92,16 @@ do
       LOG_LEVELS="$LOG_LEVELS -Dorg.bedework.loglevel.$1=DEBUG"
       shift
       ;;
+    -portoffset)
+      shift
+      portoffset="$1"
+      shift
+      ;;
+    -activemquri)
+      shift
+      activemquri="$1"
+      shift
+      ;;
     *)
       usage
       exit 1
@@ -100,12 +123,13 @@ JBOSS_BIND="-b 0.0.0.0"
 #
 
 # standard ports
-JBOSS_PORTS=-Dorg.bedework.system.ports.offset=0
+JBOSS_PORTS=-Dorg.bedework.system.ports.offset=$portoffset
 
 # standard ports + defined value
 #JBOSS_PORTS="-Dorg.bedework.system.ports.offset=505 -Djboss.service.binding.set=ports-syspar"
 
 ACTIVEMQ_DIRPREFIX="-Dorg.apache.activemq.default.directory.prefix=$JBOSS_DATA_DIR/"
+ACTIVEMQ_URI="-Dorg.bedework.activemq.uri=$activemquri"
 
 BW_DATA_DIR=$JBOSS_DATA_DIR/bedework
 BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=$BW_DATA_DIR/
@@ -114,7 +138,7 @@ JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 JAVA_OPTS="$JAVA_OPTS -XX:NewSize=$newsize -XX:MaxNewSize=$newsize"
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
-RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $BW_DATA_DIR_DEF"
+RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_DATA_DIR_DEF"
 
 echo $RUN_CMD
 

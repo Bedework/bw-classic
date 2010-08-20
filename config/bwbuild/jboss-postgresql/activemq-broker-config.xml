@@ -195,7 +195,8 @@
 
     <!-- The transport connectors ActiveMQ will listen to -->
     <transportConnectors>
-      <transportConnector name="bedework" uri="tcp://localhost:61616" />
+      <transportConnector name="bedework" 
+                          uri="${org.bedework.activemq.uri}" />
       <!--
       <transportConnector name="bedework" uri="tcp://localhost:61616" />
         According to the book we shouldn't specify a discoveryUri - can lead to
@@ -209,7 +210,7 @@
   </broker>
 
   <!--
-  ** Lets deploy some Enterprise Integration Patterns inside the ActiveMQ Message Broker
+  ** Lets dseploy some Enterprise Integration Patterns inside the ActiveMQ Message Broker
   ** For more details see
   **
   ** http://activemq.apache.org/enterprise-integration-patterns.html
