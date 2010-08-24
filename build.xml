@@ -74,36 +74,9 @@
 
   <target name="usage" depends="init"
           description="Describe targets and their usage">
-    <echo level="info" message="As distributed the package should be ready to go."/>
-    <echo level="info" message="Ensure ant is on your path, (a version is in the" />
-    <echo level="info" message="package)"/>
-    <echo level="info" message=""/>
-    <echo level="info" message="First in one window do"/>
-    <echo level="info" message="    ant hsqldb"/>
-    <echo level="info" message="This will start the hsqldb server ready for the "/>
-    <echo level="info" message="application."/>
-    <echo level="info" message=""/>
-    <echo level="info" message="In another window do"/>
-    <echo level="info" message="    ant tomcatstart"/>
-    <echo level="info" message=""/>
-    <echo level="info" message="Once tomcat is running you should be able to go to a"/>
-    <echo level="info" message="browser and connect to"/>
-    <echo level="info" message="    http://localhost:8080/bedework"/>
-    <echo level="info" message="and follow the instructions."/>
-    <echo level="info" message=""/>
-    <echo level="info" message="To build the calendar do"/>
-    <echo level="info" message="    ant deploy    or "/>
-    <echo level="info" message="    ant deploy.debug "/>
-    <echo level="info" message="which does a build and deploy of all components"/>
-    <echo level="info" message=""/>
-    <echo level="info" message="To rebuild the calendar do"/>
-    <echo level="info" message="    ant clean.deploy    or "/>
-    <echo level="info" message="    ant clean.deploy.debug "/>
-    <echo level="info" message="which does a clean, build and deploy of all components"/>
-    <echo level="info" message=""/>
-    <echo level="info" message="See documentation in the docs directory or on bedework.org"/>
-    <echo level="info" message="for instructions on creating a locally configured calendar application"/>
-    <echo level="info" message=""/>
+    <loadfile property="org.bedework.README"
+              srcFile="${org.bedework.project.bedework}/docs/README"/>
+    <echo level="info" message="${org.bedework.README}" />
   </target>
 
   <target name="init" >
