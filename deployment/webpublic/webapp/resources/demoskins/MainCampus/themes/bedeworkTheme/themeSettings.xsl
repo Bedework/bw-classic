@@ -71,8 +71,7 @@
        service, you will likely want to turn off the Facebook 
        icon (above) as it is included already. 
        See http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.6/ShareThis -->
-  <xsl:variable name="eventIconShareThis">true</xsl:variable> 
-    
+  <xsl:variable name="eventIconShareThis">true</xsl:variable>   
     
     
 

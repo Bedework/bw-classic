@@ -189,7 +189,7 @@ var bwFreeBusy = function(fbString, fbType) {
  * displayId:       ID of html block for display output
  * startRange:      js date string - start of date range for grid
  * startHoursRange: integer, 0-23 - hours of range start time 
- * endHoursRange:   integer, 0-23 - hours of range end time  
+ * endHoursRange:   integer, 0-23 - hours of range end time 
  * attendees:       array   - array of attendee objects; MUST include organizer on first instantiation
  * workday:         boolean - true to display workday hours only, false to display all 24 hours
  * zoom:            integer - scalar value for zooming the grid
@@ -237,10 +237,12 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   // internal variables
   var hourMils = 3600000;
   var startMils = Number(this.startRange.getTime()) + Number(this.startHoursRange * hourMils); // the start of the grid
-  var durationMils = hourMils; // value used to calculate default endSelectionMils, defaults to 1 hour in milliseconds
+  var durationMils = hourMils; //getTimeFromForm("duration"); 
+    // hourMils; // value used to calculate default endSelectionMils, defaults to 1 hour in milliseconds
                                // - SHOULD DEFAULT TO DATE/TIME SETTINGS
   var incrementMils = hourMils / this.hourDivision; // increment for the pick next/previous buttons
-  var startSelectionMils = startMils;  // where a mouse selection begins, milliseconds parsed from the first half of a fbcell's ID, default to beginning of grid
+  var startSelectionMils = startMils; //getTimeFromForm("start");
+    // startMils;  // where a mouse selection begins, milliseconds parsed from the first half of a fbcell's ID, default to beginning of grid
                                        // - SHOULD DEFAULT TO DATE/TIME SETTINGS
   var endSelectionMils;       // where a mouse selection ends, milliseconds parsed from the first half of a fbcell's ID
   var selecting = false;      // are we currently selecting?  If true, we'll highlight as we hover
@@ -577,7 +579,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
   this.display = function() {
     try {
       // number of days to display
-      var range = dayRange(this.startRange, this.endRange);
+      var range = getDayRange(this.startRange, this.endRange);
       // number of hours to display
       var hourRange = this.endHoursRange - this.startHoursRange;
       var startHour = this.startHoursRange;
@@ -1234,11 +1236,34 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
 };
 
 // Utilities
-var dayRange = function(startDate, endDate) {  
+var getDayRange = function(startDate, endDate) {  
   // find difference in milliseconds and return number of days.
   // 86400000 is the number of milliseconds in a day;
   return Math.round((Math.abs(startDate.getTime() - endDate.getTime())) / 86400000)
 };
+
+var getTimeFromForm = function(type) {
+  var startDate = new Date();
+  //startDate = $("#bwEventWidgetStartDate").datepicker("getDate");
+  var startMils = Number(startDate.getTime());
+  
+  switch(type) {
+    case "start": 
+      return startMils;
+    case "duration":
+      var hourMils = 3600000;
+      var endType = $("input[@name='eventEndType']:radio:checked").val();
+      if (endType = "E") { // datetime end type
+        return hourMils;
+      } else if (endType = "D") { // duration end type
+        return hourMils;
+      } else {
+        return hourMils; 
+      }
+    default: 
+      return undefined;
+  }
+}
 
 // DATE PROTOTYPE OVERRIDES - should be pulled into a library
 // the following need to call internationalized strings - from a localeSettings file

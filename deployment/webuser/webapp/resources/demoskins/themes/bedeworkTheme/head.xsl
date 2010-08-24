@@ -96,7 +96,7 @@
           <script type="text/javascript" src="{$resourcesRoot}/javascript/dynCalendarWidget.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/css/dynCalendarWidget.css"/>
         </xsl:when>
-        <xsl:otherwise>
+        <xsl:otherwise>        
           <script type="text/javascript">
             <xsl:comment>
             $.datepicker.setDefaults({
@@ -121,7 +121,7 @@
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
               }).attr("readonly", "readonly");
               $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/end/rfc3339DateTime,'T')"/>');
-
+              
               // recurrence until
               $("#bwEventWidgetUntilDate").datepicker({
                 <xsl:choose>
@@ -196,13 +196,12 @@
         var bwGridOrganizer = "<xsl:value-of select="/bedework/formElements/form/organizer/organizerUri"/>";
         var bwGridCurUser = "<xsl:value-of select="/bedework/userid"/>";
         var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay",bwGridSDate,8,17,bwGridAttees,true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","<xsl:value-of select="$widget-attendees"/>",bwGridOrganizer,bwGridCurUser);
-        
+
         // set the grid size
         function bwGridSetSize() {
           var fbWidth = $("#bwEventTab-Basic").width() - 52;
           $("#bwFreeBusyDisplay").css("width", fbWidth + "px");
         };
-        
         </xsl:comment>
       </script>
       

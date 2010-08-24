@@ -17,6 +17,10 @@
    under the License.  
 */
 
+/* DEPRECATED - now using the jQuery UI's built in Autocomplete 
+ * See: bedeworkScheduling.js
+ */
+
 var bwAutoCompleteOptions = {
   minChars: 0,
   width: 310,

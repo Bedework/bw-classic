@@ -395,7 +395,7 @@
 	                  </select>
 	                </xsl:if>
                   <xsl:text> </xsl:text>
-                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
+                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwStartClock"/></a>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -482,7 +482,7 @@
                       <xsl:copy-of select="form/end/dateTime/ampm/*"/>
                     </xsl:if>
                     <xsl:text> </xsl:text>
-                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
+                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwEndClock"/></a>
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>

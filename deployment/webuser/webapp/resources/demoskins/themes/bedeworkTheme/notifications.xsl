@@ -30,6 +30,7 @@
       <xsl:choose>
         <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:when>
         <xsl:when test="scheduleMethod=3"><xsl:value-of select="$eventView"/></xsl:when>
+        <xsl:when test="scheduleMethod=5"><xsl:value-of select="$eventView"/></xsl:when>
         <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
         <xsl:when test="scheduleMethod=7"><xsl:value-of select="$eventView"/></xsl:when>
         <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:otherwise>
