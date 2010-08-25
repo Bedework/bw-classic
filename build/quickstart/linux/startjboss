@@ -10,7 +10,7 @@ PRG="$0"
 
 usage() {
   echo "  $PRG [-heap size] [-newsize size] [-permgen size] [-debug]"
-  echo "       [-debugmodule name] [-activemquri uri]"
+  echo "       [-debugexprfilters name] [-activemquri uri]"
   echo ""
   echo " Where:"
   echo ""
@@ -30,9 +30,7 @@ usage() {
   echo ""
   echo " -debug sets the logging level to DEBUG"
   echo ""
-  echo " -debugmodule sets the logging level for module name to DEBUG"
-  echo "  This sets a system variable org.bedework.loglevel.<name> which"
-  echo "  may be referenced by the log4j configuration"
+  echo " -debugexprfilters sets the logging level for bedework expression filters to DEBUG"
   echo ""
   echo " -activemquri sets the uri used by the activemq broker for bedework"
   echo "  Some possibilities: vm://localhost tcp://localhost:61616"
@@ -54,10 +52,11 @@ portoffset=0
 
 activemquri="vm://localhost"
 
+exprfilters=INFO
+
 # =================== End defaults ===============================
 
 LOG_THRESHOLD="-Djboss.server.log.threshold=INFO"
-LOG_LEVELS=""
 
 while [ "$1" != "" ]
 do
@@ -87,9 +86,9 @@ do
       shift
       LOG_THRESHOLD="-Djboss.server.log.threshold=DEBUG"
       ;;
-    -debugmodule)
+    -debugexprfilters)
       shift
-      LOG_LEVELS="$LOG_LEVELS -Dorg.bedework.loglevel.$1=DEBUG"
+      exprfilters=DEBUG
       shift
       ;;
     -portoffset)
@@ -117,6 +116,8 @@ JBOSS_DATA_DIR="$JBOSS_SERVER_DIR/data"
 # If this is empty only localhost will be available.
 # With this address anybody can access the consoles if they are not locked down.
 JBOSS_BIND="-b 0.0.0.0"
+
+LOG_LEVELS="-Dorg.bedework.loglevel.exprfilters=$exprfilters"
 
 #
 # Port shifting
