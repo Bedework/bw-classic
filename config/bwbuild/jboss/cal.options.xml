@@ -29,13 +29,18 @@
         <personalCalendarUri>/ucal</personalCalendarUri>
 
         <!-- CardDAV server locations -->
-        <publicCardDAVUri>http://localhost:8080/carddav</publicCardDAVUri>
-        <personalCardDAVUri>http://localhost:8080/ucarddav</personalCardDAVUri>
+        <publicCardDAVHost>localhost</publicCardDAVHost>
+        <publicCardDAVPort>8080</publicCardDAVPort>
+        <publicCardDAVContext>/pubcarddav</publicCardDAVContext>
+        
+        <personalCardDAVHost>localhost</personalCardDAVHost>
+        <personalCardDAVPort>8080</personalCardDAVPort>
+        <personalCardDAVContext>/ucarddav</personalCardDAVContext>
 
         <!-- Timezone server locations -->
         <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
 
-        <systemRoots  classname="org.bedework.calfacade.configs.SystemRoots" >
+        <systemRoots classname="org.bedework.calfacade.configs.SystemRoots" >
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
           <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
@@ -46,6 +51,19 @@
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </systemRoots>
 
+        <!-- To enable mapping of calendar addresses e.g. mailto:fred@example.org
+             on to principals we need to either do a directory lookup or have
+             some sort of pattern map. 
+             
+             Setting a caladdr prefix enables pattern mapping. By default 
+             calendar addresses are users -->
+             
+          <!-- 
+        <caladdrPrefixes classname="org.bedework.calfacade.configs.CalAddrPrefixes">
+          <location>loc_</location>
+        </caladdrPrefixes>     
+           -->
+        
         <module>
           <!-- A dummy module with no directory. -->
           <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">
