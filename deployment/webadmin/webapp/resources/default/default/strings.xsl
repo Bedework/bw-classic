@@ -452,8 +452,8 @@
   <!--  xsl:template match="currentCalendar" mode="addCalendar" -->
   <xsl:variable name="bwStr-CuCa-AddCalFileOrSub">Add Calendar, Folder, or Subscription</xsl:variable>
   <xsl:variable name="bwStr-CuCa-NoteAccessSet">Note: Access may be set on a calendar after it is created.</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-Name">Name:</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-Summary">Summary:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Name">System Name:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Summary">Display Name:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Description">Description:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Filter">Filter:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ShowHideCategoriesFiltering">show/hide categories for filtering on output</xsl:variable>
@@ -501,9 +501,9 @@
   <!--  xsl:template name="calendarDescriptions" -->
   <xsl:variable name="bwStr-CaLD-CalendarInfo">Calendar Information</xsl:variable>
   <xsl:variable name="bwStr-CaLD-SelectItemFromCalendarTree">Select an item from the calendar tree on the left to view all information about that calendar or folder.  The tree on the left represents the calendar heirarchy.</xsl:variable>
-  <xsl:variable name="bwStr-CaLD-Name">Name:</xsl:variable>
+  <xsl:variable name="bwStr-CaLD-Name">System Name:</xsl:variable>
   <xsl:variable name="bwStr-CaLD-Path">Path:</xsl:variable>
-  <xsl:variable name="bwStr-CaLD-Summary">Summary:</xsl:variable>
+  <xsl:variable name="bwStr-CaLD-Summary">Display Name:</xsl:variable>
   <xsl:variable name="bwStr-CaLD-Description">Description:</xsl:variable>
 
   <!--  xsl:template match="currentCalendar" mode="displayCalendar" -->
@@ -529,9 +529,9 @@
   <!--  xsl:template name="calendarMove" -->
   <xsl:variable name="bwStr-CaMv-MoveCalendar">Move Calendar/Folder</xsl:variable>
   <xsl:variable name="bwStr-CaMv-CurrentPath">Current Path:</xsl:variable>
-  <xsl:variable name="bwStr-CaMv-Name">Name:</xsl:variable>
+  <xsl:variable name="bwStr-CaMv-Name">System Name:</xsl:variable>
   <xsl:variable name="bwStr-CaMv-MailingListID">Mailing List ID:</xsl:variable>
-  <xsl:variable name="bwStr-CaMv-Summary">Summary:</xsl:variable>
+  <xsl:variable name="bwStr-CaMv-Summary">Display Name:</xsl:variable>
   <xsl:variable name="bwStr-CaMv-Description">Description:</xsl:variable>
   <xsl:variable name="bwStr-CaMv-SelectNewParentFolder">Select a new parent folder:</xsl:variable>
 
@@ -894,7 +894,7 @@
   <xsl:variable name="bwStr-Srch-Next">next</xsl:variable>
   <xsl:variable name="bwStr-Srch-ResultReturnedFor">result(s) returned for</xsl:variable>
   <xsl:variable name="bwStr-Srch-Relevance">relevance</xsl:variable>
-  <xsl:variable name="bwStr-Srch-Summary">summary</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Summary">display name</xsl:variable>
   <xsl:variable name="bwStr-Srch-Title">title</xsl:variable>
   <xsl:variable name="bwStr-Srch-DateAndTime">date &amp; time</xsl:variable>
   <xsl:variable name="bwStr-Srch-Calendar">calendar</xsl:variable>

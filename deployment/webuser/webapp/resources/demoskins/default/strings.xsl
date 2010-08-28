@@ -577,8 +577,8 @@
   <!--  xsl:template match="currentCalendar" mode="addCalendar" -->
   <xsl:variable name="bwStr-CuCa-AddCalFolderOrSubscription">Add Calendar, Folder, or Subscription</xsl:variable>
   <xsl:variable name="bwStr-CuCa-HttpStatus">HTTP Status:</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-Name">Name:</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-Summary">Summary:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Name">System Name:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Summary">Display Name:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Description">Description:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Color">Color:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Display">Display:</xsl:variable>
@@ -1056,7 +1056,7 @@
   <xsl:variable name="bwStr-Srch-Next">next</xsl:variable>
   <xsl:variable name="bwStr-Srch-ResultReturnedFor">result(s) returned for</xsl:variable>
   <xsl:variable name="bwStr-Srch-Relevance">relevance</xsl:variable>
-  <xsl:variable name="bwStr-Srch-Summary">summary</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Summary">display name</xsl:variable>
   <xsl:variable name="bwStr-Srch-DateAndTime">date &amp; time</xsl:variable>
   <xsl:variable name="bwStr-Srch-Calendar">calendar</xsl:variable>
   <xsl:variable name="bwStr-Srch-Location">location</xsl:variable>

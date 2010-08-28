@@ -180,48 +180,35 @@ function setCalendarAlias(formObj) {
     alert("The subscription form is not available.");
     return false;
   }
-
-  // set the aliasUri to an empty string.  Only set it if user
-  // has requested a subscription.
-  formObj.aliasUri.value == "";
-
-  if (formObj.type.value == "folder") {
-    formObj.calendarCollection.value = "false";
-  } else if (formObj.type.value == "subscription") {
-    switch (formObj.subType.value) {
-      case "publicTree":
-        // do nothing: when adding a subscription to the public tree, we set the fields directly.
-        break;
-      case "public":
-        formObj.aliasUri.value = "bwcal://" + formObj.publicAliasHolder.value;
-        break;
-      case "user":
-        //the "/user/" string is temporary; it needs to be passed as a param.
-        formObj.aliasUri.value = "bwcal:///user/" + formObj.userIdHolder.value + "/" + formObj.userCalHolder.value;
-        break;
-      case "external":
-        formObj.aliasUri.value = formObj.aliasUriHolder.value;
-        break;
-    }
-  }
-  return true;
-}
-// build a uri based on user and path in the subscription form
-// DEPRECATED - use setCalendarAlias() above.
-function setSubscriptionUri(formObj,prefix) {
-  if (formObj) {
-    var fullUri =  prefix + formObj.userId.value;
-    if (formObj.userPath.value != "") {
-      if (formObj.userPath.value.substring(0,1) == "/") {
-        fullUri += formObj.userPath.value;
-      } else {
-        fullUri += "/" + formObj.userPath.value;
+  
+  // check first to make sure we have a valid calendar system name:
+  if (validateCalName(formObj['calendar.name'])) {
+    
+    // set the aliasUri to an empty string.  Only set it if user
+    // has requested a subscription.
+    formObj.aliasUri.value == "";
+  
+    if (formObj.type.value == "folder") {
+      formObj.calendarCollection.value = "false";
+    } else if (formObj.type.value == "subscription") {
+      switch (formObj.subType.value) {
+        case "publicTree":
+          // do nothing: when adding a subscription to the public tree, we set the fields directly.
+          break;
+        case "public":
+          formObj.aliasUri.value = "bwcal://" + formObj.publicAliasHolder.value;
+          break;
+        case "user":
+          //the "/user/" string is temporary; it needs to be passed as a param.
+          formObj.aliasUri.value = "bwcal:///user/" + formObj.userIdHolder.value + "/" + formObj.userCalHolder.value;
+          break;
+        case "external":
+          formObj.aliasUri.value = formObj.aliasUriHolder.value;
+          break;
       }
     }
-    formObj.calUri.value = fullUri;
     return true;
   } else {
-    alert("The subscription form is not available.");
     return false;
   }
 }
@@ -261,6 +248,35 @@ function checkPrefCategories(formObj){
     var hiddenCat = document.createElement("div");
     hiddenCat.innerHTML = '<input type="hidden" name="defaultCategory" value=""/>';
     formObj.appendChild(hiddenCat);
+  }
+}
+// Stop user from entering invalid characters in calendar names
+// In 3.6 this will only test for & ' " and /
+// In future releases, we will go further and only allow 
+// alphanumerics and dashes and underscores.
+function validateCalName(nameObj) {
+  if(nameObj.value.indexOf("'") == -1 && 
+     nameObj.value.indexOf('"') == -1 &&
+     nameObj.value.indexOf("&") == -1 && 
+     nameObj.value.indexOf("/") == -1) {
+    return true;
+  } else { // we have bad characters
+    var badChars = "";
+    if(nameObj.value.indexOf("'") != -1) {
+      badChars += " ' "; 
+    }
+    if(nameObj.value.indexOf('"') != -1) {
+      badChars += ' \" '; 
+    }
+    if(nameObj.value.indexOf("&") != -1) {
+      badChars += " & "; 
+    }
+    if(nameObj.value.indexOf("/") != -1) {
+      badChars += " / "; 
+    }
+    alert("System Names may not include the following characters: " + badChars);
+    nameObj.focus();
+    return false; 
   }
 }
 // set category filters on calendar collections

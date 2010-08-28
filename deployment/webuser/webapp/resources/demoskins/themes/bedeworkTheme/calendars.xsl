@@ -118,7 +118,7 @@
           </input>
           <xsl:choose>
             <xsl:when test="display = 'true'">
-              <!-- set the value of display to false so that when the form is submitted we toggle -->
+              <!-- set the value of display to false so that when the form is submitted we toggle-->
               <input type="hidden" name="display" value="false"/>
               <input type="checkbox" name="bwDisplaySetter" checked="checked"  onclick="this.form.submit()">
                 <xsl:if test="(/bedework/page != 'eventscalendar' and
@@ -127,7 +127,7 @@
               </input>
             </xsl:when>
             <xsl:otherwise>
-              <!-- set the value of display to true so that when the form is submitted we toggle -->
+              <!-- set the value of display to true so that when the form is submitted we toggle-->
               <input type="hidden" name="display" value="true"/>
               <input type="checkbox" name="bwDisplaySetter" onclick="this.form.submit()">
                 <xsl:if test="(/bedework/page != 'eventscalendar' and
@@ -366,9 +366,9 @@
   </xsl:template>
 
   <xsl:template name="selectCalForPublicAlias">
-  <!-- This template is DEPRECATED ... selectCalForPublicAliasCalTree is now used instead. -->
+  <!-- This template is DEPRECATED ... selectCalForPublicAliasCalTree is now used instead.-->
   <!-- selectCalForPublicAlias creates a calendar tree pop-up window for
-       selecting a public calendar subscription (alias). -->
+       selecting a public calendar subscription (alias).-->
 
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
@@ -428,7 +428,7 @@
 
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3><xsl:copy-of select="$bwStr-CuCa-AddCalFolderOrSubscription"/></h3>
-    <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="setCalendarAlias(this)">
+    <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="return setCalendarAlias(this)">
       <table class="common">
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
@@ -689,6 +689,7 @@
               </input>
               <xsl:call-template name="colorPicker">
                 <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
+                <xsl:with-param name="colorValue"><xsl:value-of select="color"/></xsl:with-param>
               </xsl:call-template>
             </td>
           </tr>
@@ -830,33 +831,23 @@
 
   <xsl:template name="colorPicker">
     <xsl:param name="colorFieldId"/><!-- required: id of text field to be updated -->
+    <button type="button" id="bwColorPickerButton" value="{$bwStr-CoPi-Pick}"><img src="{$resourcesRoot}/images/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
     <script type="text/javascript">
-      $.ui.dialog.defaults.bgiframe = true;
-      $(function() {
-        $("#bwColorPicker").dialog({ autoOpen: false, width: 214 });
-      });
-      $(function() {
-        $('#bwColorPickerButton').click(function() {
-          $('#bwColorPicker').dialog('open');
-        });
+      $(document).ready(function() {
+        $('#bwColorPickerButton').ColorPicker({
+				  onSubmit: function(hsb, hex, rgb, el) {
+              var fullHex = "#" + hex;
+              $('#<xsl:value-of select="$colorFieldId"/>').val(fullHex);
+              $('#<xsl:value-of select="$colorFieldId"/>').css('background-color',fullHex);
+              $(el).ColorPickerHide();
+            },
+            onBeforeShow: function () {
+              var curColor = $('#<xsl:value-of select="$colorFieldId"/>').val();
+              $(this).ColorPickerSetColor(curColor);
+            }
+				});
       });
     </script>
-    <button type="button" id="bwColorPickerButton" value="{$bwStr-CoPi-Pick}"><img src="{$resourcesRoot}/images/colorIcon.gif" width="16" height="13" alt="pick a color"/></button>
-
-    <div id="bwColorPicker" title="{$bwStr-CoPi-SelectColor}">
-      <xsl:for-each select="document('../../../bedework-common/default/default/subColors.xml')/subscriptionColors/color">
-        <xsl:variable name="color" select="."/>
-        <xsl:variable name="colorName" select="@name"/>
-        <a href="javascript:bwUpdateColor('{$color}','{$colorFieldId}')"
-           style="display:block;float:left;background-color:{$color};color:black;width=25px;height=25px;margin:0;padding:0;"
-           title="{$colorName}"
-           onclick="$('#bwColorPicker').dialog('close');">
-          <img src="{$resourcesRoot}/images/spacer.gif" width="25" height="25" style="border:1px solid #333;margin:0;padding:0;" alt="{$colorName}"/>
-        </a>
-        <xsl:if test="position() mod 6 = 0"><br style="clear:both;"/></xsl:if>
-      </xsl:for-each>
-      <p><a href="javascript:bwUpdateColor('','{$colorFieldId}')" onclick="$('#bwColorPicker').dialog('close');"><xsl:copy-of select="$bwStr-CoPi-UseDefaultColors"/></a></p>
-    </div>
   </xsl:template>
 
   <xsl:template name="calendarList">

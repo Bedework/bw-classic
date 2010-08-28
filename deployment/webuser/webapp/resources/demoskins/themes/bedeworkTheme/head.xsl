@@ -76,6 +76,12 @@
         </script>
       </xsl:if>
     </xsl:if>
+    
+    <xsl:if test="/bedework/page='modCalendar' or
+                  /bedework/page='addCalendar'">
+      <link rel="stylesheet" href="/bedework-common/javascript/jquery/colorpicker/colorpicker.css"/>
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/colorpicker/colorpicker.js">&#160;</script>        
+    </xsl:if>
 
     <xsl:if test="/bedework/page='attendees'">
       <!--  Note: this page is deprecated, but is still maintained for testing.
