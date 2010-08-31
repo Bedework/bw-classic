@@ -332,12 +332,25 @@
           <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-TopicalArea"/><xsl:text> </xsl:text></span>
           <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
             <xsl:variable name="calUrl" select="values/text"/>
-            <a href="{$setSelection}&amp;virtualPath={$calUrl}&amp;setappvar=curCollection({$calUrl})">
-              <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="values/text"/>
-                <xsl:with-param name="char">/</xsl:with-param>
-              </xsl:call-template>
-            </a><xsl:if test="position()!=last()">, </xsl:if>
+            <xsl:choose>
+              <xsl:when test="parameters/X-BEDEWORK-PARAM-DISPLAYNAME">
+                <xsl:variable name="displayName" select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/>
+                <a href="{$setSelection}&amp;virtualPath={$calUrl}&amp;setappvar=curCollection({$displayName})">
+                  <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/>
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <!-- this is required for backwards compatibility with old events (possibly with imported events;
+                     here we use the alias path value for display (as of 3.7 we use the display name (summary)) -->
+		            <a href="{$setSelection}&amp;virtualPath={$calUrl}&amp;setappvar=curCollection({$calUrl})">
+		              <xsl:call-template name="substring-afterLastInstanceOf">
+		                <xsl:with-param name="string" select="values/text"/>
+		                <xsl:with-param name="char">/</xsl:with-param>
+		              </xsl:call-template>
+		            </a>
+		          </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="position()!=last()">, </xsl:if>
           </xsl:for-each>
         </div>
       </xsl:if>

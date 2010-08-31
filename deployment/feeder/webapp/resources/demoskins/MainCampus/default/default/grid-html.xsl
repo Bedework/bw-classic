@@ -448,7 +448,7 @@
           <td class="fieldval">
             <xsl:variable name="calUrl" select="calendar/encodedPath"/>
             <a href="{$setSelection}&amp;calUrl={$calUrl}">
-              <xsl:value-of select="calendar/name"/>
+              <xsl:value-of select="calendar/summary"/>
             </a>
           </td>
         </tr>
@@ -1053,7 +1053,7 @@
         <strong><xsl:copy-of select="$bwStr-Cals-CalendarToExport"/></strong>
       </p>
       <div class="indent">
-        <xsl:copy-of select="$bwStr-Cals-Name"/><xsl:text> </xsl:text><strong><em><xsl:value-of select="name"/></em></strong><br/>
+        <xsl:copy-of select="$bwStr-Cals-Name"/><xsl:text> </xsl:text><strong><em><xsl:value-of select="summary"/></em></strong><br/>
         <xsl:copy-of select="$bwStr-Cals-Path"/><xsl:text> </xsl:text><xsl:value-of select="path"/>
       </div>
       <p>

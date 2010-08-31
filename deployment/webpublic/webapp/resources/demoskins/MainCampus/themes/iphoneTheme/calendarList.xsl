@@ -46,7 +46,7 @@
       </xsl:attribute>
       <xsl:variable name="calPath" select="path"/>
       <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar">
-        <xsl:value-of select="name"/>
+        <xsl:value-of select="summary"/>
       </a>
       <xsl:if test="calendar">
         <ul>

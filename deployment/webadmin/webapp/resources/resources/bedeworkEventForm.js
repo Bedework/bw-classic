@@ -363,11 +363,11 @@ function setBedeworkXProperties(formObj,submitter) {
   // commit all xproperties back to the form
   bwXProps.generate(formObj);
 }
-function toggleBedeworkXProperty(xprop,value,checked) {
+function toggleBedeworkXProperty(xprop,displayName,value,checked) {
   if (!checked) {
     bwXProps.removeByValue(xprop, value);
   } else {
-    bwXProps.update(bwXPropertyAlias,[],value,false);
+    bwXProps.update(bwXPropertyAlias,[[bwXParamDisplayName,displayName]],value,false);
   }
 }
 function claimPendingEvent(group,user) {

@@ -2797,26 +2797,27 @@
           <xsl:when test="calType = '7' or calType = '8'">
             <!-- we've hit an unresolvable alias; stop descending -->
             <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
-            <em><xsl:value-of select="name"/>?</em>
+            <em><xsl:value-of select="summary"/>?</em>
           </xsl:when>
           <xsl:when test="calType = '0'">
             <!-- no direct selecting of folders or folder aliases: we only want users to select the
                  underlying calendar aliases -->
             <img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/>
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
-            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-ALIAS','{$virtualPath}',this.checked)">
+            <xsl:variable name="displayName" select="summary"/>
+            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-ALIAS','{$displayName}','{$virtualPath}',this.checked)">
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
               <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
             <xsl:choose>
               <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
-                <strong><xsl:value-of select="name"/></strong>
+                <strong><xsl:value-of select="summary"/></strong>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="name"/>
+                <xsl:value-of select="summary"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:otherwise>
@@ -4084,7 +4085,7 @@
         </xsl:choose>
       </xsl:if>
       <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="update">
-        <xsl:value-of select="name"/>
+        <xsl:value-of select="summary"/>
       </a>
       <xsl:if test="calType = '0' and isSubscription = 'false'">
         <xsl:text> </xsl:text>
@@ -4095,7 +4096,7 @@
       <xsl:if test="calendar and isSubscription='false'">
         <ul>
           <xsl:apply-templates select="calendar" mode="listForUpdate">
-            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+            <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -4138,7 +4139,7 @@
             </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
-        <xsl:value-of select="name"/>
+        <xsl:value-of select="summary"/>
       </a>
       <xsl:if test="calendar">
         <ul>
@@ -4168,7 +4169,7 @@
           </xsl:otherwise>
         </xsl:choose>
         <a href="{$calendar-update}&amp;newCalPath={$calPath}" title="update">
-          <xsl:value-of select="name"/>
+          <xsl:value-of select="summary"/>
         </a>
         <xsl:if test="calendar">
           <ul>
@@ -4810,12 +4811,12 @@
         <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calType != '0')">
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
             <strong>
-              <xsl:value-of select="name"/>
+              <xsl:value-of select="summary"/>
             </strong>
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="name"/>
+          <xsl:value-of select="summary"/>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="calendar">
@@ -5142,7 +5143,7 @@
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </a>
         </xsl:otherwise>
       </xsl:choose>
@@ -5354,11 +5355,11 @@
       <xsl:choose>
         <xsl:when test="canAlias = 'true'">
           <a href="javascript:updatePublicCalendarAlias('{$calPath}','{$calDisplay}','bw-{$calPath}','{$calendarCollection}')" id="bw-{$calPath}">
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="name"/>
+          <xsl:value-of select="summary"/>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="calendar">

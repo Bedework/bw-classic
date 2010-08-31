@@ -56,10 +56,10 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:variable name="calPath" select="path"/>
-      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar">
-        <xsl:value-of select="name"/>
+      <xsl:variable name="displayName" select="summary"/>
+      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$displayName})" title="view calendar">
+        <xsl:value-of select="summary"/>
       </a>
-      <xsl:variable name="calPath" select="path"/>
       <span class="exportCalLink">
         <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
           <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar" border="0"/>
@@ -82,7 +82,7 @@
       <p>
         <xsl:copy-of select="$bwStr-Cals-CalendarToExport"/>
         <xsl:text> </xsl:text>
-        <em><xsl:value-of select="name"/></em>
+        <em><xsl:value-of select="summary"/></em>
       </p>
 
       <form name="exportCalendarForm" id="exportCalendarForm" action="{$export}" method="post">

@@ -156,6 +156,7 @@
                 },
                 'calendar' : {
                     'name' : '<xsl:value-of select='calendar/name'/>',
+                    'displayName' : '<xsl:value-of select='calendar/summary'/>',
                     'path' : '<xsl:value-of select='calendar/path'/>',
                     'encodedPath' : '<xsl:value-of select='calendar/encodedPath'/>'
                 },

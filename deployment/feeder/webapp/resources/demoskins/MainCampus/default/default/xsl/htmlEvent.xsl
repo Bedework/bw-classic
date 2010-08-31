@@ -316,7 +316,7 @@
          <td class="fieldval">
            <xsl:variable name="calUrl" select="calendar/encodedPath"/>
            <a href="{$setSelection}&amp;calUrl={$calUrl}">
-             <xsl:value-of select="calendar/name"/>
+             <xsl:value-of select="calendar/summary"/>
            </a>
          </td>
        </tr>

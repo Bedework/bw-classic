@@ -84,7 +84,7 @@
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
               <queue physicalName="bedework.crawler" />
-              <filteredDestination selector="inbox = 'true'"
+              <filteredDestination selector="inbox = 'true' or scheduleEvent = 'true'"
                                    queue="bedework.scheduleIn"/>
               <filteredDestination selector="outbox = 'true'"
                                    queue="bedework.scheduleOut"/>

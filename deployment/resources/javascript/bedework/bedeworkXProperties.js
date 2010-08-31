@@ -35,6 +35,7 @@ var bwXPropertySubmitStatus = "X-BEDEWORK-SUBMIT-STATUS";
 var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";
 var bwXPropertySubmissionClaimant = "X-BEDEWORK-SUBMISSION-CLAIMANT";
 
+var bwXParamDisplayName = "X-BEDEWORK-PARAM-DISPLAYNAME";
 var bwXParamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
 var bwXParamWidth = "X-BEDEWORK-PARAM-WIDTH";
 var bwXParamHeight = "X-BEDEWORK-PARAM-HEIGHT";

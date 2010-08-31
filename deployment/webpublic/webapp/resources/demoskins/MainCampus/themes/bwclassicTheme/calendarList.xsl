@@ -65,7 +65,7 @@
     <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
     <li class="{$itemClass}">
       <xsl:variable name="calPath" select="path"/>
-      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="name"/></a>
+      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="summary"/></a>
       <xsl:variable name="calPath" select="path"/>
       <span class="exportCalLink">
         <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
@@ -88,7 +88,7 @@
         <strong><xsl:copy-of select="$bwStr-Cals-CalendarToExport"/></strong>
       </p>
       <div class="indent">
-        <xsl:copy-of select="$bwStr-Cals-Name"/><xsl:text> </xsl:text><strong><em><xsl:value-of select="name"/></em></strong><br/>
+        <xsl:copy-of select="$bwStr-Cals-Name"/><xsl:text> </xsl:text><strong><em><xsl:value-of select="summary"/></em></strong><br/>
         <xsl:copy-of select="$bwStr-Cals-Path"/><xsl:text> </xsl:text><xsl:value-of select="path"/>
       </div>
       <p>

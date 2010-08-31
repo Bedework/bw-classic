@@ -293,21 +293,6 @@
               </li>
             </xsl:if>
 
-            <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
-              <li>
-                <xsl:copy-of select="$bwStr-LsVw-TopicalArea"/><xsl:text> </xsl:text>
-                <span class="eventSubscription">
-                  <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-                    <xsl:call-template name="substring-afterLastInstanceOf">
-                      <xsl:with-param name="string" select="values/text"/>
-                      <xsl:with-param name="char">/</xsl:with-param>
-                    </xsl:call-template>
-                    <xsl:if test="position()!=last()">, </xsl:if>
-                  </xsl:for-each>
-                </span>
-              </li>
-            </xsl:if>
-
           </xsl:when>
           <xsl:otherwise>
 
@@ -316,23 +301,30 @@
               <xsl:value-of select="location/address" />
             </li>
 
-            <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
-              <li>
-                <xsl:copy-of select="$bwStr-LsVw-TopicalArea"/><xsl:text> </xsl:text>
-                <span class="eventSubscription">
-                  <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-                    <xsl:call-template name="substring-afterLastInstanceOf">
-                      <xsl:with-param name="string" select="values/text"/>
-                      <xsl:with-param name="char">/</xsl:with-param>
-                    </xsl:call-template>
-                    <xsl:if test="position()!=last()">, </xsl:if>
-                  </xsl:for-each>
-                </span>
-              </li>
-            </xsl:if>
-
           </xsl:otherwise>
         </xsl:choose>
+        
+        <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
+          <li>
+            <xsl:copy-of select="$bwStr-LsVw-TopicalArea"/><xsl:text> </xsl:text>
+            <span class="eventSubscription">
+              <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                <xsl:choose>
+                  <xsl:when test="parameters/X-BEDEWORK-PARAM-DISPLAYNAME">
+	                  <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/>
+		              </xsl:when>
+		              <xsl:otherwise>
+		                <xsl:call-template name="substring-afterLastInstanceOf">
+		                  <xsl:with-param name="string" select="values/text"/>
+		                  <xsl:with-param name="char">/</xsl:with-param>
+		                </xsl:call-template>
+		              </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="position()!=last()">, </xsl:if>
+              </xsl:for-each>
+            </span>
+          </li>
+        </xsl:if>
       </ul>
     </td>
     <!-- td class="icons">
