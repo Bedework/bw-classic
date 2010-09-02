@@ -558,14 +558,18 @@ function bwAce(who, whoType, how, inherited, invert) {
   }
 
   this.toXml = function() {
+    if (this.inherited != "") {
+      return ""; // Should not emit inherited aces
+    }
+    
     var res = "  <D:ace>\n" + this.principal.toXml();
 
     res += this.howsToXml(true);
     res += this.howsToXml(false);
 
-    if (this.inherited != "") {
-      res += "    <D:inherited><D:href>" + this.inherited + "</D:href></D:inherited>";
-    }
+    //if (this.inherited != "") {
+    //  res += "    <D:inherited><D:href>" + this.inherited + "</D:href></D:inherited>";
+    //}
 
     return res + "  </D:ace>\n";
   }
