@@ -478,6 +478,32 @@
         </Pubcaldav>
 
         <!-- ==================================================================
+                          User CalWS server Usercalws
+             ================================================================== -->
+        <Usercalws classname="org.bedework.caldav.util.CalDAVConfig">
+          <appType>usercalws</appType>
+          <!--
+          <publicAdmin>false</publicAdmin>
+          -->
+          <guestMode>false</guestMode>
+
+          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
+        </Usercalws>
+
+        <!-- ==================================================================
+                          Public (unauthenticated) CalWS server Pubcalws
+             ================================================================== -->
+        <Pubcalws classname="org.bedework.caldav.util.CalDAVConfig">
+          <appType>publiccalws</appType>
+          <!--
+          <publicAdmin>false</publicAdmin>
+           -->
+          <guestMode>true</guestMode>
+
+          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
+        </Pubcalws>
+
+        <!-- ==================================================================
                           CalDAV test suite
              ================================================================== -->
         <caldavTest classname="org.bedework.calfacade.configs.ConfigCommon">
