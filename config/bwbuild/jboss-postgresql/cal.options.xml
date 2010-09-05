@@ -118,8 +118,8 @@
           </dummymail>
 
           <default-pwencrypt classname="org.bedework.calfacade.security.DefaultPwEncryptionConfig">
-            <privKeys>@QUICKSTART_DIR@/data/bedework/privkeys</privKeys>
-            <pubKeys>@QUICKSTART_DIR@/data/bedework/pubkeys</pubKeys>
+            <privKeys>@DATA_DIR@/data/bedework/privkeys</privKeys>
+            <pubKeys>@DATA_DIR@/data/bedework/pubkeys</pubKeys>
 
             <debug>true</debug>
             <verbose>true</verbose>
@@ -562,6 +562,16 @@
           <guestMode>true</guestMode>
           <debugEntity>false</debugEntity>
         </monitor>
+
+        <!-- ==================================================================
+                          System key generator
+             ================================================================== -->
+        <genkeys classname="org.bedework.calfacade.configs.BwCrawlerConfig">
+          <debug>true</debug>
+          <appType>genkeys</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+        </genkeys>
 
         <!-- ==================================================================
                           In/outbox scheduler program

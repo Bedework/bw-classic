@@ -11,6 +11,9 @@
     <filter token="QUICKSTART_DIR"
             value="${quickstart.dir}"/>
 
+    <filter token="DATA_DIR"
+            value="${org.bedework.data.dir}"/>
+
     <filter token="BW-APP-NAME"
             value="${org.bedework.deploy.name}"/>
 
