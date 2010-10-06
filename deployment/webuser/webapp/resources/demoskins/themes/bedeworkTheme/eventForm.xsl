@@ -680,19 +680,21 @@
                   <tr>
                     <td>
                       <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
-                        <input type="checkbox" name="catUid"/>
+                        <input type="checkbox" name="catUid">
                           <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:if test="uid = form/categories/current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:value-of select="value"/>
+                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        </input>
+                        <xsl:value-of select="value"/>
                         <br/>
                       </xsl:for-each>
                     </td>
                     <td>
                       <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
-                        <input type="checkbox" name="catUid"/>
+                        <input type="checkbox" name="catUid">
                           <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:if test="uid = form/categories/current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:value-of select="value"/>
+                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        </input>
+                        <xsl:value-of select="value"/>
                         <br/>
                       </xsl:for-each>
                     </td>

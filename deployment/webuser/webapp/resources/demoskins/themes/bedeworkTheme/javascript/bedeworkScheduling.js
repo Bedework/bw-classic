@@ -17,12 +17,13 @@
  under the License.
  */
 
-/* ========================================================================
-   This file builds a scheduling widget for the "meeting" tab of the 
-   add/edit event form used for adding and removing attendees, observing
-   free/busy, and for picking available time in a free/busy grid. 
-   ========================================================================
-*/
+
+/** This file builds a scheduling widget for the "meeting" tab of the 
+ * add/edit event form used for adding and removing attendees, observing
+ * free/busy, and for picking available time in a free/busy grid. 
+ *
+ * @author Arlen Johnson       johnsa - rpi.edu
+ */
 
 // Constants and RFC-5445 values 
 // These should be put some place permanent
