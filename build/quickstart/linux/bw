@@ -261,6 +261,13 @@ if [ "$1" = "-deployurlbuilder" ] ; then
   exit
 fi
 
+if [ "$1" = "-deployaddressbook" ] ; then
+   cd $QUICKSTART_HOME/bedework-carddav/clients 
+   sh deployAddressBook.sh
+  exit
+fi
+
+
 
 while [ "$1" != "" ]
 do
