@@ -71,6 +71,7 @@ usage() {
   echo "      -buildwebcache     builds webcache"
   echo "      -deploywebcache    deploys webcache"
   echo "      -deployurlbuilder  deploys url/widget builder"
+  echo "      -deployaddressbook deploys addressbook client"
   echo ""
 }
 
