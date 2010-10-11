@@ -86,6 +86,16 @@
 
     <h3><xsl:copy-of select="$bwStr-SdBr-Options"/></h3>
     <ul id="sideBarMenu">
+      <li>
+        <xsl:variable name="userid" select="/bedework/userid"/>
+        <a href="/bwAddrbookClient/?user={$userid}" target="bwAddrBook">
+          <img height="13" border="0" width="13"
+            src="{$resourcesRoot}/images/silk/book.png"
+            alt="{$bwStr-SdBr-AddrBook}" />
+          <xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-SdBr-AddrBook"/>
+        </a>
+      </li>
       <li class="prefs">
         <a href="{$prefs-fetchForUpdate}">
           <img height="13" border="0" width="13"

@@ -174,11 +174,12 @@
              <xsl:call-template name="actionIcons">
                <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
                <xsl:with-param name="startDate">
-                 <xsl:choose>
+                 <xsl:choose> <!-- why are we doing this choose? -->
                    <xsl:when test="/bedework/periodname = 'Day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
                    <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
                  </xsl:choose>
                </xsl:with-param>
+               <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
              </xsl:call-template>
            </xsl:if>
          </td>
