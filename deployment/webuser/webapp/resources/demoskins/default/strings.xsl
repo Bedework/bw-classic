@@ -50,7 +50,7 @@
   <xsl:variable name="bwStr-SdBr-Options">options</xsl:variable>
   <xsl:variable name="bwStr-SdBr-Preferences">Preferences</xsl:variable>
   <xsl:variable name="bwStr-SdBr-UploadICal">Upload iCAL</xsl:variable>
-  <xsl:variable name="bwStr-SdBr-AddrBook">Address Book</xsl:variable>
+  <xsl:variable name="bwStr-SdBr-AddrBook">Contacts</xsl:variable>
   <xsl:variable name="bwStr-SdBr-ExportCalendars">Export Calendars</xsl:variable>
   <xsl:variable name="bwStr-SdBr-UploadEvent">Upload Event</xsl:variable>
 
