@@ -45,6 +45,7 @@ usage() {
   echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
   echo "     -carddav     Target is for the CardDAV build"
+  echo "     -exsynch     Target is for the Exchange synch build"
   echo "     -client      Target is for the bedework client application build"
   echo "     -monitor     Target is for the bedework monitor application"
   echo "     -naming      Target is for the abstract naming api"
@@ -222,6 +223,7 @@ bedework=
 carddav=
 caldav=
 client=
+exsynch=
 monitor=
 naming=
 tzsvr=
@@ -314,6 +316,11 @@ do
       pkgdefault=
       shift
       ;;
+    -exsynch)
+      exsynch="yes"
+      pkgdefault=
+      shift
+      ;;
     -webdav)
       webdav="yes"
       pkgdefault=
@@ -378,6 +385,10 @@ fi
 
 if [ "$client" != "" ] ; then
   cd $QUICKSTART_HOME/bwclient
+fi
+
+if [ "$exsynch" != "" ] ; then
+  cd $QUICKSTART_HOME/exchgsynch
 fi
 
 if [ "$monitor" != "" ] ; then
