@@ -41,8 +41,6 @@ usage() {
   echo "   -offline     Build without attempting to retrieve library jars"
   echo "   target       Ant target to execute"
   echo ""
-  echo ""
-  echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
   echo "     -carddav     Target is for the CardDAV build"
   echo "     -exsynch     Target is for the Exchange synch build"
@@ -51,6 +49,8 @@ usage() {
   echo "     -naming      Target is for the abstract naming api"
   echo "     -tzsvr       Target is for the timezones server build"
   echo "     The default is a calendar build"
+  echo ""
+  echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
   echo ""
   echo "   Invokes ant to build or deploy the Bedework system. Uses a configuration"
   echo "   directory which contains one directory per configuration."
@@ -72,14 +72,17 @@ usage() {
   echo "      -buildwebcache     builds webcache"
   echo "      -deploywebcache    deploys webcache"
   echo "      -deployurlbuilder  deploys url/widget builder"
-  echo "      -deployaddressbook deploys addressbook client"
   echo ""
 }
 
 errorUsage() {
-  echo "*******************************************************"
+  echo "**************************************************************************************************************"
   echo "Error: $1"
-  echo "*******************************************************"
+  echo "**************************************************************************************************************"
+  echo
+  echo "Sleeping 5 seconds before displaying usage. Safe to ctrl-C."
+  sleep 5
+  echo ""
   usage
   exit 1
 }
@@ -271,14 +274,6 @@ if [ "$1" = "-deployurlbuilder" ] ; then
   exit
 fi
 
-if [ "$1" = "-deployaddressbook" ] ; then
-   cd $QUICKSTART_HOME/bedework-carddav/clients 
-   sh deployAddressBook.sh
-  exit
-fi
-
-
-
 while [ "$1" != "" ]
 do
   # Process the next arg
@@ -362,6 +357,9 @@ done
 if [ "$quickstart" != "" ] ; then
   if [ "$BWCONFIGS" != "" ] ; then
     errorUsage "Cannot specify both -quickstart and -bwchome"
+  fi
+  if [ "$bwc" = "jboss" ] ; then
+  	errorUsage "The jboss configuration has been removed from the quickstart.  It is now the default.  Remove the '-bwc jboss' option."
   fi
 
   BWCONFIGS=$QUICKSTART_HOME/bedework/config/bwbuild
