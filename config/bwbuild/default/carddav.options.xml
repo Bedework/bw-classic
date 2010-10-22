@@ -152,6 +152,34 @@
 
             <debug>true</debug>
           </location-principal-dirHandler>
+            
+          <!-- handle the public (enterprise) people address book hierarchy -->
+          <public-people-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
+            <pathPrefix>/public/people</pathPrefix>
+            
+            <className>org.bedework.carddav.server.dirHandlers.ldap.LdapAddrBookDirHandler</className>
+            
+            <!-- manufacture an owner for public entities -->
+            <ownerHref>/principals/users/admin</ownerHref>
+            <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
+            <providerUrl>ldap://localhost:10389/</providerUrl>
+            <baseDn>ou=people,ou=public,dc=bedework,dc=org</baseDn>
+            <queryLimit>1000</queryLimit>
+            
+            <attrIds></attrIds>
+            
+            <folderObjectClass>organizationalUnit</folderObjectClass>
+            <addressbookObjectClass>organizationalUnit</addressbookObjectClass>
+            <addressbookEntryObjectClass>inetOrgPerson</addressbookEntryObjectClass>
+            <folderIdAttr>ou</folderIdAttr>
+            <addressbookIdAttr>ou</addressbookIdAttr>
+            <addressbookEntryIdAttr>cn</addressbookEntryIdAttr>
+            
+            <authDn>uid=admin,ou=system</authDn>
+            <authPw>secret</authPw>
+            <debug>true</debug>
+          </public-people-dirHandler>
+          
           
           <!-- handle the user address book hierarchy -->
           
