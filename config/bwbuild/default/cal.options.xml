@@ -182,10 +182,18 @@
         <!-- ==================================================================
                           Timezones server
              ================================================================== -->
-        <tzsvr classname="org.bedework.calfacade.configs.ConfigCommon">
+        <tzsvr classname="org.bedework.timezones.common.TzsvrConfig">
           <appType>tzsvr</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>true</guestMode>
+          
+          <!--  Property defining location of the registry  -->
+          <tzdataUrl>http://localhost:8080/tzdata.zip</tzdataUrl>
+
+          <!-- Property defining long seconds refetch interval for data -->
+          <refetchInterval>6000</refetchInterval>
+          
+          <cacheName>vtz</cacheName>
+
+          <postId>12345abcde</postId>          
         </tzsvr>
 
         <!-- ==================================================================
@@ -311,8 +319,6 @@
 
           <calSuite>MainCampus</calSuite>
         </Events>
-
-
 
         <!-- ==================================================================
                           Feed Service
@@ -476,6 +482,32 @@
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
         </Pubcaldav>
+
+        <!-- ==================================================================
+                          User CalWS server Usercalws
+             ================================================================== -->
+        <Usercalws classname="org.bedework.caldav.util.CalDAVConfig">
+          <appType>usercalws</appType>
+          <!--
+          <publicAdmin>false</publicAdmin>
+          -->
+          <guestMode>false</guestMode>
+
+          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
+        </Usercalws>
+
+        <!-- ==================================================================
+                          Public (unauthenticated) CalWS server Pubcalws
+             ================================================================== -->
+        <Pubcalws classname="org.bedework.caldav.util.CalDAVConfig">
+          <appType>publiccalws</appType>
+          <!--
+          <publicAdmin>false</publicAdmin>
+           -->
+          <guestMode>true</guestMode>
+
+          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
+        </Pubcalws>
 
         <!-- ==================================================================
                           CalDAV test suite
