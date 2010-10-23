@@ -500,6 +500,16 @@ body {
   padding: 6px 0;
   text-align: center;
 }
+#bedework input:focus,
+#bedework textarea:focus,
+#bedework select:focus {
+  background-color: #ffb !important;
+  color: inherit;
+}
+#bedework select:focus option {
+  background-color: white;
+  color: inherit;
+}
 #bedework table.common #eventActions {
   float: right;
   clear: none;
