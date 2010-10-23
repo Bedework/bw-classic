@@ -250,6 +250,16 @@ th {
 #mainMenuEventSearch {
 
 }
+input:focus,
+textarea:focus,
+select:focus {
+  background-color: #ffb !important;
+  color: inherit;
+}
+select:focus option {
+  background-color: white;
+  color: inherit;
+}
 #searchForm {
   font-size: 0.8em;
   margin: 0 0 0 3px;
