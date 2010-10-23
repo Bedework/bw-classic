@@ -119,7 +119,8 @@ usageZoneinfo() {
 # The version parameter value should be the version code from the tzdata name
 # ---------------------------------------------------------------------------- 
 actionZoneinfo() {
-  bwresources="$QUICKSTART_HOME/bwtzsvr/resources"
+  bwtzsvr="$QUICKSTART_HOME/bwtzsvr"
+  bwresources="$bwtzsvr/resources"
 
   shift
   
@@ -193,11 +194,11 @@ actionZoneinfo() {
   
   zip -r tzdata *
   
-  cp tzdata.zip $bwresources/
+  cp tzdata.zip $bwtzsvr/
   
   echo ""
   echo "------------------------------------------------------------------------------"
-  echo "tzdata.zip has been built and is at $bwresources/tzdata.zip"
+  echo "tzdata.zip has been built and is at $bwtzsvr/tzdata.zip"
   echo "------------------------------------------------------------------------------"
   echo ""
   
