@@ -77,6 +77,16 @@ body {
   text-align: right;
   margin: 1em 0.5em;
 }
+#bedework input:focus,
+#bedework textarea:focus,
+#bedework select:focus {
+	background-color: #ffb;
+	color: inherit;
+}
+#bedework select:focus option {
+  background-color: white;
+  color: inherit;
+}
 #bedework .eventSubmitButtons input,
 #bedework .formButtons input {
   margin: 0;
