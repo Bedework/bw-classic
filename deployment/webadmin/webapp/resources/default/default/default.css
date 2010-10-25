@@ -253,7 +253,7 @@ th {
 input:focus,
 textarea:focus,
 select:focus {
-  background-color: #ffb !important;
+  background-color: #DFEAFF !important;
   color: inherit;
 }
 select:focus option {
