@@ -312,7 +312,12 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
             bwGrid.attendees.length = 0;
             for (var i=0; i < responseData.attendees.length; i++) {
               var att = responseData.attendees[i];
-              var newAttendee = new bwAttendee(att.name, att.uid, att.role, att.status, att.type);
+              // strip off mailto: from uids to store locally
+              var attUri = att.uid;
+              if (attUri.indexOf("mailto:") != -1) {
+                attUri = attUri.substr(7); 
+              }
+              var newAttendee = new bwAttendee(att.name, attUri, att.role, att.status, att.type);
               bwGrid.attendees.push(newAttendee); 
             }
             bwGrid.requestFreeBusy();
@@ -320,7 +325,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
             alert(bwErrorAttendees);
           }
           
-          // got attendees??  send the param that will trigger a
+          // got attendees??  set the param that will trigger a
           // scheduling request. For now, just set this every time
           // (we'll trim back later)
           if (bwGrid.attendees.length) {
@@ -396,21 +401,31 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     }
     var fbUrl = this.fbUrlPrefix + fbUrlStart + fbUrlEnd + fbOrganizer + fbAttendees;
     
-    $.getJSON(fbUrl, function(fb) {
-      for (var i=0; i < fb.microformats["schedule-response"].length; i++) {
-        var r = fb.microformats["schedule-response"][i]; // reference the current response
-        
-        if (r["calendar-data"] != undefined && r["calendar-data"].freebusy != undefined) {
-          // find the attendee and pass in the freebusy object if the attendee has any
-          for (var j=0; j < bwGrid.attendees.length; j++) {
-            if (bwGrid.attendees[j].uid == r["calendar-data"].attendee[0].value.substr(r["calendar-data"].attendee[0].value.lastIndexOf(":") + 1)) {
-              bwGrid.attendees[j].updateFreeBusy(r["calendar-data"].freebusy);
+    $.ajax({
+      type: "POST",
+      url: fbUrl,
+      dataType: "json",
+      success: function(fb){
+        for (var i=0; i < fb.microformats["schedule-response"].length; i++) {
+          var r = fb.microformats["schedule-response"][i]; // reference the current response
+          
+          if (r["calendar-data"] != undefined && r["calendar-data"].freebusy != undefined) {
+            // find the attendee and pass in the freebusy object if the attendee has any
+            for (var j=0; j < bwGrid.attendees.length; j++) {
+              if (bwGrid.attendees[j].uid == r["calendar-data"].attendee[0].value.substr(r["calendar-data"].attendee[0].value.lastIndexOf(":") + 1)) {
+                bwGrid.attendees[j].updateFreeBusy(r["calendar-data"].freebusy);
+              }
             }
           }
         }
+        bwGrid.display();
+      },
+      error: function(msg) {
+        // there was a problem
+        alert(msg.statusText);
       }
-      bwGrid.display();
     });
+    
   };
   
   this.pickNext = function() {
