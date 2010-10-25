@@ -80,7 +80,7 @@ body {
 #bedework input:focus,
 #bedework textarea:focus,
 #bedework select:focus {
-	background-color: #ffb !important;
+	background-color: #DFEAFF !important;
 	color: inherit;
 }
 #bedework select:focus option {
