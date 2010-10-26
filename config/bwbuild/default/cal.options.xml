@@ -40,6 +40,10 @@
         <!-- Timezone server locations -->
         <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
 
+        <!-- Public/private key locations -->
+        <privKeys>@DATA_DIR@/data/bedework/privkeys</privKeys>
+        <pubKeys>@DATA_DIR@/data/bedework/pubkeys</pubKeys>
+
         <systemRoots classname="org.bedework.calfacade.configs.SystemRoots" >
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
@@ -116,14 +120,6 @@
           <dummymail classname="org.bedework.mail.MailConfigProperties">
             <disabled>false</disabled>
           </dummymail>
-
-          <default-pwencrypt classname="org.bedework.calfacade.security.DefaultPwEncryptionConfig">
-            <privKeys>@DATA_DIR@/data/bedework/privkeys</privKeys>
-            <pubKeys>@DATA_DIR@/data/bedework/pubkeys</pubKeys>
-
-            <debug>true</debug>
-            <verbose>true</verbose>
-          </default-pwencrypt>
         </module>
       </global>
 
@@ -588,6 +584,19 @@
           <guestMode>true</guestMode>
           <debugEntity>false</debugEntity>
         </iosched>
+
+        <Exsynch classname="org.bedework.exchgsynch.ExsynchConfig">
+          <appType>exsynch</appType>
+
+          <!-- location of the WSDL - modified to include server element -->
+          <exchangeWSDLURI>http://localhost:8080/exchange/Services.wsdl</exchangeWSDLURI>
+
+          <!-- Exchange sync callback. Comment out for no service -->
+          <exchangeWsPushURI>http://128.113.124.221/exsynch/</exchangeWsPushURI>
+
+          <!-- Path to keystore - comment out to use default -->          
+          <keystore>@APPSERVER-DATA-DIR@/exsynchcerts</keystore>
+        </Exsynch>
       </app>
     </bedework>
   </org>
