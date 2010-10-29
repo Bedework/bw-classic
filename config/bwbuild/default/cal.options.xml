@@ -592,7 +592,7 @@
           <exchangeWSDLURI>http://localhost:8080/exchange/Services.wsdl</exchangeWSDLURI>
 
           <!-- Exchange sync callback. Comment out for no service -->
-          <exchangeWsPushURI>http://128.113.124.221/exsynch/</exchangeWsPushURI>
+          <exchangeWsPushURI>http://myexhange.mysite.edu/exsynch/</exchangeWsPushURI>
 
           <!-- Path to keystore - comment out to use default -->          
           <keystore>@APPSERVER-DATA-DIR@/exsynchcerts</keystore>
