@@ -349,7 +349,13 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     var role = $("#bwAddAttendeeRole").val();
     var partstat = $("#bwAddAttendeePartstat").val();
     // these are preliminary values - will get more from server after ajax call
-    bwGrid.addAttendee("",uid,role,partstat,"person");
+    if (uid.indexOf(",") != -1) {
+      // we have a list of uids from a group
+      alert("can't add a group yet, but soon..."); 
+    } else {
+      // we have a single uid
+      bwGrid.addAttendee("",uid,role,partstat,"person");
+    }
   };
   
   this.removeAttendee = function(index) {
@@ -1113,35 +1119,54 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
               var curFn = "";
               var curEmail = "";
               var curLabel = "";
+              var curKind = "";
+              
               if (entry.fn != undefined && entry.fn.value != undefined) {
                 curFn = entry.fn.value;
               } 
-              // this is probably not enough: we should account for all email addresses if there is no calendar uri
-              if (entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
-                curEmail = entry.email[0].value;
-              }
-              if (curFn != "") {
-                curLabel = curFn + ", " + curEmail;
-              } else {
-                curLabel = curEmail;
+              
+              if (entry.kind != undefined && entry.kind.value != undefined) {
+                curKind = entry.kind.value;
               }
               
-              // use the calendar address uri if available, otherwise use email
-              var curUri = "";
-              if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
-                curUri = entry.caladruri.value;
-              }
-              if (curUri == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
-                var curEmail = entry.email[0].value;
-                if (curEmail != "") {
-                  curUri = "mailto:" + curEmail;
+              if (curKind == "group") {
+                if (entry.member != undefined && entry.member.length > 0) {
+                  var members = "";
+                  for (var i = 0; i < entry.member.length; i++ ) {
+                    members += entry.member[i].value + ",";
+                  }
+                  members = members.substring(0,members.length-1);
+                  var curItem = {label: curFn, value: members};
+                  items.push(curItem);
                 }
-              }
-              
-              // only add the entry if there is a uri and a label to use
-              if (curUri != "" && curLabel != "") {
-                var curItem = {label: curLabel, value: curUri};
-                items.push(curItem);
+              } else {
+                // this is probably not enough: we should account for all email addresses if there is no calendar uri
+                if (entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+                  curEmail = entry.email[0].value;
+                }
+                if (curFn != "") {
+                  curLabel = curFn + ", " + curEmail;
+                } else {
+                  curLabel = curEmail;
+                }
+                
+                // use the calendar address uri if available, otherwise use email
+                var curUri = "";
+                if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
+                  curUri = entry.caladruri.value;
+                }
+                if (curUri == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+                  var curEmail = entry.email[0].value;
+                  if (curEmail != "") {
+                    curUri = "mailto:" + curEmail;
+                  }
+                }
+                
+                // only add the entry if there is a uri and a label to use
+                if (curUri != "" && curLabel != "") {
+                  var curItem = {label: curLabel, value: curUri};
+                  items.push(curItem);
+                }
               }
             });
             
