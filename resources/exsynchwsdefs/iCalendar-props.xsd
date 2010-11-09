@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--non-normative, to support development of WS-Calendar - 2010/10/30. 
+    Refer to rfc5545 and xCal in the IETF for normative description -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0" 
+           targetNamespace="urn:ietf:params:xml:ns:icalendar-2.0" 
+           elementFormDefault="qualified">
+
+  <!-- =====================================================================
+       3.7 Calendar Properties
+       ===================================================================== -->  
+            
+  <!-- ===================== Parameters =================================  -->
+  <xs:include schemaLocation="iCalendar-params.xsd" />
+
+  <xs:complexType name="ArrayOfProperties">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="calscale" type="xcal:calscalePropType" />
+      <xs:element name="method" type="xcal:methodPropType" />
+      <xs:element name="prodid" type="xcal:prodidPropType" />
+      <xs:element name="version" type="xcal:versionPropType" />
+      <xs:element name="attach" type="xcal:attachPropType" />
+      <xs:element name="class" type="xcal:classPropType" />
+      <xs:element name="comment" type="xcal:commentPropType" />
+      <xs:element name="description" type="xcal:descriptionPropType" />
+      <xs:element name="geo" type="xcal:geoPropType" />
+      <xs:element name="location" type="xcal:locationPropType" />
+      <xs:element name="percent-complete" type="xcal:percent-completePropType" />
+      <xs:element name="priority" type="xcal:priorityPropType" />
+      <xs:element name="resources" type="xcal:resourcesPropType" />
+      <xs:element name="status" type="xcal:statusPropType" />
+      <xs:element name="summary" type="xcal:summaryPropType" />
+      <xs:element name="completed" type="xcal:completedPropType" />
+      <xs:element name="dtend" type="xcal:dtendPropType" />
+      <xs:element name="dtstart" type="xcal:dtstartPropType" />
+      <xs:element name="due" type="xcal:duePropType" />
+      <xs:element name="duration" type="xcal:durationPropType" />
+      <xs:element name="freebusy" type="xcal:freebusyPropType" />
+      <xs:element name="transp" type="xcal:transpPropType" />
+      <xs:element name="tzid" type="xcal:tzidPropType" />
+      <xs:element name="tzname" type="xcal:tznamePropType" />
+      <xs:element name="tzoffsetfrom" type="xcal:tzoffsetfromPropType" />
+      <xs:element name="tzoffsetto" type="xcal:tzoffsettoPropType" />
+      <xs:element name="tzurl" type="xcal:tzurlPropType" />
+      <xs:element name="attendee" type="xcal:attendeePropType" />
+      <xs:element name="contact" type="xcal:contactPropType" />
+      <xs:element name="organizer" type="xcal:organizerPropType" />
+      <xs:element name="recurrence-id" type="xcal:recurrence-idPropType" />
+      <xs:element name="url" type="xcal:urlPropType" />
+      <xs:element name="uid" type="xcal:uidPropType" />
+      <xs:element name="exdate" type="xcal:exdatePropType" />
+      <xs:element name="rdate" type="xcal:rdatePropType" />
+      <xs:element name="related-to" type="xcal:related-toPropType" />
+      <xs:element name="rrule" type="xcal:rrulePropType" /> 
+      <xs:element name="action" type="xcal:actionPropType" />
+      <xs:element name="repeat" type="xcal:repeatPropType" />
+      <xs:element name="trigger" type="xcal:triggerTypePropType" />
+      <xs:element name="created" type="xcal:createdPropType" />
+      <xs:element name="dtstamp" type="xcal:dtstampPropType" />
+      <xs:element name="last-modified" type="xcal:last-modifiedPropType" />
+      <xs:element name="sequence" type="xcal:request-statusPropType" />
+      <xs:element name="request-status" type="xcal:request-statusPropType" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="BasePropertyType" >
+    <xs:sequence>
+      <xs:element name="parameters" type="xcal:ArrayOfParameters"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Properties that take a simple text value -->
+  <xs:complexType name="TextPropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence> 
+          <xs:element ref="xcal:text" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a calendar address value -->
+  <xs:complexType name="CalAddressPropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:cal-address" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a simple integer value -->
+  <xs:complexType name="IntegerPropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:integerType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a uri value -->
+  <xs:complexType name="UriPropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:uri"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a utc offset value -->
+  <xs:complexType name="UtcOffsetPropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:utc-offset"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a date-time value -->
+  <xs:complexType name="DatetimePropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:date-time"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a date or date-time value -->
+  <xs:complexType name="DateDatetimePropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:choice>
+            <xs:element ref="xcal:date-time"/>
+            <xs:element ref="xcal:date"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a recurrence value -->
+  <xs:complexType name="RecurPropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:recur"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.7.1 Calendar Scale -->
+  <xs:simpleType name="calscaleValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="GREGORIAN"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="calscalePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element name="text" type="xcal:calscaleValueType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.7.2 Method -->
+  <xs:complexType name="methodPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- 3.7.3 Product Identifier -->
+  <xs:complexType name="prodidPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- 3.7.4 Version -->
+  <xs:complexType name="versionPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.8 Component Properties -->
+  <!-- 3.8.1 Descriptive Component Properties -->
+  <!-- 3.8.1.1 Attachment -->
+  <xs:complexType name="attachPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:choice> 
+          <xs:element ref="xcal:uri"/>
+          <xs:element ref="xcal:binary"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.8.1.3 Classification -->
+  <xs:simpleType name="classValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PUBLIC"/>
+      <xs:enumeration value="PRIVATE"/>
+      <xs:enumeration value="CONFIDENTIAL"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="classPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element name="text" type="xcal:classValueType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.8.1.4 Comment -->
+  <xs:complexType name="commentPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.1.5 Description -->
+  <xs:complexType name="descriptionPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.1.6 Geographic Position -->
+  <xs:complexType name="geoPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:latitude"/>
+          <xs:element ref="xcal:longitude"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <xs:element name="latitude" type="xs:string"/>
+  <xs:element name="longitude" type="xs:string"/>
+  
+  <!-- 3.8.1.7 Location -->
+  <xs:complexType name="locationPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.1.8 Percent Complete -->
+  <xs:complexType name="percent-completePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:IntegerPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- 3.8.1.9 Priority -->
+  <xs:complexType name="priorityPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:IntegerPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.1.10 Resources -->
+  <xs:complexType name="resourcesPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:text" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- 3.8.1.11 Status -->
+  <xs:simpleType name="statusValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TENTATIVE"/> <!-- event -->
+      <xs:enumeration value="CONFIRMED"/> <!-- event -->
+      <xs:enumeration value="CANCELLED"/> <!-- event, task, journal -->
+      <xs:enumeration value="NEEDS-ACTION"/> <!-- task -->
+      <xs:enumeration value="COMPLETED"/> <!-- task -->
+      <xs:enumeration value="IN-PROCESS"/> <!-- task -->
+      <xs:enumeration value="DRAFT"/> <!-- journal -->
+      <xs:enumeration value="FINAL"/> <!-- journal -->
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="statusPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element name="text" type="xcal:statusValueType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.8.1.12 Summary -->
+  <xs:complexType name="summaryPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2 Date and Time Component Properties -->
+  <!-- 3.8.2.1 Date/Time Completed -->
+  <xs:complexType name="completedPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DateDatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2.2 Date/Time End -->
+  <xs:complexType name="dtendPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DateDatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2.3 Date/Time Due -->
+  <xs:complexType name="duePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DateDatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2.4 Date/Time Start -->
+  <xs:complexType name="dtstartPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DateDatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2.5 Duration -->
+  <xs:complexType name="durationPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:duration"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2.6 Free/Busy Time -->
+  <xs:complexType name="freebusyPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:period" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2.7 Time Transparency -->
+  <xs:simpleType name="transpValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OPAQUE"/>
+      <xs:enumeration value="TRANSPARENT"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="transpPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element name="text" type="xcal:transpValueType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.2.8 Schedules - - >
+  < ! - - 3.8.2.8.1 Scheduled-by-start - - >
+  <xs:group name="schedule-by-start-end">
+    <xs:sequence>
+      <xs:element ref="xcal:dtstart"/>
+      <xs:element ref="xcal:dtend"/>
+    </xs:sequence>
+  </xs:group>
+  < ! - - 3.8.2.8.2 Scheduled-by-end - - >
+  <xs:group name="schedule-by-end">
+    <xs:sequence>
+      <xs:group ref="xcal:property-duration"/>
+      <xs:element ref="xcal:dtend"/>
+    </xs:sequence>
+  </xs:group>
+  < ! - -  3.8.2.8.3 Scheduled-by-start - - >
+  <xs:group name="schedule-by-start">
+    <xs:sequence>
+      <xs:group ref="xcal:property-duration"/>
+      <xs:element ref="xcal:dtstart"/>
+    </xs:sequence>
+  </xs:group>
+  -->
+  
+  <!-- 3.8.3 Time Zone Component Properties -->
+  <!-- 3.8.3.1 Time Zone Identifier -->
+  <xs:complexType name="tzidPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+        
+  <!-- 3.8.3.2 Time Zone Name -->
+  <xs:complexType name="tznamePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.3.3 Time Zone Offset From -->
+  <xs:complexType name="tzoffsetfromPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:UtcOffsetPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.3.4 Time Zone Offset To -->
+  <xs:complexType name="tzoffsettoPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:UtcOffsetPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.3.5 Time Zone URL -->
+  <xs:complexType name="tzurlPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:UriPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.4 Relationship Component Properties -->
+  <!-- 3.8.4.1 Attendee -->
+  <xs:complexType name="attendeePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:CalAddressPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.4.2 Contact -->
+  <xs:complexType name="contactPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.4.3 Organizer -->
+  <xs:complexType name="organizerPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:CalAddressPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.4.4 Recurrence ID -->
+  <xs:complexType name="recurrence-idPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DateDatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.4.5 Related-To -->
+  <!-- 3.8.4.6 Uniform Resource Locator -->
+  <xs:complexType name="urlPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:UriPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.4.7 Unique Identifier -->
+  <xs:complexType name="uidPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.5 Recurrence Component Properties -->
+  <!-- 3.8.5.1 Exception Date/Times -->
+  <xs:complexType name="exdatePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DateDatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.5.2 Recurrence Date/Times -->
+  <xs:complexType name="rdatePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DateDatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <xs:complexType name="related-toPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.5.3 Recurrence Rule -->
+  <xs:complexType name="rrulePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:RecurPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.6 Alarm Component Properties -->
+  <!-- 3.8.6.1 Action -->
+  <xs:simpleType name="actionValueType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AUDIO"/>
+      <xs:enumeration value="DISPLAY"/>
+      <xs:enumeration value="EMAIL"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="actionPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element name="text" type="xcal:actionValueType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.8.6.2 Repeat Count -->
+  <xs:complexType name="repeatPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:IntegerPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <!-- 3.8.6.3 Trigger -->
+  <xs:complexType name="triggerTypePropType">
+    <xs:sequence>
+      <xs:element name="parameters" minOccurs="0">
+        <xs:complexType/>
+      </xs:element>
+      <xs:choice>
+        <xs:element ref="xcal:duration"/>
+        <xs:element ref="xcal:date-time"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <!-- 3.8.7 Change Management Component Properties -->
+  <!-- 3.8.7.1 Date/Time Created -->
+  <xs:complexType name="createdPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <!-- 3.8.7.2 Date/Time Stamp -->
+  <xs:complexType name="dtstampPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- 3.8.7.3 Last Modified -->
+  <xs:complexType name="last-modifiedPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:DatetimePropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- 3.8.7.4 Sequence Number -->
+  <xs:complexType name="sequencePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:IntegerPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- 3.8.8 Miscellaneous Component Properties -->
+  <!-- 3.8.8.3 Request Status -->
+  <xs:complexType name="request-statusPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element name="code" type="xs:string" />
+          <xs:element name="description" type="xs:string"/>
+          <xs:element name="extdata" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+    
+    <!-- 
+           statcode   = 1*DIGIT 1*2("." 1*DIGIT)
+       ;Hierarchical, numeric return status code
+
+       statdesc   = text
+       ;Textual status description
+
+       extdata    = text
+       ;Textual exception data.  For example, the offending property
+       ;name and value or complete property line.
+     -->
+</xs:schema>

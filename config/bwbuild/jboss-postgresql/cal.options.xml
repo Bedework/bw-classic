@@ -477,6 +477,16 @@
 
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
+
+          <!-- The bedework end of the exchnage synch service. This is a web
+               service called by the synch engine to get information out of
+               bedework and to update events and status.
+               
+               This path should probably be restricted to a given host only.
+               
+               Coming up on a separate port might help to lock it down.
+               Comment out or delete for no exchange synch service -->
+          <exsynchWsURI>/exsynchws/</exsynchWsURI>
         </Pubcaldav>
 
         <!-- ==================================================================
@@ -585,6 +595,9 @@
           <debugEntity>false</debugEntity>
         </iosched>
 
+        <!-- ==================================================================
+                          Exchange synch
+             ================================================================== -->
         <Exsynch classname="org.bedework.exchgsynch.ExsynchConfig">
           <appType>exsynch</appType>
 
@@ -596,6 +609,14 @@
 
           <!-- Path to keystore - comment out to use default -->          
           <keystore>@APPSERVER-DATA-DIR@/exsynchcerts</keystore>
+
+          <!-- location of the WSDL for the remote web service -->
+          <remoteWSDLURI>http://localhost:8080/exchange/wssvc.wsdl</remoteWSDLURI>
+          
+          <remoteWsURL>http://localhost:8080/pubcaldav/exsynchws/</remoteWsURL>
+          
+          <!-- seconds  --> 
+          <remoteKeepAliveInterval>60</remoteKeepAliveInterval>
         </Exsynch>
       </app>
     </bedework>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.bedework.org/exsynch/wsmessages" 
+        xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0"
+        targetNamespace="http://www.bedework.org/exsynch/wsmessages" 
+        elementFormDefault="qualified">
+  <import schemaLocation="iCalendar.xsd" 
+          namespace="urn:ietf:params:xml:ns:icalendar-2.0" />
+  <!-- Schema for messages passed from exsynch processor to the remote service. -->
+  
+  <simpleType name="SynchType">
+    <annotation>
+      <documentation xml:lang="en">
+           from... synch from that end
+           both  both ways - server tries to resolve conflicts
+           both...Master - Named service wins in conflicts.
+      </documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="fromExchange" />
+      <enumeration value="toExchange" />
+      <enumeration value="both" />
+      <enumeration value="bothExchangeMaster" />
+      <enumeration value="bothRemoteMaster" />
+    </restriction>
+  </simpleType>
+  
+  <simpleType name="StatusType">
+    <restriction base="string">
+      <enumeration value="OK" />
+      <enumeration value="Already subscribed" />
+      <enumeration value="Unknown Exchange calendar" />
+      <enumeration value="Invalid token" />
+      <enumeration value="Unknown subscription" />
+      <enumeration value="Error" />
+    </restriction>
+  </simpleType>
+  
+  <!-- *********************************************************************
+       Remote system to syncher
+       subscribe: set up a new subscription for a principal to a calendar
+       unsubscribe: remove a new subscription for a principal to a calendar
+       ********************************************************************* -->
+  
+  <element name="subscribe">
+    <annotation>
+      <documentation xml:lang="en">
+           Message from remote service requesting new subscription.
+           token
+                 Sent in initial startup request
+           principal-href
+                 Principal requesting the subscription.
+           synch-token
+                 Passed back for operations on the calendar
+           exchange-user
+                 Userid for exchange
+           exchange-encpw
+                 Encoded password for exchange
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence >
+        <element name="token" type="string" />
+        <element name="calendar-href" type="string" />
+        <element name="principal-href" type="string" />
+        <element name="synch-token" type="string" />
+        <element name="exchange-folder-id" type="string" />
+        <element name="exchange-uri" type="string" />
+        <element name="synch-type" type="tns:SynchType" />
+        <element name="exchange-user" type="string" />
+        <element name="exchange-encpw" type="string" />
+      </sequence>
+    </complexType>
+  </element>
+  
+  <element name="subscribeResponse">
+    <annotation>
+      <documentation xml:lang="en">
+           Response to message from remote service requesting new subscription.
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence >
+        <element name="calendar-href" type="string" />
+        <element name="subscribe-status" type="tns:StatusType" />
+        <element minOccurs="0" name="message" type="string" />
+      </sequence>
+    </complexType>
+  </element>
+  
+  <element name="unsubscribe">
+    <annotation>
+      <documentation xml:lang="en">
+           Message from remote service unsubscribing - same response as subscribe.
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="calendar-href" type="string" />
+        <element name="principal-href" type="string" />
+      </sequence>
+    </complexType>
+  </element>
+  
+  <!-- *********************************************************************
+       Syncher to Remote system 
+       start-service-notification; sent to (re)initialise the service
+       get-sycnch-info: return info used to synch
+       fetch: fetch one or more calendar items
+       add: add a new calendar item
+       update: update a calendar item
+       delete: delete a calendar item
+       ********************************************************************* -->
+  
+  <element name="start-service-notification">
+    <annotation>
+      <documentation xml:lang="en">
+           (Re)initialize the service
+           subscribe-url: callback url for notifications and subscribe requests
+           token: random token for subscribe requests. If token is unchanged this
+               is just a keep alive ping
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="subscribe-url" type="string" />
+        <element name="token" type="string" />
+      </sequence>
+    </complexType>
+  </element>
+  
+  <element name="start-service-response">
+    <annotation>
+      <documentation xml:lang="en">
+           Respond to the ping
+           token: sent in initial request
+           status: OK
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="token" type="string" />
+        <element name="status" type="tns:StatusType" />
+      </sequence>
+    </complexType>
+  </element>
+  
+  <element name="get-sycnch-info">
+    <annotation>
+      <documentation xml:lang="en">
+           Message to remote service requesting synchronization info.
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="calendar-href" type="string" />
+        <element name="principal-href" type="string" />
+        <element name="synch-token" type="string" />
+      </sequence>
+    </complexType>
+  </element>
+  
+  <complexType name="SynchInfoType">
+    <sequence>
+      <element name="uid" type="string" />
+      <element name="exchange-lastmod" type="string" />
+    </sequence>
+  </complexType>
+  
+  <element name="synch-info-response">
+    <annotation>
+      <documentation xml:lang="en">
+           Response to message to remote service requesting synchronization info.
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="calendar-href" type="string" />
+        <element name="synch-info-responses">
+          <complexType>
+            <sequence>
+              <element maxOccurs="unbounded" name="synch-info" 
+                       type="tns:SynchInfoType" />
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  
+  <element name="add-item">
+    <annotation>
+      <documentation xml:lang="en">
+           Message to add a calendar item.
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="synch-token" type="string" />
+        <element name="calendar-href" type="string" />
+        <element name="principal-href" type="string" />
+        <element name="icalendar" type="xcal:icalendarType" />
+      </sequence>
+    </complexType>
+  </element>
+  
+  <element name="add-item-response">
+    <annotation>
+      <documentation xml:lang="en">
+           Response to message to add an item.
+      </documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="status" type="tns:StatusType" />
+      </sequence>
+    </complexType>
+  </element>
+</schema>

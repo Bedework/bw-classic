@@ -16,17 +16,22 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-cdvutil" version="3.6"
+              name="bw-cdvutil" version="${org.bedework.caldav.version}"
               projecthome="${bw.project.home}/projects/caldav" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-cdvserver" version="3.6"
+              name="bw-cdvserver" version="${org.bedework.caldav.version}"
+              projecthome="${bw.project.home}/projects/caldav" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-exsynch-genwssrc" version="${org.bedework.caldav.version}"
               projecthome="${bw.project.home}/projects/caldav" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-webdavserver" version="3.6"
+              name="bw-webdavserver" version="${org.bedework.webdav.version}"
               projecthome="${bw.project.home}/projects/webdav" />
     </sequential>
  </macrodef>

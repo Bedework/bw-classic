@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tns="http://www.bedework.org/exsynch/wsmessages" 
+                  xmlns:s="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  targetNamespace="http://www.bedework.org/exsynch/wsmessages" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema>
+      <s:import schemaLocation="wsmessages.xsd" 
+                namespace="http://www.bedework.org/exsynch/wsmessages" />
+    </s:schema>
+  </wsdl:types>
+
+  <!-- ====================== startServiceNotification ===================== -->  
+
+  <wsdl:message name="StartServiceIn">
+    <wsdl:part name="request" element="tns:start-service-notification" />
+  </wsdl:message>
+  
+  <wsdl:message name="StartServiceOut">
+    <wsdl:part name="response" element="tns:start-service-response" />
+  </wsdl:message>
+
+  <!-- ============================ getSynchInfo =========================== -->  
+
+  <wsdl:message name="GetSynchInfoIn">
+    <wsdl:part name="request" element="tns:get-sycnch-info" />
+  </wsdl:message>
+  
+  <wsdl:message name="GetSynchInfoOut">
+    <wsdl:part name="response" element="tns:synch-info-response" />
+  </wsdl:message>
+
+  <!-- ============================= addItem =============================== -->  
+
+  <wsdl:message name="AddItemIn">
+    <wsdl:part name="request" element="tns:add-item" />
+  </wsdl:message>
+  
+  <wsdl:message name="AddItemOut">
+    <wsdl:part name="response" element="tns:add-item-response" />
+  </wsdl:message>
+
+  <!-- ============================== port ================================= -->  
+  
+  <wsdl:portType name="ExsynchRemoteServicePortType">
+    <wsdl:operation name="notify-remote-service">
+      <wsdl:input message="tns:StartServiceIn" />
+      <wsdl:output message="tns:StartServiceOut" />
+    </wsdl:operation>
+    
+    <wsdl:operation name="get-synch-info">
+      <wsdl:input message="tns:GetSynchInfoIn" />
+      <wsdl:output message="tns:GetSynchInfoOut" />
+    </wsdl:operation>
+    
+    <wsdl:operation name="add-item">
+      <wsdl:input message="tns:AddItemIn" />
+      <wsdl:output message="tns:AddItemOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <!-- ============================ binding ================================ -->  
+  
+  <wsdl:binding name="ExsynchRemoteServiceBinding" 
+                type="tns:ExsynchRemoteServicePortType">
+    <wsdl:documentation>
+      <wsi:Claim conformsTo="http://ws-i.org/profiles/basic/1.0" 
+                 xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" />
+    </wsdl:documentation>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    
+    <wsdl:operation name="notify-remote-service">
+      <soap:operation soapAction="http://www.bedework.org/exsynch/wsmessages/notify-remote-service" />
+      <wsdl:input>
+        <soap:body use="literal" parts="request" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="response" />
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="get-synch-info">
+      <soap:operation soapAction="http://www.bedework.org/exsynch/wsmessages/get-synch-info" />
+      <wsdl:input>
+        <soap:body use="literal" parts="request" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="response" />
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="add-item">
+      <soap:operation soapAction="http://www.bedework.org/exsynch/wsmessages/add-item" />
+      <wsdl:input>
+        <soap:body use="literal" parts="request" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="response" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="ExsynchRemoteService">
+    <wsdl:port name="ExsynchRSPort" binding="tns:ExsynchRemoteServiceBinding">
+       <soap:address location="http://localhost:8080/pubcaldav/exsynchws/"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>  
