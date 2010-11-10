@@ -707,23 +707,29 @@
             </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-DisplayItemsInThisCollection"/>
           </td>
         </tr>
-        <xsl:if test="disabled = 'true'">
-          <tr>
-            <xsl:attribute name="class">disabled</xsl:attribute>
-            <th><xsl:copy-of select="$bwStr-CuCa-Disabled"/></th>
-            <td>
-              <input type="hidden" name="calendar.disabled" size="40">
-                <xsl:attribute name="value"><xsl:value-of select="disabled"/></xsl:attribute>
-              </input>
-              <xsl:value-of select="disabled"/>
-              <xsl:if test="disabled = 'true'">
-                <span class="disabledNote">
-                  <xsl:copy-of select="$bwStr-CuCa-ThisItemIsInaccessible"/>
-                </span>
+        <tr>
+          <xsl:attribute name="class">disabled</xsl:attribute>
+          <th><xsl:copy-of select="$bwStr-CuCa-Disabled"/></th>
+          <td>
+            <input type="radio" name="calendar.disabled" value="false">
+              <xsl:if test="disabled = 'false'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-            </td>
-          </tr>
-        </xsl:if>
+            </input>
+            <xsl:copy-of select="$bwStr-CuCa-EnabledLabel"/>
+            <input type="radio" name="calendar.disabled" value="true">
+              <xsl:if test="disabled = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <xsl:copy-of select="$bwStr-CuCa-DisabledLabel"/>
+            <xsl:if test="disabled = 'true'">
+              <span class="disabledNote">
+                <xsl:copy-of select="$bwStr-CuCa-ThisItemIsInaccessible"/>
+              </span>
+            </xsl:if>
+          </td>
+        </tr>
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-FilterExpression"/></th>
           <td>

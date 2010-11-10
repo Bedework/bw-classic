@@ -1788,6 +1788,10 @@ display: inline;
   font-size: 0.8em;
   font-style: italic;
 }
+#bedework .disabledNote {
+  display: block;
+  font-style: italic;
+}
 #bedework #freeBusyShareLink {
   float: right;
   font-size: 0.8em;

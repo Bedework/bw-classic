@@ -617,6 +617,8 @@
   <xsl:variable name="bwStr-CuCa-DeleteCalendar">Borrar Agenda</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Cancel">cancelar</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Disabled">Desactivado:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-DisabledLabel">desactivado</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-EnabledLabel">habilitado</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ThisItemIsInaccessible">Este elemento está inaccesible y ha sido desactivado.  Puede reactivarlo para intentarlo de nuevo.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-FilterExpression">Condición de Filtro:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Acceso Actual:</xsl:variable>
