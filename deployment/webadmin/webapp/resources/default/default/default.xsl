@@ -4445,10 +4445,18 @@
           </xsl:if>
           <th><xsl:copy-of select="$bwStr-CuCa-Disabled"/></th>
           <td>
-            <input type="hidden" name="calendar.disabled" size="40">
-              <xsl:attribute name="value"><xsl:value-of select="disabled"/></xsl:attribute>
+            <input type="radio" name="calendar.disabled" value="false">
+              <xsl:if test="disabled = 'false'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
             </input>
-            <xsl:value-of select="disabled"/>
+            <xsl:copy-of select="$bwStr-CuCa-EnabledLabel"/>
+            <input type="radio" name="calendar.disabled" value="true">
+              <xsl:if test="disabled = 'true'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <xsl:copy-of select="$bwStr-CuCa-DisabledLabel"/>
             <xsl:if test="disabled = 'true'">
               <span class="disabledNote">
                 <xsl:copy-of select="$bwStr-CuCa-ItemIsInaccessible"/>

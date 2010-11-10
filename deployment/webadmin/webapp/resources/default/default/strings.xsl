@@ -482,6 +482,8 @@
   <xsl:variable name="bwStr-CuCa-Display">Display:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DisplayItemsInCollection">display items in this collection</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Disabled">Disabled:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-DisabledLabel">disabled</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-EnabledLabel">enabled</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ItemIsInaccessible">This item is inaccessible and has been disabled.  You may re-enable it to try again.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-URL">URL:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Current Access:</xsl:variable>

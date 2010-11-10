@@ -1036,6 +1036,10 @@ ul.note {
 .notes {
   padding: 1em 0;
 }
+.disabledNote {
+  display: block;
+  font-style: italic;
+}
 #calTreeBlock {
   font-size: 0.9em;
   padding: 2em;
