@@ -123,6 +123,15 @@
               }).attr("readonly", "readonly");
               $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
+              // starttime
+              $("#bwStartClock").bwTimePicker({
+                hour24: <xsl:value-of select="/bedework/hour24"/>,
+                attachToId: "calWidgetStartTimeHider",
+                hourId: "eventStartDateHour",
+                minuteId: "eventStartDateMinute",
+                ampmId: "eventStartDateAmpm"
+              });
+
               // enddate
               $("#bwEventWidgetEndDate").datepicker({
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)

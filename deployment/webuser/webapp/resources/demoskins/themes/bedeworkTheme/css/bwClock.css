@@ -17,6 +17,65 @@
    under the License.  
 */
 
+.bwTimePicker {
+	position: absolute;
+	margin: 0;
+	padding: 10px;
+  color: black;
+	background-color: white;
+	border: 1px solid #ccb;
+	overflow: visible;
+}
+.bwTimePicker .bwTimePickerCloser {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0 0 2px 2px;
+	font-weight: bold;
+  cursor: pointer;
+  color: #666;
+  background-color: #f5f5f5;
+}
+.bwTimePickerLink {
+	cursor: pointer;
+}
+.bwTimePicker h6 {
+	text-align: center;
+	margin: 0 0 4px 0;
+	padding: 0;
+}
+.bwTimePicker ul {
+	float: left;
+	margin: 0;
+	padding: 4px 0;
+	background-color: #f5f5f5;
+	color: black;
+}
+.bwTimePicker li {
+  list-style: none;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  cursor: pointer;
+}
+.bwTimePicker .bwTimePickerColumn {
+	float: left;
+}
+.bwTimePicker .bwTimePickerColon {
+  font-weight: bold;
+  margin: 4em 0.5em 0 0.5em;
+}
+.bwTimePicker .bwTimePickerAmPm {
+  margin: 3em 0 0 0.5em;
+}
+.bwTimePicker li.bwTimePickerSelected {  
+	background-color: #DFEAFF;
+	color: black;
+}
+
+/* Old Clock Styles */
 #bwClock {
   position: absolute;
   z-index: +1000;

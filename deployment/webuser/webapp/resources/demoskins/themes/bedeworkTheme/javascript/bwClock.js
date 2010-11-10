@@ -22,34 +22,104 @@ var bwClockMinute = null;
 var bwClockRequestedType = null;
 var bwClockCurrentType = null;
 
-function bwClockLaunch(type) {
-  // type: type of clock "eventStartDate" or "eventEndDate"
-  if ((document.getElementById("clock").className == "visible") && (bwClockCurrentType == type)) {
-    // if the clock with the same type is visible, toggle it off
-    changeClass("clock","invisible");
-  } else {
-    // otherwise, turn it on and display the correct type
-    changeClass("clock","visible");
-    bwClockRequestedType = type;
-    bwClockCurrentType = type;
-    // reset hours and minutes to null
-    bwClockHour = null;
-    bwClockMinute = null;
-    var bwClockIndicator = document.getElementById("bwClockDateTypeIndicator");
-    var bwClockSwitch = document.getElementById("bwClockSwitch");
-    document.getElementById("bwClockTime").innerHTML = "select time";
-    if (type == 'eventStartDate') {
-      bwClockIndicator.innerHTML = "Start Time";
-      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventEndDate\');">switch to end</a>';
+(function($){  
+  $.fn.bwTimePicker = function(options) { 
+    
+    var defaults = {  
+      hour24: false,
+      attachToId: null,
+      hourId: null,
+      minuteId: null,
+      ampmId: null
+    };  
+    var options = $.extend(defaults, options);
+    
+    var bwTimePickerContent = "";
+    bwTimePickerContent += '<div class="bwTimePicker">';
+    bwTimePickerContent += '<div class="bwTimePickerCloser">x</div>';
+    bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerHours"><h6>Hour</h6><div class="bwTimePickerVals">';
+    if (options.hour24) {
+      bwTimePickerContent += '<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul>';
+      bwTimePickerContent += '<ul><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li></ul>';
+      bwTimePickerContent += '<ul><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li></ul>';
+      bwTimePickerContent += '<ul><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li></ul>';
     } else {
-      bwClockIndicator.innerHTML = "End Time";
-      bwClockSwitch.innerHTML = '<a href="javascript:bwClockLaunch(\'eventStartDate\');">switch to start</a>';
+      bwTimePickerContent += '<ul><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li></ul>';
+      bwTimePickerContent += '<ul><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li></ul>';
     }
-  }
-}
+    bwTimePickerContent += '</div></div>';
+    bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerColon">:</div>';
+    bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerMinutes"><h6>Minute</h6><div class="bwTimePickerVals">';
+    bwTimePickerContent += '<ul><li>00</li><li>10</li><li>20</li><li>30</li><li>40</li><li>50</li></ul>';
+    bwTimePickerContent += '<ul><li>05</li><li>15</li><li>25</li><li>35</li><li>45</li><li>55</li></ul>';
+    bwTimePickerContent += '</div></div>';
+    if (!options.hour24) {
+      bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerAmPm"><ul><li>am</li><li>pm</li></ul></div>';
+    }
+    return this.each(function() {  
+      obj = $(this); 
+      
+      obj.addClass('bwTimePickerLink');
+      $("#" + options.attachToId).css("position","relative");
+      
+      obj.toggle(
+        function(){
+          $("#" + options.attachToId).append(bwTimePickerContent);
+          $(".bwTimePicker .bwTimePickerCloser").click(function(){
+            obj.click();
+          });
+          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerHours li").click(function(){
+            $("#" + options.attachToId + " .bwTimePicker .bwTimePickerHours li").removeClass('bwTimePickerSelected');
+            $(this).addClass('bwTimePickerSelected');
+            var hours = $(this).html();
+            if (hours == '12' && !options.hour24) {
+              hours = 0;
+            }
+            $("#" + options.hourId).val(hours);
+          });
+          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").click(function(){
+            $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").removeClass('bwTimePickerSelected');
+            $(this).addClass('bwTimePickerSelected');
+            $("#" + options.minuteId).val($(this).html());
+          });
+          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").click(function(){
+            $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").removeClass('bwTimePickerSelected');
+            $(this).addClass('bwTimePickerSelected');
+            $("#" + options.ampmId).val($(this).html());
+          });
+        },
+        function(){
+          $("#" + options.attachToId + " .bwTimePicker").remove();
+        }
+      );
+    });  
+  };  
+})(jQuery); 
 
-function bwClockClose() {
-  changeClass("clock","invisible");
+function bwClockLaunch(type,hour24) {
+  var clockContent = "";
+  clockContent += '<div id="bwNewClock">';
+  clockContent += '<div class="clockColumn"><h6>Hour</h6><div class="clockVals">';
+  clockContent += '<ul><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li></ul>';
+  clockContent += '<ul><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li></ul>';
+  clockContent += '</div>';
+  if (hour24) {
+    
+  } 
+  clockContent += '<div class="clockColumn"><h6>Minute</h6><div class="clockVals">';
+  clockContent += '<ul><li>00</li><li>10</li><li>20</li><li>30</li><li>40</li><li>50</li></ul>';
+  clockContent += '<ul><li>05</li><li>15</li><li>25</li><li>35</li><li>45</li><li>55</li></ul>';
+  clockContent += '</div>';
+  if (!hour24) {
+    clockContent += '<div class="clockVals"><ul><li>AM</li><li>PM</li></ul></div>';
+  }
+  
+  var $clockWidget = $('<div></div>')
+    .html(clockContent)
+    .dialog({
+      autoOpen: false
+    });
+  $clockWidget.dialog('open');
 }
 
 function bwClockUpdateDateTimeForm(valType,val,hour24) {
