@@ -138,6 +138,15 @@
               }).attr("readonly", "readonly");
               $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/end/rfc3339DateTime,'T')"/>');
               
+              // endtime
+              $("#bwEndClock").bwTimePicker({
+                hour24: <xsl:value-of select="/bedework/hour24"/>,
+                attachToId: "calWidgetEndTimeHider",
+                hourId: "eventEndDateHour",
+                minuteId: "eventEndDateMinute",
+                ampmId: "eventEndDateAmpm"
+              });
+              
               // recurrence until
               $("#bwEventWidgetUntilDate").datepicker({
                 <xsl:choose>
@@ -153,12 +162,21 @@
               }).attr("readonly", "readonly");
               $("#bwEventWidgetUntilDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
-              // rdates and xdates
+              // rdates and xdates date picker
               $("#bwEventWidgetRdate").datepicker({
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>),
                 dateFormat: "yymmdd"
               }).attr("readonly", "readonly");
-              $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+              $("#bwEventWidgetRdate").val('<xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,1,4)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,6,2)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,9,2)"/>');
+              
+              // redates and xdates times
+              $("#bwRecExcClock").bwTimePicker({
+                hour24: true,
+                withPadding: true,
+                attachToId: "rdateTimeFields",
+                hourId: "eventRdateHour",
+                minuteId: "eventRdateMinute"
+              });
               
               // meeting startdate widget
               $("#bwEventWidgetStartDateSched").datepicker({
@@ -166,6 +184,14 @@
               }).attr("readonly", "readonly");
               $("#bwEventWidgetStartDateSched").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
               
+              // meeting starttime
+              $("#bwSchedClock").bwTimePicker({
+                hour24: <xsl:value-of select="/bedework/hour24"/>,
+                attachToId: "schedTime",
+                hourId: "eventStartDateSchedHour",
+                minuteId: "eventStartDateSchedMinute",
+                ampmId: "eventStartDateSchedAmpm"
+              });
             }
             </xsl:comment>
           </script>

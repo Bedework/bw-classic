@@ -17,16 +17,22 @@
    under the License.  
 */
 
-var bwClockHour = null;
-var bwClockMinute = null;
-var bwClockRequestedType = null;
-var bwClockCurrentType = null;
+
+/** A basic jQuery plug-in for building a time picker. 
+ *  With a little effort this could be generalized; 
+ *  at the moment, it is somewhat Bedework-centric.
+ *  
+ *  Styles are defined in bwClock.css
+ * 
+ * @author Arlen Johnson       johnsa - rpi.edu
+ */
 
 (function($){  
   $.fn.bwTimePicker = function(options) { 
     
     var defaults = {  
       hour24: false,
+      withPadding: false,
       attachToId: null,
       hourId: null,
       minuteId: null,
@@ -56,11 +62,13 @@ var bwClockCurrentType = null;
     if (!options.hour24) {
       bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerAmPm"><ul><li>am</li><li>pm</li></ul></div>';
     }
+    bwTimePickerContent += '</div>';
     return this.each(function() {  
-      obj = $(this); 
+      var obj = $(this); 
       
       obj.addClass('bwTimePickerLink');
       $("#" + options.attachToId).css("position","relative");
+      $("#" + options.attachToId).css("display","inline-block");
       
       obj.toggle(
         function(){
@@ -74,6 +82,9 @@ var bwClockCurrentType = null;
             var hours = $(this).html();
             if (hours == '12' && !options.hour24) {
               hours = 0;
+            }
+            if (hours < 10 && options.withPadding) {
+              hours = "0" + hours; 
             }
             $("#" + options.hourId).val(hours);
           });
@@ -95,102 +106,3 @@ var bwClockCurrentType = null;
     });  
   };  
 })(jQuery); 
-
-function bwClockLaunch(type,hour24) {
-  var clockContent = "";
-  clockContent += '<div id="bwNewClock">';
-  clockContent += '<div class="clockColumn"><h6>Hour</h6><div class="clockVals">';
-  clockContent += '<ul><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li></ul>';
-  clockContent += '<ul><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li></ul>';
-  clockContent += '</div>';
-  if (hour24) {
-    
-  } 
-  clockContent += '<div class="clockColumn"><h6>Minute</h6><div class="clockVals">';
-  clockContent += '<ul><li>00</li><li>10</li><li>20</li><li>30</li><li>40</li><li>50</li></ul>';
-  clockContent += '<ul><li>05</li><li>15</li><li>25</li><li>35</li><li>45</li><li>55</li></ul>';
-  clockContent += '</div>';
-  if (!hour24) {
-    clockContent += '<div class="clockVals"><ul><li>AM</li><li>PM</li></ul></div>';
-  }
-  
-  var $clockWidget = $('<div></div>')
-    .html(clockContent)
-    .dialog({
-      autoOpen: false
-    });
-  $clockWidget.dialog('open');
-}
-
-function bwClockUpdateDateTimeForm(valType,val,hour24) {
-  // valType: "hour" or "minute"
-  // val: hour or minute value as integer
-  // hour24: true (24hr clock) or false (12hr clock + am/pm) 
-  if (bwClockRequestedType) {
-    try {
-      if (valType == 'minute') {
-        var fieldName = bwClockRequestedType + ".minute"
-        window.document.eventForm[fieldName].value = val;
-        if (val < 10) {
-          val = "0" + val; // pad the value for display
-        }
-        bwClockMinute = val;
-      } else {
-        var fieldName = bwClockRequestedType + ".hour"
-        if (hour24) {
-          window.document.eventForm[fieldName].value = val;
-          if (val < 10) {
-            val = "0" + val; // pad the value for display
-          }
-          bwClockHour = val;
-        } else {
-          var hour12 = val;
-          if (hour12 > 12) {
-            hour12 -= 12;
-          } else if (hour12 == 12) {
-            hour12 = 0; // noon and midnight are both represented by '0' in 12hr mode
-          }
-          window.document.eventForm[fieldName].value = hour12;
-          if (val < 10) {
-            val = "0" + val; // pad the value for display
-          }
-          bwClockHour = val;
-          // now set the am/pm field
-          fieldName = bwClockRequestedType + ".ampm";
-          window.document.eventForm[fieldName].value = bwClockGetAmPm(bwClockHour);
-        }
-      }
-      if (bwClockHour && bwClockMinute) {
-        document.getElementById("bwClockTime").innerHTML = bwClockHour + ":" + bwClockMinute + " , " + bwClockConvertAmPm(bwClockHour) + ":" + bwClockMinute + " " + bwClockGetAmPm(bwClockHour);
-      } else if (bwClockMinute) {
-        document.getElementById("bwClockTime").innerHTML = ":" + bwClockMinute;
-      } else {
-        document.getElementById("bwClockTime").innerHTML = bwClockHour + " , " + bwClockConvertAmPm(bwClockHour) + " " + bwClockGetAmPm(bwClockHour);
-      }
-    } catch(e) {
-      alert("There was an error:\n" + e );
-    }
-  } else {
-    alert("The date type is null.");
-  }
-}
-
-function bwClockConvertAmPm(hour24) {
-  hour24 = parseInt(hour24,10);
-  if (hour24 == 0) {
-    return 12;
-  } else if (hour24 > 12) {
-    return hour24 - 12;
-  } else {
-    return hour24;
-  }
-}
-
-function bwClockGetAmPm(hour24) {
-  hour24 = parseInt(hour24,10);
-  if (hour24 < 12) {
-    return 'am';
-  } else {
-    return 'pm';
-  }
-}

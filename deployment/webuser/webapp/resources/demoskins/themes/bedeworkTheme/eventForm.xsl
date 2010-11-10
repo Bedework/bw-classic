@@ -449,19 +449,7 @@
                       </script>
                     </xsl:when>
                     <xsl:otherwise>
-                      <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetEndDate" iconURL="{$resourcesRoot}/images/calIcon.gif">
-                        <xsl:attribute name="value"><xsl:value-of select="form/end/rfc3339DateTime"/></xsl:attribute>
-                        <xsl:text> </xsl:text>
-                      </span-->
                       <input type="text" name="bwEventWidgetEndDate" id="bwEventWidgetEndDate" size="10"/>
-                      <script type="text/javascript">
-                        <xsl:comment>
-                        /*$("#bwEventWidgetEndDate").datepicker({
-                          defaultDate: new Date(<xsl:value-of select="form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
-                        }).attr("readonly", "readonly");
-                        $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(form/end/rfc3339DateTime,'T')"/>');*/
-                        </xsl:comment>
-                      </script>
                       <input type="hidden" name="eventEndDate.year">
                         <xsl:attribute name="value"><xsl:value-of select="form/end/dateTime/yearText/input/@value"/></xsl:attribute>
                       </input>
@@ -476,28 +464,24 @@
                 </div>
                 <div class="{$timeFieldsClass}" id="endTimeFields">
                   <span id="calWidgetEndTimeHider" class="show">
-                    <xsl:copy-of select="form/end/dateTime/hour/*"/>
-                    <xsl:copy-of select="form/end/dateTime/minute/*"/>
-                    <xsl:if test="form/end/dateTime/ampm">
-                      <xsl:copy-of select="form/end/dateTime/ampm/*"/>
-                    </xsl:if>
+                    <select name="eventEndDate.hour" id="eventEndDateHour">
+	                    <xsl:copy-of select="form/end/dateTime/hour/select/*"/>
+	                  </select>
+	                  <select name="eventEndDate.minute" id="eventEndDateMinute">
+	                    <xsl:copy-of select="form/end/dateTime/minute/select/*"/>
+	                  </select>
+	                  <xsl:if test="form/end/dateTime/ampm">
+	                    <select name="eventEndDate.ampm" id="eventEndDateAmpm">
+	                      <xsl:copy-of select="form/end/dateTime/ampm/select/*"/>
+	                    </select>
+	                  </xsl:if>
                     <xsl:text> </xsl:text>
-                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwEndClock"/></a>
+                    <img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwEndClock"/>
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                       <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
-                      <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
-                      <!--
-                      <xsl:variable name="endTzId" select="form/end/dateTime/tzid"/>
-                      <xsl:for-each select="/bedework/timezones/timezone">
-                        <option>
-                          <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                            <xsl:if test="$endTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                          <xsl:value-of select="name"/>
-                        </option>
-                      </xsl:for-each>
-                      -->
+                      <!--  Timezone options come from the timezone server.  See bedeworkEventForm.js -->
                     </select>
                   </span>
                 </div>
@@ -1041,29 +1025,8 @@
                       </input>
                       <xsl:copy-of select="$bwStr-AEEF-Until"/>
                       <span id="untilHolder">
-                        <!-- span dojoType="dropdowndatepicker" formatLength="medium" value="today" saveFormat="yyyyMMdd" id="bwEventWidgetUntilDate" iconURL="{$resourcesRoot}/images/calIcon.gif">
-                          <xsl:attribute name="value"><xsl:value-of select="form/start/rfc3339DateTime"/></xsl:attribute>
-                          <xsl:text> </xsl:text>
-                        </span -->
                         <input type="hidden" name="bwEventUntilDate" id="bwEventUntilDate" size="10"/>
                         <input type="text" name="bwEventWidgetUntilDate" id="bwEventWidgetUntilDate" size="10" onfocus="selectRecurCountUntil('recurUntil')"/>
-                        <script type="text/javascript">
-                          <xsl:comment>
-                          /*$("#bwEventWidgetUntilDate").datepicker({
-                            <xsl:choose>
-                              <xsl:when test="form/recurrence/until">
-                                defaultDate: new Date(<xsl:value-of select="substring(form/recurrence/until,1,4)"/>, <xsl:value-of select="number(substring(form/recurrence/until,5,2)) - 1"/>, <xsl:value-of select="substring(form/recurrence/until,7,2)"/>),
-                              </xsl:when>
-                              <xsl:otherwise>
-                                defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
-                              </xsl:otherwise>
-                            </xsl:choose>
-                            altField: "#bwEventUntilDate",
-                            altFormat: "yymmdd"
-                          }).attr("readonly", "readonly");
-                          $("#bwEventWidgetUntilDate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');*/
-                          </xsl:comment>
-                        </script>
                       </span>
                     </p>
                   </div>
@@ -1288,34 +1251,11 @@
             </h4>
             <div id="raContent">
               <div class="dateStartEndBox" id="rdatesFormFields">
-                <!--
-                <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
-                all day
-                <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
-                floating
-                <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
-                store as UTC<br/>-->
                 <div class="dateFields">
-                  <!-- input name="eventRdate.date"
-                         dojoType="dropdowndatepicker"
-                         formatLength="medium"
-                         value="today"
-                         saveFormat="yyyyMMdd"
-                         id="bwEventWidgetRdate"
-                         iconURL="{$resourcesRoot}/images/calIcon.gif"/-->
                   <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
-                  <script type="text/javascript">
-                    <xsl:comment>
-                   /* $("#bwEventWidgetRdate").datepicker({
-                      defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
-                      dateFormat: "yymmdd"
-                    }).attr("readonly", "readonly");
-                    $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');*/
-                    </xsl:comment>
-                  </script>
                 </div>
                 <div id="rdateTimeFields" class="timeFields">
-                 <select name="eventRdate.hour">
+                 <select name="eventRdate.hour" id="eventRdateHour">
                     <option value="00">00</option>
                     <option value="01">01</option>
                     <option value="02">02</option>
@@ -1341,7 +1281,7 @@
                     <option value="22">22</option>
                     <option value="23">23</option>
                   </select>
-                  <select name="eventRdate.minute">
+                  <select name="eventRdate.minute" id="eventRdateMinute">
                     <option value="00" selected="selected">00</option>
                     <option value="05">05</option>
                     <option value="10">10</option>
@@ -1355,23 +1295,13 @@
                     <option value="50">50</option>
                     <option value="55">55</option>
                   </select>
-                 <xsl:text> </xsl:text>
+                  <xsl:text> </xsl:text>
+                  <img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwRecExcClock"/>
 
                   <select name="tzid" id="rdateTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
                     <option value=""><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
-                    <!--  deprecated: now calling timezone server.  See bedeworkEventForm.js -->
-                    <!--
-                    <option value="">select timezone...</option>
-                    <xsl:variable name="rdateTzId" select="/bedework/now/defaultTzid"/>
-                    <xsl:for-each select="/bedework/timezones/timezone">
-                      <option>
-                        <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                        <xsl:if test="$rdateTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                        <xsl:value-of select="name"/>
-                      </option>
-                    </xsl:for-each>
-                    -->
+                    <!--  Timezone options are called from the timezone server.  See bedeworkEventForm.js -->
                   </select>
                 </div>
                 <xsl:text> </xsl:text>
@@ -1496,7 +1426,7 @@
 	          <td class="schedDate">
 	            <input type="text" name="bwEventWidgetStartDateSched" id="bwEventWidgetStartDateSched" size="10"/>
               <xsl:text> </xsl:text>
-              <span class="schedTime">
+              <span class="schedTime" id="schedTime">
                 <select name="eventStartDateSched.hour" id="eventStartDateSchedHour">
                   <xsl:copy-of select="form/start/hour/select/*"/>
                 </select>
@@ -1508,6 +1438,8 @@
                     <xsl:copy-of select="form/start/ampm/select/*"/>
                   </select>
                 </xsl:if>
+                <xsl:text> </xsl:text>
+                <img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwSchedClock"/>
               </span>
 	          </td>
 	        </tr>
@@ -1570,11 +1502,11 @@
                 </input>
                 <xsl:copy-of select="$bwStr-AEEF-Minutes"/>
               </span>
+              
 	          </td>
 	        </tr>  
 	      </table>
                         
-        <!-- input type="button" id="getJson" onclick="bwGrid.requestFreeBusy('{$requestFreeBusy}');" value="development: get freebusy"/-->
 	    </div>
     </div>
 

@@ -943,8 +943,16 @@ display: inline;
   margin: auto;
 }
 #bedework #startTimeFields img,
-#bedework #endTimeFields img {
+#bedework #endTimeFields img,
+#bedework #rdateTimeFields img,
+#bedework #schedTime img {
   vertical-align: middle;
+}
+#bedework #calWidgetStartTimeHider,
+#bedework #calWidgetEndTimeHider,
+#bedework #rdateTimeFields,
+#bedework #schedTime {
+	width: 350px;
 }
 #bedework #tztable {
   margin-top: 1em;
