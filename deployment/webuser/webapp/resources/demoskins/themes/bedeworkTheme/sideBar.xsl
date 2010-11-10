@@ -22,6 +22,9 @@
   xmlns="http://www.w3.org/1999/xhtml">
   
   <xsl:template name="sideBar">
+    <!--  We'll leave the following views block here in case we (or someone) wants to make use of views.
+          We are not using them at the moment in the personal client, so we'll hide it. -->
+    <!-- 
     <h3>
       <xsl:copy-of select="$bwStr-SdBr-Views"/>
     </h3>
@@ -46,6 +49,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </ul>
+    -->
 
     <h3>
       <a href="{$calendar-fetch}" title="{$bwStr-SdBr-ManageCalendarsAndSubscriptions}" class="calManageLink">

@@ -46,9 +46,9 @@ var bwAclWidgetAccessStr = "Access";
 var bwAclWidgetInheritedStr = "Inherited from";
 
 // note that resourcesRoot is passed in from the html head section defined in the xslt
-var trashIcon = '<img src="' + resourcesRoot  + '/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>';
-var userIcon = '<img src="' + resourcesRoot  + '/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>';
-var groupIcon = '<img src="' + resourcesRoot  + '/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>';
+var trashIcon = '<img src="' + imagesRoot + '/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>';
+var userIcon = '<img src="' + imagesRoot + '/userIcon.gif" width="13" height="13" border="0" alt="user"/>';
+var groupIcon = '<img src="' + imagesRoot + '/groupIcon.gif" width="13" height="13" border="0" alt="group"/>';
 
 // How granted accesses appear
 var howAllVal = "all";

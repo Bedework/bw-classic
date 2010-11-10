@@ -87,12 +87,14 @@
   <xsl:template match="calendar" mode="myCalendars">
     <!-- this template receives calType 0,1,4,7,8,9  -->
     <xsl:variable name="id" select="id"/>
+    <xsl:variable name="userRootCalendar">/user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="disabled = 'true'">unknown</xsl:when>
           <xsl:when test="lastRefreshStatus &gt; 300">unknown</xsl:when>
-          <xsl:when test="/bedework/selectionState/selectionType = 'collections'
+          <xsl:when test="not(path = $userRootCalendar)
+                          and /bedework/selectionState/selectionType = 'collections'
                           and path = /bedework/selectionState/collection/virtualpath">selected</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
@@ -105,7 +107,6 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
-        <xsl:variable name="userRootCalendar">/user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
         <form name="bwHideDisplayCal" class="bwHideDisplayCal" method="post">
           <xsl:attribute name="action">
             <xsl:choose>
