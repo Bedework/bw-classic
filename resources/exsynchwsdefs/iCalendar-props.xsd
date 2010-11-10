@@ -52,9 +52,10 @@
       <xs:element name="rdate" type="xcal:rdatePropType" />
       <xs:element name="related-to" type="xcal:related-toPropType" />
       <xs:element name="rrule" type="xcal:rrulePropType" /> 
+      <xs:element name="rrule" type="xcal:exrulePropType" /> 
       <xs:element name="action" type="xcal:actionPropType" />
       <xs:element name="repeat" type="xcal:repeatPropType" />
-      <xs:element name="trigger" type="xcal:triggerTypePropType" />
+      <xs:element name="trigger" type="xcal:triggerPropType" />
       <xs:element name="created" type="xcal:createdPropType" />
       <xs:element name="dtstamp" type="xcal:dtstampPropType" />
       <xs:element name="last-modified" type="xcal:last-modifiedPropType" />
@@ -211,7 +212,18 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+    
+  <!-- 3.8.1.2 Categories -->
+  <xs:complexType name="categoriesPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:choice maxOccurs="unbounded"> 
+          <xs:element ref="xcal:text" />
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>  
+
   <!-- 3.8.1.3 Classification -->
   <xs:simpleType name="classValueType">
     <xs:restriction base="xs:string">
@@ -524,6 +536,13 @@
     </xs:complexContent>
   </xs:complexType>
     
+  <!-- x.x.x.x Deprecated ExRule -->
+  <xs:complexType name="exrulePropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:RecurPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
   <!-- 3.8.6 Alarm Component Properties -->
   <!-- 3.8.6.1 Action -->
   <xs:simpleType name="actionValueType">
@@ -552,7 +571,7 @@
   </xs:complexType>
   
   <!-- 3.8.6.3 Trigger -->
-  <xs:complexType name="triggerTypePropType">
+  <xs:complexType name="triggerPropType">
     <xs:sequence>
       <xs:element name="parameters" minOccurs="0">
         <xs:complexType/>
