@@ -51,8 +51,8 @@
       <xs:element name="exdate" type="xcal:exdatePropType" />
       <xs:element name="rdate" type="xcal:rdatePropType" />
       <xs:element name="related-to" type="xcal:related-toPropType" />
+      <xs:element name="exrule" type="xcal:exrulePropType" /> 
       <xs:element name="rrule" type="xcal:rrulePropType" /> 
-      <xs:element name="rrule" type="xcal:exrulePropType" /> 
       <xs:element name="action" type="xcal:actionPropType" />
       <xs:element name="repeat" type="xcal:repeatPropType" />
       <xs:element name="trigger" type="xcal:triggerPropType" />
