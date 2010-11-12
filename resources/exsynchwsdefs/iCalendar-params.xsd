@@ -35,6 +35,12 @@
       <xs:element name="tzid" type="xcal:tzidParamType" />
     </xs:choice>
   </xs:complexType>
+  
+  <xs:complexType name="cal-addressListParamType">
+    <xs:sequence>
+      <xs:element ref="xcal:cal-address" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
  
   <!-- 3.2.1 Alternate Text Representation -->
   <xs:complexType name="altrepParamType">
@@ -61,22 +67,22 @@
   
   <!-- 3.2.4 Delegators -->
   <xs:complexType name="delegated-fromParamType">
-    <xs:sequence>
-      <xs:element ref="xcal:cal-address" maxOccurs="unbounded"/>
-    </xs:sequence>
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:cal-addressListParamType"/>
+    </xs:complexContent>
   </xs:complexType>
 
   <!-- 3.2.5 Delegatees -->
   <xs:complexType name="delegated-toParamType">
-    <xs:sequence>
-      <xs:element ref="xcal:cal-address" maxOccurs="unbounded"/>
-    </xs:sequence>
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:cal-addressListParamType"/>
+    </xs:complexContent>
   </xs:complexType>
   
   <!-- 3.2.6 Directory Entry Reference -->
   <xs:complexType name="dirParamType">
     <xs:sequence>
-      <xs:element name="dir" type="xcal:uriType"/>
+      <xs:element ref="xcal:uri"/>
     </xs:sequence>
   </xs:complexType>
   
@@ -110,9 +116,9 @@
   
   <!-- 3.2.11 Group or List Membership -->
   <xs:complexType name="memberParamType">
-    <xs:sequence>
-      <xs:element ref="xcal:cal-address" maxOccurs="unbounded"/>
-    </xs:sequence>
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:cal-addressListParamType"/>
+    </xs:complexContent>
   </xs:complexType>
   
   <!-- 3.2.12 Participation Status -->

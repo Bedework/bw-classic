@@ -80,6 +80,16 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  
+  <xs:complexType name="TextListPropertyType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:text" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
   <!-- Properties that take a calendar address value -->
   <xs:complexType name="CalAddressPropertyType" >
@@ -216,11 +226,7 @@
   <!-- 3.8.1.2 Categories -->
   <xs:complexType name="categoriesPropType">
     <xs:complexContent mixed="false">
-      <xs:extension base="xcal:BasePropertyType">
-        <xs:choice maxOccurs="unbounded"> 
-          <xs:element ref="xcal:text" />
-        </xs:choice>
-      </xs:extension>
+      <xs:extension base="xcal:TextListPropertyType"/>
     </xs:complexContent>
   </xs:complexType>  
 
@@ -296,11 +302,7 @@
   <!-- 3.8.1.10 Resources -->
   <xs:complexType name="resourcesPropType">
     <xs:complexContent mixed="false">
-      <xs:extension base="xcal:BasePropertyType">
-        <xs:sequence>
-          <xs:element ref="xcal:text" maxOccurs="unbounded"/>
-        </xs:sequence>
-      </xs:extension>
+      <xs:extension base="xcal:TextListPropertyType"/>
     </xs:complexContent>
   </xs:complexType>
 
@@ -572,15 +574,16 @@
   
   <!-- 3.8.6.3 Trigger -->
   <xs:complexType name="triggerPropType">
-    <xs:sequence>
-      <xs:element name="parameters" minOccurs="0">
-        <xs:complexType/>
-      </xs:element>
-      <xs:choice>
-        <xs:element ref="xcal:duration"/>
-        <xs:element ref="xcal:date-time"/>
-      </xs:choice>
-    </xs:sequence>
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:choice>
+            <xs:element ref="xcal:duration"/>
+            <xs:element ref="xcal:date-time"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   
   <!-- 3.8.7 Change Management Component Properties -->

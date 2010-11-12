@@ -199,6 +199,7 @@
         <element name="synch-token" type="string" />
         <element name="calendar-href" type="string" />
         <element name="principal-href" type="string" />
+        <element name="uid" type="string" />
         <element name="icalendar" type="xcal:icalendarType" />
       </sequence>
     </complexType>
