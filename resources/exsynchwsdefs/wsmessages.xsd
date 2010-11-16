@@ -32,9 +32,35 @@
       <enumeration value="Unknown Exchange calendar" />
       <enumeration value="Invalid token" />
       <enumeration value="Unknown subscription" />
+      <enumeration value="No Access" />
+      <enumeration value="Service Stopped" />
       <enumeration value="Error" />
     </restriction>
   </simpleType>
+  
+  <complexType name="base-synch-request">
+    <annotation>
+      <documentation xml:lang="en">
+           Requests have this as the base type.
+      </documentation>
+    </annotation>
+    <sequence>
+      <element name="calendar-href" type="string" />
+      <element name="principal-href" type="string" />
+      <element name="synch-token" type="string" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="base-synch-response">
+    <annotation>
+      <documentation xml:lang="en">
+           Responses have this as the base type.
+      </documentation>
+    </annotation>
+    <sequence>
+      <element name="subscribe-status" type="tns:StatusType" />
+    </sequence>
+  </complexType>
   
   <!-- *********************************************************************
        Remote system to syncher
@@ -42,7 +68,7 @@
        unsubscribe: remove a new subscription for a principal to a calendar
        ********************************************************************* -->
   
-  <element name="subscribe">
+  <complexType name="subscribe-request-type">
     <annotation>
       <documentation xml:lang="en">
            Message from remote service requesting new subscription.
@@ -58,49 +84,70 @@
                  Encoded password for exchange
       </documentation>
     </annotation>
-    <complexType>
-      <sequence >
-        <element name="token" type="string" />
-        <element name="calendar-href" type="string" />
-        <element name="principal-href" type="string" />
-        <element name="synch-token" type="string" />
-        <element name="exchange-folder-id" type="string" />
-        <element name="exchange-uri" type="string" />
-        <element name="synch-type" type="tns:SynchType" />
-        <element name="exchange-user" type="string" />
-        <element name="exchange-encpw" type="string" />
-      </sequence>
-    </complexType>
-  </element>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-request">
+        <sequence >
+          <element name="token" type="string" />
+          <element name="exchange-folder-id" type="string" />
+          <element name="exchange-uri" type="string" />
+          <element name="synch-type" type="tns:SynchType" />
+          <element name="exchange-user" type="string" />
+          <element name="exchange-encpw" type="string" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="subscribe" type="tns:subscribe-request-type" />
   
-  <element name="subscribeResponse">
+  <complexType name="subscribe-response-type">
     <annotation>
       <documentation xml:lang="en">
            Response to message from remote service requesting new subscription.
       </documentation>
     </annotation>
-    <complexType>
-      <sequence >
-        <element name="calendar-href" type="string" />
-        <element name="subscribe-status" type="tns:StatusType" />
-        <element minOccurs="0" name="message" type="string" />
-      </sequence>
-    </complexType>
-  </element>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-response">
+        <sequence >
+          <element name="subscription-id" type="string" />
+          <element minOccurs="0" name="message" type="string" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="subscribe-response" type="tns:subscribe-response-type" />
   
-  <element name="unsubscribe">
+  <complexType name="unsubscribe-request-type">
     <annotation>
       <documentation xml:lang="en">
-           Message from remote service unsubscribing - same response as subscribe.
+           Message from remote service unsubscribing.
       </documentation>
     </annotation>
-    <complexType>
-      <sequence>
-        <element name="calendar-href" type="string" />
-        <element name="principal-href" type="string" />
-      </sequence>
-    </complexType>
-  </element>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-request">
+        <sequence >
+          <element name="subscription-id" type="string" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="unsubscribe" type="tns:unsubscribe-request-type" />
+  
+  <complexType name="unsubscribe-response-type">
+    <annotation>
+      <documentation xml:lang="en">
+           Response to message from remote service requesting unsubscription.
+      </documentation>
+    </annotation>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-response">
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="unsubscribe-response" type="tns:unsubscribe-response-type" />
   
   <!-- *********************************************************************
        Syncher to Remote system 
@@ -112,7 +159,7 @@
        delete: delete a calendar item
        ********************************************************************* -->
   
-  <element name="start-service-notification">
+  <complexType name="start-service-notificationType">
     <annotation>
       <documentation xml:lang="en">
            (Re)initialize the service
@@ -121,15 +168,16 @@
                is just a keep alive ping
       </documentation>
     </annotation>
-    <complexType>
-      <sequence>
-        <element name="subscribe-url" type="string" />
-        <element name="token" type="string" />
-      </sequence>
-    </complexType>
-  </element>
+    <sequence>
+      <element name="subscribe-url" type="string" />
+      <element name="token" type="string" />
+    </sequence>
+  </complexType>
   
-  <element name="start-service-response">
+  <element name="start-service-notification" 
+           type="tns:start-service-notificationType" />
+  
+  <complexType name="start-service-response-type">
     <annotation>
       <documentation xml:lang="en">
            Respond to the ping
@@ -137,28 +185,26 @@
            status: OK
       </documentation>
     </annotation>
-    <complexType>
-      <sequence>
-        <element name="token" type="string" />
-        <element name="status" type="tns:StatusType" />
-      </sequence>
-    </complexType>
-  </element>
+    <sequence>
+      <element name="token" type="string" />
+      <element name="status" type="tns:StatusType" />
+    </sequence>
+  </complexType>
+
+  <element name="start-service-response" type="tns:start-service-response-type" />
   
-  <element name="get-sycnch-info">
+  <complexType name="get-sycnch-info-type">
     <annotation>
       <documentation xml:lang="en">
            Message to remote service requesting synchronization info.
       </documentation>
     </annotation>
-    <complexType>
-      <sequence>
-        <element name="calendar-href" type="string" />
-        <element name="principal-href" type="string" />
-        <element name="synch-token" type="string" />
-      </sequence>
-    </complexType>
-  </element>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-request"/>
+    </complexContent>
+  </complexType>
+  
+  <element name="get-sycnch-info" type="tns:get-sycnch-info-type" />
   
   <complexType name="SynchInfoType">
     <sequence>
@@ -167,54 +213,56 @@
     </sequence>
   </complexType>
   
-  <element name="synch-info-response">
+  <complexType name="synch-info-response-type">
     <annotation>
       <documentation xml:lang="en">
            Response to message to remote service requesting synchronization info.
       </documentation>
     </annotation>
-    <complexType>
-      <sequence>
-        <element name="calendar-href" type="string" />
-        <element name="synch-info-responses">
-          <complexType>
-            <sequence>
-              <element maxOccurs="unbounded" name="synch-info" 
-                       type="tns:SynchInfoType" />
-            </sequence>
-          </complexType>
-        </element>
-      </sequence>
-    </complexType>
-  </element>
+    <sequence>
+      <element name="calendar-href" type="string" />
+      <element name="synch-info-responses">
+        <complexType>
+          <sequence>
+            <element maxOccurs="unbounded" name="synch-info" 
+                     type="tns:SynchInfoType" />
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
   
-  <element name="add-item">
+  <element name="synch-info-response" type="tns:synch-info-response-type" />
+  
+  <complexType name="add-item-type">
     <annotation>
       <documentation xml:lang="en">
            Message to add a calendar item.
       </documentation>
     </annotation>
-    <complexType>
-      <sequence>
-        <element name="synch-token" type="string" />
-        <element name="calendar-href" type="string" />
-        <element name="principal-href" type="string" />
-        <element name="uid" type="string" />
-        <element name="icalendar" type="xcal:icalendarType" />
-      </sequence>
-    </complexType>
-  </element>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-request">
+        <sequence>
+          <element name="uid" type="string" />
+          <element name="icalendar" type="xcal:icalendarType" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
   
-  <element name="add-item-response">
+  <element name="add-item" type="tns:add-item-type" />
+  
+  <complexType name="add-item-response-type">
     <annotation>
       <documentation xml:lang="en">
            Response to message to add an item.
       </documentation>
     </annotation>
-    <complexType>
-      <sequence>
-        <element name="status" type="tns:StatusType" />
-      </sequence>
-    </complexType>
-  </element>
+    <sequence>
+      <element name="status" type="tns:StatusType" />
+      <element name="message" type="string" />
+    </sequence>
+  </complexType>
+  
+  <element name="add-item-response" type="tns:add-item-response-type" />
 </schema>

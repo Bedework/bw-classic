@@ -34,11 +34,11 @@
   <!-- ============================= addItem =============================== -->  
 
   <wsdl:message name="AddItemIn">
-    <wsdl:part name="request" element="tns:add-item" />
+    <wsdl:part name="addItemRequest" element="tns:add-item" />
   </wsdl:message>
   
   <wsdl:message name="AddItemOut">
-    <wsdl:part name="response" element="tns:add-item-response" />
+    <wsdl:part name="addItemResponse" element="tns:add-item-response" />
   </wsdl:message>
 
   <!-- ============================== port ================================= -->  
@@ -93,10 +93,10 @@
     <wsdl:operation name="add-item">
       <soap:operation soapAction="http://www.bedework.org/exsynch/wsmessages/add-item" />
       <wsdl:input>
-        <soap:body use="literal" parts="request" />
+        <soap:body use="literal" parts="addItemRequest" />
       </wsdl:input>
       <wsdl:output>
-        <soap:body use="literal" parts="response" />
+        <soap:body use="literal" parts="addItemResponse" />
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
