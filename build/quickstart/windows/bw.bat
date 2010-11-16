@@ -132,8 +132,17 @@ GOTO branch
 :zoneinfo
    ECHO    zoneinfo target is not supported on Windows
    GOTO:EOF
+   
+:jbossNotice 
+  ECHO *************************************************************
+  ECHO The jboss configuration has been removed from the quickstart.
+  ECHO It is now the default.  Remove the '-bwc jboss' option.
+  ECHO *************************************************************
+  GOTO:EOF
 
 :doneWithArgs
+
+IF "%bwc%" == "jboss" GOTO jbossNotice
 
 IF NOT "%quickstart%empty" == "empty" GOTO checkBwConfig
 IF NOT "%BWCONFIGS%empty" == "empty" GOTO DoneQB
@@ -141,11 +150,6 @@ SET BWCONFIGS=%HOMEPATH%\bwbuild
 GOTO doneQB
 
 :checkBwConfig
-REM  IF "%BWCONFIGS%empty" == "empty" GOTO doneQB
-REM    ECHO *******************************************************
-REM    ECHO Error: Cannot specify both -quickstart and -bwchome
-REM    ECHO *******************************************************
-REM    GOTO:EOF
 
   SET BWCONFIGS=%QUICKSTART_HOME%\bedework\config\bwbuild
 
