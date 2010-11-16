@@ -445,7 +445,10 @@
                   <!--<input type="radio" name="method" value="REFRESH" onclick="swapScheduleDisplay('hide');"/>refresh this event<br/>-->
                   <input type="radio" name="method" value="DELEGATE" onclick="swapScheduleDisplay('hide');"/><xsl:copy-of select="$bwStr-AtRe-DelegateTo"/>
                   <input type="test" name="delegate" value=""/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-URIOrAccount"/><br/>
+                  <!-- We are hiding "counter" for now.  It may come back, so the code should remain. -->
+                  <!-- 
                   <input type="radio" name="method" value="COUNTER" onclick="swapScheduleDisplay('show');"/><xsl:copy-of select="$bwStr-AtRe-CounterSuggest"/>
+                  -->
                 </xsl:otherwise>
               </xsl:choose>
             </td>
