@@ -14,57 +14,107 @@
   <xs:include schemaLocation="iCalendar-params.xsd" />
 
   <xs:complexType name="ArrayOfProperties">
-    <xs:choice maxOccurs="unbounded">
-      <xs:element name="calscale" type="xcal:calscalePropType" />
-      <xs:element name="method" type="xcal:methodPropType" />
-      <xs:element name="prodid" type="xcal:prodidPropType" />
-      <xs:element name="version" type="xcal:versionPropType" />
-      <xs:element name="attach" type="xcal:attachPropType" />
-      <xs:element name="class" type="xcal:classPropType" />
-      <xs:element name="comment" type="xcal:commentPropType" />
-      <xs:element name="description" type="xcal:descriptionPropType" />
-      <xs:element name="geo" type="xcal:geoPropType" />
-      <xs:element name="location" type="xcal:locationPropType" />
-      <xs:element name="percent-complete" type="xcal:percent-completePropType" />
-      <xs:element name="priority" type="xcal:priorityPropType" />
-      <xs:element name="resources" type="xcal:resourcesPropType" />
-      <xs:element name="status" type="xcal:statusPropType" />
-      <xs:element name="summary" type="xcal:summaryPropType" />
-      <xs:element name="completed" type="xcal:completedPropType" />
-      <xs:element name="dtend" type="xcal:dtendPropType" />
-      <xs:element name="dtstart" type="xcal:dtstartPropType" />
-      <xs:element name="due" type="xcal:duePropType" />
-      <xs:element name="duration" type="xcal:durationPropType" />
-      <xs:element name="freebusy" type="xcal:freebusyPropType" />
-      <xs:element name="transp" type="xcal:transpPropType" />
-      <xs:element name="tzid" type="xcal:tzidPropType" />
-      <xs:element name="tzname" type="xcal:tznamePropType" />
-      <xs:element name="tzoffsetfrom" type="xcal:tzoffsetfromPropType" />
-      <xs:element name="tzoffsetto" type="xcal:tzoffsettoPropType" />
-      <xs:element name="tzurl" type="xcal:tzurlPropType" />
-      <xs:element name="attendee" type="xcal:attendeePropType" />
-      <xs:element name="contact" type="xcal:contactPropType" />
-      <xs:element name="organizer" type="xcal:organizerPropType" />
-      <xs:element name="recurrence-id" type="xcal:recurrence-idPropType" />
-      <xs:element name="url" type="xcal:urlPropType" />
-      <xs:element name="uid" type="xcal:uidPropType" />
-      <xs:element name="exdate" type="xcal:exdatePropType" />
-      <xs:element name="rdate" type="xcal:rdatePropType" />
-      <xs:element name="related-to" type="xcal:related-toPropType" />
-      <xs:element name="exrule" type="xcal:exrulePropType" /> 
-      <xs:element name="rrule" type="xcal:rrulePropType" /> 
-      <xs:element name="action" type="xcal:actionPropType" />
-      <xs:element name="repeat" type="xcal:repeatPropType" />
-      <xs:element name="trigger" type="xcal:triggerPropType" />
-      <xs:element name="created" type="xcal:createdPropType" />
-      <xs:element name="dtstamp" type="xcal:dtstampPropType" />
-      <xs:element name="last-modified" type="xcal:last-modifiedPropType" />
-      <xs:element name="sequence" type="xcal:request-statusPropType" />
-      <xs:element name="request-status" type="xcal:request-statusPropType" />
-    </xs:choice>
+    <xs:sequence>
+      <xs:element ref="xcal:base-property" maxOccurs="unbounded"/>
+    </xs:sequence>
   </xs:complexType>
+  
+  <xs:element name="base-property" type="xcal:BasePropertyType" />
+  
+  <xs:element name="calscale" type="xcal:calscalePropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="method" type="xcal:methodPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="prodid" type="xcal:prodidPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="version" type="xcal:versionPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="attach" type="xcal:attachPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="class" type="xcal:classPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="comment" type="xcal:commentPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="description" type="xcal:descriptionPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="geo" type="xcal:geoPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="location" type="xcal:locationPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="percent-complete" type="xcal:percent-completePropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="priority" type="xcal:priorityPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="resources" type="xcal:resourcesPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="status" type="xcal:statusPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="summary" type="xcal:summaryPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="completed" type="xcal:completedPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="dtend" type="xcal:dtendPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="dtstart" type="xcal:dtstartPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="due" type="xcal:duePropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="duration" type="xcal:durationPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="freebusy" type="xcal:freebusyPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="transp" type="xcal:transpPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="tzid" type="xcal:tzidPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="tzname" type="xcal:tznamePropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="tzoffsetfrom" type="xcal:tzoffsetfromPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="tzoffsetto" type="xcal:tzoffsettoPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="tzurl" type="xcal:tzurlPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="attendee" type="xcal:attendeePropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="contact" type="xcal:contactPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="organizer" type="xcal:organizerPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="recurrence-id" type="xcal:recurrence-idPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="url" type="xcal:urlPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="uid" type="xcal:uidPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="exdate" type="xcal:exdatePropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="rdate" type="xcal:rdatePropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="related-to" type="xcal:related-toPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="exrule" type="xcal:exrulePropType"
+              substitutionGroup="xcal:base-property" /> 
+  <xs:element name="rrule" type="xcal:rrulePropType"
+              substitutionGroup="xcal:base-property" /> 
+  <xs:element name="action" type="xcal:actionPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="repeat" type="xcal:repeatPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="trigger" type="xcal:triggerPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="created" type="xcal:createdPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="dtstamp" type="xcal:dtstampPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="last-modified" type="xcal:last-modifiedPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="sequence" type="xcal:request-statusPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="request-status" type="xcal:request-statusPropType"
+              substitutionGroup="xcal:base-property" />
 
-  <xs:complexType name="BasePropertyType" >
+  <xs:complexType name="BasePropertyType" abstract="true" >
     <xs:sequence>
       <xs:element name="parameters" type="xcal:ArrayOfParameters"/>
     </xs:sequence>
@@ -371,7 +421,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BasePropertyType">
         <xs:sequence>
-          <xs:element ref="xcal:duration"/>
+          <xs:element  name="duration" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -578,7 +628,7 @@
       <xs:extension base="xcal:BasePropertyType">
         <xs:sequence>
           <xs:choice>
-            <xs:element ref="xcal:duration"/>
+            <xs:element name="duration" type="xs:string"/>
             <xs:element ref="xcal:date-time"/>
           </xs:choice>
         </xs:sequence>

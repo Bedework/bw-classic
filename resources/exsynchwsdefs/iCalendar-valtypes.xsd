@@ -36,8 +36,8 @@
 	<!-- 3.3.5 DATE-TIME -->
 	<xs:element name="date-time" type="xs:string"/>
   
-	<!-- 3.3.6 DURATION -->
-	<xs:element name="duration" type="xs:string"/>
+	<!-- 3.3.6 DURATION 
+	<xs:element name="duration" type="xs:string"/>-->
   
 	<!-- 3.3.7 FLOAT -->
 	<xs:element name="float" type="xs:string"/>
