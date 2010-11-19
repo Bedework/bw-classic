@@ -12,6 +12,10 @@
             
   <!-- ===================== Parameters =================================  -->
   <xs:include schemaLocation="iCalendar-params.xsd" />
+            
+  <!-- ===================== Extensions =================================  -->
+  <xs:include schemaLocation="iCalendar-bw-extensions.xsd" />
+  <xs:include schemaLocation="iCalendar-ms-extensions.xsd" />
 
   <xs:complexType name="ArrayOfProperties">
     <xs:sequence>
@@ -30,6 +34,8 @@
   <xs:element name="version" type="xcal:versionPropType"
               substitutionGroup="xcal:base-property" />
   <xs:element name="attach" type="xcal:attachPropType"
+              substitutionGroup="xcal:base-property" />
+  <xs:element name="categories" type="xcal:categoriesPropType"
               substitutionGroup="xcal:base-property" />
   <xs:element name="class" type="xcal:classPropType"
               substitutionGroup="xcal:base-property" />
@@ -281,6 +287,7 @@
   </xs:complexType>  
 
   <!-- 3.8.1.3 Classification -->
+  <!-- Would like something lie this but not extensible
   <xs:simpleType name="classValueType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="PUBLIC"/>
@@ -288,7 +295,7 @@
       <xs:enumeration value="CONFIDENTIAL"/>
     </xs:restriction>
   </xs:simpleType>
-  
+   
   <xs:complexType name="classPropType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BasePropertyType">
@@ -298,7 +305,14 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+ -->
   
+  <xs:complexType name="classPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+    
   <!-- 3.8.1.4 Comment -->
   <xs:complexType name="commentPropType">
     <xs:complexContent mixed="false">

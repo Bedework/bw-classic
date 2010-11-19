@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Bedework extensions to icalendar -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0" 
+           targetNamespace="urn:ietf:params:xml:ns:icalendar-2.0" 
+           elementFormDefault="qualified">
+
+  <!-- =====================================================================
+       3.7 Calendar Properties
+       ===================================================================== -->  
+            
+  <!-- ===================== Properties =================================  -->
+  <xs:include schemaLocation="iCalendar-props.xsd" />
+
+  <xs:element name="x-bedework-exsynch-endtzid" 
+              type="xcal:x-bw-exsynch-endtzidPropType"
+              substitutionGroup="xcal:base-property" />
+
+  <xs:element name="x-bedework-exsynch-lastmod" 
+              type="xcal:x-bw-exsynch-lastmodPropType"
+              substitutionGroup="xcal:base-property" />
+
+  <xs:element name="x-bedework-exsynch-organizer" 
+              type="xcal:organizerPropType"
+              substitutionGroup="xcal:base-property" />
+
+  <xs:element name="x-bedework-exsynch-starttzid" 
+              type="xcal:x-bw-exsynch-starttzidPropType"
+              substitutionGroup="xcal:base-property" />
+  
+  <xs:complexType name="x-bw-exsynch-endtzidPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="x-bw-exsynch-lastmodPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="x-bw-exsynch-starttzidPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

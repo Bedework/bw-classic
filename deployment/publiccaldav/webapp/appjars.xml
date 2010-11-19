@@ -11,7 +11,7 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-caldav" version="3.6"
+              name="bw-caldav" version="${org.bedework.caldav.version}"
               projecthome="${bw.project.home}/projects/caldavimpl" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"

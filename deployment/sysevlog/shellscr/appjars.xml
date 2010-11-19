@@ -11,13 +11,15 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-cdvutil" version="3.6"
+              name="bw-cdvutil" version="${org.bedework.caldav.version}"
               projecthome="${bw.project.home}/projects/caldav" />
 
+    	<!--
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-crawler" version="3.6"
               projecthome="${bw.project.home}/projects/bwcrawler" />
+    	-->
     </sequential>
  </macrodef>
 </project>

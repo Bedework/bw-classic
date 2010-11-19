@@ -9,13 +9,6 @@
       <delete dir="${org.bedework.temp.extrajars.dir}" />
       <mkdir dir="${org.bedework.temp.extrajars.dir}" />
 
-    	<!--
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-cdvutil" version="3.6"
-              projecthome="${bw.project.home}/projects/caldav" />
-
--->
     </sequential>
  </macrodef>
 </project>

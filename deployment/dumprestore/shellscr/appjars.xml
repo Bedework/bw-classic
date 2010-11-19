@@ -11,17 +11,17 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-cdvutil" version="3.6"
+              name="bw-cdvutil" version="${org.bedework.caldav.version}"
               projecthome="${bw.project.home}/projects/caldav" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-indexer" version="3.6"
+              name="bw-indexer" version="${org.bedework.indexer.version}"
               projecthome="${bw.project.home}/projects/indexer" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-dumpres" version="3.6"
+              name="bw-dumpres" version="${org.bedework.dumprestore.version}"
               projecthome="${bw.project.home}/projects/dumprestore" />
     </sequential>
  </macrodef>
