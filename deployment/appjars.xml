@@ -229,79 +229,79 @@
       <!-- Generated bedework jars -->
 
       <getJar lib="${org.bedework.app.lib}"
-              name="rpiaccess" version="3.6"
+              name="rpiaccess" version="${org.bedework.access.version}"
               projecthome="${bw.project.home}/projects/access" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-tools" version="3.6"
+              name="bw-tools" version="${org.bedework.bwtools.version}"
               projecthome="${bw.project.home}/projects/bwtools" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="rpiutil" version="3.6"
+              name="rpiutil" version="${org.bedework.rpiutil.version}"
               projecthome="${bw.project.home}/projects/rpiutil" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-davio" version="3.6"
+              name="bw-davio" version="${org.bedework.davutil.version}"
               projecthome="${bw.project.home}/projects/davutil" />
 
       <getJar lib="${org.bedework.app.lib}"
-               name="bw-annotations" version="3.6"
+               name="bw-annotations" version="${org.bedework.calendarapi.version}"
                projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-               name="bw-apiutil" version="3.6"
+               name="bw-apiutil" version="${org.bedework.calendarapi.version}"
                projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calcore" version="3.6"
+              name="bw-calcore" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calcorei" version="3.6"
+              name="bw-calcorei" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calfacade" version="3.6"
+              name="bw-calfacade" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-               name="bw-calsvc" version="3.6"
+               name="bw-calsvc" version="${org.bedework.calendarapi.version}"
                projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-calsvci" version="3.6"
+              name="bw-calsvci" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-client" version="3.6"
+              name="bw-client" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-icalendar" version="3.6"
+              name="bw-icalendar" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-logging" version="3.6"
+              name="bw-logging" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-mail" version="3.6"
+              name="bw-mail" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-sysevents" version="3.6"
+              name="bw-sysevents" version="${org.bedework.calendarapi.version}"
               projecthome="${bw.project.home}/projects/calendarapi" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-appcommon" version="3.6"
+              name="bw-appcommon" version="${org.bedework.webapps.version}"
               projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-liferay" version="3.6"
+              name="bw-liferay" version="${org.bedework.webapps.version}"
               projecthome="${bw.project.home}/projects/webapps" />
 
       <getJar lib="${org.bedework.app.lib}"
-              name="bw-uportal" version="3.6"
+              name="bw-uportal" version="${org.bedework.webapps.version}"
               projecthome="${bw.project.home}/projects/webapps" />
 
       <!-- Included jars for eclipse -->
