@@ -41,6 +41,16 @@
     <wsdl:part name="addItemResponse" element="tns:add-item-response" />
   </wsdl:message>
 
+  <!-- ============================= fetchItem =============================== -->  
+
+  <wsdl:message name="FetchItemIn">
+    <wsdl:part name="fetchItemRequest" element="tns:fetch-item" />
+  </wsdl:message>
+  
+  <wsdl:message name="FetchItemOut">
+    <wsdl:part name="fetchItemResponse" element="tns:fetch-item-response" />
+  </wsdl:message>
+
   <!-- ============================== port ================================= -->  
   
   <wsdl:portType name="ExsynchRemoteServicePortType">
@@ -57,6 +67,11 @@
     <wsdl:operation name="add-item">
       <wsdl:input message="tns:AddItemIn" />
       <wsdl:output message="tns:AddItemOut" />
+    </wsdl:operation>
+    
+    <wsdl:operation name="fetch-item">
+      <wsdl:input message="tns:FetchItemIn" />
+      <wsdl:output message="tns:FetchItemOut" />
     </wsdl:operation>
   </wsdl:portType>
   
@@ -97,6 +112,16 @@
       </wsdl:input>
       <wsdl:output>
         <soap:body use="literal" parts="addItemResponse" />
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="fetch-item">
+      <soap:operation soapAction="http://www.bedework.org/exsynch/wsmessages/fetch-item" />
+      <wsdl:input>
+        <soap:body use="literal" parts="fetchItemRequest" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="fetchItemResponse" />
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>

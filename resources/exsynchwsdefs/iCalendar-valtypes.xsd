@@ -14,14 +14,14 @@
 	<xs:element name="binary" type="xs:string"/>
   
 	<!-- 3.3.2 BOOLEAN -->
-	<xs:element name="boolean">
-		<xs:simpleType>
-			<xs:restriction base="xs:token">
-				<xs:enumeration value="TRUE"/>
-				<xs:enumeration value="FALSE"/>
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:element>
+	<xs:element name="boolean" type="xcal:booleanType" />
+  
+  <xs:simpleType name="booleanType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="TRUE"/>
+      <xs:enumeration value="FALSE"/>
+    </xs:restriction>
+  </xs:simpleType>
   
 	<!-- 3.3.3 CAL-ADDRESS -->
   <xs:simpleType name="cal-addressType">

@@ -2,10 +2,16 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
         xmlns:tns="http://www.bedework.org/exsynch/wsmessages" 
         xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0"
+        xmlns:xcup="urn:ietf:params:xml:ns:icalendar-upd-1.0" 
         targetNamespace="http://www.bedework.org/exsynch/wsmessages" 
         elementFormDefault="qualified">
+        
   <import schemaLocation="iCalendar.xsd" 
           namespace="urn:ietf:params:xml:ns:icalendar-2.0" />
+        
+  <import schemaLocation="iCalendar-update.xsd" 
+          namespace="urn:ietf:params:xml:ns:icalendar-upd-1.0" />
+          
   <!-- Schema for messages passed from exsynch processor to the remote service. -->
   
   <simpleType name="SynchType">
@@ -45,10 +51,27 @@
       </documentation>
     </annotation>
     <sequence>
-      <element name="calendar-href" type="string" />
-      <element name="principal-href" type="string" />
-      <element name="synch-token" type="string" />
+      <element name="calendar-href" type="string" minOccurs="1" />
+      <element name="principal-href" type="string" minOccurs="1" />
+      <element name="synch-token" type="string" minOccurs="1" />
     </sequence>
+  </complexType>
+  
+  <complexType name="base-synch-entity-request">
+    <annotation>
+      <documentation xml:lang="en">
+           Message from remote service identifying an entity by it's UID and
+           optionally its recurrenceid.
+      </documentation>
+    </annotation>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-request">
+        <sequence >
+          <element name="uid" type="string" minOccurs="1" />
+          <element name="recurrence-id" type="string" />
+        </sequence>
+      </extension>
+    </complexContent>
   </complexType>
   
   <complexType name="base-synch-response">
@@ -233,6 +256,8 @@
   </complexType>
   
   <element name="synch-info-response" type="tns:synch-info-response-type" />
+
+  <!-- ============================ add-item =============================== -->
   
   <complexType name="add-item-type">
     <annotation>
@@ -241,9 +266,8 @@
       </documentation>
     </annotation>
     <complexContent mixed="false">
-      <extension base="tns:base-synch-request">
+      <extension base="tns:base-synch-entity-request">
         <sequence>
-          <element name="uid" type="string" />
           <element name="icalendar" type="xcal:icalendarType" />
         </sequence>
       </extension>
@@ -265,4 +289,67 @@
   </complexType>
   
   <element name="add-item-response" type="tns:add-item-response-type" />
+
+  <!-- ============================ add-item =============================== -->
+  
+  <complexType name="fetch-item-type">
+    <annotation>
+      <documentation xml:lang="en">
+           Message to fetch a calendar item.
+      </documentation>
+    </annotation>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-entity-request"/>
+    </complexContent>
+  </complexType>
+  
+  <element name="fetch-item" type="tns:fetch-item-type" />
+  
+  <complexType name="fetch-item-response-type">
+    <annotation>
+      <documentation xml:lang="en">
+           Response to message to fetch an item.
+      </documentation>
+    </annotation>
+    <sequence>
+      <element name="icalendar" type="xcal:icalendarType" />
+      <element name="status" type="tns:StatusType" />
+      <element name="message" type="string" />
+    </sequence>
+  </complexType>
+  
+  <element name="fetch-item-response" type="tns:fetch-item-response-type" />
+
+  <!-- ========================== update-item ============================== -->
+  
+  <complexType name="update-item-type">
+    <annotation>
+      <documentation xml:lang="en">
+           Message to update a calendar item.
+      </documentation>
+    </annotation>
+    <complexContent mixed="false">
+      <extension base="tns:base-synch-entity-request">
+        <sequence>
+          <element ref="xcup:updates" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  
+  <element name="update-item" type="tns:update-item-type" />
+  
+  <complexType name="update-item-response-type">
+    <annotation>
+      <documentation xml:lang="en">
+           Response to message to update an item.
+      </documentation>
+    </annotation>
+    <sequence>
+      <element name="status" type="tns:StatusType" />
+      <element name="message" type="string" />
+    </sequence>
+  </complexType>
+  
+  <element name="update-item-response" type="tns:update-item-response-type" />
 </schema>
