@@ -541,7 +541,6 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     //do some form validation - make sure the durations are integers
     if (isNaN(days) || isNaN(hours) || isNaN(mins)) {
       alert("Please enter an integer value for durations.")
-      //$(inputId).focus(); // this doesn't work at the moment...
       return false;
     }
     
@@ -567,6 +566,32 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     cellsInDuration = durationMils / incrementMils;
     // repopulate the free time lookup
     this.setFreeTime();
+  };
+  
+  // The time fields have been modified.
+  // Update the corresponding form elements 
+  this.bwSchedChangeTime = function(inputId) {     
+    var hours;
+    var mins;
+    
+    if (inputId.indexOf("Sched") > -1) {
+      // we changed a time on the meeting tab       
+      hours = parseInt($("#eventStartDateSchedHour").val());
+      mins = parseInt($("#eventStartDateSchedMinute").val());
+    } else {
+      // we changed a time on the main tab     
+      hours = parseInt($("#eventStartDateHour").val());
+      mins = parseInt($("#eventStartDateMinute").val());
+    }
+        
+    // set the basic tab's time values
+    $("#eventStartDateHour").val(hours);
+    $("#eventStartDateMinute").val(mins);
+    
+    // set the scheduling time field values from the parsed values
+    $("#eventStartDateSchedHour").val(hours);
+    $("#eventStartDateSchedMinute").val(mins);
+    
   };
   
   // if the "all day" checkbox is clicked, 
@@ -606,7 +631,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       var hourRange = this.endHoursRange - this.startHoursRange;
       var startHour = this.startHoursRange;
       
-      if (!workday) {
+      if (!this.workday) {
         // show full 24 hours in grid
         hourRange = 24;
         startHour = 0;
@@ -992,14 +1017,22 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         $("#bwSchedProcessingMsg").show();
         bwGrid.startRange.addDays(bwGrid.dayRange);
         bwGrid.endRange.addDays(bwGrid.dayRange);
-        bwGrid.requestFreeBusy(); 
+        if (bwGrid.attendees.length) {
+          bwGrid.requestFreeBusy();
+        } else {
+          bwGrid.display(); 
+        }
       }
       
       this.gotoPreviousRange = function() {
         $("#bwSchedProcessingMsg").show();
         bwGrid.startRange.subtractDays(bwGrid.dayRange);
         bwGrid.endRange.subtractDays(bwGrid.dayRange);
-        bwGrid.requestFreeBusy(); 
+        if (bwGrid.attendees.length) {
+          bwGrid.requestFreeBusy();
+        } else {
+          bwGrid.display(); 
+        }
       }
 
       this.setDateTimeWidgets = function(startMils) {
@@ -1218,18 +1251,48 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // now add some interactions between the freebusy control buttons,
       // the scheduling widget, and the rest of the form.
       
-      $("#bwSchedOptions").click(function() {
-        $("bwFbOptionsMenu").show("fast");
+      // toggle 24 hour mode - can be done with text or with checkbox
+      $("#bwSched24HoursText").click(function() {
+        if($("#bwSched24HoursCb").attr('checked')) {
+          $("#bwSched24HoursCb").removeAttr('checked');
+          bwGrid.workday = false;
+        } else {
+          $("#bwSched24HoursCb").attr('checked','checked');
+          bwGrid.workday = true;
+        }
+        //bwGrid.display();
+      });
+      $("#bwSched24HoursCb").click(function() {
+        if($(this).checked) {
+          bwGrid.workday = false;
+        } else {
+          bwGrid.workday = true;
+        }
+        bwGrid.display();
       });
       
-      // if we change the main tab's start date and duration, update the meeting tab
+      
+      
+      // if we change the main tab's start date, time, or duration, update the meeting tab
       // and reset the range of the scheduling grid
       $("#bwEventWidgetStartDate").change(function() {
         $("#bwEventWidgetStartDateSched").val($("#bwEventWidgetStartDate").val());
         bwGrid.startRange = $("#bwEventWidgetStartDate").datepicker("getDate");
         bwGrid.endRange = $("#bwEventWidgetStartDate").datepicker("getDate");
         bwGrid.endRange.addDays(bwGrid.dayRange);
-        bwGrid.requestFreeBusy(); 
+        if (bwGrid.attendees.length) {
+          bwGrid.requestFreeBusy();
+        } else {
+          bwGrid.display(); 
+        }
+      });
+      
+      $("#eventStartDateHour").change(function() { 
+        bwGrid.bwSchedChangeTime("#eventStartDateHour");
+      });
+      
+      $("#eventStartDateMinute").change(function() { 
+        bwGrid.bwSchedChangeTime("#eventStartDateMinute");
       });
 
       $("#durationDays").change(function() {
@@ -1244,14 +1307,27 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
         bwGrid.bwSchedChangeDuration("#durationMinutes");
       });
 
-      // if we change the meeting tab's date and duration, update the main tab
+      // if we change the meeting tab's date, time, or duration, update the main tab
       // and reset the range of the scheduling grid
       $("#bwEventWidgetStartDateSched").change(function() {
         $("#bwEventWidgetStartDate").val($("#bwEventWidgetStartDateSched").val());
         bwGrid.startRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
         bwGrid.endRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
         bwGrid.endRange.addDays(bwGrid.dayRange);
-        bwGrid.requestFreeBusy(); 
+        if (bwGrid.attendees.length) {
+          bwGrid.requestFreeBusy();
+        } else {
+          bwGrid.display(); 
+        }
+      });
+      
+      $("#eventStartDateSchedHour").change(function() { 
+        alert($("#eventStartDateSchedHour").val());
+        bwGrid.bwSchedChangeTime("#eventStartDateSchedHour");
+      });
+      
+      $("#eventStartDateSchedMinute").change(function() { 
+        bwGrid.bwSchedChangeTime("#eventStartDateSchedMinute");
       });
       
       $("#durationDaysSched").change(function() {

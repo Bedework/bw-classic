@@ -199,7 +199,7 @@
 #bwScheduleControls input.alldayFlag {
   margin-left: 1em;
 }
-#bwScheduleControls #bwFbOptionsMenu {
+/*#bwScheduleControls #bwFbOptionsMenu {
   position: fixed;
   display: none;
   white-space: nowrap;
@@ -211,7 +211,40 @@
 }
 #bwScheduleControls #bwFbOptionsMenu li {
   margin: 0.5em;
+}*/
+#bwScheduleControls #bwSchedOptionsContainer {
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+#bwScheduleControls #bwSchedOptionsContainer li {
+	list-style: none;
+}
+#bwScheduleControls #bwSchedOptionsContainer ul {
+  display:  none;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  margin: -1px 0 0 0;
+  padding: 0;
+  border: 1px solid #aaf;
+  cursor: pointer;  
+}
+#bwScheduleControls #bwSchedOptionsContainer ul li { 
+  padding: 0.25em 0.5em 0.25em 0.5em; 
+}
+#bwScheduleControls #bwSchedOptionsContainer ul li:hover { 
+  background-color: #ff9; 
+  color: #333;
+}
+#bwScheduleControls #bwSchedOptionsContainer li:hover ul { 
+  display:  block; 
+  background-color: #eef;
+  color: #333; 
 }
 #bwScheduleControls .schedTime {
   padding-left: 1em;
+}
+#bwScheduleControls .dingbat {
+  font-family: Times New Roman, Times, serif;
 }

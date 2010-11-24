@@ -1461,10 +1461,14 @@
 	            -->
 	          </td>
 	          <td>
-	            <input type="button" id="bwSchedOptions" value="Options &#x25BC;"/>
-              <ul id="bwFbOptionsMenu">
-                <li>24 Hours</li>
-              </ul>
+	            <ul id="bwSchedOptionsContainer">
+	              <li>
+			            <input type="button" id="bwSchedOptions" value="Options &#x25BC;"/>
+		              <ul id="bwFbOptionsMenu">
+		                <li id="bwSched24Hours"><span id="bwSched24HoursText">24 Hours</span> <input type="checkbox" id="bwSched24HoursCb"/></li>
+		              </ul>
+		            </li>
+	            </ul>
 	          </td>
 	          <td class="dateLabel">
 	            <strong><xsl:copy-of select="$bwStr-AEEF-Duration-Sched"/></strong>
