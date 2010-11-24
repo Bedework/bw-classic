@@ -23,65 +23,12 @@
  * free/busy, and for picking available time in a free/busy grid. 
  *
  * @author Arlen Johnson       johnsa - rpi.edu
+ * 
+ * All strings used in this file are referenced from localeSettings.xsl
  */
 
 // Constants and RFC-5445 values 
 // These should be put some place permanent
-var bwAttendeeRoleChair = "CHAIR";
-var bwAttendeeRoleRequired = "REQ-PARTICIPANT";
-var bwAttendeeRoleOptional = "OPT-PARTICIPANT";
-var bwAttendeeRoleNonParticipant = "NON-PARTICIPANT";
-var bwAttendeeStatusNeedsAction = "NEEDS-ACTION";
-var bwAttendeeStatusAccepted = "ACCEPTED";
-var bwAttendeeStatusDeclined = "DECLINED";
-var bwAttendeeStatusTentative = "TENTATIVE";
-var bwAttendeeStatusDelegated = "DELEGATED";
-var bwAttendeeStatusCompleted = "COMPLETED";
-var bwAttendeeStatusInProcess = "IN-PROCESS";
-var bwAttendeeTypePerson = "person";
-var bwAttendeeTypeLocation = "location";
-var bwAttendeeTypeResource = "resource";
-
-// display strings for the values above
-// should be put with other internationalized strings
-// can be translated
-var bwAttendeeDispRoleChair = "chair";
-var bwAttendeeDispRoleRequired = "required participant";
-var bwAttendeeDispRoleOptional = "optional participant";
-var bwAttendeeDispRoleNonParticipant = "non-participant";
-var bwAttendeeDispStatusNeedsAction = "needs action";
-var bwAttendeeDispStatusAccepted = "accepted";
-var bwAttendeeDispStatusDeclined = "declined";
-var bwAttendeeDispStatusTentative = "tentative";
-var bwAttendeeDispStatusDelegated = "delegated";
-var bwAttendeeDispStatusCompleted = "completed";
-var bwAttendeeDispStatusInProcess = "in-process";
-var bwAttendeeDispTypePerson = "person";
-var bwAttendeeDispTypeLocation = "location";
-var bwAttendeeDispTypeResource = "resource";
-
-var bwFreeBusyDispTypeBusy = "BUSY";
-var bwFreeBusyDispTypeTentative = "TENTATIVE";
-var bwAddAttendeeDisp = "add attendee...";
-var bwAddDisp = "add";
-var bwAttendeeExistsDisp = "attendee exists";
-var bwAddAttendeeRoleDisp = "Role:";
-var bwAddAttendeeTypeDisp = "Type:";
-var bwAddAttendeeBookDisp = "Book:";
-var bwEventSubmitMeetingDisp = "send";
-var bwEventSubmitDisp = "save";
-
-var bwReqParticipantDisp = "required";
-var bwOptParticipantDisp = "optional";
-var bwChairDisp = "chair";
-var bwNonParticipant = "non-participant";
-var bwNeedsAction = "needs action";
-var bwAccepted = "accepted";
-var bwDeclined = "declined";
-var bwTentative = "tentative";
-var bwDelegated = "delegated";
-
-var bwErrorAttendees = "Error: attendees not returned";
 
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
@@ -91,6 +38,7 @@ var bwErrorAttendees = "Error: attendees not returned";
  * type:            String - person, location, other resource
  * selected:        Boolean - if attendee is included in picknext selections (checkbox next to attendee in grid) 
  */
+
 var bwAttendee = function(name, uid, role, status, type) {
   this.name = name;
   this.uid = uid;

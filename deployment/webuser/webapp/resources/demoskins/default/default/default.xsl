@@ -43,7 +43,7 @@
   <!-- DEFINE INCLUDES -->
   <xsl:include href="./globals.xsl" />
   <xsl:include href="../strings.xsl" />
-  <!-- xsl:include href="../localeSettings.xsl" /-->
+  <xsl:include href="../localeSettings.xsl" />
 
   <!-- DEFAULT THEME NAME -->
   <!-- to change the default theme, change this include -->

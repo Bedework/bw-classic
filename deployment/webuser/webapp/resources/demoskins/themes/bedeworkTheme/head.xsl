@@ -202,6 +202,8 @@
       
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
       
+      <!-- import the strings for the scheduling grid widget -->
+      <xsl:call-template name="bedeworkSchedulingStrings"/>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkScheduling.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/css/bwScheduling.css"/>
       <!-- 
