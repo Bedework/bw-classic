@@ -31,12 +31,12 @@
   $.fn.bwTimePicker = function(options) { 
     
     var defaults = {  
-      hour24: false,
-      withPadding: false,
-      attachToId: null,
-      hourId: null,
-      minuteId: null,
-      ampmId: null
+      hour24: false,      // are we in 24 hour clock mode?
+      withPadding: false, // pad the hours with a zero if below 10
+      attachToId: null,   // id of element which when clicked will launch the time picker
+      hourIds: null,      // array of ids - one for each hour element to be updated
+      minuteIds: null,    // array of ids - one for each minute element to be updated
+      ampmIds: null       // array of ids - one for each am/pm element to be updated
     };  
     var options = $.extend(defaults, options);
     
@@ -86,17 +86,23 @@
             if (hours < 10 && options.withPadding) {
               hours = "0" + hours; 
             }
-            $("#" + options.hourId).val(hours);
+            for (var i=0; i < options.hourIds.length; i++) {
+              $("#" + options.hourIds[i]).val(hours);
+            }
           });
           $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").click(function(){
             $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").removeClass('bwTimePickerSelected');
             $(this).addClass('bwTimePickerSelected');
-            $("#" + options.minuteId).val($(this).html());
+            for (var i=0; i < options.minuteIds.length; i++) {
+              $("#" + options.minuteIds[i]).val($(this).html());
+            }
           });
           $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").click(function(){
             $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").removeClass('bwTimePickerSelected');
             $(this).addClass('bwTimePickerSelected');
-            $("#" + options.ampmId).val($(this).html());
+            for (var i=0; i < options.ampmIds.length; i++) {
+              $("#" + options.ampmIds[i]).val($(this).html());
+            }
           });
         },
         function(){
