@@ -36,14 +36,18 @@
       attachToId: null,   // id of element which when clicked will launch the time picker
       hourIds: null,      // array of ids - one for each hour element to be updated
       minuteIds: null,    // array of ids - one for each minute element to be updated
-      ampmIds: null       // array of ids - one for each am/pm element to be updated
+      ampmIds: null,      // array of ids - one for each am/pm element to be updated
+      hourLabel: "Hour",  // default text for "Hour"
+      minuteLabel: "Minute", // default text for "Minute"
+      amLabel: "am",      // default text for "am"
+      pmLabel: "pm",      // default text for "pm"
     };  
     var options = $.extend(defaults, options);
     
     var bwTimePickerContent = "";
     bwTimePickerContent += '<div class="bwTimePicker">';
     bwTimePickerContent += '<div class="bwTimePickerCloser">x</div>';
-    bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerHours"><h6>Hour</h6><div class="bwTimePickerVals">';
+    bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerHours"><h6>' + options.hourLabel + '</h6><div class="bwTimePickerVals">';
     if (options.hour24) {
       bwTimePickerContent += '<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul>';
       bwTimePickerContent += '<ul><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li></ul>';
@@ -55,12 +59,12 @@
     }
     bwTimePickerContent += '</div></div>';
     bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerColon">:</div>';
-    bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerMinutes"><h6>Minute</h6><div class="bwTimePickerVals">';
+    bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerMinutes"><h6>' + options.minuteLabel + '</h6><div class="bwTimePickerVals">';
     bwTimePickerContent += '<ul><li>00</li><li>10</li><li>20</li><li>30</li><li>40</li><li>50</li></ul>';
     bwTimePickerContent += '<ul><li>05</li><li>15</li><li>25</li><li>35</li><li>45</li><li>55</li></ul>';
     bwTimePickerContent += '</div></div>';
     if (!options.hour24) {
-      bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerAmPm"><ul><li>am</li><li>pm</li></ul></div>';
+      bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerAmPm"><ul><li>' + options.amLabel + '</li><li>' + options.pmLabel + '</li></ul></div>';
     }
     bwTimePickerContent += '</div>';
     return this.each(function() {  
