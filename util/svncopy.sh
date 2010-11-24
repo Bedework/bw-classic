@@ -98,6 +98,10 @@ copyproject() {
   then
 #      Not linked
     echo ""
+  elif [ "${1}" = "excgsynch" ]
+  then
+#      Not linked
+    echo ""
   elif [ "${1}" = "monitor" ]
   then
 #      Not linked
@@ -146,6 +150,7 @@ PROJECTS="$PROJECTS clientapp"
 PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
+# PROJECTS="$PROJECTS exchgsynch"
 PROJECTS="$PROJECTS indexer"
 PROJECTS="$PROJECTS monitor"
 PROJECTS="$PROJECTS naming"
