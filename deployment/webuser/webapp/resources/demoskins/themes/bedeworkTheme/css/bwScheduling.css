@@ -196,6 +196,9 @@
 #bwScheduleControls td.time {
   padding-left: 1em;
 }
+#bwScheduleControls td.schedDate {
+  min-width: 410px;
+}
 #bwScheduleControls input.alldayFlag {
   margin-left: 1em;
 }

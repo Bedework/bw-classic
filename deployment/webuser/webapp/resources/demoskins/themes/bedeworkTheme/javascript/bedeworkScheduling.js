@@ -575,14 +575,14 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     try {
       // number of days to display
       var range = getDayRange(this.startRange, this.endRange);
-      // number of hours to display
-      var hourRange = this.endHoursRange - this.startHoursRange;
-      var startHour = this.startHoursRange;
+      // number of hours to display, default to 24 hour mode
+      var hourRange = 24;
+      var startHour = 0;
       
-      if (!this.workday) {
-        // show full 24 hours in grid
-        hourRange = 24;
-        startHour = 0;
+      if (this.workday) {
+        // show only workday hours in grid
+        hourRange = this.endHoursRange - this.startHoursRange;
+        startHour = this.startHoursRange;
       }
       
       var cellsInDay = hourRange * this.hourDivision;
@@ -1200,26 +1200,31 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // the scheduling widget, and the rest of the form.
       
       // toggle 24 hour mode - can be done with text or with checkbox
-      $("#bwSched24HoursText").click(function() {
-        if($("#bwSched24HoursCb").attr('checked')) {
-          $("#bwSched24HoursCb").removeAttr('checked');
+      // checkbox handler:
+      function switchSched24() {
+        if($("#bwSched24HoursCb").is(":checked")) {
           bwGrid.workday = false;
+        } else {
+          bwGrid.workday = true;
+        }
+        // must unbind the click event from the checkbox or we'll stack up events
+        $("#bwSched24HoursCb").unbind("click", switchSched24);
+        bwGrid.display(); 
+      }
+      // text handler: checks or unchecks the box
+      function switchSched24Text() {
+        if($("#bwSched24HoursCb").is(":checked")) {
+          $("#bwSched24HoursCb").removeAttr('checked');
         } else {
           $("#bwSched24HoursCb").attr('checked','checked');
-          bwGrid.workday = true;
         }
-        //bwGrid.display();
-      });
-      $("#bwSched24HoursCb").click(function() {
-        if($(this).checked) {
-          bwGrid.workday = false;
-        } else {
-          bwGrid.workday = true;
-        }
-        bwGrid.display();
-      });
-      
-      
+        // must unbind the click event from the checkbox or we'll stack up events
+        $("#bwSched24HoursText").unbind("click", switchSched24Text);
+        switchSched24();
+      }
+      // bind the text and the checkbox to the handlers
+      $("#bwSched24HoursCb").click(switchSched24);
+      $("#bwSched24HoursText").click(switchSched24Text);
       
       // if we change the main tab's start date, time, or duration, update the meeting tab
       // and reset the range of the scheduling grid
