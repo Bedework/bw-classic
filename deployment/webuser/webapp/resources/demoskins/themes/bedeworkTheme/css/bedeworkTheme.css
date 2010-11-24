@@ -77,7 +77,7 @@ body {
   text-align: right;
   margin: 1em 0.5em;
 }
-#bedework input:focus,
+#bedework input[type=text]:focus,
 #bedework textarea:focus,
 #bedework select:focus {
 	background-color: #DFEAFF !important;

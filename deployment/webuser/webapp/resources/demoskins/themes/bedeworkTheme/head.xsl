@@ -120,9 +120,9 @@
               $("#bwStartClock").bwTimePicker({
                 hour24: <xsl:value-of select="/bedework/hour24"/>,
                 attachToId: "calWidgetStartTimeHider",
-                hourId: "eventStartDateHour",
-                minuteId: "eventStartDateMinute",
-                ampmId: "eventStartDateAmpm"
+                hourIds: ["eventStartDateHour","eventStartDateSchedHour"],
+                minuteIds: ["eventStartDateMinute","eventStartDateSchedMinute"],
+                ampmIds: ["eventStartDateAmpm","eventStartDateSchedAmpm"]
               });
 
               // enddate
@@ -135,9 +135,9 @@
               $("#bwEndClock").bwTimePicker({
                 hour24: <xsl:value-of select="/bedework/hour24"/>,
                 attachToId: "calWidgetEndTimeHider",
-                hourId: "eventEndDateHour",
-                minuteId: "eventEndDateMinute",
-                ampmId: "eventEndDateAmpm"
+                hourIds: ["eventEndDateHour"],
+                minuteIds: ["eventEndDateMinute"],
+                ampmIds: ["eventEndDateAmpm"]
               });
               
               // recurrence until
@@ -167,8 +167,8 @@
                 hour24: true,
                 withPadding: true,
                 attachToId: "rdateTimeFields",
-                hourId: "eventRdateHour",
-                minuteId: "eventRdateMinute"
+                hourIds: ["eventRdateHour"],
+                minuteIds: ["eventRdateMinute"]
               });
               
               // meeting startdate widget
@@ -181,9 +181,9 @@
               $("#bwSchedClock").bwTimePicker({
                 hour24: <xsl:value-of select="/bedework/hour24"/>,
                 attachToId: "schedTime",
-                hourId: "eventStartDateSchedHour",
-                minuteId: "eventStartDateSchedMinute",
-                ampmId: "eventStartDateSchedAmpm"
+                hourIds: ["eventStartDateSchedHour","eventStartDateHour"],
+                minuteIds: ["eventStartDateSchedMinute","eventStartDateMinute"],
+                ampmIds: ["eventStartDateSchedAmpm","eventStartDateAmpm"]
               });
             }
             </xsl:comment>
