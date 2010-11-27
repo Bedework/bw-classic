@@ -890,420 +890,415 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // write the table back to the display
       $("#" + displayId).html(fbDisplay);
       
-      
+       // now hide the processing message
+       $("#bwSchedProcessingMsg").fadeOut(100);
+
       // highlight the time based on the current date/time settings
       //var curSelectionTime = Number(startSelectionMils);
       // set the end time by adding the duration
       //endSelectionMils = Number(curSelectionTime) + Number(durationMils);
       //bwGrid.highlight(curSelectionTime, endSelectionMils);
-      
-      
-      // **** ACTIONS ****
-      // now add some rollovers and onclick actions 
-      // to the elements of the freebusy grid
-      $("#bwScheduleTable .icon").hover(
-        function () {
-          $(this).next(".tip").fadeIn(100);
-        }, 
-        function () {
-          $(this).next(".tip").fadeOut(100);
-        }
-      );  
-      
-      $("#bwScheduleTable .activeCell").hover(
-        function () {
-          $(this).children(".tip").fadeIn(20);
-        }, 
-        function () {
-          $(this).children(".tip").fadeOut(20);
-        }
-      );
-      
-      $("#bwScheduleTable .fbcell").click (
-        function () {
-          // clear all previous highlighting
-          $("#bwScheduleTable .highlight").removeClass("highlight");
-          
-          // get the id of the current cell - takes the form "1271947500000-attendeestring"
-          // we want the first half, which is the same as the time class associated with the column
-          var splitId = $(this).attr("id").split("-");
-          
-          // set the start of the selection range in milliseconds (first half of the ID)
-          // we will use this to set the start time and to find cells in the same column
-          var startSelectionMils = splitId[0];
-          var endSelectionMils = Number(startSelectionMils) + Number(durationMils);
-          
-          // now do the highlighting
-          $("#bwScheduleTable .fbcell").each(function(index) {
-            var splId = $(this).attr("id").split("-");
-            if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
-              $(this).addClass("highlight");
-            }
-          });
-          
-          // set the freeTimeIndex to the nearest index for the pickNext/previous buttons
-          for (var i = 0; i < bwGrid.freeTime.length; i++) {
-            if (Number(bwGrid.freeTime[i]) >= Number(startSelectionMils)) {
-              bwGrid.freeTimeIndex = i - 1; // this will make pick previous jump an extra gap after clicking in a busy space, but it makes pick next work correctly in the same circumstance
-              if (bwGrid.freeTimeIndex < 0) {
-                bwGrid.freeTimeIndex = 0;
-              }
-              break;
-            }
-          }
-          
-          bwGrid.setDateTimeWidgets(startSelectionMils);
-  
-        }
-      );
-      
-      this.updateBookPath = function(path) {
-        $("#bwCardDavBookPath").val(path);
-      }
-      
-      this.gotoNextRange = function() {
-        $("#bwSchedProcessingMsg").show();
-        bwGrid.startRange.addDays(bwGrid.dayRange);
-        bwGrid.endRange.addDays(bwGrid.dayRange);
-        if (bwGrid.attendees.length) {
-          bwGrid.requestFreeBusy();
-        } else {
-          bwGrid.display(); 
-        }
-      }
-      
-      this.gotoPreviousRange = function() {
-        $("#bwSchedProcessingMsg").show();
-        bwGrid.startRange.subtractDays(bwGrid.dayRange);
-        bwGrid.endRange.subtractDays(bwGrid.dayRange);
-        if (bwGrid.attendees.length) {
-          bwGrid.requestFreeBusy();
-        } else {
-          bwGrid.display(); 
-        }
-      }
-
-      this.setDateTimeWidgets = function(startMils) {
-        // set the values of the date/time widgets on the main and meeting tabs
-        var selectedDate = new Date(Number(startMils));
-        var selectedDateStr = selectedDate.getFullYear() + "-" + selectedDate.getMonthFull() + "-" + selectedDate.getDateFull();
-        $("#bwEventWidgetStartDate").val(selectedDateStr);
-        $("#bwEventWidgetStartDateSched").val(selectedDateStr);
-        // check for ampm or hour24
-        if ($("#eventStartDateSchedAmpm").length) {
-          // we are using am/pm
-          $("#eventStartDateHour").val(selectedDate.getHours12());
-          $("#eventStartDateMinute").val(selectedDate.getMinutesFull());
-          $("#eventStartDateAmpm").val(selectedDate.getAmpm());
-          $("#eventStartDateSchedHour").val(selectedDate.getHours12());
-          $("#eventStartDateSchedMinute").val(selectedDate.getMinutesFull());
-          $("#eventStartDateSchedAmpm").val(selectedDate.getAmpm());
-        } else {
-          // we are using hour24
-          $("#eventStartDateHour").val(selectedDate.getHours());
-          $("#eventStartDateMinute").val(selectedDate.getMinutesFull());
-          $("#eventStartDateSchedHour").val(selectedDate.getHours());
-          $("#eventStartDateSchedMinute").val(selectedDate.getMinutesFull());
-        }
-      } 
-      
-      /*
-      $("#bwScheduleTable .fbcell").mousedown (
-        function () {
-          // clear all previous highlighting
-          $("#bwScheduleTable .highlight").removeClass("highlight");
-          
-          // get the id of the current cell - takes the form "1271947500000-attendeestring"
-          // we want the first half, which is the same as the time class associated with the column
-          var splitId = $(this).attr("id").split("-");
-          
-          // set the start of the selection range in milliseconds (first half of the ID)
-          // we will use this to set the start time and to find cells in the same column
-          startSelectionMils = splitId[0];
-          
-          // find the cells (the column) that share the same class
-          $("#bwScheduleTable ." + startSelectionMils).addClass("highlight");
-          
-          // we are now selecting, so highlight as we go
-          selecting = true;          
-        }
-      );
-
-      $("#bwScheduleTable .fbcell").mouseover (
-        function () {
-          if (selecting) {
-            // get the id of the current cell - takes the form "1271947500000-attendeestring"
-            // we want the first half, which is the same as the time class associated with the column
-            var splitId = $(this).attr("id").split("-");
-
-            // find the cells (the column) that contain the first half as a class
-            $("#bwScheduleTable ." + splitId[0]).addClass("highlight");
-          }          
-        }
-      );
-      
-      $("#bwScheduleTable .fbcell").mouseup (
-        function () {
-          // we are no longer selecting
-          selecting = false;
-          
-          // get the id of the current cell - takes the form "1271947500000-attendeestring"
-          // we want the first half, which is the same as the time class associated with the column
-          var splitId = $(this).attr("id").split("-");
-          
-          // set the end of the selection range in milliseconds (first half of the ID)
-          // we will use this to set the end time / duration
-          endSelectionMils = splitId[0];
-          
-        }
-      );
-      */
-      
-      $("#bwScheduleTable #bwAddAttendee").click (
-        function () {
-          if (this.value == bwAddAttendeeDisp) {
-            this.value = "";
-          }
-          $(this).addClass("active");
-          $(this).removeClass("pending");
-          
-          // hide advanced switch, show add button
-          // $("#bwAddAttendeeAdvanced").hide();
-          changeClass("bwAddAttendeeAdd","visible");
-          changeClass("bwAddAttendeeFields", "visible");
-        }
-      );
-      
-      // add attendee box - use jquery UI autocomplete
-      // carddavUrl supplied in bedework.js
-      // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
-      // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
-      $("#bwScheduleTable #bwAddAttendee").autocomplete({
-        minLength: 1,
-        // set the data source, call it, and format the results:
-        source: function(req, include) {
-          // build the address book url; the path to the address book is determined by the
-          // radio button choices in the "add attendee" widget - these are stored on the fly
-          // in the hidden field with id bwCardDavBookPath
-          addrBookUrl = carddavUrl + "?format=json&addrbook=" + $("#bwCardDavBookPath").val();
-          
-          // call the server and push the results into an array "items"
-          $.getJSON(addrBookUrl, req, function(data) {
-            var acResults = "";
-            if (data != undefined && data.microformats != undefined && data.microformats.vcard != undefined) {
-              acResults = data.microformats.vcard;
-            }
-            var items = [];
-            $.each(acResults, function(i,entry) {
-              
-              // build the label from the full name and email address
-              var curFn = "";
-              var curEmail = "";
-              var curLabel = "";
-              var curKind = "";
-              
-              if (entry.fn != undefined && entry.fn.value != undefined) {
-                curFn = entry.fn.value;
-              } 
-              
-              if (entry.kind != undefined && entry.kind.value != undefined) {
-                curKind = entry.kind.value;
-              }
-              
-              if (curKind == "group") {
-                if (entry.member != undefined && entry.member.length > 0) {
-                  var members = "";
-                  for (var i = 0; i < entry.member.length; i++ ) {
-                    members += entry.member[i].value + ",";
-                  }
-                  members = members.substring(0,members.length-1);
-                  var curItem = {label: curFn, value: members};
-                  items.push(curItem);
-                }
-              } else {
-                // this is probably not enough: we should account for all email addresses if there is no calendar uri
-                if (entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
-                  curEmail = entry.email[0].value;
-                }
-                if (curFn != "") {
-                  curLabel = curFn + ", " + curEmail;
-                } else {
-                  curLabel = curEmail;
-                }
-                
-                // use the calendar address uri if available, otherwise use email
-                var curUri = "";
-                if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
-                  curUri = entry.caladruri.value;
-                }
-                if (curUri == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
-                  var curEmail = entry.email[0].value;
-                  if (curEmail != "") {
-                    curUri = "mailto:" + curEmail;
-                  }
-                }
-                
-                // only add the entry if there is a uri and a label to use
-                if (curUri != "" && curLabel != "") {
-                  var curItem = {label: curLabel, value: curUri};
-                  items.push(curItem);
-                }
-              }
-            });
-            
-            // pass items to the callback function for display in the autocomplete pulldown
-            include(items);
-          });
-        }
-      });
-      
-      // capture the enter key when entering an attendee;
-      // do not submit the form; add the attendee.
-      $("#bwScheduleTable #bwAddAttendee").keypress (
-          function (e) {
-            if(e.keyCode == 13) { // enter
-              e.preventDefault();
-              bwGrid.addAttendeeFromGrid();
-            }
-          }
-        );
-      
-      $("#bwScheduleTable #bwAddAttendeeAdd").click (
-        function () {
-          bwGrid.addAttendeeFromGrid();
-        }
-      );
-      
-      
-      $("#bwScheduleTable .removeAttendee").click (
-        function () {
-          var i = $("#bwScheduleTable .removeAttendee").index(this);
-          bwGrid.removeAttendee(i);
-        }
-      );
-      
-      // enable or disable an attendee
-      $("#bwScheduleTable input.selectedToggle").click (
-        function () {
-          var i = $("#bwScheduleTable input.selectedToggle").index(this);
-          if (this.checked) {
-             bwGrid.attendees[i].selected = true;
-          } else {
-             bwGrid.attendees[i].selected = false;
-          }
-          
-          bwGrid.display();
-        }
-      );
-      
-      // now add some interactions between the freebusy control buttons,
-      // the scheduling widget, and the rest of the form.
-      
-      // toggle 24 hour mode - can be done with text or with checkbox
-      // checkbox handler:
-      function switchSched24() {
-        if($("#bwSched24HoursCb").is(":checked")) {
-          bwGrid.workday = false;
-        } else {
-          bwGrid.workday = true;
-        }
-        // must unbind the click event from the checkbox or we'll stack up events
-        $("#bwSched24HoursCb").unbind("click", switchSched24);
-        bwGrid.display(); 
-      }
-      // text handler: checks or unchecks the box
-      function switchSched24Text() {
-        if($("#bwSched24HoursCb").is(":checked")) {
-          $("#bwSched24HoursCb").removeAttr('checked');
-        } else {
-          $("#bwSched24HoursCb").attr('checked','checked');
-        }
-        // must unbind the click event from the checkbox or we'll stack up events
-        $("#bwSched24HoursText").unbind("click", switchSched24Text);
-        switchSched24();
-      }
-      // bind the text and the checkbox to the handlers
-      $("#bwSched24HoursCb").click(switchSched24);
-      $("#bwSched24HoursText").click(switchSched24Text);
-      
-      // if we change the main tab's start date, time, or duration, update the meeting tab
-      // and reset the range of the scheduling grid
-      $("#bwEventWidgetStartDate").change(function() {
-        $("#bwEventWidgetStartDateSched").val($("#bwEventWidgetStartDate").val());
-        bwGrid.startRange = $("#bwEventWidgetStartDate").datepicker("getDate");
-        bwGrid.endRange = $("#bwEventWidgetStartDate").datepicker("getDate");
-        bwGrid.endRange.addDays(bwGrid.dayRange);
-        if (bwGrid.attendees.length) {
-          bwGrid.requestFreeBusy();
-        } else {
-          bwGrid.display(); 
-        }
-      });
-      
-      $("#eventStartDateHour").change(function() { 
-        bwGrid.bwSchedChangeTime("#eventStartDateHour");
-      });
-      
-      $("#eventStartDateMinute").change(function() { 
-        bwGrid.bwSchedChangeTime("#eventStartDateMinute");
-      });
-
-      $("#durationDays").change(function() {
-        bwGrid.bwSchedChangeDuration("#durationDays");
-      });
-      
-      $("#durationHours").change(function() {
-        bwGrid.bwSchedChangeDuration("#durationHours");
-      });
-      
-      $("#durationMinutes").change(function() {
-        bwGrid.bwSchedChangeDuration("#durationMinutes");
-      });
-
-      // if we change the meeting tab's date, time, or duration, update the main tab
-      // and reset the range of the scheduling grid
-      $("#bwEventWidgetStartDateSched").change(function() {
-        $("#bwEventWidgetStartDate").val($("#bwEventWidgetStartDateSched").val());
-        bwGrid.startRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
-        bwGrid.endRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
-        bwGrid.endRange.addDays(bwGrid.dayRange);
-        if (bwGrid.attendees.length) {
-          bwGrid.requestFreeBusy();
-        } else {
-          bwGrid.display(); 
-        }
-      });
-      
-      $("#eventStartDateSchedHour").change(function() { 
-        alert($("#eventStartDateSchedHour").val());
-        bwGrid.bwSchedChangeTime("#eventStartDateSchedHour");
-      });
-      
-      $("#eventStartDateSchedMinute").change(function() { 
-        bwGrid.bwSchedChangeTime("#eventStartDateSchedMinute");
-      });
-      
-      $("#durationDaysSched").change(function() {
-        bwGrid.bwSchedChangeDuration("#durationDaysSched");
-      });
-      
-      $("#durationHoursSched").change(function() {
-        bwGrid.bwSchedChangeDuration("#durationHoursSched");
-      });
-      
-      $("#durationMinutesSched").change(function() {
-        bwGrid.bwSchedChangeDuration("#durationMinutesSched");
-      });
-      
-      // after all else, hide the processing message
-      $("#bwSchedProcessingMsg").fadeOut(100);
-
     } catch (e) {
       alert(e);
     }
     
   };
+    
+  this.updateBookPath = function(path) {
+    $("#bwCardDavBookPath").val(path);
+  }
+  
+  this.gotoNextRange = function() {
+    $("#bwSchedProcessingMsg").show();
+    bwGrid.startRange.addDays(bwGrid.dayRange);
+    bwGrid.endRange.addDays(bwGrid.dayRange);
+    if (bwGrid.attendees.length) {
+      bwGrid.requestFreeBusy();
+    } else {
+      bwGrid.display(); 
+    }
+  }
+  
+  this.gotoPreviousRange = function() {
+    $("#bwSchedProcessingMsg").show();
+    bwGrid.startRange.subtractDays(bwGrid.dayRange);
+    bwGrid.endRange.subtractDays(bwGrid.dayRange);
+    if (bwGrid.attendees.length) {
+      bwGrid.requestFreeBusy();
+    } else {
+      bwGrid.display(); 
+    }
+  }
+  
+  this.setDateTimeWidgets = function(startMils) {
+    // set the values of the date/time widgets on the main and meeting tabs
+    var selectedDate = new Date(Number(startMils));
+    var selectedDateStr = selectedDate.getFullYear() + "-" + selectedDate.getMonthFull() + "-" + selectedDate.getDateFull();
+    $("#bwEventWidgetStartDate").val(selectedDateStr);
+    $("#bwEventWidgetStartDateSched").val(selectedDateStr);
+    // check for ampm or hour24
+    if ($("#eventStartDateSchedAmpm").length) {
+      // we are using am/pm
+      $("#eventStartDateHour").val(selectedDate.getHours12());
+      $("#eventStartDateMinute").val(selectedDate.getMinutesFull());
+      $("#eventStartDateAmpm").val(selectedDate.getAmpm());
+      $("#eventStartDateSchedHour").val(selectedDate.getHours12());
+      $("#eventStartDateSchedMinute").val(selectedDate.getMinutesFull());
+      $("#eventStartDateSchedAmpm").val(selectedDate.getAmpm());
+    } else {
+      // we are using hour24
+      $("#eventStartDateHour").val(selectedDate.getHours());
+      $("#eventStartDateMinute").val(selectedDate.getMinutesFull());
+      $("#eventStartDateSchedHour").val(selectedDate.getHours());
+      $("#eventStartDateSchedMinute").val(selectedDate.getMinutesFull());
+    }
+  } 
 };
+
+// **** ACTIONS ****
+// now add some rollovers and onclick actions 
+// to the elements of the freebusy grid once the
+// document is loaded
+$(document).ready(function() {
+  $("#bwScheduleTable .icon").hover(
+    function () {
+      $(this).next(".tip").fadeIn(100);
+    }, 
+    function () {
+      $(this).next(".tip").fadeOut(100);
+    }
+  );  
+  
+  $("#bwScheduleTable .activeCell").hover(
+    function () {
+      $(this).children(".tip").fadeIn(20);
+    }, 
+    function () {
+      $(this).children(".tip").fadeOut(20);
+    }
+  );
+  
+  $("#bwScheduleTable .fbcell").click (
+    function () {
+      // clear all previous highlighting
+      $("#bwScheduleTable .highlight").removeClass("highlight");
+      
+      // get the id of the current cell - takes the form "1271947500000-attendeestring"
+      // we want the first half, which is the same as the time class associated with the column
+      var splitId = $(this).attr("id").split("-");
+      
+      // set the start of the selection range in milliseconds (first half of the ID)
+      // we will use this to set the start time and to find cells in the same column
+      var startSelectionMils = splitId[0];
+      var endSelectionMils = Number(startSelectionMils) + Number(durationMils);
+      
+      // now do the highlighting
+      $("#bwScheduleTable .fbcell").each(function(index) {
+        var splId = $(this).attr("id").split("-");
+        if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
+          $(this).addClass("highlight");
+        }
+      });
+      
+      // set the freeTimeIndex to the nearest index for the pickNext/previous buttons
+      for (var i = 0; i < bwGrid.freeTime.length; i++) {
+        if (Number(bwGrid.freeTime[i]) >= Number(startSelectionMils)) {
+          bwGrid.freeTimeIndex = i - 1; // this will make pick previous jump an extra gap after clicking in a busy space, but it makes pick next work correctly in the same circumstance
+          if (bwGrid.freeTimeIndex < 0) {
+            bwGrid.freeTimeIndex = 0;
+          }
+          break;
+        }
+      }
+      
+      bwGrid.setDateTimeWidgets(startSelectionMils);
+  
+    }
+  );
+  
+  /*
+  $("#bwScheduleTable .fbcell").mousedown (
+    function () {
+      // clear all previous highlighting
+      $("#bwScheduleTable .highlight").removeClass("highlight");
+      
+      // get the id of the current cell - takes the form "1271947500000-attendeestring"
+      // we want the first half, which is the same as the time class associated with the column
+      var splitId = $(this).attr("id").split("-");
+      
+      // set the start of the selection range in milliseconds (first half of the ID)
+      // we will use this to set the start time and to find cells in the same column
+      startSelectionMils = splitId[0];
+      
+      // find the cells (the column) that share the same class
+      $("#bwScheduleTable ." + startSelectionMils).addClass("highlight");
+      
+      // we are now selecting, so highlight as we go
+      selecting = true;          
+    }
+  );
+  
+  $("#bwScheduleTable .fbcell").mouseover (
+    function () {
+      if (selecting) {
+        // get the id of the current cell - takes the form "1271947500000-attendeestring"
+        // we want the first half, which is the same as the time class associated with the column
+        var splitId = $(this).attr("id").split("-");
+  
+        // find the cells (the column) that contain the first half as a class
+        $("#bwScheduleTable ." + splitId[0]).addClass("highlight");
+      }          
+    }
+  );
+  
+  $("#bwScheduleTable .fbcell").mouseup (
+    function () {
+      // we are no longer selecting
+      selecting = false;
+      
+      // get the id of the current cell - takes the form "1271947500000-attendeestring"
+      // we want the first half, which is the same as the time class associated with the column
+      var splitId = $(this).attr("id").split("-");
+      
+      // set the end of the selection range in milliseconds (first half of the ID)
+      // we will use this to set the end time / duration
+      endSelectionMils = splitId[0];
+      
+    }
+  );
+  */
+  
+  $("#bwScheduleTable #bwAddAttendee").click (
+    function () {
+      if (this.value == bwAddAttendeeDisp) {
+        this.value = "";
+      }
+      $(this).addClass("active");
+      $(this).removeClass("pending");
+      
+      // hide advanced switch, show add button
+      // $("#bwAddAttendeeAdvanced").hide();
+      changeClass("bwAddAttendeeAdd","visible");
+      changeClass("bwAddAttendeeFields", "visible");
+    }
+  );
+  
+  // add attendee box - use jquery UI autocomplete
+  // carddavUrl supplied in bedework.js
+  // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
+  // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
+  $("#bwScheduleTable #bwAddAttendee").autocomplete({
+    minLength: 1,
+    // set the data source, call it, and format the results:
+    source: function(req, include) {
+      // build the address book url; the path to the address book is determined by the
+      // radio button choices in the "add attendee" widget - these are stored on the fly
+      // in the hidden field with id bwCardDavBookPath
+      addrBookUrl = carddavUrl + "?format=json&addrbook=" + $("#bwCardDavBookPath").val();
+      
+      // call the server and push the results into an array "items"
+      $.getJSON(addrBookUrl, req, function(data) {
+        var acResults = "";
+        if (data != undefined && data.microformats != undefined && data.microformats.vcard != undefined) {
+          acResults = data.microformats.vcard;
+        }
+        var items = [];
+        $.each(acResults, function(i,entry) {
+          
+          // build the label from the full name and email address
+          var curFn = "";
+          var curEmail = "";
+          var curLabel = "";
+          var curKind = "";
+          
+          if (entry.fn != undefined && entry.fn.value != undefined) {
+            curFn = entry.fn.value;
+          } 
+          
+          if (entry.kind != undefined && entry.kind.value != undefined) {
+            curKind = entry.kind.value;
+          }
+          
+          if (curKind == "group") {
+            if (entry.member != undefined && entry.member.length > 0) {
+              var members = "";
+              for (var i = 0; i < entry.member.length; i++ ) {
+                members += entry.member[i].value + ",";
+              }
+              members = members.substring(0,members.length-1);
+              var curItem = {label: curFn, value: members};
+              items.push(curItem);
+            }
+          } else {
+            // this is probably not enough: we should account for all email addresses if there is no calendar uri
+            if (entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+              curEmail = entry.email[0].value;
+            }
+            if (curFn != "") {
+              curLabel = curFn + ", " + curEmail;
+            } else {
+              curLabel = curEmail;
+            }
+            
+            // use the calendar address uri if available, otherwise use email
+            var curUri = "";
+            if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
+              curUri = entry.caladruri.value;
+            }
+            if (curUri == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+              var curEmail = entry.email[0].value;
+              if (curEmail != "") {
+                curUri = "mailto:" + curEmail;
+              }
+            }
+            
+            // only add the entry if there is a uri and a label to use
+            if (curUri != "" && curLabel != "") {
+              var curItem = {label: curLabel, value: curUri};
+              items.push(curItem);
+            }
+          }
+        });
+        
+        // pass items to the callback function for display in the autocomplete pulldown
+        include(items);
+      });
+    }
+  });
+  
+  // capture the enter key when entering an attendee;
+  // do not submit the form; add the attendee.
+  $("#bwScheduleTable #bwAddAttendee").keypress (
+      function (e) {
+        if(e.keyCode == 13) { // enter
+          e.preventDefault();
+          bwGrid.addAttendeeFromGrid();
+        }
+      }
+    );
+  
+  $("#bwScheduleTable #bwAddAttendeeAdd").click (
+    function () {
+      bwGrid.addAttendeeFromGrid();
+    }
+  );
+  
+  
+  $("#bwScheduleTable .removeAttendee").click (
+    function () {
+      var i = $("#bwScheduleTable .removeAttendee").index(this);
+      bwGrid.removeAttendee(i);
+    }
+  );
+  
+  // enable or disable an attendee
+  $("#bwScheduleTable input.selectedToggle").click (
+    function () {
+      var i = $("#bwScheduleTable input.selectedToggle").index(this);
+      if (this.checked) {
+         bwGrid.attendees[i].selected = true;
+      } else {
+         bwGrid.attendees[i].selected = false;
+      }
+      
+      bwGrid.display();
+    }
+  );
+  
+  // now add some interactions between the freebusy control buttons,
+  // the scheduling widget, and the rest of the form.
+  
+  // toggle 24 hour mode - can be done with text or with checkbox
+  // checkbox handler:
+  function switchSched24() {
+    if($("#bwSched24HoursCb").is(":checked")) {
+      bwGrid.workday = false;
+    } else {
+      bwGrid.workday = true;
+    }
+    bwGrid.display(); 
+  }
+  // text handler: checks or unchecks the box
+  function switchSched24Text() {
+    if($("#bwSched24HoursCb").is(":checked")) {
+      $("#bwSched24HoursCb").removeAttr('checked');
+    } else {
+      $("#bwSched24HoursCb").attr('checked','checked');
+    }
+    switchSched24();
+  }
+  // bind the text and the checkbox to the handlers
+  $("#bwSched24HoursCb").click(switchSched24);
+  $("#bwSched24HoursText").click(switchSched24Text);
+  
+  // if we change the main tab's start date, time, or duration, update the meeting tab
+  // and reset the range of the scheduling grid
+  $("#bwEventWidgetStartDate").change(function(event) {
+    $("#bwEventWidgetStartDateSched").val($("#bwEventWidgetStartDate").val());
+    bwGrid.startRange = $("#bwEventWidgetStartDate").datepicker("getDate");
+    bwGrid.endRange = $("#bwEventWidgetStartDate").datepicker("getDate");
+    bwGrid.endRange.addDays(bwGrid.dayRange);
+    if (bwGrid.attendees.length) {
+      bwGrid.requestFreeBusy();
+    } else {
+      bwGrid.display();
+    }
+  });
+  
+  $("#eventStartDateHour").change(function() { 
+    bwGrid.bwSchedChangeTime("#eventStartDateHour");
+  });
+  
+  $("#eventStartDateMinute").change(function() { 
+    bwGrid.bwSchedChangeTime("#eventStartDateMinute");
+  });
+  
+  $("#durationDays").change(function() {
+    bwGrid.bwSchedChangeDuration("#durationDays");
+  });
+  
+  $("#durationHours").change(function() {
+    bwGrid.bwSchedChangeDuration("#durationHours");
+  });
+  
+  $("#durationMinutes").change(function() {
+    bwGrid.bwSchedChangeDuration("#durationMinutes");
+  });
+  
+  // if we change the meeting tab's date, time, or duration, update the main tab
+  // and reset the range of the scheduling grid
+  $("#bwEventWidgetStartDateSched").change(function(event) {
+    $("#bwEventWidgetStartDate").val($("#bwEventWidgetStartDateSched").val());
+    bwGrid.startRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
+    bwGrid.endRange = $("#bwEventWidgetStartDateSched").datepicker("getDate");
+    bwGrid.endRange.addDays(bwGrid.dayRange);
+    if (bwGrid.attendees.length) {
+      bwGrid.requestFreeBusy();
+    } else {
+      bwGrid.display(); 
+    }
+  });
+  
+  $("#eventStartDateSchedHour").change(function() { 
+    bwGrid.bwSchedChangeTime("#eventStartDateSchedHour");
+  });
+  
+  $("#eventStartDateSchedMinute").change(function() { 
+    bwGrid.bwSchedChangeTime("#eventStartDateSchedMinute");
+  });
+  
+  $("#durationDaysSched").change(function() {
+    bwGrid.bwSchedChangeDuration("#durationDaysSched");
+  });
+  
+  $("#durationHoursSched").change(function() {
+    bwGrid.bwSchedChangeDuration("#durationHoursSched");
+  });
+  
+  $("#durationMinutesSched").change(function() {
+    bwGrid.bwSchedChangeDuration("#durationMinutesSched");
+  });
+});
 
 // Utilities
 var getDayRange = function(startDate, endDate) {  
