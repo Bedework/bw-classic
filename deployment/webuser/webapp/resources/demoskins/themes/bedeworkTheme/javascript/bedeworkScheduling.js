@@ -898,6 +898,255 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // set the end time by adding the duration
       //endSelectionMils = Number(curSelectionTime) + Number(durationMils);
       //bwGrid.highlight(curSelectionTime, endSelectionMils);
+       
+     //**** ACTIONS ****
+     //now add some rollovers and onclick actions 
+     //to the elements of the freebusy grid 
+     $("#bwScheduleTable .icon").hover(
+       function () {
+         $(this).next(".tip").fadeIn(100);
+       }, 
+       function () {
+         $(this).next(".tip").fadeOut(100);
+       }
+     );  
+     
+     $("#bwScheduleTable .activeCell").hover(
+       function () {
+         $(this).children(".tip").fadeIn(20);
+       }, 
+       function () {
+         $(this).children(".tip").fadeOut(20);
+       }
+     );
+     
+     $("#bwScheduleTable .fbcell").click (
+       function () {
+         // clear all previous highlighting
+         $("#bwScheduleTable .highlight").removeClass("highlight");
+         
+         // get the id of the current cell - takes the form "1271947500000-attendeestring"
+         // we want the first half, which is the same as the time class associated with the column
+         var splitId = $(this).attr("id").split("-");
+         
+         // set the start of the selection range in milliseconds (first half of the ID)
+         // we will use this to set the start time and to find cells in the same column
+         var startSelectionMils = splitId[0];
+         var endSelectionMils = Number(startSelectionMils) + Number(durationMils);
+         
+         // now do the highlighting
+         $("#bwScheduleTable .fbcell").each(function(index) {
+           var splId = $(this).attr("id").split("-");
+           if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
+             $(this).addClass("highlight");
+           }
+         });
+         
+         // set the freeTimeIndex to the nearest index for the pickNext/previous buttons
+         for (var i = 0; i < bwGrid.freeTime.length; i++) {
+           if (Number(bwGrid.freeTime[i]) >= Number(startSelectionMils)) {
+             bwGrid.freeTimeIndex = i - 1; // this will make pick previous jump an extra gap after clicking in a busy space, but it makes pick next work correctly in the same circumstance
+             if (bwGrid.freeTimeIndex < 0) {
+               bwGrid.freeTimeIndex = 0;
+             }
+             break;
+           }
+         }
+         
+         bwGrid.setDateTimeWidgets(startSelectionMils);
+     
+       }
+     );
+     
+     /*
+     $("#bwScheduleTable .fbcell").mousedown (
+       function () {
+         // clear all previous highlighting
+         $("#bwScheduleTable .highlight").removeClass("highlight");
+         
+         // get the id of the current cell - takes the form "1271947500000-attendeestring"
+         // we want the first half, which is the same as the time class associated with the column
+         var splitId = $(this).attr("id").split("-");
+         
+         // set the start of the selection range in milliseconds (first half of the ID)
+         // we will use this to set the start time and to find cells in the same column
+         startSelectionMils = splitId[0];
+         
+         // find the cells (the column) that share the same class
+         $("#bwScheduleTable ." + startSelectionMils).addClass("highlight");
+         
+         // we are now selecting, so highlight as we go
+         selecting = true;          
+       }
+     );
+     
+     $("#bwScheduleTable .fbcell").mouseover (
+       function () {
+         if (selecting) {
+           // get the id of the current cell - takes the form "1271947500000-attendeestring"
+           // we want the first half, which is the same as the time class associated with the column
+           var splitId = $(this).attr("id").split("-");
+     
+           // find the cells (the column) that contain the first half as a class
+           $("#bwScheduleTable ." + splitId[0]).addClass("highlight");
+         }          
+       }
+     );
+     
+     $("#bwScheduleTable .fbcell").mouseup (
+       function () {
+         // we are no longer selecting
+         selecting = false;
+         
+         // get the id of the current cell - takes the form "1271947500000-attendeestring"
+         // we want the first half, which is the same as the time class associated with the column
+         var splitId = $(this).attr("id").split("-");
+         
+         // set the end of the selection range in milliseconds (first half of the ID)
+         // we will use this to set the end time / duration
+         endSelectionMils = splitId[0];
+         
+       }
+     );
+     */
+     
+     $("#bwScheduleTable #bwAddAttendee").click (
+       function () {
+         if (this.value == bwAddAttendeeDisp) {
+           this.value = "";
+         }
+         $(this).addClass("active");
+         $(this).removeClass("pending");
+         
+         // hide advanced switch, show add button
+         // $("#bwAddAttendeeAdvanced").hide();
+         changeClass("bwAddAttendeeAdd","visible");
+         changeClass("bwAddAttendeeFields", "visible");
+       }
+     );
+     
+     // add attendee box - use jquery UI autocomplete
+     // carddavUrl supplied in bedework.js
+     // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
+     // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
+     $("#bwScheduleTable #bwAddAttendee").autocomplete({
+       minLength: 1,
+       // set the data source, call it, and format the results:
+       source: function(req, include) {
+         // build the address book url; the path to the address book is determined by the
+         // radio button choices in the "add attendee" widget - these are stored on the fly
+         // in the hidden field with id bwCardDavBookPath
+         addrBookUrl = carddavUrl + "?format=json&addrbook=" + $("#bwCardDavBookPath").val();
+         
+         // call the server and push the results into an array "items"
+         $.getJSON(addrBookUrl, req, function(data) {
+           var acResults = "";
+           if (data != undefined && data.microformats != undefined && data.microformats.vcard != undefined) {
+             acResults = data.microformats.vcard;
+           }
+           var items = [];
+           $.each(acResults, function(i,entry) {
+             
+             // build the label from the full name and email address
+             var curFn = "";
+             var curEmail = "";
+             var curLabel = "";
+             var curKind = "";
+             
+             if (entry.fn != undefined && entry.fn.value != undefined) {
+               curFn = entry.fn.value;
+             } 
+             
+             if (entry.kind != undefined && entry.kind.value != undefined) {
+               curKind = entry.kind.value;
+             }
+             
+             if (curKind == "group") {
+               if (entry.member != undefined && entry.member.length > 0) {
+                 var members = "";
+                 for (var i = 0; i < entry.member.length; i++ ) {
+                   members += entry.member[i].value + ",";
+                 }
+                 members = members.substring(0,members.length-1);
+                 var curItem = {label: curFn, value: members};
+                 items.push(curItem);
+               }
+             } else {
+               // this is probably not enough: we should account for all email addresses if there is no calendar uri
+               if (entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+                 curEmail = entry.email[0].value;
+               }
+               if (curFn != "") {
+                 curLabel = curFn + ", " + curEmail;
+               } else {
+                 curLabel = curEmail;
+               }
+               
+               // use the calendar address uri if available, otherwise use email
+               var curUri = "";
+               if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
+                 curUri = entry.caladruri.value;
+               }
+               if (curUri == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
+                 var curEmail = entry.email[0].value;
+                 if (curEmail != "") {
+                   curUri = "mailto:" + curEmail;
+                 }
+               }
+               
+               // only add the entry if there is a uri and a label to use
+               if (curUri != "" && curLabel != "") {
+                 var curItem = {label: curLabel, value: curUri};
+                 items.push(curItem);
+               }
+             }
+           });
+           
+           // pass items to the callback function for display in the autocomplete pulldown
+           include(items);
+         });
+       }
+     });
+     
+     // capture the enter key when entering an attendee;
+     // do not submit the form; add the attendee.
+     $("#bwScheduleTable #bwAddAttendee").keypress (
+         function (e) {
+           if(e.keyCode == 13) { // enter
+             e.preventDefault();
+             bwGrid.addAttendeeFromGrid();
+           }
+         }
+       );
+     
+     $("#bwScheduleTable #bwAddAttendeeAdd").click (
+       function () {
+         bwGrid.addAttendeeFromGrid();
+       }
+     );
+     
+     
+     $("#bwScheduleTable .removeAttendee").click (
+       function () {
+         var i = $("#bwScheduleTable .removeAttendee").index(this);
+         bwGrid.removeAttendee(i);
+       }
+     );
+     
+     // enable or disable an attendee
+     $("#bwScheduleTable input.selectedToggle").click (
+       function () {
+         var i = $("#bwScheduleTable input.selectedToggle").index(this);
+         if (this.checked) {
+            bwGrid.attendees[i].selected = true;
+         } else {
+            bwGrid.attendees[i].selected = false;
+         }
+         
+         bwGrid.display();
+       }
+     );
+       
     } catch (e) {
       alert(e);
     }
@@ -953,261 +1202,14 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       $("#eventStartDateSchedMinute").val(selectedDate.getMinutesFull());
     }
   } 
+  
 };
 
-// **** ACTIONS ****
-// now add some rollovers and onclick actions 
-// to the elements of the freebusy grid once the
+
+//now add some interactions between the freebusy control buttons,
+// the scheduling widget, and the rest of the form. once the
 // document is loaded
 $(document).ready(function() {
-  $("#bwScheduleTable .icon").hover(
-    function () {
-      $(this).next(".tip").fadeIn(100);
-    }, 
-    function () {
-      $(this).next(".tip").fadeOut(100);
-    }
-  );  
-  
-  $("#bwScheduleTable .activeCell").hover(
-    function () {
-      $(this).children(".tip").fadeIn(20);
-    }, 
-    function () {
-      $(this).children(".tip").fadeOut(20);
-    }
-  );
-  
-  $("#bwScheduleTable .fbcell").click (
-    function () {
-      // clear all previous highlighting
-      $("#bwScheduleTable .highlight").removeClass("highlight");
-      
-      // get the id of the current cell - takes the form "1271947500000-attendeestring"
-      // we want the first half, which is the same as the time class associated with the column
-      var splitId = $(this).attr("id").split("-");
-      
-      // set the start of the selection range in milliseconds (first half of the ID)
-      // we will use this to set the start time and to find cells in the same column
-      var startSelectionMils = splitId[0];
-      var endSelectionMils = Number(startSelectionMils) + Number(durationMils);
-      
-      // now do the highlighting
-      $("#bwScheduleTable .fbcell").each(function(index) {
-        var splId = $(this).attr("id").split("-");
-        if (splId[0] >= startSelectionMils && splId[0] < endSelectionMils) {
-          $(this).addClass("highlight");
-        }
-      });
-      
-      // set the freeTimeIndex to the nearest index for the pickNext/previous buttons
-      for (var i = 0; i < bwGrid.freeTime.length; i++) {
-        if (Number(bwGrid.freeTime[i]) >= Number(startSelectionMils)) {
-          bwGrid.freeTimeIndex = i - 1; // this will make pick previous jump an extra gap after clicking in a busy space, but it makes pick next work correctly in the same circumstance
-          if (bwGrid.freeTimeIndex < 0) {
-            bwGrid.freeTimeIndex = 0;
-          }
-          break;
-        }
-      }
-      
-      bwGrid.setDateTimeWidgets(startSelectionMils);
-  
-    }
-  );
-  
-  /*
-  $("#bwScheduleTable .fbcell").mousedown (
-    function () {
-      // clear all previous highlighting
-      $("#bwScheduleTable .highlight").removeClass("highlight");
-      
-      // get the id of the current cell - takes the form "1271947500000-attendeestring"
-      // we want the first half, which is the same as the time class associated with the column
-      var splitId = $(this).attr("id").split("-");
-      
-      // set the start of the selection range in milliseconds (first half of the ID)
-      // we will use this to set the start time and to find cells in the same column
-      startSelectionMils = splitId[0];
-      
-      // find the cells (the column) that share the same class
-      $("#bwScheduleTable ." + startSelectionMils).addClass("highlight");
-      
-      // we are now selecting, so highlight as we go
-      selecting = true;          
-    }
-  );
-  
-  $("#bwScheduleTable .fbcell").mouseover (
-    function () {
-      if (selecting) {
-        // get the id of the current cell - takes the form "1271947500000-attendeestring"
-        // we want the first half, which is the same as the time class associated with the column
-        var splitId = $(this).attr("id").split("-");
-  
-        // find the cells (the column) that contain the first half as a class
-        $("#bwScheduleTable ." + splitId[0]).addClass("highlight");
-      }          
-    }
-  );
-  
-  $("#bwScheduleTable .fbcell").mouseup (
-    function () {
-      // we are no longer selecting
-      selecting = false;
-      
-      // get the id of the current cell - takes the form "1271947500000-attendeestring"
-      // we want the first half, which is the same as the time class associated with the column
-      var splitId = $(this).attr("id").split("-");
-      
-      // set the end of the selection range in milliseconds (first half of the ID)
-      // we will use this to set the end time / duration
-      endSelectionMils = splitId[0];
-      
-    }
-  );
-  */
-  
-  $("#bwScheduleTable #bwAddAttendee").click (
-    function () {
-      if (this.value == bwAddAttendeeDisp) {
-        this.value = "";
-      }
-      $(this).addClass("active");
-      $(this).removeClass("pending");
-      
-      // hide advanced switch, show add button
-      // $("#bwAddAttendeeAdvanced").hide();
-      changeClass("bwAddAttendeeAdd","visible");
-      changeClass("bwAddAttendeeFields", "visible");
-    }
-  );
-  
-  // add attendee box - use jquery UI autocomplete
-  // carddavUrl supplied in bedework.js
-  // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookUsers.js"
-  // var carddavUrlTemp = "/ucalrsrc/themes/bedeworkTheme/javascript/addrbookLocations.js"
-  $("#bwScheduleTable #bwAddAttendee").autocomplete({
-    minLength: 1,
-    // set the data source, call it, and format the results:
-    source: function(req, include) {
-      // build the address book url; the path to the address book is determined by the
-      // radio button choices in the "add attendee" widget - these are stored on the fly
-      // in the hidden field with id bwCardDavBookPath
-      addrBookUrl = carddavUrl + "?format=json&addrbook=" + $("#bwCardDavBookPath").val();
-      
-      // call the server and push the results into an array "items"
-      $.getJSON(addrBookUrl, req, function(data) {
-        var acResults = "";
-        if (data != undefined && data.microformats != undefined && data.microformats.vcard != undefined) {
-          acResults = data.microformats.vcard;
-        }
-        var items = [];
-        $.each(acResults, function(i,entry) {
-          
-          // build the label from the full name and email address
-          var curFn = "";
-          var curEmail = "";
-          var curLabel = "";
-          var curKind = "";
-          
-          if (entry.fn != undefined && entry.fn.value != undefined) {
-            curFn = entry.fn.value;
-          } 
-          
-          if (entry.kind != undefined && entry.kind.value != undefined) {
-            curKind = entry.kind.value;
-          }
-          
-          if (curKind == "group") {
-            if (entry.member != undefined && entry.member.length > 0) {
-              var members = "";
-              for (var i = 0; i < entry.member.length; i++ ) {
-                members += entry.member[i].value + ",";
-              }
-              members = members.substring(0,members.length-1);
-              var curItem = {label: curFn, value: members};
-              items.push(curItem);
-            }
-          } else {
-            // this is probably not enough: we should account for all email addresses if there is no calendar uri
-            if (entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
-              curEmail = entry.email[0].value;
-            }
-            if (curFn != "") {
-              curLabel = curFn + ", " + curEmail;
-            } else {
-              curLabel = curEmail;
-            }
-            
-            // use the calendar address uri if available, otherwise use email
-            var curUri = "";
-            if (entry.caladruri != undefined && entry.caladruri.value != undefined) {
-              curUri = entry.caladruri.value;
-            }
-            if (curUri == "" && entry.email != undefined && entry.email[0] != undefined && entry.email[0].value != undefined) {
-              var curEmail = entry.email[0].value;
-              if (curEmail != "") {
-                curUri = "mailto:" + curEmail;
-              }
-            }
-            
-            // only add the entry if there is a uri and a label to use
-            if (curUri != "" && curLabel != "") {
-              var curItem = {label: curLabel, value: curUri};
-              items.push(curItem);
-            }
-          }
-        });
-        
-        // pass items to the callback function for display in the autocomplete pulldown
-        include(items);
-      });
-    }
-  });
-  
-  // capture the enter key when entering an attendee;
-  // do not submit the form; add the attendee.
-  $("#bwScheduleTable #bwAddAttendee").keypress (
-      function (e) {
-        if(e.keyCode == 13) { // enter
-          e.preventDefault();
-          bwGrid.addAttendeeFromGrid();
-        }
-      }
-    );
-  
-  $("#bwScheduleTable #bwAddAttendeeAdd").click (
-    function () {
-      bwGrid.addAttendeeFromGrid();
-    }
-  );
-  
-  
-  $("#bwScheduleTable .removeAttendee").click (
-    function () {
-      var i = $("#bwScheduleTable .removeAttendee").index(this);
-      bwGrid.removeAttendee(i);
-    }
-  );
-  
-  // enable or disable an attendee
-  $("#bwScheduleTable input.selectedToggle").click (
-    function () {
-      var i = $("#bwScheduleTable input.selectedToggle").index(this);
-      if (this.checked) {
-         bwGrid.attendees[i].selected = true;
-      } else {
-         bwGrid.attendees[i].selected = false;
-      }
-      
-      bwGrid.display();
-    }
-  );
-  
-  // now add some interactions between the freebusy control buttons,
-  // the scheduling widget, and the rest of the form.
-  
   // toggle 24 hour mode - can be done with text or with checkbox
   // checkbox handler:
   function switchSched24() {
