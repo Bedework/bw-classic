@@ -707,7 +707,8 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       addAttendeeHtml += '  <div class="bwAddAttendeeSubField" id="bwAddAttendeeBookBlock">';
       addAttendeeHtml += '    <span class="bwAddAttendeeSubFieldHead">' + bwAddAttendeeBookDisp + '</span>';
       addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeAddrBk" value="/user/' + bwGrid.curUser + '/addressbook" checked="checked" onclick="changeClass(\'bwAddAttendeeTypeBlock\',\'invisible\');bwGrid.updateBookPath(this.value);">personal';
-      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeAddrBk" value="/public" onclick="changeClass(\'bwAddAttendeeTypeBlock\',\'bwAddAttendeeSubField\');bwGrid.updateBookPath(this.form.bwAddAttendeeType.value);">public';
+      // note: the public switch uses a separate click handler set after the display is written to the output (below)
+      addAttendeeHtml += '    <input type="radio" name="bwAddAttendeeAddrBk" id="bwAddAttendeePublicSwitch" value="/public" onclick="changeClass(\'bwAddAttendeeTypeBlock\',\'bwAddAttendeeSubField\');">public';
       addAttendeeHtml += '  </div>';
       addAttendeeHtml += '  <div class="invisible" id="bwAddAttendeeTypeBlock">';
       addAttendeeHtml += '    <span class="bwAddAttendeeSubFieldHead">' + bwAddAttendeeTypeDisp + '</span>';
@@ -1024,6 +1025,11 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
          changeClass("bwAddAttendeeFields", "visible");
        }
      );
+     
+     // add a handler for the public switch (not in-line like the others)
+     $("#bwAddAttendeePublicSwitch").click(function(){
+       bwGrid.updateBookPath($('input:radio[name=bwAddAttendeeType]:checked').val());  
+     });
      
      // add attendee box - use jquery UI autocomplete
      // carddavUrl supplied in bedework.js
