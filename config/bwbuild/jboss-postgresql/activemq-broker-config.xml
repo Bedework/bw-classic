@@ -100,7 +100,8 @@
     <destinationPolicy>
       <policyMap>
         <policyEntries>
-          <policyEntry queue=">" memoryLimit="5mb" />
+          <policyEntry queue=">" producerFlowControl="false"
+            memoryLimit="64mb" />
           <policyEntry topic=">" memoryLimit="5mb">
             <!--
               you can add other policies too such as these
