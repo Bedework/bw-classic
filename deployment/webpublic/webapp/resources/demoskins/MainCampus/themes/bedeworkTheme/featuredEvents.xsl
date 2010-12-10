@@ -59,10 +59,11 @@
 
   <xsl:template match="image">
     <xsl:param name="singleMode">false</xsl:param>
+    <xsl:variable name="imgPrefix"><xsl:choose><xsl:when test="not(starts-with(name,'http') or starts-with(name,'/'))"><xsl:value-of select="$resourcesRoot"/>/featured/</xsl:when></xsl:choose></xsl:variable>
     <xsl:choose>
       <xsl:when test="link = ''">
         <img width="241" height="189">
-          <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/featured/<xsl:value-of select="name"/></xsl:attribute>
+          <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="name"/></xsl:attribute>
           <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
           <xsl:if test="$singleMode = 'true'">
             <xsl:attribute name="width">725</xsl:attribute>
@@ -73,7 +74,7 @@
         <a>
           <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
           <img width="241" height="189">
-            <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/featured/<xsl:value-of select="name"/></xsl:attribute>
+            <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="name"/></xsl:attribute>
             <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
             <xsl:if test="$singleMode = 'true'">
 	            <xsl:attribute name="width">725</xsl:attribute>
