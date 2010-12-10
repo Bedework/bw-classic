@@ -1,17 +1,50 @@
+<?xml version="1.0"?>
+<!-- Global settings for featured events are set in themeSettings.xsl.  
+     This file provides the data for featured events with some switches
+     for how they are used.-->
 <featuredEvents>
-  <image>
-    <name>bede.jpg</name>
-    <link>http://en.wikipedia.org/wiki/De_temporum_ratione</link>
-    <toolTip>De temporum ratione</toolTip>
-  </image>
-  <image>
-    <name>gettingstarted.jpg</name>
-    <link>http://www.bedework.org/bedework/update.do?artcenterkey=36</link>
-    <toolTip>Bedework Documentation</toolTip>
-  </image>
-  <image>
-    <name>bedework.jpg</name>
-    <link>http://www.bedework.org/bedework/setup.do</link>
-    <toolTip>Bedework Website</toolTip>
-  </image>
+  <featuresOn>true</featuresOn> <!-- true to use features, false to use generic placeholders -->
+  <singleMode>false</singleMode> <!-- true for a single pane (single), false for a triptych (group) -->
+  <features>
+    <group>
+      <image>
+        <name>bede.jpg</name>
+        <link>http://en.wikipedia.org/wiki/De_temporum_ratione</link>
+        <toolTip>De temporum ratione</toolTip>
+      </image>
+      <image>
+        <name>gettingstarted.jpg</name>
+        <link>http://www.bedework.org/bedework/update.do?artcenterkey=36</link>
+        <toolTip>Bedework Documentation</toolTip>
+      </image>
+      <image>
+        <name>bedework.jpg</name>
+        <link>http://www.bedework.org/bedework/setup.do</link>
+        <toolTip>Bedework Website</toolTip>
+      </image>
+    </group>
+    <single>
+      <image>
+        <name>bedework.jpg</name>
+        <link>http://www.bedework.org/bedework/setup.do</link>
+        <toolTip>Bedework Website</toolTip>
+      </image>
+    </single>
+  </features>
+  <generics>
+    <group>
+      <image>
+      <name>bede.jpg</name>
+      <toolTip>De temporum ratione</toolTip>
+    </image>
+    <image>
+      <name>gettingstarted.jpg</name>
+      <toolTip>Bedework Documentation</toolTip>
+    </image>
+    <image>
+      <name>bedework.jpg</name>
+      <toolTip>Bedework Website</toolTip>
+    </image>
+    </group>
+  </generics>
 </featuredEvents>

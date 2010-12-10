@@ -31,18 +31,42 @@
                    ($featuredEventsForMonth = 'true' and /bedework/periodname = 'Month') or
                    ($featuredEventsForYear = 'true' and /bedework/periodname = 'Year')))">
       <div id="feature">
-        <!-- pulls in the first three images from the FeaturedEvent.xml document -->
-        <xsl:apply-templates select="document('../../themes/bedeworkTheme/featured/FeaturedEvent.xml')/featuredEvents/image[position() &lt; 4]" mode="featuredEvents" />
+        <!-- grab the root of the FeaturedEvent.xml document (/image[position() &lt; 4])-->
+        <xsl:apply-templates select="document('../../themes/bedeworkTheme/featured/FeaturedEvent.xml')/featuredEvents"/>
       </div>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="image" mode="featuredEvents">
+  <xsl:template match="featuredEvents">
+    <xsl:choose>
+      <xsl:when test="featuresOn = 'true'">
+        <xsl:choose>
+          <xsl:when test="singleMode = 'false'"><!-- triptych -->
+            <xsl:apply-templates select="features/group/image"/>
+          </xsl:when>
+          <xsl:otherwise><!-- single pane -->
+            <xsl:apply-templates select="features/single/image">
+              <xsl:with-param name="singleMode">true</xsl:with-param>
+            </xsl:apply-templates>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise><!-- use generic defaults -->
+        <xsl:apply-templates select="generics/group/image"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="image">
+    <xsl:param name="singleMode">false</xsl:param>
     <xsl:choose>
       <xsl:when test="link = ''">
         <img width="241" height="189">
           <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/featured/<xsl:value-of select="name"/></xsl:attribute>
           <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
+          <xsl:if test="$singleMode = 'true'">
+            <xsl:attribute name="width">725</xsl:attribute>
+          </xsl:if> 
         </img>
       </xsl:when>
       <xsl:otherwise>
@@ -51,6 +75,9 @@
           <img width="241" height="189">
             <xsl:attribute name="src"><xsl:value-of select="$resourcesRoot"/>/featured/<xsl:value-of select="name"/></xsl:attribute>
             <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
+            <xsl:if test="$singleMode = 'true'">
+	            <xsl:attribute name="width">725</xsl:attribute>
+	          </xsl:if> 
           </img>
         </a>
       </xsl:otherwise>
