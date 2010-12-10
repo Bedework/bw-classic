@@ -186,6 +186,7 @@ ul#nav-main li a.current {
 }
 div#content {
  clear: both;
+ min-width: 964px;
  padding: 0;
  border-bottom: 1px solid #CCC;
 }
