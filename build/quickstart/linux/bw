@@ -371,6 +371,10 @@ fi
 export BEDEWORK_CONFIGS_HOME=$BWCONFIGS
 export BEDEWORK_CONFIG=$BWCONFIGS/$bwc
 
+if [ ! -d "$BEDEWORK_CONFIGS_HOME/.platform" ] ; then
+  errorUsage "Configurations directory $BEDEWORK_CONFIGS_HOME is missing directory '.platform'."
+fi
+
 if [ ! -f "$BEDEWORK_CONFIG/build.properties" ] ; then
   errorUsage "Configuration $BEDEWORK_CONFIG does not exist or is not a bedework configuration."
 fi

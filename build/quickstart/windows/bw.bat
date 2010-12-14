@@ -157,6 +157,14 @@ GOTO doneQB
   SET BEDEWORK_CONFIGS_HOME=%BWCONFIGS%
   SET BEDEWORK_CONFIG=%BWCONFIGS%\%bwc%
 
+  IF EXIST "%BEDEWORK_CONFIGS_HOME%\.platform" GOTO foundDotPlatform
+  ECHO *******************************************************
+  ECHO Error: Configurations directory %BEDEWORK_CONFIGS_HOME%
+  ECHO is missing directory '.platform'.
+  ECHO *******************************************************
+  GOTO:EOF
+:foundDotPlatform
+
   IF EXIST "%BEDEWORK_CONFIG%\build.properties" GOTO foundBuildProperties
   ECHO *******************************************************
   ECHO Error: Configuration %BEDEWORK_CONFIG%
