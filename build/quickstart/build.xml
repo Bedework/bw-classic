@@ -138,6 +138,19 @@
   </target>
 
   <!-- =================================================================
+       "deploy.log4j" target
+       ================================================================= -->
+
+  <target name="deploy.log4j" depends="init"
+          description="Copy the log4j config into the appserver">
+    <loadDeployConfig />
+
+    <copy tofile="${org.bedework.log4j.config}" 
+          file="${org.bedework.config.home}/log4j.xml"
+    	    overwrite="true" />
+  </target>
+
+  <!-- =================================================================
        The "deploy" target builds and deploys the applications
        ================================================================= -->
 
