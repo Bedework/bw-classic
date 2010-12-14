@@ -84,7 +84,7 @@
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
               <queue physicalName="bedework.crawler" />
-              <filteredDestination selector="inbox = 'true'"
+              <filteredDestination selector="inbox = 'true' or scheduleEvent = 'true'"
                                    queue="bedework.scheduleIn"/>
               <filteredDestination selector="outbox = 'true'"
                                    queue="bedework.scheduleOut"/>
@@ -100,7 +100,8 @@
     <destinationPolicy>
       <policyMap>
         <policyEntries>
-          <policyEntry queue=">" memoryLimit="5mb" />
+          <policyEntry queue=">" producerFlowControl="false"
+            memoryLimit="64mb" />
           <policyEntry topic=">" memoryLimit="5mb">
             <!--
               you can add other policies too such as these

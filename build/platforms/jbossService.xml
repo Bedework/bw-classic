@@ -51,9 +51,20 @@ hibernate.jdbc.batch_size=0
       </then>
       <else>
         <!-- Library in sar file -->
-        <property name="app.dest.lib"
-                  location="${app.dest.webinf}/lib" />
-        <antcall target="copyLibs" inheritRefs="true" />
+        <copy todir="${app.dest.lib}" >
+          <fileset dir="${org.bedework.temp.extrajars.dir}" />
+        </copy>
+      	
+        <if>
+          <not>
+            <isset property="propval.app.no.defaultlibs" />
+          </not>
+          <then>
+            <property name="app.dest.lib"
+                      location="${app.dest.webinf}/lib" />
+            <antcall target="copyLibs" inheritRefs="true" />
+          </then>
+        </if>
       </else>
     </if>
   </target>
