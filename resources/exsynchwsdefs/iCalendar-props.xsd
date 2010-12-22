@@ -17,14 +17,34 @@
   <xs:include schemaLocation="iCalendar-bw-extensions.xsd" />
   <xs:include schemaLocation="iCalendar-ms-extensions.xsd" />
 
+  <!-- =====================================================================
+        BasePropertyType 
+        All properties are based off this type which defines a property as 
+        nothing more than a list of parameters. 
+        
+        We make no attempt to define valid parameters for each property as this
+        would complicate the schema significantly. Consumers can ignore 
+        property parameters they do not understand or expect. 
+       ===================================================================== -->  
+  <xs:complexType name="BasePropertyType" abstract="true" >
+    <xs:sequence>
+      <xs:element name="parameters" type="xcal:ArrayOfParameters"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="base-property" type="xcal:BasePropertyType" />
+
   <xs:complexType name="ArrayOfProperties">
     <xs:sequence>
       <xs:element ref="xcal:base-property" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
   
-  <xs:element name="base-property" type="xcal:BasePropertyType" />
-  
+  <!-- =====================================================================
+       Define all the standard properties. By using a substitutionGroup we
+       make it easy to extend the list of properties. As an example see 
+       the properties defined in iCalendar-ms-extensions.xsd
+       ===================================================================== -->  
   <xs:element name="calscale" type="xcal:calscalePropType"
               substitutionGroup="xcal:base-property" />
   <xs:element name="method" type="xcal:methodPropType"
@@ -71,8 +91,10 @@
               substitutionGroup="xcal:base-property" />
   <xs:element name="transp" type="xcal:transpPropType"
               substitutionGroup="xcal:base-property" />
+  <!-- Comment out tzid for the moment. It has the same name as the parameter
+       and this is causing me some issues
   <xs:element name="tzid" type="xcal:tzidPropType"
-              substitutionGroup="xcal:base-property" />
+              substitutionGroup="xcal:base-property" /> -->
   <xs:element name="tzname" type="xcal:tznamePropType"
               substitutionGroup="xcal:base-property" />
   <xs:element name="tzoffsetfrom" type="xcal:tzoffsetfromPropType"
@@ -115,16 +137,10 @@
               substitutionGroup="xcal:base-property" />
   <xs:element name="last-modified" type="xcal:last-modifiedPropType"
               substitutionGroup="xcal:base-property" />
-  <xs:element name="sequence" type="xcal:request-statusPropType"
+  <xs:element name="sequence" type="xcal:sequencePropType"
               substitutionGroup="xcal:base-property" />
   <xs:element name="request-status" type="xcal:request-statusPropType"
               substitutionGroup="xcal:base-property" />
-
-  <xs:complexType name="BasePropertyType" abstract="true" >
-    <xs:sequence>
-      <xs:element name="parameters" type="xcal:ArrayOfParameters"/>
-    </xs:sequence>
-  </xs:complexType>
 
   <!-- Properties that take a simple text value -->
   <xs:complexType name="TextPropertyType" >
@@ -197,6 +213,17 @@
       <xs:extension base="xcal:BasePropertyType">
         <xs:sequence>
           <xs:element ref="xcal:date-time"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Properties that take a utc-date-time value -->
+  <xs:complexType name="UtcDatetimePropertyType" >
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BasePropertyType">
+        <xs:sequence>
+          <xs:element ref="xcal:utc-date-time"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -405,7 +432,7 @@
   <!-- 3.8.2.1 Date/Time Completed -->
   <xs:complexType name="completedPropType">
     <xs:complexContent mixed="false">
-      <xs:extension base="xcal:DateDatetimePropertyType"/>
+      <xs:extension base="xcal:UtcDatetimePropertyType"/>
     </xs:complexContent>
   </xs:complexType>
     
@@ -654,21 +681,21 @@
   <!-- 3.8.7.1 Date/Time Created -->
   <xs:complexType name="createdPropType">
     <xs:complexContent mixed="false">
-      <xs:extension base="xcal:DatetimePropertyType"/>
+      <xs:extension base="xcal:UtcDatetimePropertyType"/>
     </xs:complexContent>
   </xs:complexType>
     
   <!-- 3.8.7.2 Date/Time Stamp -->
   <xs:complexType name="dtstampPropType">
     <xs:complexContent mixed="false">
-      <xs:extension base="xcal:DatetimePropertyType"/>
+      <xs:extension base="xcal:UtcDatetimePropertyType"/>
     </xs:complexContent>
   </xs:complexType>
 
   <!-- 3.8.7.3 Last Modified -->
   <xs:complexType name="last-modifiedPropType">
     <xs:complexContent mixed="false">
-      <xs:extension base="xcal:DatetimePropertyType"/>
+      <xs:extension base="xcal:UtcDatetimePropertyType"/>
     </xs:complexContent>
   </xs:complexType>
 

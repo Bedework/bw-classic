@@ -12,6 +12,10 @@
   <!-- ===================== Properties =================================  -->
   <xs:include schemaLocation="iCalendar-props.xsd" />
 
+  <xs:element name="x-bedework-cost" 
+              type="xcal:x-bw-costPropType"
+              substitutionGroup="xcal:base-property" />
+
   <xs:element name="x-bedework-exsynch-endtzid" 
               type="xcal:x-bw-exsynch-endtzidPropType"
               substitutionGroup="xcal:base-property" />
@@ -27,6 +31,12 @@
   <xs:element name="x-bedework-exsynch-starttzid" 
               type="xcal:x-bw-exsynch-starttzidPropType"
               substitutionGroup="xcal:base-property" />
+  
+  <xs:complexType name="x-bw-costPropType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:TextPropertyType"/>
+    </xs:complexContent>
+  </xs:complexType>
   
   <xs:complexType name="x-bw-exsynch-endtzidPropType">
     <xs:complexContent mixed="false">
