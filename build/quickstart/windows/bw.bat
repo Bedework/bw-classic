@@ -28,6 +28,13 @@ SET BWCONFIG=
 SET offline=
 SET quickstart=
 
+SET ant_listener=
+SET ant_xmllogfile=
+SET ant_logger=
+
+SET ant_loglevel="-quiet"
+SET bw_loglevel=""
+
 :: Projects we will build
 SET pkgdefault=yes
 SET bedework=
@@ -71,6 +78,42 @@ GOTO branch
   GOTO branch
   
 
+:: ----------------------- Log level       
+
+:log-silent
+  SET ant_loglevel="-quiet"
+  SET bw_loglevel="-Dorg.bedework.build.silent=true"
+  SHIFT
+  GOTO branch
+
+:log-quiet
+  SET ant_loglevel="-quiet"
+  SET bw_loglevel=""
+  SHIFT
+  GOTO branch
+
+:log-inform
+  SET ant_loglevel=""
+  SET bw_loglevel="-Dorg.bedework.build.inform=true"
+  SHIFT
+  GOTO branch
+
+:log-verbose
+  SET ant_loglevel="-verbose"
+  SET bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true"
+  SHIFT
+  GOTO branch
+
+:ant-debug
+  SET ant_loglevel="-debug"
+  SHIFT
+  GOTO branch
+
+:build-debug
+  SET bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true -Dorg.bedework.build.debug=true "
+  SHIFT
+  GOTO branch
+      
 :: PROJECTS
 
 :carddav
@@ -212,6 +255,14 @@ IF "%1" == "-bwc" GOTO bwc
 IF "%1" == "-offline" GOTO offline
 IF "%1" == "-reindex" GOTO reindex
 IF "%1" == "-zoneinfo" GOTO zoneinfo
+
+IF "%1" == "-log-silent" GOTO log-silent
+IF "%1" == "-log-quiet" GOTO log-quiet
+IF "%1" == "-log-inform" GOTO log-inform
+IF "%1" == "-log-verbose" GOTO log-verbose
+IF "%1" == "-ant-debug" GOTO ant-debug
+IF "%1" == "-build-debug" GOTO build-debug
+
 IF "%1" == "-carddav" GOTO carddav 
 IF "%1" == "-caldav" GOTO caldav
 IF "%1" == "-client" GOTO client
