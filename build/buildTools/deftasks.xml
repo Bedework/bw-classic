@@ -1,0 +1,184 @@
+<!-- Define a number of tasks and macros
+     deftasks:  define someuseful build tasks
+     projectDefs: standard project definitions
+     xMsg: x=info,debug etc. For message output
+
+     Authors: Mike Douglass   douglm rpi.edu
+-->
+
+<project name="do.deftasks" basedir="." default="">
+  <macrodef name="deftasks">
+    <sequential>
+      <path id="build.cp">
+        <fileset dir="${build.dir}">
+          <include name="*.jar"/>
+        </fileset>
+      </path>
+  
+      <taskdef name="forEachApp"
+               classname="org.bedework.deployment.ForEachAppTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="resolveFile"
+               classname="org.bedework.deployment.ResolveFile">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="makeLangXsl"
+               classname="org.bedework.deployment.MakeLangXsl">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="applicationXml"
+               classname="org.bedework.deployment.ApplicationXmlTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="projectDefs">
+    <attribute name="name"/>
+    <attribute name="version"/>
+    <attribute name="deployment-name" default=""/>
+    <attribute name="no-default-libs" default="true"/>
+    <attribute name="subproject" default="false"/>
+    <sequential>
+      <property name="project.name" value="@{name}"/>
+      
+      <property name="project.version" value="@{version}"/>
+      
+      <property name="dist.home" location="${project.home}/dist"/>
+      <property name="lib.dir" location="${project.home}/lib"/>
+
+      <property name="build.dir" location="${bedework.home}/build"/>
+
+      <property name="buildjar" location="${build.dir}/buildTools/buildjar.xml"/>
+      <property name="buildwar" location="${build.dir}/buildwar.xml"/>
+      <property name="buildsh" location="${build.dir}/buildsh.xml"/>
+
+      <property name="resources.dir" location="${project.home}/resources"/>
+
+      <property name="org.bedework.libcache.dir"
+                location="${project.home}/libcache"/>
+      
+      <if>
+        <istrue value="@{subproject}" />
+        <then>
+          <property name="source.home" location="${project.home}/src"/>
+        </then>
+        <else>
+          <property name="org.bedework.temp.dir"
+                    location="${dist.home}/temp" />
+
+          <delete dir="${org.bedework.temp.dir}" />
+          <mkdir dir="${org.bedework.temp.dir}" />
+          
+          <property name="org.bedework.deployment.name"
+                    value="@{deployment-name}" />
+
+          <property name="propval.app.no.defaultlibs"
+                    value="@{no-default-libs}" />
+          
+          <deftasks/>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="build-jar">
+    <attribute name="module-base"/>
+    <attribute name="jar-file"/>
+    <attribute name="generated-sources" default=""/>
+    <attribute name="property-resources" default=""/>
+
+    <sequential>
+      <if>
+        <equals arg1="@{generated-sources}" arg2="" />
+        <then>
+          <fileset id="buildjar.generated.java.sources" refid="empty.fileset" />
+        </then>
+        <else>
+          <fileset id="buildjar.generated.java.sources" dir="@{generated-sources}" >
+            <include name="org/bedework/**/*.java"/>
+          </fileset>
+        </else>
+      </if>
+
+      <if>
+        <equals arg1="@{property-resources}" arg2="" />
+        <then>
+          <fileset id="buildjar.resource.files" refid="empty.fileset" />
+        </then>
+        <else>
+          <fileset id="buildjar.resource.files" dir="@{property-resources}" >
+            <include name="**/*.properties"/>
+          </fileset>
+        </else>
+      </if>
+
+      <fileset id="buildjar.java.sources" dir="@{module-base}/src" >
+        <include name="**/*.java"/>
+      </fileset>
+
+      <patternset id="base.class.patternset">
+        <include name="**/*.class"/>
+      </patternset>
+
+      <ant antfile="${buildjar}" inheritRefs="true" target="build" >
+        <property name="build.jar.file" location="@{jar-file}" />
+      </ant>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="infoMsg">
+    <attribute name="message"/>
+    <sequential>
+      <if>
+        <not>
+          <istrue value="${org.bedework.build.silent}" />
+        </not>
+        <then>
+          <echo message="@{message}" />
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="noisyMsg">
+    <attribute name="message"/>
+    <sequential>
+      <if>
+        <istrue value="${org.bedework.build.noisy}" />
+        <then>
+          <echo message="@{message}" />
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="debugMsg">
+    <attribute name="message"/>
+    <sequential>
+      <if>
+        <istrue value="${org.bedework.build.debug}" />
+        <then>
+          <echo message="@{message}" />
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="debugCpid">
+    <attribute name="idpar"/>
+    <sequential>
+      <if>
+        <istrue value="${org.bedework.build.debug}" />
+        <then>
+          <property name="cp" refid="@{idpar}" />
+          <echo message="***************cp: ${cp}"/>
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+</project>
