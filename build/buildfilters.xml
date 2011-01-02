@@ -11,6 +11,9 @@
     <filter token="QUICKSTART_DIR"
             value="${quickstart.dir}"/>
 
+    <filter token="APPSERVER-DATA-DIR"
+            value="${org.bedework.data.dir}"/>
+  	
     <filter token="DATA_DIR"
             value="${org.bedework.data.dir}"/>
 
@@ -52,6 +55,9 @@
 
     <filter token="LIFERAY-COMPANY-ID"
             value="${org.bedework.global.liferay.company-id}"/>
+
+    <filter token="JBOSS-CARDDB-DATASOURCE"
+            value="${org.bedework.global.jboss.carddb.datasource.jndiname}"/>
 
     <filter token="JBOSS-DB-DATASOURCE"
             value="${org.bedework.global.jboss.db.datasource.jndiname}"/>

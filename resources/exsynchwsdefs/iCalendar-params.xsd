@@ -182,8 +182,9 @@
   </xs:complexType>
   
   <!-- 3.2.7 Inline Encoding -->
+
   <xs:simpleType name="encodingValueType">
-    <xs:restriction base="xs:token">
+    <xs:restriction base="xs:string">
       <xs:enumeration value="8BIT"/>
       <xs:enumeration value="BASE64"/>
     </xs:restriction>
@@ -198,7 +199,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <!-- 3.2.8 Format Type -->
   <xs:complexType name="fmttypeParamType">
     <xs:complexContent mixed="false">
@@ -208,7 +209,7 @@
   
   <!-- 3.2.9 Free/Busy Time Type -->
   <xs:simpleType name="fbtypeValueType">
-    <xs:restriction base="xs:token">
+    <xs:restriction base="xs:string">
       <xs:enumeration value="FREE"/>
       <xs:enumeration value="BUSY"/>
       <xs:enumeration value="BUSY-UNAVAILABLE"/>

@@ -20,11 +20,13 @@
         <antcall target="runnableDoHibProps" inheritRefs="true" />
       </then>
       <else>
+        <mkdir dir="${app.dest.classes}"/>
+      	
         <echo file="${app.dest.classes}/hibernate.properties">
 hibernate.query.substitutions true 'T', false 'F', yes 'Y', no 'N'
 hibernate.dialect=${org.bedework.global.hibernate.dialect}
     	
-hibernate.connection.datasource=java:${org.bedework.global.jboss.db.datasource.jndiname}
+hibernate.connection.datasource=java:${org.bedework.jboss.datasource.jndiname}
 
 hibernate.bytecode.use_reflection_optimizer=false
 hibernate.cache.use_second_level_cache=false
@@ -51,6 +53,9 @@ hibernate.jdbc.batch_size=0
       </then>
       <else>
         <!-- Library in sar file -->
+        <property name="app.dest.lib"
+                  location="${app.dest.webinf}/lib" />
+        
         <copy todir="${app.dest.lib}" >
           <fileset dir="${org.bedework.temp.extrajars.dir}" />
         </copy>
@@ -60,8 +65,6 @@ hibernate.jdbc.batch_size=0
             <isset property="propval.app.no.defaultlibs" />
           </not>
           <then>
-            <property name="app.dest.lib"
-                      location="${app.dest.webinf}/lib" />
             <antcall target="copyLibs" inheritRefs="true" />
           </then>
         </if>

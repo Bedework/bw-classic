@@ -16,6 +16,9 @@ ant_listener=
 ant_xmllogfile=
 ant_logger=
 
+ant_loglevel="-quiet"
+bw_loglevel=""
+
 echo ""
 echo "  Bedework Calendar System"
 echo "  ------------------------"
@@ -24,7 +27,7 @@ echo ""
 PRG="$0"
 
 usage() {
-  echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [ target ] "
+  echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [LOG_LEVEL] [ target ] "
   echo "  $PRG ACTION"
   echo ""
   echo " where:"
@@ -39,6 +42,15 @@ usage() {
   echo "      -bwc configname"
   echo ""
   echo "   -offline     Build without attempting to retrieve library jars"
+  echo ""
+  echo "   LOG_LEVEL sets the level of logging and can be"
+  echo "      -log-silent   Nearly silent"
+  echo "      -log-quiet    The default"
+  echo "      -log-inform   A little more noisy"
+  echo "      -log-verbose  Noisier"
+  echo "      -ant-debug    Vast amounts of ant output"
+  echo "      -build-debug  Some bedework build debug output"
+  echo ""
   echo "   target       Ant target to execute"
   echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
@@ -303,7 +315,36 @@ do
       offline="-Dorg.bedework.offline.build=yes"
       shift
       ;;
-# Projects
+# ----------------------- Log level       
+    -log-silent)
+      ant_loglevel="-quiet"
+      bw_loglevel="-Dorg.bedework.build.silent=true"
+      shift
+      ;;
+    -log-quiet)
+      ant_loglevel="-quiet"
+      bw_loglevel=""
+      shift
+      ;;
+    -log-inform)
+      ant_loglevel=""
+      bw_loglevel="-Dorg.bedework.build.inform=true"
+      shift
+      ;;
+    -log-verbose)
+      ant_loglevel="-verbose"
+      bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true"
+      shift
+      ;;
+    -ant-debug)
+      ant_loglevel="-debug"
+      shift
+      ;;
+    -build-debug)
+      bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true -Dorg.bedework.build.debug=true "
+      shift
+      ;;
+# ------------------------Projects
     -carddav)
       carddav="yes"
       pkgdefault=
@@ -417,4 +458,4 @@ if [ "$webdav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework/projects/webdav
 fi
 
-$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $*
+$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel $*

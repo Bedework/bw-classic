@@ -28,7 +28,7 @@
     <property name="app.dest.classes"
               location="${app.dest.home}/classes" />
     <property name="app.dest.properties"
-              location="${app.dest.classes}/properties/calendar" />
+              location="${app.dest.classes}/properties/${org.bedework.deployment.name}" />
     <property name="app.dest.data"
               location="${app.dest.home}/data" />
 
@@ -50,15 +50,26 @@
     <!-- Platform specific -->
     <antcall target="addLibs" inheritRefs="true" />
 
-    <copy todir="${app.dest.classes}">
-      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />
-      <filterset refid="property.filters" />
-    </copy>
-
-    <copy todir="${app.dest.classes}">
-      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/hbms" />
-      <filterset refid="property.filters" />
-    </copy>
+    <if>
+      <isset property="org.bedework.sou.hibernate.properties" />
+      <then>
+        <if>
+          <istrue value="${org.bedework.build.debug}" />
+          <then>
+            <echo message="************* Copy hib properties from ${org.bedework.sou.hibernate.properties}" />
+          </then>
+        </if>
+        <copy todir="${app.dest.classes}">
+          <fileset dir="${org.bedework.sou.hibernate.properties}/properties" />
+          <filterset refid="property.filters" />
+        </copy>
+    
+        <copy todir="${app.dest.classes}">
+          <fileset dir="${org.bedework.sou.hibernate.properties}/hbms" />
+          <filterset refid="property.filters" />
+        </copy>
+      </then>
+    </if>
 
     <copy tofile="${app.dest.classes}/sysevents.properties"
           file="${org.bedework.config.sysevents.properties}" />
@@ -80,7 +91,7 @@
     <mkdir dir="${app.dest.properties}" />
 
     <copy tofile="${app.dest.properties}/options.xml"
-          file="${org.bedework.config.options}" >
+          file="${org.bedework.options.file}" >
       <filterset>
         <filter token="RPI-DEBUG" value="${app.debug.val}"/>
       </filterset>

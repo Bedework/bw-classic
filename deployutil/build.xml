@@ -7,7 +7,6 @@
      =================================================================== -->
 
 <project name="bedework.deployutil" default="build">
-  <property name="base.name" value="deployutil"/>
   <property name="lib.dir" location="${org.bedework.default.lib}"/>
 
   <target name="init">

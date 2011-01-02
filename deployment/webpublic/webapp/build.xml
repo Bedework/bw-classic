@@ -36,7 +36,6 @@
 
     <property name="app.resources.dir"
               location="${this.dir}/resources" />
-  	<echo message="app.resources.dir=${app.resources.dir}" />
   </target>
 
   <!-- =================================================================

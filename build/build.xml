@@ -7,7 +7,6 @@
      =================================================================== -->
 
 <project name="bedework.build" default="build">
-  <property name="base.name" value="build"/>
   <property name="lib.dir" location="${org.bedework.default.lib}"/>
 
   <target name="init">

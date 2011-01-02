@@ -7,34 +7,31 @@
      =================================================================== -->
 <project name="loadDeployConfig" basedir="." default="">
   <macrodef name="loadDeployConfig">
+    <!--<attribute name="extra.options" default="${org.bedework.carddav.options}"/> -->
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
       <property environment="env"/>
 
-      <echo message="Load user properties from ${org.bedework.user.build.properties}" />
-
       <!-- Load user property definition overrides -->
       <property file="${org.bedework.user.build.properties}" />
 
-      <!-- These should already be defined in the above file
-      <property name="org.bedework.config.properties"
-                location="${org.bedework.config.base}/configs/democal.properties" />
-      <property name="org.bedework.config.options"
-                location="${org.bedework.config.base}/configs/democal.options.xml" />
-                -->
-
-      <echo message="==========================================================" />
-      <echo message="Use config properties ${org.bedework.config.properties}" />
-      <property file="${org.bedework.config.properties}" />
+      <infoMsg message="==========================================================" />
+      <infoMsg message="Loading user properties from ${org.bedework.user.build.properties}" />
+      <infoMsg message="Use config properties ${org.bedework.config.properties}" />
+      <infoMsg message="Runtime options from ${org.bedework.config.options}" />
+      <infoMsg message="==========================================================" />
+    	
+    	<property file="${org.bedework.config.properties}" />
 
       <!-- Load the run time options and define some properties based on some
            of the values -->
 
+      <!-- Load the general bedework options -->
       <xmlproperty file="${org.bedework.config.options}"/>
 
-      <!-- Load the CardDAV options -->
-      <xmlproperty file="${org.bedework.carddav.options}"/>
+      <!-- Load the extra options 
+      <xmlproperty file="@{extra.options}"/>-->
 
       <if>
         <isset property="bedework-options.org.bedework.global.portal.platform"/>
@@ -48,11 +45,13 @@
           <property name="org.bedework.config.portal.common.home"
                     value="${org.bedework.configurations.home}/.portal/common-resources" />
 
-          <echo message="******************* load from ${org.bedework.config.portal.home}/portal.properties" />
+          <debugMsg message="******************* load from ${org.bedework.config.portal.home}/portal.properties" />
+
           <property file="${org.bedework.config.portal.home}/portal.properties" />
         </then>
         <else>
-          <echo message="******************* load from ${org.bedework.configurations.home}/.standalone/standalone.properties" />
+          <debugMsg message="******************* load from ${org.bedework.configurations.home}/.standalone/standalone.properties" />
+
           <property file="${org.bedework.configurations.home}/.platform/standalone.properties" />
         </else>
       </if>

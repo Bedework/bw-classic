@@ -49,7 +49,14 @@
         <!-- Library in war file -->
         <property name="app.dest.lib"
                   location="${app.dest.webinf}/lib" />
-        <antcall target="copyLibs" inheritRefs="true" />
+        <if>
+          <not>
+            <isset property="propval.app.no.defaultlibs" />
+          </not>
+          <then>
+            <antcall target="copyLibs" inheritRefs="true" />
+          </then>
+        </if>
       </then>
       <else>
         <!-- Preserve extra jars for later -->
@@ -70,9 +77,7 @@
         <isset property="org.bedework.global.build.ear" />
       </not>
       <then>
-        <echo message="***************************************************************" />
-        <echo message="Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
-        <echo message="***************************************************************" />
+        <infoMsg message="* =========== Deploying standalone app ${app.war.file} into ${org.bedework.appserver.dir}/${propval.app.deploy.dir}" />
 
         <!-- copy the war file. -->
         <copy todir="${org.bedework.appserver.dir}/${propval.app.deploy.dir}" file="${app.war.file}"
@@ -89,37 +94,56 @@
        ================================================================ -->
 
   <target name="deployEar">
+    <if>
+      <equals arg1="${org.bedework.global.ear.zipped}"
+              arg2="yes" />
+      <then>
+        <property name="org.bedework.ear.dir"
+                  location="${org.bedework.temp.dir}/${org.bedework.ear.name}" />
+        <property name="org.bedework.ear.file"
+                  location="${org.bedework.temp.dir}/${org.bedework.ear.name}.ear" />
+      </then>
+      <else>
+        <property name="org.bedework.ear.dir"
+                  location="${org.bedework.temp.dir}/${org.bedework.ear.name}.ear" />
+      </else>
+    </if>
+
+    <delete dir="${org.bedework.ear.dir}" />
+    <mkdir dir="${org.bedework.ear.dir}" />
+
+    <property name="org.bedework.ear.properties.jar"
+              value="${org.bedework.ear.dir}/bw-ear-properties.jar"/>
+
     <!-- Common library in ear file -->
     <property name="app.dest.lib"
               location="${org.bedework.ear.dir}" />
-    <antcall target="copyLibs" inheritRefs="true" />
+    <if>
+      <not>
+        <isset property="propval.app.no.defaultlibs" />
+      </not>
+      <then>
+        <antcall target="copyLibs" inheritRefs="true" />
+      </then>
+    </if>
 
-  	<!-- And the extra jars we preserved -->
+    <!-- And the extra jars we preserved -->
     <copy todir="${app.dest.lib}" >
       <fileset dir="${org.bedework.temp.ear.extrajars.dir}" />
     </copy>
   	
-    <echo message="***************************************************************" />
-    <echo message="Building ear file for jboss deployment" />
-    <echo message="***************************************************************" />
+    <infoMsg message="* =========== Building ear file ${org.bedework.ear.dir} for jboss deployment" />
 
     <jar jarfile="${org.bedework.ear.properties.jar}">
       <fileset dir="${org.bedework.ear.properties.dir}"/>
     </jar>
 
-    <path id="app.xml.cp">
-      <pathelement location="${org.bedework.deployutil.jar}"/>
-    </path>
+    <debugMsg message="outFile=${org.bedework.ear.dir}/META-INF/application.xml
+                        warDir=${org.bedework.temp.dir}/wars
+                        contexts=${org.bedework.global.context.roots}" />
 
-    <taskdef name="applicationXml"
-             classname="org.bedework.deployment.ApplicationXmlTask">
-      <classpath refid="app.xml.cp"/>
-    </taskdef>
-
-    <echo message="outFile=${org.bedework.ear.dir}/META-INF/application.xml
-                    warDir=${org.bedework.temp.dir}/wars
-                    contexts=${org.bedework.global.context.roots}" />
-
+  	<mkdir dir="${org.bedework.ear.dir}/META-INF" />
+  	
     <applicationXml displayName="Bedework calendar suite"
                     outFile="${org.bedework.ear.dir}/META-INF/application.xml"
                     warDir="${org.bedework.temp.dir}/wars"
@@ -128,7 +152,7 @@
         <include name="*.jar"/>
       </fileset>
     </applicationXml>
-  	
+    
     <echo file="${org.bedework.ear.dir}/META-INF/jboss-app.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <jboss-app>
    <loader-repository> 
@@ -137,11 +161,24 @@
    </loader-repository> 
 </jboss-app>
 ]]></echo>
-    	
+      
     <replace file="${org.bedework.ear.dir}/META-INF/jboss-app.xml"
-    	       token="@EAR_NAME@" 
-    	       value="${app.ear.file.name}"/>
-    	    
+             token="@EAR_NAME@" 
+             value="${app.ear.file.name}"/>
+
+    <if>
+      <and>
+        <isset property="ear.meta.dir" />
+        <available file="${ear.meta.dir}" type="dir" />
+      </and>
+      <then>
+        <copy todir="${org.bedework.ear.dir}/META-INF">
+          <fileset dir="${ear.meta.dir}" />
+          <filterset refid="property.filters" />
+        </copy>
+      </then>
+    </if>
+          
     <manifest file="${org.bedework.ear.dir}/META-INF/MANIFEST.MF" />
 
     <if>

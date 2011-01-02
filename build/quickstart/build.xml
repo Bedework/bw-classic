@@ -127,14 +127,24 @@
           description="builds the jars">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="build" />
-    <tstamp prefix="endbuild" />
-    <echo level="info" message="=================> Build finished at ${endbuild.TODAY}" />
+
+    <tstamp>
+      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
   <target name="clean.build" depends="clean"
           description="cleans then builds the jars">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="clean.build" />
+
+    <tstamp>
+      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
   <!-- =================================================================
@@ -158,17 +168,24 @@
           description="builds and deploys the applications">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="deploy" />
+
+    <tstamp>
+      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
   <target name="deploy.debug" depends="init"
           description="builds and deploys the applications">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="deploy.debug" />
+
     <tstamp>
       <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
     </tstamp>
 
-    <echo level="info" message="=================> deploy.debug finished at ${deploydebug.time}" />
+    <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
   <!-- =================================================================
@@ -185,18 +202,36 @@
           description="partial clean up for quickstart.">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="quickstart-clean" />
+
+    <tstamp>
+      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
   <target name="clean.deploy" depends="init"
           description="builds and deploys the applications">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="clean.deploy" />
+
+    <tstamp>
+      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
   <target name="clean.deploy.debug" depends="init"
           description="builds and deploys the applications">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="clean.deploy.debug" />
+
+    <tstamp>
+      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
   <!-- =================================================================

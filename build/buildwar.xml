@@ -37,6 +37,8 @@
      =================================================================== -->
 
 <project name="bedework.buildwar" default="build" >
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
   <import file="${build.dir}/buildfilters.xml" />
 
   <if>
@@ -62,10 +64,8 @@
                   location="${app.dest.webinf}/classes" />
       </else>
     </if>
-    <property name="app.dest.properties.old"
-              location="${app.dest.classes}/properties/calendar" />
     <property name="app.dest.properties"
-              location="${app.dest.classes}/properties" />
+              location="${app.dest.classes}/properties/${org.bedework.deployment.name}" />
   </target>
 
   <target name="init.common">
@@ -107,19 +107,22 @@
   </target>
 
   <target name="build" depends="init">
-    <echo message="**************************************************" />
-    <echo message=" * Building war ${propval.app.war.name}"/>
-    <echo message="**************************************************" />
+    <infoMsg message="* =========== Building war ${propval.app.war.name}" />
 
     <delete dir="${app.dest.war}" />
 
-    <!-- Add modifed login pages -->
-    <copy todir="${app.dest.docs}/login" failonerror="false" >
-      <fileset dir="${org.bedework.common.resources}/login" />
-      <filterset>
-        <filter token="DISPLAY-NAME" value="${propval.app.display.name}"/>
-      </filterset>
-    </copy>
+    <if>
+      <available file="${app.sou.dir}/war/docs" type="dir" />
+      <then>
+        <!-- Add modifed login pages -->
+        <copy todir="${app.dest.docs}/login" failonerror="false" >
+          <fileset dir="${org.bedework.common.resources}/login" />
+          <filterset>
+            <filter token="DISPLAY-NAME" value="${propval.app.display.name}"/>
+          </filterset>
+        </copy>
+      </then>
+    </if>
 
     <!-- ===============================================================
          We copy 3 sets of properties.
@@ -163,59 +166,46 @@
     </if>
 
     <copy tofile="${app.dest.properties}/options.xml"
-          file="${org.bedework.config.options}" >
+          file="${org.bedework.options.file}" >
       <filterset>
         <filter token="RPI-DEBUG" value="${app.debug.val}"/>
       </filterset>
       <filterset refid="property.filters" />
     </copy>
-
-    <!-- Temp do it again -->
-    <mkdir dir="${app.dest.properties.old}" />
-
-    <copy tofile="${app.dest.properties.old}/options.xml"
-          file="${org.bedework.config.options}" >
-      <filterset>
-        <filter token="RPI-DEBUG" value="${app.debug.val}"/>
-      </filterset>
-      <filterset refid="property.filters" />
-    </copy>
-
-  	<!--
-    <if>
-      <available file="${app.sou.dir}/war/WEB-INF/classes" type="dir" />
-      <then>
-		    <copy todir="${app.dest.classes}">
-		      <fileset dir="${app.sou.dir}/war/WEB-INF/classes"
-		               includes="*"/>
-		      <filterset refid="property.filters" />
-		    </copy>
-      </then>
-    </if>
-    -->
-
-  	<!-- Make our own servlet.properties file for struts applications
-    <copy tofile="${app.dest.classes}/servlet.properties" file="${app.sou.properties}">
-      <filterset refid="property.filters" />
-    </copy>
-    -->
-
+    
     <copy tofile="${app.dest.classes}/sysevents.properties"
           file="${org.bedework.config.sysevents.properties}" />
 
-    <!-- ===============================================================
-         Add hibernate jars and property files from calendar api.
-         =============================================================== -->
+    <if>
+      <isset property="org.bedework.sou.classpath.properties" />
+      <then>
+        <copy todir="${app.dest.classes}">
+          <fileset dir="${org.bedework.sou.classpath.properties}" />
+          <filterset refid="property.filters" />
+        </copy>
+      </then>
+    </if>
 
-    <copy todir="${app.dest.classes}">
-      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/properties" />
-      <filterset refid="property.filters" />
-    </copy>
+    <if>
+      <isset property="org.bedework.sou.hibernate.properties" />
+      <then>
+        <!-- ===========================================================
+             Add hibernate config.
+             =========================================================== -->
 
-    <copy todir="${app.dest.classes}">
-      <fileset dir="${org.bedework.project.calendarapi}/calCore/resources/hbms" />
-      <filterset refid="property.filters" />
-    </copy>
+        <debugMsg message="************* Copy hib properties from ${org.bedework.sou.hibernate.properties}" />
+
+        <copy todir="${app.dest.classes}">
+          <fileset dir="${org.bedework.sou.hibernate.properties}/properties" />
+          <filterset refid="property.filters" />
+        </copy>
+    
+        <copy todir="${app.dest.classes}">
+          <fileset dir="${org.bedework.sou.hibernate.properties}/hbms" />
+          <filterset refid="property.filters" />
+        </copy>
+      </then>
+    </if>
 
     <!-- Make a temp copy of the web.xml file -->
     <copy tofile="${app.temp.web.xml}" file="${app.web.xml}"
@@ -248,20 +238,20 @@ ${propval.app.war.name}.context=${propval.app.context.root}
 
     <!-- build the war file or directory -->
     <mkdir dir="${dist.home}" />
-  	
-  	<!-- may be there as a file or a directory -->
+
+    <!-- may be there as a file or a directory -->
     <delete file="${app.war.file}" />
     <delete dir="${app.war.file}" />
   	
     <if>
-    	<or>
-    		<not>
+      <or>
+        <not>
           <isset property="org.bedework.global.wars.zipped" />
-    		</not>
-    		<istrue value="${org.bedework.global.wars.zipped}"/>
+        </not>
+        <istrue value="${org.bedework.global.wars.zipped}"/>
       </or>
       <then>
-      	<!-- Build a zipped war file -->
+        <!-- Build a zipped war file -->
         <war warfile="${app.war.file}"
              webxml="${app.dest.web.xml}"
              basedir="${app.dest.war}"
@@ -283,7 +273,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
        ================================================================= -->
 
   <target name="struts-stuff" if="org.bedework.strutsapp">
-  	<!-- Make our own servlet.properties file for struts applications -->
+    <!-- Make our own servlet.properties file for struts applications -->
     <echo file="${app.dest.classes}/servlet.properties" ><![CDATA[#
 # ========================================================================
 # This file contains all properties for servlet applications.
@@ -345,7 +335,7 @@ edu.rpi.sss.util.action.logprefix=@APP-NAME@
       <replacefilter token="@DEFAULT-CONTENTTYPE@"
                      value="${propval.app.default.contenttype}" />
     </replace>
-    	
+      
     <!-- Copy a dummy startup file into the war. -->
     <copy todir="${app.dest.war}">
       <fileset dir="${app.sou.dir}/war/" includes="setup.do" />

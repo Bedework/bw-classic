@@ -55,8 +55,6 @@
      =================================================================== -->
 
 <project name="deploy.bedework" default="init">
-  <property name="base.name" value="deployment"/>
-
   <property name="org.bedework.temp.wars.home"
             location="${org.bedework.temp.dir}/wars" />
 
@@ -88,8 +86,20 @@
     <!-- default to debug off -->
     <property name="app.debug.val" value="0" />
 
-    <!-- set this for the war builds -->
+    <!-- set these for the war builds -->
     <dirname property="app.root.dir" file="${ant.file}"/>
+    
+    <property name="org.bedework.deployment.name"
+              value="bedework" />
+    
+    <property name="org.bedework.sou.hibernate.properties"
+              location="${org.bedework.project.calendarapi}/calCore/resources" />
+    
+    <property name="org.bedework.jboss.datasource.jndiname"
+              value="${org.bedework.global.jboss.db.datasource.jndiname}" />
+    
+    <property name="org.bedework.options.file"
+              value="${org.bedework.config.options}" />
 
     <!-- Common resources directory -->
     <property name="org.bedework.common.resources"
@@ -105,29 +115,11 @@
         <property name="app.ear.file.name"
                   value="${org.bedework.global.ear.name}.ear" />
 
-        <if>
-          <equals arg1="${org.bedework.global.ear.zipped}"
-                  arg2="yes" />
-          <then>
-            <property name="org.bedework.ear.dir"
-                      location="${dist.home}/${org.bedework.global.ear.name}" />
-            <property name="org.bedework.ear.file"
-                      location="${dist.home}/${org.bedework.global.ear.name}.ear" />
-          </then>
-          <else>
-            <property name="org.bedework.ear.dir"
-                      location="${dist.home}/${org.bedework.global.ear.name}.ear" />
-          </else>
-        </if>
+        <property name="org.bedework.ear.name"
+                  value="${org.bedework.global.ear.name}" />
 
         <property name="org.bedework.ear.properties.dir"
                   location="${org.bedework.temp.dir}/ear-properties" />
-
-        <property name="org.bedework.ear.properties.jar"
-                  location="${org.bedework.ear.dir}/bw-ear-properties.jar"/>
-
-        <delete dir="${org.bedework.ear.dir}" />
-        <mkdir dir="${org.bedework.ear.dir}" />
 
         <delete dir="${org.bedework.ear.templib}" />
         <mkdir dir="${org.bedework.ear.templib}" />
@@ -152,6 +144,7 @@
     </if>
   </target>
 
+  		<!--
   <target name="deftasks" depends="init">
     <path id="app.xml.cp">
       <pathelement location="${org.bedework.deployutil.jar}"/>
@@ -172,8 +165,9 @@
       <classpath refid="app.xml.cp"/>
     </taskdef>
   </target>
+  -->
 
-  <target name="build.configured" depends="deftasks" >
+  <target name="build.configured" depends="init" >
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 
@@ -195,7 +189,7 @@
                          The deploy target.
        ================================================================= -->
 
-  <target name="deploy" depends="deftasks" >
+  <target name="deploy" depends="init" >
     <!-- Clean up before we start -->
     <delete dir="${org.bedework.temp.wars.home}" />
 
@@ -270,7 +264,12 @@
                   from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.appType" />
     <property name="org.bedework.deploy.type.dir"
               location="${app.root.dir}/${org.bedework.deploy.name}/${propval.app.type}" />
-    <echo message="*********************************** deploy directory is ${org.bedework.deploy.type.dir}" />
+    <if>
+      <istrue value="${org.bedework.build.debug}" />
+      <then>
+        <echo message="*************** deployment build directory is ${org.bedework.deploy.type.dir}" />
+      </then>
+    </if>
 
     <if>
       <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"/>
@@ -312,7 +311,12 @@
                   from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.appType" />
     <property name="org.bedework.deploy.type.dir"
               location="${app.root.dir}/${propval.app.type}" />
-    <echo message="*********************************** deploy directory is ${org.bedework.deploy.type.dir}" />
+    <if>
+      <istrue value="${org.bedework.build.debug}" />
+      <then>
+        <echo message="*********************** deployment build directory is ${org.bedework.deploy.type.dir}" />
+      </then>
+    </if>
 
     <if>
       <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"/>

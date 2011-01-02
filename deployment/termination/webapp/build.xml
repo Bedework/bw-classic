@@ -1,24 +1,32 @@
 <?xml version="1.0"?>
 
 <!-- ===================================================================
-     Standalone apps terminations tasks.
+     terminations task.
      =================================================================== -->
 
 <project name="bwdeploy.termination" default="deploy" >
-  <import file="${org.bedework.deployment.base}/deployprops.xml" />
-
   <import file="${build.dir}/platforms/${org.bedework.global.deploy.platform}War.xml" />
 
+  <import file="${build.dir}/buildfilters.xml" />
+
   <dirname property="this.dir" file="${ant.file}"/>
+
+  <!-- ensure has value -->
+  <property name="propval.app.cal.suite" value="" />
 
   <target name="init">
   </target>
 
   <target name="deploy" depends="init,build.configured" >
-    <!-- Deploy common resources -->
-    <ant antfile="${org.bedework.common.resources}/build.xml"
-         inheritrefs="true" target="deploy" />
-
+    <if>
+      <isset property="org.bedework.common.resources" />
+      <then>
+        <!-- Deploy common resources -->
+        <ant antfile="${org.bedework.common.resources}/build.xml"
+             inheritrefs="true" target="deploy" />
+      </then>
+    </if>
+    
     <if>
       <isset property="org.bedework.global.build.ear" />
       <then>

@@ -5,7 +5,7 @@
      Authors: Mike Douglass   douglm @ rpi.edu
 -->
 
-<project name="bedework.build" default="usage" basedir=".">
+<project name="bedework.build" default="init" basedir=".">
   <property environment="env"/>
 
   <!-- This affects some of the build process in the projects -->
@@ -61,9 +61,19 @@
   <property name="org.bedework.project.webdav"
             location="${org.bedework.projects}/webdav" />
 
-  <import file="${org.bedework.project.bedework}/build/buildfilters.xml" />
-  <import file="${org.bedework.project.bedework}/build/loadDeployConfig.xml"/>
-  <import file="${org.bedework.project.bedework}/build/dirTools.xml"/>
+  <property name="build.dir" location="${org.bedework.project.bedework}/build"/>
+  
+  <property name="buildjar" location="${build.dir}/buildTools/buildjar.xml"/>
+  <property name="buildsh" location="${build.dir}/buildsh.xml"/>
+  <property name="buildwar" location="${build.dir}/buildwar.xml"/>
+
+  <import file="${build.dir}/buildTools/deftasks.xml"/>
+
+  <deftasks/>
+
+  <import file="${build.dir}/buildfilters.xml" />
+  <import file="${build.dir}/loadDeployConfig.xml"/>
+  <import file="${build.dir}/dirTools.xml"/>
 
   <target name="README" depends="init"
           description="Describe targets and their usage">
@@ -100,12 +110,7 @@
     <property name="lib.dir" location="${bw.project.home}/lib"/>
     <property name="resources.dir" location="${bw.project.home}/resources"/>
     <property name="bin.home" location="${bw.project.home}/bin"/>
-
-    <property name="build.dir" location="${bw.project.home}/build"/>
-    <property name="buildjar" location="${build.dir}/buildTools/buildjar.xml"/>
-    <property name="buildsh" location="${build.dir}/buildsh.xml"/>
-    <property name="buildwar" location="${build.dir}/buildwar.xml"/>
-
+    
     <property name="org.bedework.build.caldav" value="yes" />
 
     <condition property="org.bedework.qs.build.caldav">
@@ -175,14 +180,14 @@
        "build" and "clean" targets for the project
        ================================================================= -->
 
-  <target name="build" depends="init.build,build.rpiutil,build.build,
+  <target name="build" depends="init.build,build.deployutil,build.rpiutil,build.build,
                                 build.access,build.davutil,
                                 build.webdav,build.caldav,
                                 build.calendarapi,
                                 build.caldavTest,build.caldavimpl,
                                 build.bwtools,build.webapps,build.indexer,
                               	build.dumprestore,
-                                build.testsuite,build.deployutil"
+                                build.testsuite"
           description="builds the project">
     <mkdir dir="${dist.home}/tools" />
     <copy toDir="${dist.home}/tools" >
@@ -662,6 +667,8 @@
            target="build" >
       <property name="build.jar.file" location="${org.bedework.deployutil.jar}" />
     </ant>
+    
+    <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
   </target>
 
   <!-- =================================================================
