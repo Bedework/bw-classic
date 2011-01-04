@@ -13,14 +13,14 @@
 
   <xs:complexType name="ArrayOfComponents">
     <xs:choice maxOccurs="unbounded">
-      <xs:element name="vevent" type="xcal:veventType"/>
-      <xs:element name="vtodo" type="xcal:vtodoType"/>
-      <xs:element name="vjournal" type="xcal:vjournalType"/>
-      <xs:element name="vfreebusy" type="xcal:vfreebusyType"/>
-      <xs:element name="vtimezone" type="xcal:vtimezoneType"/>
-      <xs:element name="standard" type="xcal:standardType"/>
-      <xs:element name="daylight" type="xcal:daylightType"/>
-      <xs:element name="valarm" type="xcal:valarmType"/>
+      <xs:element name="vevent" type="xcal:VeventType"/>
+      <xs:element name="vtodo" type="xcal:VtodoType"/>
+      <xs:element name="vjournal" type="xcal:VjournalType"/>
+      <xs:element name="vfreebusy" type="xcal:VfreebusyType"/>
+      <xs:element name="vtimezone" type="xcal:VtimezoneType"/>
+      <xs:element name="standard" type="xcal:StandardType"/>
+      <xs:element name="daylight" type="xcal:DaylightType"/>
+      <xs:element name="valarm" type="xcal:ValarmType"/>
     </xs:choice>
   </xs:complexType>
           
@@ -32,68 +32,68 @@
   </xs:complexType>
   
 	<!-- 3.4 iCalendar Stream -->
-	<xs:complexType name="icalendarType">
+	<xs:complexType name="IcalendarType">
 		<xs:sequence>
-			<xs:element name="vcalendar" type="xcal:vcalendarType" maxOccurs="unbounded"/>
+			<xs:element name="vcalendar" type="xcal:VcalendarType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
   
 	<!-- 3.6 Calendar Components -->
-	<xs:complexType name="vcalendarType">
+	<xs:complexType name="VcalendarType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
   
 	<!-- 3.6.1 Event Component -->
-  <xs:complexType name="veventType">
+  <xs:complexType name="VeventType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
 
 	<!-- 3.6.2 To-do Component -->
-  <xs:complexType name="vtodoType">
+  <xs:complexType name="VtodoType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
 
 	<!-- 3.6.3 Journal Component -->
-  <xs:complexType name="vjournalType">
+  <xs:complexType name="VjournalType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
   
 	<!-- 3.6.4 Free/Busy Component -->
-  <xs:complexType name="vfreebusyType">
+  <xs:complexType name="VfreebusyType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
 
 	<!-- 3.6.5 timezone -->
-  <xs:complexType name="vtimezoneType">
+  <xs:complexType name="VtimezoneType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="standardType">
+  <xs:complexType name="StandardType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="daylightType">
+  <xs:complexType name="DaylightType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>
   </xs:complexType>
 
 	<!-- 3.6.6 Alarm Component -->
-  <xs:complexType name="valarmType">
+  <xs:complexType name="ValarmType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:BaseComponentType"/>
     </xs:complexContent>

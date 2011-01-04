@@ -13,20 +13,20 @@
   <xs:include schemaLocation="iCalendar-props.xsd" />
 
   <xs:element name="x-microsoft-cdo-busystatus" 
-              type="xcal:x-ms-cdo-busystatusPropType"
-              substitutionGroup="xcal:base-property" />
+              type="xcal:XMicrosoftCdoBusystatusPropType"
+              substitutionGroup="xcal:baseProperty" />
 
   <xs:element name="x-microsoft-cdo-intendedstatus" 
-              type="xcal:x-ms-cdo-intendedstatusPropType"
-              substitutionGroup="xcal:base-property" />
+              type="xcal:XMicrosoftCdoIntendedstatusPropType"
+              substitutionGroup="xcal:baseProperty" />
   
-  <xs:complexType name="x-ms-cdo-busystatusPropType">
+  <xs:complexType name="XMicrosoftCdoBusystatusPropType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:TextPropertyType"/>
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:complexType name="x-ms-cdo-intendedstatusPropType">
+  <xs:complexType name="XMicrosoftCdoIntendedstatusPropType">
     <xs:complexContent mixed="false">
       <xs:extension base="xcal:TextPropertyType"/>
     </xs:complexContent>

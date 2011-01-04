@@ -11,7 +11,7 @@
           namespace="urn:ietf:params:xml:ns:icalendar-2.0" />
 
   <!-- The schemas for RFC 5261 patch operations and errors. -->        
-  <import schemaLocation="patch.xsd" 
+  <import schemaLocation="patch.xsd"  
           namespace="urn:ietf:params:xml:ns:pidf-diff" />
   <import schemaLocation="patch-errors.xsd" 
           namespace="urn:ietf:params:xml:ns:patch-ops-error" />
@@ -272,7 +272,7 @@
     <complexContent mixed="false">
       <extension base="tns:base-synch-entity-request">
         <sequence>
-          <element name="icalendar" type="xcal:icalendarType" />
+          <element name="icalendar" type="xcal:IcalendarType" />
         </sequence>
       </extension>
     </complexContent>
@@ -316,7 +316,7 @@
       </documentation>
     </annotation>
     <sequence>
-      <element name="icalendar" type="xcal:icalendarType" />
+      <element name="icalendar" type="xcal:IcalendarType" />
       <element name="status" type="tns:StatusType" />
       <element name="message" type="string" />
     </sequence>

@@ -14,9 +14,9 @@
 	<xs:element name="binary" type="xs:string"/>
   
 	<!-- 3.3.2 BOOLEAN -->
-	<xs:element name="boolean" type="xcal:booleanType" />
+	<xs:element name="boolean" type="xcal:BooleanType" />
   
-  <xs:simpleType name="booleanType">
+  <xs:simpleType name="BooleanType">
     <xs:restriction base="xs:token">
       <xs:enumeration value="TRUE"/>
       <xs:enumeration value="FALSE"/>
@@ -24,11 +24,11 @@
   </xs:simpleType>
   
 	<!-- 3.3.3 CAL-ADDRESS -->
-  <xs:simpleType name="cal-addressType">
+  <xs:simpleType name="CalAddressType">
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   
-  <xs:element name="cal-address" type="xcal:cal-addressType" />  
+  <xs:element name="cal-address" type="xcal:CalAddressType" />  
   
 	<!-- 3.3.4 DATE -->
 	<xs:element name="date" type="xs:string"/>
@@ -48,16 +48,15 @@
 	<xs:element name="float" type="xs:string"/>
   
 	<!-- 3.3.8 INTEGER -->
-	<xs:element name="integerType" type="xs:string"/>
+	<xs:element name="integer" type="xs:string"/>
   
 	<!-- 3.3.9 PERIOD -->
 	<xs:element name="period" type="xs:string"/>
   
   <!-- 3.3.10 RECUR -->
-  <xs:element name="recur" type="xcal:recurType"/>
-  <xs:complexType name="recurType">
+  <xs:complexType name="RecurType">
     <xs:sequence>
-      <xs:element name="freq" type="xcal:freqRecurType"/>
+      <xs:element name="freq" type="xcal:FreqRecurType"/>
       <xs:sequence>
         <xs:choice>
           <xs:element ref="xcal:until" />
@@ -70,15 +69,15 @@
       <xs:element name="byhour" type="xs:string" maxOccurs="unbounded"/>
       <xs:element name="byday" type="xs:string" maxOccurs="unbounded"/>
       <xs:element name="byyearday" type="xs:string" maxOccurs="unbounded"/>
-      <xs:element name="bymonthday" type="xcal:bymonthdayRecurType" maxOccurs="unbounded"/>
+      <xs:element name="bymonthday" type="xcal:BymonthdayRecurType" maxOccurs="unbounded"/>
       <xs:element name="byweekno" type="xs:string" maxOccurs="unbounded"/>
-      <xs:element name="bymonth" type="xcal:bymonthRecurType" maxOccurs="unbounded"/>
+      <xs:element name="bymonth" type="xcal:BymonthRecurType" maxOccurs="unbounded"/>
       <xs:element name="bysetpos" type="xs:integer" maxOccurs="unbounded"/>
-      <xs:element name="wkst" type="xcal:weekdayRecurType" />
+      <xs:element name="wkst" type="xcal:WeekdayRecurType" />
     </xs:sequence>
   </xs:complexType>
   
-	<xs:simpleType name="freqRecurType">
+	<xs:simpleType name="FreqRecurType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="SECONDLY"/>
 			<xs:enumeration value="MINUTELY"/>
@@ -90,8 +89,9 @@
 		</xs:restriction>
 	</xs:simpleType>
   
-  <xs:element name="until" type="xcal:untilRecurType"/>
-  <xs:complexType name="untilRecurType" >
+  <xs:element name="until" type="xcal:UntilRecurType"/>
+  
+  <xs:complexType name="UntilRecurType" >
     <xs:sequence>
       <xs:choice>
         <xs:element ref="xcal:date" />
@@ -102,7 +102,7 @@
 
   <xs:element name="count" type="xs:integer"/>
   
-	<xs:simpleType name="weekdayRecurType">
+	<xs:simpleType name="WeekdayRecurType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="SU"/>
 			<xs:enumeration value="MO"/>
@@ -114,14 +114,14 @@
 		</xs:restriction>
 	</xs:simpleType>
   
-  <xs:simpleType name="bymonthdayRecurType">
+  <xs:simpleType name="BymonthdayRecurType">
     <xs:restriction base="xs:integer">
       <xs:minInclusive value="-31"/>
       <xs:maxInclusive value="31"/>
     </xs:restriction>
   </xs:simpleType>
   
-  <xs:simpleType name="bymonthRecurType">
+  <xs:simpleType name="BymonthRecurType">
     <xs:restriction base="xs:integer">
       <xs:minInclusive value="1"/>
       <xs:maxInclusive value="12"/>
@@ -135,17 +135,17 @@
 	<xs:element name="time" type="xs:string"/>
   
 	<!-- 3.3.13 URI -->
-	<xs:simpleType name="uriType">
+	<xs:simpleType name="UriType">
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   
-  <xs:element name="uri" type="xcal:uriType" />  
+  <xs:element name="uri" type="xcal:UriType" />  
   
 	<!-- 3.3.14 UTC-OFFSET -->
-  <xs:simpleType name="utc-offsetType">
+  <xs:simpleType name="UtcOffsetType">
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
   
-  <xs:element name="utc-offset" type="xcal:utc-offsetType" />  
+  <xs:element name="utc-offset" type="xcal:UtcOffsetType" />  
   
 </xs:schema>
