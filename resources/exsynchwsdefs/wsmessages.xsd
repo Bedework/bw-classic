@@ -2,15 +2,19 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
         xmlns:tns="http://www.bedework.org/exsynch/wsmessages" 
         xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0"
-        xmlns:xcup="urn:ietf:params:xml:ns:icalendar-upd-1.0" 
+        xmlns:p="urn:ietf:params:xml:ns:pidf-diff" 
+        xmlns:perr="urn:ietf:params:xml:ns:patch-ops-error" 
         targetNamespace="http://www.bedework.org/exsynch/wsmessages" 
         elementFormDefault="qualified">
         
   <import schemaLocation="iCalendar.xsd" 
           namespace="urn:ietf:params:xml:ns:icalendar-2.0" />
-        
-  <import schemaLocation="iCalendar-update.xsd" 
-          namespace="urn:ietf:params:xml:ns:icalendar-upd-1.0" />
+
+  <!-- The schemas for RFC 5261 patch operations and errors. -->        
+  <import schemaLocation="patch.xsd" 
+          namespace="urn:ietf:params:xml:ns:pidf-diff" />
+  <import schemaLocation="patch-errors.xsd" 
+          namespace="urn:ietf:params:xml:ns:patch-ops-error" />
           
   <!-- Schema for messages passed from exsynch processor to the remote service. -->
   
@@ -331,7 +335,11 @@
     <complexContent mixed="false">
       <extension base="tns:base-synch-entity-request">
         <sequence>
-          <element ref="xcup:updates" />
+          <choice>
+            <element name="add" type="p:add" />
+            <element name="replace" type="p:replace" />
+            <element name="remove" type="p:remove" />
+          </choice>
         </sequence>
       </extension>
     </complexContent>
@@ -347,6 +355,7 @@
     </annotation>
     <sequence>
       <element name="status" type="tns:StatusType" />
+      <element ref="perr:patch-ops-error" />
       <element name="message" type="string" />
     </sequence>
   </complexType>
