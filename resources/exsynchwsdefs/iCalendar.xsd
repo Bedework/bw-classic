@@ -10,26 +10,38 @@
        ===================================================================== -->  
             
   <xs:include schemaLocation="iCalendar-props.xsd" />
-
-  <xs:complexType name="ArrayOfComponents">
-    <xs:choice maxOccurs="unbounded">
-      <xs:element name="vevent" type="xcal:VeventType"/>
-      <xs:element name="vtodo" type="xcal:VtodoType"/>
-      <xs:element name="vjournal" type="xcal:VjournalType"/>
-      <xs:element name="vfreebusy" type="xcal:VfreebusyType"/>
-      <xs:element name="vtimezone" type="xcal:VtimezoneType"/>
-      <xs:element name="standard" type="xcal:StandardType"/>
-      <xs:element name="daylight" type="xcal:DaylightType"/>
-      <xs:element name="valarm" type="xcal:ValarmType"/>
-    </xs:choice>
-  </xs:complexType>
           
-  <xs:complexType name="BaseComponentType">
+  <xs:complexType name="BaseComponentType" abstract="true" >
     <xs:sequence>
       <xs:element name="properties" type="xcal:ArrayOfProperties"/>
       <xs:element name="components" type="xcal:ArrayOfComponents"/>
     </xs:sequence>
   </xs:complexType>
+
+  <xs:element name="baseComponent" type="xcal:BaseComponentType" />
+
+  <xs:complexType name="ArrayOfComponents">
+    <xs:sequence>
+      <xs:element ref="xcal:baseComponent" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="vevent" type="xcal:VeventType"
+              substitutionGroup="xcal:baseComponent"/>
+  <xs:element name="vtodo" type="xcal:VtodoType"
+              substitutionGroup="xcal:baseComponent"/>
+  <xs:element name="vjournal" type="xcal:VjournalType"
+              substitutionGroup="xcal:baseComponent"/>
+  <xs:element name="vfreebusy" type="xcal:VfreebusyType"
+              substitutionGroup="xcal:baseComponent"/>
+  <xs:element name="vtimezone" type="xcal:VtimezoneType"
+              substitutionGroup="xcal:baseComponent"/>
+  <xs:element name="standard" type="xcal:StandardType"
+              substitutionGroup="xcal:baseComponent"/>
+  <xs:element name="daylight" type="xcal:DaylightType"
+              substitutionGroup="xcal:baseComponent"/>
+  <xs:element name="valarm" type="xcal:ValarmType"
+              substitutionGroup="xcal:baseComponent"/>
   
 	<!-- 3.4 iCalendar Stream -->
 	<xs:complexType name="IcalendarType">

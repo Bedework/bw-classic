@@ -89,6 +89,7 @@
   <macrodef name="build-jar">
     <attribute name="module-base"/>
     <attribute name="jar-file"/>
+    <attribute name="jar-dependency" default=""/>
     <attribute name="generated-sources" default=""/>
     <attribute name="property-resources" default=""/>
 
@@ -124,6 +125,15 @@
       <patternset id="base.class.patternset">
         <include name="**/*.class"/>
       </patternset>
+
+      <if>
+        <not>
+          <equals arg1="@{jar-dependency}" arg2="" />
+        </not>
+        <then>
+          <property name="build.jar.dependency" value="@{jar-dependency}" />
+        </then>
+      </if>
 
       <ant antfile="${buildjar}" inheritRefs="true" target="build" >
         <property name="build.jar.file" location="@{jar-file}" />

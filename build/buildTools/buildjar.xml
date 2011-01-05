@@ -70,12 +70,29 @@
          ============================================================== -->
 
     <noisyMsg message="build.jar.file=${build.jar.file}" />
+    
+    <if>
+      <isset property="build.jar.dependency"/>
+      <then>
+        <dirname file="${build.jar.dependency}"
+                 property="dependency.dirname" />
+        <basename file="${build.jar.dependency}"
+                  property="dependency.basename" />
+        <fileset dir="${dependency.dirname}" id="dependency.fileset">
+          <include name="${dependency.basename}"/>
+        </fileset>
+      </then>
+      <else>
+        <fileset refid="empty.fileset" id="dependency.fileset"/>
+      </else>
+    </if>      
 
     <uptodate property="build.jar.uptodate"
               targetfile="${build.jar.file}" >
       <srcfiles refid="buildjar.java.sources" />
       <srcfiles refid="buildjar.generated.java.sources" />
       <srcfiles refid="buildjar.resource.files"/>
+      <srcfiles refid="dependency.fileset"/>
     </uptodate>
 
     <if>

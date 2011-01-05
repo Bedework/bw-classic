@@ -253,7 +253,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+     
   <!-- 3.7.1 Calendar Scale -->
   <xs:simpleType name="CalscaleValueType">
     <xs:restriction base="xs:string">
