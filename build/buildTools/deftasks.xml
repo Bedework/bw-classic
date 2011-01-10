@@ -49,6 +49,8 @@
       <property name="project.version" value="@{version}"/>
       
       <property name="dist.home" location="${project.home}/dist"/>
+      <mkdir dir="${dist.home}" />
+
       <property name="lib.dir" location="${project.home}/lib"/>
 
       <property name="build.dir" location="${bedework.home}/build"/>
@@ -62,15 +64,15 @@
       <property name="org.bedework.libcache.dir"
                 location="${bedework.home}/libcache"/>
       
+      <property name="org.bedework.temp.dir"
+                location="${dist.home}/temp" />
+
       <if>
         <istrue value="@{subproject}" />
         <then>
           <property name="source.home" location="${project.home}/src"/>
         </then>
         <else>
-          <property name="org.bedework.temp.dir"
-                    location="${dist.home}/temp" />
-
           <delete dir="${org.bedework.temp.dir}" />
           <mkdir dir="${org.bedework.temp.dir}" />
           
@@ -83,8 +85,101 @@
           <deftasks/>
         </else>
       </if>
+
+      <import file="${build.dir}/buildTools/getJar.xml"/>
     </sequential>
   </macrodef>
+
+  <!-- =====================================================================
+       Assumes projectDefs was called previously.
+       ===================================================================== -->
+  <macrodef name="projectInit">
+    <sequential>
+      <infoMsg message="* =========== Building ${project.name}" />
+      
+      <delete dir="${lib.dir}" />
+      <mkdir dir="${lib.dir}" />
+
+      <property name="test.data.dir"
+                location="${dist.home}/test-data" />
+
+      <property name="test.reports.dir"
+                location="${dist.home}/test-reports" />
+
+      <property name="edu.rpi.cmt.access.empty.dir"
+                location="${dist.home}/empty-dir" />
+      <mkdir dir="${edu.rpi.cmt.access.empty.dir}" />
+
+      <fileset id="empty.fileset" dir="${edu.rpi.cmt.access.empty.dir}"
+               excludes="*" />
+
+      <!-- ==================== Compilation Classpath ==================== -->
+
+      <path id="compile.classpath">
+        <fileset dir="${lib.dir}">
+           <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${dist.home}">
+           <include name="*.jar"/>
+        </fileset>
+      </path>
+    </sequential>
+  </macrodef>
+  
+  <!-- Standard targets for build files. Two targets need to be overridden by 
+       the importing task
+       
+       init - carry out project specific initialisation
+       build-source - builds the source to creat ejars.
+    -->
+  
+  <!-- Override this -->
+  <target name="init" />
+
+  <!-- Override this -->
+  <target name="build-source" />
+
+  <!-- =================================================================
+       Clean out all library files from other projects and all generated
+       files in preparation for a complete rebuild.
+
+       Needed because switching versions leaves a load of old bedework
+       generated stuff in the libraries.
+       ================================================================= -->
+  <target name="deep-clean" depends="clean">
+    <delete dir="${lib.dir}" />
+  </target>
+
+  <!-- =================================================================
+       Clean all generated files
+       ================================================================= -->
+  <target name="clean">
+    <delete dir="${dist.home}" />
+  </target>
+
+  <!-- =================================================================
+       Clean up after a build.
+       ================================================================= -->
+  <target name="cleanup">
+    <delete dir="${edu.rpi.cmt.access.empty.dir}" />
+  </target>
+
+  <!-- ========================== Base build Targets ===================
+       Here we have one target building the classes and interfaces that make
+       up the access control suite.
+       ================================================================= -->
+
+  <target name="clean-build" depends="clean,build"
+          description="Clean and compile access control classes"/>
+
+  <target name="clean-build-all" depends="clean,build-all"
+          description="Clean and compile access control classes"/>
+
+  <target name="build" depends="init,build-source,cleanup"
+          description="Compile access control classes"/>
+
+  <target name="build-all" depends="build"
+          description="Compile access control classes"/>
   
   <macrodef name="build-jar">
     <attribute name="module-base"/>

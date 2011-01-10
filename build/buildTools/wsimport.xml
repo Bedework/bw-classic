@@ -62,6 +62,7 @@
           -->
           <property name="wsimport.lib" 
                     location="${org.bedework.temp.dir}/wsimportlib" />
+          <mkdir dir="${org.bedework.temp.dir}" />
           <delete dir="${wsimport.lib}" />
           <mkdir dir="${wsimport.lib}" />
           
