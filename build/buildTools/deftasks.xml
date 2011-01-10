@@ -60,7 +60,7 @@
       <property name="resources.dir" location="${project.home}/resources"/>
 
       <property name="org.bedework.libcache.dir"
-                location="${project.home}/libcache"/>
+                location="${bedework.home}/libcache"/>
       
       <if>
         <istrue value="@{subproject}" />

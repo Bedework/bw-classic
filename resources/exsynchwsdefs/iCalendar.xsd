@@ -5,6 +5,15 @@
            xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0" 
            targetNamespace="urn:ietf:params:xml:ns:icalendar-2.0" 
            elementFormDefault="qualified">
+            
+  <!-- ===================== Standard Extensions =======================  -->
+  <xs:include schemaLocation="iCalendar-link-extension.xsd" />
+            
+  <!-- ===================== Proprietary Extensions =======================  -->
+  <xs:include schemaLocation="iCalendar-bw-extensions.xsd" />
+  <xs:include schemaLocation="iCalendar-ms-extensions.xsd" />
+  <xs:include schemaLocation="iCalendar-wscal-extensions.xsd" />
+           
   <!-- =====================================================================
        3.4 Calendar Components
        ===================================================================== -->  
@@ -28,18 +37,25 @@
 
   <xs:element name="vevent" type="xcal:VeventType"
               substitutionGroup="xcal:baseComponent"/>
+              
   <xs:element name="vtodo" type="xcal:VtodoType"
               substitutionGroup="xcal:baseComponent"/>
+              
   <xs:element name="vjournal" type="xcal:VjournalType"
               substitutionGroup="xcal:baseComponent"/>
+              
   <xs:element name="vfreebusy" type="xcal:VfreebusyType"
               substitutionGroup="xcal:baseComponent"/>
+              
   <xs:element name="vtimezone" type="xcal:VtimezoneType"
               substitutionGroup="xcal:baseComponent"/>
+              
   <xs:element name="standard" type="xcal:StandardType"
               substitutionGroup="xcal:baseComponent"/>
+              
   <xs:element name="daylight" type="xcal:DaylightType"
               substitutionGroup="xcal:baseComponent"/>
+              
   <xs:element name="valarm" type="xcal:ValarmType"
               substitutionGroup="xcal:baseComponent"/>
   
