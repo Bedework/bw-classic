@@ -63,7 +63,6 @@
 
   <property name="build.dir" location="${org.bedework.project.bedework}/build"/>
   
-  <property name="buildjar" location="${build.dir}/buildTools/buildjar.xml"/>
   <property name="buildsh" location="${build.dir}/buildsh.xml"/>
   <property name="buildwar" location="${build.dir}/buildwar.xml"/>
 
@@ -127,9 +126,6 @@
 
     <fileset id="empty.fileset" dir="${org.bedework.empty.dir}"
              excludes="*" />
-    <!-- default to empty -->
-    <fileset id="buildjar.resource.files" refid="empty.fileset" />
-    <fileset id="buildjar.generated.java.sources" refid="empty.fileset" />
 
     <!-- ==================== Subcomponent Compilation Classpath ====================
 
@@ -180,7 +176,7 @@
        "build" and "clean" targets for the project
        ================================================================= -->
 
-  <target name="build" depends="init.build,build.deployutil,build.rpiutil,build.build,
+  <target name="build" depends="init.build,build.deployutil,build.rpiutil,
                                 build.access,build.davutil,
                                 build.webdav,build.caldav,
                                 build.calendarapi,
@@ -664,9 +660,7 @@
   <target name="build.deployutil" depends="init"
           description="builds the deployutil component">
     <ant antfile="${org.bedework.project.bedework}/deployutil/build.xml" inheritrefs="true"
-           target="build" >
-      <property name="build.jar.file" location="${org.bedework.deployutil.jar}" />
-    </ant>
+           target="build" />
     
     <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
   </target>
