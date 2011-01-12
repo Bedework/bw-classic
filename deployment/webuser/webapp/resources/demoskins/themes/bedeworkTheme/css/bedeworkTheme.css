@@ -551,7 +551,7 @@ body {
   white-space: nowrap;
 }
 #bedework #navigationBarTable td {
-  vertical-align: top;
+  vertical-align: middle;
 }
 #bedework #navigationBarTable form {
   display: inline;
@@ -562,10 +562,13 @@ body {
   margin-bottom: 0em;
 }
 #bedework #navigationBarTable td.todayButton {
-  padding: 1em 1em 0 1em;
+  padding: 0 1em 0 1em;
 }
 #bedework #navigationBarTable td.gotoForm {
-  padding: 1em 0.5em 0 0;
+  padding: 0 0.5em 0 0;
+}
+#bedework #navigationBarTable button {
+  padding: 0 4px 2px 4px;
 }
 #bedework #navigationBarTable td.leftCell {
   text-align: left;

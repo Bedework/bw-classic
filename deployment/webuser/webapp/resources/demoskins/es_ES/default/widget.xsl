@@ -22,17 +22,14 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
 <xsl:output
-  method="xml"
-  indent="no"
-  media-type="text/html"
-  doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-  doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-  standalone="yes"
-  omit-xml-declaration="yes"/>
+  method="text"
+  indent="yes"
+  media-type="application/json"
+  standalone="yes"/>
 
-  <!-- ========================================= -->
-  <!--       PERSONAL CALENDAR STYLESHEET        -->
-  <!-- ========================================= -->
+  <!-- ====================================================== -->
+  <!--    PERSONAL CALENDAR STYLESHEET for JSON WIDGETS       -->
+  <!-- ====================================================== -->
  
   <!-- GENERATE KEYS -->
   <!-- We occasionally need to pick out unique events from the calendar tree view
@@ -43,10 +40,10 @@
   <!-- DEFINE INCLUDES -->
   <xsl:include href="./globals.xsl" />
   <xsl:include href="../strings.xsl" />
-  <xsl:include href="../localeSettings.xsl" />
+  <!-- xsl:include href="../localeSettings.xsl" /-->
 
-  <!-- DEFAULT THEME NAME -->
-  <!-- to change the default theme, change this include -->
-  <xsl:include href="../../themes/bedeworkTheme/bedework.xsl" />
+  <!-- DEFAULT WIDGET STYLESHEET -->
+  <!-- to change the default json stylesheets, change this include -->
+  <xsl:include href="../../widgets/json.xsl" />
 
 </xsl:stylesheet>

@@ -444,6 +444,7 @@
   <xsl:variable name="bwStr-Cals-Alias">alias</xsl:variable>
   <xsl:variable name="bwStr-Cals-Folder">folder</xsl:variable>
   <xsl:variable name="bwStr-Cals-Calendar">calendar</xsl:variable>
+  <xsl:variable name="bwStr-Cals-Add">add a calendar or folder</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="listForDisplay" -->
 
@@ -636,6 +637,7 @@
   <xsl:variable name="bwStr-Upld-Filename">Filename:</xsl:variable>
   <xsl:variable name="bwStr-Upld-IntoCalendar">Into calendar:</xsl:variable>
   <xsl:variable name="bwStr-Upld-NoneSelected"><em>none selected</em></xsl:variable>
+  <xsl:variable name="bwStr-Upld-Change">change</xsl:variable>
   <xsl:variable name="bwStr-Upld-AffectsFreeBusy">Affects free/busy:</xsl:variable>
   <xsl:variable name="bwStr-Upld-AcceptEventsSettings">accept event's settings</xsl:variable>
   <xsl:variable name="bwStr-Upld-Yes">yes</xsl:variable>
@@ -687,6 +689,7 @@
   <xsl:variable name="bwStr-MdSP-TrashCalendarDefaultName">Trash Calendar Default name:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-TrashCalendarDefaultNameNote">Default name for user trash calendar. Used when initializing user. Possibly can be changed.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-InboxNote">Default name for user inbox. Used when initializing user. Possibly can be changed.</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-UserInboxDefaultName">User Inbox Default name:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserOutboxDefaultName">User Outbox Default name:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserOutboxDefaultNameNote">Default name for user outbox. Used when initializing user. Possibly can be changed.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserDeletedCalendarDefaultName">User Deleted Calendar Default name:</xsl:variable>
@@ -853,6 +856,7 @@
   <xsl:variable name="bwStr-MAGM-ReturnToAdminGroupLS">Return to Admin Group listing</xsl:variable>
   <xsl:variable name="bwStr-MAGM-Name">Name:</xsl:variable>
   <xsl:variable name="bwStr-MAGM-Members">Members:</xsl:variable>
+  <xsl:variable name="bwStr-MAGM-Remove">remove</xsl:variable>
 
   <!--  xsl:template name="deleteAdminGroupConfirm" -->
   <xsl:variable name="bwStr-DAGC-DeleteAdminGroup">Delete Admin Group?</xsl:variable>

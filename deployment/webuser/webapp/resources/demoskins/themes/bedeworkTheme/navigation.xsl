@@ -98,9 +98,9 @@
           </xsl:choose>
         </td>
         <td class="todayButton">
-          <a href="{$navAction}&amp;viewType=todayView&amp;date={$curdate}">
-            <img src="{$resourcesRoot}/images/std-button-today-off.gif" width="54" height="22" border="0" alt="Go to Today" align="left"/>
-          </a>
+          <button type="button" onclick="window.location='{$navAction}&amp;viewType=todayView&amp;date={$curdate}'">
+            <xsl:value-of select="$bwStr-Navi-Today"/>
+          </button>
         </td>
         <td align="right" class="gotoForm">
           <form name="calForm" method="post" action="{$navAction}">

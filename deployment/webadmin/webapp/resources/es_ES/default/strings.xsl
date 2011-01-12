@@ -444,6 +444,7 @@
   <xsl:variable name="bwStr-Cals-Alias">alias</xsl:variable>
   <xsl:variable name="bwStr-Cals-Folder">carpeta</xsl:variable>
   <xsl:variable name="bwStr-Cals-Calendar">calendario</xsl:variable>
+  <xsl:variable name="bwStr-Cals-Add">añadir un calendario o una carpeta</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="listForDisplay" -->
 
@@ -636,6 +637,7 @@
   <xsl:variable name="bwStr-Upld-Filename">Nombre de archivo:</xsl:variable>
   <xsl:variable name="bwStr-Upld-IntoCalendar">Dentro del calendario:</xsl:variable>
   <xsl:variable name="bwStr-Upld-NoneSelected"><em>ninguno seleccionado</em></xsl:variable>
+  <xsl:variable name="bwStr-Upld-Change">cambiar</xsl:variable>
   <xsl:variable name="bwStr-Upld-AffectsFreeBusy">Afecta libre/ocupado:</xsl:variable>
   <xsl:variable name="bwStr-Upld-AcceptEventsSettings">aceptar los ajustes del evento</xsl:variable>
   <xsl:variable name="bwStr-Upld-Yes">sí</xsl:variable>
@@ -687,6 +689,7 @@
   <xsl:variable name="bwStr-MdSP-TrashCalendarDefaultName">Nombre por defecto de la papelera de calendario:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-TrashCalendarDefaultNameNote">Nombre por defecto de la papelera de calendario de usuario. Usada al inicializar el usuario. Podría cambiarse.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-InboxNote">Nombre por defecto del inbox del usuario. Usado al inicializar el usuario. Podría cambiarse.</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-UserInboxDefaultName">Nombre por defecto de la bandeja de entrada del usuario:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserOutboxDefaultName">Nombre por defecto del outbox del usuario:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserOutboxDefaultNameNote">Nombre por defecto del outbox del usuario. Usado al inicializar el usuario. Podría cambiarse.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UserDeletedCalendarDefaultName">Nombre por defecto del calendario borrado de usuario:</xsl:variable>
@@ -853,6 +856,7 @@
   <xsl:variable name="bwStr-MAGM-ReturnToAdminGroupLS">Volver al listado del grupo de administración</xsl:variable>
   <xsl:variable name="bwStr-MAGM-Name">Nombre:</xsl:variable>
   <xsl:variable name="bwStr-MAGM-Members">Miembros:</xsl:variable>
+  <xsl:variable name="bwStr-MAGM-Remove">quitar</xsl:variable>
 
   <!--  xsl:template name="deleteAdminGroupConfirm" -->
   <xsl:variable name="bwStr-DAGC-DeleteAdminGroup">¿Borrar grupo de administración?</xsl:variable>

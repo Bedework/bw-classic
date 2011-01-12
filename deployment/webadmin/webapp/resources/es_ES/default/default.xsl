@@ -4062,11 +4062,11 @@
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
-              <xsl:otherwise><xsl:copy-of select="$bwStr-Cals-Alias"/></xsl:otherwise>
+              <xsl:otherwise>alias</xsl:otherwise>
             </xsl:choose>
           </xsl:when>
-          <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Cals-Folder"/></xsl:when>
-          <xsl:otherwise><xsl:copy-of select="$bwStr-Cals-Calendar"/></xsl:otherwise>
+          <xsl:when test="calType = '0'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
       <xsl:if test="calType = '0'">
@@ -4090,8 +4090,8 @@
       </a>
       <xsl:if test="calType = '0' and isSubscription = 'false'">
         <xsl:text> </xsl:text>
-        <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="add a calendar or folder">
-          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
+        <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="{$bwStr-Cals-Add}">
+          <img src="{$resourcesRoot}/resources/calAddIcon.gif" width="13" height="13" alt="{$bwStr-Cals-Add}" border="0"/>
         </a>
       </xsl:if>
       <xsl:if test="calendar and isSubscription='false'">
@@ -4111,9 +4111,9 @@
         <xsl:choose>
           <xsl:when test="disabled = 'true'">unknown</xsl:when>
           <xsl:when test="lastRefreshStatus &gt;= 300">unknown</xsl:when>
-          <xsl:when test="isSubscription = 'true'"><xsl:copy-of select="$bwStr-Cals-Alias"/></xsl:when>
-          <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Cals-Folder"/></xsl:when>
-          <xsl:otherwise><xsl:copy-of select="$bwStr-Cals-Calendar"/></xsl:otherwise>
+          <xsl:when test="isSubscription = 'true'">alias</xsl:when>
+          <xsl:when test="calType = '0'">folder</xsl:when>
+          <xsl:otherwise>calendar</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
       <xsl:if test="calType = '0'">
@@ -5640,7 +5640,7 @@
               <xsl:copy-of select="$bwStr-Upld-NoneSelected"/>
             </span>
             <xsl:text> </xsl:text>
-            [<a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small">change</a>]
+            [<a href="javascript:launchCalSelectWindow('{$event-selectCalForEvent}')" class="small"><xsl:copy-of select="$bwStr-Upld-Change"/></a>]
           </td>
         </tr>
         <tr>
@@ -5841,7 +5841,7 @@
           </td>
         </tr>
         <tr>
-          <th></th>
+          <th><xsl:copy-of select="$bwStr-MdSP-UserInboxDefaultName"/></th>
           <td>
             <xsl:variable name="userInbox" select="/bedework/system/userInbox"/>
             <input value="{$userInbox}" name="userInbox" />
@@ -6882,15 +6882,15 @@
                 <xsl:when test="kind='1'"><!-- kind = user -->
                   <tr>
                     <td>
-                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="{$bwStr-MAGM-User}"/>
                     </td>
                     <td>
                       <xsl:value-of select="account"/>
                     </td>
                     <td>
                       <xsl:variable name="acct" select="account"/>
-                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="remove">
-                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=user" title="{$bwStr-MAGM-Remove}">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-MAGM-Remove}"/>
                       </a>
                     </td>
                   </tr>
@@ -6907,8 +6907,8 @@
                     </td>
                     <td>
                       <xsl:variable name="acct" select="account"/>
-                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="remove">
-                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="remove"/>
+                      <a href="{$admingroup-updateMembers}&amp;removeGroupMember={$acct}&amp;kind=group" title="{$bwStr-MAGM-Remove}">
+                        <img src="{$resourcesRoot}/resources/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-MAGM-Remove}"/>
                       </a>
                     </td>
                   </tr>
@@ -6920,8 +6920,8 @@
       </tr>
     </table>
     <p>
-      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="user"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MAGM-User"/>,
-      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+      <img src="{$resourcesRoot}/resources/userIcon.gif" width="13" height="13" border="0" alt="{$bwStr-MAGM-User}"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MAGM-User"/>,
+      <img src="{$resourcesRoot}/resources/groupIcon.gif" width="13" height="13" border="0" alt="{$bwStr-MAGM-Group}"/>
       <xsl:text> </xsl:text>
       <strong><xsl:copy-of select="$bwStr-MAGM-Group"/></strong>
     </p>
