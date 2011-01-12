@@ -313,16 +313,13 @@
         </else>
       </if>      
 
-      <uptodate property="build.jar.uptodate"
-                targetfile="@{jar-file}" >
-        <srcfiles refid="buildjar.java.sources" />
-        <srcfiles refid="buildjar.generated.java.sources" />
-        <srcfiles refid="buildjar.resource.files"/>
-        <srcfiles refid="dependency.fileset"/>
-      </uptodate>
-
       <if>
-        <isset property="build.jar.uptodate"/>
+        <uptodate targetfile="@{jar-file}" >
+          <srcfiles refid="buildjar.java.sources" />
+          <srcfiles refid="buildjar.generated.java.sources" />
+          <srcfiles refid="buildjar.resource.files"/>
+          <srcfiles refid="dependency.fileset"/>
+        </uptodate>
         <then>
           <noisyMsg message="**** @{jar-file} is up to date" />
         </then>
