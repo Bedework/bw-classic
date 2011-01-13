@@ -331,6 +331,10 @@
   <xsl:variable name="bwStr-AEEF-NoCategoriesDefined">Keine Kategorien definiert</xsl:variable>
   <xsl:variable name="bwStr-AEEF-AddCategory">Kategorie hinzuf&#252;gen</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SelectTimezone">Zeitzone aussuchen...</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-PickPrevious">&#171; W&#228;hlen Zurück</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-PickNext">W&#228;hlen Weiter &#187;</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Options">Optionen &#x25BC;</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-24Hours">24 Stunden</xsl:variable>
 
   <!-- Details tab (3153)-->
   <xsl:variable name="bwStr-AEEF-Location">Veranstaltungsort:</xsl:variable>

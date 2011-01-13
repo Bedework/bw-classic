@@ -1416,10 +1416,10 @@
 	      <table id="bwScheduleControls">
 	        <tr>
 	          <td>
-	            <input type="button" id="bwPickPrevious" onclick="bwGrid.pickPrevious();" value="&#171; Pick Previous"/>
+	            <input type="button" id="bwPickPrevious" onclick="bwGrid.pickPrevious();" value="{$bwStr-AEEF-PickPrevious}"/>
 	          </td>
 	          <td>
-	            <input type="button" id="bwPickNext" onclick="bwGrid.pickNext();" value="Pick Next &#187;"/>
+	            <input type="button" id="bwPickNext" onclick="bwGrid.pickNext();" value="{$bwStr-AEEF-PickNext}"/>
 	          </td>
 	          <td class="dateLabel">
 	            <strong><xsl:copy-of select="$bwStr-AEEF-Start"/></strong>
@@ -1463,9 +1463,9 @@
 	          <td>
 	            <ul id="bwSchedOptionsContainer">
 	              <li>
-			            <input type="button" id="bwSchedOptions" value="Options &#x25BC;"/>
+			            <input type="button" id="bwSchedOptions" value="{$bwStr-AEEF-Options}"/>
 		              <ul id="bwFbOptionsMenu">
-		                <li id="bwSched24Hours"><span id="bwSched24HoursText">24 Hours</span> <input type="checkbox" id="bwSched24HoursCb"/></li>
+		                <li id="bwSched24Hours"><span id="bwSched24HoursText"><xsl:copy-of select="$bwStr-AEEF-24Hours"/></span> <input type="checkbox" id="bwSched24HoursCb"/></li>
 		              </ul>
 		            </li>
 	            </ul>
@@ -1484,6 +1484,7 @@
                   </xsl:choose>
                 </xsl:attribute>
               </input>
+              <xsl:text> </xsl:text>
               <xsl:copy-of select="$bwStr-AEEF-Days"/>
               <xsl:text> </xsl:text>
               <span id="durationHrMinSched">
@@ -1495,6 +1496,7 @@
                     </xsl:choose>
                   </xsl:attribute>
                 </input>
+                <xsl:text> </xsl:text>
                 <xsl:copy-of select="$bwStr-AEEF-Hours"/>
                 <xsl:text> </xsl:text>
                 <input type="text" name="eventDurationSched.minutesStr" size="2" id="durationMinutesSched">
@@ -1505,6 +1507,7 @@
                     </xsl:choose>
                   </xsl:attribute>
                 </input>
+                <xsl:text> </xsl:text>
                 <xsl:copy-of select="$bwStr-AEEF-Minutes"/>
               </span>
               

@@ -24,11 +24,31 @@
  *
  * @author Arlen Johnson       johnsa - rpi.edu
  * 
- * All strings used in this file are referenced from localeSettings.xsl
+ * All strings used for display in this file are referenced from localeSettings.xsl
  */
 
 // Constants and RFC-5445 values 
-// These should be put some place permanent
+// Not for translation
+var bwAttendeeRoleChair = "CHAIR";
+var bwAttendeeRoleRequired = "REQ-PARTICIPANT";
+var bwAttendeeRoleOptional = "OPT-PARTICIPANT";
+var bwAttendeeRoleNonParticipant = "NON-PARTICIPANT";
+var bwAttendeeStatusNeedsAction = "NEEDS-ACTION";
+var bwAttendeeStatusAccepted = "ACCEPTED";
+var bwAttendeeStatusDeclined = "DECLINED";
+var bwAttendeeStatusTentative = "TENTATIVE";
+var bwAttendeeStatusDelegated = "DELEGATED";
+var bwAttendeeStatusCompleted = "COMPLETED";
+var bwAttendeeStatusInProcess = "IN-PROCESS";
+var bwAttendeeTypePerson = "person";
+var bwAttendeeTypeLocation = "location";
+var bwAttendeeTypeResource = "resource";
+var bwNonParticipant = "non-participant";
+var bwNeedsAction = "needs action";
+var bwAccepted = "accepted";
+var bwDeclined = "declined";
+var bwTentative = "tentative";
+var bwDelegated = "delegated";
 
 /* An attendee
  * name:            String - name of attendee, e.g. "Venerable Bede"
@@ -38,7 +58,6 @@
  * type:            String - person, location, other resource
  * selected:        Boolean - if attendee is included in picknext selections (checkbox next to attendee in grid) 
  */
-
 var bwAttendee = function(name, uid, role, status, type) {
   this.name = name;
   this.uid = uid;
@@ -636,7 +655,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       // generate the "All Attendees" row, and populate the (now empty) fb array
       fbDisplayTimesRow = fbDisplay.insertRow(fbDisplay.rows.length);
       $(fbDisplayTimesRow).addClass("allAttendees");
-      $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">All Attendees</td><td></td><td class="fbBoundry"></td>');
+      $(fbDisplayTimesRow).html('<td class="status"></td><td class="role"></td><td class="name">' + bwAttendeeDispGridAllAttendees + '</td><td></td><td class="fbBoundry"></td>');
       for (var i=0; i < range; i++) {
         var curDate = new Date(this.startRange); 
         curDate.setHours(startHour);

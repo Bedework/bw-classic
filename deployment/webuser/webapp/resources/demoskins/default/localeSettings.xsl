@@ -51,27 +51,11 @@
     </script>
     
   </xsl:template>
-
+  
+  <!-- Declare the JavaScript scheduling strings. -->
+  <!-- These are for display and can be translated. -->
   <xsl:template name="bedeworkSchedulingStrings">
     <script type="text/javascript">
-      var bwAttendeeRoleChair = "CHAIR";
-			var bwAttendeeRoleRequired = "REQ-PARTICIPANT";
-			var bwAttendeeRoleOptional = "OPT-PARTICIPANT";
-			var bwAttendeeRoleNonParticipant = "NON-PARTICIPANT";
-			var bwAttendeeStatusNeedsAction = "NEEDS-ACTION";
-			var bwAttendeeStatusAccepted = "ACCEPTED";
-			var bwAttendeeStatusDeclined = "DECLINED";
-			var bwAttendeeStatusTentative = "TENTATIVE";
-			var bwAttendeeStatusDelegated = "DELEGATED";
-			var bwAttendeeStatusCompleted = "COMPLETED";
-			var bwAttendeeStatusInProcess = "IN-PROCESS";
-			var bwAttendeeTypePerson = "person";
-			var bwAttendeeTypeLocation = "location";
-			var bwAttendeeTypeResource = "resource";
-			
-			// display strings for the values above
-			// should be put with other internationalized strings
-			// can be translated
 			var bwAttendeeDispRoleChair = "chair";
 			var bwAttendeeDispRoleRequired = "required participant";
 			var bwAttendeeDispRoleOptional = "optional participant";
@@ -86,6 +70,8 @@
 			var bwAttendeeDispTypePerson = "person";
 			var bwAttendeeDispTypeLocation = "location";
 			var bwAttendeeDispTypeResource = "resource";
+      
+      var bwAttendeeDispGridAllAttendees = "All Attendees";
 			
 			var bwFreeBusyDispTypeBusy = "BUSY";
 			var bwFreeBusyDispTypeTentative = "TENTATIVE";
@@ -101,15 +87,16 @@
 			var bwReqParticipantDisp = "required";
 			var bwOptParticipantDisp = "optional";
 			var bwChairDisp = "chair";
-			var bwNonParticipant = "non-participant";
-			var bwNeedsAction = "needs action";
-			var bwAccepted = "accepted";
-			var bwDeclined = "declined";
-			var bwTentative = "tentative";
-			var bwDelegated = "delegated";
 			
 			var bwErrorAttendees = "Error: attendees not returned";
       
     </script>
   </xsl:template>
+  
+  <!-- Declare the JavaScript access control strings. -->
+  <!-- These are for display and can be translated. -->
+  <xsl:template name="bedeworkAccessStrings">
+    <!-- U.S. English strings are the default; this template must remain, but no translations are needed. -->
+  </xsl:template>
+  
 </xsl:stylesheet>
