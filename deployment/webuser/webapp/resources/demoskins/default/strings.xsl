@@ -450,6 +450,11 @@
   <xsl:variable name="bwStr-Cloc-Close">close</xsl:variable>
   <xsl:variable name="bwStr-Cloc-CloseClock">close clock</xsl:variable>
   
+  <!-- xsl:template name="newclock" -->
+  <xsl:variable name="bwStr-Cloc-Hour">Hour</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-Minute">Minute</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-AM">am</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-PM">pm</xsl:variable>
 
   <!-- xsl:template name="attendees" -->
   <xsl:variable name="bwStr-Atnd-Continue">continue</xsl:variable>

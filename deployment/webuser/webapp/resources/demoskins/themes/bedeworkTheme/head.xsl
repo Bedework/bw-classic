@@ -96,19 +96,14 @@
           <script type="text/javascript" src="{$resourcesRoot}/javascript/dynCalendarWidget.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/css/dynCalendarWidget.css"/>
         </xsl:when>
-        <xsl:otherwise>        
+        <xsl:otherwise>      
+        
+          <!-- include the localized jQuery datepicker defaults -->
+          <xsl:call-template name="jqueryDatepickerDefaults"/>
+        
+          <!-- now setup date and time pickers -->  
           <script type="text/javascript">
             <xsl:comment>
-            $.datepicker.setDefaults({
-              constrainInput: true,
-              dateFormat: "yy-mm-dd",
-              showOn: "both",
-              buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
-              buttonImageOnly: true,
-              gotoCurrent: true,
-              duration: ""
-            });
-
             function bwSetupDatePickers() {
               // startdate
               $("#bwEventWidgetStartDate").datepicker({
@@ -122,7 +117,11 @@
                 attachToId: "calWidgetStartTimeHider",
                 hourIds: ["eventStartDateHour","eventStartDateSchedHour"],
                 minuteIds: ["eventStartDateMinute","eventStartDateSchedMinute"],
-                ampmIds: ["eventStartDateAmpm","eventStartDateSchedAmpm"]
+                ampmIds: ["eventStartDateAmpm","eventStartDateSchedAmpm"],
+                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+					      amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+					      pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
               });
 
               // enddate
@@ -137,7 +136,11 @@
                 attachToId: "calWidgetEndTimeHider",
                 hourIds: ["eventEndDateHour"],
                 minuteIds: ["eventEndDateMinute"],
-                ampmIds: ["eventEndDateAmpm"]
+                ampmIds: ["eventEndDateAmpm"],
+                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
               });
               
               // recurrence until
@@ -168,7 +171,11 @@
                 withPadding: true,
                 attachToId: "rdateTimeFields",
                 hourIds: ["eventRdateHour"],
-                minuteIds: ["eventRdateMinute"]
+                minuteIds: ["eventRdateMinute"],
+                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
               });
               
               // meeting startdate widget
@@ -183,7 +190,11 @@
                 attachToId: "schedTime",
                 hourIds: ["eventStartDateSchedHour","eventStartDateHour"],
                 minuteIds: ["eventStartDateSchedMinute","eventStartDateMinute"],
-                ampmIds: ["eventStartDateSchedAmpm","eventStartDateAmpm"]
+                ampmIds: ["eventStartDateSchedAmpm","eventStartDateAmpm"],
+                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
               });
             }
             </xsl:comment>

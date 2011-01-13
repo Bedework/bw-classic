@@ -24,6 +24,30 @@
   <!-- LOCALE SETTINGS -->
   <!-- A place for javascript strings and locale specific javascript overrides -->
 
+  <!-- Set up the datepicker defaults -->
+  <!-- For futher configuration, see http://docs.jquery.com/UI/Datepicker -->
+  <xsl:template name="jqueryDatepickerDefaults">
+    
+    <!-- pull in the localization strings and defaults. -->
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/lang-datepicker/jquery.ui.datepicker-es.js">&#160;</script>
+
+    <!-- Bedework datepicker defaults.  You can include further overrides to regionalization here. -->
+    <script type="text/javascript">
+      <xsl:comment>
+      $.datepicker.setDefaults({
+        constrainInput: true,
+        dateFormat: "yy-mm-dd",
+        showOn: "both",
+        buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
+        buttonImageOnly: true,
+        gotoCurrent: true,
+        duration: ""
+      });
+      </xsl:comment>
+    </script>
+    
+  </xsl:template>
+
   <xsl:template name="bedeworkSchedulingStrings">
     <script type="text/javascript">
       var bwAttendeeRoleChair = "CHAIR";
