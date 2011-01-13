@@ -67,6 +67,7 @@
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
   <xsl:variable name="bwStr-Navi-Go">go</xsl:variable>
+  <xsl:variable name="bwStr-Navi-Today">today</xsl:variable>
 
   <!--  xsl:template name="searchBar" -->
   <xsl:variable name="bwStr-SrcB-Add">add...</xsl:variable>
