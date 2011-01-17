@@ -69,6 +69,9 @@
   <import file="${build.dir}/buildTools/deftasks.xml"/>
 
   <deftasks/>
+  
+  <var name="org.bedework.jars.built" value="0" />
+  <var name="org.bedework.jars.checked" value="0" />
 
   <import file="${build.dir}/buildfilters.xml" />
   <import file="${build.dir}/loadDeployConfig.xml"/>
@@ -190,6 +193,14 @@
       <fileset dir="${org.bedework.project.bwtools}/dist" includes="*.jar" />
       <fileset dir="${org.bedework.project.bwtools}/lib" includes="*.jar" />
     </copy>
+  </target>
+
+  <target name="build.deployutil" depends="init"
+          description="builds the deployutil component">
+    <ant antfile="${org.bedework.project.bedework}/deployutil/build.xml" inheritrefs="true"
+           target="build" />
+    
+    <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
   </target>
 
   <target name="clean" depends="init,clean.rpiutil,
@@ -655,14 +666,6 @@
            target="build" >
       <property name="build.jar.file" location="${org.bedework.build.jar}" />
     </ant>
-  </target>
-
-  <target name="build.deployutil" depends="init"
-          description="builds the deployutil component">
-    <ant antfile="${org.bedework.project.bedework}/deployutil/build.xml" inheritrefs="true"
-           target="build" />
-    
-    <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
   </target>
 
   <!-- =================================================================

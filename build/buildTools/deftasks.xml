@@ -183,6 +183,22 @@
   <target name="build-all" depends="build"
           description="Compile access control classes"/>
   
+  <macrodef name="build-jar-stats">
+    <sequential>
+      <if>
+        <not>
+          <isset property="org.bedework.jars.built" />
+        </not>
+        <then>
+          <echo message="No jars were checked or built" />
+        </then>
+        <else>
+          <echo message="${org.bedework.jars.checked} jars checked: ${org.bedework.jars.built} built" />
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  
   <!-- This macro builds a single jar file. It just sets defaults for the java
        compiler then invokes it.
 
@@ -224,8 +240,22 @@
     <attribute name="jar-dependency" default=""/>
     <attribute name="generated-sources" default=""/>
     <attribute name="property-resources" default=""/>
-
+    
     <sequential>
+      <if>
+        <not>
+          <isset property="org.bedework.jars.built" />
+        </not>
+        <then>
+          <var name="org.bedework.jars.built" value="0" />
+          <var name="org.bedework.jars.checked" value="0" />
+        </then>
+      </if>
+      
+      <math result="org.bedework.jars.checked" 
+            operand1="${org.bedework.jars.checked}" 
+            operation="+" operand2="1" datatype="int"/>
+
       <if>
         <equals arg1="@{generated-sources}" arg2="" />
         <then>
@@ -263,7 +293,7 @@
           <equals arg1="@{jar-dependency}" arg2="" />
         </not>
         <then>
-          <property name="build.jar.dependency" value="@{jar-dependency}" />
+          <var name="build.jar.dependency" value="@{jar-dependency}" />
         </then>
       </if>
       
@@ -284,10 +314,10 @@
       <property name="compile.verbose" value="false"/>
       <property name="compile.listfiles" value="false"/>
 
-      <property name="jar.temp.sources"
-               location="${dist.home}/source" />
-      <property name="jar.temp.classes"
-               location="${dist.home}/classes" />
+      <var name="jar.temp.sources"
+           value="${dist.home}/source" />
+      <var name="jar.temp.classes"
+           value="${dist.home}/classes" />
 
       <!-- ==============================================================
             See if the jar is up to date. We recompile if any of the
@@ -325,6 +355,10 @@
         </then>
         <else>
           <noisyMsg message="**** @{jar-file} needs rebuilding" />
+
+          <math result="org.bedework.jars.built" 
+                operand1="${org.bedework.jars.built}" 
+                operation="+" operand2="1" datatype="int"/>
 
           <!-- Delete jar file -->
           <delete file="@{jar-file}"/>
