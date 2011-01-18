@@ -93,10 +93,9 @@
     </script>
   </xsl:template>
   
-  <!-- Declare the JavaScript access control strings. -->
-  <!-- These are for display and can be translated. -->
+  <!-- Declare the access control strings. -->
   <xsl:template name="bedeworkAccessStrings">
-    <!-- U.S. English strings are the default; this template must remain, but no translations are needed. -->
+    <!-- The XSL strings are found in resources/xsl/lang -->
   </xsl:template>
   
 </xsl:stylesheet>

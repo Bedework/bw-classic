@@ -63,6 +63,7 @@
                   /bedework/page='modSchedulingPrefs'">
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
+      <xsl:call-template name="bedeworkAccessStrings"/>
       <!-- initialize calendar acls, if present -->
       <xsl:if test="/bedework/currentCalendar/acl/ace">
         <script type="text/javascript">
@@ -224,6 +225,7 @@
       <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
       -->
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
+      <xsl:call-template name="bedeworkAccessStrings"/>
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
       
       <!-- initialize event acls, if present -->

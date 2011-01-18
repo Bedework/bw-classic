@@ -766,7 +766,7 @@
       </table>
 
       <div id="sharingBox">
-        <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/>Current Access:</h3>
+        <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/></h3>
         <div id="bwCurrentAccessWidget">&#160;</div>
         <script type="text/javascript">
           bwAcl.display("bwCurrentAccessWidget");

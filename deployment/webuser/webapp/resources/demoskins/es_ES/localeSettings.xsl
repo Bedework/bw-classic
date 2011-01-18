@@ -89,11 +89,14 @@
     </script>
   </xsl:template>
   
-  <!-- Declare the JavaScript access control strings. -->
-  <!-- These are for display and can be translated. -->
+  <!-- Declare the access control strings. -->
   <xsl:template name="bedeworkAccessStrings">
-    <script type="text/javascript">
-    </script>
+    <!-- The default JavaScript strings are found in resources/javascript/bedework/bedeworkAccess.js which 
+       gets deployed to the /bedework-common/ libraries during the build.  Overrides are found in
+       resources/javascript/bedework/lang/ and are included here. -->
+    <script type="text/javascript" src="/bedework-common/javascript/bedework/lang/bwAccessStrings-es_ES.js">&#160;</script>
+    
+    <!-- The XSL strings are found in resources/xsl/lang -->
   </xsl:template>
   
 </xsl:stylesheet>
