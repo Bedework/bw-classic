@@ -22,8 +22,6 @@
     <property name="app.common.resources.dest.dir"
               location="${org.bedework.deploy.app.sou}" />
 
-    <property name="org.bedework.use.dojo" value="true" />
-
     <property name="org.bedework.use.jquery" value="true" />
 
     <property name="common.war.name"
@@ -54,16 +52,6 @@
           <fileset dir="${org.bedework.common.resources}/common-context" />
           <filterset refid="property.filters" />
         </copy>
-
-        <if>
-          <isset property="org.bedework.use.dojo" />
-          <then>
-            <!-- Add dojo -->
-            <copy todir="${common.dest.war}/javascript/dojo">
-              <fileset dir="${common.resources.dir}/javascript/${org.bedework.dojo.dir}" />
-            </copy>
-          </then>
-        </if>
 
         <if>
           <isset property="org.bedework.use.jquery" />
