@@ -311,6 +311,84 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     
   };
   
+  // add a group of attendees returned from the CardDAV server
+  // uids - an array of uids to add
+  this.addGroupOfAttendees = function(uids) {
+    // display the processing message
+    $("#bwSchedProcessingMsg").show();
+    
+    // the json string we'll send to the server
+    var attendees = "";
+    var isFirst = true;
+    
+    for (var i = 0; i<uids.length; i++) {
+      var attendeeIsNew = true;
+      var uid = uids[i];
+      
+      // check to see if attendee already exists
+      for (var j=0; j < bwGrid.attendees.length; j++) {
+        if (uid.indexOf("mailto:") == -1) {
+           uid = "mailto:" + uid; 
+        }
+        if (uid == bwGrid.attendees[j].uid) {
+          attendeeIsNew = false;
+          break;
+        } 
+      }
+      
+      if (attendeeIsNew) {
+         if (!isFirst) attendees += "&"; 
+         attendees += 'attjson={"uri":"' + uid + '"}';
+         isFirst = false;
+      }
+    }
+    
+    // send the json string to the server:
+    $.ajax({
+      type: "POST",
+      url: bwGrid.attUrlPrefix,
+      data: attendees + "&attendee=true&submit=add&list=yes&skinName=widget",
+      dataType: "json",
+      success: function(responseData){
+
+        // the local array is overwritten with attendee data returned from the ajax call
+        if (responseData.attendees != undefined && responseData.attendees.length) {
+          bwGrid.attendees.length = 0;
+          for (var k=0; k < responseData.attendees.length; k++) {
+            var att = responseData.attendees[k];
+            // strip off mailto: from uids to store locally
+            var attUri = att.uid;
+            if (attUri.indexOf("mailto:") != -1) {
+              attUri = attUri.substr(7); 
+            }
+            var newAttendee = new bwAttendee(att.name, attUri, att.role, att.status, att.type);
+            bwGrid.attendees.push(newAttendee); 
+          }
+          bwGrid.requestFreeBusy();
+        } else { // no attendees were returned
+          alert(bwErrorAttendees);
+        }
+        
+        // got attendees??  set the param that will trigger a
+        // scheduling request. For now, just set this every time
+        // (we'll trim back later)
+        if (bwGrid.attendees.length) {
+          $("input.bwEventFormSubmit").each(function(k) {
+             $(this).attr("name","submitAndSend");
+             $(this).val(bwEventSubmitMeetingDisp);
+          });
+        }
+      },
+      error: function(msg) {
+        // there was a problem
+        alert("Error: " + msg.statusText);
+      }
+    });
+    
+    // hide the processing message
+    $("#bwSchedProcessingMsg").hide();
+  }
+  
   this.addAttendeeFromGrid = function() {
     var uid = $("#bwAddAttendee").val();
     var role = $("#bwAddAttendeeRole").val();
@@ -318,7 +396,9 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     // these are preliminary values - will get more from server after ajax call
     if (uid.indexOf(",") != -1) {
       // we have a list of uids from a group
-      alert("can't add a group yet, but soon..."); 
+      // alert("can't add a group yet, but soon...");
+      var uids = uid.split(",");
+      bwGrid.addGroupOfAttendees(uids);
     } else {
       // we have a single uid
       bwGrid.addAttendee("",uid,role,partstat,"person");
