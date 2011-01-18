@@ -28,9 +28,10 @@
 */
 
 // ========================================================================
-//   Language and customization
-//   These should come from values in the header or included as a separate cutomization
-//   file.
+//   Default strings are English (en_US).  Tranlations are found in 
+//   the sibling directory lang/ and are included as overrides based on the localeSettings.xsl
+//   file for each web client (that uses a localeSettings file, e.g. the personal 
+//   and public web clients
 
 var authenticatedStr = "authenticated";
 var unauthenticatedStr = "unauthenticated";
