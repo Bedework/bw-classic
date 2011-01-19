@@ -276,14 +276,16 @@ if [ "$1" = "-buildwebcache" ] ; then
 fi
 
 if [ "$1" = "-deploywebcache" ] ; then
-   cd $QUICKSTART_HOME/cachedfeeder
-  ./deployWebCache
+  cd $QUICKSTART_HOME/cachedfeeder
+  $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher \
+                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel deploy-webcache
   exit
 fi
 
 if [ "$1" = "-deployurlbuilder" ] ; then
-   cd $QUICKSTART_HOME/cachedfeeder
-  ./deployUrlBuilder
+  cd $QUICKSTART_HOME/cachedfeeder
+  $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher \
+                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel deploy-urlbuilder
   exit
 fi
 
