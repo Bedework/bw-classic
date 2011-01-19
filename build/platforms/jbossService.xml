@@ -59,6 +59,16 @@ hibernate.jdbc.batch_size=0
         <copy todir="${app.dest.lib}" >
           <fileset dir="${org.bedework.temp.extrajars.dir}" />
         </copy>
+        
+        <if>
+          <istrue value="${propval.app.in.ear}"/>
+          <then>
+            <!-- Preserve extra jars for later -->
+            <copy todir="${org.bedework.temp.ear.extrajars.dir}" >
+              <fileset dir="${org.bedework.temp.extrajars.dir}" />
+            </copy>
+          </then>
+        </if>
       	
         <if>
           <not>

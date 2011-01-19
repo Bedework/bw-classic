@@ -61,7 +61,7 @@
   <property name="org.bedework.temp.shellscr.home"
             location="${org.bedework.temp.dir}/shellscr" />
 
-  <!-- Recreateed by each app build file. Place extra jars here -->
+  <!-- Recreated by each app build file. Place extra jars here -->
   <property name="org.bedework.temp.extrajars.dir"
             location="${org.bedework.temp.dir}/extrajars" />
 
@@ -77,6 +77,8 @@
   <import file="${this.build.dir}/appjars.xml" />
 
   <import file="${build.dir}/loadDeployConfig.xml"/>
+  
+  <property name="ear.meta.dir" location="${this.build.dir}/ear.meta"/>
 
   <target name="init" >
     <getAppJars />

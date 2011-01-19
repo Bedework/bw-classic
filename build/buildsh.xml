@@ -41,6 +41,8 @@
        ================================================================ -->
 
   <target name="build" depends="init">
+    <infoMsg message="* =========== Building ${propval.app.zip.name}" />
+
     <delete dir="${app.dest.home}" />
 
     <!-- Library stuff -->

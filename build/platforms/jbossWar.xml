@@ -126,6 +126,11 @@
         <antcall target="copyLibs" inheritRefs="true" />
       </then>
     </if>
+    
+    <!-- Add any extra jars -->
+    <copy todir="${org.bedework.temp.ear.extrajars.dir}" >
+      <fileset dir="${org.bedework.temp.extrajars.dir}" />
+    </copy>
 
     <!-- And the extra jars we preserved -->
     <copy todir="${app.dest.lib}" >

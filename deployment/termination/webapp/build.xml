@@ -11,10 +11,13 @@
 
   <dirname property="this.dir" file="${ant.file}"/>
 
+  <import file="${this.dir}/appjars.xml" />
+
   <!-- ensure has value -->
   <property name="propval.app.cal.suite" value="" />
 
   <target name="init">
+    <getExtraJars />
   </target>
 
   <target name="deploy" depends="init,build.configured" >

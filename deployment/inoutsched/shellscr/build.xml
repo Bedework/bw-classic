@@ -41,7 +41,14 @@
        ================================================================= -->
 
   <target name="deploy" depends="init,build.configured" >
-    <antcall target="deployService" inheritRefs="true" />
+    <if>
+      <not>
+        <istrue value="${propval.app.in.ear}"/>
+      </not>
+      <then>
+        <antcall target="deployService" inheritRefs="true" />
+      </then>
+    </if>
   </target>
 
   <target name="build.configured" depends="init" >
