@@ -150,7 +150,7 @@
             </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
-        <xsl:value-of select="name"/>
+        <xsl:value-of select="summary"/>
       </a>
       <xsl:if test="color != '' and color != 'null'">
         <!-- the spacer gif approach allows us to avoid some IE misbehavior -->
@@ -160,7 +160,7 @@
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar[canAlias = 'true']" mode="myCalendars">
-            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+            <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -186,7 +186,7 @@
       <xsl:choose>
         <xsl:when test="calType='5'">
           <a href="{$showInbox}" title="{$bwStr-Cals-IncomingSchedulingRequests}">
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </a>
           <xsl:text> </xsl:text>
           <xsl:if test="/bedework/inboxState/numActive != '0'">
@@ -195,7 +195,7 @@
         </xsl:when>
         <xsl:when test="calType='6'">
           <a href="{$showOutbox}" title="{$bwStr-Cals-OutgoingSchedulingRequests}">
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </a>
           <xsl:text> </xsl:text>
           <xsl:if test="/bedework/outboxState/numActive != '0'">
@@ -211,7 +211,7 @@
                 <xsl:when test="calType = 3">Used to mask items you do not have access to truly delete, such as many subscribed events.</xsl:when>
               </xsl:choose>
             </xsl:attribute>
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </a>
         </xsl:otherwise>
       </xsl:choose>
@@ -245,7 +245,7 @@
         </xsl:choose>
       </xsl:attribute>
       <a href="{$calendar-fetchForUpdate}&amp;calPath={$calPath}" title="{$bwStr-Cals-Update}">
-        <xsl:value-of select="name"/>
+        <xsl:value-of select="summary"/>
       </a>
       <xsl:if test="calType = '0' and isSubscription = 'false'">
         <xsl:text> </xsl:text>
@@ -256,7 +256,7 @@
       <xsl:if test="calendar and isSubscription='false'">
         <ul>
           <xsl:apply-templates select="calendar" mode="listForUpdate">
-            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+            <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -275,12 +275,12 @@
         </xsl:choose>
       </xsl:attribute>
       <a href="{$calendar-fetchForDisplay}&amp;calPath={$calPath}" title="{$bwStr-Cals-Display}">
-        <xsl:value-of select="name"/>
+        <xsl:value-of select="summary"/>
       </a>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForDisplay">
-            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+            <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -310,7 +310,7 @@
         <xsl:choose>
           <xsl:when test="/bedework/formElements/form/calendars/select/option">
             <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="selectCalForEventCalTree">
-              <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+              <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
             </xsl:apply-templates>
           </xsl:when>
           <xsl:otherwise>
@@ -335,31 +335,21 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:variable name="calPath" select="path"/>
-      <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-      <xsl:variable name="calDisplay">
-        <xsl:choose>
-          <xsl:when test="contains(path,$userPath)">
-            <xsl:value-of select="substring-after(path,$userPath)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="path"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
+      <xsl:variable name="calDisplay" select="summary"/>
       <xsl:choose>
         <xsl:when test="path = /bedework/formElements/form/calendars/select//option/@value and (calType != '0')">
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
-            <strong><xsl:value-of select="name"/></strong>
+            <strong><xsl:value-of select="summary"/></strong>
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="name"/>
+          <xsl:value-of select="summary"/>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="calendar">
         <ul>
           <xsl:apply-templates select="calendar[calType &lt; 2]" mode="selectCalForEventCalTree">
-            <xsl:sort select="name" order="ascending" case-order="upper-first"/>
+            <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
           </xsl:apply-templates>
         </ul>
       </xsl:if>
@@ -412,11 +402,11 @@
       <xsl:choose>
         <xsl:when test="canAlias = 'true'">
           <a href="javascript:updatePublicCalendarAlias('{$calPath}','{$calDisplay}','{$calendarCollection}')">
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="name"/>
+          <xsl:value-of select="summary"/>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="calendar">
@@ -894,7 +884,7 @@
         </xsl:variable>
         <tr class="{$descClass}">
           <td>
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </td>
           <td>
             <xsl:value-of select="desc"/>
@@ -1048,7 +1038,7 @@
                   <xsl:variable name="calPath" select="path"/>
                   <xsl:variable name="name" select="name"/>
                   <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                    <xsl:value-of select="name"/>
+                    <xsl:value-of select="summary"/>
                   </a>
                 </li>
               </xsl:for-each>
@@ -1060,7 +1050,7 @@
                   <xsl:variable name="calPath" select="path"/>
                   <xsl:variable name="name" select="name"/>
                   <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                    <xsl:value-of select="name"/>
+                    <xsl:value-of select="summary"/>
                   </a>
                 </li>
               </xsl:for-each>
@@ -1080,7 +1070,7 @@
     <xsl:choose>
       <xsl:when test="calType = '0'">
         <li class="folder">
-          <xsl:value-of select="name"/>
+          <xsl:value-of select="summary"/>
           <xsl:if test="calendar">
             <ul>
               <xsl:apply-templates select="calendar" mode="buildExportTree"/>
@@ -1093,7 +1083,7 @@
           <xsl:variable name="calPath" select="path"/>
           <xsl:variable name="name" select="name"/>
           <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </a>
         </li>
       </xsl:otherwise>

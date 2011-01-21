@@ -679,6 +679,7 @@ body {
 }
 #bedework #calSelectWidget {
   position: absolute;
+  z-index: 10;
   margin: 0;
   padding: 0 2em 1em 0;
   border: 1px solid #666;

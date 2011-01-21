@@ -1277,26 +1277,27 @@
           <xsl:when test="calType = '7' or calType = '8'">
             <!-- we've hit an unresolvable alias; stop descending -->
             <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
-            <em><xsl:value-of select="name"/>?</em>
+            <em><xsl:value-of select="summary"/>?</em>
           </xsl:when>
           <xsl:when test="calType = '0'">
             <!-- no direct selecting of folders or folder aliases: we only want users to select the
                  underlying calendar aliases -->
             <img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/>
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
-            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-SUBMIT-ALIAS','{$virtualPath}',this.checked)">
+            <xsl:variable name="displayName" select="summary"/>
+            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-SUBMIT-ALIAS','{$displayName}','{$virtualPath}',this.checked)">
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
               <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
             <xsl:choose>
               <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text">
-                <strong><xsl:value-of select="name"/></strong>
+                <strong><xsl:value-of select="summary"/></strong>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="name"/>
+                <xsl:value-of select="summary"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:otherwise>

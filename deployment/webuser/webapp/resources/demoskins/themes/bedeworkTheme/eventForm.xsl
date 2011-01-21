@@ -231,41 +231,20 @@
                        (not(contains(path,$userPath)))]/path"/></xsl:variable>
 
                 <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
-
-                <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
                 <span id="bwEventCalDisplay">
-                  <xsl:choose>
-                    <xsl:when test="contains($newCalPath,$userFullPath)">
-                      <xsl:value-of select="substring-after($newCalPath,$userFullPath)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="$newCalPath"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                  <xsl:value-of select="form/calendar/summary"/>
+                  <xsl:text> </xsl:text>
                 </span>
               </xsl:when>
               <xsl:otherwise>
                 <input type="hidden" name="newCalPath" id="bwNewCalPathField">
                   <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
                 </input>
-
-                <xsl:variable name="userFullPath"><xsl:value-of select="$userPath"/>/</xsl:variable>
                 <span id="bwEventCalDisplay">
-                  <xsl:choose>
-                    <xsl:when test="contains(form/calendar/path,$userFullPath)">
-                      <xsl:value-of select="substring-after(form/calendar/path,$userFullPath)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="form/calendar/path"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                  <xsl:value-of select="form/calendar/summary"/>
                   <xsl:text> </xsl:text>
-                  <!-- this final text element is required to avoid an empty
-                       span element which is improperly rendered in the browser -->
                 </span>
-
                 <xsl:call-template name="selectCalForEvent"/>
-
               </xsl:otherwise>
             </xsl:choose>
           </td>

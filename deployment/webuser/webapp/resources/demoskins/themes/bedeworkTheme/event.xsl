@@ -593,20 +593,7 @@
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Calendar"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
-            <!--
-            <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
-            <xsl:variable name="calUrl" select="calendar/encodedPath"/> -->
-            <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-            <!-- a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calUrl}"-->
-              <xsl:choose>
-                <xsl:when test="contains(calendar/path,$userPath)">
-                  <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="calendar/path"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            <!-- /a-->
+            <xsl:value-of select="calendar/summary"/>
           </td>
         </tr>
       </xsl:if>
