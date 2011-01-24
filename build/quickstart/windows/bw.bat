@@ -176,6 +176,21 @@ GOTO branch
    ECHO    zoneinfo target is not supported on Windows
    GOTO:EOF
    
+:buildwebcache
+   cd %QUICKSTART_HOME%\cachedfeeder
+   buildWebCache.bat
+   GOTO:EOF
+
+:deploywebcache
+  cd %QUICKSTART_HOME%\cachedfeeder
+  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" deploy-webcache
+   GOTO:EOF
+   
+:deployurlbuilder
+  cd %QUICKSTART_HOME%\cachedfeeder
+  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" deploy-urlbuilder
+   GOTO:EOF
+   
 :jbossNotice 
   ECHO *************************************************************
   ECHO The jboss configuration has been removed from the quickstart.
@@ -255,6 +270,9 @@ IF "%1" == "-bwc" GOTO bwc
 IF "%1" == "-offline" GOTO offline
 IF "%1" == "-reindex" GOTO reindex
 IF "%1" == "-zoneinfo" GOTO zoneinfo
+IF "%1" == "-buildwebcache" GOTO buildwebcache
+IF "%1" == "-deploywebcache" GOTO deploywebcache
+IF "%1" == "-deployurlbuilder" GOTO deployurlbuilder
 
 IF "%1" == "-log-silent" GOTO log-silent
 IF "%1" == "-log-quiet" GOTO log-quiet
@@ -320,6 +338,9 @@ GOTO doneWithArgs
 REM   Don't support zoneinfo command on Windows for now
 REM   ECHO      -zoneinfo - builds zoneinfo data for the timezones server
 REM   ECHO                  requires -version and -tzdata parameters
+  ECHO     -buildwebcache - builds webcache
+  ECHO     -deploywebcache - deploys webcache 
+  ECHO     -deployurlbuilder - deploys url/widget builder
   ECHO.
   ECHO.
   ECHO.
