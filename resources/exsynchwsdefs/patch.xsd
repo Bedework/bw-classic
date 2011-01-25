@@ -19,79 +19,111 @@
   <!ENTITY child  "&cnodes;|&step;">
   <!ENTITY last   "(&child;|&aname;|&nspa;)">
  ]>
-<!-- This is the schema for the XML patch operations defined in RFC 5261
+<!-- This is the schema for the XML patch operations defined in RFC 5261 as 
+  modified for xcalendar updates and according to appropriate conventions.
+  
+  As this is intended for use in a SOAP environment the xs:any for the new or
+  replacement value is going to be a problem.
+  
+  For icalendar patching we can restrict the value to be an icalendar element.
+  
+  We select the outer vcalendar is we wish to add a component
+
+  We select a component if we wish to add a property or a component to that 
+  component or if we wish to delete that component 
+
+  We select a property to change it's parameters or it's value or delete it. The 
+  value can be a parameter to add, a new value for the property or nothing to delete
+  
+  We select a parameter to delete it or change its value. The value is a value-type
+  element
+  
 -->
 
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-            xmlns="urn:ietf:params:xml:ns:pidf-diff" 
-            targetNamespace="urn:ietf:params:xml:ns:pidf-diff" 
-            elementFormDefault="qualified">
-  <xsd:simpleType name="xpath">
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0" 
+           xmlns="urn:ietf:params:xml:ns:pidf-diff" 
+           targetNamespace="urn:ietf:params:xml:ns:pidf-diff" 
+           elementFormDefault="qualified">
+
+  <xs:import schemaLocation="iCalendar.xsd" 
+             namespace="urn:ietf:params:xml:ns:icalendar-2.0" />
+
+  <xs:simpleType name="XpathType">
+    <xs:restriction base="xs:string">
+      <xs:pattern
              value="(/)?((&id;)((/&step;)*(/&last;))?|(&step;/)*(&last;))"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+    </xs:restriction>
+  </xs:simpleType>
   
-  <xsd:simpleType name="xpath-add">
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern
+  <xs:simpleType name="XpathAddType">
+    <xs:restriction base="xs:string">
+      <xs:pattern
              value="(/)?((&id;)((/&step;)*(/&child;))?|(&step;/)*(&child;))"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+    </xs:restriction>
+  </xs:simpleType>
   
-  <xsd:simpleType name="pos">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="before"/>
-      <xsd:enumeration value="after"/>
-      <xsd:enumeration value="prepend"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+  <xs:simpleType name="PosType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="before"/>
+      <xs:enumeration value="after"/>
+      <xs:enumeration value="prepend"/>
+    </xs:restriction>
+  </xs:simpleType>
   
-  <xsd:simpleType name="type">
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern value="&aname;|&nspa;"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+  <xs:simpleType name="AddValueType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="&aname;|&nspa;"/>
+    </xs:restriction>
+  </xs:simpleType>
   
-  <xsd:complexType name="add">
-    <xsd:complexContent mixed="true">
-      <xsd:restriction base="xsd:anyType">
-       <xsd:sequence>
-         <xsd:any processContents="lax" namespace="##any"
-                  minOccurs="0" maxOccurs="unbounded"/>
-       </xsd:sequence>
-       <xsd:attribute name="sel" type="xpath-add"
-                    use="required"/>
-       <xsd:attribute name="pos" type="pos"/>
-       <xsd:attribute name="type" type="type"/>
-     </xsd:restriction>
-    </xsd:complexContent>
-  </xsd:complexType>
+  <xs:complexType name="BaseUpdateType" abstract="true">
+    <xs:attribute name="sel" type="XpathAddType"
+                  use="required"/>
+  </xs:complexType>
   
-  <xsd:complexType name="replace">
-    <xsd:complexContent mixed="true">
-      <xsd:restriction base="xsd:anyType">
-        <xsd:sequence>
-          <xsd:any processContents="lax" namespace="##any"
-                   minOccurs="0" maxOccurs="1"/>
-        </xsd:sequence>
-        <xsd:attribute name="sel" type="xpath" use="required"/>
-      </xsd:restriction>
-    </xsd:complexContent>
-  </xsd:complexType>
+  <xs:complexType name="NewValueType" abstract="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="BaseUpdateType">
+        <xs:choice> 
+          <xs:element name="component" type="xcal:BaseComponentType"/>
+          <xs:element name="property" type="xcal:BasePropertyType"/>
+          <xs:element name="parameter" type="xcal:BaseParameterType"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   
-  <xsd:simpleType name="ws">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="before"/>
-      <xsd:enumeration value="after"/>
-      <xsd:enumeration value="both"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+  <xs:simpleType name="WhitespaceType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="before"/>
+      <xs:enumeration value="after"/>
+      <xs:enumeration value="both"/>
+    </xs:restriction>
+  </xs:simpleType>
   
-  <xsd:complexType name="remove">
-    <xsd:attribute name="sel" type="xpath" use="required"/>
-    <xsd:attribute name="ws" type="ws"/>
-  </xsd:complexType>
-</xsd:schema>
+  <xs:complexType name="AddType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="NewValueType">
+        <xs:attribute name="pos" type="PosType"/>
+        <xs:attribute name="type" type="AddValueType"/>
+     </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="ReplaceType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="NewValueType">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="RemoveType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="BaseUpdateType">
+        <xs:attribute name="ws" type="WhitespaceType"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
            
