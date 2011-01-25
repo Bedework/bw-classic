@@ -17,7 +17,14 @@
   <property name="propval.app.cal.suite" value="" />
 
   <target name="init">
-    <getExtraJars />
+    <if>
+      <not>
+        <isset property="org.bedework.no.extra.ear.jars" />
+      </not>  
+      <then>
+        <getExtraEarJars />
+      </then>
+    </if>
   </target>
 
   <target name="deploy" depends="init,build.configured" >

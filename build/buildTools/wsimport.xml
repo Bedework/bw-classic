@@ -98,7 +98,9 @@
             <pathelement location="${wsimport.lib}/jaxb-xjc-2.1.7.jar"/>
             <pathelement location="${wsimport.lib}/jaxb-impl-2.1.8.jar"/>
             <pathelement location="${wsimport.lib}/jaxws-rt-2.1.4.jar"/>
+            <!--
             <pathelement location="${wsimport.lib}/tools-1.6.0_21.jar" />
+            -->
             <pathelement location="${wsimport.lib}/streambuffer-1.0.jar" />
             <pathelement location="${wsimport.lib}/stax-ex-2.2.1.jar" />
             <fileset dir="${ant.home}/lib">

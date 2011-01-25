@@ -3,8 +3,8 @@
 <!-- ===================================================================
      Fetch extra jars for an ear application
      =================================================================== -->
-<project name="extraJars" basedir="." default="">
-  <macrodef name="getExtraJars">
+<project name="extraEarJars" basedir="." default="">
+  <macrodef name="getExtraEarJars">
     <sequential>
       <delete dir="${org.bedework.temp.extrajars.dir}" />
       <mkdir dir="${org.bedework.temp.extrajars.dir}" />
