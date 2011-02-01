@@ -626,9 +626,15 @@ table.common2 th {
   top: 160px;
   margin: auto;
 }
-#startTimeFields img,
-#endTimeFields img {
+#bedework #startTimeFields img,
+#bedework #endTimeFields img,
+#bedework #rdateTimeFields img{
   vertical-align: middle;
+}
+#bedework #calWidgetStartTimeHider,
+#bedework #calWidgetEndTimeHider,
+#bedework #rdateTimeFields {
+  width: 350px;
 }
 #tztable {
   margin-top: 1em;

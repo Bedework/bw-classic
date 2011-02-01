@@ -310,6 +310,12 @@
   <xsl:variable name="bwStr-Cloc-SelectTime">seleccionar hora</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Switch">intercambiar</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">cerrar</xsl:variable>
+  
+  <!-- xsl:template name="newclock" -->
+  <xsl:variable name="bwStr-Cloc-Hour">Hora</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-Minute">Minuto</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-AM">am</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-PM">pm</xsl:variable>
 
   <!--  xsl:template match="event" mode="displayEvent" -->
   <xsl:variable name="bwStr-DsEv-OkayToDelete">¿Seguro que quiere borrar este evento?</xsl:variable>

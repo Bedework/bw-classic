@@ -248,8 +248,8 @@
         </xsl:if>
         <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
-          <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
-          <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework/bwClock.js">&#160;</script>
+          <link rel="stylesheet" href="/bedework-common/javascript/bedework/bwClock.css"/>
           <xsl:choose>
             <xsl:when test="$portalFriendly = 'true'">
               <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
@@ -276,11 +276,37 @@
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
+		              // starttime
+		              $("#bwStartClock").bwTimePicker({
+		                hour24: <xsl:value-of select="/bedework/hour24"/>,
+		                attachToId: "calWidgetStartTimeHider",
+		                hourIds: ["eventStartDateHour","eventStartDateSchedHour"],
+		                minuteIds: ["eventStartDateMinute","eventStartDateSchedMinute"],
+		                ampmIds: ["eventStartDateAmpm","eventStartDateSchedAmpm"],
+		                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+		                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+		                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+		                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+		              });
+
                   // enddate
                   $("#bwEventWidgetEndDate").datepicker({
                     defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/end/rfc3339DateTime,'T')"/>');
+
+		              // endtime
+		              $("#bwEndClock").bwTimePicker({
+		                hour24: <xsl:value-of select="/bedework/hour24"/>,
+		                attachToId: "calWidgetEndTimeHider",
+		                hourIds: ["eventEndDateHour"],
+		                minuteIds: ["eventEndDateMinute"],
+		                ampmIds: ["eventEndDateAmpm"],
+		                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+		                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+		                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+		                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+		              });
 
                   // recurrence until
                   $("#bwEventWidgetUntilDate").datepicker({
@@ -303,6 +329,19 @@
                     dateFormat: "yymmdd"
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+                  
+		              // rdates and xdates times
+		              $("#bwRecExcClock").bwTimePicker({
+		                hour24: true,
+		                withPadding: true,
+		                attachToId: "rdateTimeFields",
+		                hourIds: ["eventRdateHour"],
+		                minuteIds: ["eventRdateMinute"],
+		                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+		                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+		                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+		                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+		              });
                 }
                 </xsl:comment>
               </script>
@@ -1493,19 +1532,19 @@
               </div>
               <div class="{$timeFieldsClass}" id="startTimeFields">
                 <span id="calWidgetStartTimeHider" class="show">
-                  <select name="eventStartDate.hour">
+                  <select name="eventStartDate.hour" id="eventStartDateHour">
                     <xsl:copy-of select="form/start/hour/select/*"/>
                   </select>
-                  <select name="eventStartDate.minute">
+                  <select name="eventStartDate.minute" id="eventStartDateMinute">
                     <xsl:copy-of select="form/start/minute/select/*"/>
                   </select>
                   <xsl:if test="form/start/ampm">
-                    <select name="eventStartDate.ampm">
+                    <select name="eventStartDate.ampm" id="eventStartDateAmpm">
                       <xsl:copy-of select="form/start/ampm/select/*"/>
                     </select>
                   </xsl:if>
                   <xsl:text> </xsl:text>
-                  <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                  <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwStartClock"/>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1583,19 +1622,19 @@
                 </div>
                 <div class="{$timeFieldsClass}" id="endTimeFields">
                   <span id="calWidgetEndTimeHider" class="show">
-                    <select name="eventEndDate.hour">
+                    <select name="eventEndDate.hour" id="eventEndDateHour">
                       <xsl:copy-of select="form/end/dateTime/hour/select/*"/>
                     </select>
-                    <select name="eventEndDate.minute">
+                    <select name="eventEndDate.minute" id="eventEndDateMinute">
                       <xsl:copy-of select="form/end/dateTime/minute/select/*"/>
                     </select>
-                    <xsl:if test="form/end/dateTime/ampm/select">
-                      <select name="eventEndDate.ampm">
+                    <xsl:if test="form/start/ampm">
+                      <select name="eventEndDate.ampm" id="eventEndDateAmpm">
                         <xsl:copy-of select="form/end/dateTime/ampm/select/*"/>
                       </select>
                     </xsl:if>
                     <xsl:text> </xsl:text>
-                    <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0"/></a>
+                    <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwEndClock"/>
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -2239,7 +2278,7 @@
                           </script>
                         </div>
                         <div id="rdateTimeFields" class="timeFields">
-                         <select name="eventRdate.hour">
+                         <select name="eventRdate.hour" id="eventRdateHour">
                             <option value="00">00</option>
                             <option value="01">01</option>
                             <option value="02">02</option>
@@ -2265,7 +2304,7 @@
                             <option value="22">22</option>
                             <option value="23">23</option>
                           </select>
-                          <select name="eventRdate.minute">
+                          <select name="eventRdate.minute" id="eventRdateMinute">
                             <option value="00" selected="selected">00</option>
                             <option value="05">05</option>
                             <option value="10">10</option>
@@ -2280,6 +2319,7 @@
                             <option value="55">55</option>
                           </select>
                          <xsl:text> </xsl:text>
+                         <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwRecExcClock"/>
 
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
