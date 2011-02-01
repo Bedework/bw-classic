@@ -41,6 +41,8 @@
   <!-- This may have defined the config properties location. Load that now to get overrides
   <property file="${org.bedework.config.properties}" />-->
 
+  <import file="${bedework.quickstart.basedir}/../buildTools/deftasks.xml"/>
+
   <import file="${bedework.quickstart.basedir}/../loadDeployConfig.xml"/>
 
   <target name="usage" depends="init"
