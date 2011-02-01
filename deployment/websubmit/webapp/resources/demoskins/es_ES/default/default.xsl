@@ -148,25 +148,25 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
     <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
+    
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+    
     <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
+    
     <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent'">
-      <script type="text/javascript" src="{$resourcesRoot}/resources/bwClock.js">&#160;</script>
-      <link rel="stylesheet" href="{$resourcesRoot}/resources/bwClock.css"/>
+      <script type="text/javascript" src="/bedework-common/javascript/bedework/bwClock.js">&#160;</script>
+      <link rel="stylesheet" href="/bedework-common/javascript/bedework/bwClock.css"/>
       <xsl:choose>
         <xsl:when test="$portalFriendly = 'true'">
           <script type="text/javascript" src="{$resourcesRoot}/resources/dynCalendarWidget.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
         </xsl:when>
         <xsl:otherwise>
-          <!-- <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/> -->
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
           <script type="text/javascript">
             <xsl:comment>
             $.datepicker.setDefaults({
@@ -185,12 +185,38 @@
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
               }).attr("readonly", "readonly");
               $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
-
+              
+              // starttime
+              $("#bwStartClock").bwTimePicker({
+                hour24: <xsl:value-of select="/bedework/hour24"/>,
+                attachToId: "calWidgetStartTimeHider",
+                hourIds: ["eventStartDateHour","eventStartDateSchedHour"],
+                minuteIds: ["eventStartDateMinute","eventStartDateSchedMinute"],
+                ampmIds: ["eventStartDateAmpm","eventStartDateSchedAmpm"],
+                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+              });
+              
               // enddate
               $("#bwEventWidgetEndDate").datepicker({
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
               }).attr("readonly", "readonly");
               $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/end/rfc3339DateTime,'T')"/>');
+              
+              // endtime
+              $("#bwEndClock").bwTimePicker({
+                hour24: <xsl:value-of select="/bedework/hour24"/>,
+                attachToId: "calWidgetEndTimeHider",
+                hourIds: ["eventEndDateHour"],
+                minuteIds: ["eventEndDateMinute"],
+                ampmIds: ["eventEndDateAmpm"],
+                hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+              });
             }
             </xsl:comment>
           </script>
@@ -690,13 +716,19 @@
                 </div>
                 <div class="{$timeFieldsClass}" id="startTimeFields">
                   <span id="calWidgetStartTimeHider" class="show">
-                    <xsl:copy-of select="form/start/hour/*"/>
-                    <xsl:copy-of select="form/start/minute/*"/>
-                    <xsl:if test="form/start/ampm">
-                      <xsl:copy-of select="form/start/ampm/*"/>
-                    </xsl:if>
+	                  <select name="eventStartDate.hour" id="eventStartDateHour">
+	                    <xsl:copy-of select="form/start/hour/select/*"/>
+	                  </select>
+	                  <select name="eventStartDate.minute" id="eventStartDateMinute">
+	                    <xsl:copy-of select="form/start/minute/select/*"/>
+	                  </select>
+	                  <xsl:if test="form/start/ampm">
+	                    <select name="eventStartDate.ampm" id="eventStartDateAmpm">
+	                      <xsl:copy-of select="form/start/ampm/select/*"/>
+	                    </select>
+	                  </xsl:if>
                     <xsl:text> </xsl:text>
-                    <a href="javascript:bwClockLaunch('eventStartDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
+                    <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwStartClock"/>
 
                     <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -780,13 +812,19 @@
                   </div>
                   <div class="{$timeFieldsClass}" id="endTimeFields">
                     <span id="calWidgetEndTimeHider" class="show">
-                      <xsl:copy-of select="form/end/dateTime/hour/*"/>
-                      <xsl:copy-of select="form/end/dateTime/minute/*"/>
-                      <xsl:if test="form/end/dateTime/ampm">
-                        <xsl:copy-of select="form/end/dateTime/ampm/*"/>
-                      </xsl:if>
+	                    <select name="eventEndDate.hour" id="eventEndDateHour">
+	                      <xsl:copy-of select="form/end/dateTime/hour/select/*"/>
+	                    </select>
+	                    <select name="eventEndDate.minute" id="eventEndDateMinute">
+	                      <xsl:copy-of select="form/end/dateTime/minute/select/*"/>
+	                    </select>
+	                    <xsl:if test="form/start/ampm">
+	                      <select name="eventEndDate.ampm" id="eventEndDateAmpm">
+	                        <xsl:copy-of select="form/end/dateTime/ampm/select/*"/>
+	                      </select>
+	                    </xsl:if>
                       <xsl:text> </xsl:text>
-                      <a href="javascript:bwClockLaunch('eventEndDate');"><img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock"/></a>
+                      <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwEndClock"/>
 
                       <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                         <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1277,26 +1315,27 @@
           <xsl:when test="calType = '7' or calType = '8'">
             <!-- we've hit an unresolvable alias; stop descending -->
             <input type="checkbox" name="forDiplayOnly" disabled="disabled"/>
-            <em><xsl:value-of select="name"/>?</em>
+            <em><xsl:value-of select="summary"/>?</em>
           </xsl:when>
           <xsl:when test="calType = '0'">
             <!-- no direct selecting of folders or folder aliases: we only want users to select the
                  underlying calendar aliases -->
             <img src="{$resourcesRoot}/resources/catIcon.gif" width="13" height="13" alt="folder" class="folderForAliasTree" border="0"/>
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="summary"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
-            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-SUBMIT-ALIAS','{$virtualPath}',this.checked)">
+            <xsl:variable name="displayName" select="summary"/>
+            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-SUBMIT-ALIAS','{$displayName}','{$virtualPath}',this.checked)">
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
               <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
             <xsl:choose>
               <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text">
-                <strong><xsl:value-of select="name"/></strong>
+                <strong><xsl:value-of select="summary"/></strong>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="name"/>
+                <xsl:value-of select="summary"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:otherwise>

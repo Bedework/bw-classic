@@ -137,7 +137,13 @@
   <xsl:variable name="bwStr-Cloc-SelectTime">seleccione hora</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Switch">cambiar</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">cerrar</xsl:variable>
-
+  
+  <!-- xsl:template name="newclock" -->
+  <xsl:variable name="bwStr-Cloc-Hour">Hora</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-Minute">Minuto</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-AM">am</xsl:variable>
+  <xsl:variable name="bwStr-Cloc-PM">pm</xsl:variable>
+  
   <!-- xsl:template name="eventList" -->
   <xsl:variable name="bwStr-EvLs-PendingEvents">Eventos pendientes</xsl:variable>
   <xsl:variable name="bwStr-EvLs-EventsBelowWaiting">Los eventos de debajo están a la espera de ser publicados por un administrador del calendario. Puede editarlos o borrarlos hasta que hayan sido aceptados. Una vez que el evento es publicado no lo verá más en su lista.</xsl:variable>
