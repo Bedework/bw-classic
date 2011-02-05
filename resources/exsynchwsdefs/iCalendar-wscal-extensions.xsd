@@ -65,7 +65,16 @@
     </xs:complexContent>
   </xs:complexType>
               
-  <xs:element name="x-wscalendar-gluon" type="xcal:WsCalendarGluonType"
+  <xs:element name="gluon" type="xcal:WsCalendarGluonType"
+              substitutionGroup="xcal:baseComponent"/>
+
+  <xs:complexType name="WsCalendarIntervalType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="xcal:BaseComponentType"/>
+    </xs:complexContent>
+  </xs:complexType>
+              
+  <xs:element name="interval" type="xcal:WsCalendarIntervalType"
               substitutionGroup="xcal:baseComponent"/>
 
   <!-- =====================================================================
