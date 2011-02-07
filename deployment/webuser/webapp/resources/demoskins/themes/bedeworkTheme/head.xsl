@@ -166,7 +166,7 @@
               }).attr("readonly", "readonly");
               $("#bwEventWidgetRdate").val('<xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,1,4)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,6,2)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,9,2)"/>');
               
-              // redates and xdates times
+              // rdates and xdates times
               $("#bwRecExcClock").bwTimePicker({
                 hour24: true,
                 withPadding: true,
