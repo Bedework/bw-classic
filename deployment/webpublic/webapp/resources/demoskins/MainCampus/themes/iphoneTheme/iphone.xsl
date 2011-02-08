@@ -58,6 +58,7 @@
     <html xml:lang="en">
       <head>
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
+        <meta name="viewport" id="viewport" content="width=device-width, user-scalable=yes,initial-scale=1.0,maximum-scale=1.0" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="Pragma" content="no-cache"/>
         <meta http-equiv="Expires" content="-1"/>
