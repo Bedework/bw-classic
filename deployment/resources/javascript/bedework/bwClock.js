@@ -40,7 +40,7 @@
       hourLabel: "Hour",  // default text for "Hour"
       minuteLabel: "Minute", // default text for "Minute"
       amLabel: "am",      // default text for "am"
-      pmLabel: "pm",      // default text for "pm"
+      pmLabel: "pm"      // default text for "pm"
     };  
     var options = $.extend(defaults, options);
     
