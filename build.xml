@@ -66,6 +66,22 @@
   <property name="buildsh" location="${build.dir}/buildsh.xml"/>
   <property name="buildwar" location="${build.dir}/buildwar.xml"/>
 
+  <!-- ========================= deployutil ================================ -->
+
+  <property name="bw.project.home" location="${org.bedework.project.bedework}"/>
+
+  <property file="${bw.project.home}/build.properties" />
+
+  <property name="project.version" value="${org.bedework.version}"/>
+
+  <property name="org.bedework.deployutil.jar"
+            location="${org.bedework.project.bedework}/bin/${org.bedework.deployutil.jar.name}-${project.version}.jar" />
+
+  <ant antfile="${org.bedework.project.bedework}/deployutil/build.xml" inheritrefs="true"
+         target="build" />
+  
+  <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
+  
   <import file="${build.dir}/buildTools/deftasks.xml"/>
 
   <deftasks/>
@@ -101,12 +117,7 @@
               Default properties.
          =============================================================== -->
 
-    <property name="bw.project.home" location="${org.bedework.project.bedework}"/>
-
-    <property file="${bw.project.home}/build.properties" />
-
     <property name="project.name" value="${org.bedework.package.name}"/>
-    <property name="project.version" value="${org.bedework.version}"/>
 
     <property name="dist.home" location="${bw.project.home}/dist"/>
     <property name="lib.dir" location="${bw.project.home}/lib"/>
