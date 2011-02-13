@@ -243,6 +243,7 @@ quickstart=
 # Projects we will build
 pkgdefault=yes
 bedework=
+bwxmlschema=
 carddav=
 caldav=
 client=
@@ -347,6 +348,11 @@ do
       shift
       ;;
 # ------------------------Projects
+    -bwxml)
+      bwxmlschema="yes"
+      pkgdefault=
+      shift
+      ;;
     -carddav)
       carddav="yes"
       pkgdefault=
@@ -427,6 +433,10 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
+
+if [ "$bwxmlschema" != "" ] ; then
+  cd $QUICKSTART_HOME/bwxml-schema
+fi
 
 if [ "$caldav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework/projects/caldav

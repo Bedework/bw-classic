@@ -29,15 +29,15 @@
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
       
-      <property name="sourcedestdir" location="@{module-base}/src" />
+      <var name="sourcedestdir" value="@{module-base}/src" />
       
-      <dirname property="org.bedework.wsdl.dir" file="@{wsdl}"/>
+      <dirname property="org.bedework.schema.dir" file="@{schema}"/>
 
       <if>
         <and>
           <available file="${sourcedestdir}" type="dir" />
           <uptodate targetfile="@{jar-file}" >
-            <srcfiles dir="${org.bedework.wsdl.dir}" />
+            <srcfiles dir="${org.bedework.schema.dir}" />
           </uptodate>
         </and>
         <then>

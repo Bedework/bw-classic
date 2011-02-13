@@ -385,6 +385,7 @@
      <priority value="${jboss.server.log.threshold}" />
    </category>
 
+<!-- 
    <category name="org.bedework.calsvc.CalSvc$SvcSimpleFilterParser">
       <priority value="${org.bedework.loglevel.exprfilters}"/>
    </category>
@@ -397,12 +398,28 @@
       <priority value="${org.bedework.loglevel.schemaexport:INFO}"/>
    </category>
 
-   <category name="org.bedework.calcore.AccessUtil">
+   <category name="org.bedework.client.FilterBuilder">
+      <priority value="${org.bedework.loglevel.exprfilters}"/>
+   </category>
+ -->
+   <category name="org.bedework.calsvc.CalSvc$SvcSimpleFilterParser">
+      <priority value="INFO"/>
+   </category>
+
+   <category name="org.bedework.calsvc.client.FilterBuilder">
+      <priority value="INFO"/>
+   </category>
+
+   <category name="org.hibernate.tool.hbm2ddl.SchemaExport">
       <priority value="INFO"/>
    </category>
 
    <category name="org.bedework.client.FilterBuilder">
-      <priority value="${org.bedework.loglevel.exprfilters}"/>
+      <priority value="INFO"/>
+   </category>
+ 
+   <category name="org.bedework.calcore.AccessUtil">
+      <priority value="INFO"/>
    </category>
 
    <!-- Limit hibernate categories -->

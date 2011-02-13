@@ -295,6 +295,7 @@ public class MakeLangXsl extends Task {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void checkResources(final List<String> fnames) throws BuildException {
     List<TreeSet<String>> propNamesList = new LinkedList<TreeSet<String>>();
     int fnamesSz = fnames.size();

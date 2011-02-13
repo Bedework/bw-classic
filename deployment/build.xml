@@ -100,8 +100,10 @@
     <property name="org.bedework.jboss.datasource.jndiname"
               value="${org.bedework.global.jboss.db.datasource.jndiname}" />
     
+    <!--
     <property name="org.bedework.options.file"
               value="${org.bedework.config.options}" />
+              -->
 
     <!-- Common resources directory -->
     <property name="org.bedework.common.resources"

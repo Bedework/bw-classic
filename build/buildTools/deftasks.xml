@@ -19,6 +19,11 @@
                classname="org.bedework.deployment.ForEachAppTask">
         <classpath refid="build.cp"/>
       </taskdef>
+      
+      <taskdef name="forApp"
+               classname="org.bedework.deployment.ForAppTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
 
       <taskdef name="resolveFile"
                classname="org.bedework.deployment.ResolveFile">
