@@ -152,7 +152,7 @@
               </if>
             	
               <copy file="@{libcache}/${org.bedework.getjar.jarname}"
-                    todir="@{lib}" overwrite="yes" />
+                    todir="@{lib}" overwrite="yes" preservelastmodified="true" />
             </else>
           </if>
 

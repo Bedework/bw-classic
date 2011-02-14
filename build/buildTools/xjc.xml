@@ -44,7 +44,7 @@
           <noisyMsg message="**** @{jar-file} is up to date" />
         </then>
         <else>
-          <noisyMsg message="**** @{jar.file} needs rebuilding" />
+          <noisyMsg message="**** @{jar-file} needs rebuilding" />
 
           <delete dir="${sourcedestdir}" />
           <mkdir dir="${sourcedestdir}" />

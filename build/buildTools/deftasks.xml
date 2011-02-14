@@ -375,12 +375,17 @@
       <noisyMsg message="**** org.bedework.libraries.changed = ${org.bedework.libraries.changed}" />
 
       <if>
-        <uptodate targetfile="@{jar-file}" >
-          <srcfiles refid="buildjar.java.sources" />
-          <srcfiles refid="buildjar.generated.java.sources" />
-          <srcfiles refid="buildjar.resource.files"/>
-          <srcfiles refid="dependency.fileset"/>
-        </uptodate>
+        <and>
+          <not>
+            <equals arg1="${org.bedework.libraries.changed}" arg2="true" />
+          </not>
+          <uptodate targetfile="@{jar-file}" >
+            <srcfiles refid="buildjar.java.sources" />
+            <srcfiles refid="buildjar.generated.java.sources" />
+            <srcfiles refid="buildjar.resource.files"/>
+            <srcfiles refid="dependency.fileset"/>
+          </uptodate>
+        </and>
         <then>
           <noisyMsg message="**** @{jar-file} is up to date" />
         </then>
