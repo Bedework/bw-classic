@@ -41,7 +41,7 @@
           </uptodate>
         </and>
         <then>
-          <noisyMsg message="**** @{jar.file} is up to date" />
+          <noisyMsg message="**** @{jar-file} is up to date" />
         </then>
         <else>
           <noisyMsg message="**** @{jar.file} needs rebuilding" />

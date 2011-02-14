@@ -101,7 +101,7 @@
                 <then>
                   <noisyMsg message="Fetch ${org.bedework.getjar.jarname} from project @{project}" />
                   <copy file="${org.bedework.getjar.project.jar}"
-                        todir="@{lib}" overwrite="yes" />
+                        todir="@{lib}" overwrite="yes" preservelastmodified="true" />
                 </then>
               </if>
             </then>

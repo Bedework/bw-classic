@@ -348,6 +348,32 @@
         </else>
       </if>      
 
+      <!-- See if the libraries are later than any classes --> 
+
+      <var name="org.bedework.libraries.changed" value="false" />
+      
+      <outofdate outputsources="org.bedework,changed.sources">
+        <sourcefiles>
+          <fileset dir="${lib.dir}">
+             <include name="*.jar"/>
+          </fileset>
+          <!-- This makes almost everything rebuild all the time
+               because it has the generated jars for the current package
+          <path refid="compile.classpath"/> 
+          -->
+        </sourcefiles>
+        <targetfiles>
+          <pathelement path="@{jar-file}"/>
+        </targetfiles>
+        <sequential>
+          <var name="org.bedework.libraries.changed" value="true" />
+          <noisyMsg message="**** @{jar-file} needs rebuilding - libraries changed" />
+        </sequential>
+      </outofdate>
+      
+      <noisyMsg message="**** org.bedework,changed.sources = ${org.bedework,changed.sources}" />
+      <noisyMsg message="**** org.bedework.libraries.changed = ${org.bedework.libraries.changed}" />
+
       <if>
         <uptodate targetfile="@{jar-file}" >
           <srcfiles refid="buildjar.java.sources" />
