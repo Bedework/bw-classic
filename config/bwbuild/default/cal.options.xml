@@ -499,7 +499,7 @@
 
         <!-- ===============================================================
                           Admin web client CalAdmin
-             ================================================================== -->
+             =============================================================== -->
         <CalAdmin classname="org.bedework.calfacade.configs.AdminConfig">
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
@@ -961,6 +961,16 @@
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </pubcarddav>
+
+        <!-- ==================================================================
+                          CardDAV importer
+             ================================================================== -->
+        <carddavImp classname="org.bedework.carddav.util.CardDAVConfig">
+          <appType>carddavimp</appType>
+          <!-- 
+          <publicAdmin>false</publicAdmin> -->
+          <guestMode>false</guestMode>
+        </carddavImp>
       </app>
     </bedework>
   </org>

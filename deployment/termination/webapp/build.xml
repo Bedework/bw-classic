@@ -11,20 +11,10 @@
 
   <dirname property="this.dir" file="${ant.file}"/>
 
-  <import file="${this.dir}/appjars.xml" />
-
   <!-- ensure has value -->
   <property name="propval.app.cal.suite" value="" />
 
   <target name="init">
-    <if>
-      <not>
-        <isset property="org.bedework.no.extra.ear.jars" />
-      </not>  
-      <then>
-        <getExtraEarJars />
-      </then>
-    </if>
   </target>
 
   <target name="deploy" depends="init,build.configured" >

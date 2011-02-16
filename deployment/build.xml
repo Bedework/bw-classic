@@ -74,14 +74,13 @@
 
   <import file="${build.dir}/buildTools/getJar.xml"/>
 
-  <import file="${this.build.dir}/appjars.xml" />
-
   <import file="${build.dir}/loadDeployConfig.xml"/>
   
   <property name="ear.meta.dir" location="${this.build.dir}/ear.meta"/>
 
   <target name="init" >
-    <getAppJars />
+    <property name="org.bedework.struts.tlds"
+              location="${resources.dir}/struts-1.2.9/tlds"/>
 
     <loadDeployConfig />
 
@@ -100,11 +99,6 @@
     <property name="org.bedework.jboss.datasource.jndiname"
               value="${org.bedework.global.jboss.db.datasource.jndiname}" />
     
-    <!--
-    <property name="org.bedework.options.file"
-              value="${org.bedework.config.options}" />
-              -->
-
     <!-- Common resources directory -->
     <property name="org.bedework.common.resources"
               location="${app.root.dir}/resources" />
@@ -147,29 +141,6 @@
       </then>
     </if>
   </target>
-
-  		<!--
-  <target name="deftasks" depends="init">
-    <path id="app.xml.cp">
-      <pathelement location="${org.bedework.deployutil.jar}"/>
-    </path>
-
-    <taskdef name="forEachApp"
-             classname="org.bedework.deployment.ForEachAppTask">
-      <classpath refid="app.xml.cp"/>
-    </taskdef>
-
-    <taskdef name="resolveFile"
-             classname="org.bedework.deployment.ResolveFile">
-      <classpath refid="app.xml.cp"/>
-    </taskdef>
-
-    <taskdef name="makeLangXsl"
-             classname="org.bedework.deployment.MakeLangXsl">
-      <classpath refid="app.xml.cp"/>
-    </taskdef>
-  </target>
-  -->
 
   <target name="build.configured" depends="init" >
     <!-- Clean up before we start -->

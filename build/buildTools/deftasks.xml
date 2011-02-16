@@ -46,7 +46,6 @@
     <attribute name="name"/>
     <attribute name="version"/>
     <attribute name="deployment-name" default=""/>
-    <attribute name="no-default-libs" default="true"/>
     <attribute name="subproject" default="false"/>
     <sequential>
       <property name="project.name" value="@{name}"/>
@@ -84,9 +83,6 @@
           <property name="org.bedework.deployment.name"
                     value="@{deployment-name}" />
 
-          <property name="propval.app.no.defaultlibs"
-                    value="@{no-default-libs}" />
-          
           <deftasks/>
         </else>
       </if>
@@ -128,6 +124,75 @@
            <include name="*.jar"/>
         </fileset>
       </path>
+    </sequential>
+  </macrodef>
+
+  <!-- =====================================================================
+       Assumes projectDefs was called previously.
+       Set things up ready for deployment
+       ===================================================================== -->
+  <macrodef name="deployInit">
+    <attribute name="ear-name"/>
+    <sequential>
+      <!-- Where we put ear stuff -->
+      <if>
+        <isset property="org.bedework.global.build.ear" />
+        <then>
+          <property name="app.ear.file.name"
+                    value="@{ear-name}.ear" />
+
+          <property name="org.bedework.ear.name"
+                    value="@{ear-name}" />
+
+          <property name="org.bedework.ear.templib"
+                    location="${org.bedework.temp.dir}/earlib" />
+
+          <property name="org.bedework.ear.properties.dir"
+                    location="${org.bedework.temp.dir}/ear-properties" />
+
+          <delete dir="${org.bedework.ear.templib}" />
+          <mkdir dir="${org.bedework.ear.templib}" />
+
+          <delete dir="${org.bedework.ear.properties.dir}" />
+          <mkdir dir="${org.bedework.ear.properties.dir}" />
+        </then>
+      </if>
+      
+      <property name="org.bedework.temp.shellscr.home"
+                location="${org.bedework.temp.dir}/shellscr" />
+
+      <property name="org.bedework.temp.extrajars.dir"
+                location="${org.bedework.temp.dir}/extrajars" />
+
+      <!-- Preserve extra jars for ear builds -->
+      <property name="org.bedework.temp.ear.extrajars.dir"
+                location="${org.bedework.temp.dir}/earextrajars" />
+      
+      <property name="org.bedework.global.context.roots"
+                location="${org.bedework.temp.dir}/context-roots.properties" />
+
+      <!-- ===== End of stuff in main bedework deployment build file ======   -->
+      
+      <!-- Clean up before we start -->
+      <delete dir="${org.bedework.temp.wars.home}" />
+      <mkdir dir="${org.bedework.temp.wars.home}" />
+
+      <delete dir="${org.bedework.temp.ear.extrajars.dir}" />
+      <mkdir dir="${org.bedework.temp.ear.extrajars.dir}" />
+
+      <delete dir="${org.bedework.temp.extrajars.dir}" />
+      <mkdir dir="${org.bedework.temp.extrajars.dir}" />
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="deployTerm">
+    <sequential>
+      <ant antfile="${build.dir}/../deployment/termination/webapp/build.xml" 
+           target="deploy" inheritRefs="true" />
+      
+      <!-- Platform specific -->
+      <ant antfile="${build.dir}/../deployment/termination/build.xml" 
+           target="deploy" inheritRefs="true" />
     </sequential>
   </macrodef>
   

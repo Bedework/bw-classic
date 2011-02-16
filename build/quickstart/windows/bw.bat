@@ -19,7 +19,6 @@ SET ANT_HOME=%QUICKSTART_HOME%\apache-ant-1.7.0
 
 SET CLASSPATH="%ANT_HOME%\lib\ant-launcher.jar"
 SET CLASSPATH=%CLASSPATH%;"%QUICKSTART_HOME%\bedework\build\quickstart\antlib"
-:: SET CLASSPATH=%CLASSPATH%;"%QUICKSTART_HOME%\bedework\applib\log4j-1.2.8.jar"
 
 :: Default some parameters
 SET BWCONFIGS=

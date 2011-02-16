@@ -13,6 +13,37 @@
               libcache="${org.bedework.libcache.dir}"
               name="caldavtest" version="${org.bedework.caldavtest.version}"
               projecthome="${bw.project.home}/projects/caldavTest" />
+
+      <!-- ===================== Bedework dav jars ========================= -->
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-davio" version="${org.bedework.davutil.version}" 
+              projecthome="${bw.project.home}/projects/davutil" />
+      
+      <!-- ======================= Commons jars ============================ -->
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="commons-codec" version="1.3"/>
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="commons-httpclient" version="3.0"/>
+
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="commons-ssl" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="commons-logging" />
+
+      <!-- ========================== Misc jars ============================ -->
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="log4j" version="1.2.8"/>
     </sequential>
  </macrodef>
 </project>

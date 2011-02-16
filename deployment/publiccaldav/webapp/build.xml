@@ -11,7 +11,8 @@
 
   <dirname property="this.dir" file="${ant.file}"/>
 
-  <import file="${this.dir}/appjars.xml" />
+  <!--<import file="${this.dir}/appjars.xml" />-->
+  <import file="${org.bedework.deployment.base}/bw-core-appjars.xml" />
 
   <target name="init" >
     <getExtraJars />
