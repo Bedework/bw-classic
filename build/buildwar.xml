@@ -112,11 +112,23 @@
     <delete dir="${app.dest.war}" />
 
     <if>
+      <isset property="propval.app.login.directory" />
+      <then>
+        <fileset dir="${propval.app.login.directory}"
+                 id="org.bedework.login.fileset" />
+      </then>
+      <else>
+        <fileset dir="${org.bedework.common.resources}/login"
+                 id="org.bedework.login.fileset" />
+      </else>
+    </if>
+
+    <if>
       <available file="${app.sou.dir}/war/docs" type="dir" />
       <then>
         <!-- Add modifed login pages -->
         <copy todir="${app.dest.docs}/login" failonerror="false" >
-          <fileset dir="${org.bedework.common.resources}/login" />
+          <fileset refid="org.bedework.login.fileset" />
           <filterset>
             <filter token="DISPLAY-NAME" value="${propval.app.display.name}"/>
           </filterset>
