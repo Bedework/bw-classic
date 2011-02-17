@@ -436,7 +436,12 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
       },
       error: function(msg) {
         // there was a problem
+       if (msg.statusText == "OK") {
+         alert(msg.responseText);
+       }
+       else {
         alert(msg.statusText);
+       }
       }
     });
     
@@ -1253,7 +1258,7 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
      );
        
     } catch (e) {
-      alert(e);
+      alert("Error: " + e);
     }
     
   };

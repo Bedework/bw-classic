@@ -1151,6 +1151,9 @@ li.changeGroup {
   color: #f00;
   background-color: transparent;
 }
+.aliasTree input {
+	margin-left: 6px;
+}
 img.folderForAliasTree {
   padding: 0.5em 0.2em 0 0.5em;
 }
@@ -1301,4 +1304,8 @@ a:hover {
 #footer a {
   color: #999;
   background-color: inherit;
+}
+div#footer a:hover {
+ color: #444;
+ background-color: transparent;
 }

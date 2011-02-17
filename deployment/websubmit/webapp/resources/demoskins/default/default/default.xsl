@@ -998,7 +998,7 @@
             <td class="fieldname"><em><xsl:copy-of select="$bwStr-FoEl-ImageURL"/></em></td>
             <td class="fieldval">
               <input type="text" name="xBwImageHolder" size="30" value="">
-                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
+                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
               </input>
               <xsl:text> </xsl:text>
               <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-ImageURLOptional"/></span>
@@ -1026,20 +1026,20 @@
           <p>
             <label for="commentLocationAddress"><xsl:copy-of select="$bwStr-FoEl-Address"/><xsl:text> </xsl:text></label>
             <input type="text" name="commentLocationAddress" id="bwCommentLocationAddress">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
           </p>
           <p>
             <label for="commentLocationSubaddress"><em><xsl:copy-of select="$bwStr-FoEl-SubAddress"/></em> </label>
             <input type="text" name="commentLocationSubaddress" id="commentLocationSubaddress">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-SUBADDRESS']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-SUBADDRESS']" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-Optional"/></span>
           </p>
           <p>
             <label for="commentLocationURL"><em><xsl:copy-of select="$bwStr-FoEl-URL"/></em> </label>
             <input type="text" name="commentLocationURL" id="commentLocationURL">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-LOCATION']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-Optional"/></span>
           </p>
@@ -1065,28 +1065,28 @@
           <p>
             <label for="commentContactName"><xsl:copy-of select="$bwStr-FoEl-OrganizationName"/><xsl:text> </xsl:text> </label>
             <input type="text" name="commentContactName" id="bwCommentContactName" size="40">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/values/text"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-PleaseLimitContacts"/></span>
           </p>
           <p>
             <label for="commentContactPhone"><em><xsl:copy-of select="$bwStr-FoEl-Phone"/></em> </label>
             <input type="text" name="commentContactPhone">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-Optional"/></span>
           </p>
           <p>
             <label for="commentContactURL"><em><xsl:copy-of select="$bwStr-FoEl-URL"/></em> </label>
             <input type="text" name="commentContactURL">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-Optional"/></span>
           </p>
           <p>
             <label for="commentContactEmail"><em><xsl:copy-of select="$bwStr-FoEl-Email"/></em> </label>
             <input type="text" name="commentContactEmail">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <span class="note"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-Optional"/></span>
           </p>
@@ -1112,7 +1112,7 @@
           <p>
             <label for="commentCategories"><xsl:copy-of select="$bwStr-FoEl-TypeOfEvent"/><xsl:text> </xsl:text></label>
             <input type="text" name="commentCategories" size="80">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
           </p>
         </div>
@@ -1153,7 +1153,7 @@
           <p>
             <label for="commentCategories">Category suggestion: </label>
             <input type="text" name="commentCategories" size="30">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
           </p>
         </div-->
@@ -1184,8 +1184,8 @@
             <xsl:copy-of select="$bwStr-FoEl-FinalNotes"/><br/>
           <!-- note: don't remove the #160 from the textarea or browsers will see it as a closed tag when empty -->
            <textarea name="commentNotes" cols="60" rows="4"><!--
-           --><xsl:value-of select="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text)"/><!--
-           --><xsl:if test="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text) = ''">&#160;</xsl:if><!--
+           --><xsl:value-of select="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text)" disable-output-escaping="yes"/><!--
+           --><xsl:if test="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text) = ''"><xsl:text> </xsl:text></xsl:if><!--
            --></textarea>
           </p>
         </div>

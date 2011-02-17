@@ -224,7 +224,7 @@
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
         <link rel="stylesheet" href="{$resourcesRoot}/default/default/default.css"/>
-        <link rel="stylesheet" href="{$resourcesRoot}/default/default/subColors.css"/>
+        <link rel="stylesheet" href="/bedework-common/default/default/subColors.css"/>
         <!-- set globals that must be passed in from the XSLT -->
         <script type="text/javascript">
           <xsl:comment>
@@ -366,6 +366,32 @@
                 bwXProps.init('<xsl:value-of select="name()"/>',[<xsl:for-each select="parameters/node()">['<xsl:value-of select="name()"/>','<xsl:value-of select="node()"/>']<xsl:if test="position() != last()">,</xsl:if></xsl:for-each>],'<xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:value-of select="values/text"/></xsl:with-param></xsl:call-template>');
               </xsl:for-each>
             }
+
+            $(document).ready(function(){
+
+	          <xsl:if test="/bedework/formElements/recurrenceId = ''">
+                initRXDates();
+              </xsl:if>
+              
+              <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
+                initXProperties();
+                bwSetupDatePickers();
+              </xsl:if>
+                            
+              focusFirstElement();
+
+              // If you wish to collapse specific topical areas, you can specify them here:
+              // (note that this will be managed from the admin client in time)
+              // $("ul.aliasTree > li:eq(4) > ul").hide();  	      
+              // $("ul.aliasTree > li:eq(11) > ul").hide(); 	      
+              // $("ul.aliasTree > li:eq(13) > ul").hide(); 
+              $("ul.aliasTree > li > img.folderForAliasTree").attr("src", '<xsl:value-of select="$resourcesRoot"/>/resources/catExpander.gif');
+              $("ul.aliasTree > li > img.folderForAliasTree").css("cursor","pointer");
+              $("ul.aliasTree > li > img.folderForAliasTree").click(function(){
+                $(this).next("ul.aliasTree > li > ul").slideToggle("slow");
+              });
+
+            });
             </xsl:comment>
           </script>
         </xsl:if>
@@ -428,14 +454,6 @@
         </script>
       </head>
       <body>
-        <xsl:choose>
-          <xsl:when test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
-            <xsl:attribute name="onload"><xsl:if test="/bedework/formElements/recurrenceId = ''">initRXDates();</xsl:if>initXProperties();focusFirstElement();bwSetupDatePickers();</xsl:attribute>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:attribute name="onload">focusFirstElement();</xsl:attribute>
-          </xsl:otherwise>
-        </xsl:choose>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated -->
         <xsl:choose>
           <xsl:when test="/bedework/page='selectCalForEvent'">
@@ -1245,7 +1263,7 @@
             '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']"/></xsl:call-template>',
             '<xsl:for-each select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-ALIAS']/values/text"><xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:call-template name="substring-afterLastInstanceOf"><xsl:with-param name="string" select="."/><xsl:with-param name="char">/</xsl:with-param></xsl:call-template></xsl:with-param></xsl:call-template><br/></xsl:for-each>',
             '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:call-template>',
-            '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/></xsl:call-template>');
+            '<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/></xsl:call-template>');
         </script>
 
         <div id="bwSubmittedEventCommentBlock">
@@ -2494,7 +2512,7 @@
           </td>
           <td>
             <input type="text" name="xBwImageHolder" value="" size="80" class="edit">
-              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text"/></xsl:attribute>
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <xsl:text> </xsl:text>
             <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventImage"/></span>
