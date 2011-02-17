@@ -34,7 +34,7 @@
       </xsl:choose>
     </xsl:variable>
     <h2 class="{$statusClass}">
-      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
+      <a id="linkToEvent" href="javascript:showLink('{$urlPrefix}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}','{$bwStr-SgEv-EventLink}')" title="{$bwStr-SgEv-GenerateLinkToThisEvent}">
         <xsl:copy-of select="$bwStr-SgEv-LinkToThisEvent"/>
       </a>
       <xsl:if test="status='CANCELLED'"><xsl:copy-of select="$bwStr-SgEv-Canceled"/><xsl:text> </xsl:text></xsl:if>

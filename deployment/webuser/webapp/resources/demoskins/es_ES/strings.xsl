@@ -616,7 +616,6 @@
   <xsl:variable name="bwStr-CuCa-Cancel">cancelar</xsl:variable>
 
   <!--  xsl:template match="currentCalendar" mode="modCalendar -->
-  <xsl:variable name="bwStr-CuCa-ModifySubscription">Modificar Suscripción</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ModifySubscription">Modificar Subscripción</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ModifyFolder">Modificar Carpeta</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ModifyCalendar">Modificar Agenda</xsl:variable>

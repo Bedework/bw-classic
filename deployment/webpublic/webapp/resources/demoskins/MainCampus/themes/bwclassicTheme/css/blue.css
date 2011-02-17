@@ -305,7 +305,7 @@ body {
   white-space: nowrap;
 }
 #navigationBarTable td {
-  vertical-align: top;
+  vertical-align: middle;
 }
 #navigationBarTable form {
   display: inline;
@@ -316,10 +316,13 @@ body {
   margin-bottom: 0em;
 }
 #navigationBarTable td.todayButton {
-  padding: 1em 1em 0 1em;
+  padding: 0 1em;
 }
 #navigationBarTable td.gotoForm {
-  padding: 1em 0.5em 0 0;
+  padding: 0 0.5em 0 0;
+}
+#navigationBarTable button {
+  padding: 0 4px 2px 4px;
 }
 #navigationBarTable td.leftCell {
   text-align: left;

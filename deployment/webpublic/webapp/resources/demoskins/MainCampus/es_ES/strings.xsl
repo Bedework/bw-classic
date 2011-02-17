@@ -54,7 +54,6 @@
   <xsl:variable name="bwStr-Deadline-Title">Fechas límite</xsl:variable>
   <xsl:variable name="bwStr-Deadline-NoEvents">No hay fechas límite en este intervalo de tiempo o en esta vista</xsl:variable>
 
-
   <!--  xsl:template name="tabs" -->
   <xsl:variable name="bwStr-Tabs-LoggedInAs">conectado como</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Logout">desconectar</xsl:variable>
@@ -149,7 +148,6 @@
   <xsl:variable name="bwStr-SgEv-End">Fin:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Ends">Finaliza</xsl:variable>
   <xsl:variable name="bwStr-SgEv-DueBy">Gracias a</xsl:variable>
-<!--  <xsl:variable name="bwStr-SgEv-DueBy">Due By</xsl:variable> -->
   <xsl:variable name="bwStr-SgEv-AddToMyCalendar">añadir a mi agenda</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Añadir a MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToGoogleCalendar">Añadir a Google Calendar</xsl:variable>
