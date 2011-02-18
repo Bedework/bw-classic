@@ -43,8 +43,8 @@
         <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
 
         <!-- Public/private key locations -->
-        <privKeys>@DATA_DIR@/data/bedework/privkeys</privKeys>
-        <pubKeys>@DATA_DIR@/data/bedework/pubkeys</pubKeys>
+        <privKeys>@DATA_DIR@/privkeys</privKeys>
+        <pubKeys>@DATA_DIR@/pubkeys</pubKeys>
 
         <systemRoots classname="org.bedework.calfacade.configs.SystemRoots" >
           <principalRoot>/principals</principalRoot>
