@@ -96,7 +96,7 @@
        resources/javascript/bedework/lang/ and are included here. -->
     <script type="text/javascript" src="/bedework-common/javascript/bedework/lang/bwAccessStrings-es_ES.js">&#160;</script>
     
-    <!-- The XSL strings are found in resources/xsl/lang -->
+    <!-- The XSL access strings are found in resources/xsl/lang and are referenced in default/globals.xsl -->
   </xsl:template>
   
 </xsl:stylesheet>

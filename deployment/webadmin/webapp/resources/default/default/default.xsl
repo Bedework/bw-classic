@@ -38,10 +38,12 @@
   <xsl:key name="catUid" match="category" use="uid"/>
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/bedeworkAccess.xsl"/>
+  <!-- include the language strings -->
+  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="../../../bedework-common/default/default/bedeworkAccessStrings.xsl"/>
   <xsl:include href="./strings.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
@@ -5945,6 +5947,16 @@
             <input value="{$defaultViewName}" name="defaultUserViewName" />
             <div class="desc">
               <xsl:copy-of select="$bwStr-MdSP-DefaultUserViewNameNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-MaxAttendees"/></th>
+          <td>
+            <xsl:variable name="maxAttendees" select="/bedework/system/maxAttendees"/>
+            <input value="{$maxAttendees}" name="maxAttendees" />
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-MaxAttendeesNote"/>
             </div>
           </td>
         </tr>

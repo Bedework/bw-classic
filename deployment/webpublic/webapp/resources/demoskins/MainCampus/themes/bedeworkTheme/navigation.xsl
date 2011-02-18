@@ -40,7 +40,7 @@
           </xsl:choose>
         </li>
       </ul>
-      <a id="rssRequest" class="rss" href="/feeder/showMain.rdo?skinName=list-rss" title="RSS feed">
+      <a id="rssRequest" class="rss" href="/feeder/showMain.rdo?skinName=list-rss" title="{$bwStr-HdBr-RSSFeed}">
         <xsl:attribute name="href">
           <xsl:choose>
             <xsl:when test="$embedUrlBuilder = 'true'"><xsl:value-of select="$showPage"/>&amp;setappvar=page(urlbuilder)</xsl:when>

@@ -704,6 +704,8 @@
   <xsl:variable name="bwStr-MdSP-UserBusyCalendarDefaultNameNote">Default name for user busy time calendar. Used when initializing user. Possibly can be changed.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-DefaultUserViewName">Default user view name:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-DefaultUserViewNameNote">Name used for default view created when a new user is added</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-MaxAttendees">Maximum attendees:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-MaxAttendeesNote">Maximum number of event attendees (for personal client scheduling)</xsl:variable>
   <xsl:variable name="bwStr-MdSP-HTTPConnectionsPerUser">Http connections per user:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-HTTPConnectionsPerHost">Http connections per host:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-TotalHTTPConnections">Total http connections:</xsl:variable>

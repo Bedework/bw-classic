@@ -29,23 +29,23 @@
 
     <table cellpadding="0" id="accessFormTable" class="common">
       <tr>
-        <th colspan="2" class="commonHeader">Add:</th>
+        <th colspan="2" class="commonHeader"><xsl:value-of select="$bwStr-Access-Add"/></th>
       </tr>
       <tr>
         <td>
-          <h5>Who:</h5>
+          <h5><xsl:value-of select="$bwStr-Access-Who"/></h5>
           <div class="whoTypes">
             <input type="text" name="who" size="20"/><br/>
-            <input type="radio" value="user" name="whoType" checked="checked"/> user
-            <input type="radio" value="group" name="whoType"/> group
-            <p>OR</p>
+            <input type="radio" value="user" name="whoType" checked="checked"/> <xsl:value-of select="$bwStr-Access-User"/>
+            <input type="radio" value="group" name="whoType"/> <xsl:value-of select="$bwStr-Access-Group"/>
+            <p><xsl:value-of select="$bwStr-Access-Or"/></p>
             <p>
-              <input type="radio" value="owner" name="whoType"/> owner<br/>
-              <input type="radio" value="auth" name="whoType"/> authenticated<br/>
-              <input type="radio" value="unauth" name="whoType"/> unauthenticated<br/>
-              <input type="radio" value="all" name="whoType"/> all users
+              <input type="radio" value="owner" name="whoType"/> <xsl:value-of select="$bwStr-Access-Owner"/><br/>
+              <input type="radio" value="auth" name="whoType"/> <xsl:value-of select="$bwStr-Access-Authenticated"/><br/>
+              <input type="radio" value="unauth" name="whoType"/> <xsl:value-of select="$bwStr-Access-Unauthenticated"/><br/>
+              <input type="radio" value="all" name="whoType"/> <xsl:value-of select="$bwStr-Access-AllUsers"/>
             </p>
-            <input type="button" name="updateACLs" value="add entry" onclick="bwAcl.update(this.form,'{$outputId}')"/>
+            <input type="button" name="updateACLs" value="{$bwStr-Access-AddEntry}" onclick="bwAcl.update(this.form,'{$outputId}')"/>
           </div>
         </td>
         <td>
@@ -53,16 +53,16 @@
             <span id="accessRightsToggle">
               <xsl:choose>
                 <xsl:when test="/bedework/appvar[key='accessRightsToggle']/value='advanced'">
-                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
-                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" checked="checked" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
+                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/><xsl:value-of select="$bwStr-Access-Basic"/>
+                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" checked="checked" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/><xsl:value-of select="$bwStr-Access-Advanced"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" checked="checked" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/>basic
-                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/>advanced
+                  <input type="radio" name="setappvar" value="accessRightsToggle(basic)" checked="checked" onclick="changeClass('howList','visible');changeClass('howTable','invisible');"/><xsl:value-of select="$bwStr-Access-Basic"/>
+                  <input type="radio" name="setappvar" value="accessRightsToggle(advanced)" onclick="changeClass('howList','invisible');changeClass('howTable','visible');"/><xsl:value-of select="$bwStr-Access-Advanced"/>
                 </xsl:otherwise>
               </xsl:choose>
             </span>
-            Rights:
+            <xsl:value-of select="$bwStr-Access-Rights"/>
           </h5>
           <input type="hidden" name="how" value="" id="bwCurrentHow"/>
           <!-- field 'acl' will receive xml for method 2 -->
@@ -74,13 +74,13 @@
               <xsl:attribute name="class">visible</xsl:attribute>
             </xsl:if>
             <tr>
-              <th>access type</th>
-              <th>allow</th>
-              <th>deny</th>
+              <th><xsl:value-of select="$bwStr-Access-AccessType"/></th>
+              <th><xsl:value-of select="$bwStr-Access-Allow"/></th>
+              <th><xsl:value-of select="$bwStr-Access-Deny"/></th>
             </tr>
             <tr>
               <td class="level1">
-                <input type="checkbox" value="A" id="accessAll" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/>All
+                <input type="checkbox" value="A" id="accessAll" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-All"/>
               </td>
               <td>
                 <input type="radio" value="A" name="accessAll" checked="checked" disabled="disabled"/>
@@ -91,7 +91,7 @@
             </tr>
             <tr>
               <td class="level2">
-                <input type="checkbox" value="R" id="accessRead" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Read
+                <input type="checkbox" value="R" id="accessRead" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> <xsl:value-of select="$bwStr-Access-Read"/>
               </td>
               <td>
                 <input type="radio" value="R" name="accessRead" checked="checked"/>
@@ -102,7 +102,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="r" id="r" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read ACL
+                <input type="checkbox" value="r" id="r" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ReadACL"/>
               </td>
               <td>
                 <input type="radio" value="r" name="r" checked="checked" disabled="disabled"/>
@@ -113,7 +113,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="P" id="accessPriv" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read current user privilege set
+                <input type="checkbox" value="P" id="accessPriv" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ReadCurrentUserPrivilegeSet"/>
               </td>
               <td>
                 <input type="radio" value="P" name="accessPriv" checked="checked" disabled="disabled"/>
@@ -124,7 +124,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="F" id="F" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> read freebusy
+                <input type="checkbox" value="F" id="F" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ReadFreebusy"/>
               </td>
               <td>
                 <input type="radio" value="F" name="F" checked="checked" disabled="disabled"/>
@@ -135,7 +135,7 @@
             </tr>
             <tr>
               <td class="level2">
-                <input type="checkbox" value="W" id="W" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> Write
+                <input type="checkbox" value="W" id="W" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-Write"/>
               </td>
               <td>
                 <input type="radio" value="W" name="W" checked="checked" disabled="disabled"/>
@@ -146,7 +146,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="a" id="a" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write ACL
+                <input type="checkbox" value="a" id="a" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-WriteACL"/>
               </td>
               <td>
                 <input type="radio" value="a" name="a" checked="checked" disabled="disabled"/>
@@ -157,7 +157,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="p" id="p" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write properties
+                <input type="checkbox" value="p" id="p" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-WriteProperties"/>
               </td>
               <td>
                 <input type="radio" value="p" name="p" checked="checked" disabled="disabled"/>
@@ -168,7 +168,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="c" id="c" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> write content
+                <input type="checkbox" value="c" id="c" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-WriteContent"/>
               </td>
               <td>
                 <input type="radio" value="c" name="c" checked="checked" disabled="disabled"/>
@@ -179,7 +179,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="b" id="b" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> create (bind)
+                <input type="checkbox" value="b" id="b" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-Create"/>
               </td>
               <td>
                 <input type="radio" value="b" name="b" checked="checked" disabled="disabled"/>
@@ -188,55 +188,9 @@
                 <input type="radio" value="-b" name="b" disabled="disabled"/>
               </td>
             </tr>
-            <!--  Old style scheduling - disable setting
-            <tr>
-              <td class="level4">
-                <input type="checkbox" value="S" id="accessSchedule" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)"/> schedule
-              </td>
-              <td>
-                <input type="radio" value="S" name="accessSchedule" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-S" name="accessSchedule" disabled="disabled"/>
-              </td>
-              </tr>
-              <tr>
-                <td class="level5">
-                  <input type="checkbox" value="t" id="t" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule request
-                </td>
-              <td>
-                <input type="radio" value="t" name="t" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-t" name="t" disabled="disabled"/>
-              </td>
-              </tr>
-              <tr>
-                <td class="level5">
-                  <input type="checkbox" value="y" id="y" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule reply
-                </td>
-              <td>
-                <input type="radio" value="y" name="y" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-y" name="y" disabled="disabled"/>
-              </td>
-              </tr>
-              <tr>
-                <td class="level5">
-                  <input type="checkbox" value="s" id="s" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule free-busy
-                </td>
-              <td>
-                <input type="radio" value="s" name="s" checked="checked" disabled="disabled"/>
-              </td>
-              <td>
-                <input type="radio" value="-s" name="s" disabled="disabled"/>
-              </td>
-            </tr>
-            End of old style scheduling -->
             <tr>
               <td class="level3">
-                 <input type="checkbox" value="u" id="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> delete (unbind)
+                 <input type="checkbox" value="u" id="u" name="howItem" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-Delete"/>
               </td>
               <td>
                 <input type="radio" value="u" name="u" checked="checked" disabled="disabled"/>
@@ -247,7 +201,7 @@
             </tr>
             <tr>
               <td class="level2">
-                <input type="checkbox" value="D" id="accessScheduleDeliver" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Schedule-deliver
+                <input type="checkbox" value="D" id="accessScheduleDeliver" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> <xsl:value-of select="$bwStr-Access-ScheduleDeliver"/>
               </td>
               <td>
                 <input type="radio" value="D" name="accessScheduleDeliver" checked="checked"/>
@@ -258,7 +212,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="i" id="i" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-deliver-invite
+                <input type="checkbox" value="i" id="i" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ScheduleDeliverInvite"/>
               </td>
               <td>
                 <input type="radio" value="i" name="i" checked="checked" disabled="disabled"/>
@@ -269,7 +223,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="e" id="e" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-deliver-reply
+                <input type="checkbox" value="e" id="e" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ScheduleDeliverReply"/>
               </td>
               <td>
                 <input type="radio" value="e" name="e" checked="checked" disabled="disabled"/>
@@ -280,7 +234,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="q" id="q" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-query-freebusy
+                <input type="checkbox" value="q" id="q" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ScheduleQueryFreebusy"/>
               </td>
               <td>
                 <input type="radio" value="q" name="q" checked="checked" disabled="disabled"/>
@@ -291,7 +245,7 @@
             </tr>
             <tr>
               <td class="level2">
-                <input type="checkbox" value="T" id="accessScheduleSend" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> Schedule-send
+                <input type="checkbox" value="T" id="accessScheduleSend" name="howItem" onclick="setupAccessForm(this, this.form); toggleAllowDenyFlag(this, this.form)" checked="checked"/> <xsl:value-of select="$bwStr-Access-ScheduleSend"/>
               </td>
               <td>
                 <input type="radio" value="T" name="accessScheduleSend" checked="checked"/>
@@ -302,7 +256,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="I" id="I" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-send-invite
+                <input type="checkbox" value="I" id="I" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ScheduleSendInvite"/>
               </td>
               <td>
                 <input type="radio" value="I" name="I" checked="checked" disabled="disabled"/>
@@ -313,7 +267,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="E" id="E" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-send-reply
+                <input type="checkbox" value="E" id="E" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ScheduleSendReply"/>
               </td>
               <td>
                 <input type="radio" value="E" name="E" checked="checked" disabled="disabled"/>
@@ -324,7 +278,7 @@
             </tr>
             <tr>
               <td class="level3">
-                <input type="checkbox" value="Q" id="Q" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> schedule-send-freebusy
+                <input type="checkbox" value="Q" id="Q" name="howItem" disabled="disabled" onclick="toggleAllowDenyFlag(this, this.form)"/> <xsl:value-of select="$bwStr-Access-ScheduleSendFreebusy"/>
               </td>
               <td>
                 <input type="radio" value="Q" name="Q" checked="checked" disabled="disabled"/>
@@ -335,7 +289,7 @@
             </tr>
             <!--<tr>
               <td class="level1">
-                <input type="checkbox" value="N" name="howItem" onclick="setupAccessForm(this, this.form)"/> None
+                <input type="checkbox" value="N" name="howItem" onclick="setupAccessForm(this, this.form)"/> <xsl:value-of select="$bwStr-Access-None"/>
               </td>
               <td>
               </td>
@@ -350,10 +304,10 @@
               <xsl:attribute name="class">invisible</xsl:attribute>
             </xsl:if>
             <li>
-              <input type="radio" value="A" name="basicHowItem"/>All
+              <input type="radio" value="A" name="basicHowItem"/><xsl:value-of select="$bwStr-Access-BasicAll"/>
             </li>
             <li>
-              <input type="radio" value="R" name="basicHowItem" checked="checked"/>Read only
+              <input type="radio" value="R" name="basicHowItem" checked="checked"/><xsl:value-of select="$bwStr-Access-BasicRead"/>
             </li>
           </ul>
         </td>

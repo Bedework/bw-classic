@@ -21,8 +21,8 @@
 // Spanish translations, es_ES 
 // not yet translated
 
-var authenticatedStr = "authenticated";
-var unauthenticatedStr = "unauthenticated";
+var authenticatedStr = "autenticado";
+var unauthenticatedStr = "sin verificar";
 var ownerStr = "owner";
 var otherStr = "other";
 var grantStr = "grant";

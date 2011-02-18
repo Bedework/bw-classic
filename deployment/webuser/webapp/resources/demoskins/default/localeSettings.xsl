@@ -95,7 +95,7 @@
   
   <!-- Declare the access control strings. -->
   <xsl:template name="bedeworkAccessStrings">
-    <!-- The XSL strings are found in resources/xsl/lang -->
+    <!-- The XSL access strings are found in resources/xsl/lang and are referenced in default/globals.xsl-->
   </xsl:template>
   
 </xsl:stylesheet>

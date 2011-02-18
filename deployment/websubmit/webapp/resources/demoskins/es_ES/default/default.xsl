@@ -35,9 +35,11 @@
   <!-- ========================================================= -->
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
+  
+  <!-- include the language string libraries -->
+  <xsl:include href="../../../bedework-common/es_ES/default/errors.xsl"/>
+  <xsl:include href="../../../bedework-common/es_ES/default/messages.xsl"/>
   <xsl:include href="./strings.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->

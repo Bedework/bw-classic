@@ -41,7 +41,7 @@
   <xsl:variable name="bwStr-HdBr-Print">drucken</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PrintThisView">diese Ansicht drucken</xsl:variable>
   <xsl:variable name="bwStr-HdBr-RSS">RSS</xsl:variable>
-  <xsl:variable name="bwStr-HdBr-RSSFeed">RSS feed</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-RSSFeed">Daten-Feeds &amp; Widgets</xsl:variable>
   <xsl:variable name="bwStr-HdBr-EventInformation">Veranstaltung Information</xsl:variable>
   <xsl:variable name="bwStr-HdBr-BackLink">(zur&#252;ck zur Veranstaltung)</xsl:variable>
   <xsl:variable name="bwStr-HdBr-Back">&#8656; zur&#252;ck</xsl:variable>
@@ -70,6 +70,7 @@
   <xsl:variable name="bwStr-Navi-WeekOf">Woche ab</xsl:variable>
   <xsl:variable name="bwStr-Navi-Go">weiter</xsl:variable>
   <xsl:variable name="bwStr-Navi-GoToDate">Weiter zum Datum:</xsl:variable>
+  <xsl:variable name="bwStr-Navi-Today">heute</xsl:variable>
 
   <!--  xsl:template name="searchBar" -->
   <xsl:variable name="bwStr-SrcB-Add">hinzuf&#252;gen...</xsl:variable>

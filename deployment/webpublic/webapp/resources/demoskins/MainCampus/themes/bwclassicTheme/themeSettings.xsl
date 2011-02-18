@@ -28,6 +28,6 @@
   <!-- Location of the urlbuilder application; this is set to the 
        default quickstart location. If you move it, you must change this
        value. -->
-  <xsl:variable name="urlbuilder">http://localhost:9090/urlbuilder</xsl:variable>
+  <xsl:variable name="urlbuilder">/urlbuilder</xsl:variable>
 
 </xsl:stylesheet>

@@ -38,10 +38,12 @@
   <xsl:key name="catUid" match="category" use="uid"/>
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
   <xsl:include href="../../../bedework-common/default/default/bedeworkAccess.xsl"/>
+  <!-- include the language strings -->
+  <xsl:include href="../../../bedework-common/es_ES/default/errors.xsl"/>
+  <xsl:include href="../../../bedework-common/es_ES/default/messages.xsl"/>
+  <xsl:include href="../../../bedework-common/es_ES/default/bedeworkAccessStrings.xsl"/>
   <xsl:include href="./strings.xsl"/>
 
   <!-- DEFINE GLOBAL CONSTANTS -->
@@ -401,6 +403,7 @@
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
           <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework/lang/bwAccessStrings-es.js">&#160;</script>
           <!-- initialize calendar acls, if present -->
           <xsl:if test="/bedework/currentCalendar/acl/ace">
             <script type="text/javascript">
@@ -5945,6 +5948,16 @@
             <input value="{$defaultViewName}" name="defaultUserViewName" />
             <div class="desc">
               <xsl:copy-of select="$bwStr-MdSP-DefaultUserViewNameNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-MaxAttendees"/></th>
+          <td>
+            <xsl:variable name="maxAttendees" select="/bedework/system/maxAttendees"/>
+            <input value="{$maxAttendees}" name="maxAttendees" />
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-MaxAttendeesNote"/>
             </div>
           </td>
         </tr>
