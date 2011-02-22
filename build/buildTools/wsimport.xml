@@ -23,29 +23,25 @@
 <project name="do.wsimport" basedir="." default="">
   <macrodef name="wsimport">
     <attribute name="wsdl"/>
+    <attribute name="wsdllocation" /> 
     <attribute name="module-base"/>
     <attribute name="jar-file"/>
     <attribute name="bindingsdir" default="" />
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
       
-      <property name="sourcedestdir" location="@{module-base}/src" />
-
+      <var name="sourcedestdir" value="@{module-base}/src" />
       
       <dirname property="org.bedework.wsdl.dir" file="@{wsdl}"/>
 
       <if>
-        <available file="${sourcedestdir}" type="dir" />
-        <then>
+        <and>
+          <available file="${sourcedestdir}" type="dir" />
           <uptodate property="org.bedework.wsimport.uptodate"
                     targetfile="@{jar-file}" >
             <srcfiles dir="${org.bedework.wsdl.dir}" />
           </uptodate>
-        </then>
-      </if>
-
-      <if>
-        <isset property="org.bedework.wsimport.uptodate"/>
+        </and>
         <then>
           <noisyMsg message="**** @{jar.file} is up to date" />
         </then>
@@ -115,7 +111,7 @@
           
           <debugCpid idpar="wsimport.classpath" />
       
-          <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+          <taskdef name="wsimportTask" classname="com.sun.tools.ws.ant.WsImport">
             <classpath refid="wsimport.classpath" />
           </taskdef>
           
@@ -128,22 +124,24 @@
           <if>
             <equals arg1="@{bindingsdir}" arg2="" />
             <then>
-              <wsimport keep="true"
-                        sourcedestdir="${sourcedestdir}"
-                        destdir="${wsimport.dest}"
-                        wsdl="@{wsdl}" 
-                        xendorsed="true" >
-              </wsimport>
+              <wsimportTask keep="true"
+                            sourcedestdir="${sourcedestdir}"
+                            destdir="${wsimport.dest}"
+                            wsdl="@{wsdl}" 
+                            wsdllocation="@{wsdllocation}"
+                            xendorsed="true" >
+              </wsimportTask>
             </then>
             <else>
-              <wsimport keep="true"
-                        sourcedestdir="${sourcedestdir}"
-                        destdir="${wsimport.dest}"
-                        wsdl="@{wsdl}" 
-                        xendorsed="true" >
+              <wsimportTask keep="true"
+                            sourcedestdir="${sourcedestdir}"
+                            destdir="${wsimport.dest}"
+                            wsdl="@{wsdl}" 
+                            wsdllocation="@{wsdllocation}"
+                            xendorsed="true" >
                 <binding dir="@{bindingsdir}" includes="*.xml">
                 </binding>
-              </wsimport>
+              </wsimportTask>
             </else>
           </if>
           

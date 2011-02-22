@@ -19,6 +19,9 @@ ant_logger=
 ant_loglevel="-quiet"
 bw_loglevel=""
 
+# Projects we need to update
+updateProjects="bwxml bedework bedework-carddav bwtzsvr cachedfeeder"
+
 echo ""
 echo "  Bedework Calendar System"
 echo "  ------------------------"
@@ -27,10 +30,22 @@ echo ""
 PRG="$0"
 
 usage() {
-  echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [LOG_LEVEL] [ target ] "
   echo "  $PRG ACTION"
+  echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [LOG_LEVEL] [ target ] "
   echo ""
   echo " where:"
+  echo ""
+  echo "   ACTION defines an action to take usually in the context of the quickstart."
+  echo "    In a deployed system many of these actions are handled directly by a"
+  echo "    deployed application. ACTION may be one of"
+  echo "      -updateall  Does an svn update of all projects"
+  echo "      -reindex    runs the indexer directly out of the quickstart bedework"
+  echo "                  dist directory to rebuild the lucene indexes"
+  echo "      -zoneinfo   builds zoneinfo data for the timezones server"
+  echo "                  requires -version and -tzdata parameters.   NOTE: build depends on glib2"
+  echo "      -buildwebcache     builds webcache"
+  echo "      -deploywebcache    deploys webcache"
+  echo "      -deployurlbuilder  deploys url/widget builder"
   echo ""
   echo "   CONFIG-SOURCE optionally defines the location of configurations and"
   echo "                 is one or none of  "
@@ -54,6 +69,7 @@ usage() {
   echo "   target       Ant target to execute"
   echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
+  echo "     -bwxml       Target is for the Bedework XML schemas build"
   echo "     -carddav     Target is for the CardDAV build"
   echo "     -exsynch     Target is for the Exchange synch build"
   echo "     -client      Target is for the bedework client application build"
@@ -74,17 +90,6 @@ usage() {
   echo "   The environment variable BEDEWORK_CONFIG contains the path to the current"
   echo "   configuration directory and can be used to build a path to the other files."
   echo ""
-  echo "   ACTION defines an action to take usually in the context of the quickstart."
-  echo "    In a deployed system many of these actions are handled directly by a"
-  echo "    deployed application. ACTION may be one of"
-  echo "      -reindex    runs the indexer directly out of the quickstart bedework"
-  echo "                  dist directory to rebuild the lucene indexes"
-  echo "      -zoneinfo   builds zoneinfo data for the timezones server"
-  echo "                  requires -version and -tzdata parameters.   NOTE: build depends on glib2"
-  echo "      -buildwebcache     builds webcache"
-  echo "      -deploywebcache    deploys webcache"
-  echo "      -deployurlbuilder  deploys url/widget builder"
-  echo ""
 }
 
 errorUsage() {
@@ -97,6 +102,21 @@ errorUsage() {
   echo ""
   usage
   exit 1
+}
+
+# ---------------------------------------------------------------------------- 
+# Update the projects
+# ---------------------------------------------------------------------------- 
+actionUpdateall() {
+  for project in $updateProjects
+  do
+    echo "*********************************************************************"
+    echo "Updating project $project"
+    echo "*********************************************************************"
+    svn update $project
+  done
+  
+  exit 0
 }
 
 # ---------------------------------------------------------------------------- 
@@ -242,7 +262,7 @@ quickstart=
 # Projects we will build
 pkgdefault=yes
 bedework=
-bwxmlschema=
+bwxml=
 carddav=
 caldav=
 client=
@@ -260,6 +280,10 @@ if [ "$1" = "" ] ; then
 fi
 
 # look for actions first
+
+if [ "$1" = "-updateall" ] ; then
+  actionUpdateall
+fi
 
 if [ "$1" = "-reindex" ] ; then
   actionReindex
@@ -348,7 +372,7 @@ do
       ;;
 # ------------------------Projects
     -bwxml)
-      bwxmlschema="yes"
+      bwxml="yes"
       pkgdefault=
       shift
       ;;
@@ -433,8 +457,8 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
-if [ "$bwxmlschema" != "" ] ; then
-  cd $QUICKSTART_HOME/bwxml-schema
+if [ "$bwxml" != "" ] ; then
+  cd $QUICKSTART_HOME/bwxml
 fi
 
 if [ "$caldav" != "" ] ; then

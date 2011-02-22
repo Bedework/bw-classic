@@ -897,17 +897,19 @@
         <Exsynch classname="org.bedework.exchgsynch.ExsynchConfig">
           <appType>exsynch</appType>
 
-          <!-- location of the WSDL - modified to include server element -->
+          <!-- location of the WSDL - modified to include server element 
+               localhost may be good enough 
+          -->
           <exchangeWSDLURI>http://localhost:8080/exchange/Services.wsdl</exchangeWSDLURI>
+
+          <!-- location of the WSDL for the remote web service -->
+          <remoteWSDLURI>http://localhost:8080/exchange/wssvc.wsdl</remoteWSDLURI>
 
           <!-- Exchange sync callback. Comment out for no service -->
           <exchangeWsPushURI>http://128.113.124.164:8080/exsynch/</exchangeWsPushURI>
 
           <!-- Path to keystore - comment out to use default -->          
           <keystore>@APPSERVER-DATA-DIR@/exsynchcerts</keystore>
-
-          <!-- location of the WSDL for the remote web service -->
-          <remoteWSDLURI>http://localhost:8080/exchange/wssvc.wsdl</remoteWSDLURI>
           
           <remoteWsURL>http://localhost:8080/pubcaldav/exsynchws/</remoteWsURL>
           

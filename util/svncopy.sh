@@ -86,6 +86,10 @@ copyproject() {
   then
 #      Not linked
     echo ""
+  elif [ "${1}" = "bwxml" ]
+  then
+#      Not linked
+    echo ""
   elif [ "${1}" = "cachedfeeder" ]
   then
 #      Not linked
@@ -140,6 +144,7 @@ PROJECTS="$PROJECTS bedework"
 PROJECTS="$PROJECTS buildTools"
 PROJECTS="$PROJECTS bwtools"
 PROJECTS="$PROJECTS bwtzsvr"
+PROJECTS="$PROJECTS bwxml"
 PROJECTS="$PROJECTS cachedfeeder"
 PROJECTS="$PROJECTS caldav"
 PROJECTS="$PROJECTS caldavimpl"

@@ -157,6 +157,17 @@ GOTO branch
   SHIFT
   GOTO branch
 
+:updateall
+  for %%project in (%updateProjects%) do (
+    ECHO *************************************************************
+    ECHO Updating project %%project.
+    ECHO *************************************************************
+    
+    echo svn update %%project
+  )
+
+  GOTO:EOF
+  
 :reindex
   ECHO     Calling the reindexer
   SET INDEXER=%QUICKSTART_HOME%\bedework\dist\temp\shellscr\indexer
@@ -267,6 +278,7 @@ IF "%1" == "-quickstart" GOTO quickstart
 IF "%1" == "-bwchome" GOTO bwchome
 IF "%1" == "-bwc" GOTO bwc
 IF "%1" == "-offline" GOTO offline
+IF "%1" == "-updateall" GOTO updateall
 IF "%1" == "-reindex" GOTO reindex
 IF "%1" == "-zoneinfo" GOTO zoneinfo
 IF "%1" == "-buildwebcache" GOTO buildwebcache
@@ -292,10 +304,23 @@ GOTO doneWithArgs
 :usage
   ECHO    Usage:
   ECHO.
-  ECHO    bw [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [ target ]
   ECHO    bw ACTION
+  ECHO    bw [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [ target ]
   ECHO.
   ECHO    Where:
+  ECHO.
+  ECHO   ACTION defines an action to take usually in the context of the quickstart.
+  ECHO    In a deployed system many of these actions are handled directly by a
+  ECHO    deployed application. ACTION may be one of
+  ECHO      -updateall  Does an svn update of all projects"
+  ECHO      -reindex    runs the indexer directly out of the quickstart bedework
+  ECHO                  dist directory to rebuild the lucene indexes
+REM   Don't support zoneinfo command on Windows for now
+REM   ECHO      -zoneinfo - builds zoneinfo data for the timezones server
+REM   ECHO                  requires -version and -tzdata parameters
+  ECHO      -buildwebcache    builds webcache
+  ECHO      -deploywebcache   deploys webcache 
+  ECHO      -deployurlbuilder deploys url/widget builder
   ECHO.
   ECHO    CONFIG-SOURCE optionally defines the location of configurations and is one or none of
   ECHO     -quickstart      to use the configurations within the quickstart
@@ -328,18 +353,6 @@ GOTO doneWithArgs
   ECHO    In general these files will be in the same directory as build.properties.
   ECHO    The environment variable BEDEWORK_CONFIG contains the path to the current
   ECHO    configuration directory and can be used to build a path to the other files.
-  ECHO.
-  ECHO   ACTION defines an action to take usually in the context of the quickstart.
-  ECHO    In a deployed system many of these actions are handled directly by a
-  ECHO    deployed application. ACTION may be one of
-  ECHO      -reindex - runs the indexer directly out of the quickstart bedework
-  ECHO                 dist directory to rebuild the lucene indexes
-REM   Don't support zoneinfo command on Windows for now
-REM   ECHO      -zoneinfo - builds zoneinfo data for the timezones server
-REM   ECHO                  requires -version and -tzdata parameters
-  ECHO     -buildwebcache - builds webcache
-  ECHO     -deploywebcache - deploys webcache 
-  ECHO     -deployurlbuilder - deploys url/widget builder
   ECHO.
   ECHO.
   ECHO.

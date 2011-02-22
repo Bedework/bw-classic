@@ -25,11 +25,13 @@
               libcache="${org.bedework.libcache.dir}"
               name="bw-cdvserver" version="${org.bedework.caldav.version}"
               projecthome="${bw.project.home}/projects/caldav" />
+
+      <!-- ===================== Bedework schema jars ====================== -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-exsynch-genwssrc" version="${org.bedework.caldav.version}"
-              projecthome="${bw.project.home}/projects/caldav" />
+              name="bw-exsynchwsschema" version="${org.bedework.bwxml.version}"
+              projecthome="${bw.project.home}/../bwxml" />
 
       <!-- ================= Bedework dump/restore jars ==================== -->
 
