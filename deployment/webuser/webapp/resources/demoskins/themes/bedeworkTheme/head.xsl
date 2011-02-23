@@ -109,7 +109,7 @@
               // startdate
               $("#bwEventWidgetStartDate").datepicker({
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
-              }).attr("readonly", "readonly");
+              });
               $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
               // starttime
@@ -128,7 +128,7 @@
               // enddate
               $("#bwEventWidgetEndDate").datepicker({
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
-              }).attr("readonly", "readonly");
+              });
               $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/end/rfc3339DateTime,'T')"/>');
               
               // endtime
@@ -156,14 +156,14 @@
                 </xsl:choose>
                 altField: "#bwEventUntilDate",
                 altFormat: "yymmdd"
-              }).attr("readonly", "readonly");
+              });
               $("#bwEventWidgetUntilDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
               // rdates and xdates date picker
               $("#bwEventWidgetRdate").datepicker({
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>),
                 dateFormat: "yymmdd"
-              }).attr("readonly", "readonly");
+              });
               $("#bwEventWidgetRdate").val('<xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,1,4)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,6,2)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,9,2)"/>');
               
               // rdates and xdates times
