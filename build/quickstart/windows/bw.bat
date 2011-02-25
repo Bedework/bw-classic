@@ -34,6 +34,9 @@ SET ant_logger=
 SET ant_loglevel="-quiet"
 SET bw_loglevel=""
 
+:: Projects we need to update
+SET updateProjects="bwxml bedework bedework-carddav bwtzsvr cachedfeeder"
+
 :: Projects we will build
 SET pkgdefault=yes
 SET bedework=
@@ -158,12 +161,12 @@ GOTO branch
   GOTO branch
 
 :updateall
-  for %%project in (%updateProjects%) do (
+  for %%p in ("%updateProjects%") do (
     ECHO *************************************************************
-    ECHO Updating project %%project.
+    ECHO Updating project %%p
     ECHO *************************************************************
     
-    echo svn update %%project
+    svn update %%p
   )
 
   GOTO:EOF
@@ -255,7 +258,6 @@ GOTO doneQB
   ECHO.
   ECHO     BWCONFIGS = %BWCONFIGS%
   ECHO     BWCONFIG = %BWCONFIG%
-  ECHO.
 
   IF NOT "%caldav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\caldav
   IF NOT "%carddav%empty" == "empty" cd %QUICKSTART_HOME%\bedework-carddav
@@ -265,6 +267,10 @@ GOTO doneQB
   IF NOT "%tzsvr%empty" == "empty"   cd %QUICKSTART_HOME%\bwtzsvr
   IF NOT "%webdav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\webdav
 
+  ECHO     WORKING DIRECTORY = %cd%
+  ECHO     COMMAND =  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
+  ECHO.
+  ECHO.
   "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
 
   GOTO:EOF
