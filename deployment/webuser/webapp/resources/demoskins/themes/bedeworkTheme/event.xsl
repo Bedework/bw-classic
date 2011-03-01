@@ -418,7 +418,7 @@
           </td>
         </tr>
       </xsl:if>
-      <xsl:if test="scheduleMethod != 3 and description != ''">
+      <xsl:if test="description != ''">
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Description"/><xsl:text> </xsl:text></td>
           <td class="fieldval">

@@ -53,6 +53,15 @@
       <xsl:with-param name="replacement" select="'\&quot;'"/>
     </xsl:call-template>
   </xsl:template>
+ 
+  <xsl:template name="escapeGoogle">
+    <xsl:param name="string"/>
+    <xsl:call-template name="replace">
+      <xsl:with-param name="string" select="$string"/>
+      <xsl:with-param name="pattern" select="'&#xA;'"/>
+      <xsl:with-param name="replacement" select="'%0A'"/>
+    </xsl:call-template>
+  </xsl:template>
 
   <xsl:template name="httpStatusCodes">
     <xsl:param name="code"/>
