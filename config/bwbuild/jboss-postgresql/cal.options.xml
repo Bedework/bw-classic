@@ -906,7 +906,7 @@
           <remoteWSDLURI>http://localhost:8080/exchange/wssvc.wsdl</remoteWSDLURI>
 
           <!-- Exchange sync callback. Comment out for no service -->
-          <exchangeWsPushURI>http://128.113.124.164:8080/exsynch/</exchangeWsPushURI>
+          <exchangeWsPushURI>http://128.113.124.225:8080/exsynch/</exchangeWsPushURI>
 
           <!-- Path to keystore - comment out to use default -->          
           <keystore>@APPSERVER-DATA-DIR@/exsynchcerts</keystore>
