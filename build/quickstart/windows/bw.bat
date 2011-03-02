@@ -40,6 +40,7 @@ SET updateProjects="bwxml bedework bedework-carddav bwtzsvr cachedfeeder"
 :: Projects we will build
 SET pkgdefault=yes
 SET bedework=
+SET bwxml=
 SET carddav=
 SET caldav=
 SET client=
@@ -116,8 +117,14 @@ GOTO branch
   SHIFT
   GOTO branch
       
-:: PROJECTS
+:: ----------------------- PROJECTS
 
+:bwxml
+  SET bwxml="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
 :carddav
   SET carddav="yes"
   SET pkgdefault=
@@ -259,6 +266,7 @@ GOTO doneQB
   ECHO     BWCONFIGS = %BWCONFIGS%
   ECHO     BWCONFIG = %BWCONFIG%
 
+  IF NOT "%bwxml%empty" == "empty"  cd %QUICKSTART_HOME%\bwxml
   IF NOT "%caldav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\caldav
   IF NOT "%carddav%empty" == "empty" cd %QUICKSTART_HOME%\bedework-carddav
   IF NOT "%client%empty" == "empty"  cd %QUICKSTART_HOME%\bwclient
@@ -298,6 +306,7 @@ IF "%1" == "-log-verbose" GOTO log-verbose
 IF "%1" == "-ant-debug" GOTO ant-debug
 IF "%1" == "-build-debug" GOTO build-debug
 
+IF "%1" == "-bwxml" GOTO bwxml 
 IF "%1" == "-carddav" GOTO carddav 
 IF "%1" == "-caldav" GOTO caldav
 IF "%1" == "-client" GOTO client
@@ -344,9 +353,13 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO.
   ECHO.
   ECHO    PROJECT optionally defines the package to build and is none or more of
-  ECHO     -carddav     Target is for the CardDAV build
-  ECHO     -monitor     Target is for the bedework monitor application
-  ECHO     -naming      Target is for the abstract naming api
+  ECHO      -bwxml       Target is for the Bedework XML schemas build
+  ECHO      -carddav     Target is for the CardDAV build
+  ECHO      -exsynch     Target is for the Exchange synch build
+  ECHO      -client      Target is for the bedework client application build
+  ECHO      -monitor     Target is for the bedework monitor application
+  ECHO      -naming      Target is for the abstract naming api
+  ECHO      -tzsvr       Target is for the timezones server build
   ECHO     The default is a calendar build
   ECHO.
   ECHO    Invokes ant to build or deploy the Bedework system. Uses a configuration
