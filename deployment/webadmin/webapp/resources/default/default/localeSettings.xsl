@@ -29,8 +29,12 @@
   <xsl:template name="jqueryDatepickerDefaults">
     
     <!-- pull in the localization strings and defaults. -->
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/lang-datepicker/jquery.ui.datepicker-de.js">&#160;</script>
-
+    <!--  
+      U.S. English is the default, so there is no string file for U.S. English. 
+      This code is here for consistency and clarity across localeSettings files.
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/lang-datepicker/jquery.ui.datepicker-en.js">&#160;</script>
+    -->
+    
     <!-- Bedework datepicker defaults.  You can include further overrides to regionalization here. -->
     <script type="text/javascript">
       <xsl:comment>
@@ -38,7 +42,7 @@
         constrainInput: true,
         dateFormat: "yy-mm-dd",
         showOn: "both",
-        buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
+        buttonImage: "<xsl:value-of select='$resourcesRoot'/>/resources/calIcon.gif",
         buttonImageOnly: true,
         gotoCurrent: true,
         duration: ""
@@ -52,41 +56,6 @@
   <!-- These are for display and can be translated. -->
   <xsl:template name="bedeworkEventJsStrings">
     <script type="text/javascript">
-      // Scheduling strings
-			var bwAttendeeDispRoleChair = "chair";
-			var bwAttendeeDispRoleRequired = "required participant";
-			var bwAttendeeDispRoleOptional = "optional participant";
-			var bwAttendeeDispRoleNonParticipant = "non-participant";
-			var bwAttendeeDispStatusNeedsAction = "needs action";
-			var bwAttendeeDispStatusAccepted = "accepted";
-			var bwAttendeeDispStatusDeclined = "declined";
-			var bwAttendeeDispStatusTentative = "tentative";
-			var bwAttendeeDispStatusDelegated = "delegated";
-			var bwAttendeeDispStatusCompleted = "completed";
-			var bwAttendeeDispStatusInProcess = "in-process";
-			var bwAttendeeDispTypePerson = "person";
-			var bwAttendeeDispTypeLocation = "location";
-			var bwAttendeeDispTypeResource = "resource";
-			
-			var bwAttendeeDispGridAllAttendees = "Alle Teilnehmer";
-			
-			var bwFreeBusyDispTypeBusy = "BUSY";
-			var bwFreeBusyDispTypeTentative = "TENTATIVE";
-			var bwAddAttendeeDisp = "add attendee...";
-			var bwAddDisp = "add";
-			var bwAttendeeExistsDisp = "attendee exists";
-			var bwAddAttendeeRoleDisp = "Role:";
-			var bwAddAttendeeTypeDisp = "Type:";
-			var bwAddAttendeeBookDisp = "Book:";
-			var bwEventSubmitMeetingDisp = "send";
-			var bwEventSubmitDisp = "save";
-			
-			var bwReqParticipantDisp = "required";
-			var bwOptParticipantDisp = "optional";
-			var bwChairDisp = "chair";
-			
-			var bwErrorAttendees = "Error: attendees not returned";
-      
       // recurrence strings
       var bwRecurChangeWarning = "WARNING: changing your recurrence rules\nwill destroy all existing recurrence overrides\nand exceptions when you save the event.\n\nContinue?";
     </script>
@@ -94,12 +63,7 @@
   
   <!-- Declare the access control strings. -->
   <xsl:template name="bedeworkAccessStrings">
-    <!-- The default JavaScript strings are found in resources/javascript/bedework/bedeworkAccess.js which 
-       gets deployed to the /bedework-common/ libraries during the build.  Overrides are found in
-       resources/javascript/bedework/lang/ and are included here. -->
-    <script type="text/javascript" src="/bedework-common/javascript/bedework/lang/bwAccessStrings-de_DE.js">&#160;</script>
-    
-    <!-- The XSL access strings are found in resources/xsl/lang  and are referenced in default/globals.xsl -->
+    <!-- The XSL access strings are found in resources/xsl/lang and are referenced in default/globals.xsl-->
   </xsl:template>
   
 </xsl:stylesheet>

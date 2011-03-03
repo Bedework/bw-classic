@@ -393,10 +393,16 @@ function swapRecurrence(obj) {
 }
 function swapRrules(obj) {
   if (obj.checked) {
-    changeClass('rrulesTable','visible');
-    changeClass('rrulesUiSwitch','visible');
-    if (document.getElementById('recurrenceInfo')) {
-      changeClass('recurrenceInfo','invisible');
+    // make sure the user knows the ramifications of their actions
+    if(confirm(bwRecurChangeWarning)) {
+      changeClass('rrulesTable','visible');
+      changeClass('rrulesUiSwitch','visible');
+      if (document.getElementById('recurrenceInfo')) {
+        changeClass('recurrenceInfo','invisible');
+      }
+    } else {
+      // they decided against it. Uncheck the box.
+      obj.checked = false; 
     }
   } else {
     changeClass('rrulesTable','invisible');
@@ -509,7 +515,7 @@ function setRecurrence(formObj) {
         while (document.getElementById(monthByDayId)) {
           var monthFields = document.getElementById(monthByDayId);
           var dayPosSelect = monthFields.getElementsByTagName('select');
-          var dayPos = dayPosSelect[0][dayPosSelect[0].selectedIndex].value;
+          var dayPos = dayPosSelect[0].value;
           if (dayPos) {
             byday = collectRecurChkBoxVals(byday,monthFields.getElementsByTagName('input'),dayPos);
           }

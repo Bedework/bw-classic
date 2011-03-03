@@ -826,13 +826,12 @@
 
             <h4><xsl:copy-of select="$bwStr-AEEF-RecurrenceRules"/></h4>
             <!-- show or hide rrules fields when editing: -->
-            <!-- DEPRECATED: No longer allow the changing of recurrence information once created.
             <xsl:if test="form/recurrence">
               <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
               <span id="rrulesSwitch">
                 <xsl:copy-of select="$bwStr-AEEF-ChangeRecurrenceRules"/>
               </span>
-            </xsl:if> -->
+            </xsl:if>
             <span id="rrulesUiSwitch">
               <xsl:if test="form/recurrence">
                 <xsl:attribute name="class">invisible</xsl:attribute>
@@ -866,6 +865,7 @@
                   <xsl:for-each select="form/recurrence/byday/pos">
                     <xsl:if test="position() != 1"> <xsl:copy-of select="$bwStr-AEEF-And"/> </xsl:if>
                     <xsl:copy-of select="$bwStr-AEEF-On"/>
+                    <xsl:text> </xsl:text>
                     <xsl:choose>
                       <xsl:when test="@val='1'">
                         <xsl:copy-of select="$bwStr-AEEF-TheFirst"/><xsl:text> </xsl:text>
@@ -921,6 +921,7 @@
                   <xsl:copy-of select="$bwStr-AEEF-OnThe"/>
                   <xsl:text> </xsl:text>
                   <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
+                  <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-AEEF-DayOfTheMonth"/>
                   <xsl:text> </xsl:text>
                 </xsl:if>
@@ -930,6 +931,7 @@
                   <xsl:copy-of select="$bwStr-AEEF-OnThe"/>
                   <xsl:text> </xsl:text>
                   <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
+                  <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-AEEF-DayOfTheYear"/>
                   <xsl:text> </xsl:text>
                 </xsl:if>
@@ -939,6 +941,7 @@
                   <xsl:copy-of select="$bwStr-AEEF-InThe"/>
                   <xsl:text> </xsl:text>
                   <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
+                  <xsl:text> </xsl:text>
                   <xsl:copy-of select="$bwStr-AEEF-WeekOfTheYear"/>
                   <xsl:text> </xsl:text>
                 </xsl:if>

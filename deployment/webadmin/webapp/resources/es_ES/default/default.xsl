@@ -45,6 +45,7 @@
   <xsl:include href="../../../bedework-common/es_ES/default/messages.xsl"/>
   <xsl:include href="../../../bedework-common/es_ES/default/bedeworkAccessStrings.xsl"/>
   <xsl:include href="./strings.xsl"/>
+  <xsl:include href="./localeSettings.xsl" />
 
   <!-- DEFINE GLOBAL CONSTANTS -->
 
@@ -249,6 +250,9 @@
           <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
         </xsl:if>
         <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
+          <!-- import the internationalized strings for the javascript widgets -->
+          <xsl:call-template name="bedeworkEventJsStrings"/>
+          
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedework.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/bedework/bwClock.js">&#160;</script>
           <link rel="stylesheet" href="/bedework-common/javascript/bedework/bwClock.css"/>
@@ -258,19 +262,12 @@
               <link rel="stylesheet" href="{$resourcesRoot}/resources/dynCalendarWidget.css"/>
             </xsl:when>
             <xsl:otherwise>
-              <!-- link rel="stylesheet" href="/bedework-common/javascript/jquery/bedeworkJqueryThemes.css"/-->
+              <!-- include the localized jQuery datepicker defaults -->
+		          <xsl:call-template name="jqueryDatepickerDefaults"/>
+		        
+		          <!-- now setup date and time pickers -->  
               <script type="text/javascript">
                 <xsl:comment>
-                $.datepicker.setDefaults({
-                  constrainInput: true,
-                  dateFormat: "yy-mm-dd",
-                  showOn: "both",
-                  buttonImage: "<xsl:value-of select='$resourcesRoot'/>/resources/calIcon.gif",
-                  buttonImageOnly: true,
-                  gotoCurrent: true,
-                  duration: ""
-                });
-
                 function bwSetupDatePickers() {
                   // startdate
                   $("#bwEventWidgetStartDate").datepicker({
@@ -1843,7 +1840,6 @@
                     <xsl:copy-of select="$bwStr-AEEF-RecurrenceRules"/>
                   </h4>
                   <!-- show or hide rrules fields when editing: -->
-                  <!-- DEPRECATED: No longer allow the changing of recurrence information once created.
                   <xsl:if test="form/recurrence">
                     <span id="rrulesSwitch">
                       <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
@@ -1852,7 +1848,7 @@
                       </input>
                       <xsl:copy-of select="$bwStr-AEEF-ChangeRecurrenceRules"/>
                     </span>
-                  </xsl:if> -->
+                  </xsl:if>
                   <span id="rrulesUiSwitch">
                     <xsl:if test="form/recurrence">
                       <xsl:attribute name="class">invisible</xsl:attribute>
@@ -1866,7 +1862,7 @@
                          complete yet. Replace all strings so can be
                          more easily internationalized. -->
                     <div id="recurrenceInfo">
-                      <xsl:copy-of select="$bwStr-AEEF-Every"/>
+                      <xsl:copy-of select="$bwStr-AEEF-Every"/><xsl:text> </xsl:text>
                       <xsl:choose>
                         <xsl:when test="form/recurrence/interval &gt; 1">
                           <xsl:value-of select="form/recurrence/interval"/>
@@ -1874,11 +1870,11 @@
                       </xsl:choose>
                       <xsl:text> </xsl:text>
                       <xsl:choose>
-                        <xsl:when test="form/recurrence/freq = 'HOURLY'"><xsl:copy-of select="$bwStr-AEEF-Hour"/></xsl:when>
-                        <xsl:when test="form/recurrence/freq = 'DAILY'"><xsl:copy-of select="$bwStr-AEEF-Day"/></xsl:when>
-                        <xsl:when test="form/recurrence/freq = 'WEEKLY'"><xsl:copy-of select="$bwStr-AEEF-Week"/></xsl:when>
-                        <xsl:when test="form/recurrence/freq = 'MONTHLY'"><xsl:copy-of select="$bwStr-AEEF-Month"/></xsl:when>
-                        <xsl:when test="form/recurrence/freq = 'YEARLY'"><xsl:copy-of select="$bwStr-AEEF-Year"/></xsl:when>
+                        <xsl:when test="form/recurrence/freq = 'HOURLY'"><xsl:copy-of select="$bwStr-AEEF-Hour"/><xsl:text> </xsl:text></xsl:when>
+                        <xsl:when test="form/recurrence/freq = 'DAILY'"><xsl:copy-of select="$bwStr-AEEF-Day"/><xsl:text> </xsl:text></xsl:when>
+                        <xsl:when test="form/recurrence/freq = 'WEEKLY'"><xsl:copy-of select="$bwStr-AEEF-Week"/><xsl:text> </xsl:text></xsl:when>
+                        <xsl:when test="form/recurrence/freq = 'MONTHLY'"><xsl:copy-of select="$bwStr-AEEF-Month"/><xsl:text> </xsl:text></xsl:when>
+                        <xsl:when test="form/recurrence/freq = 'YEARLY'"><xsl:copy-of select="$bwStr-AEEF-Year"/><xsl:text> </xsl:text></xsl:when>
                       </xsl:choose>
                       <xsl:text> </xsl:text>
 
@@ -1886,24 +1882,25 @@
                         <xsl:for-each select="form/recurrence/byday/pos">
                           <xsl:if test="position() != 1"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-And"/><xsl:text> </xsl:text></xsl:if>
                           <xsl:copy-of select="$bwStr-AEEF-On"/>
+                          <xsl:text> </xsl:text>
                           <xsl:choose>
                             <xsl:when test="@val='1'">
-                              <xsl:copy-of select="$bwStr-AEEF-TheFirst"/>
+                              <xsl:copy-of select="$bwStr-AEEF-TheFirst"/><xsl:text> </xsl:text>
                             </xsl:when>
                             <xsl:when test="@val='2'">
-                              <xsl:copy-of select="$bwStr-AEEF-TheSecond"/>
+                              <xsl:copy-of select="$bwStr-AEEF-TheSecond"/><xsl:text> </xsl:text>
                             </xsl:when>
                             <xsl:when test="@val='3'">
-                              <xsl:copy-of select="$bwStr-AEEF-TheThird"/>
+                              <xsl:copy-of select="$bwStr-AEEF-TheThird"/><xsl:text> </xsl:text>
                             </xsl:when>
                             <xsl:when test="@val='4'">
-                              <xsl:copy-of select="$bwStr-AEEF-TheFourth"/>
+                              <xsl:copy-of select="$bwStr-AEEF-TheFourth"/><xsl:text> </xsl:text>
                             </xsl:when>
                             <xsl:when test="@val='5'">
-                              <xsl:copy-of select="$bwStr-AEEF-TheFifth"/>
+                              <xsl:copy-of select="$bwStr-AEEF-TheFifth"/><xsl:text> </xsl:text>
                             </xsl:when>
                             <xsl:when test="@val='-1'">
-                              <xsl:copy-of select="$bwStr-AEEF-TheLast"/>
+                              <xsl:copy-of select="$bwStr-AEEF-TheLast"/><xsl:text> </xsl:text>
                             </xsl:when>
                             <!-- don't output "every" -->
                             <!--<xsl:otherwise>
@@ -1935,31 +1932,48 @@
                       </xsl:if>
 
                       <xsl:if test="form/recurrence/bymonthday">
+                        <xsl:text> </xsl:text>
                         <xsl:copy-of select="$bwStr-AEEF-OnThe"/>
+                        <xsl:text> </xsl:text>
                         <xsl:apply-templates select="form/recurrence/bymonthday/val" mode="weekMonthYearNumbers"/>
+                        <xsl:text> </xsl:text>
                         <xsl:copy-of select="$bwStr-AEEF-DayOfTheMonth"/>
+                        <xsl:text> </xsl:text>
                       </xsl:if>
 
                       <xsl:if test="form/recurrence/byyearday">
+                        <xsl:text> </xsl:text>
                         <xsl:copy-of select="$bwStr-AEEF-OnThe"/>
+                        <xsl:text> </xsl:text>
                         <xsl:apply-templates select="form/recurrence/byyearday/val" mode="weekMonthYearNumbers"/>
+                        <xsl:text> </xsl:text>
                         <xsl:copy-of select="$bwStr-AEEF-DayOfTheYear"/>
+                        <xsl:text> </xsl:text>
                       </xsl:if>
 
                       <xsl:if test="form/recurrence/byweekno">
+                        <xsl:text> </xsl:text>
                         <xsl:copy-of select="$bwStr-AEEF-InThe"/>
+                        <xsl:text> </xsl:text>
                         <xsl:apply-templates select="form/recurrence/byweekno/val" mode="weekMonthYearNumbers"/>
+                        <xsl:text> </xsl:text>
                         <xsl:copy-of select="$bwStr-AEEF-WeekOfTheYear"/>
+                        <xsl:text> </xsl:text>
                       </xsl:if>
 
                       <xsl:copy-of select="$bwStr-AEEF-Repeating"/>
                       <xsl:choose>
-                        <xsl:when test="form/recurrence/count = '-1'"><xsl:copy-of select="$bwStr-AEEF-Forever"/></xsl:when>
+                        <xsl:when test="form/recurrence/count = '-1'"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-Forever"/></xsl:when>
                         <xsl:when test="form/recurrence/until">
-                          <xsl:copy-of select="$bwStr-AEEF-Until"/><xsl:text> </xsl:text><xsl:value-of select="substring(form/recurrence/until,1,4)"/>-<xsl:value-of select="substring(form/recurrence/until,5,2)"/>-<xsl:value-of select="substring(form/recurrence/until,7,2)"/>
+                          <xsl:text> </xsl:text>
+                          <xsl:copy-of select="$bwStr-AEEF-Until"/>
+                          <xsl:text> </xsl:text>
+                          <xsl:value-of select="substring(form/recurrence/until,1,4)"/>-<xsl:value-of select="substring(form/recurrence/until,5,2)"/>-<xsl:value-of select="substring(form/recurrence/until,7,2)"/>
                         </xsl:when>
                         <xsl:otherwise>
+                          <xsl:text> </xsl:text>
                           <xsl:value-of select="form/recurrence/count"/>
+                          <xsl:text> </xsl:text>
                           <xsl:copy-of select="$bwStr-AEEF-Times"/>
                         </xsl:otherwise>
                       </xsl:choose>

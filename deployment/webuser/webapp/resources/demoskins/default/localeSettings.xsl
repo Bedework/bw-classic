@@ -52,10 +52,11 @@
     
   </xsl:template>
   
-  <!-- Declare the JavaScript scheduling strings. -->
+  <!-- Declare the JavaScript event strings. -->
   <!-- These are for display and can be translated. -->
-  <xsl:template name="bedeworkSchedulingStrings">
+  <xsl:template name="bedeworkEventJsStrings">
     <script type="text/javascript">
+      // Scheduling strings
 			var bwAttendeeDispRoleChair = "chair";
 			var bwAttendeeDispRoleRequired = "required participant";
 			var bwAttendeeDispRoleOptional = "optional participant";
@@ -90,6 +91,8 @@
 			
 			var bwErrorAttendees = "Error: attendees not returned";
       
+      // recurrence strings
+      var bwRecurChangeWarning = "WARNING: changing your recurrence rules\nwill destroy all existing recurrence overrides\nand exceptions when you save the event.\n\nContinue?";
     </script>
   </xsl:template>
   

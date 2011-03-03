@@ -495,10 +495,16 @@ function swapRecurrence(obj) {
 }
 function swapRrules(obj) {
   if (obj.checked) {
-    changeClass('rrulesTable','visible');
-    changeClass('rrulesUiSwitch','visible');
-    if (document.getElementById('recurrenceInfo')) {
-      changeClass('recurrenceInfo','invisible');
+    // make sure the user knows the ramifications of their actions
+    if(confirm(bwRecurChangeWarning)) {
+      changeClass('rrulesTable','visible');
+      changeClass('rrulesUiSwitch','visible');
+      if (document.getElementById('recurrenceInfo')) {
+        changeClass('recurrenceInfo','invisible');
+      }
+    } else {
+      // they decided against it. Uncheck the box.
+      obj.checked = false; 
     }
   } else {
     changeClass('rrulesTable','invisible');
