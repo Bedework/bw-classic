@@ -253,9 +253,9 @@ var bwSchedulingGrid = function(displayId, startRange, startHoursRange, endHours
     
     // check to see if attendee already exists
     for (var i=0; i < bwGrid.attendees.length; i++) {
-      if (uid.indexOf("mailto:") == -1) {
+      /*if (uid.indexOf("mailto:") == -1) {
          uid = "mailto:" + uid; 
-      }
+      }*/
       if (uid == bwGrid.attendees[i].uid) {
         attendeeIsNew = false;
         alert(bwAttendeeExistsDisp);

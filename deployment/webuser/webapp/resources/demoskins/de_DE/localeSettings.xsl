@@ -85,7 +85,7 @@
 			var bwOptParticipantDisp = "optional";
 			var bwChairDisp = "chair";
 			
-			var bwErrorAttendees = "Error: attendees not returned";
+			var bwErrorAttendees = "Error: attendee not found";
       
       // recurrence strings
       var bwRecurChangeWarning = "WARNING: changing your recurrence rules\nwill destroy all existing recurrence overrides\nand exceptions when you save the event.\n\nContinue?";
