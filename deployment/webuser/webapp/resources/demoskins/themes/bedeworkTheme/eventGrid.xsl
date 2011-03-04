@@ -163,6 +163,7 @@
         <xsl:choose>
           <xsl:when test="start/shortdate != ../shortdate">
             <xsl:copy-of select="$bwStr-EvCG-Cont"/>
+            <xsl:text> </xsl:text>
           </xsl:when>
           <xsl:when test="start/allday = 'false'">
             <xsl:value-of select="start/time"/>:
