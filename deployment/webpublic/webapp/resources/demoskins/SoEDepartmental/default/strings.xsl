@@ -26,6 +26,9 @@
 
   <xsl:variable name="bwStr-Root-PageTitle">School of Engineering - Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-Error">Error:</xsl:variable>
+  <xsl:variable name="bwStr-Error-NoPage">No page to display</xsl:variable>
+  <xsl:variable name="bwStr-Error-PageNotDefined">Page "<xsl:value-of select="/bedework/appvar[key='page']/value"/>" is not defined.</xsl:variable>
+  <xsl:variable name="bwStr-Error-IframeUnsupported">Your browser does not support iframes.</xsl:variable>
 
   <!-- xsl:template name="headBar" -->
   <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Events Calendar</xsl:variable>
@@ -40,7 +43,7 @@
   <xsl:variable name="bwStr-HdBr-Print">print</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PrintThisView">print this view</xsl:variable>
   <xsl:variable name="bwStr-HdBr-RSS">RSS</xsl:variable>
-  <xsl:variable name="bwStr-HdBr-RSSFeed">RSS feed</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-RSSFeed">Data Feeds &amp; Widgets</xsl:variable>
   <xsl:variable name="bwStr-HdBr-EventInformation">Event Information</xsl:variable>
   <xsl:variable name="bwStr-HdBr-BackLink">(return to events)</xsl:variable>
   <xsl:variable name="bwStr-HdBr-Back">&#8656; back</xsl:variable>
@@ -63,10 +66,13 @@
   <xsl:variable name="bwStr-Tabs-Month">MONTH</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Year">YEAR</xsl:variable>
   <xsl:variable name="bwStr-Tabs-List">LIST</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Search">Search</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-AdvSearch">Advanced Search</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
   <xsl:variable name="bwStr-Navi-Go">go</xsl:variable>
+  <xsl:variable name="bwStr-Navi-GoToDate">Go to date:</xsl:variable>
   <xsl:variable name="bwStr-Navi-Today">today</xsl:variable>
 
   <!--  xsl:template name="searchBar" -->
@@ -134,6 +140,7 @@
   <xsl:variable name="bwStr-SgEv-Task">Task</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Meeting">Meeting</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Recurring">Recurring</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-EventLink">Event Link:</xsl:variable>
   <!--public, private -->
   <xsl:variable name="bwStr-SgEv-Organizer">organizer:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-RecurrenceMaster">recurrence master</xsl:variable>
@@ -149,6 +156,7 @@
   <xsl:variable name="bwStr-SgEv-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToGoogleCalendar">Add to Google Calendar</xsl:variable>
   <xsl:variable name="bwStr-SgEv-AddToFacebook">Add to Facebook</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-ShareThis">Share This - must be configured explicitly for your site.</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Where">Where:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Complete">Complete:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-ORGANIZER">Organizer:</xsl:variable>
@@ -175,6 +183,7 @@
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplayWithOngoing">No non-ongoing events found.  Please try a different view or time period or look in the Ongoing events list.</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AllDay">All Day</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-At">at</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Today">Today</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AddEventToMyCalendar">Add to MyCalendar</xsl:variable>
   <xsl:variable name="bwStr-LsVw-DownloadEvent">Download ical</xsl:variable>
@@ -265,7 +274,7 @@
   <xsl:variable name="bwStr-Calr-Calendar">calendar</xsl:variable>
 
   <!--  xsl:template match="currentCalendar" mode="export" -->
-  <xsl:variable name="bwStr-Cals-ExportCals">Export Calendars as iCal</xsl:variable>
+  <xsl:variable name="bwStr-Cals-ExportCals">Export Calendar as iCal</xsl:variable>
   <xsl:variable name="bwStr-Cals-CalendarToExport">Exporting:</xsl:variable>
   <xsl:variable name="bwStr-Cals-Name">Name:</xsl:variable>
   <xsl:variable name="bwStr-Cals-Path">Path:</xsl:variable>

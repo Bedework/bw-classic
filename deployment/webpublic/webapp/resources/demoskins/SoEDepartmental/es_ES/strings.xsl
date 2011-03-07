@@ -116,6 +116,7 @@
   <xsl:variable name="bwStr-SgEv-Task">Tarea</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Meeting">Reunión</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Recurring">Repetitivo</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-EventLink">Event Link:</xsl:variable>
   <!--public, private -->
   <xsl:variable name="bwStr-SgEv-Organizer">organizador:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-RecurrenceMaster">evento principal</xsl:variable>
