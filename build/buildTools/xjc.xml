@@ -26,6 +26,7 @@
     <attribute name="module-base"/>
     <attribute name="jar-file"/>
     <attribute name="bindingsdir" default="" />
+    <attribute name="dependencies" default="empty.fileset" />
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
       
@@ -33,13 +34,28 @@
       
       <dirname property="org.bedework.schema.dir" file="@{schema}"/>
 
+      <var name="org.bedework.source.changed" value="false" />
+      
+      <outofdate outputsources="org.bedework,changed.sources">
+        <sourcefiles>
+          <fileset dir="${org.bedework.schema.dir}"/>
+          <fileset refid="@{dependencies}"/>
+        </sourcefiles>
+        <targetfiles>
+          <pathelement path="@{jar-file}"/>
+        </targetfiles>
+        <sequential>
+          <var name="org.bedework.source.changed" value="true" />
+        </sequential>
+      </outofdate>
+      
+      <noisyMsg message="**** org.bedework,changed.sources = ${org.bedework,changed.sources}" />
+      <noisyMsg message="**** org.bedework.source.changed = ${org.bedework.source.changed}" />
+
       <if>
-        <and>
-          <available file="${sourcedestdir}" type="dir" />
-          <uptodate targetfile="@{jar-file}" >
-            <srcfiles dir="${org.bedework.schema.dir}" />
-          </uptodate>
-        </and>
+        <not>
+          <equals arg1="${org.bedework.source.changed}" arg2="true" />
+        </not>
         <then>
           <noisyMsg message="**** @{jar-file} is up to date" />
         </then>
