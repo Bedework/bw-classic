@@ -125,7 +125,7 @@
           
           <debugCpid idpar="xjc.classpath" />
       
-          <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+          <taskdef name="xjctask" classname="com.sun.tools.xjc.XJCTask">
             <classpath refid="xjc.classpath" />
           </taskdef>
           
@@ -138,17 +138,17 @@
           <if>
             <equals arg1="@{bindingsdir}" arg2="" />
             <then>
-              <xjc destdir="${sourcedestdir}"
-                   schema="@{schema}" >
-              </xjc>
+              <xjctask destdir="${sourcedestdir}"
+                       schema="@{schema}" >
+              </xjctask>
             </then>
             <else>
-              <xjc destdir="${sourcedestdir}"
-                   schema="@{schema}"
-                   extension="true">
+              <xjctask destdir="${sourcedestdir}"
+                       schema="@{schema}"
+                       extension="true">
                 <binding dir="@{bindingsdir}" includes="*.xml">
                 </binding>
-              </xjc>
+              </xjctask>
             </else>
           </if>
           
