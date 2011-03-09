@@ -38,7 +38,7 @@
 
      ===============================================================  -->
 
-   <xsl:include href="strings.xsl"/>
+   <xsl:include href="../strings.xsl"/> 
 
    <xsl:template match="/">
      <rss version="2.0">
