@@ -401,6 +401,9 @@
       <xsl:when test="id='org.bedework.validation.error.invalid.transparency'">
         Error: Invalid transparency: <em><xsl:value-of select="param"/></em>
       </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.invalid.uri'">
+        Error: Invalid URI: <em><xsl:value-of select="param"/></em>
+      </xsl:when>
       <xsl:when test="id='org.bedework.validation.error.invalid.user'">
         Error: Invalid user: <em><xsl:value-of select="param"/></em>
       </xsl:when>
