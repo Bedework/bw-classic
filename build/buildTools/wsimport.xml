@@ -32,14 +32,15 @@
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
       
       <var name="sourcedestdir" value="@{module-base}/src" />
-      
+
+      <var name="org.bedework.wsdl.dir" unset="true" />
       <dirname property="org.bedework.wsdl.dir" file="@{wsdl}"/>
 
       <var name="org.bedework.source.changed" value="false" />
       
       <outofdate outputsources="org.bedework,changed.sources">
         <sourcefiles>
-          <fileset dir="${org.bedework.wsdl.dir}"/>
+          <fileset dir="${org.bedework.wsdl.dir}" includes="*"/>
           <fileset refid="@{dependencies}"/>
         </sourcefiles>
         <targetfiles>

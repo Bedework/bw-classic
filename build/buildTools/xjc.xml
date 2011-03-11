@@ -32,6 +32,7 @@
       
       <var name="sourcedestdir" value="@{module-base}/src" />
       
+      <var name="org.bedework.schema.dir" unset="true" />
       <dirname property="org.bedework.schema.dir" file="@{schema}"/>
 
       <var name="org.bedework.source.changed" value="false" />
