@@ -746,6 +746,9 @@
 
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
+
+          <!-- Comment out or delete for soap web service -->
+          <calSoapWsURI>/calws-soap</calSoapWsURI>
         </Usercaldav>
 
         <!-- ==================================================================
@@ -900,10 +903,10 @@
           <!-- location of the WSDL - modified to include server element 
                localhost may be good enough 
           -->
-          <exchangeWSDLURI>http://localhost:8080/exchange/Services.wsdl</exchangeWSDLURI>
+          <exchangeWSDLURI>http://localhost:8080/wsdls/exchange/Services.wsdl</exchangeWSDLURI>
 
           <!-- location of the WSDL for the remote web service -->
-          <remoteWSDLURI>http://localhost:8080/exchange/wssvc.wsdl</remoteWSDLURI>
+          <remoteWSDLURI>http://localhost:8080/wsdls/exsynch/wssvc.wsdl</remoteWSDLURI>
 
           <!-- Exchange sync callback. Comment out for no service -->
           <exchangeWsPushURI>http://128.113.124.225:8080/exsynch/</exchangeWsPushURI>
