@@ -70,6 +70,7 @@ usage() {
   echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
   echo "     -bwxml       Target is for the Bedework XML schemas build"
+  echo "     -caldavTest  Target is for the CalDAV Test build"
   echo "     -carddav     Target is for the CardDAV build"
   echo "     -exsynch     Target is for the Exchange synch build"
   echo "     -client      Target is for the bedework client application build"
@@ -264,6 +265,7 @@ pkgdefault=yes
 bedework=
 bwxml=
 carddav=
+caldavTest=
 caldav=
 client=
 exsynch=
@@ -386,6 +388,11 @@ do
       pkgdefault=
       shift
       ;;
+    -caldavTest)
+      caldavTest="yes"
+      pkgdefault=
+      shift
+      ;;
     -client)
       client="yes"
       pkgdefault=
@@ -463,6 +470,10 @@ fi
 
 if [ "$caldav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework/projects/caldav
+fi
+
+if [ "$caldavTest" != "" ] ; then
+  cd $QUICKSTART_HOME/caldavTest
 fi
 
 if [ "$carddav" != "" ] ; then
