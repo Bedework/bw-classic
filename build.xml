@@ -34,9 +34,6 @@
   <property name="org.bedework.project.caldavimpl"
             location="${org.bedework.projects}/caldavimpl" />
 
-  <property name="org.bedework.project.caldavTest"
-            location="${org.bedework.projects}/caldavTest" />
-
   <property name="org.bedework.project.calendarapi"
             location="${org.bedework.projects}/calendarapi" />
 
@@ -197,7 +194,7 @@
                                 build.access,build.davutil,
                                 build.webdav,build.caldav,
                                 build.calendarapi,
-                                build.caldavTest,build.caldavimpl,
+                                build.caldavimpl,
                                 build.bwtools,build.webapps,build.indexer,
                               	build.dumprestore,
                                 build.testsuite"
@@ -220,7 +217,7 @@
   <target name="clean" depends="init,clean.rpiutil,
                                 clean.access,clean.davutil,
                                 clean.calendarapi,
-                                clean.webdav,clean.caldav,clean.caldavTest,
+                                clean.webdav,clean.caldav,
                                 clean.caldavimpl,
                                 clean.bwtools,clean.webapps,clean.indexer,
                               	clean.dumprestore,clean.testsuite"
@@ -232,7 +229,7 @@
   <target name="quickstart-clean" depends="init,clean.rpiutil,
                                            clean.access,clean.davutil,
                                            clean.calendarapi,
-                                           clean.webdav,clean.caldav,clean.caldavTest,
+                                           clean.webdav,clean.caldav,
                                            clean.caldavimpl,
                                            clean.bwtools,clean.webapps,clean.indexer,
   	                                       clean.dumprestore,clean.testsuite"
@@ -362,12 +359,6 @@
                 location="${org.bedework.projectdocs.home}/caldavimpl/api" />
     </ant>
 
-    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/caldavTest/api" />
-    </ant>
-
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
          target="javadoc" >
       <property name="destdir"
@@ -482,27 +473,6 @@
           description="clean builds the caldavimpl project"/>
 
   <!-- .................................................................
-                          caldavTest
-       .................................................................. -->
-  <target name="build.caldavTest" depends="init"
-          description="builds the caldavTest project">
-    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-         target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.caldavTest" depends="init"
-          description="clean the caldavTest project">
-    <ant antfile="${org.bedework.project.caldavTest}/build.xml" inheritall="false"
-         target="deep-clean" />
-  </target>
-
-  <target name="clean.build.caldavTest" depends="clean.caldavTest,build.caldavTest"
-          description="clean builds the caldavTest project"/>
-
-  <!-- .................................................................
                           calendarapi
        .................................................................. -->
   <target name="build.calendarapi" depends="init"
@@ -521,7 +491,7 @@
   </target>
 
   <target name="clean.build.calendarapi" depends="clean.calendarapi,build.calendarapi"
-          description="clean builds the caldavTest project"/>
+          description="clean builds the calendarapi project"/>
 
   <!-- .................................................................
                           davutil
