@@ -174,8 +174,13 @@
       <!-- ===== End of stuff in main bedework deployment build file ======   -->
       
       <!-- Clean up before we start -->
-      <delete dir="${org.bedework.temp.wars.home}" />
-      <mkdir dir="${org.bedework.temp.wars.home}" />
+      <if>
+        <isset property="org.bedework.temp.wars.home" />
+        <then>    
+          <delete dir="${org.bedework.temp.wars.home}" />
+          <mkdir dir="${org.bedework.temp.wars.home}" />
+        </then>
+      </if>
 
       <delete dir="${org.bedework.temp.ear.extrajars.dir}" />
       <mkdir dir="${org.bedework.temp.ear.extrajars.dir}" />
