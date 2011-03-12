@@ -9,7 +9,7 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
 <datasources>
   <local-tx-datasource>
     <jndi-name>ExsynchDS</jndi-name>
-    <connection-url>jdbc:postgresql://localhost:5433/bwexsynch3p7</connection-url>
+    <connection-url>jdbc:postgresql://localhost:5432/bwexsynch3p7</connection-url>
     <driver-class>org.postgresql.Driver</driver-class>
     <user-name>bedework</user-name>
     <password></password>
