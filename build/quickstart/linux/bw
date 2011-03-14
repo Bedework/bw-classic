@@ -69,11 +69,12 @@ usage() {
   echo "   target       Ant target to execute"
   echo ""
   echo "   PROJECT optionally defines the package to build and is none or more of"
+  echo "     -bwtools     Target is for the Bedework tools build"
   echo "     -bwxml       Target is for the Bedework XML schemas build"
   echo "     -caldavTest  Target is for the CalDAV Test build"
   echo "     -carddav     Target is for the CardDAV build"
-  echo "     -exsynch     Target is for the Exchange synch build"
   echo "     -client      Target is for the bedework client application build"
+  echo "     -exsynch     Target is for the Exchange synch build"
   echo "     -monitor     Target is for the bedework monitor application"
   echo "     -naming      Target is for the abstract naming api"
   echo "     -testsuite   Target is for the bedework test suite"
@@ -265,9 +266,10 @@ quickstart=
 pkgdefault=yes
 bedework=
 bwxml=
+bwtools=
 carddav=
-caldavTest=
 caldav=
+caldavTest=
 client=
 exsynch=
 monitor=
@@ -375,6 +377,11 @@ do
       shift
       ;;
 # ------------------------Projects
+    -bwtools)
+      bwtools="yes"
+      pkgdefault=
+      shift
+      ;;
     -bwxml)
       bwxml="yes"
       pkgdefault=
@@ -473,6 +480,10 @@ echo "BWCONFIG=$BWCONFIG"
 
 if [ "$bwxml" != "" ] ; then
   cd $QUICKSTART_HOME/bwxml
+fi
+
+if [ "$bwtools" != "" ] ; then
+  cd $QUICKSTART_HOME/bwtools
 fi
 
 if [ "$caldav" != "" ] ; then
