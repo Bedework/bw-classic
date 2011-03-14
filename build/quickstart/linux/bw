@@ -76,6 +76,7 @@ usage() {
   echo "     -client      Target is for the bedework client application build"
   echo "     -monitor     Target is for the bedework monitor application"
   echo "     -naming      Target is for the abstract naming api"
+  echo "     -testsuite   Target is for the bedework test suite"
   echo "     -tzsvr       Target is for the timezones server build"
   echo "     The default is a calendar build"
   echo ""
@@ -271,6 +272,7 @@ client=
 exsynch=
 monitor=
 naming=
+testsuite=
 tzsvr=
 webdav=
 
@@ -418,6 +420,11 @@ do
       pkgdefault=
       shift
       ;;
+    -testsuite)
+      testsuite="yes"
+      pkgdefault=
+      shift
+      ;;
     -tzsvr)
       tzsvr="yes"
       pkgdefault=
@@ -494,6 +501,10 @@ fi
 
 if [ "$naming" != "" ] ; then
   cd $QUICKSTART_HOME/bwnaming
+fi
+
+if [ "$testsuite" != "" ] ; then
+  cd $QUICKSTART_HOME/testsuite
 fi
 
 if [ "$tzsvr" != "" ] ; then

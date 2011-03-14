@@ -49,9 +49,6 @@
   <property name="org.bedework.project.rpiutil"
             location="${org.bedework.projects}/rpiutil" />
 
-  <property name="org.bedework.project.testsuite"
-            location="${org.bedework.projects}/testsuite" />
-
   <property name="org.bedework.project.webapps"
             location="${org.bedework.projects}/webapps" />
 
@@ -196,8 +193,7 @@
                                 build.calendarapi,
                                 build.caldavimpl,
                                 build.bwtools,build.webapps,build.indexer,
-                              	build.dumprestore,
-                                build.testsuite"
+                              	build.dumprestore"
           description="builds the project">
     <mkdir dir="${dist.home}/tools" />
     <copy toDir="${dist.home}/tools" >
@@ -220,7 +216,7 @@
                                 clean.webdav,clean.caldav,
                                 clean.caldavimpl,
                                 clean.bwtools,clean.webapps,clean.indexer,
-                              	clean.dumprestore,clean.testsuite"
+                              	clean.dumprestore"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
     <delete dir="${bin.home}" />
@@ -232,7 +228,7 @@
                                            clean.webdav,clean.caldav,
                                            clean.caldavimpl,
                                            clean.bwtools,clean.webapps,clean.indexer,
-  	                                       clean.dumprestore,clean.testsuite"
+  	                                       clean.dumprestore"
           description="partial clean up for quickstart.">
     <delete dir="${bin.home}" />
     <delete dir="${org.bedework.temp.dir}" />
@@ -375,12 +371,6 @@
          target="javadoc" >
       <property name="destdir"
                 location="${org.bedework.projectdocs.home}/webapps/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/testsuite/api" />
     </ant>
   </target>
 
@@ -578,27 +568,6 @@
           description="builds the rpiutil project"/>
 
   <!-- .................................................................
-                          testsuite
-       .................................................................. -->
-  <target name="build.testsuite" depends="init"
-          description="builds the testsuite project">
-    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
-         target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.testsuite" depends="init"
-          description="clean the testsuite project">
-    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
-         target="deep-clean" />
-  </target>
-
-  <target name="clean.build.testsuite" depends="clean.testsuite,clean.testsuite"
-          description="builds the testsuite project"/>
-
-  <!-- .................................................................
                           webapps
        .................................................................. -->
   <target name="build.webapps" depends="init"
@@ -660,30 +629,6 @@
           description="run the cmdline utility">
     <ant antfile="${org.bedework.project.bwtools}/build.xml" inheritall="false"
          target="cmdutil" />
-  </target>
-
-  <!-- =================================================================
-       Build and run the unit test suite
-       ================================================================= -->
-
-  <target name="bld.test" depends="init"
-          description="Build and run tests">
-    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
-         target="bld.test" />
-  </target>
-
-  <target name="run.test" depends="init"
-          description="Build and run tests">
-    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
-         target="run.test" />
-  </target>
-
-  <target name="run.test.debug" depends="init"
-          description="Build and run tests">
-    <ant antfile="${org.bedework.project.testsuite}/build.xml" inheritall="false"
-         target="run.test"  >
-      <property name="org.bedework.debug" value="yes" />
-    </ant>
   </target>
 
   <!-- Rebuild the http test suite only -->
