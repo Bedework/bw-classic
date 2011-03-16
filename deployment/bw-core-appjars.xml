@@ -33,6 +33,12 @@
               name="bw-exsynchwsschema" version="${org.bedework.bwxml.version}"
               projecthome="${bw.project.home}/../bwxml" />
 
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-calws-soapschema" 
+              version="${org.bedework.bwxml.version}" 
+              projecthome="${project.home}/../bwxml" />
+
       <!-- ================= Bedework dump/restore jars ==================== -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"

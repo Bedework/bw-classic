@@ -748,7 +748,8 @@
           <webcalServiceURI>/webcal</webcalServiceURI>
 
           <!-- Comment out or delete for soap web service -->
-          <calSoapWsURI>/calws-soap</calSoapWsURI>
+          <calSoapWsURI>/calws-soap/</calSoapWsURI>
+          <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
         </Usercaldav>
 
         <!-- ==================================================================
