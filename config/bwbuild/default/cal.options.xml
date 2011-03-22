@@ -10,6 +10,8 @@
 
         <!-- This property is how the running system finds the system settings.
              In theory we could have multiple settings with different names
+             
+             DO NOT CHANGE
          -->
         <systemName>bedework</systemName>
 
@@ -419,8 +421,16 @@
         </module>
       </global>
 
+      <!-- System parameters are used to INITIALISE the system settings during
+           restore or a first time build of the data. 
+           
+           Values in the database take precedence after that and need to be 
+           changed via the admin console on teh system parameters page.
+       -->
       <syspars classname="org.bedework.calfacade.BwSystem">
-        <!-- name must match the global system name -->
+        <!-- name must match the global system name              
+             DO NOT CHANGE
+          -->
         <name>bedework</name>
         <tzid>America/New_York</tzid>
         <systemid>demobedework@mysite.edu</systemid>
