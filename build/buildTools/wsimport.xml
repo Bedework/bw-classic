@@ -72,10 +72,15 @@
           <getJar name="jaxb-xjc" version="2.2" /> 
           <getJar name="jaxws-rt" version="2.2" /> 
           -->
+        	<var name="org.bedework.wsimport.tstamp" unset="true" />
+        	<tstamp>
+            <format property="org.bedework.wsimport.tstamp" pattern="YYYYMMDDhhmmss"/>
+      	  </tstamp>
+
           <property name="wsimport.lib" 
-                    location="${org.bedework.temp.dir}/wsimportlib" />
+                    location="${org.bedework.temp.dir}/wsimportlib${org.bedework.wsimport.tstamp}" />
           <mkdir dir="${org.bedework.temp.dir}" />
-          <delete dir="${wsimport.lib}" />
+          <!--<delete dir="${wsimport.lib}" />-->
           <mkdir dir="${wsimport.lib}" />
           
           <getJar lib="${wsimport.lib}"
