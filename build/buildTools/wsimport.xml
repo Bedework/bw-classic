@@ -74,7 +74,7 @@
           -->
         	<var name="org.bedework.wsimport.tstamp" unset="true" />
         	<tstamp>
-            <format property="org.bedework.wsimport.tstamp" pattern="YYYYMMDDhhmmss"/>
+            <format property="org.bedework.wsimport.tstamp" pattern="yyyyMMddhhmmss"/>
       	  </tstamp>
 
           <property name="wsimport.lib" 
