@@ -112,6 +112,12 @@
 
     <filter token="SCHEMA-DELIMITER"
             value="${propval.app.schema.delimiter}" />
+
+    <filter token="calSoapWsURI"
+            value="${org.bedework.calws-soap.uri}" />
+
+    <filter token="exsynchWsURI"
+            value="${org.bedework.exsynch.uri}" />
   </filterset>
 
   <target name="dummy">
