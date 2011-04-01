@@ -142,6 +142,8 @@
                     location="${org.bedework.temp.dir}/wsclasses" />
           <mkdir dir="${wsimport.dest}" />
     
+          <infoMsg message="* =========== Compiling @{wsdl}" />
+          
           <if>
             <equals arg1="@{bindingsdir}" arg2="" />
             <then>

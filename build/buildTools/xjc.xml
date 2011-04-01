@@ -136,6 +136,8 @@
                     location="${org.bedework.temp.dir}/xjcclasses" />
           <mkdir dir="${xjc.dest}" />
     
+          <infoMsg message="* =========== Compiling @{schema}" />
+          
           <if>
             <equals arg1="@{bindingsdir}" arg2="" />
             <then>
