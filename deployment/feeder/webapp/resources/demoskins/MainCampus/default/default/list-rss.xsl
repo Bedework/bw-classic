@@ -18,9 +18,13 @@
     under the License.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output method="xml" omit-xml-declaration="no" indent="yes"
-    media-type="text/xml" encoding="UTF-8" />
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:atom="http://www.w3.org/2005/Atom">
+  <xsl:output method="xml" 
+              omit-xml-declaration="no" indent="yes"
+              media-type="text/xml" 
+              encoding="UTF-8" />
 
    <!-- =========================================================
 
@@ -56,11 +60,7 @@
             <xsl:otherwise><xsl:value-of select="/bedework/now/longdate"/> - <xsl:value-of select="/bedework/events/event[position()=last()]/start/longdate"/></xsl:otherwise>
           </xsl:choose>
         </description>
-        <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
-          --><xsl:value-of select="substring(/bedework/now/utc,7,2)"/><xsl:text> </xsl:text><!--
-          --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(/bedework/now/utc,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="substring(/bedework/now/utc,1,4)"/><xsl:text> </xsl:text><!--
-          --><xsl:value-of select="substring(/bedework/now/utc,10,2)"/>:<xsl:value-of select="substring(/bedework/now/utc,12,2)"/>:00 UT</pubDate>
+        <atom:updated><xsl:value-of select="substring(/bedework/now/utc,1,4)"/>-<xsl:value-of select="substring(/bedework/now/utc,5,2)"/>-<xsl:value-of select="substring(/bedework/now/utc,7,5)"/>:<xsl:value-of select="substring(/bedework/now/utc,12,2)"/>:<xsl:value-of select="substring(/bedework/now/utc,14,3)"/></atom:updated>
         <language>en-US</language>
         <copyright>Copyright <xsl:value-of select="substring(/bedework/now/utc,1,4)"/>, Bedework</copyright>
         <managingEditor>editor@mysite.edu (Editor Name)</managingEditor>
@@ -100,12 +100,9 @@
     <item>
       <title><xsl:if test="status = 'CANCELLED'">CANCELED: </xsl:if><xsl:value-of select="summary"/></title>
       <link><xsl:value-of select="substring-before($urlPrefix,$feeder)"/><xsl:value-of select="$publicCal"/>/event/eventView.do?calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></link>
-      <guid>calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></guid>
-      <pubDate><!-- takes the form: 11 Jan 2008 17:00:00 UT (note - do not output dayname - we only provide dayname in local time).
-        --><xsl:value-of select="substring(start/utcdate,7,2)"/><xsl:text> </xsl:text><!--
-        --><xsl:call-template name="monthNumToName"><xsl:with-param name="monthNum" select="substring(start/utcdate,5,2)"/></xsl:call-template><xsl:text> </xsl:text><!--
-        --><xsl:value-of select="substring(start/utcdate,1,4)"/><xsl:text> </xsl:text><!--
-        --><xsl:value-of select="substring(start/utcdate,10,2)"/>:<xsl:value-of select="substring(start/utcdate,12,2)"/>:00 UT</pubDate>
+      <guid isPermaLink="false">calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></guid>
+      <atom:updated><xsl:value-of select="substring(start/utcdate,1,4)"/>-<xsl:value-of select="substring(start/utcdate,5,2)"/>-<xsl:value-of select="substring(start/utcdate,7,5)"/>:<xsl:value-of select="substring(start/utcdate,12,2)"/>:<xsl:value-of select="substring(start/utcdate,14,3)"/></atom:updated>
+      
       <description>
         <xsl:value-of select="start/dayname" />,
         <xsl:value-of select="start/longdate" />
@@ -226,15 +223,15 @@
         ]]>
 
         <xsl:copy-of select="$bwStr-SgEv-Where"/><xsl:text> </xsl:text>
-        <xsl:choose>
-          <xsl:when test="location/link=''">
+        <!-- <xsl:choose>
+          <xsl:when test="location/link=''">-->
             <xsl:value-of select="location/address" />
             <xsl:text> </xsl:text>
             <xsl:if test="location/subaddress!=''">
               <xsl:text> </xsl:text>
               <xsl:value-of select="location/subaddress" />
             </xsl:if>
-          </xsl:when>
+          <!-- </xsl:when>
           <xsl:otherwise>
             <a>
               <xsl:attribute name="href"><xsl:value-of select="location/link"/></xsl:attribute>
@@ -245,7 +242,7 @@
               </xsl:if>
             </a>
           </xsl:otherwise>
-        </xsl:choose>
+        </xsl:choose>-->
 
         <![CDATA[
           <br/>
