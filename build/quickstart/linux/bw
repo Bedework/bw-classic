@@ -39,10 +39,9 @@ usage() {
   echo "    In a deployed system many of these actions are handled directly by a"
   echo "    deployed application. ACTION may be one of"
   echo "      -updateall  Does an svn update of all projects"
-  echo "      -reindex    runs the indexer directly out of the quickstart bedework"
-  echo "                  dist directory to rebuild the lucene indexes"
   echo "      -zoneinfo   builds zoneinfo data for the timezones server"
-  echo "                  requires -version and -tzdata parameters.   NOTE: build depends on glib2"
+  echo "                  requires -version and -tzdata parameters.   "
+  echo "                  NOTE: build depends on glib2 and only works on Linux/Unix"
   echo "      -buildwebcache     builds webcache"
   echo "      -deploywebcache    deploys webcache"
   echo "      -deployurlbuilder  deploys url/widget builder"
@@ -68,20 +67,26 @@ usage() {
   echo ""
   echo "   target       Ant target to execute"
   echo ""
-  echo "   PROJECT optionally defines the package to build and is none or more of"
-  echo "     -bwtools     Target is for the Bedework tools build"
+  echo "   PROJECT optionally defines the package to build and is one of"
+  echo "           the core, ancillary or experimental targets below:"
+  echo ""
+  echo "   Core projects: required for a functioning system"
   echo "     -bwxml       Target is for the Bedework XML schemas build"
-  echo "     -caldavTest  Target is for the CalDAV Test build"
+  echo "                       (usually built automatically be dependent projects"
   echo "     -carddav     Target is for the CardDAV build"
+  echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
+  echo "     -tzsvr       Target is for the timezones server build"
+  echo "   Ancillary projects: not required"
+  echo "     -bwtools     Target is for the Bedework tools build"
+  echo "     -caldavTest  Target is for the CalDAV Test build"
+  echo "     -monitor     Target is for the bedework monitor application"
+  echo "     -testsuite   Target is for the bedework test suite"
+  echo "   Experimental projects: no guarantees"
+  echo "     -catdav      Target is for the CatDAV build"
   echo "     -client      Target is for the bedework client application build"
   echo "     -exsynch     Target is for the Exchange synch build"
-  echo "     -monitor     Target is for the bedework monitor application"
   echo "     -naming      Target is for the abstract naming api"
-  echo "     -testsuite   Target is for the bedework test suite"
-  echo "     -tzsvr       Target is for the timezones server build"
   echo "     The default is a calendar build"
-  echo ""
-  echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
   echo ""
   echo "   Invokes ant to build or deploy the Bedework system. Uses a configuration"
   echo "   directory which contains one directory per configuration."
@@ -118,23 +123,6 @@ actionUpdateall() {
     echo "*********************************************************************"
     svn update $project
   done
-  
-  exit 0
-}
-
-# ---------------------------------------------------------------------------- 
-# Reindex the data
-# ---------------------------------------------------------------------------- 
-actionReindex() {
-  INDEXER=$QUICKSTART_HOME/bedework/dist/temp/shellscr/indexer
-  
-	if [ ! -d "$INDEXER" ] ; then
-	  errorUsage "The indexer directory $INDEXER does not exist. You probably need to do a rebuild."
-	fi
-
-  cd $INDEXER
-  chmod +x bwrun
-  ./bwrun reindex-nostart -user admin -indexlocprefix ../../../../../
   
   exit 0
 }
@@ -267,9 +255,10 @@ pkgdefault=yes
 bedework=
 bwxml=
 bwtools=
-carddav=
 caldav=
 caldavTest=
+carddav=
+catdav=
 client=
 exsynch=
 monitor=
@@ -289,10 +278,6 @@ fi
 
 if [ "$1" = "-updateall" ] ; then
   actionUpdateall
-fi
-
-if [ "$1" = "-reindex" ] ; then
-  actionReindex
 fi
 
 if [ "$1" = "-zoneinfo" ] ; then
@@ -387,11 +372,6 @@ do
       pkgdefault=
       shift
       ;;
-    -carddav)
-      carddav="yes"
-      pkgdefault=
-      shift
-      ;;
     -caldav)
       caldav="yes"
       pkgdefault=
@@ -399,6 +379,16 @@ do
       ;;
     -caldavTest)
       caldavTest="yes"
+      pkgdefault=
+      shift
+      ;;
+    -carddav)
+      carddav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -catdav)
+      catdav="yes"
       pkgdefault=
       shift
       ;;
@@ -496,6 +486,10 @@ fi
 
 if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav
+fi
+
+if [ "$catdav" != "" ] ; then
+  cd $QUICKSTART_HOME/catdav
 fi
 
 if [ "$client" != "" ] ; then

@@ -178,20 +178,6 @@ GOTO branch
 
   GOTO:EOF
   
-:reindex
-  ECHO     Calling the reindexer
-  SET INDEXER=%QUICKSTART_HOME%\bedework\dist\temp\shellscr\indexer
-
-  if exist %INDEXER% goto indexerok
-    ECHO The indexer directory %INDEXER% does not exist. You probably need to do a rebuild.
-    GOTO:EOF
-
-  :indexerok
-  cd %INDEXER%
-  bwrun.bat reindex-nostart -user admin -indexlocprefix ..\..\..\..\..\
-
-  GOTO:EOF
-
 :zoneinfo
    ECHO    zoneinfo target is not supported on Windows
    GOTO:EOF
@@ -293,7 +279,6 @@ IF "%1" == "-bwchome" GOTO bwchome
 IF "%1" == "-bwc" GOTO bwc
 IF "%1" == "-offline" GOTO offline
 IF "%1" == "-updateall" GOTO updateall
-IF "%1" == "-reindex" GOTO reindex
 IF "%1" == "-zoneinfo" GOTO zoneinfo
 IF "%1" == "-buildwebcache" GOTO buildwebcache
 IF "%1" == "-deploywebcache" GOTO deploywebcache
@@ -328,8 +313,6 @@ GOTO doneWithArgs
   ECHO    In a deployed system many of these actions are handled directly by a
   ECHO    deployed application. ACTION may be one of
   ECHO      -updateall  Does an svn update of all projects"
-  ECHO      -reindex    runs the indexer directly out of the quickstart bedework
-  ECHO                  dist directory to rebuild the lucene indexes
 REM   Don't support zoneinfo command on Windows for now
 REM   ECHO      -zoneinfo - builds zoneinfo data for the timezones server
 REM   ECHO                  requires -version and -tzdata parameters
@@ -350,16 +333,21 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO    -offline     Build without attempting to retrieve library jars
   ECHO    target       Ant target to execute (e.g. "start")
   ECHO.
+  ECHO    PROJECT optionally defines the package to build and is one of
+  ECHO            the core, ancillary or experimental targets below:
   ECHO.
-  ECHO.
-  ECHO    PROJECT optionally defines the package to build and is none or more of
+  ECHO   Core projects: required for a functioning system
   ECHO      -bwxml       Target is for the Bedework XML schemas build
+  ECHO                       (usually built automatically be dependent projects
   ECHO      -carddav     Target is for the CardDAV build
-  ECHO      -exsynch     Target is for the Exchange synch build
-  ECHO      -client      Target is for the bedework client application build
-  ECHO      -monitor     Target is for the bedework monitor application
-  ECHO      -naming      Target is for the abstract naming api
+  ECHO      -carddav deploy-addrbook    To deploy the Javascript Addressbook client.
   ECHO      -tzsvr       Target is for the timezones server build
+  ECHO   Ancillary projects: not required
+  ECHO      -monitor     Target is for the bedework monitor application
+  ECHO   Experimental projects: no guarantees
+  ECHO      -client      Target is for the bedework client application build
+  ECHO      -exsynch     Target is for the Exchange synch build
+  ECHO      -naming      Target is for the abstract naming api
   ECHO     The default is a calendar build
   ECHO.
   ECHO    Invokes ant to build or deploy the Bedework system. Uses a configuration
