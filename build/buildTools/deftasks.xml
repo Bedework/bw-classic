@@ -88,6 +88,7 @@
       </if>
 
       <import file="${build.dir}/buildTools/getJar.xml"/>
+      <import file="${build.dir}/buildTools/jdoc.xml"/>
     </sequential>
   </macrodef>
 
@@ -210,6 +211,9 @@
   
   <!-- Override this -->
   <target name="init" />
+  
+  <!-- Override this -->
+  <target name="build-init" />
 
   <!-- Override this -->
   <target name="build-source" />
@@ -257,6 +261,11 @@
 
   <target name="build-all" depends="build"
           description="Compile access control classes"/>
+  
+  <target name="javadoc" depends="build-init"
+          description="Create Javadoc API documentation">
+    <jdoc/>
+  </target>
   
   <macrodef name="build-jar-stats">
     <sequential>
