@@ -72,8 +72,8 @@
           <getJar name="jaxb-xjc" version="2.2" /> 
           <getJar name="jaxws-rt" version="2.2" /> 
           -->
-        	<var name="org.bedework.wsimport.tstamp" unset="true" />
-        	<tstamp>
+          <var name="org.bedework.wsimport.tstamp" unset="true" />
+          <tstamp>
             <format property="org.bedework.wsimport.tstamp" pattern="yyyyMMddhhmmss"/>
       	  </tstamp>
 
