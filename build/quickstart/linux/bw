@@ -82,7 +82,7 @@ usage() {
   echo "     -monitor     Target is for the bedework monitor application"
   echo "     -testsuite   Target is for the bedework test suite"
   echo "   Experimental projects: no guarantees"
-  echo "     -catdav      Target is for the CatDAV build"
+  echo "     -catsvr      Target is for the Catsvr build"
   echo "     -client      Target is for the bedework client application build"
   echo "     -exsynch     Target is for the Exchange synch build"
   echo "     -naming      Target is for the abstract naming api"
@@ -258,7 +258,7 @@ bwtools=
 caldav=
 caldavTest=
 carddav=
-catdav=
+catsvr=
 client=
 exsynch=
 monitor=
@@ -387,8 +387,8 @@ do
       pkgdefault=
       shift
       ;;
-    -catdav)
-      catdav="yes"
+    -catsvr)
+      catsvr="yes"
       pkgdefault=
       shift
       ;;
@@ -488,8 +488,8 @@ if [ "$carddav" != "" ] ; then
   cd $QUICKSTART_HOME/bedework-carddav
 fi
 
-if [ "$catdav" != "" ] ; then
-  cd $QUICKSTART_HOME/catdav
+if [ "$catsvr" != "" ] ; then
+  cd $QUICKSTART_HOME/catsvr
 fi
 
 if [ "$client" != "" ] ; then
