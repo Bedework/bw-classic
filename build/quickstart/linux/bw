@@ -213,7 +213,8 @@ actionZoneinfo() {
   cd tzdata
   
   echo "version=$version" > info.txt
-  date +buildTime=%D-%T-%N >> info.txt
+#  date +buildTime=%D-%T-%N >> info.txt
+  date +buildTime=%Y%m%dT%H%M%S >> info.txt
   
   zip -r tzdata *
   
