@@ -214,11 +214,11 @@ actionZoneinfo() {
   
   echo "version=$version" > info.txt
 #  date +buildTime=%D-%T-%N >> info.txt
-  date +buildTime=%Y%m%dT%H%M%S >> info.txt
+  date --utc +buildTime=%Y%m%dT%H%M%SZ >> info.txt
   
   zip -r tzdata *
   
-  cp tzdata.zip $bwtzsvr/
+  cp tzdata.zip $bwtzsvr/dist
   
   echo ""
   echo "------------------------------------------------------------------------------"

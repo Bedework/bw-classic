@@ -8,16 +8,15 @@
 
 <project name="bedework.platformTermination" default="doPlatform" >
   <target name="doPlatform" >
-    <!-- If requested copy in the db configuration.
+    <!-- If requested copy in the db configuration. -->
 
     <if>
-      <istrue value="${org.bedework.global.copy.bedeworkexsynchds.config}" />
+      <istrue value="${org.bedework.global.copy.bedeworktzds.config}" />
       <then>
-        <copy file="${org.bedework.config.home}/bedework-exsynch-ds.xml"
-              tofile="${org.bedework.appserver.deploy.dir}/bedework-exsynch-ds.xml"
+        <copy file="${org.bedework.config.home}/bedework-tz-ds.xml"
+              tofile="${org.bedework.appserver.deploy.dir}/bedework-tz-ds.xml"
               overwrite="yes" />
       </then>
     </if>
-     -->
   </target>
 </project>
