@@ -31,9 +31,9 @@
           <xsl:for-each
             select="/bedework/eventscalendar/year/month/week/day/event[categories/category[uid = $ongoingEventsCatUid]]">
             <xsl:sort select="start/unformatted" order="ascending" data-type="number" />
-            <xsl:sort select="id" data-type="number" />
-            <xsl:variable name="lastId" select="id" />
-            <xsl:if test="not(preceding::event[id=$lastId])">
+            <xsl:sort select="guid" order="ascending" />
+            <xsl:variable name="lastId" select="guid" />
+            <xsl:if test="not(preceding::event[guid=$lastId])">
               <xsl:call-template name="ongoingEvent" />
             </xsl:if>
           </xsl:for-each>
