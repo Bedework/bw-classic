@@ -489,7 +489,8 @@
           
           <!--  Property defining location of the registry  -->
           <tzdataUrl>http://localhost:8080/tzdata.zip</tzdataUrl>
-
+          <tzdataUrl>@DATA_DIR@/tzdata.zip</tzdataUrl>
+    
           <!-- Property defining long seconds refetch interval for data -->
           <refetchInterval>6000</refetchInterval>
           
