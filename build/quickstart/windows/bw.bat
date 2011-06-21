@@ -32,7 +32,7 @@ SET ant_xmllogfile=
 SET ant_logger=
 
 SET ant_loglevel="-quiet"
-SET bw_loglevel=""
+SET bw_loglevel=
 
 :: Projects we need to update
 SET updateProjects="bwxml bedework bedework-carddav bwtzsvr cachedfeeder"
