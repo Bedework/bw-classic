@@ -207,11 +207,7 @@
       <table cellspacing="0" class="common dottedBorder">
       
         <!--  Calendar  -->
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-AEEF-Calendar"/><xsl:text> </xsl:text>
-          </td>
-          <td class="fieldval">
+        
             <!-- the string "user/" should not be hard coded; fix this -->
             <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
             <xsl:variable name="writableCalendars">
@@ -229,26 +225,26 @@
                          currentAccess/current-user-privilege-set/privilege/write-content]/path"/><xsl:value-of select="/bedework/mySubscriptions//calendar[calType = '1' and
                        currentAccess/current-user-privilege-set/privilege/write-content and
                        (not(contains(path,$userPath)))]/path"/></xsl:variable>
-
-                <input type="hidden" name="newCalPath" value="{$newCalPath}"/>
-                <span id="bwEventCalDisplay">
-                  <xsl:value-of select="form/calendar/summary"/>
-                  <xsl:text> </xsl:text>
-                </span>
+                <tr class="hidden"><td><input type="hidden" name="newCalPath" value="{$newCalPath}"/></td></tr>
               </xsl:when>
               <xsl:otherwise>
-                <input type="hidden" name="newCalPath" id="bwNewCalPathField">
-                  <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-                </input>
-                <span id="bwEventCalDisplay">
-                  <xsl:value-of select="form/calendar/summary"/>
-                  <xsl:text> </xsl:text>
-                </span>
-                <xsl:call-template name="selectCalForEvent"/>
+                <tr>
+				          <td class="fieldname">
+				            <xsl:copy-of select="$bwStr-AEEF-Calendar"/><xsl:text> </xsl:text>
+				          </td>
+				          <td class="fieldval">
+		                <input type="hidden" name="newCalPath" id="bwNewCalPathField">
+		                  <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+		                </input>
+		                <span id="bwEventCalDisplay">
+		                  <xsl:value-of select="form/calendar/summary"/>
+		                  <xsl:text> </xsl:text>
+		                </span>
+		                <xsl:call-template name="selectCalForEvent"/>
+		              </td>
+		            </tr>
               </xsl:otherwise>
             </xsl:choose>
-          </td>
-        </tr>
         
         <!--  Summary (title) of event  -->
         <tr>
