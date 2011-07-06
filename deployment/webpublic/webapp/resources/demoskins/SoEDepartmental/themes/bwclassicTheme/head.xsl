@@ -44,7 +44,7 @@
           <link rel="stylesheet" href="{$resourcesRoot}/css/blue.css"/>
         </xsl:otherwise>
       </xsl:choose>
-      <link rel="stylesheet" href="../../../bedework-common/default/default/subColors.css"/>
+      <link rel="stylesheet" href="/bedework-common/default/default/subColors.css"/>
       <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
       <!-- load javascript -->
       <xsl:if test="/bedework/page='event' or /bedework/page='displayCalendarForExport'">

@@ -26,8 +26,8 @@
   <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/browserResourceRoot"/>/themes/bwclassicTheme</xsl:variable>
   
   <!-- Location of the urlbuilder application; this is set to the 
-       default quickstart location. If you move it, you must change this
+       default quickstart location. If you move it, you may need to change this
        value. -->
-  <xsl:variable name="urlbuilder">http://localhost:9090/urlbuilder</xsl:variable>
+  <xsl:variable name="urlbuilder">/urlbuilder</xsl:variable>
 
 </xsl:stylesheet>

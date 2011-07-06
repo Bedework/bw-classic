@@ -38,12 +38,12 @@
   <xsl:key name="catUid" match="category" use="uid"/>
 
   <!-- DEFINE INCLUDES -->
-  <xsl:include href="../../../bedework-common/default/default/util.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/bedeworkAccess.xsl"/>
+  <xsl:include href="/bedework-common/default/default/util.xsl"/>
+  <xsl:include href="/bedework-common/default/default/bedeworkAccess.xsl"/>
   <!-- include the language strings -->
-  <xsl:include href="../../../bedework-common/default/default/errors.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/messages.xsl"/>
-  <xsl:include href="../../../bedework-common/default/default/bedeworkAccessStrings.xsl"/>
+  <xsl:include href="/bedework-common/default/default/errors.xsl"/>
+  <xsl:include href="/bedework-common/default/default/messages.xsl"/>
+  <xsl:include href="/bedework-common/default/default/bedeworkAccessStrings.xsl"/>
   <xsl:include href="./strings.xsl"/>
   <xsl:include href="./localeSettings.xsl" />
 
@@ -213,7 +213,7 @@
   <xsl:variable name="urlPrefix" select="/bedework/urlprefix"/>
 
   <!-- Other generally useful global variables -->
-  <xsl:variable name="publicCal">http://localhost:8080/cal</xsl:variable>
+  <xsl:variable name="publicCal">/cal</xsl:variable>
 
   <!-- the following variable can be set to "true" or "false";
        to use jQuery widgets and fancier UI features, set to false - these are
