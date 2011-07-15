@@ -6,7 +6,7 @@
      Authors: Mike Douglass   douglm rpi.edu
 -->
 
-<project name="do.deftasks" basedir="." default="">
+<project name="doDeftasks" basedir="." default="">
   <macrodef name="deftasks">
     <sequential>
       <path id="build.cp">
@@ -42,6 +42,16 @@
     </sequential>
   </macrodef>
   
+  <macrodef name="execProject">
+    <attribute name="project"/>
+    <attribute name="target"/>
+	  <sequential>
+	    <ant antfile="${bedework.home}/../@{project}/build.xml" 
+	         inheritall="false"
+	         target="@{target}" />
+	  </sequential>
+	</macrodef>
+    
   <macrodef name="projectDefs">
     <attribute name="name"/>
     <attribute name="version"/>
