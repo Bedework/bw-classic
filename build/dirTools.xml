@@ -12,16 +12,22 @@
        ================================================================= -->
 
   <target name="dirToolInit" >
+    <property name="org.bedework.project.bwtools"
+              location="${org.bedework.project.bedework}/../bwtools" />
+      
     <property name="app.dest.classes"
-              location="${org.bedework.project.bedework}/dist/tools/classes" />
+              location="${org.bedework.project.bwtools}/dist/tools/classes" />
 
     <delete dir="${app.dest.classes}" />
     <mkdir dir="${app.dest.classes}" />
 
     <path id="run.classpath">
-      <fileset dir="${org.bedework.project.bedework}/dist/tools">
+      <fileset dir="${org.bedework.project.bwtools}/dist">
          <include name="*.jar"/>
       </fileset>
+        <fileset dir="${org.bedework.project.bwtools}/lib">
+           <include name="*.jar"/>
+        </fileset>
       <pathelement location="${org.bedework.project.bwtools}/resources" />
       <pathelement location="${app.dest.classes}" />
     </path>
