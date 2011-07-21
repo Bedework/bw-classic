@@ -14,6 +14,9 @@
     <property name="org.bedework.project.bedework"
               location="${basedir}/bedework" />
 
+    <property name="org.bedework.project.bwtools"
+              location="${basedir}/bwtools" />
+
     <property name="org.bedework.directory.dir"
               location="${org.bedework.project.bedework}/../apacheds-1.5.3.fixed" />
   </target>
