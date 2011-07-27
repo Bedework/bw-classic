@@ -976,6 +976,36 @@
         </usercarddav>
 
         <!-- ===============================================================
+                          User CardDAV server usercarddavweb
+             This should be pretty much identical to the above
+             =============================================================== -->
+        <usercarddavweb classname="org.bedework.carddav.util.CardDAVConfig" >
+          <sysintfImpl>org.bedework.carddav.bwserver.BwSysIntfImpl</sysintfImpl>
+          
+          <webaddrServiceURI>/find</webaddrServiceURI>
+          <webaddrServicePropertiesList>fn,email,note,org</webaddrServicePropertiesList>
+          <webaddrPublicAddrbook>/principals/users</webaddrPublicAddrbook>
+
+          <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
+
+          <defaultAddressbook>addressbook</defaultAddressbook>
+
+          <!-- This will act as the root for the file system -->
+          <addressBookHandlerPrefix>/user</addressBookHandlerPrefix>
+          
+          <!-- Needed for access calculations -->
+          <userHomeRoot>/user</userHomeRoot>
+
+          <principalRoot>/principals</principalRoot>
+          <userPrincipalRoot>/principals/users</userPrincipalRoot>
+          <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+          <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
+          <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
+          <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
+          <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
+        </usercarddavweb>
+
+        <!-- ===============================================================
                           Public CardDAV server pubcarddav
              =============================================================== -->
         <pubcarddav classname="org.bedework.carddav.util.CardDAVConfig" >
