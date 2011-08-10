@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <!-- The connector "exdemo" will load the following config - 
+       the suffix "ExchangeConfig" is appended to the connector id -->
+  <bean id="exdemoExchangeConfig" 
+        class="org.bedework.synch.cnctrs.exchange.ExchangeConnectorConfig">
+
+    <!-- location of the WSDL - modified to include server element 
+         This corresponds to the wsdl deploy location defined in the
+         build properties file.
+    -->
+    <property name="exchangeWSDLURI"
+              value="http://localhost:8080/wsdls/exchange/Services.wsdl" />
+              <!-- 
+    <property name="props">
+      <props>
+        <prop key="x1">y1</prop>
+        <prop key="x2">y2</prop>
+      </props>
+    </property>
+     -->
+  </bean>
+  
+  <!-- The connector "bwdemo" will load the following config - 
+       the suffix "BedeworkConfig" is appended to the connector id -->
+  <bean id="bwdemoBedeworkConfig" 
+        class="org.bedework.synch.cnctrs.bedework.BedeworkConnectorConfig">
+
+    <!-- location of the WSDL for the remote web service 
+         This corresponds to the wsdl deploy location defined in the
+         build properties file.
+    -->
+    <property name="bwWSDLURI"
+              value="http://localhost:8080/wsdls/synch/wssvc.wsdl" />
+              
+    <!-- seconds  --> 
+    <property name="keepAliveInterval"
+              value="60" />
+  </bean>
+</beans>
