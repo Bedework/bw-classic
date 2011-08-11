@@ -796,7 +796,7 @@
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
 
-          <!-- The bedework end of the exchange synch service. This is a web
+          <!-- The bedework end of the synch service. This is a web
                service called by the synch engine to get information out of
                bedework and to update events and status.
                
@@ -805,9 +805,9 @@
                Coming up on a separate port might help to lock it down.
                Comment out or delete for no exchange synch service 
                
-               NOTE: tthe value below is defined in the build properties 
+               NOTE: the value below is defined in the build properties 
                -->
-          <exsynchWsURI>@exsynchWsURI@</exsynchWsURI>
+          <synchWsURI>@synchWsURI@</synchWsURI>
         </Pubcaldav>
 
         <!-- ==================================================================
@@ -915,36 +915,6 @@
           <guestMode>true</guestMode>
           <debugEntity>false</debugEntity>
         </iosched>
-
-        <!-- ==================================================================
-                          Exchange synch
-             ================================================================== -->
-        <Exsynch classname="org.bedework.exchgsynch.ExsynchConfig">
-          <appType>exsynch</appType>
-
-          <!-- location of the WSDL - modified to include server element 
-               This corresponds to the wsdl deploy location defined in the
-               build properties file.
-          -->
-          <exchangeWSDLURI>http://localhost:8080/wsdls/exchange/Services.wsdl</exchangeWSDLURI>
-
-          <!-- location of the WSDL for the remote web service 
-               This corresponds to the wsdl deploy location defined in the
-               build properties file.
-          -->
-          <remoteWSDLURI>http://localhost:8080/wsdls/exsynch/wssvc.wsdl</remoteWSDLURI>
-
-          <!-- Exchange sync callback. Comment out for no service -->
-          <exchangeWsPushURI>http://128.113.124.225:8080/exsynch/</exchangeWsPushURI>
-
-          <!-- Path to keystore - comment out to use default -->          
-          <keystore>@APPSERVER-DATA-DIR@/exsynchcerts</keystore>
-          
-          <remoteWsURL>http://localhost:8080/pubcaldav/exsynchws/</remoteWsURL>
-          
-          <!-- seconds  --> 
-          <remoteKeepAliveInterval>60</remoteKeepAliveInterval>
-        </Exsynch>
 
         <!-- ===============================================================
                           User CardDAV server usercarddav

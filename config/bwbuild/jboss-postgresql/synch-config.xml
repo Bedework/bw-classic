@@ -3,6 +3,30 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                 http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <!-- =====================================================================
+       Synch engine configuration
+       ===================================================================== -->
+  <bean id="synchConfig" 
+        class="org.bedework.synch.SynchConfig">
+    <!-- callback. Comment out for no service. MUST end in "/" -->
+    <property name="callbackURI"
+              value="http://128.113.124.225:8080/synch/" />
+              
+    <!-- Path to keystore - comment out to use default -->          
+    <property name="keystore"
+              value="@APPSERVER-DATA-DIR@/synchcerts" />
+              
+    <property name="connectors">
+      <map>
+        <entry key="exdemo" 
+               value="org.bedework.synch.cnctrs.exchange.ExchangeConnector" />
+        <entry key="bwdemo" 
+               value="org.bedework.synch.cnctrs.bedework.BedeworkConnector" />
+      </map>
+    </property>
+  </bean>
+
   <!-- The connector "exdemo" will load the following config - 
        the suffix "ExchangeConfig" is appended to the connector id -->
   <bean id="exdemoExchangeConfig" 

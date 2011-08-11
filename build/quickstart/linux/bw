@@ -84,7 +84,7 @@ usage() {
   echo "   Experimental projects: no guarantees"
   echo "     -catsvr      Target is for the Catsvr build"
   echo "     -client      Target is for the bedework client application build"
-  echo "     -exsynch     Target is for the Exchange synch build"
+  echo "     -synch       Target is for the synch build"
   echo "     -naming      Target is for the abstract naming api"
   echo "     The default is a calendar build"
   echo ""
@@ -261,7 +261,7 @@ caldavTest=
 carddav=
 catsvr=
 client=
-exsynch=
+synch=
 monitor=
 naming=
 testsuite=
@@ -398,8 +398,8 @@ do
       pkgdefault=
       shift
       ;;
-    -exsynch)
-      exsynch="yes"
+    -synch)
+      synch="yes"
       pkgdefault=
       shift
       ;;
@@ -497,8 +497,8 @@ if [ "$client" != "" ] ; then
   cd $QUICKSTART_HOME/bwclient
 fi
 
-if [ "$exsynch" != "" ] ; then
-  cd $QUICKSTART_HOME/exchgsynch
+if [ "$synch" != "" ] ; then
+  cd $QUICKSTART_HOME/synch
 fi
 
 if [ "$monitor" != "" ] ; then
