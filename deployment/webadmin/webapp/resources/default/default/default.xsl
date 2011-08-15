@@ -2514,7 +2514,7 @@
           <td>
             <input type="text" name="eventLink" size="80" class="edit">
               <xsl:attribute name="value"><xsl:value-of select="form/link/input/@value"/></xsl:attribute>
-              <xsl:if test="$canEdit = 'false'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+              <!-- xsl:if test="$canEdit = 'false'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if-->
             </input>
             <xsl:text> </xsl:text>
             <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalMoreEventInfo"/></span>
