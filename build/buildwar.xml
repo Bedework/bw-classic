@@ -185,6 +185,17 @@
       <filterset refid="property.filters" />
     </copy>
     
+    <if>
+      <isset property="org.bedework.extra.properties" />
+      <then>
+        <copy todir="${app.dest.properties}">
+          <filelist dir="${org.bedework.config.home}"
+                    files="${org.bedework.extra.properties}"/> 
+          <filterset refid="property.filters" />
+        </copy>
+      </then>
+    </if>
+    
     <copy tofile="${app.dest.classes}/sysevents.properties"
           file="${org.bedework.config.sysevents.properties}" />
 

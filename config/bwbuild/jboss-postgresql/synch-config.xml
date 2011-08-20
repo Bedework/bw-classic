@@ -9,6 +9,16 @@
        ===================================================================== -->
   <bean id="synchConfig" 
         class="org.bedework.synch.SynchConfig">
+    <!-- Size of synchling pool. This effectively limits the number of 
+         concurrent threads processing synch actions  --> 
+    <property name="synchlingPoolSize"
+              value="20" />
+        
+    <!-- timeout in millisecs for synchling pool. Processes waiting for a free  
+         synchling will timeout after this period and fail  --> 
+    <property name="synchlingPoolTimeout"
+              value="5000" />
+        
     <!-- callback. Comment out for no service. MUST end in "/" -->
     <property name="callbackURI"
               value="http://128.113.124.225:8080/synch/" />
@@ -19,8 +29,17 @@
               
     <property name="connectors">
       <map>
+        <!-- manager is a special connector which provides a way of
+             communicating with the synch engine. There must always be
+             one, and only one, of this class. -->
+        <entry key="manager" 
+               value="org.bedework.synch.SynchConnector" />
+
+        <!-- An exchange connector -->               
         <entry key="exdemo" 
                value="org.bedework.synch.cnctrs.exchange.ExchangeConnector" />
+
+        <!-- A bedework connector -->               
         <entry key="bwdemo" 
                value="org.bedework.synch.cnctrs.bedework.BedeworkConnector" />
       </map>
