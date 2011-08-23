@@ -23,9 +23,15 @@
     <property name="callbackURI"
               value="http://128.113.124.225:8080/synch/" />
               
-    <!-- Path to keystore - comment out to use default -->          
+    <!-- Path to keystore - comment out to use default. Used for ssl etc. -->          
     <property name="keystore"
               value="@APPSERVER-DATA-DIR@/synchcerts" />
+
+    <!-- Public/private key locations -->
+    <property name="privKeys"
+              value="@DATA_DIR@/privkeys" />
+    <property name="pubKeys"
+              value="@DATA_DIR@/pubkeys" />
               
     <property name="connectors">
       <map>
@@ -42,6 +48,10 @@
         <!-- A bedework connector -->               
         <entry key="bwdemo" 
                value="org.bedework.synch.cnctrs.bedework.BedeworkConnector" />
+
+        <!-- A file connector -->               
+        <entry key="read-only-file" 
+               value="org.bedework.synch.cnctrs.file.FileConnector" />
       </map>
     </property>
   </bean>
@@ -82,5 +92,15 @@
     <!-- seconds  --> 
     <property name="keepAliveInterval"
               value="60" />
+  </bean>
+  
+  <!-- The connector "file" will load the following config - 
+       the suffix "FileConfig" is appended to the connector id -->
+  <bean id="read-only-fileFileConfig" 
+        class="org.bedework.synch.cnctrs.file.FileConnectorConfig">
+    <property name="readOnly" value="true" />
+
+    <!-- seconds  --> 
+    <property name="minPoll" value="15" />
   </bean>
 </beans>
