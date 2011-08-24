@@ -803,11 +803,11 @@
                This path should probably be restricted to a given host only.
                
                Coming up on a separate port might help to lock it down.
-               Comment out or delete for no exchange synch service 
+               Comment out or delete for no synch service 
                
                NOTE: the value below is defined in the build properties 
                -->
-          <synchWsURI>@synchWsURI@</synchWsURI>
+          <synchWsURI>/synchws/</synchWsURI>
         </Pubcaldav>
 
         <!-- ==================================================================

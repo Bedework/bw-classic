@@ -47,7 +47,7 @@
   <broker xmlns="http://activemq.apache.org/schema/core"
           brokerName="bedework" useJmx="true" useShutdownHook="false" >
     <!--
-      MikeD Queues for various bedework services. These are all fed by
+      MikeD Queues for various bedework services. These are mostly fed by
       the virtual queue bedework.sysevents
     -->
     <destinations>

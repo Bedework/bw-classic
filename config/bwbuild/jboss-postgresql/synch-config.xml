@@ -89,7 +89,11 @@
     <property name="bwWSDLURI"
               value="http://localhost:8080/wsdls/synch/wssvc.wsdl" />
               
-    <!-- seconds  --> 
+    <!-- seconds before retry on failure  --> 
+    <property name="retryInterval"
+              value="10" />
+              
+    <!-- seconds before we ping just to say we're still around --> 
     <property name="keepAliveInterval"
               value="60" />
   </bean>
