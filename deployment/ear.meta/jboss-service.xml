@@ -31,6 +31,10 @@
     <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
   </mbean>
   
+  <mbean code="org.bedework.caldav.server.soap.synch.SynchConnections"
+         name="org.bedework:service=SynchConnections">
+  </mbean>
+  
   <mbean code="org.bedework.dumprestore.BwDumpRestore"
          name="org.bedework:service=DumpRestore">
     <attribute name="Account">admin</attribute>
