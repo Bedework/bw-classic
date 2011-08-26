@@ -20,7 +20,7 @@ ant_loglevel="-quiet"
 bw_loglevel=""
 
 # Projects we need to update
-updateProjects="bwxml bedework bedework-carddav bwtzsvr cachedfeeder"
+updateProjects="bwxml rpiutil access bedework bedework-carddav bwtzsvr cachedfeeder"
 
 echo ""
 echo "  Bedework Calendar System"
@@ -71,10 +71,12 @@ usage() {
   echo "           the core, ancillary or experimental targets below:"
   echo ""
   echo "   Core projects: required for a functioning system"
+  echo "     -access      Target is for the access classes"
   echo "     -bwxml       Target is for the Bedework XML schemas build"
   echo "                       (usually built automatically be dependent projects"
   echo "     -carddav     Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
+  echo "     -rpiutil     Target is for the Bedework util classes"
   echo "     -tzsvr       Target is for the timezones server build"
   echo "   Ancillary projects: not required"
   echo "     -bwtools     Target is for the Bedework tools build"
@@ -253,6 +255,7 @@ quickstart=
 
 # Projects we will build
 pkgdefault=yes
+access=
 bedework=
 bwxml=
 bwtools=
@@ -261,9 +264,10 @@ caldavTest=
 carddav=
 catsvr=
 client=
-synch=
 monitor=
 naming=
+rpiutil=
+synch=
 testsuite=
 tzsvr=
 webdav=
@@ -363,6 +367,11 @@ do
       shift
       ;;
 # ------------------------Projects
+    -access)
+      access="yes"
+      pkgdefault=
+      shift
+      ;;
     -bwtools)
       bwtools="yes"
       pkgdefault=
@@ -398,16 +407,6 @@ do
       pkgdefault=
       shift
       ;;
-    -synch)
-      synch="yes"
-      pkgdefault=
-      shift
-      ;;
-    -webdav)
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
     -monitor)
       monitor="yes"
       pkgdefault=
@@ -418,6 +417,16 @@ do
       pkgdefault=
       shift
       ;;
+    -rpiutil)
+      rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -synch)
+      synch="yes"
+      pkgdefault=
+      shift
+      ;;
     -testsuite)
       testsuite="yes"
       pkgdefault=
@@ -425,6 +434,11 @@ do
       ;;
     -tzsvr)
       tzsvr="yes"
+      pkgdefault=
+      shift
+      ;;
+    -webdav)
+      webdav="yes"
       pkgdefault=
       shift
       ;;
@@ -469,6 +483,10 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
+if [ "$access" != "" ] ; then
+  cd $QUICKSTART_HOME/access
+fi
+
 if [ "$bwxml" != "" ] ; then
   cd $QUICKSTART_HOME/bwxml
 fi
@@ -497,16 +515,20 @@ if [ "$client" != "" ] ; then
   cd $QUICKSTART_HOME/bwclient
 fi
 
-if [ "$synch" != "" ] ; then
-  cd $QUICKSTART_HOME/synch
-fi
-
 if [ "$monitor" != "" ] ; then
   cd $QUICKSTART_HOME/MonitorApp
 fi
 
 if [ "$naming" != "" ] ; then
   cd $QUICKSTART_HOME/bwnaming
+fi
+
+if [ "$rpiutil" != "" ] ; then
+  cd $QUICKSTART_HOME/rpiutil
+fi
+
+if [ "$synch" != "" ] ; then
+  cd $QUICKSTART_HOME/synch
 fi
 
 if [ "$testsuite" != "" ] ; then
