@@ -98,7 +98,7 @@
               value="60" />
   </bean>
   
-  <!-- The connector "file" will load the following config - 
+  <!-- The connector "read-only-file" will load the following config - 
        the suffix "FileConfig" is appended to the connector id -->
   <bean id="read-only-fileFileConfig" 
         class="org.bedework.synch.cnctrs.file.FileConnectorConfig">

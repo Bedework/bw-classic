@@ -116,8 +116,20 @@
     <filter token="calSoapWsURI"
             value="${org.bedework.calws-soap.uri}" />
 
-    <filter token="exsynchWsURI"
-            value="${org.bedework.exsynch.uri}" />
+    <filter token="synchWsURI"
+            value="${org.bedework.synch.uri}" />
+
+    <filter token="synchService"
+            value="${org.bedework.synch.service}" />
+
+    <filter token="synchServiceManager"
+            value="${org.bedework.synch.service.manager}" />
+
+    <filter token="SYNCH_WSDL_DIR"
+            value="${org.bedework.synch.wsdl.deploy.dir}" />
+
+    <filter token="synchWsdlURI"
+            value="${org.bedework.synch.wsdl.uri}" />
   </filterset>
 
   <target name="dummy">

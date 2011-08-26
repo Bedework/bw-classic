@@ -58,6 +58,9 @@
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </systemRoots>
+        
+        <synchWsdlUri>@synchWsdlURI@</synchWsdlUri>
+        <synchManagerUri>@synchServiceManager@</synchManagerUri>
 
         <!-- To enable mapping of calendar addresses e.g. mailto:fred@example.org
              on to principals we need to either do a directory lookup or have
@@ -804,8 +807,6 @@
                
                Coming up on a separate port might help to lock it down.
                Comment out or delete for no synch service 
-               
-               NOTE: the value below is defined in the build properties 
                -->
           <synchWsURI>/synchws/</synchWsURI>
         </Pubcaldav>
