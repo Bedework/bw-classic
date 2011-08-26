@@ -211,13 +211,27 @@
            target="deploy" inheritRefs="true" />
     </sequential>
   </macrodef>
+
+  <!-- =================================================================
+       Builds and cleans for projects we might depend on. Add these targets 
+       as dependencies
+       ================================================================= -->
   
-  <!-- Standard targets for build files. Two targets need to be overridden by 
-       the importing task
+  <target name="build.bwxml">
+    <execProject project="bwxml" target="build" />
+  </target>
+  
+  <target name="clean.bwxml">
+    <execProject project="bwxml" target="clean" />
+  </target>
+  
+  <!-- =================================================================
+       Standard targets for build files. Two targets (at least) need to be 
+       overridden by the importing task
        
        init - carry out project specific initialisation
        build-source - builds the source to creat ejars.
-    -->
+       =================================================================-->
   
   <!-- Override this -->
   <target name="init" />
