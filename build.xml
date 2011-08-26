@@ -22,9 +22,6 @@
   <property name="org.bedework.projects"
             location="${org.bedework.project.bedework}/projects" />
 
-  <property name="org.bedework.project.access"
-            location="${org.bedework.projects}/access" />
-
   <property name="org.bedework.project.caldav"
             location="${org.bedework.projects}/caldav" />
 
@@ -34,17 +31,11 @@
   <property name="org.bedework.project.calendarapi"
             location="${org.bedework.projects}/calendarapi" />
 
-  <property name="org.bedework.project.davutil"
-            location="${org.bedework.projects}/davutil" />
-
   <property name="org.bedework.project.dumprestore"
             location="${org.bedework.projects}/dumprestore" />
 
   <property name="org.bedework.project.indexer"
             location="${org.bedework.projects}/indexer" />
-
-  <property name="org.bedework.project.rpiutil"
-            location="${org.bedework.projects}/rpiutil" />
 
   <property name="org.bedework.project.webapps"
             location="${org.bedework.projects}/webapps" />
@@ -184,8 +175,7 @@
        "build" and "clean" targets for the project
        ================================================================= -->
 
-  <target name="build" depends="init.build,build.deployutil,build.rpiutil,
-                                build.access,build.davutil,
+  <target name="build" depends="init.build,build.deployutil,
                                 build.webdav,build.caldav,
                                 build.calendarapi,
                                 build.caldavimpl,
@@ -202,8 +192,7 @@
     <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
   </target>
 
-  <target name="clean" depends="init,clean.rpiutil,
-                                clean.access,clean.davutil,
+  <target name="clean" depends="init,
                                 clean.calendarapi,
                                 clean.webdav,clean.caldav,
                                 clean.caldavimpl,
@@ -214,8 +203,7 @@
     <delete dir="${bin.home}" />
   </target>
 
-  <target name="quickstart-clean" depends="init,clean.rpiutil,
-                                           clean.access,clean.davutil,
+  <target name="quickstart-clean" depends="init,
                                            clean.calendarapi,
                                            clean.webdav,clean.caldav,
                                            clean.caldavimpl,
@@ -299,24 +287,6 @@
     <delete dir="${org.bedework.projectdocs.home}" />
     <mkdir dir="${org.bedework.projectdocs.home}" />
 
-    <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/rpiutil/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/access/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/davutil/api" />
-    </ant>
-
     <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
          target="javadoc" >
       <property name="destdir"
@@ -363,27 +333,6 @@
   <!-- =================================================================
        Targets to build sub-projects.
        ================================================================= -->
-
-  <!-- .................................................................
-                          access
-       .................................................................. -->
-  <target name="build.access" depends="init"
-          description="builds the access project">
-    <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
-           target="build-all" >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.access" depends="init"
-          description="cleans the access project">
-    <ant antfile="${org.bedework.project.access}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.access" depends="clean.access,build.access"
-          description="builds the access project"/>
 
   <!-- .................................................................
                           caldav
@@ -449,27 +398,6 @@
           description="clean builds the calendarapi project"/>
 
   <!-- .................................................................
-                          davutil
-       .................................................................. -->
-  <target name="build.davutil" depends="init"
-          description="builds the davutil project">
-    <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
-           target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.davutil" depends="init"
-          description="cleans the davutil project">
-    <ant antfile="${org.bedework.project.davutil}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.davutil" depends="clean.davutil,build.davutil"
-          description="clean builds the davutil project"/>
-
-  <!-- .................................................................
                           dumprestore
        .................................................................. -->
   <target name="build.dumprestore" depends="init"
@@ -510,27 +438,6 @@
 
   <target name="clean.build.indexer" depends="clean.indexer,build.indexer"
           description="builds the indexer project"/>
-
-  <!-- .................................................................
-                          rpiutil
-       .................................................................. -->
-  <target name="build.rpiutil" depends="init"
-          description="builds the rpiutil project">
-    <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
-           target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.rpiutil" depends="init"
-          description="cleans the rpiutil project">
-    <ant antfile="${org.bedework.project.rpiutil}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.rpiutil" depends="clean.rpiutil,build.rpiutil"
-          description="builds the rpiutil project"/>
 
   <!-- .................................................................
                           webapps

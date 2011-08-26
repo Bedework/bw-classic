@@ -18,7 +18,7 @@
               libcache="${org.bedework.libcache.dir}"
               name="rpiaccess" 
               version="${org.bedework.access.version}" project="access"
-              projecthome="${bw.project.home}/projects/access" />
+              projecthome="${bw.project.home}/../access" />
 
     </sequential>
  </macrodef>

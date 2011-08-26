@@ -131,7 +131,7 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-davio" version="${org.bedework.davutil.version}" 
-              projecthome="${bw.project.home}/projects/davutil" />
+              projecthome="${bw.project.home}/../davutil" />
 
       <!-- =================== Bedework indexer jars ======================= -->
 
@@ -176,12 +176,12 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="rpiaccess" version="${org.bedework.access.version}" 
-              projecthome="${bw.project.home}/projects/access" />
+              projecthome="${bw.project.home}/../access" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="rpiutil" version="${org.bedework.rpiutil.version}" 
-              projecthome="${bw.project.home}/projects/rpiutil" />
+              projecthome="${bw.project.home}/../rpiutil" />
       
       <!-- ======================= Ical4j jars ============================ -->
 

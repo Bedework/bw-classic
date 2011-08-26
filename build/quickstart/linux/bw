@@ -20,7 +20,7 @@ ant_loglevel="-quiet"
 bw_loglevel=""
 
 # Projects we need to update
-updateProjects="bwxml rpiutil access bedework bedework-carddav bwtzsvr cachedfeeder"
+updateProjects="bwxml rpiutil access davutil bedework bedework-carddav bwtzsvr cachedfeeder"
 
 echo ""
 echo "  Bedework Calendar System"
@@ -76,6 +76,7 @@ usage() {
   echo "                       (usually built automatically be dependent projects"
   echo "     -carddav     Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
+  echo "     -davutil     Target is for the Bedework dav util classes"
   echo "     -rpiutil     Target is for the Bedework util classes"
   echo "     -tzsvr       Target is for the timezones server build"
   echo "   Ancillary projects: not required"
@@ -264,6 +265,7 @@ caldavTest=
 carddav=
 catsvr=
 client=
+davutil=
 monitor=
 naming=
 rpiutil=
@@ -407,6 +409,11 @@ do
       pkgdefault=
       shift
       ;;
+    -davutil)
+      davutil="yes"
+      pkgdefault=
+      shift
+      ;;
     -monitor)
       monitor="yes"
       pkgdefault=
@@ -513,6 +520,10 @@ fi
 
 if [ "$client" != "" ] ; then
   cd $QUICKSTART_HOME/bwclient
+fi
+
+if [ "$davutil" != "" ] ; then
+  cd $QUICKSTART_HOME/davutil
 fi
 
 if [ "$monitor" != "" ] ; then
