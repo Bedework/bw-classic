@@ -82,39 +82,25 @@ copyproject() {
   if [ "${1}" = "buildTools" ]
   then
     echo "build/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "bwtzsvr" ]
+  elif [ "${1}" = "caldav" ]
   then
-#      Not linked
-    echo ""
-  elif [ "${1}" = "bwxml" ]
+    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "caldavimpl" ]
   then
-#      Not linked
-    echo ""
-  elif [ "${1}" = "cachedfeeder" ]
+    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "calendarapi" ]
   then
-#      Not linked
-    echo ""
-  elif [ "${1}" = "carddav" ]
+    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "dumprestore" ]
   then
-#      Not linked
-    echo ""
-  elif [ "${1}" = "clientapp" ]
+    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "indexer" ]
   then
-#      Not linked
-    echo ""
-  elif [ "${1}" = "excgsynch" ]
+    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "webapps" ]
   then
-#      Not linked
-    echo ""
-  elif [ "${1}" = "monitor" ]
-  then
-#      Not linked
-    echo ""
-  elif [ "${1}" = "naming" ]
-  then
-#      Not linked
-    echo ""
-  elif [ "${1}" != "bedework" ]
+    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
+  elif [ "${1}" = "webdav" ]
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   fi
@@ -155,7 +141,7 @@ PROJECTS="$PROJECTS clientapp"
 PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
-# PROJECTS="$PROJECTS exchgsynch"
+# PROJECTS="$PROJECTS synch"
 PROJECTS="$PROJECTS indexer"
 PROJECTS="$PROJECTS monitor"
 PROJECTS="$PROJECTS naming"

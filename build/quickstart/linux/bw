@@ -258,8 +258,8 @@ quickstart=
 pkgdefault=yes
 access=
 bedework=
-bwxml=
 bwtools=
+bwxml=
 caldav=
 caldavTest=
 carddav=
@@ -494,12 +494,12 @@ if [ "$access" != "" ] ; then
   cd $QUICKSTART_HOME/access
 fi
 
-if [ "$bwxml" != "" ] ; then
-  cd $QUICKSTART_HOME/bwxml
-fi
-
 if [ "$bwtools" != "" ] ; then
   cd $QUICKSTART_HOME/bwtools
+fi
+
+if [ "$bwxml" != "" ] ; then
+  cd $QUICKSTART_HOME/bwxml
 fi
 
 if [ "$caldav" != "" ] ; then

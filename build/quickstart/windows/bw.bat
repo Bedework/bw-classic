@@ -35,17 +35,23 @@ SET ant_loglevel="-quiet"
 SET bw_loglevel=
 
 :: Projects we need to update
-SET updateProjects="bwxml bedework bedework-carddav bwtzsvr cachedfeeder"
+SET updateProjects="bwxml rpiutil access davutil bedework bedework-carddav bwtzsvr cachedfeeder"
 
 :: Projects we will build
 SET pkgdefault=yes
+SET access=
 SET bedework=
+SET bwtools=
 SET bwxml=
-SET carddav=
 SET caldav=
+SET caldavTest=
+SET carddav=
 SET client=
+SET davutil=
 SET monitor=
 SET naming=
+SET rpiutil=
+SET synch=
 SET tzsvr=
 SET webdav=
 
@@ -119,14 +125,20 @@ GOTO branch
       
 :: ----------------------- PROJECTS
 
-:bwxml
-  SET bwxml="yes"
+:access
+  SET access="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
   
-:carddav
-  SET carddav="yes"
+:bwtools
+  SET bwtools="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwxml
+  SET bwxml="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -137,14 +149,26 @@ GOTO branch
   SHIFT
   GOTO branch
   
+:caldavTest
+  SET caldavTest="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:carddav
+  SET carddav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
 :client
   SET client="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
   
-:webdav
-  SET webdav="yes"
+:davutil
+  SET davutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -161,8 +185,32 @@ GOTO branch
   SHIFT
   GOTO branch
   
+:rpiutil
+  SET rpiutil="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:synch
+  SET synch="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:testsuite
+  SET testsuite="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
 :tzsvr
   SET tzsvr="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:webdav
+  SET webdav="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -252,12 +300,19 @@ GOTO doneQB
   ECHO     BWCONFIGS = %BWCONFIGS%
   ECHO     BWCONFIG = %BWCONFIG%
 
+  IF NOT "%access%empty" == "empty"  cd %QUICKSTART_HOME%\access
+  IF NOT "%bwtools%empty" == "empty"  cd %QUICKSTART_HOME%\bwtools
   IF NOT "%bwxml%empty" == "empty"  cd %QUICKSTART_HOME%\bwxml
   IF NOT "%caldav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\caldav
+  IF NOT "%caldavTest%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\caldavTest
   IF NOT "%carddav%empty" == "empty" cd %QUICKSTART_HOME%\bedework-carddav
   IF NOT "%client%empty" == "empty"  cd %QUICKSTART_HOME%\bwclient
+  IF NOT "%davutil%empty" == "empty"  cd %QUICKSTART_HOME%\davutil
   IF NOT "%monitor%empty" == "empty" cd %QUICKSTART_HOME%\MonitorApp
   IF NOT "%naming%empty" == "empty"  cd %QUICKSTART_HOME%\bwnaming
+  IF NOT "%rpiutil%empty" == "empty"  cd %QUICKSTART_HOME%\rpiutil
+  IF NOT "%synch%empty" == "empty"  cd %QUICKSTART_HOME%\synch
+  IF NOT "%testsuite%empty" == "empty"  cd %QUICKSTART_HOME%\testsuite
   IF NOT "%tzsvr%empty" == "empty"   cd %QUICKSTART_HOME%\bwtzsvr
   IF NOT "%webdav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\webdav
 
@@ -291,14 +346,21 @@ IF "%1" == "-log-verbose" GOTO log-verbose
 IF "%1" == "-ant-debug" GOTO ant-debug
 IF "%1" == "-build-debug" GOTO build-debug
 
+IF "%1" == "-access" GOTO access 
+IF "%1" == "-bwtools" GOTO bwtools 
 IF "%1" == "-bwxml" GOTO bwxml 
-IF "%1" == "-carddav" GOTO carddav 
 IF "%1" == "-caldav" GOTO caldav
+IF "%1" == "-caldavTest" GOTO caldavTest
+IF "%1" == "-carddav" GOTO carddav 
 IF "%1" == "-client" GOTO client
-IF "%1" == "-webdav" GOTO webdav
+IF "%1" == "-davutil" GOTO davutil
 IF "%1" == "-monitor" GOTO monitor
 IF "%1" == "-naming" GOTO naming
+IF "%1" == "-rpiutil" GOTO rpiutil
+IF "%1" == "-synch" GOTO synch
+IF "%1" == "-testsuite" GOTO testsuite
 IF "%1" == "-tzsvr" GOTO tzsvr
+IF "%1" == "-webdav" GOTO webdav
 GOTO doneWithArgs
 
 :usage
@@ -337,10 +399,13 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO            the core, ancillary or experimental targets below:
   ECHO.
   ECHO   Core projects: required for a functioning system
+  ECHO      -access      Target is for the access classes
   ECHO      -bwxml       Target is for the Bedework XML schemas build
   ECHO                       (usually built automatically be dependent projects
   ECHO      -carddav     Target is for the CardDAV build
   ECHO      -carddav deploy-addrbook    To deploy the Javascript Addressbook client.
+  ECHO      -davutil     Target is for the Bedework dav util classes
+  ECHO      -rpiutil     Target is for the Bedework util classes
   ECHO      -tzsvr       Target is for the timezones server build
   ECHO   Ancillary projects: not required
   ECHO      -monitor     Target is for the bedework monitor application
