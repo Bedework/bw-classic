@@ -20,7 +20,7 @@ ant_loglevel="-quiet"
 bw_loglevel=""
 
 # Projects we need to update
-updateProjects="bwxml rpiutil access davutil bedework bedework-carddav bwtzsvr cachedfeeder"
+updateProjects="bwxml rpiutil access davutil webdav caldav bedework bedework-carddav bwtzsvr cachedfeeder"
 
 echo ""
 echo "  Bedework Calendar System"
@@ -74,11 +74,13 @@ usage() {
   echo "     -access      Target is for the access classes"
   echo "     -bwxml       Target is for the Bedework XML schemas build"
   echo "                       (usually built automatically be dependent projects"
+  echo "     -caldav      Target is for the CalDAV build"
   echo "     -carddav     Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
   echo "     -davutil     Target is for the Bedework dav util classes"
   echo "     -rpiutil     Target is for the Bedework util classes"
   echo "     -tzsvr       Target is for the timezones server build"
+  echo "     -webdav      Target is for the WebDAV build"
   echo "   Ancillary projects: not required"
   echo "     -bwtools     Target is for the Bedework tools build"
   echo "     -caldavTest  Target is for the CalDAV Test build"
@@ -503,7 +505,7 @@ if [ "$bwxml" != "" ] ; then
 fi
 
 if [ "$caldav" != "" ] ; then
-  cd $QUICKSTART_HOME/bedework/projects/caldav
+  cd $QUICKSTART_HOME/caldav
 fi
 
 if [ "$caldavTest" != "" ] ; then
@@ -551,7 +553,7 @@ if [ "$tzsvr" != "" ] ; then
 fi
 
 if [ "$webdav" != "" ] ; then
-  cd $QUICKSTART_HOME/bedework/projects/webdav
+  cd $QUICKSTART_HOME/webdav
 fi
 
 $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel $*

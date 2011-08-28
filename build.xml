@@ -22,9 +22,6 @@
   <property name="org.bedework.projects"
             location="${org.bedework.project.bedework}/projects" />
 
-  <property name="org.bedework.project.caldav"
-            location="${org.bedework.projects}/caldav" />
-
   <property name="org.bedework.project.caldavimpl"
             location="${org.bedework.projects}/caldavimpl" />
 
@@ -39,9 +36,6 @@
 
   <property name="org.bedework.project.webapps"
             location="${org.bedework.projects}/webapps" />
-
-  <property name="org.bedework.project.webdav"
-            location="${org.bedework.projects}/webdav" />
 
   <property name="build.dir" location="${org.bedework.project.bedework}/build"/>
   
@@ -108,12 +102,6 @@
     <property name="lib.dir" location="${bw.project.home}/lib"/>
     <property name="resources.dir" location="${bw.project.home}/resources"/>
     <property name="bin.home" location="${bw.project.home}/bin"/>
-    
-    <property name="org.bedework.build.caldav" value="yes" />
-
-    <condition property="org.bedework.qs.build.caldav">
-      <equals arg1="yes" arg2="${org.bedework.build.caldav}"/>
-    </condition>
 
     <mkdir dir="${dist.home}" />
 
@@ -176,7 +164,6 @@
        ================================================================= -->
 
   <target name="build" depends="init.build,build.deployutil,
-                                build.webdav,build.caldav,
                                 build.calendarapi,
                                 build.caldavimpl,
                                 build.webapps,build.indexer,
@@ -194,7 +181,6 @@
 
   <target name="clean" depends="init,
                                 clean.calendarapi,
-                                clean.webdav,clean.caldav,
                                 clean.caldavimpl,
                                 clean.webapps,clean.indexer,
                               	clean.dumprestore"
@@ -205,7 +191,6 @@
 
   <target name="quickstart-clean" depends="init,
                                            clean.calendarapi,
-                                           clean.webdav,clean.caldav,
                                            clean.caldavimpl,
                                            clean.webapps,clean.indexer,
   	                                       clean.dumprestore"
@@ -299,18 +284,6 @@
                 location="${org.bedework.projectdocs.home}/dumprestore/api" />
     </ant>
 
-    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/webdav/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/caldav/api" />
-    </ant>
-
     <ant antfile="${org.bedework.project.caldavimpl}/build.xml" inheritall="false"
          target="javadoc" >
       <property name="destdir"
@@ -335,27 +308,6 @@
        ================================================================= -->
 
   <!-- .................................................................
-                          caldav
-       .................................................................. -->
-  <target name="build.caldav" depends="init"
-          description="builds the caldav project">
-    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-       target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.caldav" depends="init"
-          description="clean the caldav project">
-    <ant antfile="${org.bedework.project.caldav}/build.xml" inheritall="false"
-         target="deep-clean" />
-  </target>
-
-  <target name="clean.build.caldav" depends="clean.caldav,build.caldav"
-          description="clean builds the caldav project"/>
-
-  <!-- .................................................................
                           caldavimpl
        .................................................................. -->
   <target name="build.caldavimpl" depends="init"
@@ -373,7 +325,7 @@
          target="deep-clean" />
   </target>
 
-  <target name="clean.build.caldavimpl" depends="clean.caldav,build.caldav"
+  <target name="clean.build.caldavimpl" depends="init"
           description="clean builds the caldavimpl project"/>
 
   <!-- .................................................................
@@ -459,27 +411,6 @@
 
   <target name="clean.build.webapps" depends="clean.webapps,build.webapps"
           description="builds the webapps project"/>
-
-  <!-- .................................................................
-                          webdav
-       .................................................................. -->
-  <target name="build.webdav" depends="init"
-          description="builds the webdav project">
-    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-         target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.webdav" depends="init"
-          description="cleans the webdav project">
-    <ant antfile="${org.bedework.project.webdav}/build.xml" inheritall="false"
-         target="deep-clean" />
-  </target>
-
-  <target name="clean.build.webdav" depends="clean.webdav,build.webdav"
-          description="builds the webdav project"/>
 
   <!-- =================================================================
        Targets to build sub-components of this project.
