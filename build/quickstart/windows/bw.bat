@@ -355,7 +355,7 @@ GOTO doneQB
   IF NOT "%webdav%empty" == "empty"  GOTO cdWebdav
   IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
   IF NOT "%caldavTest%empty" == "empty"  GOTO cdCaldavTest
-  IF NOT "%carddav%empty" == "empty" 
+  IF NOT "%carddav%empty" == "empty" GOTO cdCarddav
   IF NOT "%bedework%empty" == "empty" GOTO cdBedework
   IF NOT "%client%empty" == "empty"  GOTO cdBwclient
   IF NOT "%monitor%empty" == "empty" GOTO cdMonitor
@@ -364,89 +364,9 @@ GOTO doneQB
   IF NOT "%testsuite%empty" == "empty"  GOTO cdTestsuite
   IF NOT "%bwtools%empty" == "empty"  GOTO cdBwtools
   IF NOT "%tzsvr%empty" == "empty"   GOTO cdTzsvr
-    
-:cdAccess
-  cd %QUICKSTART_HOME%\access
-  SET access=""
-  GOTO doant
   
-:cdBedework
-  cd %QUICKSTART_HOME%
-  SET bedework=""
-  GOTO doant
-  
-:cdBwxml
-  cd %QUICKSTART_HOME%\bwxml
-  SET bwxml=""
-  GOTO doant
+GOTO:EOF
     
-:cdCaldav
-  cd %QUICKSTART_HOME%\caldav
-  SET caldav=""
-  GOTO doant
-    
-:cdCaldavTest
-  cd %QUICKSTART_HOME%\caldavTest
-  SET caldavTest=""
-  GOTO doant
-    
-:cdCarddav
-  cd %QUICKSTART_HOME%\bedework-carddav
-  SET carddav=""
-  GOTO doant
-    
-:cdClient
-  cd %QUICKSTART_HOME%\client
-  SET client=""
-  GOTO doant
-    
-:cdDavutil
-  cd %QUICKSTART_HOME%\davutil
-  SET davutil=""
-  GOTO doant
-    
-:cdMonitor
-  cd %QUICKSTART_HOME%\MonitorApp
-  SET monitor=""
-  GOTO doant
-    
-:cdNaming
-  cd %QUICKSTART_HOME%\naming
-  SET naming=""
-  GOTO doant
-    
-:cdRpiutil
-  cd %QUICKSTART_HOME%\rpiutil
-  SET rpiutil=""
-  GOTO doant
-    
-:cdSynch
-  cd %QUICKSTART_HOME%\synch
-  SET synch=""
-  GOTO doant
-    
-:cdTestsuite
-  cd %QUICKSTART_HOME%\testsuite
-  SET testsuite=""
-  GOTO doant
-    
-:cdTzsvr
-  cd %QUICKSTART_HOME%\bwtzsvr
-  SET tzsvr=""
-  GOTO doant
-    
-:cdBwtools
-  cd %QUICKSTART_HOME%\bwtools
-  SET bwtools=""
-  GOTO doant
-    
-:cdWebdav
-  cd %QUICKSTART_HOME%\webdav
-  SET webdav=""
-  GOTO doant
-  
-  GOTO:EOF
-
 :doant
   ECHO     WORKING DIRECTORY = %cd%
   ECHO     COMMAND =  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
@@ -455,7 +375,87 @@ GOTO doneQB
   "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
 
   GOTO runBedework
-
+    
+:cdAccess
+  cd %QUICKSTART_HOME%\access
+  SET access=
+  GOTO doant
+  
+:cdBedework
+  cd %QUICKSTART_HOME%
+  SET bedework=
+  GOTO doant
+  
+:cdBwxml
+  cd %QUICKSTART_HOME%\bwxml
+  SET bwxml=
+  GOTO doant
+    
+:cdCaldav
+  cd %QUICKSTART_HOME%\caldav
+  SET caldav=
+  GOTO doant
+    
+:cdCaldavTest
+  cd %QUICKSTART_HOME%\caldavTest
+  SET caldavTest=
+  GOTO doant
+    
+:cdCarddav
+  cd %QUICKSTART_HOME%\bedework-carddav
+  SET carddav=
+  GOTO doant
+    
+:cdClient
+  cd %QUICKSTART_HOME%\client
+  SET client=
+  GOTO doant
+    
+:cdDavutil
+  cd %QUICKSTART_HOME%\davutil
+  SET davutil=
+  GOTO doant
+    
+:cdMonitor
+  cd %QUICKSTART_HOME%\MonitorApp
+  SET monitor=
+  GOTO doant
+    
+:cdNaming
+  cd %QUICKSTART_HOME%\naming
+  SET naming=
+  GOTO doant
+    
+:cdRpiutil
+  cd %QUICKSTART_HOME%\rpiutil
+  SET rpiutil=
+  GOTO doant
+    
+:cdSynch
+  cd %QUICKSTART_HOME%\synch
+  SET synch=
+  GOTO doant
+    
+:cdTestsuite
+  cd %QUICKSTART_HOME%\testsuite
+  SET testsuite=
+  GOTO doant
+    
+:cdTzsvr
+  cd %QUICKSTART_HOME%\bwtzsvr
+  SET tzsvr=
+  GOTO doant
+    
+:cdBwtools
+  cd %QUICKSTART_HOME%\bwtools
+  SET bwtools=
+  GOTO doant
+    
+:cdWebdav
+  cd %QUICKSTART_HOME%\webdav
+  SET webdav=
+  GOTO doant
+  
 
 :: Iterate over the command line arguments;
 :: DOS Batch labels can't contain hyphens, so convert them

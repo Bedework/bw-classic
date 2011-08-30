@@ -796,18 +796,16 @@
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
 
-          <!-- The bedework end of the exchange synch service. This is a web
+          <!-- The bedework end of the synch service. This is a web
                service called by the synch engine to get information out of
                bedework and to update events and status.
                
                This path should probably be restricted to a given host only.
                
                Coming up on a separate port might help to lock it down.
-               Comment out or delete for no exchange synch service 
-               
-               NOTE: tthe value below is defined in the build properties 
+               Comment out or delete for no synch service 
                -->
-          <exsynchWsURI>@exsynchWsURI@</exsynchWsURI>
+          <synchWsURI>/synchws/</synchWsURI>
         </Pubcaldav>
 
         <!-- ==================================================================
