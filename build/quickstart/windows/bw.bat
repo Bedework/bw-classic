@@ -127,6 +127,9 @@ GOTO branch
 
 :access
   SET access="yes"
+  
+  SET bwxml="yes"
+  SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -145,18 +148,33 @@ GOTO branch
   
 :caldav
   SET caldav="yes"
+
+  SET access="yes"
+  SET bwxml="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
   
 :caldavTest
   SET caldavTest="yes"
+
+  SET access="yes"
+  SET bwxml="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
   
 :carddav
   SET carddav="yes"
+
+  SET access="yes"
+  SET bwxml="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -169,6 +187,9 @@ GOTO branch
   
 :davutil
   SET davutil="yes"
+
+  SET bwxml="yes"
+  SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -187,12 +208,19 @@ GOTO branch
   
 :rpiutil
   SET rpiutil="yes"
+
+  SET bwxml="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
   
 :synch
   SET synch="yes"
+
+  SET access="yes"
+  SET bwxml="yes"
+  SET davutil="yes"
+  SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -205,12 +233,19 @@ GOTO branch
   
 :tzsvr
   SET tzsvr="yes"
+
+  SET bwxml="yes"
+  SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
   
 :webdav
   SET webdav="yes"
+
+  SET access="yes"
+  SET bwxml="yes"
+  SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -253,6 +288,18 @@ GOTO branch
   GOTO:EOF
 
 :doneWithArgs
+
+IF NOT "%pkgdefault%" == "yes" GOTO notdefault
+  SET bedework="yes"
+
+  SET access="yes"
+  SET bwxml="yes"
+  SET caldav="yes"
+  SET davutil="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
+
+:notdefault
 
 IF "%bwc%" == "jboss" GOTO jbossNotice
 
@@ -300,29 +347,114 @@ GOTO doneQB
   ECHO     BWCONFIGS = %BWCONFIGS%
   ECHO     BWCONFIG = %BWCONFIG%
 
-  IF NOT "%access%empty" == "empty"  cd %QUICKSTART_HOME%\access
-  IF NOT "%bwtools%empty" == "empty"  cd %QUICKSTART_HOME%\bwtools
-  IF NOT "%bwxml%empty" == "empty"  cd %QUICKSTART_HOME%\bwxml
-  IF NOT "%caldav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\caldav
-  IF NOT "%caldavTest%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\caldavTest
-  IF NOT "%carddav%empty" == "empty" cd %QUICKSTART_HOME%\bedework-carddav
-  IF NOT "%client%empty" == "empty"  cd %QUICKSTART_HOME%\bwclient
-  IF NOT "%davutil%empty" == "empty"  cd %QUICKSTART_HOME%\davutil
-  IF NOT "%monitor%empty" == "empty" cd %QUICKSTART_HOME%\MonitorApp
-  IF NOT "%naming%empty" == "empty"  cd %QUICKSTART_HOME%\bwnaming
-  IF NOT "%rpiutil%empty" == "empty"  cd %QUICKSTART_HOME%\rpiutil
-  IF NOT "%synch%empty" == "empty"  cd %QUICKSTART_HOME%\synch
-  IF NOT "%testsuite%empty" == "empty"  cd %QUICKSTART_HOME%\testsuite
-  IF NOT "%tzsvr%empty" == "empty"   cd %QUICKSTART_HOME%\bwtzsvr
-  IF NOT "%webdav%empty" == "empty"  cd %QUICKSTART_HOME%\bedework\projects\webdav
+:: This below reflects the dependency ordering
+  IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
+  IF NOT "%rpiutil%empty" == "empty" GOTO cdRpiutil
+  IF NOT "%access%empty" == "empty"  GOTO cdAccess
+  IF NOT "%davutil%empty" == "empty"  GOTO cdDavutil
+  IF NOT "%webdav%empty" == "empty"  GOTO cdWebdav
+  IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
+  IF NOT "%caldavTest%empty" == "empty"  GOTO cdCaldavTest
+  IF NOT "%carddav%empty" == "empty" 
+  IF NOT "%bedework%empty" == "empty" GOTO cdBedework
+  IF NOT "%client%empty" == "empty"  GOTO cdBwclient
+  IF NOT "%monitor%empty" == "empty" GOTO cdMonitor
+  IF NOT "%naming%empty" == "empty"  GOTO cdNaming
+  IF NOT "%synch%empty" == "empty"  GOTO cdSynch
+  IF NOT "%testsuite%empty" == "empty"  GOTO cdTestsuite
+  IF NOT "%bwtools%empty" == "empty"  GOTO cdBwtools
+  IF NOT "%tzsvr%empty" == "empty"   GOTO cdTzsvr
+    
+:cdAccess
+  cd %QUICKSTART_HOME%\access
+  SET access=""
+  GOTO doant
+  
+:cdBedework
+  cd %QUICKSTART_HOME%
+  SET bedework=""
+  GOTO doant
+  
+:cdBwxml
+  cd %QUICKSTART_HOME%\bwxml
+  SET bwxml=""
+  GOTO doant
+    
+:cdCaldav
+  cd %QUICKSTART_HOME%\caldav
+  SET caldav=""
+  GOTO doant
+    
+:cdCaldavTest
+  cd %QUICKSTART_HOME%\caldavTest
+  SET caldavTest=""
+  GOTO doant
+    
+:cdCarddav
+  cd %QUICKSTART_HOME%\bedework-carddav
+  SET carddav=""
+  GOTO doant
+    
+:cdClient
+  cd %QUICKSTART_HOME%\client
+  SET client=""
+  GOTO doant
+    
+:cdDavutil
+  cd %QUICKSTART_HOME%\davutil
+  SET davutil=""
+  GOTO doant
+    
+:cdMonitor
+  cd %QUICKSTART_HOME%\MonitorApp
+  SET monitor=""
+  GOTO doant
+    
+:cdNaming
+  cd %QUICKSTART_HOME%\naming
+  SET naming=""
+  GOTO doant
+    
+:cdRpiutil
+  cd %QUICKSTART_HOME%\rpiutil
+  SET rpiutil=""
+  GOTO doant
+    
+:cdSynch
+  cd %QUICKSTART_HOME%\synch
+  SET synch=""
+  GOTO doant
+    
+:cdTestsuite
+  cd %QUICKSTART_HOME%\testsuite
+  SET testsuite=""
+  GOTO doant
+    
+:cdTzsvr
+  cd %QUICKSTART_HOME%\bwtzsvr
+  SET tzsvr=""
+  GOTO doant
+    
+:cdBwtools
+  cd %QUICKSTART_HOME%\bwtools
+  SET bwtools=""
+  GOTO doant
+    
+:cdWebdav
+  cd %QUICKSTART_HOME%\webdav
+  SET webdav=""
+  GOTO doant
+  
+  GOTO:EOF
 
+:doant
   ECHO     WORKING DIRECTORY = %cd%
   ECHO     COMMAND =  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
   ECHO.
   ECHO.
   "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
 
-  GOTO:EOF
+  GOTO runBedework
 
 
 :: Iterate over the command line arguments;

@@ -82,9 +82,6 @@ copyproject() {
   if [ "${1}" = "buildTools" ]
   then
     echo "build/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "caldav" ]
-  then
-    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   elif [ "${1}" = "caldavimpl" ]
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
@@ -98,9 +95,6 @@ copyproject() {
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   elif [ "${1}" = "webapps" ]
-  then
-    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "webdav" ]
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   fi

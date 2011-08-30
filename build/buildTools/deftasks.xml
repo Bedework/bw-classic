@@ -213,43 +213,6 @@
   </macrodef>
 
   <!-- =================================================================
-       Builds and cleans for projects we might depend on. Add these targets 
-       as dependencies
-       ================================================================= -->
-  
-  <target name="build.access">
-    <execProject project="access" target="build" />
-  </target>
-  
-  <target name="clean.access">
-    <execProject project="access" target="clean" />
-  </target>
-  
-  <target name="build.bwxml">
-    <execProject project="bwxml" target="build" />
-  </target>
-  
-  <target name="clean.bwxml">
-    <execProject project="bwxml" target="clean" />
-  </target>
-  
-  <target name="build.davutil">
-    <execProject project="davutil" target="build" />
-  </target>
-  
-  <target name="clean.davutil">
-    <execProject project="davutil" target="clean" />
-  </target>
-  
-  <target name="build.rpiutil">
-    <execProject project="rpiutil" target="build" />
-  </target>
-  
-  <target name="clean.rpiutil">
-    <execProject project="rpiutil" target="clean" />
-  </target>
-  
-  <!-- =================================================================
        Standard targets for build files. Two targets (at least) need to be 
        overridden by the importing task
        
@@ -265,6 +228,9 @@
 
   <!-- Override this -->
   <target name="build-source" />
+  
+  <!-- Override this -->
+  <target name="deploy" />
 
   <!-- =================================================================
        Clean out all library files from other projects and all generated

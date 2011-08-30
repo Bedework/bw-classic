@@ -65,14 +65,8 @@
     <echo level="info" message="and follow the instructions."/>
     <echo level="info" message=""/>
     <echo level="info" message="To build the calendar do"/>
-    <echo level="info" message="    ant deploy    or "/>
-    <echo level="info" message="    ant deploy.debug "/>
+    <echo level="info" message="    ./bw -quickstart deploy"/>
     <echo level="info" message="which does a build and deploy of all components"/>
-    <echo level="info" message=""/>
-    <echo level="info" message="To rebuild the calendar do"/>
-    <echo level="info" message="    ant clean.deploy    or "/>
-    <echo level="info" message="    ant clean.deploy.debug "/>
-    <echo level="info" message="which does a clean, build and deploy of all components"/>
     <echo level="info" message=""/>
     <echo level="info" message="See documentation in the docs directory or on bedework.org"/>
     <echo level="info" message="for instructions on creating a locally configured calendar application"/>
@@ -178,18 +172,6 @@
     <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
-  <target name="deploy.debug" depends="init"
-          description="builds and deploys the applications">
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-           target="deploy.debug" />
-
-    <tstamp>
-      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
-    </tstamp>
-
-    <echo message="* ============== finished at ${deploydebug.time}" />
-  </target>
-
   <!-- =================================================================
        The "clean.deploy" target cleans, builds and deploys the applications
        ================================================================= -->
@@ -224,18 +206,6 @@
     <echo message="* ============== finished at ${deploydebug.time}" />
   </target>
 
-  <target name="clean.deploy.debug" depends="init"
-          description="builds and deploys the applications">
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-           target="clean.deploy.debug" />
-
-    <tstamp>
-      <format property="deploydebug.time" pattern="MM/dd/yyyy HH:mm:ss"/>
-    </tstamp>
-
-    <echo message="* ============== finished at ${deploydebug.time}" />
-  </target>
-
   <!-- =================================================================
        The "build.configured" target builds configured applications
        ================================================================= -->
@@ -246,22 +216,10 @@
            target="build.configured" />
   </target>
 
-  <target name="build.configured.debug" depends="init"
-          description="Build configured applications" >
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-           target="build.configured.debug" />
-  </target>
-
   <target name="clean.build.configured" depends="init"
           description="Build configured applications" >
     <ant antfile="${bedework.build.file}" inheritrefs="true"
            target="clean.build.configured" />
-  </target>
-
-  <target name="clean.build.configured.debug" depends="init"
-          description="Build configured applications" >
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-           target="clean.build.configured.debug" />
   </target>
 
   <!-- =================================================================
@@ -329,19 +287,6 @@
           <antcall target="tomcatstart" inheritrefs="true" />
         </parallel>
       </sequential>
-    </parallel>
-  </target>
-
-  <!-- =================================================================
-       The "start-debug" target starts the quickstart infrastructure components
-       ================================================================= -->
-
-  <target name="start-debug" depends="run.init"
-          description="Start quickstart system" >
-    <parallel>
-      <antcall target="activemq" inheritrefs="true" />
-      <antcall target="dirstart" inheritrefs="true" />
-      <antcall target="hsqldb" inheritrefs="true" />
     </parallel>
   </target>
 </project>

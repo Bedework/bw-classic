@@ -22,6 +22,26 @@ bw_loglevel=""
 # Projects we need to update
 updateProjects="bwxml rpiutil access davutil webdav caldav bedework bedework-carddav bwtzsvr cachedfeeder"
 
+# Projects we will build - pkgdefault (bedework) is built if nothing specified
+pkgdefault=yes
+access=
+bedework=
+bwtools=
+bwxml=
+caldav=
+caldavTest=
+carddav=
+catsvr=
+client=
+davutil=
+monitor=
+naming=
+rpiutil=
+synch=
+testsuite=
+tzsvr=
+webdav=
+
 echo ""
 echo "  Bedework Calendar System"
 echo "  ------------------------"
@@ -140,6 +160,114 @@ usageZoneinfo() {
   exit 1
 }
 
+# Change to the next project to build. Exit if we're done.
+# The order below reflects the dependencies
+setDirectory() {
+	if [ "$bwxml" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwxml
+      bwxml=
+	  return
+	fi
+	
+	if [ "$rpiutil" != "" ] ; then
+	  cd $QUICKSTART_HOME/rpiutil
+      rpiutil=
+	  return
+	fi
+	
+	if [ "$access" != "" ] ; then
+	  cd $QUICKSTART_HOME/access
+      access=
+	  return
+	fi
+	
+	if [ "$davutil" != "" ] ; then
+	  cd $QUICKSTART_HOME/davutil
+      davutil=
+	  return
+	fi
+	
+	if [ "$webdav" != "" ] ; then
+	  cd $QUICKSTART_HOME/webdav
+      webdav=
+	  return
+	fi
+	
+	if [ "$caldav" != "" ] ; then
+	  cd $QUICKSTART_HOME/caldav
+      caldav=
+	  return
+	fi
+	
+	if [ "$caldavTest" != "" ] ; then
+	  cd $QUICKSTART_HOME/caldavTest
+      caldavTest=
+	  return
+	fi
+	
+	if [ "$carddav" != "" ] ; then
+	  cd $QUICKSTART_HOME/bedework-carddav
+      carddav=
+	  return
+	fi
+	
+	if [ "$bedework" != "" ] ; then
+	  cd $QUICKSTART_HOME
+      bedework=
+	  return
+	fi
+	
+	if [ "$catsvr" != "" ] ; then
+	  cd $QUICKSTART_HOME/catsvr
+      catsvr=
+	  return
+	fi
+	
+	if [ "$client" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwclient
+      client=
+	  return
+	fi
+	
+	if [ "$monitor" != "" ] ; then
+	  cd $QUICKSTART_HOME/MonitorApp
+      monitor=
+	  return
+	fi
+	
+	if [ "$naming" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwnaming
+      naming=
+	  return
+	fi
+	
+	if [ "$synch" != "" ] ; then
+	  cd $QUICKSTART_HOME/synch
+      synch=
+	  return
+	fi
+	
+	if [ "$testsuite" != "" ] ; then
+	  cd $QUICKSTART_HOME/testsuite
+      testsuite=
+	  return
+	fi
+	
+	if [ "$tzsvr" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwtzsvr
+      tzsvr=
+	  return
+	fi
+	
+	if [ "$bwtools" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwtools
+      bwtools=
+	  return
+	fi
+	
+	exit 0;
+}
+
 # ---------------------------------------------------------------------------- 
 # Build zoneinfo - require -version -tzdata
 # tzdata file can be obtained via http://www.twinsun.com/tz/tz-link.htm or
@@ -256,26 +384,6 @@ BWCONFIG=
 offline=
 quickstart=
 
-# Projects we will build
-pkgdefault=yes
-access=
-bedework=
-bwtools=
-bwxml=
-caldav=
-caldavTest=
-carddav=
-catsvr=
-client=
-davutil=
-monitor=
-naming=
-rpiutil=
-synch=
-testsuite=
-tzsvr=
-webdav=
-
 action=
 
 if [ "$1" = "" ] ; then
@@ -373,6 +481,9 @@ do
 # ------------------------Projects
     -access)
       access="yes"
+      
+      bwxml="yes"
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
@@ -388,21 +499,41 @@ do
       ;;
     -caldav)
       caldav="yes"
+
+      access="yes"
+      bwxml="yes"
+      rpiutil="yes"
+      webdav="yes"
       pkgdefault=
       shift
       ;;
     -caldavTest)
       caldavTest="yes"
+
+      access="yes"
+      bwxml="yes"
+      rpiutil="yes"
+      webdav="yes"
       pkgdefault=
       shift
       ;;
     -carddav)
       carddav="yes"
+
+      access="yes"
+      bwxml="yes"
+      rpiutil="yes"
+      webdav="yes"
       pkgdefault=
       shift
       ;;
     -catsvr)
       catsvr="yes"
+
+      access="yes"
+      bwxml="yes"
+      rpiutil="yes"
+      webdav="yes"
       pkgdefault=
       shift
       ;;
@@ -413,6 +544,9 @@ do
       ;;
     -davutil)
       davutil="yes"
+
+      bwxml="yes"
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
@@ -428,11 +562,18 @@ do
       ;;
     -rpiutil)
       rpiutil="yes"
+
+      bwxml="yes"
       pkgdefault=
       shift
       ;;
     -synch)
       synch="yes"
+      
+      access="yes"
+      bwxml="yes"
+      davutil="yes"
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
@@ -443,11 +584,17 @@ do
       ;;
     -tzsvr)
       tzsvr="yes"
+      bwxml="yes"
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
     -webdav)
       webdav="yes"
+
+      access="yes"
+      bwxml="yes"
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
@@ -461,6 +608,17 @@ do
       ;;
   esac
 done
+
+if [ "$pkgdefault" = "yes" ] ; then
+  bedework="yes"
+
+  access="yes"
+  bwxml="yes"
+  caldav="yes"
+  davutil="yes"
+  rpiutil="yes"
+  webdav="yes"
+fi
 
 if [ "$quickstart" != "" ] ; then
   if [ "$BWCONFIGS" != "" ] ; then
@@ -492,68 +650,9 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
-if [ "$access" != "" ] ; then
-  cd $QUICKSTART_HOME/access
-fi
-
-if [ "$bwtools" != "" ] ; then
-  cd $QUICKSTART_HOME/bwtools
-fi
-
-if [ "$bwxml" != "" ] ; then
-  cd $QUICKSTART_HOME/bwxml
-fi
-
-if [ "$caldav" != "" ] ; then
-  cd $QUICKSTART_HOME/caldav
-fi
-
-if [ "$caldavTest" != "" ] ; then
-  cd $QUICKSTART_HOME/caldavTest
-fi
-
-if [ "$carddav" != "" ] ; then
-  cd $QUICKSTART_HOME/bedework-carddav
-fi
-
-if [ "$catsvr" != "" ] ; then
-  cd $QUICKSTART_HOME/catsvr
-fi
-
-if [ "$client" != "" ] ; then
-  cd $QUICKSTART_HOME/bwclient
-fi
-
-if [ "$davutil" != "" ] ; then
-  cd $QUICKSTART_HOME/davutil
-fi
-
-if [ "$monitor" != "" ] ; then
-  cd $QUICKSTART_HOME/MonitorApp
-fi
-
-if [ "$naming" != "" ] ; then
-  cd $QUICKSTART_HOME/bwnaming
-fi
-
-if [ "$rpiutil" != "" ] ; then
-  cd $QUICKSTART_HOME/rpiutil
-fi
-
-if [ "$synch" != "" ] ; then
-  cd $QUICKSTART_HOME/synch
-fi
-
-if [ "$testsuite" != "" ] ; then
-  cd $QUICKSTART_HOME/testsuite
-fi
-
-if [ "$tzsvr" != "" ] ; then
-  cd $QUICKSTART_HOME/bwtzsvr
-fi
-
-if [ "$webdav" != "" ] ; then
-  cd $QUICKSTART_HOME/webdav
-fi
-
-$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel $*
+while true
+do
+  setDirectory
+  $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel $*
+done
+  
