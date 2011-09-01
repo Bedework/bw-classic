@@ -8,7 +8,7 @@
      Authors: Mike Douglass   douglm@rpi.edu
 -->
 
-<project name="quickstart-build-file" default="usage" basedir=".">
+<project name="quickstart-build-file" default="deploy" basedir=".">
   <property environment="env"/>
 
   <dirname property="bedework.quickstart.basedir" 

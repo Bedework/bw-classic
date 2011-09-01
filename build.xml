@@ -5,7 +5,7 @@
      Authors: Mike Douglass   douglm @ rpi.edu
 -->
 
-<project name="bedework.build" default="init" basedir=".">
+<project name="bedework.build" default="deploy" basedir=".">
   <property environment="env"/>
 
   <!-- This affects some of the build process in the projects -->
