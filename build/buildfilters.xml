@@ -133,6 +133,9 @@
 
     <filter token="tzdataURI"
             value="${org.bedework.app.tzsvr.tzdata.url}" />
+
+    <filter token="tzdataRefreshInterval"
+            value="${org.bedework.app.tzsvr.refetch.interval}" />
   </filterset>
 
   <target name="dummy">
