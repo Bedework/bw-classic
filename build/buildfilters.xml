@@ -130,6 +130,9 @@
 
     <filter token="synchWsdlURI"
             value="${org.bedework.synch.wsdl.uri}" />
+
+    <filter token="tzdataURI"
+            value="${org.bedework.app.tzsvr.tzdata.url}" />
   </filterset>
 
   <target name="dummy">
