@@ -63,9 +63,9 @@
     <attribute name="SchemaOutFile">${jboss.server.data.dir}/bedework/dumprestore/schema.txt</attribute>
     
     <!-- SQL input file name - full path. Used instead of the configuration? -->
-    <!--  There appears to be a bug in the hibernate code. Everybody initialises
+    <!--  There appears to be a bug in the hibernate code. Everybody initializes
         this to /import.sql. Set to null causes an NPE 
-        Make sure it refers toa non-existant file -->
+        Make sure it refers to a non-existant file -->
     <attribute name="SqlIn">not-a-file.sql</attribute>
     
     <!-- XML data input file name - full path. Used for data restore -->

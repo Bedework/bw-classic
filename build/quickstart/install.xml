@@ -8,16 +8,13 @@
      Authors: Mike Douglass   douglm - rpi.edu
 -->
 
-<project name="quickstart-install" default="install" basedir=".">
+<project name="quickstart-install" default="run.init" basedir=".">
   <target name="run.init">
     <property name="org.bedework.project.bedework"
               location="${basedir}/bedework" />
 
     <property name="org.bedework.directory.dir"
               location="${org.bedework.project.bedework}/../apacheds-1.5.3.fixed" />
-
-    <property name="org.bedework.hsqldb.dir"
-              location="${org.bedework.project.bedework}/../hsqldb-1.7.3.3" />
   </target>
 
   <!-- =================================================================

@@ -55,13 +55,13 @@
         <if>
           <istrue value="${org.bedework.global.copy.activemq.config}" />
           <then>
-            <copy file="${org.bedework.config.home}/activemq-ra.xml"
+            <copy file="${org.bedework.activemq.configurations}/activemq-ra.xml"
                   tofile="${org.bedework.global.activemq.dir}/META-INF/ra.xml"
                   overwrite="yes" />
-            <copy file="${org.bedework.config.home}/activemq-broker-config.xml"
+            <copy file="${org.bedework.activemq.configurations}/activemq-broker-config.xml"
                   tofile="${org.bedework.global.activemq.dir}/broker-config.xml"
                   overwrite="yes" />
-            <copy file="${org.bedework.config.home}/activemq-jms-ds.xml"
+            <copy file="${org.bedework.activemq.configurations}/activemq-jms-ds.xml"
                   tofile="${org.bedework.appserver.deploy.dir}/activemq-jms-ds.xml"
                   overwrite="yes" />
           </then>

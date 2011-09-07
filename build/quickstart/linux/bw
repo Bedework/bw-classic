@@ -663,12 +663,16 @@ if [ ! -d "$BEDEWORK_CONFIGS_HOME/.platform" ] ; then
   errorUsage "Configurations directory $BEDEWORK_CONFIGS_HOME is missing directory '.platform'."
 fi
 
+if [ ! -d "$BEDEWORK_CONFIGS_HOME/.defaults" ] ; then
+  errorUsage "Configurations directory $BEDEWORK_CONFIGS_HOME is missing directory '.defaults'."
+fi
+
 if [ ! -f "$BEDEWORK_CONFIG/build.properties" ] ; then
   errorUsage "Configuration $BEDEWORK_CONFIG does not exist or is not a bedework configuration."
 fi
 
 # Make available for ant
-export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.properties"
+export BWCONFIG="-Dorg.bedework.build.properties=$BEDEWORK_CONFIG/build.properties"
 
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"

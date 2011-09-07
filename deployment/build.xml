@@ -119,6 +119,9 @@
         <property name="org.bedework.ear.properties.dir"
                   location="${org.bedework.temp.dir}/ear-properties" />
 
+        <property name="org.bedework.ear.templib"
+                  location="${org.bedework.temp.dir}/earlib"/>
+        
         <delete dir="${org.bedework.ear.templib}" />
         <mkdir dir="${org.bedework.ear.templib}" />
 

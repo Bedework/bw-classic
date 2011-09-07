@@ -341,7 +341,7 @@ GOTO doneQB
 
 :runBedework
   :: Make available for ant
-  SET BWCONFIG=-Dorg.bedework.user.build.properties=%BEDEWORK_CONFIG%\build.properties
+  SET BWCONFIG=-Dorg.bedework.build.properties=%BEDEWORK_CONFIG%\build.properties
 
   ECHO.
   ECHO     BWCONFIGS = %BWCONFIGS%

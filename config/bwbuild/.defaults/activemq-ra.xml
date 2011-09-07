@@ -16,6 +16,14 @@
     limitations under the License.
 -->
 
+<!-- Bedework:
+  For the quickstart this file is copied out of the configuration
+  directory into the activemq configuration directory.
+
+  DO NOT edit the copy of this file inside activemq. If you want to change the
+  configuration edit a copy inside your bedework configuration directory.
+ -->
+
 <connector xmlns="http://java.sun.com/xml/ns/j2ee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee

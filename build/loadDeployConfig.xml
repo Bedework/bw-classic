@@ -10,19 +10,21 @@
     <!--<attribute name="extra.options" default="${org.bedework.carddav.options}"/> -->
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-
+  	
       <property environment="env"/>
 
-      <!-- Load user property definition overrides -->
-      <property file="${org.bedework.user.build.properties}" />
+      <!-- Load build property definition overrides -->
+      <property file="${org.bedework.build.properties}" />
 
       <infoMsg message="==========================================================" />
-      <infoMsg message="Loading user properties from ${org.bedework.user.build.properties}" />
+      <infoMsg message="Loading build properties from ${org.bedework.build.properties}" />
+      <infoMsg message="Use config override properties ${org.bedework.config.override.properties}" />
       <infoMsg message="Use config properties ${org.bedework.config.properties}" />
       <infoMsg message="Runtime options from ${org.bedework.config.options}" />
       <infoMsg message="==========================================================" />
-    	
-    	<property file="${org.bedework.config.properties}" />
+
+      <property file="${org.bedework.config.override.properties}" />
+      <property file="${org.bedework.config.properties}" />
 
       <!-- Load the run time options and define some properties based on some
            of the values -->
@@ -54,13 +56,6 @@
 
           <property file="${org.bedework.configurations.home}/.platform/standalone.properties" />
         </else>
-      </if>
-
-      <if>
-        <isset property="org.bedework.global.build.ear"/>
-        <then>
-          <property file="${org.bedework.configurations.home}/.platform/ear.properties" />
-        </then>
       </if>
 
       <property name="org.bedework.global.version"
