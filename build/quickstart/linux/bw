@@ -42,6 +42,12 @@ testsuite=
 tzsvr=
 webdav=
 
+# Special targets - avoiding dependencies
+
+dirstart=
+
+specialTarget=
+
 echo ""
 echo "  Bedework Calendar System"
 echo "  ------------------------"
@@ -163,6 +169,17 @@ usageZoneinfo() {
 # Change to the next project to build. Exit if we're done.
 # The order below reflects the dependencies
 setDirectory() {
+    specialTarget=
+    
+#     Special targets
+	if [ "$dirstart" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=dirstart
+      dirstart=
+	  return
+	fi
+	
+#     projects
 	if [ "$bwxml" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwxml
       bwxml=
@@ -478,6 +495,12 @@ do
       bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true -Dorg.bedework.build.debug=true "
       shift
       ;;
+# ------------------------Special targets
+	dirstart)
+	  dirstart="yes"
+      pkgdefault=
+      shift
+      ;;
 # ------------------------Projects
     -access)
       access="yes"
@@ -650,9 +673,16 @@ export BWCONFIG="-Dorg.bedework.user.build.properties=$BEDEWORK_CONFIG/build.pro
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
+javacmd="$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
+
 while true
 do
   setDirectory
-  $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel $*
+  
+  if [ "$specialTarget" != "" ] ; then
+    $javacmd $specialTarget
+  else  
+    $javacmd $*
+  fi
 done
   
