@@ -23,6 +23,7 @@
       <infoMsg message="Runtime options from ${org.bedework.config.options}" />
       <infoMsg message="==========================================================" />
 
+      <property file="${org.bedework.configuration.versions}" />
       <property file="${org.bedework.config.override.properties}" />
       <property file="${org.bedework.config.properties}" />
 
