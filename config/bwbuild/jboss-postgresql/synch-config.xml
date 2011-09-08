@@ -95,7 +95,7 @@
               
     <!-- seconds before we ping just to say we're still around --> 
     <property name="keepAliveInterval"
-              value="60" />
+              value="300" />
   </bean>
   
   <!-- The connector "read-only-file" will load the following config - 
