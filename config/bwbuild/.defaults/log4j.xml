@@ -402,6 +402,10 @@
       <priority value="${org.bedework.loglevel.exprfilters}"/>
    </category>
  -->
+   <category name="org.bedework.calcore.hibernate.Filters">
+      <priority value="INFO"/>
+   </category>
+
    <category name="org.bedework.calsvc.CalSvc$SvcSimpleFilterParser">
       <priority value="INFO"/>
    </category>

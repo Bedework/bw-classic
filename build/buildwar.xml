@@ -189,7 +189,7 @@
       <isset property="org.bedework.extra.properties" />
       <then>
         <copy todir="${app.dest.properties}">
-          <filelist dir="${org.bedework.config.home}"
+          <filelist dir="${org.bedework.extra.properties.dir}"
                     files="${org.bedework.extra.properties}"/> 
           <filterset refid="property.filters" />
         </copy>

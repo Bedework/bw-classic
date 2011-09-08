@@ -57,6 +57,13 @@ SET webdav=
 
 SET action=
 
+:: Special targets - avoiding dependencies
+
+SET deploylog4j=
+SET dirstart=
+
+SET specialTarget=
+
 :: check for command-line arguments and branch on them
 IF "%1noargs" == "noargs" GOTO usage
 GOTO branch
@@ -120,6 +127,19 @@ GOTO branch
 
 :build-debug
   SET bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true -Dorg.bedework.build.debug=true "
+  SHIFT
+  GOTO branch
+      
+:: ----------------------- Special targets
+:deploylog4j
+  SET deploylog4j="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+      
+:dirstart
+  SET dirstart="yes"
+  SET pkgdefault=
   SHIFT
   GOTO branch
       
@@ -348,6 +368,10 @@ GOTO doneQB
   ECHO     BWCONFIG = %BWCONFIG%
 
 :: This below reflects the dependency ordering
+:: Special targets first
+  IF NOT "%dirstart%empty" == "empty" GOTO cdDirstart
+  IF NOT "%deploylog4j%empty" == "empty" GOTO cdDeploylog4j
+:: Now projects
   IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
   IF NOT "%rpiutil%empty" == "empty" GOTO cdRpiutil
   IF NOT "%access%empty" == "empty"  GOTO cdAccess
@@ -376,6 +400,30 @@ GOTO:EOF
 
   GOTO runBedework
     
+:dospecial
+  ECHO     WORKING DIRECTORY = %cd%
+  ECHO     COMMAND =  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %specialTarget%
+  ECHO.
+  ECHO.
+  "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %specialTarget%
+
+  GOTO runBedework
+
+:: Special targets
+  
+:cdDirstart
+  cd %QUICKSTART_HOME%
+  SET dirstart=
+  SET specialTarget="dirstart"
+  GOTO dospecial
+  
+:cdDeploylog4j
+  cd %QUICKSTART_HOME%
+  SET deploylog4j=
+  SET specialTarget="deploylog4j"
+  GOTO dospecial
+
+:: Projects    
 :cdAccess
   cd %QUICKSTART_HOME%\access
   SET access=
@@ -461,6 +509,10 @@ GOTO:EOF
 :: DOS Batch labels can't contain hyphens, so convert them
 :: (otherwise, we could just "GOTO %1")
 :branch
+:: Special targets 
+IF "%1" == "deploylog4j" GOTO deploylog4j
+IF "%1" == "dirstart" GOTO dirstart
+:: projects
 IF "%1" == "-quickstart" GOTO quickstart
 IF "%1" == "-bwchome" GOTO bwchome
 IF "%1" == "-bwc" GOTO bwc

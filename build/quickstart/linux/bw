@@ -44,6 +44,7 @@ webdav=
 
 # Special targets - avoiding dependencies
 
+deploylog4j=
 dirstart=
 
 specialTarget=
@@ -176,6 +177,13 @@ setDirectory() {
 	  cd $QUICKSTART_HOME
 	  specialTarget=dirstart
       dirstart=
+	  return
+	fi
+
+	if [ "$deploylog4j" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=deploylog4j
+      deploylog4j=
 	  return
 	fi
 	
@@ -496,6 +504,11 @@ do
       shift
       ;;
 # ------------------------Special targets
+	deploylog4j)
+	  deploylog4j="yes"
+      pkgdefault=
+      shift
+      ;;
 	dirstart)
 	  dirstart="yes"
       pkgdefault=
