@@ -730,6 +730,18 @@
 
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
+
+          <!-- SOAP web service 
+               This corresponds to the full uri in the properties file.
+               Defined as a global deployment property
+               
+               NOTE: tthe value below is defined in the build properties 
+                -->
+          <calSoapWsURI>@calSoapWsURI@</calSoapWsURI>
+          
+          <!-- This corresponds to the deployment path in the properties file.
+               Defined as a global deployment property  -->
+          <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
         </Usercaldav>
 
         <!-- ==================================================================
@@ -865,30 +877,6 @@
           <debugEntity>false</debugEntity>
         </iosched>
 
-        <!-- ==================================================================
-                          Exchange synch
-             ================================================================== -->
-        <Exsynch classname="org.bedework.exchgsynch.ExsynchConfig">
-          <appType>exsynch</appType>
-
-          <!-- location of the WSDL - modified to include server element -->
-          <exchangeWSDLURI>http://localhost:8080/exchange/Services.wsdl</exchangeWSDLURI>
-
-          <!-- Exchange sync callback. Comment out for no service -->
-          <exchangeWsPushURI>http://128.113.124.221/exsynch/</exchangeWsPushURI>
-
-          <!-- Path to keystore - comment out to use default -->          
-          <keystore>@APPSERVER-DATA-DIR@/exsynchcerts</keystore>
-
-          <!-- location of the WSDL for the remote web service -->
-          <remoteWSDLURI>http://localhost:8080/exchange/wssvc.wsdl</remoteWSDLURI>
-          
-          <remoteWsURL>http://localhost:8080/pubcaldav/exsynchws/</remoteWsURL>
-          
-          <!-- seconds  --> 
-          <remoteKeepAliveInterval>60</remoteKeepAliveInterval>
-        </Exsynch>
-
         <!-- ===============================================================
                           User CardDAV server usercarddav
              =============================================================== -->
@@ -917,6 +905,36 @@
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </usercarddav>
+
+        <!-- ===============================================================
+                          User CardDAV server usercarddavweb
+             This should be pretty much identical to the above
+             =============================================================== -->
+        <usercarddavweb classname="org.bedework.carddav.util.CardDAVConfig" >
+          <sysintfImpl>org.bedework.carddav.bwserver.BwSysIntfImpl</sysintfImpl>
+          
+          <webaddrServiceURI>/find</webaddrServiceURI>
+          <webaddrServicePropertiesList>fn,email,note,org</webaddrServicePropertiesList>
+          <webaddrPublicAddrbook>/principals/users</webaddrPublicAddrbook>
+
+          <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
+
+          <defaultAddressbook>addressbook</defaultAddressbook>
+
+          <!-- This will act as the root for the file system -->
+          <addressBookHandlerPrefix>/user</addressBookHandlerPrefix>
+          
+          <!-- Needed for access calculations -->
+          <userHomeRoot>/user</userHomeRoot>
+
+          <principalRoot>/principals</principalRoot>
+          <userPrincipalRoot>/principals/users</userPrincipalRoot>
+          <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+          <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
+          <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
+          <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
+          <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
+        </usercarddavweb>
 
         <!-- ===============================================================
                           Public CardDAV server pubcarddav
