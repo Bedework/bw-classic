@@ -8,6 +8,9 @@
       <global>
         <version>3.7</version>
 
+        <!-- Temp value to enable/disable the use of the synch service -->
+        <doWeSynch>false</doWeSynch>
+        
         <!-- This property is how the running system finds the system settings.
              In theory we could have multiple settings with different names
              
