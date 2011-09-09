@@ -516,7 +516,7 @@
           <logPrefix>PubEventsAdmin</logPrefix>
           
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>http://localhost:8080/caladminrsrc</browserResourceRoot>
+          <browserResourceRoot>/caladminrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/caladminrsrc</appRoot>
@@ -549,7 +549,7 @@
           <logPrefix>EventSubmit</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>http://localhost:8080/eventsubmitrsrc</browserResourceRoot>
+          <browserResourceRoot>/eventsubmitrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
@@ -585,7 +585,7 @@
           <logPrefix>PubEvents</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>http://localhost:8080/calrsrc</browserResourceRoot>
+          <browserResourceRoot>/calrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calrsrc</appRoot>
@@ -623,7 +623,7 @@
           <logPrefix>Feeder</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>http://localhost:8080/calfeedrsrc</browserResourceRoot>
+          <browserResourceRoot>/calfeedrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calfeedrsrc</appRoot>
@@ -661,7 +661,7 @@
           <logPrefix>SoEDept</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>http://localhost:8080/calrsrc</browserResourceRoot>
+          <browserResourceRoot>/calrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calrsrc</appRoot>
@@ -696,7 +696,7 @@
           <logPrefix>PersonalCalendar</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>http://localhost:8080/ucalrsrc</browserResourceRoot>
+          <browserResourceRoot>/ucalrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/ucalrsrc</appRoot>

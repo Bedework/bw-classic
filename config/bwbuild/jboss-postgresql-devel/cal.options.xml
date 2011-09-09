@@ -58,6 +58,9 @@
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </systemRoots>
+        
+        <synchWsdlUri>@synchWsdlURI@</synchWsdlUri>
+        <synchManagerUri>@synchServiceManager@</synchManagerUri>
 
         <!-- To enable mapping of calendar addresses e.g. mailto:fred@example.org
              on to principals we need to either do a directory lookup or have
@@ -516,7 +519,7 @@
           <logPrefix>PubEventsAdmin</logPrefix>
           
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/caladminrsrc</browserResourceRoot>
+          <browserResourceRoot>http://localhost:8080/caladminrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/caladminrsrc</appRoot>
@@ -549,7 +552,7 @@
           <logPrefix>EventSubmit</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/eventsubmitrsrc</browserResourceRoot>
+          <browserResourceRoot>http://localhost:8080/eventsubmitrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
@@ -585,7 +588,7 @@
           <logPrefix>PubEvents</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/calrsrc</browserResourceRoot>
+          <browserResourceRoot>http://localhost:8080/calrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calrsrc</appRoot>
@@ -623,7 +626,7 @@
           <logPrefix>Feeder</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/calfeedrsrc</browserResourceRoot>
+          <browserResourceRoot>http://localhost:8080/calfeedrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calfeedrsrc</appRoot>
@@ -661,7 +664,7 @@
           <logPrefix>SoEDept</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/calrsrc</browserResourceRoot>
+          <browserResourceRoot>http://localhost:8080/calrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/calrsrc</appRoot>
@@ -696,7 +699,7 @@
           <logPrefix>PersonalCalendar</logPrefix>
 
           <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/ucalrsrc</browserResourceRoot>
+          <browserResourceRoot>http://localhost:8080/ucalrsrc</browserResourceRoot>
           
           <!-- Where the server finds xsl etc -->    
           <appRoot>http://localhost:8080/ucalrsrc</appRoot>
@@ -769,6 +772,17 @@
 
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
+
+          <!-- The bedework end of the synch service. This is a web
+               service called by the synch engine to get information out of
+               bedework and to update events and status.
+               
+               This path should probably be restricted to a given host only.
+               
+               Coming up on a separate port might help to lock it down.
+               Comment out or delete for no synch service 
+               -->
+          <synchWsURI>/synchws/</synchWsURI>
         </Pubcaldav>
 
         <!-- ==================================================================

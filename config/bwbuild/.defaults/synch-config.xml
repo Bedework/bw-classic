@@ -60,6 +60,9 @@
        the suffix "ExchangeConfig" is appended to the connector id -->
   <bean id="exdemoExchangeConfig" 
         class="org.bedework.synch.cnctrs.exchange.ExchangeConnectorConfig">
+    <property name="readOnly" value="false" />
+
+    <property name="trustLastmod" value="true" />
 
     <!-- location of the WSDL - modified to include server element 
          This corresponds to the wsdl deploy location defined in the
@@ -81,6 +84,9 @@
        the suffix "BedeworkConfig" is appended to the connector id -->
   <bean id="bwdemoBedeworkConfig" 
         class="org.bedework.synch.cnctrs.bedework.BedeworkConnectorConfig">
+    <property name="readOnly" value="false" />
+
+    <property name="trustLastmod" value="true" />
 
     <!-- location of the WSDL for the remote web service 
          This corresponds to the wsdl deploy location defined in the
@@ -103,6 +109,8 @@
   <bean id="read-only-fileFileConfig" 
         class="org.bedework.synch.cnctrs.file.FileConnectorConfig">
     <property name="readOnly" value="true" />
+
+    <property name="trustLastmod" value="false" />
 
     <!-- seconds  --> 
     <property name="minPoll" value="15" />
