@@ -6,7 +6,7 @@
   <org>
     <bedework>
       <global>
-        <version>3.7</version>
+        <version>3.8</version>
 
         <!-- Temp value to enable/disable the use of the synch service -->
         <doWeSynch>true</doWeSynch>
