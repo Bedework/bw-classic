@@ -35,7 +35,7 @@ SET ant_loglevel="-quiet"
 SET bw_loglevel=
 
 :: Projects we need to update
-SET updateProjects="bwxml rpiutil access davutil bedework bedework-carddav bwtzsvr cachedfeeder"
+SET updateProjects="bwxml rpiutil access davutil webdav caldav bedework bedework-carddav bwtzsvr cachedfeeder"
 
 :: Projects we will build
 SET pkgdefault=yes
