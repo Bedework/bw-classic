@@ -79,10 +79,7 @@ check() {
 # ------------------------------------------------------------------
 copyproject() {
   echo "copyproject $1 $2 from $4"
-  if [ "${1}" = "buildTools" ]
-  then
-    echo "build/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "caldavimpl" ]
+  if [ "${1}" = "caldavimpl" ]
   then
     echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
   elif [ "${1}" = "calendarapi" ]
@@ -121,7 +118,6 @@ COMMENT="$3"
 PROJECTS=""
 PROJECTS="$PROJECTS access"
 PROJECTS="$PROJECTS bedework"
-PROJECTS="$PROJECTS buildTools"
 PROJECTS="$PROJECTS bwtools"
 PROJECTS="$PROJECTS bwtzsvr"
 PROJECTS="$PROJECTS bwxml"
@@ -132,14 +128,14 @@ PROJECTS="$PROJECTS caldavTest"
 PROJECTS="$PROJECTS calendarapi"
 PROJECTS="$PROJECTS carddav"
 PROJECTS="$PROJECTS clientapp"
-PROJECTS="$PROJECTS contrib"
+#PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
-# PROJECTS="$PROJECTS synch"
 PROJECTS="$PROJECTS indexer"
 PROJECTS="$PROJECTS monitor"
 PROJECTS="$PROJECTS naming"
 PROJECTS="$PROJECTS rpiutil"
+# PROJECTS="$PROJECTS synch"
 PROJECTS="$PROJECTS testsuite"
 PROJECTS="$PROJECTS webapps"
 PROJECTS="$PROJECTS webdav"
