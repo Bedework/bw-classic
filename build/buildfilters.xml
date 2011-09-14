@@ -113,6 +113,9 @@
     <filter token="SCHEMA-DELIMITER"
             value="${propval.app.schema.delimiter}" />
 
+    <filter token="KEYFILE-DIR"
+            value="${org.bedework.global.keyfile.dir}"/>
+
     <filter token="calSoapWsURI"
             value="${org.bedework.calws-soap.uri}" />
 

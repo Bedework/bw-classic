@@ -8,10 +8,10 @@
   <mbean code="org.bedework.calfacade.security.GenKeys"
          name="org.bedework:service=GenKeys">
     <attribute name="PrivKeyFileName"
-          >${jboss.server.data.dir}/bedework/privkeys</attribute>
+          >@KEYFILE-DIR@/privkeys</attribute>
 
     <attribute name="PublicKeyFileName"
-          >${jboss.server.data.dir}/bedework/pubkeys</attribute>
+          >@KEYFILE-DIR@/pubkeys</attribute>
 
   </mbean>
 </server>

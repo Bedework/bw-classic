@@ -48,8 +48,8 @@
         <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
 
         <!-- Public/private key locations -->
-        <privKeys>${jboss.server.data.dir}/bedework/privkeys</privKeys>
-        <pubKeys>${jboss.server.data.dir}/bedework/pubkeys</pubKeys>
+        <privKeys>@KEYFILE-DIR@/privkeys</privKeys>
+        <pubKeys>@KEYFILE-DIR@/pubkeys</pubKeys>
 
         <systemRoots classname="org.bedework.calfacade.configs.SystemRoots" >
           <principalRoot>/principals</principalRoot>
