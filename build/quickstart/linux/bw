@@ -558,6 +558,7 @@ do
 
       access="yes"
       bwxml="yes"
+      davutil="yes"
       rpiutil="yes"
       webdav="yes"
       pkgdefault=
