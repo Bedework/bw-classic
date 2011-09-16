@@ -43,9 +43,25 @@
         <personalCardDAVHost>localhost</personalCardDAVHost>
         <personalCardDAVPort>8080</personalCardDAVPort>
         <personalCardDAVContext>/ucarddav</personalCardDAVContext>
+           
+        <!-- ===============================================================
+                         Timezone server information
+             =============================================================== -->
 
         <!-- Timezone server locations -->
         <timezonesUri>http://localhost:8080/tzsvr</timezonesUri>
+
+        <!-- Initial value for the primary server url if not stored elsewhere.
+             Used when initializing the tz server database -->
+        <initialPrimaryUrl>@tzserverPrimaryUrl@</initialPrimaryUrl>
+
+        <!-- Initial value for the primary/secondary server flag if not stored elsewhere.
+             Used when initializing the tz server database -->
+        <initialPrimaryServer>@tzserverPrimary@</initialPrimaryServer>
+
+        <!-- Initial value for the refresh interval if not stored elsewhere.
+             Used when initializing the tz server database -->
+        <initialRefreshInterval>@tzdataRefreshInterval@</initialRefreshInterval>
 
         <!-- Public/private key locations -->
         <privKeys>@KEYFILE-DIR@/privkeys</privKeys>
