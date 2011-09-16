@@ -161,9 +161,17 @@ actionUpdateall() {
 
 usageZoneinfo() {
   echo ""
+  echo "$PRG -zoneinfo -fetch"
+  echo "to have data fetched and processed. Alternatively to process a specifi set of data"
   echo "$PRG -zoneinfo -version VERSION -tzdata path-to-data" 
   echo "for example:" 
   echo "$PRG -zoneinfo -version 2010m -tzdata /data/olson/tzdata2010m.tar.gz" 
+  echo ""
+  echo "The data can be obtained manually in the following manner:"
+  echo "  wget 'ftp://elsie.nci.nih.gov/pub/tz*.tar.gz'"
+  echo ""
+  echo "The version is the '*' part of the name"
+  
   exit 1
 }
 
@@ -303,35 +311,55 @@ actionZoneinfo() {
   bwtzsvr="$QUICKSTART_HOME/bwtzsvr"
   bwresources="$bwtzsvr/resources"
 
-  shift
-  
-  if [ "$1" != "-version" ] ; then
-    echo "got $1"
-    echo "Must supply -version parameter for -zoneinfo"
-    usageZoneinfo
-  fi
-  
-  shift
-    echo "got $1"
-#  version="-Dorg.bedework.timezones.version=$1"
-  version=$1
-  shift
-  
-  if [ "$1" != "-tzdata" ] ; then
-    echo "Must supply -tzdata parameter for -zoneinfo"
-    usageZoneinfo
-  fi
-  
-  shift
-#  tzdata="-Dorg.bedework.timezones.data=$1"
-  tzdata=$1
-  shift
-  
   rm -rf /tmp/bedework
   mkdir /tmp/bedework
   mkdir /tmp/bedework/timezones
+  mkdir /tmp/bedework/timezones/data
   
   cd /tmp/bedework/timezones
+  
+  shift
+  
+  if [ "$1" = "-fetch" ] ; then
+    shift
+    cd data
+    wget 'ftp://elsie.nci.nih.gov/pub/tz*.tar.gz'
+    gzip -dc tzdata*.tar.gz | tar -xf -
+    
+    filename=$(basename `ls tzdata*`)
+    version=$( echo $filename | cut -c 7-11 )
+    
+    tzdata="/tmp/bedework/timezones/data/$filename"
+    
+    cd ..
+    
+    echo version=$version
+    echo tzdata=$tzdata
+  else
+    if [ "$1" != "-version" ] ; then
+      echo "got $1"
+      echo "Must supply -version parameter for -zoneinfo"
+      usageZoneinfo
+    fi
+    
+    shift
+
+    echo "got $1"
+    version=$1
+
+    shift
+    
+    if [ "$1" != "-tzdata" ] ; then
+      echo "Must supply -tzdata parameter for -zoneinfo"
+      usageZoneinfo
+    fi
+    
+    shift
+
+    tzdata=$1
+
+    shift
+  fi
   
   wget http://bedework.org/downloads/lib/vzic-1.3.tgz
   gunzip vzic-1.3.tgz
@@ -380,7 +408,7 @@ actionZoneinfo() {
   
   echo ""
   echo "------------------------------------------------------------------------------"
-  echo "tzdata.zip has been built and is at $bwtzsvr/tzdata.zip"
+  echo "tzdata.zip has been built and is at $bwtzsvr/dist/tzdata.zip"
   echo "------------------------------------------------------------------------------"
   echo ""
   
@@ -504,7 +532,7 @@ do
       shift
       ;;
 # ------------------------Special targets
-	deploylog4j)
+    deploylog4j)
 	  deploylog4j="yes"
       pkgdefault=
       shift
