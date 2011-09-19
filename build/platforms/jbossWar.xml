@@ -177,6 +177,21 @@
         </copy>
       </then>
     </if>
+    
+    <if>
+      <and>
+        <isset property="service.xmdesc.dir" />
+        <available file="${service.xmdesc.dir}" type="dir" />
+        <available file="${org.bedework.appserver.xmldesc.deploy.dir}" type="dir" />
+      </and>
+      <then>
+        <copy todir="${org.bedework.appserver.xmldesc.deploy.dir}"
+              overwrite="true" >
+          <fileset dir="${service.xmdesc.dir}" />
+          <filterset refid="property.filters" />
+        </copy>
+      </then>
+    </if>
           
     <manifest file="${org.bedework.ear.dir}/META-INF/MANIFEST.MF" />
 
