@@ -25,7 +25,7 @@
   <macrodef name="getJar">
     <attribute name="name"/>
     <attribute name="version" default="" />
-    <attribute name="src" default="http://bedework.org/downloads/lib"/>
+    <attribute name="src" default="http://dev.bedework.org/downloads/lib"/>
     <attribute name="lib" default="${lib.dir}"/>
     <attribute name="libcache" default="${org.bedework.libcache.dir}"/>
     <attribute name="property" default="" />
