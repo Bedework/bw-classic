@@ -71,6 +71,28 @@
       </layout>
    </appender>
 
+   <!-- Appender for timezone refresh log -->
+   <appender name="TZREFRESH" class="org.apache.log4j.DailyRollingFileAppender">
+      <errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler"/>
+      <param name="File" value="${jboss.server.log.dir}/tzrefresh.log"/>
+      <param name="Append" value="true"/>
+
+      <!-- Rollover at midnight each day -->
+      <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+
+      <!-- Rollover at the top of each hour
+      <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+      -->
+
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- The default pattern: Date Priority [Category] Message\n -->
+         <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+
+         <!-- The full pattern: Date MS Priority [Category] (Thread:NDC) Message\n
+         <param name="ConversionPattern" value="%d %-5r %-5p [%c] (%t:%x) %m%n"/>
+          -->
+      </layout>
+   </appender>
 
    <!-- A size based file rolling appender
    <appender name="FILE" class="org.jboss.logging.appender.RollingFileAppender">
@@ -472,6 +494,14 @@
    <category name="org.bedework.sysevents" additivity="false">
      <priority value="INFO"/>
      <appender-ref ref="SYSEVENTS"/>
+   </category>
+
+   <!-- tz refresh - logged separately -->
+
+   <category name="org.bedework.timezones.refresh.logger" additivity="false">
+     <priority value="INFO"/>
+     <appender-ref ref="TZREFRESH"/>
+     <appender-ref ref="CONSOLE"/>
    </category>
    
    <!-- ======================= -->
