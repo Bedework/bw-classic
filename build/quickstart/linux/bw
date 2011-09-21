@@ -297,7 +297,9 @@ setDirectory() {
       bwtools=
 	  return
 	fi
-	
+
+# Nothing left to do
+    echo "Finished at $(date)"	
 	exit 0;
 }
 
