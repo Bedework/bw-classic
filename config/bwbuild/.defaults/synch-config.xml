@@ -13,12 +13,12 @@
          concurrent threads processing synch actions  --> 
     <property name="synchlingPoolSize"
               value="20" />
-        
+
     <!-- timeout in millisecs for synchling pool. Processes waiting for a free  
          synchling will timeout after this period and fail  --> 
     <property name="synchlingPoolTimeout"
               value="5000" />
-        
+
     <!-- callback. Comment out for no service. MUST end in "/" -->
     <property name="callbackURI"
               value="http://128.113.124.225:8080/synch/" />
@@ -32,7 +32,11 @@
               value="@DATA_DIR@/privkeys" />
     <property name="pubKeys"
               value="@DATA_DIR@/pubkeys" />
-              
+
+    <!-- Timezone server location -->
+    <property name="timezonesURI"
+              value="http://localhost:8080/tzsvr" />
+
     <property name="connectors">
       <map>
         <!-- manager is a special connector which provides a way of
