@@ -721,7 +721,14 @@ export BWCONFIG="-Dorg.bedework.build.properties=$BEDEWORK_CONFIG/build.properti
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
-javacmd="$JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile $offline -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
+javacmd="$JAVA_HOME/bin/java -classpath $CLASSPATH"
+# Build (of bwxml) blew up with permgen error
+javacmd="$javacmd -Xmx512M -XX:MaxPermSize=512M"
+
+javacmd="$javacmd $ant_xmllogfile $offline"
+javacmd="$javacmd -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher"
+javacmd="$javacmd $BWCONFIG"
+javacmd="$javacmd $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
 
 while true
 do
