@@ -646,7 +646,8 @@ do
       ;;
     -testsuite)
       testsuite="yes"
-      pkgdefault=
+      
+      pkgdefault="yes"
       shift
       ;;
     -tzsvr)
