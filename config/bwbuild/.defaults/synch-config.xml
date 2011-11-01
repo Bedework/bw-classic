@@ -19,6 +19,13 @@
     <property name="synchlingPoolTimeout"
               value="5000" />
 
+    <!-- How often we retry a synch when one of the targets goes missing.
+         It's possible a file target might get deleted and replaced rather than
+         updated. Also changing access might make a collection disappear for a 
+         while. --> 
+    <property name="missingTargetRetries"
+              value="10" />
+
     <!-- callback. Comment out for no service. MUST end in "/" -->
     <property name="callbackURI"
               value="http://128.113.124.225:8080/synch/" />
