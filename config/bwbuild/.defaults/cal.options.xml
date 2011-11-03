@@ -77,6 +77,15 @@
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </systemRoots>
+        
+        <synchWsdlUri>@synchWsdlURI@</synchWsdlUri>
+        <synchManagerUri>@synchServiceManager@</synchManagerUri>
+        
+        <!-- This must match the connector id in the synch config. 
+             It identifies which connection we are using for communication
+             with the synch engine.
+          -->
+        <synchConnectorId>localBedework</synchConnectorId>
 
         <!-- To enable mapping of calendar addresses e.g. mailto:fred@example.org
              on to principals we need to either do a directory lookup or have

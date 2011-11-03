@@ -6,6 +6,11 @@
 
   <!-- =====================================================================
        Synch engine configuration
+       
+       Eventually this data will migrate into a database to allow for dynamic 
+       persistent configuration of the system. Many of these properties can be
+       changed via the jmx console but currently the chanegs will not survive
+       a restart.
        ===================================================================== -->
   <bean id="synchConfig" 
         class="org.bedework.synch.SynchConfig">
@@ -44,6 +49,14 @@
     <property name="timezonesURI"
               value="http://localhost:8080/tzsvr" />
 
+    <!-- The table of connectors we define. Each has an id, the key and a 
+         value which is the class of the connector for that id. The ids must be
+         unique, but we may have more than one occurrence of connectors with the
+          class.
+          
+          For example we could have two bedework connectors to allow synch
+          between the local bedework and some other remote bedework.
+     -->               
     <property name="connectors">
       <map>
         <!-- manager is a special connector which provides a way of
@@ -56,8 +69,11 @@
         <entry key="exdemo" 
                value="org.bedework.synch.cnctrs.exchange.ExchangeConnector" />
 
-        <!-- A bedework connector -->               
-        <entry key="bwdemo" 
+        <!-- A local bedework connector. This handles connections to the local
+             bedework system. This name is configured in to bedework so that
+             it can locate its own connections. 
+          -->               
+        <entry key="localBedework" 
                value="org.bedework.synch.cnctrs.bedework.BedeworkConnector" />
 
         <!-- A file connector -->               
@@ -91,9 +107,9 @@
      -->
   </bean>
   
-  <!-- The connector "bwdemo" will load the following config - 
+  <!-- The connector "localBedework" will load the following config - 
        the suffix "BedeworkConfig" is appended to the connector id -->
-  <bean id="bwdemoBedeworkConfig" 
+  <bean id="localBedeworkBedeworkConfig" 
         class="org.bedework.synch.cnctrs.bedework.BedeworkConnectorConfig">
     <property name="readOnly" value="false" />
 
