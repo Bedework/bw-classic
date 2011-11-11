@@ -63,7 +63,7 @@
              communicating with the synch engine. There must always be
              one, and only one, of this class. -->
         <entry key="manager" 
-               value="org.bedework.synch.SynchConnector" />
+               value="org.bedework.synch.cnctrs.manager.SynchConnector" />
 
         <!-- An exchange connector -->               
         <entry key="exdemo" 
