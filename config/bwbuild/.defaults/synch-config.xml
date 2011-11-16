@@ -7,13 +7,14 @@
   <!-- =====================================================================
        Synch engine configuration
        
-       Eventually this data will migrate into a database to allow for dynamic 
-       persistent configuration of the system. Many of these properties can be
-       changed via the jmx console but currently the chanegs will not survive
-       a restart.
+       NOTE: This is a one time initial configuration. It is used to populate
+       classes when the synch engine configuration database is uninitialized.
+       
+       Once it has been initialized at startup use the jmx console to change
+       the configuration. This should be an infrequent occurrence
        ===================================================================== -->
   <bean id="synchConfig" 
-        class="org.bedework.synch.SynchConfig">
+        class="org.bedework.synch.db.SynchConfig">
     <!-- Size of synchling pool. This effectively limits the number of 
          concurrent threads processing synch actions  --> 
     <property name="synchlingPoolSize"
@@ -56,90 +57,120 @@
           
           For example we could have two bedework connectors to allow synch
           between the local bedework and some other remote bedework.
-     -->               
-    <property name="connectors">
-      <map>
-        <!-- manager is a special connector which provides a way of
-             communicating with the synch engine. There must always be
-             one, and only one, of this class. -->
-        <entry key="manager" 
-               value="org.bedework.synch.cnctrs.manager.SynchConnector" />
-
-        <!-- An exchange connector -->               
-        <entry key="exdemo" 
-               value="org.bedework.synch.cnctrs.exchange.ExchangeConnector" />
-
-        <!-- A local bedework connector. This handles connections to the local
-             bedework system. This name is configured in to bedework so that
-             it can locate its own connections. 
-          -->               
-        <entry key="localBedework" 
-               value="org.bedework.synch.cnctrs.bedework.BedeworkConnector" />
-
-        <!-- A file connector -->               
-        <entry key="read-only-file" 
-               value="org.bedework.synch.cnctrs.file.FileConnector" />
-      </map>
-    </property>
-  </bean>
-
-  <!-- The connector "exdemo" will load the following config - 
-       the suffix "ExchangeConfig" is appended to the connector id -->
-  <bean id="exdemoExchangeConfig" 
-        class="org.bedework.synch.cnctrs.exchange.ExchangeConnectorConfig">
-    <property name="readOnly" value="false" />
-
-    <property name="trustLastmod" value="true" />
-
-    <!-- location of the WSDL - modified to include server element 
-         This corresponds to the wsdl deploy location defined in the
-         build properties file.
-    -->
-    <property name="exchangeWSDLURI"
-              value="http://localhost:8080/wsdls/exchange/Services.wsdl" />
-              <!-- 
-    <property name="props">
-      <props>
-        <prop key="x1">y1</prop>
-        <prop key="x2">y2</prop>
-      </props>
-    </property>
      -->
+    <property name="connectors">
+      <set>
+        <ref bean="manager"/>     
+        <ref bean="exdemo"/>     
+        <ref bean="localBedework" />
+        <ref bean="read-only-file" />
+      </set>
+    </property>
   </bean>
-  
-  <!-- The connector "localBedework" will load the following config - 
-       the suffix "BedeworkConfig" is appended to the connector id -->
-  <bean id="localBedeworkBedeworkConfig" 
-        class="org.bedework.synch.cnctrs.bedework.BedeworkConnectorConfig">
+
+  <!-- The manager is a special connector which provides a way of
+       communicating with the synch engine. There must always be
+       one, and only one, of this class. -->
+  <bean id="manager" 
+        class="org.bedework.synch.db.ConnectorConfig">
+    <property name="name" value="manager" />
+    <property name="className" 
+              value="org.bedework.synch.cnctrs.manager.SynchConnector" />
+              
+    <property name="readOnly" value="false" />
+
+    <property name="trustLastmod" value="true" />
+  </bean>
+
+  <!-- An exchange connector  -->
+  <bean id="exdemo" 
+        class="org.bedework.synch.db.ConnectorConfig">
+    <property name="name" value="exdemo" />
+    <property name="className"
+              value="org.bedework.synch.cnctrs.exchange.ExchangeConnector" />
+              
     <property name="readOnly" value="false" />
 
     <property name="trustLastmod" value="true" />
 
-    <!-- location of the WSDL for the remote web service 
-         This corresponds to the wsdl deploy location defined in the
-         build properties file.
-    -->
-    <property name="bwWSDLURI"
-              value="http://localhost:8080/wsdls/synch/wssvc.wsdl" />
-              
-    <!-- seconds before retry on failure  --> 
-    <property name="retryInterval"
-              value="10" />
-              
-    <!-- seconds before we ping just to say we're still around --> 
-    <property name="keepAliveInterval"
-              value="300" />
+    <property name="properties">
+      <set>
+        <!-- location of the WSDL - modified to include server element 
+             This corresponds to the wsdl deploy location defined in the
+             build properties file.
+        -->
+        <bean class="org.bedework.synch.db.SynchProperty">
+          <property name="name" value="exchangeWSDLURI" />
+          <property name="value" 
+                    value="http://localhost:8080/wsdls/exchange/Services.wsdl" />
+        </bean>
+      </set>
+    </property>
   </bean>
   
-  <!-- The connector "read-only-file" will load the following config - 
-       the suffix "FileConfig" is appended to the connector id -->
-  <bean id="read-only-fileFileConfig" 
-        class="org.bedework.synch.cnctrs.file.FileConnectorConfig">
+  <!-- A local bedework connector. This handles connections to the local
+       bedework system. This name is configured in to bedework so that
+       it can locate its own connections. 
+    -->               
+  <bean id="localBedework" 
+        class="org.bedework.synch.db.ConnectorConfig">
+    <property name="name" value="localBedework" />
+    <property name="className"
+              value="org.bedework.synch.cnctrs.bedework.BedeworkConnector" />
+    
+    <property name="readOnly" value="false" />
+
+    <property name="trustLastmod" value="true" />
+
+    <property name="properties">
+      <set>
+        <!-- location of the WSDL for the remote web service 
+             This corresponds to the wsdl deploy location defined in the
+             build properties file.
+        -->
+        <bean class="org.bedework.synch.db.SynchProperty">
+          <property name="name" value="bwWSDLURI" />
+          <property name="value" 
+                    value="http://localhost:8080/wsdls/synch/wssvc.wsdl" />
+        </bean>
+                  
+        <!-- seconds before retry on failure  --> 
+        <bean class="org.bedework.synch.db.SynchProperty">
+          <property name="name" value="retryInterval"/>
+          <property name="value" 
+                    value="10" />
+        </bean>
+              
+        <!-- seconds before we ping just to say we're still around --> 
+        <bean class="org.bedework.synch.db.SynchProperty">
+          <property name="name" value="keepAliveInterval" />
+          <property name="value" 
+                    value="300" />
+        </bean>
+      </set>
+    </property>
+  </bean>
+  
+  <!-- The connector "read-only-file" will allow subscriptions with ics files -->
+  <bean id="read-only-file" 
+        class="org.bedework.synch.db.ConnectorConfig">
+    <property name="name" value="read-only-file" />
+    <property name="className"
+              value="org.bedework.synch.cnctrs.file.FileConnector" />
+
     <property name="readOnly" value="true" />
 
     <property name="trustLastmod" value="false" />
 
-    <!-- seconds  --> 
-    <property name="minPoll" value="15" />
+    <property name="properties">
+      <set>
+        <!-- seconds  --> 
+        <bean class="org.bedework.synch.db.SynchProperty">
+          <property name="name" value="minPoll" />
+          <property name="value" 
+                    value="15" />
+        </bean>
+      </set>
+    </property>
   </bean>
 </beans>
