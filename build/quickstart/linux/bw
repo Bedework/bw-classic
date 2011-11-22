@@ -26,6 +26,7 @@ updateProjects="bwxml rpiutil access davutil webdav caldav bedework bedework-car
 pkgdefault=yes
 access=
 bedework=
+bwannotations=
 bwtools=
 bwxml=
 caldav=
@@ -196,6 +197,13 @@ setDirectory() {
 	fi
 	
 #     projects
+
+	if [ "$bwannotations" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwannotations
+      bwannotations=
+	  return
+	fi
+
 	if [ "$bwxml" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwxml
       bwxml=
@@ -553,6 +561,11 @@ do
       pkgdefault=
       shift
       ;;
+    -bwann)
+      bwannotations="yes"
+      pkgdefault=
+      shift
+      ;;
     -bwtools)
       bwtools="yes"
       pkgdefault=
@@ -681,6 +694,7 @@ if [ "$pkgdefault" = "yes" ] ; then
   bedework="yes"
 
   access="yes"
+#  bwannotations="yes"  
   bwxml="yes"
   caldav="yes"
   davutil="yes"
