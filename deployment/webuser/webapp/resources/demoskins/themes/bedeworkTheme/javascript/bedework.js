@@ -233,6 +233,12 @@ function setCalendarAlias(formObj) {
     return false;
   }
 }
+// set the calendar summary to the calendar name in the form if summary is empty
+function setCalSummary(val,summaryField) {
+  if (summaryField.value == '') {
+    summaryField.value = val;  
+  }
+}
 //Stop user from entering invalid characters in calendar names
 //In 3.6 this will only test for & ' " and /
 //In future releases, we will go further and only allow 

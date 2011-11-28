@@ -298,3 +298,9 @@ function setCatFilters(formObj) {
     }
   }
 }
+// set the calendar summary to the calendar name in the form if summary is empty
+function setCalSummary(val,summaryField) {
+  if (summaryField.value == '') {
+    summaryField.value = val;  
+  }
+}

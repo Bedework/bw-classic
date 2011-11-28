@@ -425,7 +425,7 @@
           <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
           <td>
             <xsl:variable name="curCalName" select="name"/>
-            <input name="calendar.name" value="{$curCalName}" size="40"/>
+            <input name="calendar.name" value="{$curCalName}" onblur="setCalSummary(this.value, this.form['calendar.summary']);" size="40"/>
           </td>
         </tr>
         <tr>
