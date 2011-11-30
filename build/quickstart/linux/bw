@@ -20,14 +20,45 @@ ant_loglevel="-quiet"
 bw_loglevel=""
 
 # Projects we need to update
-updateProjects="bwxml rpiutil access davutil webdav caldav bedework bedework-carddav bwtzsvr cachedfeeder"
+updateProjects="access"
+updateProjects="$updateProjects  bedework"
+updateProjects="$updateProjects  bedework-carddav"
+updateProjects="$updateProjects  bwannotations"
+updateProjects="$updateProjects  bwcalcore"
+updateProjects="$updateProjects  bwcaldav"
+updateProjects="$updateProjects  bwcalFacade"
+updateProjects="$updateProjects  bwdeployutil"
+updateProjects="$updateProjects  bwical"
+updateProjects="$updateProjects  bwinterfaces"
+updateProjects="$updateProjects  bwmisc"
+updateProjects="$updateProjects  bwsysevents"
+updateProjects="$updateProjects  bwtzsvr"
+updateProjects="$updateProjects  bwwebapps"
+updateProjects="$updateProjects  bwxml"
+updateProjects="$updateProjects  cachedfeeder"
+updateProjects="$updateProjects  caldav"
+updateProjects="$updateProjects  davutil"
+updateProjects="$updateProjects  dumprestore"
+updateProjects="$updateProjects  indexer"
+updateProjects="$updateProjects  rpiutil"
+updateProjects="$updateProjects  synch"
+updateProjects="$updateProjects  webdav"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
 access=
 bedework=
 bwannotations=
+bwcalcore=
+bwcaldav=
+bwcalfacade=
+bwdeployutil=
+bwicalendar=
+bwinterfaces=
+bwmisc=
+bwsysevents=
 bwtools=
+bwwebapps=
 bwxml=
 caldav=
 caldavTest=
@@ -35,6 +66,8 @@ carddav=
 catsvr=
 client=
 davutil=
+dumprestore=
+indexer=
 monitor=
 naming=
 rpiutil=
@@ -95,31 +128,43 @@ usage() {
   echo ""
   echo "   target       Ant target to execute"
   echo ""
-  echo "   PROJECT optionally defines the package to build and is one of"
+  echo "   PROJECT optionally defines the package to build. If omitted the main"
+  echo "           bedework calendar system will be built otherwise it is one of"
   echo "           the core, ancillary or experimental targets below:"
   echo ""
-  echo "   Core projects: required for a functioning system"
-  echo "     -access      Target is for the access classes"
-  echo "     -bwxml       Target is for the Bedework XML schemas build"
-  echo "                       (usually built automatically be dependent projects"
-  echo "     -caldav      Target is for the CalDAV build"
-  echo "     -carddav     Target is for the CardDAV build"
+  echo "   Core sub-projects: required for a functioning system"
+  echo "     -access       Target is for the access classes"
+  echo "     -bwann        Target is for the annotation classes"
+  echo "     -bwcalcore    Target is for the bedework core api implementation"
+  echo "     -bwcaldav     Target is for the bedework CalDAV implementation"
+  echo "     -bwcalfacade  Target is for the bedework api interface classes"
+  echo "     -bwicalendar  Target is for the bedework icalendar classes"
+  echo "     -bwinterfaces Target is for the bedework service and api interfaces"
+  echo "     -bwmisc       Target is for misc classes"
+  echo "     -bwsysevents  Target is for the system JMS event classes"
+  echo "     -bwwebapps    Target is for the bedework web ui classes"
+  echo "     -bwxml        Target is for the Bedework XML schemas build"
+  echo "                        (usually built automatically be dependent projects"
+  echo "     -caldav       Target is for the generic CalDAV server"
+  echo "     -carddav      Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
-  echo "     -davutil     Target is for the Bedework dav util classes"
-  echo "     -rpiutil     Target is for the Bedework util classes"
-  echo "     -tzsvr       Target is for the timezones server build"
-  echo "     -webdav      Target is for the WebDAV build"
+  echo "     -davutil      Target is for the Bedework dav util classes"
+  echo "     -dumprestore  Target is for the Bedework dump/restore service"
+  echo "     -indexer      Target is for the Bedework indexer service"
+  echo "     -rpiutil      Target is for the Bedework util classes"
+  echo "     -synch        Target is for the synch build"
+  echo "     -tzsvr        Target is for the timezones server build"
+  echo "     -webdav       Target is for the WebDAV build"
   echo "   Ancillary projects: not required"
-  echo "     -bwtools     Target is for the Bedework tools build"
-  echo "     -caldavTest  Target is for the CalDAV Test build"
-  echo "     -monitor     Target is for the bedework monitor application"
-  echo "     -testsuite   Target is for the bedework test suite"
+  echo "     -bwtools      Target is for the Bedework tools build"
+  echo "     -caldavTest   Target is for the CalDAV Test build"
+  echo "     -deployutil   Target is for the Bedework deployment classes"
+  echo "     -monitor      Target is for the bedework monitor application"
+  echo "     -testsuite    Target is for the bedework test suite"
   echo "   Experimental projects: no guarantees"
-  echo "     -catsvr      Target is for the Catsvr build"
-  echo "     -client      Target is for the bedework client application build"
-  echo "     -synch       Target is for the synch build"
-  echo "     -naming      Target is for the abstract naming api"
-  echo "     The default is a calendar build"
+  echo "     -catsvr       Target is for the Catsvr build"
+  echo "     -client       Target is for the bedework client application build"
+  echo "     -naming       Target is for the abstract naming api"
   echo ""
   echo "   Invokes ant to build or deploy the Bedework system. Uses a configuration"
   echo "   directory which contains one directory per configuration."
@@ -198,9 +243,9 @@ setDirectory() {
 	
 #     projects
 
-	if [ "$bwannotations" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwannotations
-      bwannotations=
+	if [ "$bwdeployutil" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwdeployutil
+      bwdeployutil=
 	  return
 	fi
 
@@ -251,10 +296,58 @@ setDirectory() {
       carddav=
 	  return
 	fi
+
+	if [ "$bwannotations" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwannotations
+      bwannotations=
+	  return
+	fi
+
+	if [ "$bwcalfacade" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwcalFacade
+      bwcalfacade=
+	  return
+	fi
+
+	if [ "$bwinterfaces" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwinterfaces
+      bwinterfaces=
+	  return
+	fi
+
+	if [ "$bwsysevents" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwsysevents
+      bwsysevents=
+	  return
+	fi
+
+	if [ "$bwicalendar" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwical
+      bwicalendar=
+	  return
+	fi
+
+	if [ "$bwmisc" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwmisc
+      bwmisc=
+	  return
+	fi
 	
-	if [ "$bedework" != "" ] ; then
-	  cd $QUICKSTART_HOME
-      bedework=
+	if [ "$bwwebapps" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwwebapps
+      bwwebapps=
+	  return
+	fi
+
+	if [ "$bwcaldav" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwcaldav
+      bwcaldav=
+	  return
+	fi
+
+	if [ "$bwcalcore" != "" ] ; then
+	  cd $QUICKSTART_HOME/bwcalcore
+      bwcalcore=
 	  return
 	fi
 	
@@ -267,6 +360,24 @@ setDirectory() {
 	if [ "$client" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwclient
       client=
+	  return
+	fi
+	
+	if [ "$indexer" != "" ] ; then
+	  cd $QUICKSTART_HOME/indexer
+      indexer=
+	  return
+	fi
+	
+	if [ "$dumprestore" != "" ] ; then
+	  cd $QUICKSTART_HOME/dumprestore
+      dumprestore=
+	  return
+	fi
+	
+	if [ "$bedework" != "" ] ; then
+	  cd $QUICKSTART_HOME
+      bedework=
 	  return
 	fi
 	
@@ -484,6 +595,31 @@ if [ "$1" = "-deployurlbuilder" ] ; then
   exit
 fi
 
+# ---------------------------------------------------------------------------- 
+#  Here we go through looking for arguments.
+#  
+#  Look firther down for wher we are specifying projects to build. I've
+#  not tried specifying more than one but I think it would work.
+#  
+#  There's a hidden default project "bedework" which you get if you don't specify
+#  any of the below projects. That gets turned off by each of them  with
+#        pkgdefault=
+#  Each also turns on it's own project build and any dependencies it has. 
+#  Further up in this file is where we build each project that has been turned
+#  on. That processing is done in dependency order. Of course this whole process
+#  fails if we ever build in a circular dependency - that's why it's important to
+#  do a clean build fairly regularly. So as an example
+#   -webdav)
+#      webdav="yes"
+#
+#      access="yes"
+#      bwxml="yes"
+#      rpiutil="yes"
+#      pkgdefault=
+#  Turns on the webdav build and also access, bwxml and rpiutil because it depends
+#  on them.
+# ---------------------------------------------------------------------------- 
+
 while [ "$1" != "" ]
 do
   # Process the next arg
@@ -566,8 +702,114 @@ do
       pkgdefault=
       shift
       ;;
+    -bwcaldav)
+      bwcaldav="yes"
+      
+      access="yes"
+      bwannotations="yes"  
+      bwcalfacade="yes"
+      bwicalendar="yes"
+      bwinterfaces="yes"
+#      bwmisc="yes"
+      bwsysevents="yes"
+      bwxml="yes"
+      caldav="yes"
+#      davutil="yes"
+      rpiutil="yes"
+      webdav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bwcalcore)
+      bwcalcore="yes"
+      
+      access="yes"
+      bwannotations="yes"  
+      bwcalfacade="yes"
+      bwicalendar="yes"
+      bwinterfaces="yes"
+      bwmisc="yes"
+      bwsysevents="yes"
+      bwxml="yes"
+      caldav="yes"
+      davutil="yes"
+      rpiutil="yes"
+      webdav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bwcalfacade)
+      bwcalfacade="yes"
+    
+      access="yes"
+      bwannotations="yes"
+      bwxml="yes"
+      caldav="yes"
+      davutil="yes"
+      rpiutil="yes"
+      webdav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bwicalendar)
+      bwicalendar="yes"
+    
+      bwannotations="yes"
+      bwcalfacade="yes"
+      bwxml="yes"
+      
+      pkgdefault=
+      shift
+      ;;
+    -bwinterfaces)
+      bwinterfaces="yes"
+    
+      access="yes"
+      bwannotations="yes"
+      bwxml="yes"
+      caldav="yes"
+      davutil="yes"
+      rpiutil="yes"
+      webdav="yes"
+      
+      pkgdefault=
+      shift
+      ;;
+    -bwmisc)
+      bwmisc="yes"
+      
+      davutil="yes"
+      bwannotations="yes"  
+      bwcalfacade="yes"
+      bwicalendar="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bwsysevents)
+      bwsysevents="yes"
+      
+      bwinterfaces="yes"
+      pkgdefault=
+      shift
+      ;;
     -bwtools)
       bwtools="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bwwebapps)
+      bwwebapps="yes"
+      
+      access="yes"
+      bwannotations="yes"  
+      bwcalfacade="yes"
+      bwicalendar="yes"
+      bwinterfaces="yes"
+      bwxml="yes"
+      caldav="yes"
+      davutil="yes"
+      rpiutil="yes"
+      webdav="yes"
       pkgdefault=
       shift
       ;;
@@ -626,6 +868,44 @@ do
       davutil="yes"
 
       bwxml="yes"
+      rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -deployutil)
+      bwdeployutil="yes"
+
+      pkgdefault=
+      shift
+      ;;
+    -dumprestore)
+      dumprestore="yes"
+      
+      access="yes"
+      bwannotations="yes"  
+      bwcalcore="yes"   
+      bwcalfacade="yes"
+      bwicalendar="yes"
+      bwinterfaces="yes"
+      bwmisc="yes"
+      bwsysevents="yes"
+      indexer="yes"
+      rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -indexer)
+      indexer="yes"
+      
+      access="yes"
+      bwannotations="yes"  
+      bwcalcore="yes"   
+      bwcalfacade="yes"
+      bwicalendar="yes"
+      bwinterfaces="yes"
+      bwmisc="yes"
+      bwsysevents="yes"
+      indexer="yes"
       rpiutil="yes"
       pkgdefault=
       shift
@@ -694,10 +974,20 @@ if [ "$pkgdefault" = "yes" ] ; then
   bedework="yes"
 
   access="yes"
-#  bwannotations="yes"  
+  bwannotations="yes"  
+  bwcalcore="yes"   
+  bwcaldav="yes"   
+  bwcalfacade="yes"
+  bwicalendar="yes"
+  bwinterfaces="yes"
+  bwmisc="yes"
+  bwsysevents="yes"
+  bwwebapps="yes"
   bwxml="yes"
   caldav="yes"
   davutil="yes"
+  dumprestore="yes"
+  indexer="yes"
   rpiutil="yes"
   webdav="yes"
 fi
