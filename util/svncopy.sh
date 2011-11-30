@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Copy the current trunk to a new location and adjust the bedework externals property
+# Copy all the projects in one branch to a new location
 
 usage() {
-  echo "This script will copy the trunk (or named location) to a new location and"
-  echo "adjust the svn:externals property to refer to the new copies"
+  echo "This script will copy the trunk (or named location) to a new location"
   echo " "
   echo " $0 help"
   echo " $0 (branch | tag | release) name comment-text [ from (branch | tag | release) name]"
@@ -13,7 +12,9 @@ usage() {
   echo " par 2: name e.g. my-copy or bedework-4.0.1"
   echo " par 3: comment text"
   echo " "
-  echo ' e.g. svncopy branch my-copy "my personal branch"'
+  echo " Examples:"
+  echo '  svncopy branch my-copy "my personal branch"'
+  echo '  svncopy release bedework-4.1 "New release"'
   echo " "
   exit
 }
@@ -69,8 +70,7 @@ check() {
 }
 
 # ------------------------------------------------------------------
-# copyproject - copy a single project. At the same time build up an
-#               externals property file
+# copyproject - copy a single project. 
 #
 # par 1 - project name
 # par 2 - destination
@@ -79,22 +79,7 @@ check() {
 # ------------------------------------------------------------------
 copyproject() {
   echo "copyproject $1 $2 from $4"
-  if [ "${1}" = "caldavimpl" ]
-  then
-    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "calendarapi" ]
-  then
-    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "dumprestore" ]
-  then
-    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "indexer" ]
-  then
-    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  elif [ "${1}" = "webapps" ]
-  then
-    echo "projects/$1 $SVNREPOSITORY/$1/$2" >> $SCTEMPFILE
-  fi
+
   svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2
 }
 
@@ -118,45 +103,47 @@ COMMENT="$3"
 PROJECTS=""
 PROJECTS="$PROJECTS access"
 PROJECTS="$PROJECTS bedework"
+#  bwalarms  - later
+PROJECTS="$PROJECTS bwannotations"
+PROJECTS="$PROJECTS bwcalcore"
+PROJECTS="$PROJECTS bwcaldav"
+PROJECTS="$PROJECTS bwcalFacade"
+#  bwcrawler - can probably delete
+PROJECTS="$PROJECTS bwdeployutil"
+PROJECTS="$PROJECTS bwical"
+PROJECTS="$PROJECTS bwinterfaces"
+PROJECTS="$PROJECTS bwmisc"
+PROJECTS="$PROJECTS bwsysevents"
 PROJECTS="$PROJECTS bwtools"
 PROJECTS="$PROJECTS bwtzsvr"
+PROJECTS="$PROJECTS bwwebapps"
 PROJECTS="$PROJECTS bwxml"
 PROJECTS="$PROJECTS cachedfeeder"
 PROJECTS="$PROJECTS caldav"
-PROJECTS="$PROJECTS caldavimpl"
+#  caldavimpl - dropped in 3.8 release
 PROJECTS="$PROJECTS caldavTest"
-PROJECTS="$PROJECTS calendarapi"
+#  calendarapi - dropped in 3.8 release
 PROJECTS="$PROJECTS carddav"
 PROJECTS="$PROJECTS clientapp"
 #PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
+#  exchgGateway - later
+#  exchgsynch - delete this one 
+#   freebusy   - aggregator - not supported
 PROJECTS="$PROJECTS indexer"
 PROJECTS="$PROJECTS monitor"
 PROJECTS="$PROJECTS naming"
 PROJECTS="$PROJECTS rpiutil"
-# PROJECTS="$PROJECTS synch"
+PROJECTS="$PROJECTS synch"
+#   synchml  - delete?
 PROJECTS="$PROJECTS testsuite"
-PROJECTS="$PROJECTS webapps"
+#   timezones ?
+#   webapps   dropped in 3.8
+#   webcache ?
 PROJECTS="$PROJECTS webdav"
-
-SCTEMPDIR="${TMPDIR:=/tmp}/svncopydir$$"
-SCTEMPFILE=$SCTEMPDIR/svncopy
-
-mkdir $SCTEMPDIR
-
-# Assure the file is removed at program termination
-# or after we received a signal:
-trap 'rm -rf "$SCTEMPDIR" >/dev/null 2>&1' 0
-trap "exit 2" 1 2 3 15
 
 for project in $PROJECTS
 do
    copyproject "$project" "$TARGET" "$COMMENT" "$SOURCE"
 done
-
-svn co -N $SVNREPOSITORY/bedework/$TARGET $SCTEMPDIR/bedework
-svn propset svn:externals -F $SCTEMPFILE $SCTEMPDIR/bedework
-svn commit -N -m "Change externals to new copies" $SCTEMPDIR/bedework
-
-#more $SCTEMPFILE

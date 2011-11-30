@@ -18,25 +18,6 @@
     <property name="org.bedework.libcache.dir"
               location="${org.bedework.project.bedework}/libcache"/>
 
-  <!-- Where we put other projects -->
-  <property name="org.bedework.projects"
-            location="${org.bedework.project.bedework}/projects" />
-
-  <property name="org.bedework.project.caldavimpl"
-            location="${org.bedework.projects}/caldavimpl" />
-
-  <property name="org.bedework.project.calendarapi"
-            location="${org.bedework.projects}/calendarapi" />
-
-  <property name="org.bedework.project.dumprestore"
-            location="${org.bedework.projects}/dumprestore" />
-
-  <property name="org.bedework.project.indexer"
-            location="${org.bedework.projects}/indexer" />
-
-  <property name="org.bedework.project.webapps"
-            location="${org.bedework.projects}/webapps" />
-
   <property name="build.dir" location="${org.bedework.project.bedework}/build"/>
   
   <property name="buildsh" location="${build.dir}/buildsh.xml"/>
@@ -52,14 +33,6 @@
   <property file="${bw.project.home}/build.properties" />
 
   <property name="project.version" value="${org.bedework.version}"/>
-
-  <property name="org.bedework.deployutil.jar"
-            location="${org.bedework.project.bedework}/bin/${org.bedework.deployutil.jar.name}-${project.version}.jar" />
-
-  <ant antfile="${org.bedework.project.bedework}/deployutil/build.xml" inheritrefs="true"
-         target="build" />
-  
-  <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
   
   <import file="${build.dir}/buildTools/deftasks.xml"/>
 
@@ -123,7 +96,7 @@
     </path>
 -->
     <!-- ===============================================================
-              Locations and jar files built by this project.
+              This project builds nothing - it just assembles.
          =============================================================== -->
 
     <property name="org.bedework.temp.dir"
@@ -140,282 +113,39 @@
 
     <property name="org.bedework.deployment.base"
               location="${org.bedework.project.bedework}/deployment" />
-
-    <property name="org.bedework.build.jar"
-              location="${bin.home}/${org.bedework.build.jar.name}-${project.version}.jar" />
-
-    <property name="org.bedework.deployutil.jar"
-              location="${bin.home}/${org.bedework.deployutil.jar.name}-${project.version}.jar" />
-  </target>
-
-  <target name="init.build" depends="init">
-    <mkdir dir="${dist.home}" />
-
-    <mkdir dir="${bin.home}" />
-
-    <mkdir dir="${org.bedework.empty.dir}" />
   </target>
 
   <!-- =================================================================
        "build" and "clean" targets for the project
        ================================================================= -->
 
-  <target name="build" depends="init.build,build.deployutil,
-                                build.calendarapi,
-                                build.caldavimpl,
-                                build.webapps,build.indexer,
-                              	build.dumprestore"
+  <target name="build" depends="init"
           description="builds the project">
   </target>
 
-  <target name="build.deployutil" depends="init"
-          description="builds the deployutil component">
-    <ant antfile="${org.bedework.project.bedework}/deployutil/build.xml" inheritrefs="true"
-           target="build" />
-    
-    <copy todir="${build.dir}" file="${org.bedework.deployutil.jar}" />
-  </target>
-
-  <target name="clean" depends="init,
-                                clean.calendarapi,
-                                clean.caldavimpl,
-                                clean.webapps,clean.indexer,
-                              	clean.dumprestore"
+  <target name="clean" depends="init"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
-    <delete dir="${bin.home}" />
   </target>
 
-  <target name="quickstart-clean" depends="init,
-                                           clean.calendarapi,
-                                           clean.caldavimpl,
-                                           clean.webapps,clean.indexer,
-  	                                       clean.dumprestore"
+  <target name="quickstart-clean" depends="init"
           description="partial clean up for quickstart.">
-    <delete dir="${bin.home}" />
     <delete dir="${org.bedework.temp.dir}" />
     <delete dir="${org.bedework.empty.dir}" />
     <delete dir="${bw.project.home}/libcache"/>
-    <delete dir="${bw.project.home}/applib"/>
 
     <delete>
       <fileset dir="${dist.home}" includes="*.war"/>
     </delete>
   </target>
 
-  <target name="clean.build" depends="clean, build"
-          description="cleans then builds the project"/>
-
   <!-- =================================================================
-       The "deploy" and "deploy.all" target builds and deploys the applications
+       The "deploy" target deploys the applications
        ================================================================= -->
 
   <target name="deploy" depends="build"
           description="builds and deploys the applications">
     <ant antfile="${org.bedework.project.bedework}/deployment/build.xml" inheritrefs="true"
          target="deploy" />
-  </target>
-
-  <!-- =================================================================
-       The "clean.deploy" target cleans, builds and deploys the applications
-       ================================================================= -->
-
-  <target name="clean.deploy" depends="clean,deploy" />
-
-  <!-- =================================================================
-       The "build.configured" target builds configured applications
-       ================================================================= -->
-
-  <target name="build.configured" depends="build"
-          description="Build configured applications" >
-    <ant antfile="${org.bedework.project.bedework}/deployment}/build.xml" inheritrefs="true"
-         target="build.configured" />
-  </target>
-
-  <target name="clean.build.configured" depends="clean,build.configured" />
-
-  <!-- ======================== javadoc target =======================
-       We build these and copy in turn into the main bedework docs directory.
-
-       The org.bedework.projectdocs.home property allows each project to
-       locate the previously built javadocs so they can link to it.
-
-       We also assume access to the java api docs.
-       ================================================================= -->
-
-  <target name="javadoc" depends="init" description="Generate javadoc">
-    <property name="docs.home" location="${bw.project.home}/docs"/>
-    <property name="org.bedework.projectdocs.home" location="${docs.home}/projectdocs"/>
-    <delete dir="${org.bedework.projectdocs.home}" />
-    <mkdir dir="${org.bedework.projectdocs.home}" />
-
-    <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/calendarapi/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/dumprestore/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.caldavimpl}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/caldavimpl/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.indexer}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/indexer/api" />
-    </ant>
-
-    <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
-         target="javadoc" >
-      <property name="destdir"
-                location="${org.bedework.projectdocs.home}/webapps/api" />
-    </ant>
-  </target>
-
-  <!-- =================================================================
-       Targets to build sub-projects.
-       ================================================================= -->
-
-  <!-- .................................................................
-                          caldavimpl
-       .................................................................. -->
-  <target name="build.caldavimpl" depends="init"
-          description="builds the caldavimpl project">
-    <ant antfile="${org.bedework.project.caldavimpl}/build.xml" inheritall="false"
-       target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.caldavimpl" depends="init"
-          description="clean the caldavimpl project">
-    <ant antfile="${org.bedework.project.caldavimpl}/build.xml" inheritall="false"
-         target="deep-clean" />
-  </target>
-
-  <target name="clean.build.caldavimpl" depends="init"
-          description="clean builds the caldavimpl project"/>
-
-  <!-- .................................................................
-                          calendarapi
-       .................................................................. -->
-  <target name="build.calendarapi" depends="init"
-          description="builds the calendar project">
-    <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
-           target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.calendarapi" depends="init"
-          description="clean the calendar project">
-    <ant antfile="${org.bedework.project.calendarapi}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.calendarapi" depends="clean.calendarapi,build.calendarapi"
-          description="clean builds the calendarapi project"/>
-
-  <!-- .................................................................
-                          dumprestore
-       .................................................................. -->
-  <target name="build.dumprestore" depends="init"
-          description="builds the dumprestore project">
-    <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritall="false"
-           target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.dumprestore" depends="init"
-          description="clean the dumprestore project">
-    <ant antfile="${org.bedework.project.dumprestore}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.dumprestore" depends="clean.dumprestore,build.dumprestore"
-          description="builds the dumprestore project"/>
-
-  <!-- .................................................................
-                          indexer
-       .................................................................. -->
-  <target name="build.indexer" depends="init"
-          description="builds the indexer project">
-    <ant antfile="${org.bedework.project.indexer}/build.xml" inheritall="false"
-           target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.indexer" depends="init"
-          description="clean the indexer project">
-    <ant antfile="${org.bedework.project.indexer}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.indexer" depends="clean.indexer,build.indexer"
-          description="builds the indexer project"/>
-
-  <!-- .................................................................
-                          webapps
-       .................................................................. -->
-  <target name="build.webapps" depends="init"
-          description="builds the webapps project">
-    <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
-           target="build-all"  >
-      <property name="org.bedework.libcache.dir"
-                location="${org.bedework.project.bedework}/libcache"/>
-    </ant>
-  </target>
-
-  <target name="clean.webapps" depends="init"
-          description="clean the webapps project">
-    <ant antfile="${org.bedework.project.webapps}/build.xml" inheritall="false"
-           target="deep-clean" />
-  </target>
-
-  <target name="clean.build.webapps" depends="clean.webapps,build.webapps"
-          description="builds the webapps project"/>
-
-  <!-- =================================================================
-       Targets to build sub-components of this project.
-       ================================================================= -->
-
-  <target name="build.build" depends="init"
-          description="builds the java build configuration component">
-    <ant antfile="${org.bedework.project.bedework}/build/build.xml" inheritrefs="true"
-           target="build" >
-      <property name="build.jar.file" location="${org.bedework.build.jar}" />
-    </ant>
-  </target>
-
-  <!-- Rebuild the http test suite only -->
-  <target name="httptest" depends="init"
-          description="Run httptest suite" >
-    <input message="httptest may destroy this calendar db. Proceed with test"
-           validargs="y,n"
-           addproperty="do.httptest" />
-    <condition property="do.abort">
-      <equals arg1="n" arg2="${do.httptest}"/>
-    </condition>
-    <fail if="do.abort">httptest aborted by user.</fail>
-
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
-           target="bld.httptest" />
-
-    <ant antfile="${calendar.build.file}" inheritrefs="true"
-           target="run.httptest" />
   </target>
 </project>
