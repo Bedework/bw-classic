@@ -13,8 +13,8 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-caldav" version="${org.bedework.caldav.version}"
-              projecthome="${bw.project.home}/projects/caldavimpl" />
+              name="bw-caldav" version="${org.bedework.bwcaldav.version}"
+              projecthome="${bw.project.home}/../bwcaldav" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
@@ -31,7 +31,7 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-synchwsschema" version="${org.bedework.bwxml.version}"
-              projecthome="${bw.project.home}/../bwxml" />
+              projecthome="${project.home}/../bwxml" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
@@ -48,140 +48,125 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-tzschema" version="${org.bedework.bwxml.version}"
-              projecthome="${bedework.home}/../bwxml" />
+              projecthome="${project.home}/../bwxml" />
 
       <!-- ================= Bedework dump/restore jars ==================== -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-dumpres" version="${org.bedework.dumprestore.version}"
-              projecthome="${bw.project.home}/projects/dumprestore" />
+              projecthome="${project.home}/../dumprestore" />
 
-      <!-- ================ Bedework event scheduler jars ================== -->
-
+      <!-- ================= Bedework calendar core jars ================== -->
+      
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-inoutsched" version="${org.bedework.calendarapi.version}"
-              projecthome="${bw.project.home}/projects/calendarapi" />
+              name="bw-inoutsched" version="${org.bedework.calcore.version}"
+              projecthome="${project.home}/../bwcalcore" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-calcorei" version="${org.bedework.calcore.version}" 
+              projecthome="${project.home}/../bwcalcore" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-calcore" version="${org.bedework.calcore.version}" 
+              projecthome="${project.home}/../bwcalcore" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-calsvc" version="${org.bedework.calcore.version}" 
+              projecthome="${project.home}/../bwcalcore" />
 
       <!-- ================ Bedework calendar api jars ===================== -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-annotations" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
+              name="bw-annotations" version="${org.bedework.annotations.version}" 
+              projecthome="${project.home}/../bwannotations" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-calfacade" version="${org.bedework.calfacade.version}" 
+              projecthome="${project.home}/../bwcalFacade" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-apiutil" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
+              name="bw-misc" version="${org.bedework.misc.version}" 
+              projecthome="${project.home}/../bwmisc" />
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-calfacade" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
+              name="bw-icalendar" version="${org.bedework.icalendar.version}" 
+              projecthome="${project.home}/../bwical" />
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-calcorei" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
+              name="bw-interfaces" version="${org.bedework.interfaces.version}" 
+              projecthome="${project.home}/../bwinterfaces" />
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-calcore" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
-      
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-calsvci" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
-      
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-calsvc" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
-      
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-client" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
-      
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-icalendar" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-logging" version="${org.bedework.calendarapi.version}"
-              projecthome="${bw.project.home}/projects/calendarapi" />
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-mail" version="${org.bedework.calendarapi.version}"
-              projecthome="${bw.project.home}/projects/calendarapi" />
-      
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-sysevents" version="${org.bedework.calendarapi.version}" 
-              projecthome="${bw.project.home}/projects/calendarapi" />
+              name="bw-sysevents" version="${org.bedework.sysevents.version}" 
+              projecthome="${project.home}/../bwsysevents" />
 
       <!-- ===================== Bedework dav jars ========================= -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-davio" version="${org.bedework.davutil.version}" 
-              projecthome="${bw.project.home}/../davutil" />
+              projecthome="${project.home}/../davutil" />
 
       <!-- =================== Bedework indexer jars ======================= -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-indexer" version="${org.bedework.indexer.version}"
-              projecthome="${bw.project.home}/projects/indexer" />
+              projecthome="${project.home}/../indexer" />
 
       <!-- ================== Bedework webapps jars ======================== -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-appcommon" version="${org.bedework.webapps.version}" 
-              projecthome="${bw.project.home}/projects/webapps" />
+              projecthome="${project.home}/../bwwebapps" />
 
       <!-- Only for portlet - maybe
         <getJar lib="${org.bedework.temp.extrajars.dir}"
                 libcache="${org.bedework.libcache.dir}"
                 name="bw-liferay" version="${org.bedework.webapps.version}" 
-                projecthome="${bw.project.home}/projects/webapps" />
+                projecthome="${project.home}/projects/webapps" />
                   
         <getJar lib="${org.bedework.temp.extrajars.dir}"
                 libcache="${org.bedework.libcache.dir}"
                 name="bw-uportal" version="${org.bedework.webapps.version}" 
-                projecthome="${bw.project.home}/projects/webapps" />
+                projecthome="${project.home}/projects/webapps" />
                 -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-webcommon" version="${org.bedework.webapps.version}"
-              projecthome="${bw.project.home}/projects/webapps" />
+              projecthome="${project.home}/../bwwebapps" />
 
       <!-- =================== Bedework webdav jars ======================== -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="bw-webdavserver" version="${org.bedework.webdav.version}"
-              projecthome="${bw.project.home}/../webdav" />
+              projecthome="${project.home}/../webdav" />
 
       <!-- ==================== Bedework other jars ======================== -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="rpiaccess" version="${org.bedework.access.version}" 
-              projecthome="${bw.project.home}/../access" />
+              projecthome="${project.home}/../access" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="rpiutil" version="${org.bedework.rpiutil.version}" 
-              projecthome="${bw.project.home}/../rpiutil" />
+              projecthome="${project.home}/../rpiutil" />
       
       <!-- ======================= Ical4j jars ============================ -->
 

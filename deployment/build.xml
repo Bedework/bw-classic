@@ -13,7 +13,7 @@
      
      We cycle over the information we have for each application we want to 
      build and for each application use ants property mapping to map the 
-     properties onto a constant set of names, e.g. the application specific 
+     properties onto a constant set of names, e.g. the applicfation specific 
      name 
          org.bedework.app.CalAdmin.deploy.dir
      would be mapped onto 
@@ -70,7 +70,9 @@
             location="${org.bedework.temp.dir}/earextrajars" />
 	
   <dirname property="this.build.dir" file="${ant.file}"/>
-  <property name="bedework.deployment.base" location="this.build.dir" />
+  <property name="bedework.deployment.base" location="${this.build.dir}" />
+  <property name="org.bedework.deployment.resources" 
+            location="${bedework.deployment.base}/resources" />
 
   <import file="${build.dir}/buildTools/getJar.xml"/>
 
@@ -84,6 +86,35 @@
 
     <loadDeployConfig />
 
+    <!-- All the projects we deploy -->
+    <property name="org.bedework.project.bwtzsvr"
+              location="${org.bedework.project.bedework}/../bwtzsvr" />
+    <property name="org.bedework.project.bwwebapps"
+              location="${org.bedework.project.bedework}/../bwwebapps" />
+    <property name="org.bedework.project.bwcaldav"
+              location="${org.bedework.project.bedework}/../bwcaldav" />
+    <property name="org.bedework.project.caldavTest"
+              location="${org.bedework.project.bedework}/../caldavTest" />
+    <property name="org.bedework.project.testsuite"
+              location="${org.bedework.project.bedework}/../testsuite" />
+    <property name="org.bedework.project.bwtools"
+              location="${org.bedework.project.bedework}/../bwtools" />
+    <property name="org.bedework.project.dumprestore"
+              location="${org.bedework.project.bedework}/../dumprestore" />
+    <property name="org.bedework.project.indexer"
+              location="${org.bedework.project.bedework}/../indexer" />
+    <property name="org.bedework.project.bwsysevents"
+              location="${org.bedework.project.bedework}/../bwsysevents" />
+    <property name="org.bedework.project.bwcalFacade"
+              location="${org.bedework.project.bedework}/../bwcalFacade" />
+    <property name="org.bedework.project.bwcalcore"
+              location="${org.bedework.project.bedework}/../bwcalcore" />
+    <property name="org.bedework.project.carddav"
+              location="${org.bedework.project.bedework}/../carddav" />
+    <property name="org.bedework.project.synch"
+              location="${org.bedework.project.bedework}/../synch" />
+
+
     <!-- default to debug off -->
     <property name="app.debug.val" value="0" />
 
@@ -94,7 +125,7 @@
               value="bedework" />
     
     <property name="org.bedework.sou.hibernate.properties"
-              location="${org.bedework.project.calendarapi}/calCore/resources" />
+              location="${org.bedework.deployment.resources}/hibernate" />
     
     <property name="org.bedework.jboss.datasource.jndiname"
               value="${org.bedework.global.jboss.db.datasource.jndiname}" />
@@ -172,7 +203,7 @@
     <delete dir="${org.bedework.temp.wars.home}" />
 
     <property name="org.bedework.lang.properties"
-              location="${org.bedework.project.calendarapi}/calFacade/resources/org/bedework/locale/resources" />
+              location="${org.bedework.deployment.resources}/org/bedework/locale/resources" />
 
     <property name="org.bedework.xsllang.dir"
               location="${org.bedework.temp.dir}/xsllang" />

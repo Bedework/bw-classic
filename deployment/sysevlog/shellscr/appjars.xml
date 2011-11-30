@@ -11,8 +11,13 @@
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-sysevents" version="${org.bedework.calendarapi.version}"
-              projecthome="${bw.project.home}/projects/calendarapi" />
+              name="bw-sysevents" version="${org.bedework.sysevents.version}"
+              projecthome="${bw.project.home}/../bwsysevents" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-interfaces" version="${org.bedework.interfaces.version}" 
+              projecthome="${project.home}/../bwinterfaces" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
