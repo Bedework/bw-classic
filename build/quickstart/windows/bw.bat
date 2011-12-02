@@ -35,23 +35,59 @@ SET ant_loglevel="-quiet"
 SET bw_loglevel=
 
 :: Projects we need to update
-SET updateProjects="bwxml rpiutil access davutil webdav caldav bedework bedework-carddav bwtzsvr cachedfeeder"
+SET updateProjects="access"
+SET updateProjects="%updateProjects%  bedework"
+SET updateProjects="%updateProjects%  bedework-carddav"
+SET updateProjects="%updateProjects%  bwannotations"
+SET updateProjects="%updateProjects%  bwcalcore"
+SET updateProjects="%updateProjects%  bwcaldav"
+SET updateProjects="%updateProjects%  bwcalFacade"
+SET updateProjects="%updateProjects%  bwdeployutil"
+SET updateProjects="%updateProjects%  bwical"
+SET updateProjects="%updateProjects%  bwinterfaces"
+SET updateProjects="%updateProjects%  bwmisc"
+SET updateProjects="%updateProjects%  bwsysevents"
+SET updateProjects="%updateProjects%  bwtzsvr"
+SET updateProjects="%updateProjects%  bwwebapps"
+SET updateProjects="%updateProjects%  bwxml"
+SET updateProjects="%updateProjects%  cachedfeeder"
+SET updateProjects="%updateProjects%  caldav"
+SET updateProjects="%updateProjects%  davutil"
+SET updateProjects="%updateProjects%  dumprestore"
+SET updateProjects="%updateProjects%  indexer"
+SET updateProjects="%updateProjects%  rpiutil"
+SET updateProjects="%updateProjects%  synch"
+SET updateProjects="%updateProjects%  webdav"
 
-:: Projects we will build
+:: Projects we will build - pkgdefault (bedework) is built if nothing specified
 SET pkgdefault=yes
 SET access=
 SET bedework=
+SET bwannotations=
+SET bwcalcore=
+SET bwcaldav=
+SET bwcalfacade=
+SET bwdeployutil=
+SET bwicalendar=
+SET bwinterfaces=
+SET bwmisc=
+SET bwsysevents=
 SET bwtools=
+SET bwwebapps=
 SET bwxml=
 SET caldav=
 SET caldavTest=
 SET carddav=
+SET catsvr=
 SET client=
 SET davutil=
+SET dumprestore=
+SET indexer=
 SET monitor=
 SET naming=
 SET rpiutil=
 SET synch=
+SET testsuite=
 SET tzsvr=
 SET webdav=
 
@@ -154,8 +190,125 @@ GOTO branch
   SHIFT
   GOTO branch
   
+:bwann
+  SET bwannotations="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwcaldav
+  SET bwcaldav="yes"
+  
+  SET access="yes"
+  SET bwannotations="yes"
+  SET bwcalfacade="yes"
+  SET bwicalendar="yes"
+  SET bwinterfaces="yes"
+  SET bwsysevents="yes"
+  SET bwxml="yes"
+  SET caldav="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwcalcore
+  SET bwcalcore="yes"
+  
+  SET access="yes"
+  SET bwannotations="yes"
+  SET bwcalfacade="yes"
+  SET bwicalendar="yes"
+  SET bwinterfaces="yes"
+  SET bwmisc="yes"
+  SET bwsysevents="yes"
+  SET bwxml="yes"
+  SET caldav="yes"
+  SET davutil="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwcalfacade
+  SET bwcalfacade="yes"
+  
+  SET access="yes"
+  SET bwannotations="yes"
+  SET bwxml="yes"
+  SET caldav="yes"
+  SET davutil="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwicalendar
+  SET bwicalendar="yes"
+  
+  SET bwannotations="yes"
+  SET bwcalfacade="yes"
+  SET bwxml="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwinterfaces
+  SET bwinterfaces="yes"
+  
+  SET access="yes"
+  SET bwannotations="yes"
+  SET bwcalfacade="yes"
+  SET bwxml="yes"
+  SET caldav="yes"
+  SET davutil="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwmisc
+  SET bwmisc="yes"
+  
+  SET bwannotations="yes"
+  SET bwcalfacade="yes"
+  SET bwicalendar="yes"
+  SET davutil="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwsysevents
+  SET bwsysevents="yes"
+
+  SET bwinterfaces="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
 :bwtools
   SET bwtools="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:bwwebapps
+  SET bwwebapps="yes"
+  
+  SET access="yes"
+  SET bwannotations="yes"
+  SET bwcalfacade="yes"
+  SET bwicalendar="yes"
+  SET bwinterfaces="yes"
+  SET bwxml="yes"
+  SET caldav="yes"
+  SET davutil="yes"
+  SET rpiutil="yes"
+  SET webdav="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -210,6 +363,39 @@ GOTO branch
   SET davutil="yes"
 
   SET bwxml="yes"
+  SET rpiutil="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:dumprestore
+  SET dumprestore="yes"
+  
+  SET access="yes"
+  SET bwannotations="yes"
+  SET bwcalcore="yes"
+  SET bwcalfacade="yes"
+  SET bwicalendar="yes"
+  SET bwinterfaces="yes"
+  SET bwmisc="yes"
+  SET bwsysevents="yes"
+  SET indexer="yes"
+  SET rpiutil="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
+:indexer
+  SET indexer="yes"
+  
+  SET access="yes"
+  SET bwannotations="yes"
+  SET bwcalcore="yes"
+  SET bwcalfacade="yes"
+  SET bwicalendar="yes"
+  SET bwinterfaces="yes"
+  SET bwmisc="yes"
+  SET bwsysevents="yes"
   SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
@@ -314,9 +500,20 @@ IF NOT "%pkgdefault%" == "yes" GOTO notdefault
   SET bedework="yes"
 
   SET access="yes"
+  SET bwannotations="yes"
+  SET bwcalcore="yes"
+  SET bwcaldav="yes"
+  SET bwcalfacade="yes"
+  SET bwicalendar="yes"
+  SET bwinterfaces="yes"
+  SET bwmisc="yes"
+  SET bwsysevents="yes"
+  SET bwwebapps="yes"
   SET bwxml="yes"
   SET caldav="yes"
   SET davutil="yes"
+  SET dumprestore="yes"
+  SET indexer="yes"
   SET rpiutil="yes"
   SET webdav="yes"
 
@@ -373,6 +570,7 @@ GOTO doneQB
   IF NOT "%dirstart%empty" == "empty" GOTO cdDirstart
   IF NOT "%deploylog4j%empty" == "empty" GOTO cdDeploylog4j
 :: Now projects
+  IF NOT "%bwdeployutil%empty" == "empty" GOTO cdBwdeployutil
   IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
   IF NOT "%rpiutil%empty" == "empty" GOTO cdRpiutil
   IF NOT "%access%empty" == "empty"  GOTO cdAccess
@@ -381,8 +579,20 @@ GOTO doneQB
   IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
   IF NOT "%caldavTest%empty" == "empty"  GOTO cdCaldavTest
   IF NOT "%carddav%empty" == "empty" GOTO cdCarddav
-  IF NOT "%bedework%empty" == "empty" GOTO cdBedework
+  IF NOT "%bwannotations%empty" == "empty" GOTO cdBwannotations  
+  IF NOT "%bwcalfacade%empty" == "empty" GOTO cdBwcalFacade
+  IF NOT "%bwinterfaces%empty" == "empty" GOTO cdBwinterfaces
+  IF NOT "%bwsysevents%empty" == "empty" GOTO cdBwsysevents
+  IF NOT "%bwicalendar%empty" == "empty" GOTO cdBwicalendar
+  IF NOT "%bwmisc%empty" == "empty" GOTO cdBwmisc
+  IF NOT "%bwwebapps%empty" == "empty" GOTO cdBwwebapps
+  IF NOT "%bwcaldav%empty" == "empty" GOTO cdBwcaldav
+  IF NOT "%bwcalcore%empty" == "empty" GOTO cdBwcalcore
+  IF NOT "%catsvr%empty" == "empty" GOTO cdCatsvr
   IF NOT "%client%empty" == "empty"  GOTO cdBwclient
+  IF NOT "%indexer%empty" == "empty" GOTO cdIndexer
+  IF NOT "%dumprestore%empty" == "empty" GOTO cdDumprestore
+  IF NOT "%bedework%empty" == "empty" GOTO cdBedework
   IF NOT "%monitor%empty" == "empty" GOTO cdMonitor
   IF NOT "%naming%empty" == "empty"  GOTO cdNaming
   IF NOT "%synch%empty" == "empty"  GOTO cdSynch
@@ -434,7 +644,62 @@ GOTO:EOF
   cd %QUICKSTART_HOME%
   SET bedework=
   GOTO doant
-  
+    
+:cdBwannotations
+  cd %QUICKSTART_HOME%\bwannotations
+  SET bwannotations=
+  GOTO doant
+    
+:cdBwcalcore
+  cd %QUICKSTART_HOME%\bwcalcore
+  SET bwcalcore=
+  GOTO doant
+    
+:cdBwcaldav
+  cd %QUICKSTART_HOME%\bwcaldav
+  SET bwcaldav=
+  GOTO doant
+    
+:cdBwcalfacade
+  cd %QUICKSTART_HOME%\bwcalfacade
+  SET bwcalfacade=
+  GOTO doant
+    
+:cdBwdeployutil
+  cd %QUICKSTART_HOME%\bwdeployutil
+  SET bwdeployutil=
+  GOTO doant
+    
+:cdBwicalendar
+  cd %QUICKSTART_HOME%\bwicalendar
+  SET bwicalendar=
+  GOTO doant
+    
+:cdBwinterfaces
+  cd %QUICKSTART_HOME%\bwinterfaces
+  SET bwinterfaces=
+  GOTO doant
+    
+:cdBwmisc
+  cd %QUICKSTART_HOME%\bwmisc
+  SET bwmisc=
+  GOTO doant
+    
+:cdBwsysevents
+  cd %QUICKSTART_HOME%\bwsysevents
+  SET bwsysevents=
+  GOTO doant
+    
+:cdBwtools
+  cd %QUICKSTART_HOME%\bwtools
+  SET bwtools=
+  GOTO doant
+    
+:cdBwwebapps
+  cd %QUICKSTART_HOME%\bwwebapps
+  SET bwwebapps=
+  GOTO doant
+    
 :cdBwxml
   cd %QUICKSTART_HOME%\bwxml
   SET bwxml=
@@ -465,6 +730,21 @@ GOTO:EOF
   SET davutil=
   GOTO doant
     
+:cdDeploytil
+  cd %QUICKSTART_HOME%\deploytil
+  SET deploytil=
+  GOTO doant
+    
+:cdDumprestore
+  cd %QUICKSTART_HOME%\dumprestore
+  SET dumprestore=
+  GOTO doant
+    
+:cdIndexer
+  cd %QUICKSTART_HOME%\indexer
+  SET indexer=
+  GOTO doant
+    
 :cdMonitor
   cd %QUICKSTART_HOME%\MonitorApp
   SET monitor=
@@ -493,11 +773,6 @@ GOTO:EOF
 :cdTzsvr
   cd %QUICKSTART_HOME%\bwtzsvr
   SET tzsvr=
-  GOTO doant
-    
-:cdBwtools
-  cd %QUICKSTART_HOME%\bwtools
-  SET bwtools=
   GOTO doant
     
 :cdWebdav
@@ -532,13 +807,25 @@ IF "%1" == "-ant-debug" GOTO ant-debug
 IF "%1" == "-build-debug" GOTO build-debug
 
 IF "%1" == "-access" GOTO access 
+IF "%1" == "-bwann" GOTO bwannotations 
+IF "%1" == "-bwcaldav" GOTO bwcaldav 
+IF "%1" == "-bwcalcore" GOTO bwcalcore 
+IF "%1" == "-bwcalfacade" GOTO bwcalfacade 
+IF "%1" == "-bwicalendar" GOTO bwicalendar 
+IF "%1" == "-bwinterfaces" GOTO bwinterfaces 
+IF "%1" == "-bwmisc" GOTO bwmisc 
+IF "%1" == "-bwsysevents" GOTO bwsysevents 
 IF "%1" == "-bwtools" GOTO bwtools 
+IF "%1" == "-bwwebapps" GOTO bwwebapps 
 IF "%1" == "-bwxml" GOTO bwxml 
 IF "%1" == "-caldav" GOTO caldav
 IF "%1" == "-caldavTest" GOTO caldavTest
 IF "%1" == "-carddav" GOTO carddav 
 IF "%1" == "-client" GOTO client
 IF "%1" == "-davutil" GOTO davutil
+IF "%1" == "-deployutil" GOTO deployutil
+IF "%1" == "-dumprestore" GOTO dumprestore
+IF "%1" == "-indexer" GOTO indexer
 IF "%1" == "-monitor" GOTO monitor
 IF "%1" == "-naming" GOTO naming
 IF "%1" == "-rpiutil" GOTO rpiutil
@@ -585,18 +872,34 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO.
   ECHO   Core projects: required for a functioning system
   ECHO      -access      Target is for the access classes
+  ECHO      -bwann        Target is for the annotation classes
+  ECHO      -bwcalcore    Target is for the bedework core api implementation
+  ECHO      -bwcaldav     Target is for the bedework CalDAV implementation
+  ECHO      -bwcalfacade  Target is for the bedework api interface classes
+  ECHO      -bwicalendar  Target is for the bedework icalendar classes
+  ECHO      -bwinterfaces Target is for the bedework service and api interfaces
+  ECHO      -bwmisc       Target is for misc classes
+  ECHO      -bwsysevents  Target is for the system JMS event classes
+  ECHO      -bwwebapps    Target is for the bedework web ui classes
   ECHO      -bwxml       Target is for the Bedework XML schemas build
   ECHO                       (usually built automatically be dependent projects
+  ECHO      -caldav       Target is for the generic CalDAV server
   ECHO      -carddav     Target is for the CardDAV build
   ECHO      -carddav deploy-addrbook    To deploy the Javascript Addressbook client.
   ECHO      -davutil     Target is for the Bedework dav util classes
+  ECHO      -dumprestore  Target is for the Bedework dump/restore service
+  ECHO      -indexer      Target is for the Bedework indexer service
   ECHO      -rpiutil     Target is for the Bedework util classes
+  ECHO      -synch        Target is for the synch build
   ECHO      -tzsvr       Target is for the timezones server build
   ECHO   Ancillary projects: not required
+  ECHO      -bwtools      Target is for the Bedework tools build
+  ECHO      -caldavTest   Target is for the CalDAV Test build
+  ECHO      -deployutil   Target is for the Bedework deployment classes
   ECHO      -monitor     Target is for the bedework monitor application
+  ECHO      -testsuite    Target is for the bedework test suite
   ECHO   Experimental projects: no guarantees
   ECHO      -client      Target is for the bedework client application build
-  ECHO      -exsynch     Target is for the Exchange synch build
   ECHO      -naming      Target is for the abstract naming api
   ECHO     The default is a calendar build
   ECHO.

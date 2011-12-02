@@ -766,6 +766,7 @@ do
     
       access="yes"
       bwannotations="yes"
+      bwcalfacade="yes"
       bwxml="yes"
       caldav="yes"
       davutil="yes"
@@ -778,10 +779,10 @@ do
     -bwmisc)
       bwmisc="yes"
       
-      davutil="yes"
       bwannotations="yes"  
       bwcalfacade="yes"
       bwicalendar="yes"
+      davutil="yes"
       pkgdefault=
       shift
       ;;
@@ -905,7 +906,6 @@ do
       bwinterfaces="yes"
       bwmisc="yes"
       bwsysevents="yes"
-      indexer="yes"
       rpiutil="yes"
       pkgdefault=
       shift
