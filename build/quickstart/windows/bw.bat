@@ -43,7 +43,7 @@ SET "updateProjects=%updateProjects% bwcalcore"
 SET "updateProjects=%updateProjects% bwcaldav"
 SET "updateProjects=%updateProjects% bwcalFacade"
 SET "updateProjects=%updateProjects% bwdeployutil"
-SET "updateProjects=%updateProjects% bwical"
+SET "updateProjects=%updateProjects% bwicalendar"
 SET "updateProjects=%updateProjects% bwinterfaces"
 SET "updateProjects=%updateProjects% bwmisc"
 SET "updateProjects=%updateProjects% bwsysevents"
@@ -671,7 +671,7 @@ GOTO:EOF
   GOTO doant
     
 :cdBwicalendar
-  cd %QUICKSTART_HOME%\bwicalendar
+  cd %QUICKSTART_HOME%\bwical
   SET bwicalendar=
   GOTO doant
     
