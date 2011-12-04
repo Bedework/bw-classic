@@ -35,29 +35,29 @@ SET ant_loglevel="-quiet"
 SET bw_loglevel=
 
 :: Projects we need to update
-SET updateProjects="access"
-SET updateProjects="%updateProjects%  bedework"
-SET updateProjects="%updateProjects%  bedework-carddav"
-SET updateProjects="%updateProjects%  bwannotations"
-SET updateProjects="%updateProjects%  bwcalcore"
-SET updateProjects="%updateProjects%  bwcaldav"
-SET updateProjects="%updateProjects%  bwcalFacade"
-SET updateProjects="%updateProjects%  bwdeployutil"
-SET updateProjects="%updateProjects%  bwical"
-SET updateProjects="%updateProjects%  bwinterfaces"
-SET updateProjects="%updateProjects%  bwmisc"
-SET updateProjects="%updateProjects%  bwsysevents"
-SET updateProjects="%updateProjects%  bwtzsvr"
-SET updateProjects="%updateProjects%  bwwebapps"
-SET updateProjects="%updateProjects%  bwxml"
-SET updateProjects="%updateProjects%  cachedfeeder"
-SET updateProjects="%updateProjects%  caldav"
-SET updateProjects="%updateProjects%  davutil"
-SET updateProjects="%updateProjects%  dumprestore"
-SET updateProjects="%updateProjects%  indexer"
-SET updateProjects="%updateProjects%  rpiutil"
-SET updateProjects="%updateProjects%  synch"
-SET updateProjects="%updateProjects%  webdav"
+SET "updateProjects=access"
+SET "updateProjects=%updateProjects% bedework"
+SET "updateProjects=%updateProjects% bedework-carddav"
+SET "updateProjects=%updateProjects% bwannotations"
+SET "updateProjects=%updateProjects% bwcalcore"
+SET "updateProjects=%updateProjects% bwcaldav"
+SET "updateProjects=%updateProjects% bwcalFacade"
+SET "updateProjects=%updateProjects% bwdeployutil"
+SET "updateProjects=%updateProjects% bwical"
+SET "updateProjects=%updateProjects% bwinterfaces"
+SET "updateProjects=%updateProjects% bwmisc"
+SET "updateProjects=%updateProjects% bwsysevents"
+SET "updateProjects=%updateProjects% bwtzsvr"
+SET "updateProjects=%updateProjects% bwwebapps"
+SET "updateProjects=%updateProjects% bwxml"
+SET "updateProjects=%updateProjects% cachedfeeder"
+SET "updateProjects=%updateProjects% caldav"
+SET "updateProjects=%updateProjects% davutil"
+SET "updateProjects=%updateProjects% dumprestore"
+SET "updateProjects=%updateProjects% indexer"
+SET "updateProjects=%updateProjects% rpiutil"
+SET "updateProjects=%updateProjects% synch"
+SET "updateProjects=%updateProjects% webdav"
 
 :: Projects we will build - pkgdefault (bedework) is built if nothing specified
 SET pkgdefault=yes
@@ -458,7 +458,7 @@ GOTO branch
   GOTO branch
 
 :updateall
-  for %%p in ("%updateProjects%") do (
+  for %%p in (%updateProjects%) do (
     ECHO *************************************************************
     ECHO Updating project %%p
     ECHO *************************************************************
