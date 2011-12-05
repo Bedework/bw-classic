@@ -55,7 +55,7 @@
   <!-- "Views" provide an abstraction layer of arbitrary named collections of 
        subscriptions but (currently) has no hierarchy. View are maintained in the 
        "Calendar Suite" tab of the admin web client. -->
-<xsl:variable name="useViewsNav">false</xsl:variable>
+<xsl:variable name="useViewsNav">true</xsl:variable>
 
   <!-- SUBSCRIPTIONS LISTING -->
   <!-- "Subscriptions" provide the full hierarchy of calendars within a calendar suite.
@@ -63,7 +63,7 @@
        is managed in the "Calendar Suite" tab of the admin web client. By deafault, 
        the top level subscriptions will be shown with all folders closed. Generating 
        the subscriptions listing requires a second request to the server (an ajax call).  -->
-<xsl:variable name="useSubscriptionsNav">true</xsl:variable>  
+<xsl:variable name="useSubscriptionsNav">false</xsl:variable>  
   
   
   
