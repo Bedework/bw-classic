@@ -60,7 +60,7 @@
   <!-- SUBSCRIPTIONS LISTING -->
   <!-- "Subscriptions" provide the full hierarchy of calendars within a calendar suite.
        These are presented with an explorer-like navigation paradigm.  This listing
-       is managed in the "Calendar Suite" tab of the admin web client. By deafault, 
+       is managed in the "Calendar Suite" tab of the admin web client. By default, 
        the top level subscriptions will be shown with all folders closed. Generating 
        the subscriptions listing requires a second request to the server (an ajax call).  -->
 <xsl:variable name="useSubscriptionsNav">false</xsl:variable>  
