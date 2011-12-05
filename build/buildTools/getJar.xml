@@ -122,12 +122,27 @@
             </then>
             <else>
               <!-- Not offline - check repository -->
-              <noisyMsg message="Fetch ${org.bedework.getjar.jarname} from archive" />
-              <get src="@{src}/${org.bedework.getjar.jarname}"
-                   dest="@{libcache}/${org.bedework.getjar.jarname}"
-                   ignoreerrors="true"
-                   verbose="${org.bedework.getjar.noisy}"
-                   usetimestamp="true"/>
+              <if>
+                <isset property="org.bedework.jar.repository.location" />
+                <then>
+                  <!-- user specified -->
+                  <echo message="Fetch ${org.bedework.getjar.jarname} from archive ${org.bedework.jar.repository.location}" />
+                  <noisyMsg message="Fetch ${org.bedework.getjar.jarname} from archive '${org.bedework.jar.repository.location}'" />
+                  <get src="${org.bedework.jar.repository.location}/${org.bedework.getjar.jarname}"
+                       dest="@{libcache}/${org.bedework.getjar.jarname}"
+                       ignoreerrors="true"
+                       verbose="${org.bedework.getjar.noisy}"
+                       usetimestamp="true"/>
+                </then>
+                <else>
+	              <noisyMsg message="Fetch ${org.bedework.getjar.jarname} from archive @{src}" />
+	              <get src="@{src}/${org.bedework.getjar.jarname}"
+	                   dest="@{libcache}/${org.bedework.getjar.jarname}"
+	                   ignoreerrors="true"
+	                   verbose="${org.bedework.getjar.noisy}"
+	                   usetimestamp="true"/>
+                </else>
+              </if>
             </else>
           </if>
 
