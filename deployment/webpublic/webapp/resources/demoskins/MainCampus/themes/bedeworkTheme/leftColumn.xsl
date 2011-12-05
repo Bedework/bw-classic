@@ -25,7 +25,12 @@
     <div class="left_column">
       <xsl:call-template name="jsDateSelectionCal" />
       <div class="clear">&#160;</div>
-      <xsl:call-template name="viewList" />
+      <xsl:if test="$useViewsNav = 'true'">
+        <xsl:call-template name="viewList" />
+      </xsl:if>
+      <xsl:if test="$useSubscriptionsNav = 'true'">
+        <xsl:call-template name="subscriptionsTree" />
+      </xsl:if>
       <xsl:call-template name="displaySideBar" />
     </div>
   </xsl:template>

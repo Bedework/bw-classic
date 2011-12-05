@@ -45,6 +45,30 @@
   
 
   
+  <!-- VIEWS and SUBSCRIPTIONS NAVIGATION TREES -->
+  <!-- In this theme, you can use the calendar suite's views,   
+       its underlying calendar subscriptions, or both to construct the left navigation menu.
+       If both are used, you'll see both menus in the left menu bar.
+       Typically, you'll want to use one or the other. -->
+  
+  <!-- VIEWS LISTING -->
+  <!-- "Views" provide an abstraction layer of arbitrary named collections of 
+       subscriptions but (currently) has no hierarchy. View are maintained in the 
+       "Calendar Suite" tab of the admin web client. -->
+<xsl:variable name="useViewsNav">false</xsl:variable>
+
+  <!-- SUBSCRIPTIONS LISTING -->
+  <!-- "Subscriptions" provide the full hierarchy of calendars within a calendar suite.
+       These are presented with an explorer-like navigation paradigm.  This listing
+       is managed in the "Calendar Suite" tab of the admin web client. By deafault, 
+       the top level subscriptions will be shown with all folders closed. Generating 
+       the subscriptions listing requires a second request to the server (an ajax call).  -->
+<xsl:variable name="useSubscriptionsNav">true</xsl:variable>  
+  
+  
+  
+  
+  
   
   <!-- EVENT ACTION ICONS -->
   <!-- which services to include for event actions in list and detail view: -->

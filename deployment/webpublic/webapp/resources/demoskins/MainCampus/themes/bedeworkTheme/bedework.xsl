@@ -57,6 +57,7 @@
   <xsl:include href="header.xsl" />
   <xsl:include href="leftColumn.xsl" />
   <xsl:include href="views.xsl" />
+  <xsl:include href="subscriptions.xsl" />
   <xsl:include href="featuredEvents.xsl"/>
   <xsl:include href="navigation.xsl" />
   <xsl:include href="eventList.xsl" />
@@ -92,7 +93,7 @@
           <div id="content">
             <div id="contentSection">
 
-              <!-- LEFT COLUMN: calendar widget, views, and links -->
+              <!-- LEFT COLUMN: calendar widget, views, subscriptions, and links -->
               <xsl:call-template name="leftColumn" />
 
               <!-- FEATURED EVENTS, if enabled -->

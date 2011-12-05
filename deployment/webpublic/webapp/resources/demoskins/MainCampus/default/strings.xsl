@@ -95,6 +95,7 @@
   <!--  xsl:template name="leftColumn", "viewList", and "sideBar" -->
   <xsl:variable name="bwStr-LCol-JsMessage">To view the interactive calendar, please enable Javascript on your browser.</xsl:variable>
   <xsl:variable name="bwStr-LCol-CalendarViews">Calendar Views</xsl:variable>
+  <xsl:variable name="bwStr-LCol-Calendars">Calendars</xsl:variable>
   <xsl:variable name="bwStr-LCol-FilterOnCalendars">FILTER ON CALENDARS:</xsl:variable>
   <xsl:variable name="bwStr-LCol-ViewAllCalendars">View All Calendars</xsl:variable>
 

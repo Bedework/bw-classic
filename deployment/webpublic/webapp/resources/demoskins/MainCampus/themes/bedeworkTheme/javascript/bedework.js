@@ -55,6 +55,30 @@ function showLink(urlString,title) {
   linkWindow.document.close();
   linkWindow.focus();
 }
+// Using the subscriptions tree for navigation (as defined in themeSettings.xsl).
+// Get them and load them onto the page.
+function loadSubscriptions(containerId) {
+  $.getJSON('/feeder/calendar/fetchPublicCalendars.do?skinName=widget-json-cals', function(data) {
+    var subsTree = '<ul>' + buildSubsTree(data.bwCals.calendars) + '</ul>';
+    $(containerId).html(subsTree);
+  });
+}
+function buildSubsTree(calObj) {
+  var subsTreeHtml = "";
+  $.each(calObj,function(i) {
+    if (this.calType < 2) { // show only calendars and folders
+      subsTreeHtml += "<li>" + this.name;
+      if(this.children != undefined) {
+        subsTreeHtml += "<ul>";
+        subsTreeHtml += buildSubsTree(this.children);
+        subsTreeHtml += "</ul>";
+      }
+      subsTreeHtml += "</li>";
+    }
+  });
+  
+  return(subsTreeHtml);
+}
 
 // topLink is defined in themeSettings.xsl
 $(document).ready(function(){

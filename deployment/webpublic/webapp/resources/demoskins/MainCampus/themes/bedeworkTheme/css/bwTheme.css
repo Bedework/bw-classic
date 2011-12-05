@@ -429,6 +429,12 @@ ul.subviewList li a.current:hover {
 ul.subviewList li a:hover {
  color: #DDB500;
 }
+#subsTree {
+	margin: 1em 0 0 1em;
+}
+#subsTree ul li li {
+	margin: 0 0 0 2em;
+}
 ul.sideLinksExpand {
  font-size: 1em;
  border-top: none;
