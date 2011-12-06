@@ -29,10 +29,13 @@
        Usage:
        
        To call the object as pure json:  
-       /feeder/calendar/fetchPublicCalendars.do?skinName=widget-json-cals
+       /feeder/calendar/fetchPublicCalendars.do?skinName=widget-json-cals&setappvar=setSelectionAction(calsuiteSetSelectionAction)
+       where the "calsuiteSetSelectionAction" is the path to the setSelection.do action as produced by 
+       the current calendar suite calling this page.  Different suites will have different contexts, so we 
+       need to account for that by passing in the server-relative path to setSelection.do. 
        
        To call the object and assign it to a variable:
-       /feeder/calendar/fetchPublicCalendars.do?skinName=widget-json-cals&setappvar=objName(somename)
+       /feeder/calendar/fetchPublicCalendars.do?skinName=widget-json-cals&setappvar=setSelectionAction(calsuiteSetSelectionAction)&setappvar=objName(somename)
        This usage assigns the json object to a "somename" variable which can be directly referenced. 
 
   -->
@@ -52,18 +55,33 @@
       </xsl:otherwise>
     </xsl:choose>
         "calendars": [
-            <xsl:apply-templates select="/bedework/calendars/calendar"/>
+            <xsl:apply-templates select="/bedework/calendars/calendar">
+              <xsl:with-param name="isRoot">true</xsl:with-param>
+            </xsl:apply-templates>
         ]
     }}
   </xsl:template>
   
   <!-- output root calendar and all children (recursively) -->
   <xsl:template match="calendar">
+    <xsl:param name="isRoot"/>
+    <xsl:variable name="virtualPath"><xsl:call-template name="escapeJson"><xsl:with-param name="string">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
+    <xsl:variable name="encVirtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="$virtualPath"/></xsl:call-template></xsl:variable>
+    <xsl:variable name="summary"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="summary"/></xsl:call-template></xsl:variable>
     {
       "name" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="name"/></xsl:call-template>",
-      "summary" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="summary"/></xsl:call-template>",
+      "summary" : "<xsl:value-of select="$summary"/>",
       "path" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="path"/></xsl:call-template>",
       "encodedPath" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="encodedPath"/></xsl:call-template>",
+      "virtualPath" : "<xsl:value-of select="$virtualPath"/>",
+      <xsl:choose>
+        <xsl:when test="$isRoot = 'true'">
+      "calendarLink" : "<xsl:value-of select="/bedework/appvar[key='setSelectionAction']/value"/>&amp;setappvar=curCollection()",
+        </xsl:when>
+        <xsl:otherwise>
+      "calendarLink" : "<xsl:value-of select="/bedework/appvar[key='setSelectionAction']/value"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$summary"/>)",
+        </xsl:otherwise>
+      </xsl:choose>
       "ownerHref" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="ownerHref"/></xsl:call-template>",
       "calType" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="calType"/></xsl:call-template>",
       "calendarCollection" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="calendarCollection"/></xsl:call-template>",
@@ -79,7 +97,9 @@
       "externalSub" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="externalSub"/></xsl:call-template>"<!-- 
     --><xsl:if test="calendar">,
       "children" : [
-        <xsl:apply-templates select="calendar"/>
+        <xsl:apply-templates select="calendar">
+          <xsl:with-param name="isRoot">false</xsl:with-param>
+        </xsl:apply-templates>
       ]
       </xsl:if>
      }<xsl:if test="position() != last()">,</xsl:if>
