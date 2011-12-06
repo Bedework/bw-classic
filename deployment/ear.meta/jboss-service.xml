@@ -32,7 +32,7 @@
   </mbean>
   
   <mbean code="org.bedework.caldav.server.soap.synch.SynchConnections"
-         name="org.bedework:service=SynchConnections">
+         name="org.bedework:service=CalDAVSynchConnections">
   </mbean>
   
   <mbean code="org.bedework.dumprestore.BwDumpRestore"
