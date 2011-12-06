@@ -57,20 +57,49 @@ function showLink(urlString,title) {
 }
 // Using the subscriptions tree for navigation (as defined in themeSettings.xsl).
 // Get them and load them onto the page.
-function loadSubscriptions(containerId) {
-  $.getJSON('/feeder/calendar/fetchPublicCalendars.do?skinName=widget-json-cals', function(data) {
-    var subsTree = '<ul>' + buildSubsTree(data.bwCals.calendars) + '</ul>';
+function loadSubscriptions(containerId,setSelectionAction,curPath) {
+  var feederUrl = '/feeder/calendar/fetchPublicCalendars.do?skinName=widget-json-cals&setappvar=setSelectionAction(' + setSelectionAction + ')'; 
+  $.getJSON(feederUrl, function(data) {
+    var subsTree = '<ul>' + buildSubsTree(data.bwCals.calendars,true,curPath) + '</ul>';
     $(containerId).html(subsTree);
+    $("#subsTree .subsTreeToggle").click(function() {
+      $(this).parent("li").children("ul").toggle("fast");
+    });
   });
 }
-function buildSubsTree(calObj) {
+function buildSubsTree(calObj,isRoot,curPath) {
   var subsTreeHtml = "";
+  
   $.each(calObj,function(i) {
     if (this.calType < 2) { // show only calendars and folders
-      subsTreeHtml += "<li>" + this.name;
+      if (isRoot) {
+        subsTreeHtml += '<li><a href="' + this.calendarLink + '">All</a>';
+      } else {
+        // build the child tree
+        if(this.children != undefined) {
+          //alert(curPath + "\n" + decodeURI(this.virtualPath) + "\n" + curPath.indexOf(decodeURI(this.virtualPath)));
+          // see if we have the selected item
+          var itemClass = "";
+          if (curPath == decodeURI(this.virtualPath)) {
+            itemClass = ' class="hasChildren selected open"';
+          } else if (curPath.indexOf(decodeURI(this.virtualPath)) > -1) {
+            itemClass = ' class="hasChildren selectedPath open"';
+          } else {
+            itemClass = ' class="hasChildren closed"';
+          }
+          subsTreeHtml += '<li'+ itemClass +'><span class="subsTreeToggle">+</span>';
+        } else {
+          var itemClass = "";
+          if (curPath == decodeURI(this.virtualPath)) {
+            itemClass = ' class="selected"';
+          }
+          subsTreeHtml += '<li'+ itemClass +'>';
+        }
+        subsTreeHtml += '<a href="' + this.calendarLink + '">' + this.name + '</a>';
+      }
       if(this.children != undefined) {
         subsTreeHtml += "<ul>";
-        subsTreeHtml += buildSubsTree(this.children);
+        subsTreeHtml += buildSubsTree(this.children,false,curPath);
         subsTreeHtml += "</ul>";
       }
       subsTreeHtml += "</li>";

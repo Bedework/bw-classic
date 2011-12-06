@@ -57,7 +57,7 @@
       </xsl:attribute>
       <xsl:variable name="calPath" select="path"/>
       <xsl:variable name="displayName" select="summary"/>
-      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$displayName})" title="view calendar">
+      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$displayName})&amp;setappvar=curPath({$calPath})" title="view calendar">
         <xsl:value-of select="summary"/>
       </a>
       <span class="exportCalLink">

@@ -431,9 +431,34 @@ ul.subviewList li a:hover {
 }
 #subsTree {
 	margin: 1em 0 0 1em;
+	font-size: 14px;
 }
 #subsTree ul li li {
-	margin: 0 0 0 2em;
+	margin: 0 0 0 20px;
+}
+#subsTree li.hasChildren {
+  margin: 0 0 0 10px;
+}
+#subsTree li.selected {
+  font-weight: bold;
+}
+#subsTree li.closed ul {
+  display: none;
+}
+#subsTree a {
+	color: #335080;
+}
+#subsTree a:hover {
+  color: #DDB500;
+}
+#subsTree .subsTreeToggle {
+	display: block;
+	float: left;
+	width: 10px;
+	height: 10px;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
 }
 ul.sideLinksExpand {
  font-size: 1em;

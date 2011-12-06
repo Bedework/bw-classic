@@ -293,7 +293,7 @@
 
 
   <!-- NOT YET ENABLED -->
-  <!-- the following features did not make the 3.6 release, and are here
+  <!-- the following features did not make the 3.8 release, and are here
        for reference -->
 
    <!-- DEADLINES/TASKS -->
@@ -307,13 +307,9 @@
    <!-- always display sidebar, even if no deadlines are present? -->
    <!-- <xsl:variable name="deadlinesAlwaysDisplayed">true</xsl:variable> -->
 
-
-  <!-- VIEW HIERARCHY -->
-  <!-- force views into a heirarchy? -->
-  <!-- <xsl:variable name="childViewsEnabled">true</xsl:variable> -->
-
   <!-- FOR ONGOING EVENTS -->
-  <!-- pull events longer than day range into ongoing list? -->
+  <!-- pull normal events that are longer than day range into ongoing list? -->
+  <!-- (this automates the use of ongoing - tagging not needed) -->
   <!-- <xsl:variable name="ongoingEventsUseDayRange">false</xsl:variable> -->
   <!-- <xsl:variable name="ongoingEventsDayRange">12</xsl:variable> -->
 

@@ -31,7 +31,7 @@
     <script type="text/javascript">
 	    $(document).ready(function(){
 	      // get the subscriptions/calendars and load them into the tree
-	      loadSubscriptions("#subsTree");
+	      loadSubscriptions("#subsTree","<xsl:value-of select="$setSelection"/>","<xsl:value-of select="/bedework/selectionState/collection/virtualpath"/>");
 	    });
 	  </script>
   </xsl:template>
