@@ -96,6 +96,7 @@
   <xsl:variable name="bwStr-LCol-JsMessage">Para ver la agenda interactiva, active Javascript en su navegador.</xsl:variable>
   <xsl:variable name="bwStr-LCol-CalendarViews">Vistas de Agenda</xsl:variable>
   <xsl:variable name="bwStr-LCol-Calendars">Agendas</xsl:variable>
+  <xsl:variable name="bwStr-LCol-All">Todas</xsl:variable>
   <xsl:variable name="bwStr-LCol-FilterOnCalendars">FILTRAR AGENDAS:</xsl:variable>
   <xsl:variable name="bwStr-LCol-ViewAllCalendars">Ver Todas las Agendas</xsl:variable>
 

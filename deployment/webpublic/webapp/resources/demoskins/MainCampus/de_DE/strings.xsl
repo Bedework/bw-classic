@@ -96,6 +96,7 @@
   <xsl:variable name="bwStr-LCol-JsMessage">Bitte aktivieren Javascript in ihrem Browser um den interaktiven Kalender anschauen zu k&#246;nnen.</xsl:variable>
   <xsl:variable name="bwStr-LCol-CalendarViews">Kalender Ansicht</xsl:variable>
   <xsl:variable name="bwStr-LCol-Calendars">Kalender</xsl:variable>
+  <xsl:variable name="bwStr-LCol-All">Alles</xsl:variable>
   <xsl:variable name="bwStr-LCol-FilterOnCalendars">FILTER AUF KALENDER:</xsl:variable>
   <xsl:variable name="bwStr-LCol-ViewAllCalendars">Ansicht aller Kalender</xsl:variable>
 

@@ -26,14 +26,64 @@
     <div class="secondaryColHeader">
       <h3><xsl:copy-of select="$bwStr-LCol-Calendars"/></h3>
     </div>
-    <div id="subsTree">&#160;</div>
+    <div id="subsTree">
+      <ul>
+        <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar" mode="subsTree">
+          <xsl:with-param name="isRoot">true</xsl:with-param>
+        </xsl:apply-templates>
+      </ul>
+    </div>
     
     <script type="text/javascript">
 	    $(document).ready(function(){
-	      // get the subscriptions/calendars and load them into the tree
-	      loadSubscriptions("#subsTree","<xsl:value-of select="$setSelection"/>","<xsl:value-of select="/bedework/selectionState/collection/virtualpath"/>");
+		    $("#subsTree .subsTreeToggle").click(function() {
+		      $(this).parent("li").children("ul").toggle("fast");
+		    });
 	    });
 	  </script>
   </xsl:template>
 
+  <xsl:template match="calendar" mode="subsTree">
+    <xsl:param name="isRoot"/>
+    <xsl:variable name="curPath"><xsl:call-template name="escapeJson"><xsl:with-param name="string"><xsl:value-of select="/bedework/selectionState/collection/virtualpath"/></xsl:with-param></xsl:call-template></xsl:variable>
+    <xsl:variable name="virtualPath"><xsl:call-template name="escapeJson"><xsl:with-param name="string">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
+    <xsl:variable name="encVirtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="$virtualPath"/></xsl:call-template></xsl:variable>
+    <xsl:variable name="summary" select="summary"/>
+    <xsl:variable name="itemId" select="generate-id(path)"/>
+    <xsl:variable name="folderState">closed</xsl:variable>
+    <li id="{$itemId}">
+      <xsl:if test="calendar and not($isRoot = 'true')">
+	      <xsl:attribute name="class">
+	        <xsl:choose>
+	          <xsl:when test="$virtualPath = $curPath">hasChildren selected <xsl:value-of select="$folderState"/></xsl:when>
+	          <xsl:when test="contains($curPath,$virtualPath)">hasChildren selectedPath open</xsl:when>
+	          <xsl:otherwise>hasChildren <xsl:value-of select="$folderState"/></xsl:otherwise>
+	        </xsl:choose>
+	      </xsl:attribute>
+	      <span class="subsTreeToggle">+</span>
+	    </xsl:if>
+	    <xsl:if test="not(calendar) and $virtualPath = $curPath">
+	      <xsl:attribute name="class">selected</xsl:attribute>
+	    </xsl:if>
+	    <xsl:choose>
+	      <xsl:when test="$isRoot = 'true'">
+	        <a href="{$setSelection}&amp;setappvar=curCollection()">
+	          <xsl:copy-of select="$bwStr-LCol-All"/>
+	        </a>
+	      </xsl:when>
+	      <xsl:otherwise>
+	        <a href="{$setSelection}&amp;virtualPath={$encVirtualPath}&amp;setappvar=curCollection({$summary})">
+	          <xsl:value-of select="summary"/>
+	        </a>
+	      </xsl:otherwise>	      
+	    </xsl:choose>
+	    <xsl:if test="calendar[(calType &lt; 2) and (name != 'calendar')]"><!-- the test for "calendar" isn't good -->
+	      <ul>
+	        <xsl:apply-templates select="calendar[(calType &lt; 2) and (name != 'calendar')]" mode="subsTree">
+	          <xsl:with-param name="isRoot">false</xsl:with-param>
+	        </xsl:apply-templates>
+	      </ul>
+	    </xsl:if>
+    </li>
+  </xsl:template>
 </xsl:stylesheet>
