@@ -99,6 +99,7 @@
 	    </xsl:if>
 	    <xsl:choose>
 	      <xsl:when test="$isRoot = 'true'">
+	        <xsl:attribute name="class">root</xsl:attribute>
 	        <a href="{$setSelection}&amp;setappvar=curCollection()">
 	          <xsl:copy-of select="$bwStr-LCol-All"/>
 	        </a>
