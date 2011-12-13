@@ -33,6 +33,7 @@
   <!-- xsl:template name="headBar" -->
   <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Veranstaltungskalender</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PublicCalendar">&#214;ffentlicher Kalender</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-PublicEventsCalendar">&#214;ffentlicher Kalender</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PersonalCalendar">Pers&#246;nlicher Kalender</xsl:variable>
   <xsl:variable name="bwStr-HdBr-UniversityHome">Startseite Universit&#228;t</xsl:variable>
   <xsl:variable name="bwStr-HdBr-SchoolHome">Startseite Schule</xsl:variable>
@@ -65,6 +66,7 @@
   <xsl:variable name="bwStr-Tabs-List">LISTE</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Search">Suchen</xsl:variable>
   <xsl:variable name="bwStr-Tabs-AdvSearch">Erweitere Suche</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-JumpToDate">Jump To Date</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Woche ab</xsl:variable>
@@ -107,6 +109,7 @@
   <xsl:variable name="bwStr-LCol-OtherCals">KALENDER WEITERER UNIVERSIT&#196;TEN</xsl:variable>
   <xsl:variable name="bwStr-LCol-ExampleLink">Beispiel Verkn&#252;pfung</xsl:variable>
   <xsl:variable name="bwStr-LCol-OtherLinks">WEITERE VERKN&#220;PFUNGEN</xsl:variable>
+  <xsl:variable name="bwStr-LCol-MoreDotDotDot">Mehr...</xsl:variable>
 
   <!--  xsl:template match="event" -->
   <xsl:variable name="bwStr-SgEv-GenerateLinkToThisEvent">Verkn&#252;pfung zu dieser Veranstaltung erzeugen</xsl:variable>

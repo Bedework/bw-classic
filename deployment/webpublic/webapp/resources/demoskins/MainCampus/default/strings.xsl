@@ -33,6 +33,7 @@
   <!-- xsl:template name="headBar" -->
   <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PublicCalendar">Public Calendar</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-PublicEventsCalendar">Public Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PersonalCalendar">Personal Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-UniversityHome">University Home</xsl:variable>
   <xsl:variable name="bwStr-HdBr-SchoolHome">School Home</xsl:variable>
@@ -65,6 +66,7 @@
   <xsl:variable name="bwStr-Tabs-List">LIST</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Search">Search</xsl:variable>
   <xsl:variable name="bwStr-Tabs-AdvSearch">Advanced Search</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-JumpToDate">Jump To Date</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
@@ -107,7 +109,7 @@
   <xsl:variable name="bwStr-LCol-OtherCals">OTHER UNIVERSITY CALENDARS</xsl:variable>
   <xsl:variable name="bwStr-LCol-ExampleLink">Example link</xsl:variable>
   <xsl:variable name="bwStr-LCol-OtherLinks">OTHER LINKS</xsl:variable>
-
+  <xsl:variable name="bwStr-LCol-MoreDotDotDot">More...</xsl:variable>
 
   <!--  xsl:template match="event" -->
   <xsl:variable name="bwStr-SgEv-GenerateLinkToThisEvent">generate link to this event</xsl:variable>
