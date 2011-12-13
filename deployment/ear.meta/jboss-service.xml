@@ -39,7 +39,7 @@
          name="org.bedework:service=DumpRestore">
     <attribute name="Account">admin</attribute>
     
-    <attribute name="Appname">dumpres</attribute>
+    <attribute name="Appname"/>
     
     <!-- Create tables - false for safety - set true in console -->
     <attribute name="Create">false</attribute>
