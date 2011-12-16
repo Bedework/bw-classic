@@ -6485,7 +6485,7 @@
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
-      <a href="http://www.bedework.org/">Bedework Website</a> |
+      <a href="http://www.jasig.org/bedework">Bedework Website</a> |
       <!-- Enable the following two items when debugging skins only -->
       <a href="?noxslt=yes">show XML</a> |
       <a href="?refreshXslt=yes">refresh XSLT</a>

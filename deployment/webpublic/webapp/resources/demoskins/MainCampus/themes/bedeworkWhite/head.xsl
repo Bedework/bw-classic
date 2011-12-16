@@ -64,8 +64,6 @@
       <xsl:if test="/bedework/page='searchResult'">
         <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">&#160;</script>
       </xsl:if>
-      <script type="text/javascript" src="{$resourcesRoot}/javascript/mainCampus.js">&#160;</script>
-
       <script type="text/javascript">
         <xsl:call-template name="themeJavascriptVariables"/>
       </script>

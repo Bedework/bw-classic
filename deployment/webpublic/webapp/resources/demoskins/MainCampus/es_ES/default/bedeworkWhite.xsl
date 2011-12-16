@@ -38,14 +38,15 @@
     For detailed instructions on how to work with the XSLT
     stylesheets included with this distribution, please see the
     Bedework Manual at http://www.jasig.org/bedework/documentation
-    
+
     ===============================================================  -->
 
   <!-- DEFINE INCLUDES -->
   <xsl:include href="./globals.xsl" />
   <xsl:include href="../strings.xsl" />
+  <xsl:include href="../localeSettings.xsl" />
 
   <!-- THEME NAME -->
-  <xsl:include href="../../themes/videocalTheme/videocal.xsl" />
+  <xsl:include href="../../themes/bedeworkWhite/bedework.xsl" />
 
 </xsl:stylesheet>

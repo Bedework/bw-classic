@@ -24,13 +24,13 @@
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
-      <xsl:copy-of select="$bwStr-Foot-BasedOnThe"/><xsl:text> </xsl:text><a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-Foot-BedeworkCalendarSystem"/></a>
+      <xsl:copy-of select="$bwStr-Foot-BasedOnThe"/><xsl:text> </xsl:text><a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-Foot-BedeworkCalendarSystem"/></a>
     </div>
     <table id="skinSelectorTable" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td class="leftCell">
-          <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
-          <a href="http://www.bedework.org/bedework/update.do?artcenterkey=35"><xsl:copy-of select="$bwStr-Foot-ProductionExamples"/></a> |
+          <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
+          <a href="http://www.jasig.org/bedework/whosusing"><xsl:copy-of select="$bwStr-Foot-ProductionExamples"/></a> |
           <a href="?noxslt=yes"><xsl:copy-of select="$bwStr-Foot-ShowXML"/></a> |
           <a href="?refreshXslt=yes"><xsl:copy-of select="$bwStr-Foot-RefreshXSLT"/></a>
         </td>
@@ -48,6 +48,9 @@
             <select name="skinPicker" onchange="window.location = this.value">
               <option value="{$setup}&amp;skinNameSticky=default">
                 <xsl:copy-of select="$bwStr-Foot-ExampleSkins" />
+              </option>
+              <option value="{$setup}&amp;skinNameSticky=bedeworkWhite">
+                <xsl:copy-of select="$bwStr-Foot-BwWhite" />
               </option>
               <option value="{$setup}&amp;skinNameSticky=bwclassic">
                 <xsl:copy-of select="$bwStr-Foot-BwClassic" />

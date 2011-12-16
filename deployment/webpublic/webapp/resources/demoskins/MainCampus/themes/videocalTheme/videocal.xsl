@@ -128,7 +128,7 @@
                 Bedework Calendar of Events
                 Video Feed
               </h1>
-              <h2>http://www.bedework.org</h2>
+              <h2>http://www.jasig.org/bedework</h2>
             </div>
           </xsl:when>
           <xsl:otherwise>

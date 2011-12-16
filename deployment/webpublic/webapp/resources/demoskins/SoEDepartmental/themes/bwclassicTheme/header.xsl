@@ -29,7 +29,7 @@
           <h2><xsl:copy-of select="$bwStr-HdBr-SchoolOfEng"/></h2>
           <a href="http://www.youruniversityhere.edu/engineering/"><xsl:copy-of select="$bwStr-HdBr-SchoolOfEngHome"/></a> |
           <a href="http://www.youruniversityhere.edu"><xsl:copy-of select="$bwStr-HdBr-UniversityHome"/></a> |
-          <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a>
+          <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a>
         </td>
       </tr>
     </table>

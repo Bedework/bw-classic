@@ -36,8 +36,30 @@
     
     <script type="text/javascript">
 	    $(document).ready(function(){
+	      var openCals = new Array();
+	      <xsl:if test="/bedework/appvar[key='opencals']">
+	        var openCalsRaw = "<xsl:value-of select="/bedework/appvar[key='opencals']/value"/>";
+	        openCals = openCalsRaw.split(",");
+	      </xsl:if>
 		    $("#subsTree .subsTreeToggle").click(function() {
-		      $(this).parent("li").children("ul").toggle("fast");
+		      var curItem = $(this).parent("li");
+		      $(curItem).children("ul").slideToggle("fast", function(){
+		        if ($(this).is(":visible")) {
+		          $(this).parent("li").children("span.subsTreeToggle").html("-");
+	            openCals.push($(curItem).attr("id"));
+	          } else {
+	            var itemIndex = $.inArray($(curItem).attr("id"),openCals);
+              $(this).parent("li").children("span.subsTreeToggle").html("+");
+	            openCals.splice(itemIndex,1);
+	          }
+	          
+	          $.ajax({
+	            url: '/cal/misc/async.do',
+	            data: 'setappvar=opencals(' + openCals.toString() + ')',
+	            dataType: 'xml'
+	          });
+		      });
+		      
 		    });
 	    });
 	  </script>
@@ -50,7 +72,12 @@
     <xsl:variable name="encVirtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="$virtualPath"/></xsl:call-template></xsl:variable>
     <xsl:variable name="summary" select="summary"/>
     <xsl:variable name="itemId" select="generate-id(path)"/>
-    <xsl:variable name="folderState">closed</xsl:variable>
+    <xsl:variable name="folderState">
+      <xsl:choose>
+        <xsl:when test="contains(/bedework/appvar[key='opencals']/value,$itemId)">open</xsl:when>
+        <xsl:otherwise>closed</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <li id="{$itemId}">
       <xsl:if test="calendar and not($isRoot = 'true')">
 	      <xsl:attribute name="class">
@@ -60,13 +87,19 @@
 	          <xsl:otherwise>hasChildren <xsl:value-of select="$folderState"/></xsl:otherwise>
 	        </xsl:choose>
 	      </xsl:attribute>
-	      <span class="subsTreeToggle">+</span>
+	      <span class="subsTreeToggle">
+	        <xsl:choose>
+	          <xsl:when test="$folderState = 'closed'">+</xsl:when>
+	          <xsl:otherwise>-</xsl:otherwise>
+	        </xsl:choose>
+	      </span>
 	    </xsl:if>
 	    <xsl:if test="not(calendar) and $virtualPath = $curPath">
 	      <xsl:attribute name="class">selected</xsl:attribute>
 	    </xsl:if>
 	    <xsl:choose>
 	      <xsl:when test="$isRoot = 'true'">
+	        <xsl:attribute name="class">root</xsl:attribute>
 	        <a href="{$setSelection}&amp;setappvar=curCollection()">
 	          <xsl:copy-of select="$bwStr-LCol-All"/>
 	        </a>

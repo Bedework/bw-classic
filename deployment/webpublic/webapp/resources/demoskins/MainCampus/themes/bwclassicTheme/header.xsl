@@ -28,8 +28,8 @@
         <td colspan="2" id="schoolLinksCell">
           <h2><xsl:copy-of select="$bwStr-HdBr-PublicCalendar"/></h2>
           <a href="{$privateCal}"><xsl:copy-of select="$bwStr-HdBr-PersonalCalendar"/></a> |
-          <a href="http://www.youruniversityhere.edu"><xsl:copy-of select="$bwStr-HdBr-UniversityHome"/></a> |
-          <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a>
+          <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-HdBr-UniversityHome"/></a> |
+          <a href="http://www.jasig.org/bedework/documentation"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a>
         </td>
       </tr>
     </table>

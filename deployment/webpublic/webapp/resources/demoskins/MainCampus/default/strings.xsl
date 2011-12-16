@@ -344,6 +344,7 @@
   <xsl:variable name="bwStr-Foot-ResetSkin">Reset Skin</xsl:variable>
   <xsl:variable name="bwStr-Foot-ExampleSkins">example themes/skins:</xsl:variable>
   <xsl:variable name="bwStr-Foot-BwClassic">Bedework Classic</xsl:variable>
+  <xsl:variable name="bwStr-Foot-BwWhite">Bedework White</xsl:variable>
   <xsl:variable name="bwStr-Foot-RSSNext3Days">RSS: next 3 days</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptNext3Days">JSON: next 3 days</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptTodaysEvents">javascript: today's events</xsl:variable>

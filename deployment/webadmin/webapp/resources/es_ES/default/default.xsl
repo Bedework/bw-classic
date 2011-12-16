@@ -7314,7 +7314,7 @@
   <!--==== FOOTER ====-->
   <xsl:template name="footer">
     <div id="footer">
-      <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
+      <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
       <!-- Enable the following two items when debugging skins only -->
       <a href="?noxslt=yes"><xsl:copy-of select="$bwStr-Foot-ShowXML"/></a> |
       <a href="?refreshXslt=yes"><xsl:copy-of select="$bwStr-Foot-RefreshXSLT"/></a>

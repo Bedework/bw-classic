@@ -19,14 +19,14 @@
       </image>
       <image>
         <name>bedework.jpg</name>
-        <link>http://jasig.org/bedework</link>
-        <toolTip>Bedework Website</toolTip>
+        <link>http://www.jasig.org/bedework/documentation</link>
+        <toolTip>Bedework Documentation</toolTip>
       </image>
     </group>
     <single>
       <image>
         <name>bedework.jpg</name>
-        <link>http://www.bedework.org/bedework/setup.do</link>
+        <link>http://www.jasig.org/bedework</link>
         <toolTip>Bedework Website</toolTip>
       </image>
     </single>

@@ -235,7 +235,7 @@
               </a>
             </xsl:if>
             <xsl:if test="$eventIconShareThis = 'true'">
-              <a href="http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.6/ShareThis">
+              <a href="https://wiki.jasig.org/pages/viewpage.action?pageId=50860497">
                 <img title="{$bwStr-SgEv-ShareThis}" src="{$resourcesRoot}/images/share-icon-16x16.png" alt="{$bwStr-SgEv-ShareThis}"/>
               </a>
             </xsl:if>

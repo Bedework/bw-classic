@@ -14,19 +14,19 @@
       </image>
       <image>
         <name>gettingstarted.jpg</name>
-        <link>http://www.bedework.org/bedework/update.do?artcenterkey=36</link>
-        <toolTip>Bedework Documentation</toolTip>
+        <link>http://wiki.jasig.org/display/BWK38/BW+3.8+Getting+Started</link>
+        <toolTip>Bedework Getting Started Guide</toolTip>
       </image>
       <image>
         <name>bedework.jpg</name>
-        <link>http://www.bedework.org/bedework/setup.do</link>
-        <toolTip>Bedework Website</toolTip>
+        <link>http://www.jasig.org/bedework/documentation</link>
+        <toolTip>Bedework Documentation</toolTip>
       </image>
     </group>
     <single>
       <image>
         <name>bedework.jpg</name>
-        <link>http://www.bedework.org/bedework/setup.do</link>
+        <link>http://www.jasig.org/bedework</link>
         <toolTip>Bedework Website</toolTip>
       </image>
     </single>

@@ -317,7 +317,7 @@
   <xsl:variable name="bwStr-Srch-Location">Veranstaltungsort</xsl:variable>
   <xsl:variable name="bwStr-Srch-Pages">Seite(n):</xsl:variable>
   <xsl:variable name="bwStr-Srch-AdvancedSearch">Erweiterte Suche</xsl:variable>
-  <xsl:variable name="bwStr-Srch-CatsToSearch">Kategorien ausw#228;hlen f&#252;r die Suche (Optional)</xsl:variable>
+  <xsl:variable name="bwStr-Srch-CatsToSearch">Kategorien ausw&#228;hlen f&#252;r die Suche (Optional)</xsl:variable>
   <xsl:variable name="bwStr-Srch-SearchTermNotice">Ein Suchbegriff ist nicht erfordertlich wenn eine Kategorie ausgew#228;hlt wurde.</xsl:variable>
 
   <!--  xsl:template name="searchResultPageNav" -->
@@ -345,6 +345,7 @@
   <xsl:variable name="bwStr-Foot-ResetSkin">Design zur&#252;cksetzen</xsl:variable>
   <xsl:variable name="bwStr-Foot-ExampleSkins">Beispielthemen/-design:</xsl:variable>
   <xsl:variable name="bwStr-Foot-BwClassic">Bedework Classic</xsl:variable>
+  <xsl:variable name="bwStr-Foot-BwWhite">Bedework Weiß</xsl:variable>
   <xsl:variable name="bwStr-Foot-RSSNext3Days">RSS: n&#228;chsten 3 Tage</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptNext3Days">JSON: n&#228;chsten 3 Tage</xsl:variable>
   <xsl:variable name="bwStr-Foot-JavascriptTodaysEvents">javascript: heutige Veranstaltung(en)</xsl:variable>

@@ -29,8 +29,8 @@
           <h2><xsl:copy-of select="$bwStr-HdBr-PersonalCalendar"/></h2>
           <a href="{$publicCal}"><xsl:copy-of select="$bwStr-HdBr-PublicCalendar"/></a> |
           <a href="http://www.yourschoolhere.edu"><xsl:copy-of select="$bwStr-HdBr-SchoolHome"/></a> |
-          <a href="http://www.bedework.org/"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a> |
-          <a href="http://helpdesk.rpi.edu/update.do?catcenterkey=51">
+          <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a> |
+          <a href="http://www.jasig.org/bedework/documentation">
             <xsl:copy-of select="$bwStr-HdBr-ExampleCalendarHelp"/>
           </a>
         </td>

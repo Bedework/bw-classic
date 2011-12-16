@@ -34,8 +34,7 @@
 
     For detailed instructions on how to work with the XSLT
     stylesheets included with this distribution, please see the
-    Bedework Design Guide at
-    http://www.bedework.org/bedework/update.do?artcenterkey=24
+    Bedework Manual at http://www.jasig.org/bedework/documentation
 
     ===============================================================  -->
 

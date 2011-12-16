@@ -94,7 +94,7 @@
        the javascript code expected. If you use the Share This
        service, you will likely want to turn off the Facebook 
        icon (above) as it is included already. 
-       See http://www.bedework.org/trac/bedework/wiki/BedeworkManual/v3.6/ShareThis -->
+       See https://wiki.jasig.org/pages/viewpage.action?pageId=50860497 -->
   <xsl:variable name="eventIconShareThis">true</xsl:variable>   
     
     
@@ -210,12 +210,12 @@
   <xsl:template name="footerText">
     <xsl:copy-of select="$bwStr-Foot-BasedOnThe" />
     <xsl:text> </xsl:text>
-    <a href="http://www.bedework.org/">
+    <a href="http://www.jasig.org/bedework/documentation">
       <xsl:copy-of select="$bwStr-Foot-BedeworkCalendarSystem" />
     </a>
     |
     <a
-      href="http://www.bedework.org/bedework/update.do?artcenterkey=35">
+      href="http://www.jasig.org/bedework/whosusing">
       <xsl:copy-of select="$bwStr-Foot-ProductionExamples" />
     </a>
     |
@@ -245,7 +245,7 @@
          </a>
        </li>
        <li>
-         <a href="http://www.bedework.org/bedework/update.do?artcenterkey=36"><xsl:copy-of select="$bwStr-LCol-Help"/></a>
+         <a href="http://www.jasig.org/bedework/documentation"><xsl:copy-of select="$bwStr-LCol-Help"/></a>
        </li>
      </ul>
      <ul class="sideLinksExpand">
@@ -254,17 +254,17 @@
          <span class="additionalUnivClicker">+</span>
          <ul id="additionalUnivSub">
            <li>
-             <a href="http://www.bedework.org/">
+             <a href="http://www.jasig.org/bedework/documentation">
                <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
            <li>
-             <a href="http://www.bedework.org/">
+             <a href="http://www.jasig.org/bedework/documentation">
                <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
            <li>
-             <a href="http://www.bedework.org/">
+             <a href="http://www.jasig.org/bedework/documentation">
                <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
@@ -275,12 +275,12 @@
          <span class="additionalOptionsClicker">+</span>
          <ul id="additionalOptionsSub">
            <li>
-             <a href="http://www.bedework.org/">
+             <a href="http://www.jasig.org/bedework/documentation">
                <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
            <li>
-             <a href="http://www.bedework.org/">
+             <a href="http://www.jasig.org/bedework/documentation">
                <xsl:copy-of select="$bwStr-LCol-ExampleLink"/>
              </a>
            </li>
