@@ -128,15 +128,9 @@
     <delete dir="${dist.home}" />
   </target>
 
-  <target name="quickstart-clean" depends="init"
-          description="partial clean up for quickstart.">
-    <delete dir="${org.bedework.temp.dir}" />
-    <delete dir="${org.bedework.empty.dir}" />
+  <target name="quickstart-clean" depends="clean"
+          description="extra clean up for quickstart.">
     <delete dir="${bw.project.home}/libcache"/>
-
-    <delete>
-      <fileset dir="${dist.home}" includes="*.war"/>
-    </delete>
   </target>
 
   <!-- =================================================================
