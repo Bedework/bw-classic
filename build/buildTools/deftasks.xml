@@ -250,6 +250,9 @@
     <delete dir="${lib.dir}" />
   </target>
 
+  <target name="quickstart-clean" depends="clean" >
+  </target>
+
   <!-- =================================================================
        Clean and deploy in one go
        ================================================================= -->

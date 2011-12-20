@@ -8,9 +8,6 @@
 <project name="bedework.build" default="deploy" basedir=".">
   <property environment="env"/>
 
-  <!-- This affects some of the build process in the projects -->
-  <property name="org.bedework.quickstart.build" value="true" />
-
   <!-- this project -->
   <property name="org.bedework.project.bedework"
             location="${basedir}" />
@@ -84,17 +81,6 @@
     <fileset id="empty.fileset" dir="${org.bedework.empty.dir}"
              excludes="*" />
 
-    <!-- ==================== Subcomponent Compilation Classpath ====================
-
-    <path id="compile.classpath">
-      <fileset dir="${lib.dir}">
-         <include name="*.jar"/>
-      </fileset>
-      <fileset dir="${dist.home}">
-         <include name="*.jar"/>
-      </fileset>
-    </path>
--->
     <!-- ===============================================================
               This project builds nothing - it just assembles.
          =============================================================== -->
