@@ -38,14 +38,19 @@
           <tr>
             <td class="eventFilterInfo" colspan="3">
               <xsl:copy-of select="$bwStr-LsVw-DispEventsForCal"/>
-              <xsl:text> </xsl:text>
-              <span class="displayFilterName">
-                <xsl:call-template name="substring-afterLastInstanceOf">
-                  <xsl:with-param name="string" select="/bedework/selectionState/collection/virtualpath"/>
-                  <xsl:with-param name="char">/</xsl:with-param>
-                </xsl:call-template>
-              </span><xsl:text> </xsl:text>
-              <a id="allView" href="{$setSelection}"><xsl:copy-of select="$bwStr-LsVw-ShowAll"/></a></td>
+	          <xsl:text> </xsl:text>
+	          <span class="displayFilterName">
+	            <xsl:variable name="subscriptionName">				          
+		          <xsl:call-template name="substring-afterLastInstanceOf">
+	                <xsl:with-param name="string" select="/bedework/selectionState/collection/virtualpath"/>
+		            <xsl:with-param name="char">/</xsl:with-param>	
+		          </xsl:call-template>
+		        </xsl:variable>
+		        <xsl:value-of select="/bedework/myCalendars/calendars//calendar[name=$subscriptionName]/summary/text()" />
+	          </span>
+	          <xsl:text> </xsl:text>
+	          <a id="allView" href="{$setSelection}"><xsl:copy-of select="$bwStr-LsVw-ShowAll"/></a>
+	        </td>
           </tr>
         </xsl:when>
         <xsl:when test="/bedework/selectionState/view/name != 'All'">

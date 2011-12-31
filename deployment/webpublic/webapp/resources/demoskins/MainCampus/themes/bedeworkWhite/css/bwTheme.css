@@ -715,8 +715,9 @@ div.calendarList {
   margin: 0 0 0 4em;
 }
 .info {
-  font-size: 1.1em;
+  font-size: 14px;
   margin: 1em 1em 0 1em;
+  font-family: Arial, Helvetica, sans-serif;
 }
 table#searchTable {
  font-size: .9em;
@@ -780,12 +781,12 @@ div.singleEvent {
  font-size: 14px;
  line-height: 1.5;
 }
-div.singleEvent   a {
+div.singleEvent a {
  text-decoration: none;
  color: #444;
  font-weight: bold;
 }
-div.singleEvent   a:hover {
+div.singleEvent a:hover {
  text-decoration: underline;
  
 }
@@ -812,6 +813,8 @@ div.singleEvent .tzdates {
 }
 ul.calendarTree {
  padding: 1em;
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 12px;
 }
 ul.calendarTree li {
  font-weight: bold;
@@ -820,6 +823,10 @@ ul.calendarTree li {
 }
 ul.calendarTree li a {
  color: #444;
+ text-decoration: none;
+}
+ul.calendarTree li a:hover {
+ text-decoration: underline;
 }
 ul.calendarTree li ul {
  margin: 0 0 .5em 1.5em;

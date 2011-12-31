@@ -70,6 +70,8 @@
     <xsl:variable name="curPath"><xsl:call-template name="escapeJson"><xsl:with-param name="string"><xsl:value-of select="/bedework/selectionState/collection/virtualpath"/></xsl:with-param></xsl:call-template></xsl:variable>
     <xsl:variable name="virtualPath"><xsl:call-template name="escapeJson"><xsl:with-param name="string">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
     <xsl:variable name="encVirtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="$virtualPath"/></xsl:call-template></xsl:variable>
+    
+    <xsl:variable name="name" select="name"/>
     <xsl:variable name="summary" select="summary"/>
     <xsl:variable name="itemId" select="generate-id(path)"/>
     <xsl:variable name="folderState">
@@ -105,7 +107,7 @@
 	        </a>
 	      </xsl:when>
 	      <xsl:otherwise>
-	        <a href="{$setSelection}&amp;virtualPath={$encVirtualPath}&amp;setappvar=curCollection({$summary})">
+	        <a href="{$setSelection}&amp;virtualPath={$encVirtualPath}&amp;setappvar=curCollection({$name})">
 	          <xsl:value-of select="summary"/>
 	        </a>
 	      </xsl:otherwise>	      
