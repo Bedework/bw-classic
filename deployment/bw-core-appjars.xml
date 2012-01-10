@@ -199,18 +199,10 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="commons-fileupload" />
-      
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="commons-httpclient" version="3.0"/>
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="commons-lang" version="2.6"/>
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="commons-ssl" />
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
@@ -221,6 +213,16 @@
               libcache="${org.bedework.libcache.dir}"
               name="commons-logging" />
               -->
+
+      <!-- ======================= httpclient jars ============================ -->
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="httpclient" version="4.1.2"/>
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="httpcore" version="4.1.2"/>
 
       <!-- ======================= Hibernate jars ========================== -->
       

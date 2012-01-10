@@ -36,9 +36,10 @@
     <property name="callbackURI"
               value="http://128.113.124.225:8080/synch/" />
               
-    <!-- Path to keystore - comment out to use default. Used for ssl etc. -->          
+    <!-- Path to keystore - comment out to use default. Used for ssl etc.      
     <property name="keystore"
               value="@APPSERVER-DATA-DIR@/synchcerts" />
+               -->    
 
     <!-- Public/private key locations -->
     <property name="privKeys"
