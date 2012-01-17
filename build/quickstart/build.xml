@@ -9,29 +9,23 @@
 -->
 
 <project name="quickstart-build-file" default="deploy" basedir=".">
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
   <property environment="env"/>
 
   <dirname property="bedework.quickstart.basedir" 
   	       file="${ant.file.quickstart-build-file}"/>
-
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
   <import file="${bedework.quickstart.basedir}/run-dir.xml" />
   <import file="${bedework.quickstart.basedir}/install.xml" />
 
   <import file="${bedework.quickstart.basedir}/../buildTools/deftasks.xml"/>
 
-  <import file="${bedework.quickstart.basedir}/../loadDeployConfig.xml"/>
+  <property name="bedework.home"
+            location="${env.QUICKSTART_HOME}/bedework" />
 
-  <!-- The only properties set below should be those directly used to
-       invoke the targets below, in this file.
-       Do not set properties here for tasks invoked in other build
-       files.  Instead, make sure the targets work in calendar/build.xml,
-       then invoke ant on the task in calendar/build.xml.
+  <deftasks/>
 
-       For an example, of invoking ant on another build file,
-       see the deploy target, below.
-    -->
  <target name="init" >
    <dirname property="quickstart.dir" file="${ant.file}"/>
 
@@ -60,25 +54,18 @@
   <target name="usage" depends="init"
           description="Describe targets and their usage">
     <echo level="info" message="As distributed the package should be ready to go."/>
-    <echo level="info" message="Ensure ant is on your path, (a version is in the" />
-    <echo level="info" message="package)"/>
     <echo level="info" message=""/>
-    <echo level="info" message="First in one window do"/>
-    <echo level="info" message="    ant hsqldb"/>
-    <echo level="info" message="This will start the hsqldb server ready for the "/>
-    <echo level="info" message="application."/>
+    <echo level="info" message="cd into the quickstart then do"/>
+    <echo level="info" message="    ./startjboss"/>
     <echo level="info" message=""/>
-    <echo level="info" message="In another window do"/>
-    <echo level="info" message="    ant tomcatstart"/>
-    <echo level="info" message=""/>
-    <echo level="info" message="Once tomcat is running you should be able to go to a"/>
+    <echo level="info" message="Once jboss is running you should be able to go to a"/>
     <echo level="info" message="browser and connect to"/>
     <echo level="info" message="    http://localhost:8080/bedework"/>
     <echo level="info" message="and follow the instructions."/>
     <echo level="info" message=""/>
-    <echo level="info" message="To build the calendar do"/>
+    <echo level="info" message="To build and deploy bedework do"/>
     <echo level="info" message="    ./bw -quickstart deploy"/>
-    <echo level="info" message="which does a build and deploy of all components"/>
+    <echo level="info" message="which does a build and deploy of all calendar components"/>
     <echo level="info" message=""/>
     <echo level="info" message="See documentation in the docs directory or on bedework.org"/>
     <echo level="info" message="for instructions on creating a locally configured calendar application"/>

@@ -55,36 +55,18 @@
      =================================================================== -->
 
 <project name="deploy.bedework" default="init">
-  <property name="org.bedework.temp.wars.home"
-            location="${org.bedework.temp.dir}/wars" />
-
-  <property name="org.bedework.temp.shellscr.home"
-            location="${org.bedework.temp.dir}/shellscr" />
-
-  <!-- Recreated by each app build file. Place extra jars here -->
-  <property name="org.bedework.temp.extrajars.dir"
-            location="${org.bedework.temp.dir}/extrajars" />
-
-  <!-- Preserve extra jars for ear builds -->
-  <property name="org.bedework.temp.ear.extrajars.dir"
-            location="${org.bedework.temp.dir}/earextrajars" />
-	
   <dirname property="this.build.dir" file="${ant.file}"/>
+
   <property name="bedework.deployment.base" location="${this.build.dir}" />
+  
   <property name="org.bedework.deployment.resources" 
             location="${bedework.deployment.base}/resources" />
-
-  <import file="${build.dir}/buildTools/getJar.xml"/>
-
-  <import file="${build.dir}/loadDeployConfig.xml"/>
   
   <property name="ear.meta.dir" location="${this.build.dir}/ear.meta"/>
 
   <target name="init" >
     <property name="org.bedework.struts.tlds"
               location="${resources.dir}/struts-1.2.9/tlds"/>
-
-    <loadDeployConfig />
 
     <!-- All the projects we deploy -->
     <property name="org.bedework.project.bwtzsvr"
@@ -121,9 +103,6 @@
     <!-- set these for the war builds -->
     <dirname property="app.root.dir" file="${ant.file}"/>
     
-    <property name="org.bedework.deployment.name"
-              value="bedework" />
-    
     <property name="org.bedework.sou.hibernate.properties"
               location="${org.bedework.deployment.resources}/hibernate" />
     
@@ -133,47 +112,6 @@
     <!-- Common resources directory -->
     <property name="org.bedework.common.resources"
               location="${app.root.dir}/resources" />
-
-    <property name="org.bedework.global.build.common.context.war.name"
-              value="bw-common" />
-
-    <!-- Where we put ear stuff -->
-    <if>
-      <isset property="org.bedework.global.build.ear" />
-      <then>
-        <property name="app.ear.file.name"
-                  value="${org.bedework.global.ear.name}.ear" />
-
-        <property name="org.bedework.ear.name"
-                  value="${org.bedework.global.ear.name}" />
-
-        <property name="org.bedework.ear.properties.dir"
-                  location="${org.bedework.temp.dir}/ear-properties" />
-
-        <property name="org.bedework.ear.templib"
-                  location="${org.bedework.temp.dir}/earlib"/>
-        
-        <delete dir="${org.bedework.ear.templib}" />
-        <mkdir dir="${org.bedework.ear.templib}" />
-
-        <delete dir="${org.bedework.ear.properties.dir}" />
-        <mkdir dir="${org.bedework.ear.properties.dir}" />
-      </then>
-    </if>
-
-    <property name="org.bedework.global.context.roots"
-              location="${org.bedework.temp.dir}/context-roots.properties" />
-
-    <if>
-      <not>
-        <isset property="org.bedework.global.context.roots" />
-      </not>
-      <then>
-        <tempfile property="org.bedework.global.context.roots"
-                  destdir="${org.bedework.temp.dir}"
-                  prefix="context-roots" suffix=".properties" />
-      </then>
-    </if>
   </target>
 
   <target name="build.configured" depends="init" >
@@ -230,6 +168,9 @@
 
     <!-- ================= termination tasks for deployment ================ -->
 
+    <!-- ensure has value -->
+    <property name="propval.app.cal.suite" value="" />
+
     <ant antfile="${org.bedework.deployment.base}/termination/build.xml"
          inheritrefs="true" target="deploy" />
   </target>
@@ -243,8 +184,6 @@
   <!-- The cp.xalan task conditionally copies the xalan.jar file, if
        necessary -->
   <target name="cp.xalan" if="xalan.in.tomcat.common.endorsed">
-    <copy file="${org.bedework.default.lib}/xalan.jar"
-          todir="${appserver.endorsed.dir}"/>
   </target>
 
   <!-- =================================================================
@@ -253,6 +192,7 @@
        this component.
        ================================================================= -->
   <target name="build.configured.apps">
+    <!-- Is this used any more? -->
     <forEachApp names="${org.bedework.install.app.names}"
                 prefix="org.bedework.deploy"
                 appPrefix="org.bedework.app"
@@ -290,6 +230,8 @@
 
         <propertycopy name="propval.app.unauthenticated"
                       from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
+        <!-- ensure has value -->
+        <property name="propval.app.cal.suite" value="" />
 
         <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
              inheritrefs="true" target="build.configured" >
@@ -331,12 +273,14 @@
       <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"/>
       <then>
         <propertyset id="deploy-app-properties">
-          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}"/>
+          <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}."/>
           <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
         </propertyset>
 
         <propertycopy name="propval.app.unauthenticated"
                       from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
+        <!-- ensure has value -->
+        <property name="propval.app.cal.suite" value="" />
 
         <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
              inheritrefs="true" target="deploy" >

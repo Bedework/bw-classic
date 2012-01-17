@@ -9,9 +9,6 @@
 
   <dirname property="this.dir" file="${ant.file}"/>
 
-  <!-- ensure has value -->
-  <property name="propval.app.cal.suite" value="" />
-
   <target name="init">
   </target>
 

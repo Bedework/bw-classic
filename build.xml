@@ -6,41 +6,48 @@
 -->
 
 <project name="bedework.build" default="deploy" basedir=".">
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
   <property environment="env"/>
+
+  <dirname property="project.home" file="${ant.file}"/>
+
+  <property name="bedework.home"
+            location="${project.home}" />
 
   <!-- this project -->
   <property name="org.bedework.project.bedework"
             location="${basedir}" />
 
-    <property name="org.bedework.libcache.dir"
-              location="${org.bedework.project.bedework}/libcache"/>
-
-  <property name="build.dir" location="${org.bedework.project.bedework}/build"/>
-  
-  <property name="buildsh" location="${build.dir}/buildsh.xml"/>
-  <property name="buildwar" location="${build.dir}/buildwar.xml"/>
-
-  <!-- ========================= deployutil ================================ -->
-
-  <property name="org.bedework.default.lib"
-            location="${org.bedework.project.bedework}/lib" />
+  <property name="build.dir" location="${bedework.home}/build"/>
 
   <property name="bw.project.home" location="${org.bedework.project.bedework}"/>
 
-  <property file="${bw.project.home}/build.properties" />
-
-  <property name="project.version" value="${org.bedework.version}"/>
-  
   <import file="${build.dir}/buildTools/deftasks.xml"/>
 
   <deftasks/>
+
+  <projectDefs name="bedework main project"
+               version="${org.bedework.version}" 
+               deployment-name="bedework"
+  />
   
   <var name="org.bedework.jars.built" value="0" />
   <var name="org.bedework.jars.checked" value="0" />
 
-  <import file="${build.dir}/buildfilters.xml" />
-  <import file="${build.dir}/loadDeployConfig.xml"/>
-  <import file="${build.dir}/dirTools.xml"/>
+  <target name="init" >
+    <projectInit/>
+
+    <!-- ===============================================================
+              This project builds nothing - it just assembles.
+         =============================================================== -->
+
+    <property name="org.bedework.config.base"
+              location="${org.bedework.project.bedework}/config" />
+
+    <property name="org.bedework.deployment.base"
+              location="${org.bedework.project.bedework}/deployment" />
+  </target>
 
   <target name="README" depends="init"
           description="Describe targets and their usage">
@@ -54,51 +61,6 @@
     <loadfile property="org.bedework.README"
               srcFile="${org.bedework.project.bedework}/docs/README"/>
     <echo level="info" message="${org.bedework.README}" />
-  </target>
-
-  <target name="init" >
-    <loadDeployConfig />
-
-    <!-- ===============================================================
-              Default properties.
-         =============================================================== -->
-
-    <property name="project.name" value="${org.bedework.package.name}"/>
-
-    <property name="dist.home" location="${bw.project.home}/dist"/>
-    <property name="lib.dir" location="${bw.project.home}/lib"/>
-    <property name="resources.dir" location="${bw.project.home}/resources"/>
-    <property name="bin.home" location="${bw.project.home}/bin"/>
-
-    <mkdir dir="${dist.home}" />
-
-    <mkdir dir="${bin.home}" />
-
-    <property name="org.bedework.empty.dir"
-              location="${dist.home}/empty-dir" />
-    <mkdir dir="${org.bedework.empty.dir}" />
-
-    <fileset id="empty.fileset" dir="${org.bedework.empty.dir}"
-             excludes="*" />
-
-    <!-- ===============================================================
-              This project builds nothing - it just assembles.
-         =============================================================== -->
-
-    <property name="org.bedework.temp.dir"
-              location="${dist.home}/temp" />
-
-    <property name="org.bedework.ear.properties.dir"
-              location="${org.bedework.temp.dir}/ear-properties" />
-
-    <property name="org.bedework.config.base"
-              location="${org.bedework.project.bedework}/config" />
-
-    <property name="org.bedework.default.lib"
-              location="${org.bedework.project.bedework}/lib" />
-
-    <property name="org.bedework.deployment.base"
-              location="${org.bedework.project.bedework}/deployment" />
   </target>
 
   <!-- =================================================================
@@ -122,8 +84,12 @@
   <!-- =================================================================
        The "deploy" target deploys the applications
        ================================================================= -->
+  
+  <target name="deploy-init" depends="init">
+    <deployInit ear-name="bwcal" />
+  </target>
 
-  <target name="deploy" depends="build"
+  <target name="deploy" depends="build,deploy-init"
           description="builds and deploys the applications">
     <ant antfile="${org.bedework.project.bedework}/deployment/build.xml" inheritrefs="true"
          target="deploy" />

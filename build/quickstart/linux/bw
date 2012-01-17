@@ -67,6 +67,7 @@ catsvr=
 client=
 davutil=
 dumprestore=
+exchgGateway=
 indexer=
 monitor=
 naming=
@@ -123,6 +124,7 @@ usage() {
   echo "      -log-quiet    The default"
   echo "      -log-inform   A little more noisy"
   echo "      -log-verbose  Noisier"
+  echo "      -log-configs  Some info about configurations"
   echo "      -ant-debug    Vast amounts of ant output"
   echo "      -build-debug  Some bedework build debug output"
   echo ""
@@ -393,6 +395,12 @@ setDirectory() {
 	  return
 	fi
 	
+	if [ "$exchgGateway" != "" ] ; then
+	  cd $QUICKSTART_HOME/exchgGateway
+      exchgGateway=
+	  return
+	fi
+
 	if [ "$synch" != "" ] ; then
 	  cd $QUICKSTART_HOME/synch
       synch=
@@ -669,6 +677,10 @@ do
       bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true"
       shift
       ;;
+    -log-configs)
+      bw_loglevel="$bw_loglevel -Dorg.bedework.build.showconfigs=true"
+      shift
+      ;;
     -ant-debug)
       ant_loglevel="-debug"
       shift
@@ -927,6 +939,16 @@ do
       pkgdefault=
       shift
       ;;
+    -exchgGateway)
+      exchgGateway="yes"
+      
+#      access="yes"
+      bwxml="yes"
+#      davutil="yes"
+#      rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
     -synch)
       synch="yes"
       
@@ -1042,6 +1064,7 @@ do
   if [ "$specialTarget" != "" ] ; then
     $javacmd $specialTarget
   else  
+#    echo $javacmd $*
     $javacmd $*
   fi
 done

@@ -7,7 +7,8 @@
 <project name="bwdeploy.termination" default="deploy" >
   <import file="${build.dir}/platforms/${org.bedework.global.deploy.platform}War.xml" />
 
-  <import file="${build.dir}/buildfilters.xml" />
+  <!--<import file="${build.dir}/buildfilters.xml" />-->
+  <buildfilters/>
 
   <dirname property="this.dir" file="${ant.file}"/>
 

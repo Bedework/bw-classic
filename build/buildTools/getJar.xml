@@ -34,13 +34,47 @@
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
     	
-    	<mkdir dir="@{libcache}" />
+   	  <mkdir dir="@{libcache}" />
+
+      <if>
+        <isset property="org.bedework.print.jar.reference.info" />
+        <then>
+          <mkdir dir="${bedework.home}/dist"/>
+          <echoxml file="${bedework.home}/dist/jarrefs.xml" append="true">
+            <jar-ref>
+              <name>@{name}</name>
+              <version>@{version}</version>
+              <from>${project.name}</from>
+            </jar-ref>
+          </echoxml>
+        </then>
+      </if>
+
+      <if>
+        <isset property="org.bedework.print.jar.licence.info" />
+        <then>
+          <license name="@{name}" version="@{version}" 
+                   prefix="org.bedework.license" 
+                   licenseInfoFile="${org.bedework.license-mappings}" />
+          
+          <mkdir dir="${bedework.home}/dist"/>
+          <echoxml file="${bedework.home}/dist/jarlicenses.xml" append="true">
+            <jar-license>
+              <name>@{name}</name>
+              <version>${org.bedework.license.version}</version>
+              <groupId>${org.bedework.license.groupId}</groupId>
+              <artifactId>${org.bedework.license.artifactId}</artifactId>
+              <license>${org.bedework.license.license}</license>
+              <from>${project.name}</from>
+            </jar-license>
+          </echoxml>
+        </then>
+      </if>
 
       <!-- Names are of form
              <name-part>-<version>.jar   or
              <name-part>.jar
         -->
-
       <if>
         <equals arg1="@{version}" arg2="" />
         <then>
@@ -71,8 +105,8 @@
       <var name="org.bedework.getjar.finished" value="false" />
 
       <!-- If a project or projecthome was specified try to get it from the
-           local file system
-        -->
+           local file system -->
+      
       <if>
         <or>
           <not>

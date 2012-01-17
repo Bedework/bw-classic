@@ -39,8 +39,9 @@
 <project name="bedework.buildwar" default="build" >
   <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
-  <import file="${build.dir}/buildfilters.xml" />
-
+  <!--<import file="${build.dir}/buildfilters.xml" />-->
+  <buildfilters/>
+  
   <if>
     <isset property="org.bedework.global.portal.platform" />
     <then>

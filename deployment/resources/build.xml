@@ -14,7 +14,8 @@
   <property name="propval.app.war.name"
             value="${org.bedework.global.build.common.context.war.name}" />
 
-  <import file="${build.dir}/buildfilters.xml" />
+  <!--<import file="${build.dir}/buildfilters.xml" />-->
+  <buildfilters/>
 
   <target name="init" >
     <dirname property="common.resources.dir" file="${ant.file}"/>

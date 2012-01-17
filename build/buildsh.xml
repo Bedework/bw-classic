@@ -15,8 +15,9 @@
      =================================================================== -->
 
 <project name="bw.buildsh" default="build">
-  <import file="${build.dir}/buildfilters.xml" />
-
+  <!--<import file="${build.dir}/buildfilters.xml" />-->
+  <buildfilters/>
+  
   <import file="${build.dir}/platforms/${org.bedework.global.deploy.platform}Service.xml" />
 
   <target name="init">

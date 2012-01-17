@@ -9,6 +9,8 @@
 <project name="doDeftasks" basedir="." default="">
   <macrodef name="deftasks">
     <sequential>
+      <property name="build.dir" location="${bedework.home}/build"/>
+
       <path id="build.cp">
         <fileset dir="${build.dir}">
           <include name="*.jar"/>
@@ -22,6 +24,11 @@
       
       <taskdef name="forApp"
                classname="org.bedework.deployment.ForAppTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="license"
+               classname="org.bedework.deployment.LicenseTask">
         <classpath refid="build.cp"/>
       </taskdef>
 
@@ -45,13 +52,158 @@
   <macrodef name="execProject">
     <attribute name="project"/>
     <attribute name="target"/>
-	  <sequential>
-	    <ant antfile="${bedework.home}/../@{project}/build.xml" 
-	         inheritall="false"
-	         target="@{target}" />
-	  </sequential>
-	</macrodef>
+    <sequential>
+      <ant antfile="${bedework.home}/../@{project}/build.xml" 
+           inheritall="false"
+           target="@{target}" />
+    </sequential>
+  </macrodef>
     
+  <macrodef name="buildfilters">
+    <sequential>
+      <filterset id="property.filters" >
+        <!--      Global settings            -->
+        <filter token="QUICKSTART_DIR"
+                value="${quickstart.dir}"/>
+
+        <filter token="APPSERVER-DATA-DIR"
+                value="${org.bedework.data.dir}"/>
+      	
+        <filter token="DATA_DIR"
+                value="${org.bedework.data.dir}"/>
+
+        <filter token="BW-APP-NAME"
+                value="${org.bedework.deploy.name}"/>
+
+        <filter token="HIBERNATE-DIALECT"
+                value="${org.bedework.global.hibernate.dialect}" />
+
+        <filter token="SECOND-LEVEL-CACHING"
+                value="${org.bedework.global.hibernate.cache.use_second_level_cache}" />
+
+        <filter token="CACHE-PROVIDER"
+                value="${org.bedework.global.hibernate.cache.provider_class}" />
+
+        <filter token="DIRECTORY-BROWSING-DISALLOWED"
+                value="${org.bedework.global.directory.browsing.disallowed}" />
+
+        <filter token="SERVLET-CLASS"
+                value="${org.bedework.global.servlet.class}"/>
+
+        <filter token="PORTLET-SERVLET-CLASS"
+                value="${org.bedework.global.portlet-servlet.class}"/>
+
+        <filter token="PORTAL-SERVLET-CONTEXT-PROVIDER"
+                value="${org.bedework.global.portal-servlet.context.provider}"/>
+
+        <filter token="PORTAL-SERVLET-CONTEXT-LISTENER"
+                value="${org.bedework.global.portal-servlet.context.listener}"/>
+
+        <filter token="PORTLET-CLASS"
+                value="${org.bedework.global.portlet.class}"/>
+
+        <filter token="IGNORE-CONTENT-TYPE"
+                value="${org.bedework.global.ignoreContentType}" />
+
+        <filter token="GENURL-TAGLIB-TLD"
+                value="${org.bedework.global.genurl.taglib.tld}"/>
+
+        <filter token="LIFERAY-COMPANY-ID"
+                value="${org.bedework.global.liferay.company-id}"/>
+
+        <filter token="JBOSS-CARDDB-DATASOURCE"
+                value="${org.bedework.global.jboss.carddb.datasource.jndiname}"/>
+
+        <filter token="JBOSS-DB-DATASOURCE"
+                value="${org.bedework.global.jboss.db.datasource.jndiname}"/>
+
+        <!--      Application settings            -->
+
+        <filter token="APP-DESCRIPTION"
+                value="${propval.app.description}" />
+
+        <filter token="PORTLET-NAME"
+                value="${propval.app.portlet.name}"/>
+
+        <filter token="CAL-SUITE"
+                value="${propval.app.cal.suite}"/>
+
+        <filter token="SECURITY-DOMAIN"
+                value="${propval.app.security.domain}"/>
+        <filter token="SECURITY-PREFIX"
+                value="${propval.app.security.prefix}"/>
+        <filter token="TRANSPORT-GUARANTEE"
+                value="${propval.app.transport.guarantee}"/>
+
+        <filter token="DISPLAY-NAME"
+                value="${propval.app.display.name}"/>
+        <filter token="CONTEXT-ROOT"
+                value="${propval.app.context.root}" />
+        <filter token="APP-NAME"
+                value="${propval.app.name}"/>
+        <filter token="APP-DESCRIPTION"
+                value="${propval.app.description}"/>
+        <filter token="APP-VERSION"
+                value="${org.bedework.global.version}"/>
+        <filter token="WAR-NAME"
+                value="${propval.app.war.name}"/>
+        <filter token="TOMCAT-DOC-BASE"
+                value="${org.bedework.appserver.dir}${propval.app.deploy.dir}/${propval.app.war.name}"/>
+
+        <filter token="DEFAULT-CONTENTTYPE"
+                value="${propval.app.default.contenttype}" />
+        <filter token="NOXSLT"
+                value="${propval.app.noxslt}" />
+
+        <!-- Change this to be an app par -->
+        <filter token="RUN-AS-USER"
+                value="${org.bedework.syspar.public.user}" />
+
+                <!-- ???????
+        <filter token="CALFILE-NAME"
+                value="${propval.app.calfile.name}" /> -->
+
+        <!--      Shell script settings            -->
+
+        <filter token="SCHEMA-DELIMITER"
+                value="${propval.app.schema.delimiter}" />
+
+        <filter token="KEYFILE-DIR"
+                value="${org.bedework.global.keyfile.dir}"/>
+
+        <filter token="calSoapWsURI"
+                value="${org.bedework.calws-soap.uri}" />
+
+        <filter token="synchWsURI"
+                value="${org.bedework.synch.uri}" />
+
+        <filter token="synchService"
+                value="${org.bedework.synch.service}" />
+
+        <filter token="synchServiceManager"
+                value="${org.bedework.synch.service.manager}" />
+
+        <filter token="SYNCH_WSDL_DIR"
+                value="${org.bedework.synch.wsdl.deploy.dir}" />
+
+        <filter token="synchWsdlURI"
+                value="${org.bedework.synch.wsdl.uri}" />
+
+        <filter token="tzdataURI"
+                value="${org.bedework.app.tzsvr.tzdata.url}" />
+
+        <filter token="tzdataRefreshInterval"
+                value="${org.bedework.app.tzsvr.refetch.interval}" />
+
+        <filter token="tzserverPrimary"
+                value="${org.bedework.app.tzsvr.primary.server}" />
+
+        <filter token="tzserverPrimaryUrl"
+                value="${org.bedework.app.tzsvr.primary.url}" />
+      </filterset>
+    </sequential>
+  </macrodef>
+      
   <macrodef name="projectDefs">
     <attribute name="name"/>
     <attribute name="version"/>
@@ -66,8 +218,6 @@
       <mkdir dir="${dist.home}" />
 
       <property name="lib.dir" location="${project.home}/lib"/>
-
-      <property name="build.dir" location="${bedework.home}/build"/>
 
       <property name="buildjar" location="${build.dir}/buildTools/buildjar.xml"/>
       <property name="buildwar" location="${build.dir}/buildwar.xml"/>
@@ -102,12 +252,85 @@
     </sequential>
   </macrodef>
 
+  <!-- ===================================================================
+       Load the deployment configuration from the properties file. We also load
+       the run time options and define some properties based on some of the
+       values found there
+       =================================================================== -->
+  <macrodef name="loadDeployConfig">
+    <!--<attribute name="extra.options" default="${org.bedework.carddav.options}"/> -->
+    <sequential>
+      <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+    
+      <if>
+        <not>
+          <isset property="bedework-options.org.bedework.global.portal.platform"/>
+        </not>
+        <then>
+        <property environment="env"/>
+  
+        <!-- Load build property definition overrides -->
+        <property file="${org.bedework.build.properties}" />
+  
+        <configMsg message="Loading build properties from ${org.bedework.build.properties}" />
+        <configMsg message="Use config override properties ${org.bedework.config.override.properties}" />
+        <configMsg message="Use config properties ${org.bedework.config.properties}" />
+        <configMsg message="Runtime options from ${org.bedework.config.options}" />
+  
+        <property file="${org.bedework.configuration.versions}" />
+        <property file="${org.bedework.config.override.properties}" />
+        <property file="${org.bedework.config.properties}" />
+  
+        <!-- Load the run time options and define some properties based on some
+             of the values -->
+  
+        <!-- Load the general bedework options -->
+        <xmlproperty file="${org.bedework.config.options}"/>
+  
+        <!-- Load the extra options 
+        <xmlproperty file="@{extra.options}"/>-->
+  
+        <if>
+          <isset property="bedework-options.org.bedework.global.portal.platform"/>
+          <then>
+            <property name="org.bedework.global.portal.platform"
+                      value="${bedework-options.org.bedework.global.portal.platform}" />
+  
+            <property name="org.bedework.config.portal.home"
+                      value="${org.bedework.configurations.home}/.portal/${org.bedework.global.portal.platform}" />
+  
+            <property name="org.bedework.config.portal.common.home"
+                      value="${org.bedework.configurations.home}/.portal/common-resources" />
+  
+            <debugMsg message="******************* load from ${org.bedework.config.portal.home}/portal.properties" />
+  
+            <property file="${org.bedework.config.portal.home}/portal.properties" />
+          </then>
+          <else>
+            <debugMsg message="******************* load from ${org.bedework.configurations.home}/.standalone/standalone.properties" />
+  
+            <property file="${org.bedework.configurations.home}/.platform/standalone.properties" />
+          </else>
+        </if>
+  
+        <property name="org.bedework.global.version"
+                  value="${bedework-options.org.bedework.global.version}" />
+  
+        <property name="org.bedework.global.directory.browsing.disallowed"
+                  value="${bedework-options.org.bedework.syspars.directoryBrowsingDisallowed}" />
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+
   <!-- =====================================================================
        Assumes projectDefs was called previously.
        ===================================================================== -->
   <macrodef name="projectInit">
     <sequential>
       <infoMsg message="* =========== Building ${project.name}" />
+
+      <loadDeployConfig/>
       
       <delete dir="${lib.dir}" />
       <mkdir dir="${lib.dir}" />
@@ -169,9 +392,16 @@
         </then>
       </if>
       
+      <property name="org.bedework.global.build.common.context.war.name"
+                value="bw-common" />
+      
+      <property name="org.bedework.temp.wars.home"
+                location="${org.bedework.temp.dir}/wars" />
+
       <property name="org.bedework.temp.shellscr.home"
                 location="${org.bedework.temp.dir}/shellscr" />
 
+      <!-- Recreated by each app build file. Place extra jars here -->
       <property name="org.bedework.temp.extrajars.dir"
                 location="${org.bedework.temp.dir}/extrajars" />
 
@@ -182,16 +412,13 @@
       <property name="org.bedework.global.context.roots"
                 location="${org.bedework.temp.dir}/context-roots.properties" />
 
-      <!-- ===== End of stuff in main bedework deployment build file ======   -->
+      <tempfile property="org.bedework.global.context.roots"
+                destdir="${org.bedework.temp.dir}"
+                prefix="context-roots" suffix=".properties" />
       
       <!-- Clean up before we start -->
-      <if>
-        <isset property="org.bedework.temp.wars.home" />
-        <then>    
-          <delete dir="${org.bedework.temp.wars.home}" />
-          <mkdir dir="${org.bedework.temp.wars.home}" />
-        </then>
-      </if>
+      <delete dir="${org.bedework.temp.wars.home}" />
+      <mkdir dir="${org.bedework.temp.wars.home}" />
 
       <delete dir="${org.bedework.temp.ear.extrajars.dir}" />
       <mkdir dir="${org.bedework.temp.ear.extrajars.dir}" />
@@ -230,7 +457,12 @@
   <target name="build-source" />
   
   <!-- Override this -->
-  <target name="deploy" depends="build" />
+  <target name="deploy-init" depends="init">
+    <deployInit ear-name="" />
+  </target>
+  
+  <!-- Override this -->
+  <target name="deploy" depends="deploy-init,build" />
 
   <!-- =================================================================
        Clean out all library files from other projects and all generated
@@ -577,6 +809,18 @@
     <sequential>
       <if>
         <istrue value="${org.bedework.build.noisy}" />
+        <then>
+          <echo message="@{message}" />
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="configMsg">
+    <attribute name="message"/>
+    <sequential>
+      <if>
+        <istrue value="${org.bedework.build.showconfigs}" />
         <then>
           <echo message="@{message}" />
         </then>
