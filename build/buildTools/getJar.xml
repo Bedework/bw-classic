@@ -59,14 +59,14 @@
           
           <mkdir dir="${bedework.home}/dist"/>
           <echoxml file="${bedework.home}/dist/jarlicenses.xml" append="true">
-            <jar-license>
+            <jarLicense>
               <name>@{name}</name>
               <version>${org.bedework.license.version}</version>
               <groupId>${org.bedework.license.groupId}</groupId>
               <artifactId>${org.bedework.license.artifactId}</artifactId>
               <license>${org.bedework.license.license}</license>
               <from>${project.name}</from>
-            </jar-license>
+            </jarLicense>
           </echoxml>
         </then>
       </if>

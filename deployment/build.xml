@@ -168,9 +168,6 @@
 
     <!-- ================= termination tasks for deployment ================ -->
 
-    <!-- ensure has value -->
-    <property name="propval.app.cal.suite" value="" />
-
     <ant antfile="${org.bedework.deployment.base}/termination/build.xml"
          inheritrefs="true" target="deploy" />
   </target>
@@ -192,7 +189,6 @@
        this component.
        ================================================================= -->
   <target name="build.configured.apps">
-    <!-- Is this used any more? -->
     <forEachApp names="${org.bedework.install.app.names}"
                 prefix="org.bedework.deploy"
                 appPrefix="org.bedework.app"
@@ -230,9 +226,6 @@
 
         <propertycopy name="propval.app.unauthenticated"
                       from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
-        <!-- ensure has value -->
-        <property name="propval.app.cal.suite" value="" />
-
         <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
              inheritrefs="true" target="build.configured" >
           <propertyset refid="deploy-app-properties" />
@@ -279,9 +272,7 @@
 
         <propertycopy name="propval.app.unauthenticated"
                       from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
-        <!-- ensure has value -->
-        <property name="propval.app.cal.suite" value="" />
-
+        
         <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
              inheritrefs="true" target="deploy" >
           <propertyset refid="deploy-app-properties" />
