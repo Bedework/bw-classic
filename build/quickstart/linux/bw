@@ -807,6 +807,12 @@ do
       ;;
     -bwtools)
       bwtools="yes"
+      
+      bwannotations="yes"  
+      bwcalfacade="yes"
+      bwinterfaces="yes"
+      bwxml="yes"
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
