@@ -102,7 +102,7 @@
 	    <xsl:choose>
 	      <xsl:when test="$isRoot = 'true'">
 	        <xsl:attribute name="class">root</xsl:attribute>
-	        <a href="{$setSelection}&amp;setappvar=curCollection()">
+	        <a href="{$setSelection}">
 	          <xsl:copy-of select="$bwStr-LCol-All"/>
 	        </a>
 	      </xsl:when>
