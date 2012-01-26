@@ -5476,9 +5476,10 @@
     </xsl:choose>
 
     <form name="delCalForm" action="{$subscriptions-delete}" method="post">
+      <input type="hidden" name="deleteContent" value="true"/>
       <table class="eventFormTable">
         <tr>
-          <th>Path:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Path"/></th>
           <td>
             <xsl:value-of select="path"/>
           </td>
