@@ -295,6 +295,31 @@
         <license>Not distributed with project</license>
     </artifact>
     <artifact>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>dsn</artifactId>    
+      <license>Commons Development and Distribution License, Version 1.0</license>
+    </artifact>
+    <artifact>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>imap</artifactId>    
+      <license>Commons Development and Distribution License, Version 1.0</license>
+    </artifact>
+    <artifact>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>mailapi</artifactId>
+      <license>Commons Development and Distribution License, Version 1.0</license>
+    </artifact>
+    <artifact>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>pop3</artifactId>
+      <license>Commons Development and Distribution License, Version 1.0</license>
+    </artifact>
+    <artifact>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>smtp</artifactId>
+      <license>Commons Development and Distribution License, Version 1.0</license>
+    </artifact>
+    <artifact>
         <groupId>com.sun.xml.bind</groupId>
         <artifactId>jaxb-impl</artifactId>
         <license>Commons Development and Distribution License, Version 1.0</license>
@@ -352,6 +377,11 @@
     <artifact>
         <groupId>commons-lang</groupId>
         <artifactId>commons-lang</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+      <groupId>commons-validator</groupId>
+      <artifactId>commons-validator</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
@@ -415,6 +445,11 @@
         <groupId>javax.el</groupId>
         <artifactId>el-api</artifactId>
         <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>javax.jms</groupId>
+        <artifactId>jms</artifactId>
+        <license>Commons Development and Distribution License, Version 1.0</license>
     </artifact>
     <artifact>
         <groupId>javax.portlet</groupId>
