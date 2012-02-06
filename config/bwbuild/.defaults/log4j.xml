@@ -407,6 +407,11 @@
      <priority value="${jboss.server.log.threshold}" />
    </category>
 
+   <!-- Control struts config logging -->
+   <category name="edu.rpi.sss.util.jsp.UtilAbstractAction.traceConfig">
+      <priority value="INFO"/>
+   </category>
+
 <!-- 
    <category name="org.bedework.calsvc.CalSvc$SvcSimpleFilterParser">
       <priority value="${org.bedework.loglevel.exprfilters}"/>
