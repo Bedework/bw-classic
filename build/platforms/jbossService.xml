@@ -30,6 +30,8 @@ hibernate.connection.datasource=java:${org.bedework.jboss.datasource.jndiname}
 
 hibernate.bytecode.use_reflection_optimizer=false
 hibernate.cache.use_second_level_cache=false
+
+hibernate.jdbc.use_streams_for_binary false
 #
 # Here for better debugging
 #

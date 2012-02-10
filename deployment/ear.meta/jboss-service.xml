@@ -17,6 +17,14 @@
     <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
   </mbean>
   
+  <mbean code="org.bedework.calsvc.scheduling.ischedule.BwIschedule"
+         name="org.bedework:service=Ischedule">
+    <attribute name="Account">admin</attribute>
+    
+    <!-- We also need the bedework database -->
+    <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
+  </mbean>
+  
   <mbean code="org.bedework.inoutsched.BwInoutSched"
          name="org.bedework:service=BwInoutSched">
          <!--  no attributes yet

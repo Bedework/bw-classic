@@ -602,6 +602,11 @@
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
+      <groupId>org.apache.pluto</groupId>
+      <artifactId>pluto</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
         <groupId>org.apache.portals.bridges</groupId>
         <artifactId>portals-bridges-common</artifactId>
         <license>Apache License, Version 2.0</license>
@@ -727,6 +732,11 @@
     <artifact>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-annotations</artifactId>
+        <license>LGPL, v2.1</license>
+    </artifact>
+    <artifact>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
         <license>LGPL, v2.1</license>
     </artifact>
     <artifact>

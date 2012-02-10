@@ -21,6 +21,8 @@ hibernate.connection.password=${org.bedework.global.jdbcpw}
 hibernate.connection.url=${org.bedework.global.jdbcurl}
 hibernate.bytecode.use_reflection_optimizer=false
 hibernate.cache.use_second_level_cache=false
+
+hibernate.jdbc.use_streams_for_binary false
 #
 # Here for better debugging
 #
