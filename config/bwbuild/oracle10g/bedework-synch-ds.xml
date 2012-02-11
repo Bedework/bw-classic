@@ -7,8 +7,8 @@
 <datasources>
   <local-tx-datasource>
     <jndi-name>SynchDS</jndi-name>
-    <connection-url>jdbc:mysql://127.0.0.1:3306/bwsynch3p7</connection-url>
-    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <connection-url>jdbc:oracle:thin:@youroraclehost:1521:yoursid</connection-url>
+    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
     <user-name>[[[yourDbUserNameHere]]]</user-name>
     <password>[[[yourDbPasswordHere]]]</password>
     <min-pool-size>5</min-pool-size>
@@ -16,7 +16,7 @@
     <blocking-timeout-millis>5000</blocking-timeout-millis>
     <idle-timeout-minutes>15</idle-timeout-minutes>
     <metadata>
-      <type-mapping>mySQL</type-mapping>
+      <type-mapping>Oracle9i</type-mapping>
     </metadata>
   </local-tx-datasource>
 </datasources>
