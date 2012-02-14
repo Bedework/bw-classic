@@ -5826,16 +5826,6 @@
           </td>
         </tr>
         <tr>
-          <th><xsl:copy-of select="$bwStr-MdSP-Indexing"/></th>
-          <td>
-            <xsl:variable name="indexing" select="/bedework/system/indexing"/>
-            <input value="{$indexing}" name="indexing" />
-            <div class="desc">
-              <xsl:copy-of select="$bwStr-MdSP-IndexingNote"/>
-            </div>
-          </td>
-        </tr>
-        <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-DefaultFBPeriod"/></th>
           <td>
             <xsl:variable name="defaultFBPeriod" select="/bedework/system/defaultFBPeriod"/>
