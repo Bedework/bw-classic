@@ -2521,17 +2521,23 @@
           </td>
         </tr>
         <!-- Image Url -->
-        <tr class="optional">
+        <tr class="optional" id="bwImageUrl">
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
           <td class="fieldName">
-            <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
+            <xsl:copy-of select="$bwStr-AEEF-Image"/>
           </td>
           <td>
-            <input type="text" name="xBwImageHolder" value="" size="80" class="edit">
+            <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
+            <xsl:text> </xsl:text>
+            <input type="text" name="xBwImageHolder" value="" size="67" class="edit">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <xsl:text> </xsl:text>
             <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventImage"/></span>
+            <br/>
+            <xsl:copy-of select="$bwStr-AEEF-ImageUpload"/>
+            <xsl:text> </xsl:text>
+            <input type="file" name="eventImageUpload" size="80" class="edit"/>
           </td>
         </tr>
         <!-- Location -->

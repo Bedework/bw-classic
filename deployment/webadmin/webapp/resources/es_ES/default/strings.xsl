@@ -249,7 +249,9 @@
   <xsl:variable name="bwStr-AEEF-OptionalPlaceToPurchaseTicks">(opcional: si lo hay, y el lugar para obtener las entradas)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventURL">URL del evento:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalMoreEventInfo">(opcional: para más información sobre el evento)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Image">Imagen:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ImageURL">URL de la imagen:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ImageUpload">-o- Cargar la imagen:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalEventImage">(opcional: para incluir una imagen con la descripción del evento)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Location">Localización:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Add">añadir</xsl:variable>
