@@ -108,6 +108,7 @@
   <xsl:variable name="featuredEventsForMonth">false</xsl:variable>
   <xsl:variable name="featuredEventsForYear">false</xsl:variable>
   <xsl:variable name="featuredEventsForEventDisplay">false</xsl:variable>
+  <xsl:variable name="featuredEventsForEventList">true</xsl:variable>
   <xsl:variable name="featuredEventsForCalList">false</xsl:variable>
 
 

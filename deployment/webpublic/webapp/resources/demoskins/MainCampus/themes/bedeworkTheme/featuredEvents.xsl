@@ -25,6 +25,7 @@
     <xsl:if test="$featuredEventsAlwaysOn = 'true' or
                  ($featuredEventsForEventDisplay = 'true' and /bedework/page = 'event') or
                  ($featuredEventsForCalList = 'true' and /bedework/page = 'calendarList') or
+                 ($featuredEventsForEventList = 'true' and /bedework/page = 'eventList') or
                  (/bedework/page = 'eventscalendar' and (
                    ($featuredEventsForDay = 'true' and /bedework/periodname = 'Day') or
                    ($featuredEventsForWeek = 'true' and /bedework/periodname = 'Week') or

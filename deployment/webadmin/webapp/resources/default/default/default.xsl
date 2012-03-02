@@ -6294,6 +6294,33 @@
         </tr>
         <tr>
           <th>
+            <xsl:copy-of select="$bwStr-CSPf-DefaultViewMode"/>
+          </th>
+          <td>
+            <select name="defaultViewMode">
+              <option value="daily">
+                <xsl:if test="/bedework/prefs/defaultViewMode = 'daily'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeDaily"/>
+              </option>
+              <option value="list">
+                <xsl:if test="/bedework/prefs/defaultViewMode = 'list'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeList"/>
+              </option>
+              <option value="grid">
+                <xsl:if test="/bedework/prefs/defaultViewMode = 'grid'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeGrid"/>
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>
             <xsl:copy-of select="$bwStr-CSPf-PreferredViewPeriod"/>
           </th>
           <td>

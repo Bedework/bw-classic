@@ -27,7 +27,7 @@
   <xsl:variable name="ongoingEvents">
     <xsl:choose>
       <xsl:when test="$ongoingEventsEnabled = 'true' and
-                      /bedework/page = 'eventscalendar' and
+                     (/bedework/page = 'eventscalendar' or /bedework/page = 'eventList') and
                       /bedework/periodname != 'Year'">
         <xsl:choose>
           <xsl:when test="$ongoingEventsAlwaysDisplayed = 'true'">true</xsl:when>

@@ -107,7 +107,13 @@
 	        </a>
 	      </xsl:when>
 	      <xsl:otherwise>
-	        <a href="{$setSelection}&amp;virtualPath={$encVirtualPath}&amp;setappvar=curCollection({$name})">
+	        <a href="{$setSelection}">
+	          <xsl:attribute name="href">
+	            <xsl:choose>
+	              <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$listEvents"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$name"/>)</xsl:when>
+	              <xsl:otherwise><xsl:value-of select="$setSelection"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$name"/>)</xsl:otherwise>
+	            </xsl:choose>
+	          </xsl:attribute>
 	          <xsl:value-of select="summary"/>
 	        </a>
 	      </xsl:otherwise>	      

@@ -113,8 +113,19 @@
         <xsl:variable name="currentClass">current</xsl:variable>
         <li>
           <a
+            href="{$listEvents}">
+            <xsl:if test="/bedework/page='eventList'">
+              <xsl:attribute name="class">
+                <xsl:value-of select="$currentClass" />
+              </xsl:attribute>
+            </xsl:if>
+            <xsl:copy-of select="$bwStr-Tabs-Upcoming"/>
+          </a>
+        </li>
+        <li>
+          <a
             href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Day'">
+            <xsl:if test="/bedework/periodname='Day' and /bedework/page != 'eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -125,7 +136,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Week'">
+            <xsl:if test="/bedework/periodname='Week' and /bedework/page != 'eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -136,7 +147,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Month'">
+            <xsl:if test="/bedework/periodname='Month' and /bedework/page != 'eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -147,7 +158,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Year'">
+            <xsl:if test="/bedework/periodname='Year' and /bedework/page != 'eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -158,7 +169,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=todayView">
-            <xsl:if test="/bedework/periodname='Today'">
+            <xsl:if test="/bedework/periodname='Today' and /bedework/page != 'eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>

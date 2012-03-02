@@ -59,6 +59,7 @@
   <xsl:variable name="bwStr-Tabs-LoggedInAs">logged in as</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Logout">logout</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Today">TODAY</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Upcoming">UPCOMING</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Day">DAY</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Week">WEEK</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Month">MONTH</xsl:variable>
@@ -210,6 +211,7 @@
   <xsl:variable name="bwStr-LsEv-Canceled">CANCELED:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Tentative">TENTATIVE:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-EventList">Event List</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-Upcoming">Upcoming Events</xsl:variable>
 
   <!--  xsl:template name="buildListEventsDaysOptions" -->
 
