@@ -16,14 +16,39 @@
           <include name="*.jar"/>
         </fileset>
       </path>
+
+      <taskdef name="applicationXml"
+               classname="org.bedework.deployment.ApplicationXmlTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="artifactId"
+               classname="org.bedework.deployment.ArtifactIdTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="dependencies"
+               classname="org.bedework.deployment.DependenciesTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="dependency"
+               classname="org.bedework.deployment.DependencyTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+         
+      <taskdef name="forApp"
+               classname="org.bedework.deployment.ForAppTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
   
       <taskdef name="forEachApp"
                classname="org.bedework.deployment.ForEachAppTask">
         <classpath refid="build.cp"/>
       </taskdef>
-      
-      <taskdef name="forApp"
-               classname="org.bedework.deployment.ForAppTask">
+
+      <taskdef name="groupId"
+               classname="org.bedework.deployment.GroupIdTask">
         <classpath refid="build.cp"/>
       </taskdef>
 
@@ -32,18 +57,33 @@
         <classpath refid="build.cp"/>
       </taskdef>
 
-      <taskdef name="resolveFile"
-               classname="org.bedework.deployment.ResolveFile">
-        <classpath refid="build.cp"/>
-      </taskdef>
-
       <taskdef name="makeLangXsl"
                classname="org.bedework.deployment.MakeLangXsl">
         <classpath refid="build.cp"/>
       </taskdef>
 
-      <taskdef name="applicationXml"
-               classname="org.bedework.deployment.ApplicationXmlTask">
+      <taskdef name="optional"
+               classname="org.bedework.deployment.OptionalTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="resolveFile"
+               classname="org.bedework.deployment.ResolveFile">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="scope"
+               classname="org.bedework.deployment.ScopeTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="type"
+               classname="org.bedework.deployment.TypeTask">
+        <classpath refid="build.cp"/>
+      </taskdef>
+
+      <taskdef name="version"
+               classname="org.bedework.deployment.VersionTask">
         <classpath refid="build.cp"/>
       </taskdef>
     </sequential>
