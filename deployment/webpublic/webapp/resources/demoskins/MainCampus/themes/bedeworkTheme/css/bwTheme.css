@@ -588,10 +588,10 @@ table.eventList tr td.description a {
 table.eventList tr td.icons {
  width: 5em;
 }
-table.eventList .icons {
+.icons {
  float: right;
 }
-table.eventList .icons a {
+.icons a {
  padding: 2px;
  display: inline;
 }
@@ -623,6 +623,10 @@ ul.eventList li {
 ul.eventList li a {
  display: inline;
  color: #397DAE;
+}
+ul.eventList li a:hover {
+ color: #0a529a;
+ text-decoration: underline;
 }
 a#allView:visited, a#allView {
  color: #273E6D;
@@ -675,8 +679,8 @@ ul#eventList li {
 }
 .eventWhere {
 }
-.eventDescription {
- margin: 1em 0;
+.singleEvent .eventDescription {
+ margin: 1em 1.5em 1em 0;
 }
 .eventStatus {
 }
@@ -686,7 +690,11 @@ ul#eventList li {
 }
 .eventContact {
 }
-.eventCategories {
+.singleEvent .eventCategories {
+  margin-right: 1em;
+}
+.singleEvent .eventAliases {
+  margin-right: 1em;
 }
 .eventComments {
 }
@@ -856,7 +864,7 @@ div#advSearch h3 {
  color: #335080;
 }
 div.singleEvent {
- padding: 1em 0 1em 8px;
+ padding: 1em 0 1em 1em;
 }
 div.singleEvent h2 {
  display: block;
@@ -1051,7 +1059,31 @@ div#footer a.rss {
 }
 #listEvents li {
   display: block;
-  margin-bottom: 1em;
+  clear: both;
+  margin-bottom: 0.5em;
+  padding: 0.5em;
+}
+#listEvents li.even {
+  background-color: #f5f5f5;
+}
+#listEvents .eventListContent {
+  margin-left: 0;
+}
+#listEvents .withImage {
+  margin-left: 90px;
+}
+#listEvents h4 {
+  font-size: 1.2em;
+  margin: 0;
+}
+#listEvents img.eventThumb {
+  float: left; 
+}
+#bwEventList {
+  font-size: 0.9em;
+}
+#bwEventList li {
+  margin: 0.5em;
 }
 #page {
   margin: 1em;

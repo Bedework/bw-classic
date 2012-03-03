@@ -153,6 +153,25 @@
 
 
 
+  <!-- EVENT THUMBNAILS -->
+  <!-- Use event thumbnails in the "upcoming" event listings? (see eventListDiscrete.xsl) -->
+  <xsl:variable name="thumbsEnabled">true</xsl:variable>
+  <!-- Thumbnail width (default should be 80px) -->
+  <xsl:variable name="thumbWidth">80</xsl:variable>
+  <!-- Use full-size image scaled to a thumbmail if only full-size image is present? -->
+  <xsl:variable name="useFullImageThumbs">true</xsl:variable>
+  <!-- Use a placeholder thumbnail in listing if no image supplied with event? -->
+  <xsl:variable name="usePlaceholderThumb">false</xsl:variable>
+  <!-- Limit thumbs to a specific views and collections? -->
+  <xsl:variable name="limitThumbs">false</xsl:variable>
+  <!-- Limit the thumbs to these comma separated view names: -->
+  <xsl:variable name="limitThumbsToView"></xsl:variable>
+  <!-- Limit the thumbs to these comma separated collections (full virtual paths): -->
+  <xsl:variable name="limitThumbsToCollections"></xsl:variable>
+
+
+
+
 
 
   <!-- JAVASCRIPT CONSTANTS -->

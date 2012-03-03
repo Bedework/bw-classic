@@ -115,19 +115,26 @@
                 </span>
                 
                 <!-- event thumbnail -->
-                <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                  <img width="80" class="eventThumb">
-                    <xsl:attribute name="src">
-                      <xsl:choose>
-                        <xsl:when test="xproperties/X-BEDEWORK-IMAGE"><xsl:value-of select="xproperties/X-BEDEWORK-IMAGE/values/text"/></xsl:when>
-                        <xsl:otherwise><xsl:value-of select="$resourcesRoot"/>/images/sdpl/placeholder.png</xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:attribute>
-                    <xsl:attribute name="alt"><xsl:value-of select="summary"/></xsl:attribute>
-                  </img>
-                </a>
+                <xsl:if test="xproperties/X-BEDEWORK-IMAGE or $usePlaceholderThumb = 'true'">
+	                <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+	                  <img class="eventThumb">
+	                    <xsl:attribute name="width"><xsl:value-of select="$thumbWidth"/></xsl:attribute>
+	                    <xsl:attribute name="src">
+	                      <xsl:choose>
+	                        <xsl:when test="xproperties/X-BEDEWORK-THUMB-IMAGE"><xsl:value-of select="xproperties/X-BEDEWORK-THUMB-IMAGE/values/text"/></xsl:when>
+	                        <xsl:when test="xproperties/X-BEDEWORK-IMAGE and $useFullImageThumbs = 'true'"><xsl:value-of select="xproperties/X-BEDEWORK-IMAGE/values/text"/></xsl:when>
+	                        <xsl:otherwise><xsl:value-of select="$resourcesRoot"/>/images/placeholder.png</xsl:otherwise>
+	                      </xsl:choose>
+	                    </xsl:attribute>
+	                    <xsl:attribute name="alt"><xsl:value-of select="summary"/></xsl:attribute>
+	                  </img>
+	                </a>
+	              </xsl:if>
                 
                 <div class="eventListContent">
+                  <xsl:if test="xproperties/X-BEDEWORK-IMAGE or $usePlaceholderThumb = 'true'">
+                    <xsl:attribute name="class">eventListContent withImage</xsl:attribute>
+                  </xsl:if>
                   <!-- event title -->
                   <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                   <xsl:if test="status='TENTATIVE'"><strong><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></strong></xsl:if>

@@ -251,8 +251,11 @@
   <xsl:variable name="bwStr-AEEF-OptionalMoreEventInfo">(optional: for more information about the event)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Image">Image:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ImageURL">Image URL:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ImageThumbURL">Thumbnail URL:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ImageUpload">-or- upload image:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalEventImage">(optional: to include an image with the event description)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalEventThumbImage">(optional: to include an image thumbnail for event lists)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalImageUpload">(uploads will overwrite the image and thumbnail URLs)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Location">Location:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Add">add</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Address">Address:</xsl:variable>

@@ -2527,17 +2527,47 @@
             <xsl:copy-of select="$bwStr-AEEF-Image"/>
           </td>
           <td>
-            <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
+            <xsl:choose>
+	            <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
+	              <img class="eventFormImage">
+	                <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']"/></xsl:attribute>
+	                <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
+	              </img>
+	            </xsl:when>
+              <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+                <img class="eventFormImage">
+                  <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']"/></xsl:attribute>
+                  <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
+                </img>
+              </xsl:when>
+	          </xsl:choose>
+            <label class="interiorLabel" for="xBwImageHolder">
+              <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
+            </label>
             <xsl:text> </xsl:text>
-            <input type="text" name="xBwImageHolder" value="" size="67" class="edit">
+            <input type="text" name="xBwImageHolder" id="xBwImageHolder" value="" size="45" class="edit">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <xsl:text> </xsl:text>
             <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventImage"/></span>
             <br/>
-            <xsl:copy-of select="$bwStr-AEEF-ImageUpload"/>
+            <label class="interiorLabel" for="xBwImageThumbHolder">
+              <xsl:copy-of select="$bwStr-AEEF-ImageThumbURL"/>
+            </label>
             <xsl:text> </xsl:text>
-            <input type="file" name="eventImageUpload" size="80" class="edit"/>
+            <input type="text" name="xBwImageThumbHolder" id="xBwImageThumbHolder" value="" size="45" class="edit">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
+            </input>
+            <xsl:text> </xsl:text>
+            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventThumbImage"/></span>
+            <br/>
+            <label class="interiorLabel" for="eventImageUpload">
+              <xsl:copy-of select="$bwStr-AEEF-ImageUpload"/>
+            </label>
+            <xsl:text> </xsl:text>
+            <input type="file" name="eventImageUpload" id="eventImageUpload" size="45" class="edit"/>
+            <xsl:text> </xsl:text>
+            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/></span>
           </td>
         </tr>
         <!-- Location -->

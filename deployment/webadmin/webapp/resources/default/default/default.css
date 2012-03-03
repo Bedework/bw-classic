@@ -472,6 +472,16 @@ table.eventFormTable td.allField {
   font-size: 0.9em;
   font-style: italic;
 }
+label.interiorLabel {
+	display: block;
+	float: left;
+	width: 150px;
+}
+.eventFormImage {
+	display: block;
+  clear: right;
+  margin-bottom: 0.5em;
+}
 table.eventFormTable div.fieldInfo {
   width: 400px;
   margin-bottom: 0.5em;
