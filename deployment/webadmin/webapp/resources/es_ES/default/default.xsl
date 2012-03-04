@@ -57,6 +57,9 @@
     -->
   <xsl:variable name="resourcesRoot" select="/bedework/browserResourceRoot"/>
 
+  <!-- Root context of uploaded event images -->
+  <xsl:variable name="bwEventImagePrefix">/pubcaldav</xsl:variable>
+
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
        included stylesheets and xml fragments. These are generally
@@ -2529,16 +2532,28 @@
           </td>
           <td>
             <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE'] or form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
+              <xsl:variable name="imgPrefix">
+                <xsl:choose>
+                  <xsl:when test="starts-with(form/xproperties/node()[name()='X-BEDEWORK-IMAGE'],'http')"></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <xsl:variable name="imgThumbPrefix">
+                <xsl:choose>
+                  <xsl:when test="starts-with(form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE'],'http')"></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
               <div id="eventFormImage">
                 <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
                   <img>
-                    <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']"/></xsl:attribute>
+                    <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']"/></xsl:attribute>
                     <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
                   </img>
                 </xsl:if>
 		            <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
 		              <img>
-		                <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']"/></xsl:attribute>
+		                <xsl:attribute name="src"><xsl:value-of select="$imgThumbPrefix"/><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']"/></xsl:attribute>
 		                <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
 		              </img>
 		            </xsl:if>

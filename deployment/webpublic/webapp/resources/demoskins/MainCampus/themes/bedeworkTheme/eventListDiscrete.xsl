@@ -116,13 +116,25 @@
                 
                 <!-- event thumbnail -->
                 <xsl:if test="xproperties/X-BEDEWORK-IMAGE or $usePlaceholderThumb = 'true'">
+                  <xsl:variable name="imgPrefix">
+                    <xsl:choose>
+                      <xsl:when test="starts-with(xproperties/X-BEDEWORK-IMAGE/values/text,'http')"></xsl:when>
+                      <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+                  <xsl:variable name="imgThumbPrefix">
+                    <xsl:choose>
+                      <xsl:when test="starts-with(xproperties/X-BEDEWORK-THUMB-IMAGE/values/text,'http')"></xsl:when>
+                      <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
 	                <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
 	                  <img class="eventThumb">
 	                    <xsl:attribute name="width"><xsl:value-of select="$thumbWidth"/></xsl:attribute>
 	                    <xsl:attribute name="src">
 	                      <xsl:choose>
-	                        <xsl:when test="xproperties/X-BEDEWORK-THUMB-IMAGE"><xsl:value-of select="xproperties/X-BEDEWORK-THUMB-IMAGE/values/text"/></xsl:when>
-	                        <xsl:when test="xproperties/X-BEDEWORK-IMAGE and $useFullImageThumbs = 'true'"><xsl:value-of select="xproperties/X-BEDEWORK-IMAGE/values/text"/></xsl:when>
+	                        <xsl:when test="xproperties/X-BEDEWORK-THUMB-IMAGE"><xsl:value-of select="$imgThumbPrefix"/><xsl:value-of select="xproperties/X-BEDEWORK-THUMB-IMAGE/values/text"/></xsl:when>
+	                        <xsl:when test="xproperties/X-BEDEWORK-IMAGE and $useFullImageThumbs = 'true'"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="xproperties/X-BEDEWORK-IMAGE/values/text"/></xsl:when>
 	                        <xsl:otherwise><xsl:value-of select="$resourcesRoot"/>/images/placeholder.png</xsl:otherwise>
 	                      </xsl:choose>
 	                    </xsl:attribute>

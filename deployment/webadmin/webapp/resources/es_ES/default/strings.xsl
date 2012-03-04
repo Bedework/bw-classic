@@ -254,7 +254,7 @@
   <xsl:variable name="bwStr-AEEF-ImageThumbURL">URL de la thumbnail:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ImageUpload">-o- Cargar la imagen:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalEventImage">(opcional: para incluir una imagen con la descripción del evento)</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-OptionalEventThumbImage">(optional: to include an image thumbnail for event lists)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalEventThumbImage">(optional: to include an image thumbnail for event lists.  Default width: 80px.)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalImageUpload">(uploads will overwrite the image and thumbnail URLs)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Location">Localización:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Add">añadir</xsl:variable>

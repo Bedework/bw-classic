@@ -25,7 +25,8 @@
 
   <!-- URL of html resources (images, css, other html) for the current theme -->
   <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/browserResourceRoot" />/themes/bedeworkTheme</xsl:variable>
-
+  <!-- Root context of uploaded event images -->
+  <xsl:variable name="bwEventImagePrefix">/pubcaldav</xsl:variable>
 
   <!-- ============================== -->
   <!-- Features for the current theme -->
