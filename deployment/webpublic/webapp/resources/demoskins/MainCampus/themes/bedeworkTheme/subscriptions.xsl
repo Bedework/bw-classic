@@ -103,6 +103,12 @@
 	      <xsl:when test="$isRoot = 'true'">
 	        <xsl:attribute name="class">root</xsl:attribute>
 	        <a href="{$setSelection}">
+            <xsl:attribute name="href">
+              <xsl:choose>
+                <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$setSelectionList"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$setSelection"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
 	          <xsl:copy-of select="$bwStr-LCol-All"/>
 	        </a>
 	      </xsl:when>
@@ -110,7 +116,7 @@
 	        <a href="{$setSelection}">
 	          <xsl:attribute name="href">
 	            <xsl:choose>
-	              <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$listEvents"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$name"/>)</xsl:when>
+	              <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$setSelectionList"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$name"/>)</xsl:when>
 	              <xsl:otherwise><xsl:value-of select="$setSelection"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$name"/>)</xsl:otherwise>
 	            </xsl:choose>
 	          </xsl:attribute>

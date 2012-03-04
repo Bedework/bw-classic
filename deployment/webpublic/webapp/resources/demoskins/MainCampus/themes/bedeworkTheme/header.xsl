@@ -125,7 +125,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Day' and /bedework/page != 'eventList'">
+            <xsl:if test="/bedework/periodname='Day' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -136,7 +136,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Week' and /bedework/page != 'eventList'">
+            <xsl:if test="/bedework/periodname='Week' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -147,7 +147,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Month' and /bedework/page != 'eventList'">
+            <xsl:if test="/bedework/periodname='Month' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -158,7 +158,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}">
-            <xsl:if test="/bedework/periodname='Year' and /bedework/page != 'eventList'">
+            <xsl:if test="/bedework/periodname='Year' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
@@ -169,7 +169,7 @@
         <li>
           <a
             href="{$setViewPeriod}&amp;viewType=todayView">
-            <xsl:if test="/bedework/periodname='Today' and /bedework/page != 'eventList'">
+            <xsl:if test="/bedework/periodname='Today' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
               </xsl:attribute>
