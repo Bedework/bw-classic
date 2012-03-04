@@ -1298,7 +1298,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userInfo/currentUser"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-For"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/userInfo/group"/> (<xsl:value-of select="/bedework/userInfo/user"/>)</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
+    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
@@ -2515,24 +2515,62 @@
           <td>
             <input type="text" name="eventLink" size="80" class="edit">
               <xsl:attribute name="value"><xsl:value-of select="form/link/input/@value"/></xsl:attribute>
-              <xsl:if test="$canEdit = 'false'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+              <!-- xsl:if test="$canEdit = 'false'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if-->
             </input>
             <xsl:text> </xsl:text>
             <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalMoreEventInfo"/></span>
           </td>
         </tr>
         <!-- Image Url -->
-        <tr class="optional">
+        <tr class="optional" id="bwImageUrl">
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
           <td class="fieldName">
-            <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
+            <xsl:copy-of select="$bwStr-AEEF-Image"/>
           </td>
           <td>
-            <input type="text" name="xBwImageHolder" value="" size="80" class="edit">
+            <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE'] or form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
+              <div id="eventFormImage">
+                <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+                  <img>
+                    <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']"/></xsl:attribute>
+                    <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
+                  </img>
+                </xsl:if>
+		            <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
+		              <img>
+		                <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']"/></xsl:attribute>
+		                <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
+		              </img>
+		            </xsl:if>
+	            </div>
+	          </xsl:if>
+            <label class="interiorLabel" for="xBwImageHolder">
+              <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
+            </label>
+            <xsl:text> </xsl:text>
+            <input type="text" name="xBwImageHolder" id="xBwImageHolder" value="" size="45" class="edit">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
             <xsl:text> </xsl:text>
             <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventImage"/></span>
+            <br/>
+            <label class="interiorLabel" for="xBwImageThumbHolder">
+              <xsl:copy-of select="$bwStr-AEEF-ImageThumbURL"/>
+            </label>
+            <xsl:text> </xsl:text>
+            <input type="text" name="xBwImageThumbHolder" id="xBwImageThumbHolder" value="" size="45" class="edit">
+              <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
+            </input>
+            <xsl:text> </xsl:text>
+            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventThumbImage"/></span>
+            <br/>
+            <label class="interiorLabel" for="eventImageUpload">
+              <xsl:copy-of select="$bwStr-AEEF-ImageUpload"/>
+            </label>
+            <xsl:text> </xsl:text>
+            <input type="file" name="eventImageUpload" id="eventImageUpload" size="45" class="edit"/>
+            <xsl:text> </xsl:text>
+            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/></span>
           </td>
         </tr>
         <!-- Location -->
@@ -5477,9 +5515,10 @@
     </xsl:choose>
 
     <form name="delCalForm" action="{$subscriptions-delete}" method="post">
+      <input type="hidden" name="deleteContent" value="true"/>
       <table class="eventFormTable">
         <tr>
-          <th>Path:</th>
+          <th><xsl:copy-of select="$bwStr-CuCa-Path"/></th>
           <td>
             <xsl:value-of select="path"/>
           </td>
@@ -6284,6 +6323,33 @@
           <td>
             <xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
             <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <xsl:copy-of select="$bwStr-CSPf-DefaultViewMode"/>
+          </th>
+          <td>
+            <select name="defaultViewMode">
+              <option value="daily">
+                <xsl:if test="/bedework/prefs/defaultViewMode = 'daily'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeDaily"/>
+              </option>
+              <option value="list">
+                <xsl:if test="/bedework/prefs/defaultViewMode = 'list'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeList"/>
+              </option>
+              <option value="grid">
+                <xsl:if test="/bedework/prefs/defaultViewMode = 'grid'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeGrid"/>
+              </option>
+            </select>
           </td>
         </tr>
         <tr>
@@ -7247,7 +7313,7 @@
             <xsl:value-of select="event/start/time"/>
             <xsl:choose>
               <xsl:when test="event/start/longdate != event/end/longdate">
-                - <xsl:value-of select="event/start/longdate"/>
+                - <xsl:value-of select="event/end/longdate"/>
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="event/end/time"/>
               </xsl:when>

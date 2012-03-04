@@ -2527,20 +2527,22 @@
             <xsl:copy-of select="$bwStr-AEEF-Image"/>
           </td>
           <td>
-            <xsl:choose>
-	            <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
-	              <img class="eventFormImage">
-	                <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']"/></xsl:attribute>
-	                <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
-	              </img>
-	            </xsl:when>
-              <xsl:when test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
-                <img class="eventFormImage">
-                  <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']"/></xsl:attribute>
-                  <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
-                </img>
-              </xsl:when>
-	          </xsl:choose>
+            <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE'] or form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
+              <div id="eventFormImage">
+                <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+                  <img>
+                    <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']"/></xsl:attribute>
+                    <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
+                  </img>
+                </xsl:if>
+		            <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
+		              <img>
+		                <xsl:attribute name="src"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']"/></xsl:attribute>
+		                <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
+		              </img>
+		            </xsl:if>
+	            </div>
+	          </xsl:if>
             <label class="interiorLabel" for="xBwImageHolder">
               <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
             </label>

@@ -356,7 +356,12 @@ function setBedeworkXProperties(formObj,submitter) {
                    [bwXParamHeight,'']],
                    formObj["xBwImageHolder"].value,true);
   }
-
+  
+  //X-BEDEWORK-THUMB-IMAGE:
+  if (formObj["xBwImageThumbHolder"] && formObj["xBwImageThumbHolder"].value != '') {
+    bwXProps.update(bwXPropertyThumbImage,[],formObj["xBwImageThumbHolder"].value,true);
+  }
+  
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
 

@@ -477,10 +477,11 @@ label.interiorLabel {
   float: left;
   width: 150px;
 }
-.eventFormImage {
-  display: block;
-  clear: right;
+#eventFormImage {
   margin-bottom: 0.5em;
+}
+#eventFormImage img {
+  margin-right: 4px;
 }
 table.eventFormTable div.fieldInfo {
   width: 400px;
