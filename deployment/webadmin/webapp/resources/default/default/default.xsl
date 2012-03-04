@@ -6509,6 +6509,16 @@
 
           </td>
         </tr>
+        <tr>
+          <th>
+            <xsl:copy-of select="$bwStr-CSPf-DefaultImageDirectory"/>
+          </th>
+          <td>
+            <input type="text" name="defaultImageDirectory" value="" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/defaultImageDirectory"/></xsl:attribute>
+            </input>
+          </td>
+        </tr>
         <!--
         <tr>
           <td class="fieldName">

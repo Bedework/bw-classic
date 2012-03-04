@@ -792,6 +792,7 @@
   <xsl:variable name="bwStr-CSPf-SelectTimezone">select timezone...</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Update">Update</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Cancel">Cancel</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-DefaultImageDirectory">Default image directory:</xsl:variable>
 
   <!--  xsl:template name="uploadTimezones" -->
   <xsl:variable name="bwStr-UpTZ-ManageTZ">Manage Timezones</xsl:variable>
