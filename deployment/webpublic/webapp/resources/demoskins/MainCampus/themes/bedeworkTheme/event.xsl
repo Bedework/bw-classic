@@ -265,8 +265,14 @@
       </xsl:if>
 
       <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+        <xsl:variable name="imgPrefix">
+          <xsl:choose>
+            <xsl:when test="starts-with(xproperties/X-BEDEWORK-IMAGE/values/text,'http')"></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
         <img class="bwEventImage">
-          <xsl:attribute name="src"><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" /></xsl:attribute>
+          <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" /></xsl:attribute>
         </img>
       </xsl:if>
 
