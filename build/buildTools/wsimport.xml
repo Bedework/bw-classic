@@ -139,7 +139,7 @@
           <!-- We don't want the generated classes but there doesn't appear to be a
                way to suppress generation -->
           <property name="wsimport.dest" 
-                    location="${org.bedework.temp.dir}/wsclasses" />
+                    location="${org.bedework.temp.dir}/wsclasses${org.bedework.wsimport.tstamp}" />
           <mkdir dir="${wsimport.dest}" />
     
           <infoMsg message="* =========== Compiling @{wsdl}" />
