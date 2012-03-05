@@ -768,5 +768,11 @@ function doRejectEvent(formObj, eventTitle, eventDatesForEmail){
   }
   formObj.sntext.value = message;
 }
-
+function setOverwriteImageField(chkBox) {
+  if(chkBox.checked) {
+    $("#replaceImage").attr('checked','checked');
+  } else {
+    $("#replaceImage").removeAttr('checked');
+  }
+}
 

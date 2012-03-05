@@ -256,6 +256,7 @@
   <xsl:variable name="bwStr-AEEF-OptionalEventImage">opcional: para incluir una imagen con la descripción del evento</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalEventThumbImage">optional link to thumbnail for event lists, 80px wide</xsl:variable>
   <xsl:variable name="bwStr-AEEF-UseExisting">Use existing...</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Overwrite">Overwrite</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalImageUpload">Uploads can be JPG, PNG, or GIF and will overwrite the image and thumbnail URLs.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Location">Localización:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Add">añadir</xsl:variable>

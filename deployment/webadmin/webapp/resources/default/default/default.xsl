@@ -757,7 +757,14 @@
     <xsl:if test="/bedework/error">
       <ul id="errors">
         <xsl:for-each select="/bedework/error">
-          <li><xsl:apply-templates select="."/></li>
+          <li>
+            <xsl:apply-templates select="."/>
+	          <!-- Special cases for handling error conditions: -->
+	          <xsl:if test="/bedework/error/id = 'org.bedework.client.error.duplicateimage'">
+              <input type="checkbox" id="overwriteEventImage" onclick="setOverwriteImageField(this);"/><label for="overwriteEventImage"><xsl:copy-of select="$bwStr-AEEF-Overwrite"/></label><xsl:text> </xsl:text>
+              <!-- input type="checkbox" id="reuseEventImage"/><label for="reuseEventImage">Reuse</label>-->
+	          </xsl:if>
+          </li>
         </xsl:for-each>
       </ul>
     </xsl:if>
@@ -2578,7 +2585,8 @@
 	            </label>
 	            <xsl:text> </xsl:text>
 	            <input type="file" name="eventImageUpload" id="eventImageUpload" size="45"/>
-	            <button name="eventImageUseExisting" id="eventImageUseExisting"><xsl:copy-of select="$bwStr-AEEF-UseExisting"/></button><br/>
+	            <input type="checkbox" name="replaceImage" id="replaceImage" value="true"/><label for="replaceImage"><xsl:copy-of select="$bwStr-AEEF-Overwrite"/></label>
+	            <!-- button name="eventImageUseExisting" id="eventImageUseExisting"><xsl:copy-of select="$bwStr-AEEF-UseExisting"/></button--><br/>
 	            <div class="fieldInfoAlone"><xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/></div>
 	          </xsl:if>
           </td>

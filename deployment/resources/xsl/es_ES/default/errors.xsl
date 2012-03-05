@@ -277,6 +277,15 @@
       <xsl:when test="id='org.bedework.validation.error.insubmissionscalendar'">
         To publish this event, you must move it to a public calendar.  Please select a different calendar.
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.duplicateimage'">
+        Image with that name already uploaded.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.imageerror'">
+        The file you attempted to upload is not a recognized image format.  Use JPG, PNG, or GIF.
+      </xsl:when>
+      <xsl:when test="id='org.bedework.validation.error.toolarge'">
+        The file you attempted to upload is too large:  <em><xsl:value-of select="param[position() = 1]"/> bytes</em>.  Max size allowed: <xsl:value-of select="param[position() = 2]"/> bytes.
+      </xsl:when>
 
       <!-- Scheduling error codes are defined in CalfacadeException -->
 

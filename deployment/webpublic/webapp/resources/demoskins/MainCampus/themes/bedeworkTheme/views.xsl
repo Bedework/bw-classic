@@ -31,6 +31,12 @@
         <xsl:variable name="viewName" select="name/text()"/>
         <li>
           <a href="{$setSelection}&amp;viewName={$viewName}">
+            <xsl:attribute name="href">
+              <xsl:choose>
+                <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$setSelectionList"/>&amp;viewName=<xsl:value-of select="$viewName"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$setSelection"/>&amp;viewName=<xsl:value-of select="$viewName"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
             <xsl:if test="$viewName = (/bedework/selectionState/view/name)">
               <xsl:attribute name="class">current</xsl:attribute>
             </xsl:if>
