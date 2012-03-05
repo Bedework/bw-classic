@@ -450,8 +450,6 @@ table.eventFormTable tr.optional td.fieldName {
   font-style: normal;
 }
 table.eventFormTable tr.optional input {
-  background-color: #eee;
-  color: black;
 }
 table.eventFormTable td.allField {
   white-space: nowrap;
@@ -472,16 +470,26 @@ table.eventFormTable td.allField {
   font-size: 0.9em;
   font-style: italic;
 }
+.fieldInfoAlone {
+	margin: 0 0 12px 140px;
+  font-size: 0.9em;
+  font-style: italic;
+  color: #777;
+  background-color: transparent;
+}
 label.interiorLabel {
   display: block;
   float: left;
-  width: 150px;
+  width: 140px;
 }
 #eventFormImage {
   margin-bottom: 0.5em;
 }
 #eventFormImage img {
-  margin-right: 4px;
+	margin-right: 4px;
+}
+#eventImageUseExisting {
+	margin-bottom: 0;
 }
 table.eventFormTable div.fieldInfo {
   width: 400px;

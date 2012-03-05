@@ -243,19 +243,20 @@
   <xsl:variable name="bwStr-AEEF-YesOpaque">yes (opaque)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-NoTransparent">no (transparent)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Description">Description:</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-EnterPertientInfo">Enter all pertinent information, including the academic titles of all speakers and/or participants.</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EnterPertientInfo">Enter a brief description of the event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-CharsMax">characters max.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Cost">Cost:</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-OptionalPlaceToPurchaseTicks">(optional: if any, and place to purchase tickets)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalPlaceToPurchaseTicks">optional: if any, and place to purchase tickets</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventURL">Event URL:</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-OptionalMoreEventInfo">(optional: for more information about the event)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalMoreEventInfo">optional link to more information about the event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Image">Image:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ImageURL">Image URL:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ImageThumbURL">Thumbnail URL:</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-ImageUpload">-or- upload image:</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-OptionalEventImage">(optional: to include an image with the event description)</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-OptionalEventThumbImage">(optional: to include an image thumbnail for event lists.  Default width: 80px.)</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-OptionalImageUpload">(uploads will overwrite the image and thumbnail URLs)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ImageUpload">-or- Upload image:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalEventImage">optional link to image for event description</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalEventThumbImage">optional link to thumbnail for event lists, 80px wide</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-UseExisting">Use existing...</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-OptionalImageUpload">Uploads can be JPG, PNG, or GIF and will overwrite the image and thumbnail URLs.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Location">Location:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Add">add</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Address">Address:</xsl:variable>
@@ -792,6 +793,7 @@
   <xsl:variable name="bwStr-CSPf-SelectTimezone">select timezone...</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Update">Update</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Cancel">Cancel</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-MaxEntitySize">Maximum size for file uploads (in bytes):</xsl:variable>
   <xsl:variable name="bwStr-CSPf-DefaultImageDirectory">Default image directory:</xsl:variable>
 
   <!--  xsl:template name="uploadTimezones" -->

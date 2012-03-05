@@ -2478,15 +2478,14 @@
             <xsl:copy-of select="$bwStr-AEEF-Description"/>
           </td>
           <td>
-            <textarea name="description" cols="55" rows="8">
+            <textarea name="description" cols="80" rows="8" placeholder="{$bwStr-AEEF-EnterPertientInfo}">
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
               <xsl:value-of select="form/desc/textarea"/>
               <xsl:if test="form/desc/textarea = ''"><xsl:text> </xsl:text></xsl:if>
             </textarea>
             <div class="fieldInfo">
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-              <xsl:copy-of select="$bwStr-AEEF-EnterPertientInfo"/>
-              <span class="maxCharNotice">(<xsl:value-of select="form/descLength"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-CharsMax"/></span>
+              <span class="maxCharNotice"><xsl:value-of select="form/descLength"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-CharsMax"/></span>
             </div>
             <xsl:if test="$canEdit = 'false'">
               <div class="bwHighlightBox">
@@ -2502,11 +2501,9 @@
             <xsl:copy-of select="$bwStr-AEEF-Cost"/>
           </td>
           <td>
-            <input type="text" size="30" name="eventCost" class="edit">
+            <input type="text" size="80" name="eventCost" placeholder="{$bwStr-AEEF-OptionalPlaceToPurchaseTicks}">
               <xsl:attribute name="value"><xsl:value-of select="form/cost/input/@value"/></xsl:attribute>
             </input>
-            <xsl:text> </xsl:text>
-            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalPlaceToPurchaseTicks"/></span>
           </td>
         </tr>
         <!-- Url -->
@@ -2516,12 +2513,10 @@
             <xsl:copy-of select="$bwStr-AEEF-EventURL"/>
           </td>
           <td>
-            <input type="text" name="eventLink" size="80" class="edit">
+            <input type="text" name="eventLink" size="80" placeholder="{$bwStr-AEEF-OptionalMoreEventInfo}">
               <xsl:attribute name="value"><xsl:value-of select="form/link/input/@value"/></xsl:attribute>
               <!-- xsl:if test="$canEdit = 'false'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if-->
             </input>
-            <xsl:text> </xsl:text>
-            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalMoreEventInfo"/></span>
           </td>
         </tr>
         <!-- Image Url -->
@@ -2563,29 +2558,25 @@
               <xsl:copy-of select="$bwStr-AEEF-ImageURL"/>
             </label>
             <xsl:text> </xsl:text>
-            <input type="text" name="xBwImageHolder" id="xBwImageHolder" value="" size="45" class="edit">
+            <input type="text" name="xBwImageHolder" id="xBwImageHolder" value="" size="60" placeholder="{$bwStr-AEEF-OptionalEventImage}">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
-            <xsl:text> </xsl:text>
-            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventImage"/></span>
             <br/>
             <label class="interiorLabel" for="xBwImageThumbHolder">
               <xsl:copy-of select="$bwStr-AEEF-ImageThumbURL"/>
             </label>
             <xsl:text> </xsl:text>
-            <input type="text" name="xBwImageThumbHolder" id="xBwImageThumbHolder" value="" size="45" class="edit">
+            <input type="text" name="xBwImageThumbHolder" id="xBwImageThumbHolder" value="" size="60" placeholder="{$bwStr-AEEF-OptionalEventThumbImage}">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
-            <xsl:text> </xsl:text>
-            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalEventThumbImage"/></span>
             <br/>
             <label class="interiorLabel" for="eventImageUpload">
               <xsl:copy-of select="$bwStr-AEEF-ImageUpload"/>
             </label>
             <xsl:text> </xsl:text>
-            <input type="file" name="eventImageUpload" id="eventImageUpload" size="45" class="edit"/>
-            <xsl:text> </xsl:text>
-            <span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/></span>
+            <input type="file" name="eventImageUpload" id="eventImageUpload" size="45"/>
+            <button name="eventImageUseExisting" id="eventImageUseExisting"><xsl:copy-of select="$bwStr-AEEF-UseExisting"/></button><br/>
+            <div class="fieldInfoAlone"><xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/></div>
           </td>
         </tr>
         <!-- Location -->
@@ -6516,7 +6507,7 @@
           </th>
           <td>
             <input type="text" name="defaultImageDirectory" value="" size="40">
-              <xsl:attribute name="value" select="/bedework/prefs/defaultImageDirectory"/>
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/defaultImageDirectory"/></xsl:attribute>
             </input>
           </td>
         </tr>
