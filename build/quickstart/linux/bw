@@ -39,6 +39,7 @@ updateProjects="$updateProjects  cachedfeeder"
 updateProjects="$updateProjects  caldav"
 updateProjects="$updateProjects  davutil"
 updateProjects="$updateProjects  dumprestore"
+# updateProjects="$updateProjects  geronimo-hib"
 updateProjects="$updateProjects  indexer"
 updateProjects="$updateProjects  rpiutil"
 updateProjects="$updateProjects  synch"
@@ -68,6 +69,7 @@ client=
 davutil=
 dumprestore=
 exchgGateway=
+geronimoHib=
 indexer=
 monitor=
 naming=
@@ -244,6 +246,12 @@ setDirectory() {
 	fi
 	
 #     projects
+
+	if [ "$geronimoHib" != "" ] ; then
+	  cd $QUICKSTART_HOME/geronimo-hibernate
+      geronimoHib=
+	  return
+	fi
 
 	if [ "$bwdeployutil" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwdeployutil
@@ -910,6 +918,12 @@ do
       bwsysevents="yes"
       indexer="yes"
       rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -geronimohib)
+      geronimoHib="yes"
+
       pkgdefault=
       shift
       ;;
