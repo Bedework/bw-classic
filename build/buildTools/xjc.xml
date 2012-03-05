@@ -71,8 +71,13 @@
           <getJar name="jaxb-xjc" version="2.2" /> 
           <getJar name="jaxws-rt" version="2.2" /> 
           -->
+          <var name="org.bedework.xjc.tstamp" unset="true" />
+          <tstamp>
+            <format property="org.bedework.xjc.tstamp" pattern="yyyyMMddhhmmss"/>
+      	  </tstamp>
+
           <property name="xjc.lib" 
-                    location="${org.bedework.temp.dir}/xjclib" />
+                    location="${org.bedework.temp.dir}/xjclib${org.bedework.xjc.tstamp}" />
           <mkdir dir="${org.bedework.temp.dir}" />
           <delete dir="${xjc.lib}" />
           <mkdir dir="${xjc.lib}" />
@@ -133,7 +138,7 @@
           <!-- We don't want the generated classes but there doesn't appear to be a
                way to suppress generation -->
           <property name="xjc.dest" 
-                    location="${org.bedework.temp.dir}/xjcclasses" />
+                    location="${org.bedework.temp.dir}/xjcclasses${org.bedework.xjc.tstamp}" />
           <mkdir dir="${xjc.dest}" />
     
           <infoMsg message="* =========== Compiling @{schema}" />
