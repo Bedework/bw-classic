@@ -71,35 +71,37 @@
           <getJar name="jaxb-xjc" version="2.2" /> 
           <getJar name="jaxws-rt" version="2.2" /> 
           -->
-          <var name="org.bedework.xjc.tstamp" unset="true" />
-          <tstamp>
-            <format property="org.bedework.xjc.tstamp" pattern="yyyyMMddhhmmss"/>
-      	  </tstamp>
-
           <property name="xjc.lib" 
-                    location="${org.bedework.temp.dir}/xjclib${org.bedework.xjc.tstamp}" />
-          <mkdir dir="${org.bedework.temp.dir}" />
-          <delete dir="${xjc.lib}" />
-          <mkdir dir="${xjc.lib}" />
+                    location="${org.bedework.temp.dir}/xjclib" />
+      	
+          <if>
+            <not>
+              <available file="${xjc.lib}" />
+            </not>
+            <then>
+              <mkdir dir="${org.bedework.temp.dir}" />
+              <mkdir dir="${xjc.lib}" />
           
-          <getJar lib="${xjc.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxws-tools" version="2.1.4" /> 
-          <getJar lib="${xjc.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxb-xjc" version="2.1.7" /> 
-          <getJar lib="${xjc.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxb-impl" version="2.1.8" /> 
-          <getJar lib="${xjc.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxws-rt" version="2.1.4" /> 
-          <getJar lib="${xjc.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="streambuffer" version="1.0" /> 
-          <getJar lib="${xjc.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="stax-ex" version="2.2.1" /> 
+              <getJar lib="${xjc.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxws-tools" version="2.1.4" /> 
+              <getJar lib="${xjc.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxb-xjc" version="2.1.7" /> 
+              <getJar lib="${xjc.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxb-impl" version="2.1.8" /> 
+              <getJar lib="${xjc.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxws-rt" version="2.1.4" /> 
+              <getJar lib="${xjc.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="streambuffer" version="1.0" /> 
+              <getJar lib="${xjc.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="stax-ex" version="2.2.1" /> 
+            </then>
+          </if>
       
           <path id="xjc.classpath">
             <fileset dir="${ant.home}/lib">
@@ -138,7 +140,7 @@
           <!-- We don't want the generated classes but there doesn't appear to be a
                way to suppress generation -->
           <property name="xjc.dest" 
-                    location="${org.bedework.temp.dir}/xjcclasses${org.bedework.xjc.tstamp}" />
+                    location="${org.bedework.temp.dir}/xjcclasses" />
           <mkdir dir="${xjc.dest}" />
     
           <infoMsg message="* =========== Compiling @{schema}" />

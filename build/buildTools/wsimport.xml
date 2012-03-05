@@ -72,36 +72,40 @@
           <getJar name="jaxb-xjc" version="2.2" /> 
           <getJar name="jaxws-rt" version="2.2" /> 
           -->
-          <var name="org.bedework.wsimport.tstamp" unset="true" />
-          <tstamp>
-            <format property="org.bedework.wsimport.tstamp" pattern="yyyyMMddhhmmss"/>
-      	  </tstamp>
-
-          <property name="wsimport.lib" 
-                    location="${org.bedework.temp.dir}/wsimportlib${org.bedework.wsimport.tstamp}" />
-          <mkdir dir="${org.bedework.temp.dir}" />
-          <!--<delete dir="${wsimport.lib}" />-->
-          <mkdir dir="${wsimport.lib}" />
           
-          <getJar lib="${wsimport.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxws-tools" version="2.1.4" /> 
-          <getJar lib="${wsimport.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxb-xjc" version="2.1.7" /> 
-          <getJar lib="${wsimport.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxb-impl" version="2.1.8" /> 
-          <getJar lib="${wsimport.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="jaxws-rt" version="2.1.4" /> 
-          <getJar lib="${wsimport.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="streambuffer" version="1.0" /> 
-          <getJar lib="${wsimport.lib}"
-                  libcache="${org.bedework.libcache.dir}"
-                  name="stax-ex" version="2.2.1" /> 
+          <property name="wsimport.lib" 
+                    location="${org.bedework.temp.dir}/wsimportlib" />
+          
+          <if>
+            <not>
+              <available file="${wsimport.lib}" />
+            </not>
+            <then>
+              <mkdir dir="${org.bedework.temp.dir}" />
+              <mkdir dir="${wsimport.lib}" />
+          
+              <getJar lib="${wsimport.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxws-tools" version="2.1.4" /> 
+              <getJar lib="${wsimport.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxb-xjc" version="2.1.7" /> 
+              <getJar lib="${wsimport.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxb-impl" version="2.1.8" /> 
+              <getJar lib="${wsimport.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="jaxws-rt" version="2.1.4" /> 
+              <getJar lib="${wsimport.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="streambuffer" version="1.0" /> 
+              <getJar lib="${wsimport.lib}"
+                      libcache="${org.bedework.libcache.dir}"
+                      name="stax-ex" version="2.2.1" /> 
+            </then>
+          </if>
       
+
           <path id="wsimport.classpath">
             <fileset dir="${ant.home}/lib">
               <include name="jax*.jar"/>
@@ -139,7 +143,7 @@
           <!-- We don't want the generated classes but there doesn't appear to be a
                way to suppress generation -->
           <property name="wsimport.dest" 
-                    location="${org.bedework.temp.dir}/wsclasses${org.bedework.wsimport.tstamp}" />
+                    location="${org.bedework.temp.dir}/wsclasses" />
           <mkdir dir="${wsimport.dest}" />
     
           <infoMsg message="* =========== Compiling @{wsdl}" />
