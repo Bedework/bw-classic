@@ -10,7 +10,6 @@
 <hibernate-mapping>
   <class name="org.bedework.calfacade.BwResourceContent"
          table="bw_resource_contents">
-    <cache usage="read-write"/>
     <id name="id" type="integer" column="id" unsaved-value="-1">
       <generator class="native"/>
     </id>
