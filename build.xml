@@ -24,6 +24,7 @@
   <property name="bw.project.home" location="${org.bedework.project.bedework}"/>
 
   <import file="${build.dir}/buildTools/deftasks.xml"/>
+  <import file="${build.dir}/dirTools.xml"/>
 
   <deftasks/>
 
