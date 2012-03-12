@@ -19,7 +19,8 @@ ant_logger=
 ant_loglevel="-quiet"
 bw_loglevel=""
 
-# Projects we need to update
+# Projects we need to update - these are the svn projects - not internal variables
+# or user parameters.
 updateProjects="access"
 updateProjects="$updateProjects  bedework"
 updateProjects="$updateProjects  bedework-carddav"

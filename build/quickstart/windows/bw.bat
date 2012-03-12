@@ -34,7 +34,8 @@ SET ant_logger=
 SET ant_loglevel="-quiet"
 SET bw_loglevel=
 
-:: Projects we need to update
+:: Projects we need to update - these are the svn projects - not internal variables
+:: or user parameters.
 SET "updateProjects=access"
 SET "updateProjects=%updateProjects% bedework"
 SET "updateProjects=%updateProjects% bedework-carddav"
@@ -43,7 +44,7 @@ SET "updateProjects=%updateProjects% bwcalcore"
 SET "updateProjects=%updateProjects% bwcaldav"
 SET "updateProjects=%updateProjects% bwcalFacade"
 SET "updateProjects=%updateProjects% bwdeployutil"
-SET "updateProjects=%updateProjects% bwicalendar"
+SET "updateProjects=%updateProjects% bwical"
 SET "updateProjects=%updateProjects% bwinterfaces"
 SET "updateProjects=%updateProjects% bwmisc"
 SET "updateProjects=%updateProjects% bwsysevents"
