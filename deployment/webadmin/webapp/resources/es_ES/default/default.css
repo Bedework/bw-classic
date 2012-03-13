@@ -477,6 +477,9 @@ table.eventFormTable td.allField {
   color: #777;
   background-color: transparent;
 }
+.fieldInfoAlone button {
+	float: right;
+}
 label.interiorLabel {
   display: block;
   float: left;

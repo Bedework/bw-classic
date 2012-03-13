@@ -368,6 +368,14 @@ function setBedeworkXProperties(formObj,submitter) {
   // commit all xproperties back to the form
   bwXProps.generate(formObj);
 }
+function removeEventImage(imgField,thumbField) {
+  bwXProps.remove(bwXPropertyImage);
+  bwXProps.remove(bwXPropertyThumbImage);
+  imgField.value = "";
+  thumbField.value = "";
+  $("#eventFormImage").hide();
+  $("#eventImageRemoveButton").hide();
+}
 function toggleBedeworkXProperty(xprop,displayName,value,checked) {
   if (!checked) {
     bwXProps.removeByValue(xprop, value);

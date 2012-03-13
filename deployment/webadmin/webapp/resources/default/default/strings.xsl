@@ -258,6 +258,7 @@
   <xsl:variable name="bwStr-AEEF-UseExisting">Use existing...</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Overwrite">Overwrite</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalImageUpload">Uploads can be JPG, PNG, or GIF and will overwrite the image and thumbnail URLs.</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-RemoveImages">remove images</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Location">Location:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Add">add</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Address">Address:</xsl:variable>

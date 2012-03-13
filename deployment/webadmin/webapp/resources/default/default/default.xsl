@@ -2587,7 +2587,12 @@
 	            <input type="file" name="eventImageUpload" id="eventImageUpload" size="45"/>
 	            <input type="checkbox" name="replaceImage" id="replaceImage" value="true"/><label for="replaceImage"><xsl:copy-of select="$bwStr-AEEF-Overwrite"/></label>
 	            <!-- button name="eventImageUseExisting" id="eventImageUseExisting"><xsl:copy-of select="$bwStr-AEEF-UseExisting"/></button--><br/>
-	            <div class="fieldInfoAlone"><xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/></div>
+	            <div class="fieldInfoAlone">
+	              <xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/><br/>
+	              <xsl:if test="/bedework/creating = 'false' and form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+	                <button id="eventImageRemoveButton" onclick="removeEventImage(this.form.xBwImageHolder,this.form.xBwImageThumbHolder);return false;"><xsl:copy-of select="$bwStr-AEEF-RemoveImages"/></button>
+	              </xsl:if>
+	            </div>
 	          </xsl:if>
           </td>
         </tr>
