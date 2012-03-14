@@ -102,6 +102,7 @@
   <xsl:variable name="bwStr-LCol-All">All</xsl:variable>
   <xsl:variable name="bwStr-LCol-FilterOnCalendars">FILTER ON CALENDARS:</xsl:variable>
   <xsl:variable name="bwStr-LCol-ViewAllCalendars">View All Calendars</xsl:variable>
+  <xsl:variable name="bwStr-LCol-FeedsAndWidgets">Feeds and Widgets</xsl:variable>
 
   <xsl:variable name="bwStr-LCol-CalInfo">EVENTS CALENDAR INFO:</xsl:variable>
   <xsl:variable name="bwStr-LCol-ManageEvents">Manage Events</xsl:variable>

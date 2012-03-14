@@ -55,6 +55,18 @@
             <xsl:copy-of select="$bwStr-LCol-ViewAllCalendars"/>
           </a>
         </li>
+        <li>
+		      <a>
+		        <xsl:attribute name="href">
+		          <xsl:choose>
+		            <xsl:when test="$embedUrlBuilder = 'true'"><xsl:value-of select="$showPage"/>&amp;setappvar=page(urlbuilder)</xsl:when>
+		            <xsl:otherwise><xsl:value-of select="$urlbuilder"/></xsl:otherwise>
+		          </xsl:choose>
+		        </xsl:attribute>
+		        <xsl:attribute name="title"><xsl:value-of select="$bwStr-LCol-FeedsAndWidgets"/></xsl:attribute>
+            <xsl:copy-of select="$bwStr-LCol-FeedsAndWidgets"/>
+          </a>
+        </li>
       </ul>
       <xsl:call-template name="leftColumnText"/>
     </div>
