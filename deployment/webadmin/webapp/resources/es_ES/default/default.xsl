@@ -385,6 +385,22 @@
                             
                 // trim the event description:
                 $("#description").val($.trim($("#description").val()));
+                
+                // limit the event description to maxPublicDescriptionLength as configured in cal.options.xml
+                $("#description").keyup(function(){  
+                  var maxDescLength = parseInt(<xsl:value-of select="/bedework/formElements/form/descLength"/>);  
+                  var desc = $(this).val();  
+                  var remainingChars = maxDescLength - desc.length;
+                  if (remainingChars &lt; 0) {
+                    remainingChars = 0;
+                  }
+                  $("#remainingChars").html(remainingChars + " <xsl:value-of select="$bwStr-AEEF-CharsRemaining"/>"); 
+                  if(desc.length > maxDescLength){  
+                    var truncDesc = desc.substr(0, maxDescLength);  
+                    $(this).val(truncDesc); 
+                  };  
+                });  
+                
               </xsl:if>
 
               // If you wish to collapse specific topical areas, you can specify them here:
@@ -2478,6 +2494,7 @@
             <div class="fieldInfo">
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
               <span class="maxCharNotice"><xsl:value-of select="form/descLength"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-CharsMax"/></span>
+              <span id="remainingChars">&#160;</span>
             </div>
             <xsl:if test="$canEdit = 'false'">
               <div class="bwHighlightBox">

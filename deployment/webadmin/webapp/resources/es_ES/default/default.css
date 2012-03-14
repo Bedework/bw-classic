@@ -488,6 +488,9 @@ label.interiorLabel {
   float: left;
   width: 140px;
 }
+#remainingChars {
+	margin-left: 2em;
+}
 #eventFormImage {
   margin-bottom: 0.5em;
 }

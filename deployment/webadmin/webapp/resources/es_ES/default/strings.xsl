@@ -245,6 +245,7 @@
   <xsl:variable name="bwStr-AEEF-Description">Descripción:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EnterPertientInfo">Introduzca toda la información pertinente</xsl:variable>
   <xsl:variable name="bwStr-AEEF-CharsMax">caracteres max.)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-CharsRemaining">caracter(es) remanente.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Cost">Coste:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalPlaceToPurchaseTicks">opcional: si lo hay, y el lugar para obtener las entradas</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventURL">URL del evento:</xsl:variable>

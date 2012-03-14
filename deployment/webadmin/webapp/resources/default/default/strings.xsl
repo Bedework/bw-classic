@@ -245,6 +245,7 @@
   <xsl:variable name="bwStr-AEEF-Description">Description:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EnterPertientInfo">Enter a brief description of the event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-CharsMax">characters max.</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-CharsRemaining">character(s) remaining.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Cost">Cost:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalPlaceToPurchaseTicks">optional: if any, and place to purchase tickets</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventURL">Event URL:</xsl:variable>
