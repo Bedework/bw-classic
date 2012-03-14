@@ -241,17 +241,21 @@
           var imagesRoot = resourcesRoot + "/resources";
           </xsl:comment>
         </script>
-        <!-- Load jQuery when needed -->
-        <xsl:if test="/bedework/page='modEvent' or
-                      /bedework/page='modEventPending' or
-                      /bedework/page='modSubscription'">
-          <!-- <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>-->
+        <!-- load jQuery  -->
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
           <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
           <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
-        </xsl:if>
+        <!-- Global Javascript (every page): -->
+        <script type="text/javascript">
+          <xsl:comment>
+            $(document).ready(function(){
+              // focus first visible,enabled form element:
+              $(':input[type=text]:visible:enabled:first').focus();
+            });
+          </xsl:comment>
+        </script>
+        <!-- conditional javascript and css -->
         <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
           <!-- import the internationalized strings for the javascript widgets -->
           <xsl:call-template name="bedeworkEventJsStrings"/>
@@ -378,9 +382,10 @@
               <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
                 initXProperties();
                 bwSetupDatePickers();
-              </xsl:if>
                             
-              focusFirstElement();
+                // trim the event description:
+                $("#description").val($.trim($("#description").val()));
+              </xsl:if>
 
               // If you wish to collapse specific topical areas, you can specify them here:
               // (note that this will be managed from the admin client in time)
@@ -435,26 +440,6 @@
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
-        <script language="JavaScript" type="text/javascript">
-          <xsl:comment>
-          <![CDATA[
-          // places the cursor in the first available form element when the page is loaded
-          // (if a form exists on the page)
-          function focusFirstElement() {
-            if (window.document.forms[0]) {
-              for (i=0; i<window.document.forms[0].elements.length; i++) {
-                if (window.document.forms[0].elements[i].type != "hidden" &&
-                    window.document.forms[0].elements[i].type != "submit" &&
-                    window.document.forms[0].elements[i].type != "reset" &&
-                    window.document.forms[0].elements[i].type != "button" ) {
-                  window.document.forms[0].elements[i].focus();
-                  break;
-                }
-              }
-            }
-          }]]>
-          </xsl:comment>
-        </script>
       </head>
       <body>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated -->
@@ -755,7 +740,14 @@
     <xsl:if test="/bedework/error">
       <ul id="errors">
         <xsl:for-each select="/bedework/error">
-          <li><xsl:apply-templates select="."/></li>
+          <li>
+            <xsl:apply-templates select="."/>
+	          <!-- Special cases for handling error conditions: -->
+	          <xsl:if test="/bedework/error/id = 'org.bedework.client.error.duplicateimage'">
+              <input type="checkbox" id="overwriteEventImage" onclick="setOverwriteImageField(this);"/><label for="overwriteEventImage"><xsl:copy-of select="$bwStr-AEEF-Overwrite"/></label><xsl:text> </xsl:text>
+              <!-- input type="checkbox" id="reuseEventImage"/><label for="reuseEventImage">Reuse</label>-->
+	          </xsl:if>
+          </li>
         </xsl:for-each>
       </ul>
     </xsl:if>
@@ -2478,7 +2470,7 @@
             <xsl:copy-of select="$bwStr-AEEF-Description"/>
           </td>
           <td>
-            <textarea name="description" cols="80" rows="8" placeholder="{$bwStr-AEEF-EnterPertientInfo}">
+            <textarea name="description" id="description" cols="80" rows="8" placeholder="{$bwStr-AEEF-EnterPertientInfo}">
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
               <xsl:value-of select="form/desc/textarea"/>
               <xsl:if test="form/desc/textarea = ''"><xsl:text> </xsl:text></xsl:if>
@@ -2569,14 +2561,22 @@
             <input type="text" name="xBwImageThumbHolder" id="xBwImageThumbHolder" value="" size="60" placeholder="{$bwStr-AEEF-OptionalEventThumbImage}">
               <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']/values/text" disable-output-escaping="yes"/></xsl:attribute>
             </input>
+            <xsl:if test="/bedework/imageUploadDirectory">
             <br/>
             <label class="interiorLabel" for="eventImageUpload">
               <xsl:copy-of select="$bwStr-AEEF-ImageUpload"/>
             </label>
             <xsl:text> </xsl:text>
             <input type="file" name="eventImageUpload" id="eventImageUpload" size="45"/>
-            <button name="eventImageUseExisting" id="eventImageUseExisting"><xsl:copy-of select="$bwStr-AEEF-UseExisting"/></button><br/>
-            <div class="fieldInfoAlone"><xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/></div>
+	            <input type="checkbox" name="replaceImage" id="replaceImage" value="true"/><label for="replaceImage"><xsl:copy-of select="$bwStr-AEEF-Overwrite"/></label>
+	            <!-- button name="eventImageUseExisting" id="eventImageUseExisting"><xsl:copy-of select="$bwStr-AEEF-UseExisting"/></button--><br/>
+	            <div class="fieldInfoAlone">
+	              <xsl:copy-of select="$bwStr-AEEF-OptionalImageUpload"/><br/>
+	              <xsl:if test="/bedework/creating = 'false' and form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
+	                <button id="eventImageRemoveButton" onclick="removeEventImage(this.form.xBwImageHolder,this.form.xBwImageThumbHolder);return false;"><xsl:copy-of select="$bwStr-AEEF-RemoveImages"/></button>
+	              </xsl:if>
+	            </div>
+	          </xsl:if>
           </td>
         </tr>
         <!-- Location -->
@@ -3525,7 +3525,10 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactName"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/name/*"/>
+            <input type="text" name="contactName.value" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/name/input/@value"/></xsl:attribute>
+            </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-ContactName-Placeholder"/></span>
           </td>
         </tr>
         <tr>
@@ -3533,7 +3536,10 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactPhone"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/phone/*"/>
+            <input type="text" name="contact.phone" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/phone/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MdCo-ContactPhone-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-Optional"/></span>
           </td>
         </tr>
@@ -3542,7 +3548,10 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactURL"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/link/*"/>
+            <input type="text" name="contact.link" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/link/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MdCo-ContactURL-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-Optional"/></span>
           </td>
         </tr>
@@ -3551,7 +3560,9 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactEmail"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/email/*"/>
+            <input type="text" name="contact.email" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/email/input/@value"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-Optional"/></span>
           </td>
         </tr>
@@ -3733,7 +3744,10 @@
             <xsl:copy-of select="$bwStr-MoLo-Address"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/address/*"/>
+            <input type="text" name="locationAddress.value" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/address/input/@value"/></xsl:attribute>
+            </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Address-Placeholder"/></span>
           </td>
         </tr>
         <tr class="optional">
@@ -3741,7 +3755,10 @@
             <xsl:copy-of select="$bwStr-MoLo-SubAddress"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/subaddress/*"/>
+            <input type="text" name="locationSubaddress.value" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/subaddress/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-SubAddress-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
           </td>
         </tr>
@@ -3750,7 +3767,10 @@
             <xsl:copy-of select="$bwStr-MoLo-LocationURL"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/link/*"/>
+            <input type="text" name="location.link" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/link/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-LocationURL-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
           </td>
         </tr>
@@ -6501,16 +6521,28 @@
 
           </td>
         </tr>
-        <tr>
-          <th>
-            <xsl:copy-of select="$bwStr-CSPf-DefaultImageDirectory"/>
-          </th>
-          <td>
-            <input type="text" name="defaultImageDirectory" value="" size="40">
-              <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/defaultImageDirectory"/></xsl:attribute>
-            </input>
-          </td>
-        </tr>
+        <xsl:if test="/bedework/userInfo/superUser = 'true'">
+          <tr>
+            <th>
+              <xsl:copy-of select="$bwStr-CSPf-DefaultImageDirectory"/>
+            </th>
+            <td>
+              <input type="text" name="defaultImageDirectory" value="" size="40">
+                <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/defaultImageDirectory"/></xsl:attribute>
+              </input>
+            </td>
+          </tr>
+	        <tr>
+            <th>
+              <xsl:copy-of select="$bwStr-CSPf-MaxEntitySize"/>
+            </th>
+            <td>
+              <input type="text" name="maxEntitySize" value="" size="40">
+                <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/maxEntitySize"/></xsl:attribute>
+              </input>
+            </td>
+          </tr>
+	    </xsl:if>
         <!--
         <tr>
           <td class="fieldName">

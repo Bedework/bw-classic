@@ -241,17 +241,21 @@
           var imagesRoot = resourcesRoot + "/resources";
           </xsl:comment>
         </script>
-        <!-- Load jQuery when needed -->
-        <xsl:if test="/bedework/page='modEvent' or
-                      /bedework/page='modEventPending' or
-                      /bedework/page='modSubscription'">
-          <!-- <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.2.6.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.5.2.min.js">&#160;</script>-->
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
-          <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
-          <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
-        </xsl:if>
+        <!-- load jQuery  -->
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
+        <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
+        <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
+        <!-- Global Javascript (every page): -->
+        <script type="text/javascript">
+          <xsl:comment>
+            $(document).ready(function(){
+              // focus first visible,enabled form element:
+              $(':input[type=text]:visible:enabled:first').focus();
+            });
+          </xsl:comment>
+        </script>
+        <!-- conditional javascript and css -->
         <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
           <!-- import the internationalized strings for the javascript widgets -->
           <xsl:call-template name="bedeworkEventJsStrings"/>
@@ -383,8 +387,6 @@
                 $("#description").val($.trim($("#description").val()));
               </xsl:if>
                             
-              focusFirstElement();
-
               // If you wish to collapse specific topical areas, you can specify them here:
               // (note that this will be managed from the admin client in time)
               // $("ul.aliasTree > li:eq(4) > ul").hide();  	      
@@ -437,26 +439,6 @@
           <link rel="stylesheet" href="{$resourcesRoot}/resources/calendarDescriptions.css"/>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/resources/bedework.ico" />
-        <script language="JavaScript" type="text/javascript">
-          <xsl:comment>
-          <![CDATA[
-          // places the cursor in the first available form element when the page is loaded
-          // (if a form exists on the page)
-          function focusFirstElement() {
-            if (window.document.forms[0]) {
-              for (i=0; i<window.document.forms[0].elements.length; i++) {
-                if (window.document.forms[0].elements[i].type != "hidden" &&
-                    window.document.forms[0].elements[i].type != "submit" &&
-                    window.document.forms[0].elements[i].type != "reset" &&
-                    window.document.forms[0].elements[i].type != "button" ) {
-                  window.document.forms[0].elements[i].focus();
-                  break;
-                }
-              }
-            }
-          }]]>
-          </xsl:comment>
-        </script>
       </head>
       <body>
         <div id="bedework"><!-- main wrapper div to keep styles encapsulated -->
@@ -3542,7 +3524,10 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactName"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/name/*"/>
+            <input type="text" name="contactName.value" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/name/input/@value"/></xsl:attribute>
+            </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-ContactName-Placeholder"/></span>
           </td>
         </tr>
         <tr>
@@ -3550,7 +3535,10 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactPhone"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/phone/*"/>
+            <input type="text" name="contact.phone" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/phone/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MdCo-ContactPhone-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-Optional"/></span>
           </td>
         </tr>
@@ -3559,7 +3547,10 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactURL"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/link/*"/>
+            <input type="text" name="contact.link" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/link/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MdCo-ContactURL-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-Optional"/></span>
           </td>
         </tr>
@@ -3568,7 +3559,9 @@
             <xsl:copy-of select="$bwStr-MdCo-ContactEmail"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/email/*"/>
+            <input type="text" name="contact.email" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/email/input/@value"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-Optional"/></span>
           </td>
         </tr>
@@ -3750,7 +3743,10 @@
             <xsl:copy-of select="$bwStr-MoLo-Address"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/address/*"/>
+            <input type="text" name="locationAddress.value" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/address/input/@value"/></xsl:attribute>
+            </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Address-Placeholder"/></span>
           </td>
         </tr>
         <tr class="optional">
@@ -3758,7 +3754,10 @@
             <xsl:copy-of select="$bwStr-MoLo-SubAddress"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/subaddress/*"/>
+            <input type="text" name="locationSubaddress.value" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/subaddress/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-SubAddress-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
           </td>
         </tr>
@@ -3767,7 +3766,10 @@
             <xsl:copy-of select="$bwStr-MoLo-LocationURL"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/link/*"/>
+            <input type="text" name="location.link" size="80">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/link/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-LocationURL-Placeholder"/></xsl:attribute>
+            </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
           </td>
         </tr>
@@ -6539,7 +6541,7 @@
               </input>
             </td>
           </tr>
-	      </xsl:if>
+	    </xsl:if>
         <!--
         <tr>
           <td class="fieldName">

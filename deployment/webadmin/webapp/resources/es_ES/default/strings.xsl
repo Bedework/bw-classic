@@ -361,8 +361,11 @@
   <!--  xsl:template name="modContact" -->
   <xsl:variable name="bwStr-MdCo-ContactInfo">Información del contacto</xsl:variable>
   <xsl:variable name="bwStr-MdCo-ContactName">Contacto (nombre):</xsl:variable>
+  <xsl:variable name="bwStr-MdCo-ContactName-Placeholder">e.g. name, group, or department</xsl:variable>
   <xsl:variable name="bwStr-MdCo-ContactPhone">Número de teléfono del contacto:</xsl:variable>
+  <xsl:variable name="bwStr-MdCo-ContactPhone-Placeholder">e.g. 555-555-5555</xsl:variable>
   <xsl:variable name="bwStr-MdCo-ContactURL">URL del contacto:</xsl:variable>
+  <xsl:variable name="bwStr-MdCo-ContactURL-Placeholder">link to more information</xsl:variable>
   <xsl:variable name="bwStr-MdCo-ContactEmail">Dirección de Email del contacto:</xsl:variable>
   <xsl:variable name="bwStr-MdCo-Optional">(opcional)</xsl:variable>
 
@@ -396,9 +399,12 @@
   <xsl:variable name="bwStr-MoLo-AddLocation">Añadir localización</xsl:variable>
   <xsl:variable name="bwStr-MoLo-UpdateLocation">Actualizar localización</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address">Dirección:</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-Address-Placeholder">include building and room when appropriate</xsl:variable>
   <xsl:variable name="bwStr-MoLo-SubAddress">Subdirección:</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-SubAddress-Placeholder">street address, including city and state when appropriate</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Optional">(opcional)</xsl:variable>
   <xsl:variable name="bwStr-MoLo-LocationURL">URL de la localización:</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-LocationURL-Placeholder">link to more information or map</xsl:variable>
   <xsl:variable name="bwStr-MoLo-DeleteLocation">Borrar localización</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Cancel">Cancelar</xsl:variable>
 

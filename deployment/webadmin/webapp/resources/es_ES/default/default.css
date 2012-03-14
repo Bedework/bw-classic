@@ -469,6 +469,8 @@ table.eventFormTable td.allField {
 .fieldInfo {
   font-size: 0.9em;
   font-style: italic;
+  color: #777;
+  background-color: transparent;
 }
 .fieldInfoAlone {
 	margin: 0 0 12px 140px;
@@ -479,6 +481,7 @@ table.eventFormTable td.allField {
 }
 .fieldInfoAlone button {
 	float: right;
+	margin: 0.5em 2em 1em 0;
 }
 label.interiorLabel {
   display: block;
@@ -931,6 +934,9 @@ table.common2 th {
   margin-left: 0;
   font-size: 11px;
 }
+#bedework table td {
+  vertical-align: top;
+}
 table.common {
   width: 100%;
   font-size: 0.9em;
@@ -956,7 +962,7 @@ table.common th.thin {
   background-color: #fff;
   color: black;
 }
-table.common th.commonHeader {
+#bedework table.common th.commonHeader {
   vertical-align: middle;
   background-color: #666;
   color: #eee;
