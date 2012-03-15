@@ -1326,7 +1326,7 @@
             <xsl:value-of select="summary"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
+            <xsl:variable name="virtualPath"><xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
             <xsl:variable name="displayName" select="summary"/>
             <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-SUBMIT-ALIAS','{$displayName}','{$virtualPath}',this.checked)">
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
