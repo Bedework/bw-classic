@@ -1259,8 +1259,16 @@
       <p><xsl:copy-of select="$bwStr-AEEF-YouMayTag"/></p>
     </xsl:if>
 
-    <!-- if a submitted event has comments, display them -->
     <xsl:if test="/bedework/page = 'modEventPending'">
+      <!-- if a submitted event has topical areas that match with 
+           those in the calendar suite, convert them -->
+      <script type="text/javascript">
+      $(document).ready(function() {
+        $("ul.aliasTree input:checked").trigger("onclick");
+      });
+      </script>
+    
+      <!-- if a submitted event has comments, display them -->
       <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-LOCATION' or name()='X-BEDEWORK-CONTACT' or name()='X-BEDEWORK-CATEGORIES' or name()='X-BEDEWORK-SUBMIT-COMMENT']">
         <script type="text/javascript">
           bwSubmitComment = new bwSubmitComment(
@@ -2948,12 +2956,16 @@
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
               <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
               <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
+              <xsl:if test="/bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text = substring-after(aliasUri,'bwcal://')"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
             <xsl:choose>
               <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
                 <strong><xsl:value-of select="summary"/></strong>
               </xsl:when>
               <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text">
+                <strong><xsl:value-of select="summary"/></strong>
+              </xsl:when>
+              <xsl:when test="/bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text = substring-after(aliasUri,'bwcal://')">
                 <strong><xsl:value-of select="summary"/></strong>
               </xsl:when>
               <xsl:otherwise>
