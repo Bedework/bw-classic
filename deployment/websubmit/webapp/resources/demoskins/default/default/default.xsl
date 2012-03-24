@@ -956,7 +956,7 @@
             </td>
           </tr>
           <!--  Status  -->
-          <tr>
+          <!-- <tr>
             <td class="fieldname">
               <xsl:copy-of select="$bwStr-FoEl-Status"/>
             </td>
@@ -974,7 +974,7 @@
               </input>
               <xsl:copy-of select="$bwStr-FoEl-Canceled"/>
             </td>
-          </tr>
+          </tr> -->
           <!-- Cost -->
           <tr>
             <td class="fieldname"><em><xsl:copy-of select="$bwStr-FoEl-Cost"/></em></td>
