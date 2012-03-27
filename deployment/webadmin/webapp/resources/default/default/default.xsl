@@ -266,7 +266,7 @@
           <xsl:comment>
             $(document).ready(function(){
               // focus first visible,enabled form element:
-              $(':input[type=text]:visible:enabled:first:not(#bwListWidgetStartDate)').focus();
+              $(':input[type=text]:visible:enabled:first:not(.noFocus)').focus();
             });
           </xsl:comment>
         </script>
@@ -1075,7 +1075,7 @@
     <div id="bwEventListControls">
       <form name="calForm" id="bwManageEventListControls" method="post" action="{$event-initUpdateEvent}">
         <label for="bwListWidgetStartDate"><xsl:copy-of select="$bwStr-EvLs-StartDate"/></label>
-        <input id="bwListWidgetStartDate" name="start" size="10" onchange="setListDate(this.form);"/>
+        <input id="bwListWidgetStartDate" class="noFocus" name="start" size="10" onchange="setListDate(this.form);"/>
         <input type="hidden" name="setappvar" id="curListDateHolder"/>
         <input type="hidden" name="limitdays" value="true"/>
         <span id="daysSetterBox">
