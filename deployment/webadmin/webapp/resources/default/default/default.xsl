@@ -1068,7 +1068,7 @@
         <label for="bwListWidgetStartDate"><xsl:copy-of select="$bwStr-EvLs-StartDate"/></label>
         <input id="bwListWidgetStartDate" name="start" size="10" onchange="setListDate(this.form);"/>
         <input type="hidden" name="setappvar" id="curListDateHolder"/>
-        <input type="hidden" name="limitdays" id="true"/>
+        <input type="hidden" name="limitdays" value="true"/>
         <span id="daysSetterBox">
 	        <label for="days"><xsl:copy-of select="$bwStr-EvLs-Days"/></label>
 	        <xsl:text> </xsl:text>
@@ -1114,7 +1114,7 @@
             </xsl:choose>
           </xsl:attribute>
         </input>
-        <input type="hidden" name="limitdays" id="true"/>
+        <input type="hidden" name="limitdays" value="true"/>
         <xsl:if test="/bedework/appvar[key='catFilter'] and /bedework/appvar[key='catFilter']/value != 'none'">
           <input type="submit" value="{$bwStr-EvLs-ClearFilter}" onclick="this.form.setappvar.selectedIndex = 0"/>
         </xsl:if>
