@@ -1072,13 +1072,11 @@
         <span id="daysSetterBox">
 	        <label for="days"><xsl:copy-of select="$bwStr-EvLs-Days"/></label>
 	        <xsl:text> </xsl:text>
-	        <xsl:value-of select="/bedework/defaultdays"/>
-	        <!-- 
+	        <!-- <xsl:value-of select="/bedework/defaultdays"/> -->
           <select id="days" name="days">
 	          <xsl:call-template name="buildListDays"/>
 	        </select>
 	        <input type="hidden" id="curListDaysHolder" name="setappvar"/>
-	        -->
 	      </span>
         
         <!-- This block contains the original Show Active/All toggle.  
