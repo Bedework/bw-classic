@@ -266,7 +266,7 @@
           <xsl:comment>
             $(document).ready(function(){
               // focus first visible,enabled form element:
-              $(':input[type=text]:visible:enabled:first').focus();
+              $(':input[type=text]:visible:enabled:first:not(#bwListWidgetStartDate)').focus();
             });
           </xsl:comment>
         </script>
