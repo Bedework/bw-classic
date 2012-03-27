@@ -223,6 +223,21 @@
        not guaranteed to work in portals.  -->
   <xsl:variable name="portalFriendly">false</xsl:variable>
 
+	<!-- get the current date set by the user, if exists, else use now -->
+	<xsl:variable name="curListDate">
+	  <xsl:choose>
+	    <xsl:when test="/bedework/appvar[key='curListDate']/value"><xsl:value-of select="/bedework/appvar[key='curListDate']/value"/></xsl:when>
+	    <xsl:otherwise><xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="substring(/bedework/now/date,5,2)"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:otherwise>
+	  </xsl:choose>
+	</xsl:variable>
+	<!-- get the current number of days set by the user, if exists, else use default -->
+  <xsl:variable name="curListDays">
+    <xsl:choose>
+      <xsl:when test="/bedework/appvar[key='curListDays']/value"><xsl:value-of select="/bedework/appvar[key='curListDays']/value"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="/bedework/defaultdays"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
   <!--==== MAIN TEMPLATE  ====-->
   <xsl:template match="/">
     <html lang="en">
@@ -426,13 +441,6 @@
           <!-- include the localized jQuery datepicker defaults -->
           <xsl:call-template name="jqueryDatepickerDefaults"/>
           
-          <!-- get the current date set by the user, if exists, else use now -->
-          <xsl:variable name="curListDate">
-            <xsl:choose>
-              <xsl:when test="/bedework/appvar[key='curListDate']/value"><xsl:value-of select="/bedework/appvar[key='curListDate']/value"/></xsl:when>
-              <xsl:otherwise><xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="number(substring(/bedework/now/date,5,2)) - 1"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
           <!-- now setup date and time pickers -->  
           <script type="text/javascript">
             <xsl:comment>
@@ -853,7 +861,8 @@
       </tr>
       <tr>
         <td>
-          <a href="{$event-initUpdateEvent}&amp;limitdays=true">
+          <a href="{$event-initUpdateEvent}">
+            <xsl:attribute name="href"><xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="$curListDate"/>&amp;days=<xsl:value-of select="$curListDays"/>&amp;limitdays=true</xsl:attribute>
             <xsl:if test="not(/bedework/currentCalSuite/name)">
               <xsl:attribute name="onclick">alert("<xsl:copy-of select="$bwStr-MMnu-YouMustBeOperating"/>");return false;</xsl:attribute>
             </xsl:if>
@@ -1069,12 +1078,12 @@
         <label for="bwListWidgetStartDate"><xsl:copy-of select="$bwStr-EvLs-StartDate"/></label>
         <input id="bwListWidgetStartDate" name="start" size="10" onchange="setListDate(this.form);"/>
         <input type="hidden" name="setappvar" id="curListDateHolder"/>
-        <input type="hidden" name="limitdays" id="true"/>
+        <input type="hidden" name="limitdays" value="true"/>
         <span id="daysSetterBox">
 	        <label for="days"><xsl:copy-of select="$bwStr-EvLs-Days"/></label>
 	        <xsl:text> </xsl:text>
 	        <!-- <xsl:value-of select="/bedework/defaultdays"/> -->
-          <select id="days" name="days">
+          <select id="days" name="days" onchange="setListDate(this.form);">
 	          <xsl:call-template name="buildListDays"/>
 	        </select>
 	        <input type="hidden" id="curListDaysHolder" name="setappvar"/>
@@ -1107,15 +1116,8 @@
             </option>
           </xsl:for-each>
         </select>
-        <input type="hidden" name="start">
-          <xsl:attribute name="value">
-            <xsl:choose>
-              <xsl:when test="/bedework/appvar[key='curListDate']/value"><xsl:value-of select="/bedework/appvar[key='curListDate']/value"/></xsl:when>
-              <xsl:otherwise><xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="number(substring(/bedework/now/date,5,2)) - 1"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-        </input>
-        <input type="hidden" name="limitdays" id="true"/>
+        <input type="hidden" name="start" value="{$curListDate}"/>
+        <input type="hidden" name="limitdays" value="true"/>
         <xsl:if test="/bedework/appvar[key='catFilter'] and /bedework/appvar[key='catFilter']/value != 'none'">
           <input type="submit" value="{$bwStr-EvLs-ClearFilter}" onclick="this.form.setappvar.selectedIndex = 0"/>
         </xsl:if>
@@ -1126,16 +1128,10 @@
 
   <xsl:template name="buildListDays">
     <xsl:param name="index">1</xsl:param>
-    <xsl:variable name="current">
-      <xsl:choose>
-        <xsl:when test="/bedework/appvar[key='curListDays']/value"><xsl:value-of select="/bedework/appvar[key='curListDays']/value"/></xsl:when>
-        <xsl:otherwise><xsl:value-of select="/bedework/defaultdays"/></xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
     <xsl:variable name="max" select="/bedework/maxdays"/>
     <xsl:if test="number($index) &lt; number($max)">
       <option name="listDays($index)">
-        <xsl:if test="$index = $current"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+        <xsl:if test="$index = $curListDays"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
         <xsl:value-of select="$index"/>
       </option>
       <xsl:call-template name="buildListDays">
