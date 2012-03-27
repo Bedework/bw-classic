@@ -100,6 +100,8 @@
   <xsl:variable name="bwStr-EvLs-ManageEvents">Gestionar eventos</xsl:variable>
   <xsl:variable name="bwStr-EvLs-SelectEvent">Seleccione el evento que desearía actualizar:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-PageTitle">Añadir nuevo evento</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-StartDate">Start Date:</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-Days">Days:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Show">Mostrar:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Active">Activo</xsl:variable>
   <xsl:variable name="bwStr-EvLs-All">Todo</xsl:variable>

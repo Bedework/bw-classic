@@ -403,6 +403,10 @@
                 
               </xsl:if>
 
+              <xsl:if test="/bedework/page='listEvents'">
+                bwSetupListDatePicker();
+              </xsl:if>
+                            
               // If you wish to collapse specific topical areas, you can specify them here:
               // (note that this will be managed from the admin client in time)
               // $("ul.aliasTree > li:eq(4) > ul").hide();  	      
@@ -414,6 +418,30 @@
                 $(this).next("ul.aliasTree > li > ul").slideToggle("slow");
               });
 
+            });
+            </xsl:comment>
+          </script>
+        </xsl:if>
+        <xsl:if test="/bedework/page='eventList'">
+          <!-- include the localized jQuery datepicker defaults -->
+          <xsl:call-template name="jqueryDatepickerDefaults"/>
+          
+          <!-- get the current date set by the user, if exists, else use now -->
+          <xsl:variable name="curListDate">
+            <xsl:choose>
+              <xsl:when test="/bedework/appvar[key='curListDate']/value"><xsl:value-of select="/bedework/appvar[key='curListDate']/value"/></xsl:when>
+              <xsl:otherwise><xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="number(substring(/bedework/now/date,5,2)) - 1"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <!-- now setup date and time pickers -->  
+          <script type="text/javascript">
+            <xsl:comment>
+            $(document).ready(function(){
+              // startdate for list
+              $("#bwListWidgetStartDate").datepicker({
+                defaultDate: new Date(<xsl:value-of select="substring(/bedework/now/date,1,4)"/>, <xsl:value-of select="number(substring(/bedework/now/date,5,2)) - 1"/>, <xsl:value-of select="substring(/bedework/now/date,7,2)"/>)
+              }).attr("readonly", "readonly");
+              $("#bwListWidgetStartDate").val('<xsl:value-of select="$curListDate"/>');
             });
             </xsl:comment>
           </script>
@@ -825,7 +853,7 @@
       </tr>
       <tr>
         <td>
-          <a href="{$event-initUpdateEvent}">
+          <a href="{$event-initUpdateEvent}&amp;limitdays=true">
             <xsl:if test="not(/bedework/currentCalSuite/name)">
               <xsl:attribute name="onclick">alert("<xsl:copy-of select="$bwStr-MMnu-YouMustBeOperating"/>");return false;</xsl:attribute>
             </xsl:if>
@@ -1038,11 +1066,31 @@
 
     <div id="bwEventListControls">
       <form name="calForm" id="bwManageEventListControls" method="post" action="{$event-initUpdateEvent}">
+        <label for="bwListWidgetStartDate"><xsl:copy-of select="$bwStr-EvLs-StartDate"/></label>
+        <input id="bwListWidgetStartDate" name="start" size="10" onchange="setListDate(this.form);"/>
+        <input type="hidden" name="setappvar" id="curListDateHolder"/>
+        <input type="hidden" name="limitdays" id="true"/>
+        <span id="daysSetterBox">
+	        <label for="days"><xsl:copy-of select="$bwStr-EvLs-Days"/></label>
+	        <xsl:text> </xsl:text>
+	        <xsl:value-of select="/bedework/defaultdays"/>
+	        <!-- 
+          <select id="days" name="days">
+	          <xsl:call-template name="buildListDays"/>
+	        </select>
+	        <input type="hidden" id="curListDaysHolder" name="setappvar"/>
+	        -->
+	      </span>
+        
+        <!-- This block contains the original Show Active/All toggle.  
+             Uncomment this block to use, though it can be slow if working 
+             with large very large numbers of events. 
         <xsl:copy-of select="$bwStr-EvLs-Show"/>
         <xsl:copy-of select="/bedework/formElements/form/listAllSwitchFalse/*"/>
         <xsl:copy-of select="$bwStr-EvLs-Active"/>
         <xsl:copy-of select="/bedework/formElements/form/listAllSwitchTrue/*"/>
         <xsl:copy-of select="$bwStr-EvLs-All"/>
+        -->
       </form>
 
       <form name="filterEventsForm"
@@ -1061,12 +1109,41 @@
             </option>
           </xsl:for-each>
         </select>
+        <input type="hidden" name="start">
+          <xsl:attribute name="value">
+            <xsl:choose>
+              <xsl:when test="/bedework/appvar[key='curListDate']/value"><xsl:value-of select="/bedework/appvar[key='curListDate']/value"/></xsl:when>
+              <xsl:otherwise><xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="number(substring(/bedework/now/date,5,2)) - 1"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+        </input>
+        <input type="hidden" name="limitdays" id="true"/>
         <xsl:if test="/bedework/appvar[key='catFilter'] and /bedework/appvar[key='catFilter']/value != 'none'">
           <input type="submit" value="{$bwStr-EvLs-ClearFilter}" onclick="this.form.setappvar.selectedIndex = 0"/>
         </xsl:if>
       </form>
     </div>
     <xsl:call-template name="eventListCommon"/>
+  </xsl:template>
+
+  <xsl:template name="buildListDays">
+    <xsl:param name="index">1</xsl:param>
+    <xsl:variable name="current">
+      <xsl:choose>
+        <xsl:when test="/bedework/appvar[key='curListDays']/value"><xsl:value-of select="/bedework/appvar[key='curListDays']/value"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="/bedework/defaultdays"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="max" select="/bedework/maxdays"/>
+    <xsl:if test="number($index) &lt; number($max)">
+      <option name="listDays($index)">
+        <xsl:if test="$index = $current"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+        <xsl:value-of select="$index"/>
+      </option>
+      <xsl:call-template name="buildListDays">
+        <xsl:with-param name="index"><xsl:value-of select="number($index)+1"/></xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="eventListCommon">
@@ -1260,8 +1337,16 @@
       <p><xsl:copy-of select="$bwStr-AEEF-YouMayTag"/></p>
     </xsl:if>
 
-    <!-- if a submitted event has comments, display them -->
     <xsl:if test="/bedework/page = 'modEventPending'">
+      <!-- if a submitted event has topical areas that match with 
+           those in the calendar suite, convert them -->
+      <script type="text/javascript">
+      $(document).ready(function() {
+        $("ul.aliasTree input:checked").trigger("onclick");
+      });
+      </script>
+    
+      <!-- if a submitted event has comments, display them -->
       <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-LOCATION' or name()='X-BEDEWORK-CONTACT' or name()='X-BEDEWORK-CATEGORIES' or name()='X-BEDEWORK-SUBMIT-COMMENT']">
         <script type="text/javascript">
           bwSubmitComment = new bwSubmitComment(
@@ -2949,12 +3034,16 @@
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
               <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
               <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
+              <xsl:if test="/bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text = substring-after(aliasUri,'bwcal://')"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
             <xsl:choose>
               <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
                 <strong><xsl:value-of select="summary"/></strong>
               </xsl:when>
               <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text">
+                <strong><xsl:value-of select="summary"/></strong>
+              </xsl:when>
+              <xsl:when test="/bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text = substring-after(aliasUri,'bwcal://')">
                 <strong><xsl:value-of select="summary"/></strong>
               </xsl:when>
               <xsl:otherwise>

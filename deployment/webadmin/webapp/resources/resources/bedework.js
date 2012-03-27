@@ -304,3 +304,10 @@ function setCalSummary(val,summaryField) {
     summaryField.value = val;  
   }
 }
+// setup the event list dates 
+function setListDate(formObj) {
+  $("#curListDateHolder").val("curListDate(" + formObj.start.value + ")");
+  // restore ability to set days when form accepts it
+  //$("#curListDaysHolder").val("curListDays(" + formObj.days.value + ")");
+  formObj.submit();
+}
