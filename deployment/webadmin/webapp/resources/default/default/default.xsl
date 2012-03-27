@@ -1073,7 +1073,7 @@
 	        <label for="days"><xsl:copy-of select="$bwStr-EvLs-Days"/></label>
 	        <xsl:text> </xsl:text>
 	        <!-- <xsl:value-of select="/bedework/defaultdays"/> -->
-          <select id="days" name="days">
+          <select id="days" name="days" onchange="setListDate(this.form);">
 	          <xsl:call-template name="buildListDays"/>
 	        </select>
 	        <input type="hidden" id="curListDaysHolder" name="setappvar"/>
