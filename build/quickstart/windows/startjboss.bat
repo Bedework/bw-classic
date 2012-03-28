@@ -79,7 +79,7 @@ SET BW_DATA_DIR=%JBOSS_DATA_DIR%\bedework
 SET BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=%BW_DATA_DIR%\
 
 SET JAVA_OPTS=%JAVA_OPTS% -Xms%heap% -Xmx%heap%
-SET JAVA_OPTS=%JAVA_OPTS% -XX:NewSize=%newsize% -XX:MaxNewSize=%newsize%
+:: Don't do this SET JAVA_OPTS=%JAVA_OPTS% -XX:NewSize=%newsize% -XX:MaxNewSize=%newsize%
 SET JAVA_OPTS=%JAVA_OPTS% -XX:PermSize=%permsize% -XX:MaxPermSize=%permsize%
 
 SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat -c %JBOSS_CONFIG% %JBOSS_BIND% %JBOSS_PORTS% %LOG_THRESHOLD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI% %BW_DATA_DIR_DEF%
@@ -120,10 +120,6 @@ ECHO                                        nK for kilo-bytes (e.g. 2560000K)
 ECHO                                        nM for mega-bytes (e.g. 256oM)
 ECHO                                        nG for giga-bytes (e.g. 1G)
 ECHO. Default: %heap%
-ECHO.
-ECHO -newsize sets the new generation size and has the same form as -heap
-ECHO  the value should be around one third of the heap
-ECHO. Default: %newsize%
 ECHO.
 ECHO -permsize sets the permgen size and has the same form as -heap
 ECHO   The value should probably not be less than 256M

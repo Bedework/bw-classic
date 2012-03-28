@@ -20,10 +20,6 @@ usage() {
   echo "                                        nG for giga-bytes (e.g. 1G)"
   echo "  Default: $heap"
   echo ""
-  echo " -newsize sets the new generation size and has the same form as -heap"
-  echo "  the value should be around one third of the heap"
-  echo "  Default: $newsize"
-  echo ""
   echo " -permsize sets the permgen size and has the same form as -heap"
   echo "  The value should probably not be less than 256M"
   echo "  Default: $permsize"
@@ -141,7 +137,7 @@ BW_DATA_DIR=$JBOSS_DATA_DIR/bedework
 BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=$BW_DATA_DIR/
 
 JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
-JAVA_OPTS="$JAVA_OPTS -XX:NewSize=$newsize -XX:MaxNewSize=$newsize"
+# Don't set since java 1.4JAVA_OPTS="$JAVA_OPTS -XX:NewSize=$newsize -XX:MaxNewSize=$newsize"
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
 RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_DATA_DIR_DEF"
