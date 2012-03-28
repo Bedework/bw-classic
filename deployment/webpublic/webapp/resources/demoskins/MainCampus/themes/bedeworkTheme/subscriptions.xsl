@@ -73,7 +73,7 @@
     
     <xsl:variable name="name" select="name"/>
     <xsl:variable name="summary" select="summary"/>
-    <xsl:variable name="itemId" select="generate-id(path)"/>
+    <xsl:variable name="itemId"><xsl:value-of select="translate(path,'/_- ','')"/></xsl:variable>
     <xsl:variable name="folderState">
       <xsl:choose>
         <xsl:when test="contains(/bedework/appvar[key='opencals']/value,$itemId)">open</xsl:when>
