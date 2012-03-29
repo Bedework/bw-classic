@@ -1363,7 +1363,7 @@
               <xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/>
             </a><xsl:text> </xsl:text>
             (<a href="mailto:{$submitterEmail}?subject=[Event%20Submission] {$eventTitle}" title="Email {$submitterEmail}">
-              <img src="{$resourcesRoot}/resources/email.gif" border="0"/>
+              <img src="{$resourcesRoot}/resources/email.gif" border="0" alt="*"/>
               <xsl:copy-of select="$bwStr-AEEF-SendMsg"/>
             </a>)
           </div>
@@ -1651,7 +1651,7 @@
                     </select>
                   </xsl:if>
                   <xsl:text> </xsl:text>
-                  <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwStartClock"/>
+                  <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwStartClock" alt="*"/>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1672,10 +1672,10 @@
               <strong><xsl:copy-of select="$bwStr-AEEF-End"/></strong>
               <xsl:choose>
                 <xsl:when test="form/end/type='E'">
-                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:copy-of select="$bwStr-AEEF-Date"/>
@@ -1741,7 +1741,7 @@
                       </select>
                     </xsl:if>
                     <xsl:text> </xsl:text>
-                    <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwEndClock"/>
+                    <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwEndClock" alt="*"/>
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1765,10 +1765,10 @@
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="form/end/type='D'">
-                    <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 <xsl:copy-of select="$bwStr-AEEF-Duration"/>
@@ -1839,10 +1839,10 @@
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="form/end/type='N'">
-                    <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 <xsl:copy-of select="$bwStr-AEEF-ThisEventHasNoDurationEndDate"/>
@@ -2214,13 +2214,11 @@
                             </input>
                             <xsl:copy-of select="$bwStr-AEEF-WeekOn"/>
                           </p>
-                          <p>
-                            <div id="weekRecurFields">
-                              <xsl:call-template name="byDayChkBoxList">
-                                <xsl:with-param name="name">byDayWeek</xsl:with-param>
-                              </xsl:call-template>
-                            </div>
-                          </p>
+                          <div id="weekRecurFields">
+                            <xsl:call-template name="byDayChkBoxList">
+                              <xsl:with-param name="name">byDayWeek</xsl:with-param>
+                            </xsl:call-template>
+                          </div>
                           <p class="weekRecurLinks">
                             <a href="javascript:recurSelectWeekdays('weekRecurFields')"><xsl:copy-of select="$bwStr-AEEF-SelectWeekdays"/></a> |
                             <a href="javascript:recurSelectWeekends('weekRecurFields')"><xsl:copy-of select="$bwStr-AEEF-SelectWeekends"/></a>
@@ -2253,7 +2251,7 @@
                           <div id="monthRecurFields">
                             <div id="monthRecurFields1">
                               <xsl:copy-of select="$bwStr-AEEF-On"/>
-                              <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
+                              <select name="bymonthposPos1" onchange="changeClass('monthRecurFields2','shown')">
                                 <xsl:call-template name="recurrenceDayPosOptions"/>
                               </select>
                               <xsl:call-template name="byDayChkBoxList"/>
@@ -2291,7 +2289,7 @@
                           <div id="yearRecurFields">
                             <div id="yearRecurFields1">
                               <xsl:copy-of select="$bwStr-AEEF-On"/>
-                              <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
+                              <select name="byyearposPos1" onchange="changeClass('yearRecurFields2','shown')">
                                 <xsl:call-template name="recurrenceDayPosOptions"/>
                               </select>
                               <xsl:call-template name="byDayChkBoxList"/>
@@ -2443,7 +2441,7 @@
                             <option value="55">55</option>
                           </select>
                          <xsl:text> </xsl:text>
-                         <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwRecExcClock"/>
+                         <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwRecExcClock" alt="*"/>
 
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -3063,6 +3061,8 @@
     <xsl:param name="eventTitle"/>
     <xsl:param name="eventUrlPrefix"/>
     <xsl:param name="canEdit"/>
+    
+    <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="eventTitle"/></xsl:call-template></xsl:variable>
     <div class="submitBox">
       <xsl:choose>
         <!-- xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)"-->
@@ -3102,7 +3102,7 @@
                   </xsl:for-each>
                 </select>
                 <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}">
-                  <xsl:attribute name="onclick">doPublishEvent(this.form.newCalPath.value,'<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>',this.form);changeClass('publishBox','invisible');</xsl:attribute>
+                  <xsl:attribute name="onclick">doPublishEvent(this.form.newCalPath.value,"<xsl:value-of select="$escapedTitle"/>","<xsl:value-of select="$eventUrlPrefix"/>",this.form);changeClass('publishBox','invisible');</xsl:attribute>
                 </input>
                 <xsl:if test="$portalFriendly = 'false'">
                   <br/>
@@ -3119,7 +3119,7 @@
               <!-- we are using the single calendar model for public events -->
               <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-UpdateEvent}"/>
               <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}">
-                <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>',this.form);</xsl:attribute>
+                <xsl:attribute name="onclick">doPublishEvent("<xsl:value-of select="form/calendar/all/select/option/@value"/>","<xsl:value-of select="$escapedTitle"/>","<xsl:value-of select="$eventUrlPrefix"/>",this.form);</xsl:attribute>
               </input>
               <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}"/>
             </xsl:otherwise>
@@ -3229,7 +3229,7 @@
     <div class="invisible">
       <xsl:attribute name="id"><xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current"/></xsl:attribute>
       <xsl:copy-of select="$bwStr-BuRF-And"/>
-      <select width="12em">
+      <select>
         <xsl:attribute name="name">by<xsl:value-of select="$name"/>posPos<xsl:value-of select="$current"/></xsl:attribute>
         <xsl:if test="$current != $total">
           <xsl:attribute name="onchange">changeClass('<xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current+1"/>','shown')</xsl:attribute>
