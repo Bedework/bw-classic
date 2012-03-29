@@ -2682,6 +2682,9 @@
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
               <xsl:if test="form/location/preferred/select/option">
                 <select name="prefLocationId" id="bwPreferredLocationList">
+                  <xsl:if test="form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected)">
+                    <xsl:attribute name="class">invisible</xsl:attribute>
+                  </xsl:if>
                   <option value="">
                     <xsl:copy-of select="$bwStr-AEEF-SelectColon"/>
                   </option>
@@ -2689,7 +2692,7 @@
                 </select>
               </xsl:if>
               <select name="allLocationId" id="bwAllLocationList">
-                <xsl:if test="form/location/preferred/select/option">
+                <xsl:if test="form/location/preferred/select/option and not(form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected))">
                   <xsl:attribute name="class">invisible</xsl:attribute>
                 </xsl:if>
                 <option value="">
@@ -2701,9 +2704,17 @@
               <!-- allow for toggling between the preferred and all location listings if preferred
                    locations exist -->
               <xsl:if test="form/location/preferred/select/option">
-                <input type="radio" name="toggleLocationLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredLocationList','shown');changeClass('bwAllLocationList','invisible');"/>
+                <input type="radio" name="toggleLocationLists" value="preferred" onclick="changeClass('bwPreferredLocationList','shown');changeClass('bwAllLocationList','invisible');">
+                  <xsl:if test="form/location/preferred/select/option and not(form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected))">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
-                <input type="radio" name="toggleLocationLists" value="all" onclick="changeClass('bwPreferredLocationList','invisible');changeClass('bwAllLocationList','shown');"/>
+                <input type="radio" name="toggleLocationLists" value="all" onclick="changeClass('bwPreferredLocationList','invisible');changeClass('bwAllLocationList','shown');">
+                  <xsl:if test="form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected)">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-All"/>
               </xsl:if>
             </span>
@@ -2758,6 +2769,9 @@
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
               <xsl:if test="form/contact/preferred/select/option">
                 <select name="prefContactId" id="bwPreferredContactList">
+                  <xsl:if test="form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected)">
+                    <xsl:attribute name="class">invisible</xsl:attribute>
+                  </xsl:if>
                   <option value="">
                     <xsl:copy-of select="$bwStr-AEEF-SelectColon"/>
                   </option>option>
@@ -2765,7 +2779,7 @@
                 </select>
               </xsl:if>
               <select name="allContactId" id="bwAllContactList">
-                <xsl:if test="form/contact/preferred/select/option">
+                <xsl:if test="form/contact/preferred/select/option and not(form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected))">
                   <xsl:attribute name="class">invisible</xsl:attribute>
                 </xsl:if>
                 <option value="">
@@ -2777,9 +2791,17 @@
               <!-- allow for toggling between the preferred and all contacts listings if preferred
                    contacts exist -->
               <xsl:if test="form/contact/preferred/select/option">
-                <input type="radio" name="toggleContactLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredContactList','shown');changeClass('bwAllContactList','invisible');"/>
+                <input type="radio" name="toggleContactLists" value="preferred" onclick="changeClass('bwPreferredContactList','shown');changeClass('bwAllContactList','invisible');">
+                  <xsl:if test="form/contact/preferred/select/option and not(form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected))">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
-                <input type="radio" name="toggleContactLists" value="all" onclick="changeClass('bwPreferredContactList','invisible');changeClass('bwAllContactList','shown');"/>
+                <input type="radio" name="toggleContactLists" value="all" onclick="changeClass('bwPreferredContactList','invisible');changeClass('bwAllContactList','shown');">
+                  <xsl:if test="form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected)">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-All"/>
               </xsl:if>
             </span>
