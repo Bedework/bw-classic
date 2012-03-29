@@ -1106,6 +1106,7 @@
         <select name="setappvar" onchange="this.form.submit();">
           <option value="catFilter(none)"><xsl:copy-of select="$bwStr-EvLs-SelectCategory"/></option>
           <xsl:for-each select="/bedework/events//event/categories//category[generate-id() = generate-id(key('catUid',uid)[1])]">
+            <xsl:sort order="ascending" select="value"/>
             <xsl:variable name="uid" select="uid"/>
             <option value="catFilter({$uid})">
               <xsl:if test="/bedework/appvar[key='catFilter']/value = uid">
