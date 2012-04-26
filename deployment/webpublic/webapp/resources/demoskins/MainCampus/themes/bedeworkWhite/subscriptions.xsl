@@ -73,7 +73,7 @@
     
     <xsl:variable name="name" select="name"/>
     <xsl:variable name="summary" select="summary"/>
-    <xsl:variable name="itemId" select="generate-id(path)"/>
+    <xsl:variable name="itemId"><xsl:value-of select="translate(path,'/_- ','')"/></xsl:variable>
     <xsl:variable name="folderState">
       <xsl:choose>
         <xsl:when test="contains(/bedework/appvar[key='opencals']/value,$itemId)">open</xsl:when>
@@ -103,11 +103,23 @@
 	      <xsl:when test="$isRoot = 'true'">
 	        <xsl:attribute name="class">root</xsl:attribute>
 	        <a href="{$setSelection}">
+            <xsl:attribute name="href">
+              <xsl:choose>
+                <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$setSelectionList"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$setSelection"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
 	          <xsl:copy-of select="$bwStr-LCol-All"/>
 	        </a>
 	      </xsl:when>
 	      <xsl:otherwise>
-	        <a href="{$setSelection}&amp;virtualPath={$encVirtualPath}&amp;setappvar=curCollection({$name})">
+	        <a href="{$setSelection}">
+	          <xsl:attribute name="href">
+	            <xsl:choose>
+	              <xsl:when test="/bedework/page = 'eventList'"><xsl:value-of select="$setSelectionList"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$name"/>)</xsl:when>
+	              <xsl:otherwise><xsl:value-of select="$setSelection"/>&amp;virtualPath=<xsl:value-of select="$encVirtualPath"/>&amp;setappvar=curCollection(<xsl:value-of select="$name"/>)</xsl:otherwise>
+	            </xsl:choose>
+	          </xsl:attribute>
 	          <xsl:value-of select="summary"/>
 	        </a>
 	      </xsl:otherwise>	      
