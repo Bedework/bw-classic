@@ -351,6 +351,10 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="lucene-misc" version="2.0.0"/>
+
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="solr-solrj" version="3.6.0"/>
       
       <!-- Might be able to get rid of this if we use system xalan -->
       <getJar lib="${org.bedework.temp.extrajars.dir}"

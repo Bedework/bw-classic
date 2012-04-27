@@ -501,6 +501,16 @@
         <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
 
         <indexRoot>lucene/indexroot</indexRoot>
+        
+        <useSolr>true</useSolr>
+        <solrURL>http://localhost:8080/solr/</solrURL>
+        
+        <!-- Path to the core admin handlers. Configured into solr.xml -->
+        <solrCoreAdmin>admin/cores/</solrCoreAdmin>
+        
+        <!-- The name of the default index we use in solr for public indexing.
+             As we switch cores we use this as the base.  --> 
+        <solrDefaultCore>bwpublic</solrDefaultCore>
 
         <rootUsers>admin</rootUsers>
       </syspars>

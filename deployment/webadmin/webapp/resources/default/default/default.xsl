@@ -6300,6 +6300,46 @@
           </td>
         </tr>
         <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-UseSolr"/></th>
+          <td>
+            <xsl:variable name="useSolr" select="/bedework/system/useSolr"/>
+            <input value="{$useSolr}" name="useSolr" class="wide"/>
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-UseSolrNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-SolrURL"/></th>
+          <td>
+            <xsl:variable name="solrURL" select="/bedework/system/solrURL"/>
+            <input value="{$solrURL}" name="solrURL" class="wide"/>
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-SolrURLNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-SolrCoreAdmin"/></th>
+          <td>
+            <xsl:variable name="solrCoreAdmin" select="/bedework/system/solrCoreAdmin"/>
+            <input value="{$solrCoreAdmin}" name="solrCoreAdmin" class="wide"/>
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-SolrCoreAdminNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-SolrDefaultCore"/></th>
+          <td>
+            <xsl:variable name="solrDefaultCore" select="/bedework/system/solrDefaultCore"/>
+            <input value="{$solrDefaultCore}" name="solrDefaultCore" class="wide"/>
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-SolrDefaultCoreNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-SupportedLocales"/></th>
           <td>
             <xsl:variable name="localeList" select="/bedework/system/localeList"/>

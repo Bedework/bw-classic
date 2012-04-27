@@ -746,6 +746,14 @@
   <xsl:variable name="bwStr-MdSP-DirBrowseDisallowedNote">True if the server hosting the xsl disallows directory browsing.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-IndexRoot">Index root:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-IndexRootNote">Root for the event indexes. Should only be changed if the indexes are moved/copied</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-UseSolr">Use Solr for public indexing:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-UseSolrNote">Use Solr for public indexing:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-SolrURL">Solr Server URL:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-SolrURLNote">Solr Server URL:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-SolrCoreAdmin">Solr Server core admin path:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-SolrCoreAdminNote">Solr Server core admin path:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-SolrDefaultCore">Solr Server Default Core:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-SolrDefaultCoreNote">Solr Server Default Core:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-SupportedLocales">Supported Locales:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-ListOfSupportedLocales">List of supported locales. The format is a rigid, comma separated list of 2 letter language, underscore, 2 letter country. No spaces. Example: en_US,fr_CA</xsl:variable>
   <xsl:variable name="bwStr-MdSP-Update">Update</xsl:variable>
