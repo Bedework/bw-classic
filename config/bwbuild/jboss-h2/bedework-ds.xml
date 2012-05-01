@@ -31,7 +31,7 @@
   </local-tx-datasource>
 
   <!-- mbean for server mode -->
-  <mbean code="edu.rpi.cmt.jboss.jdbc.H2Db" 
+  <mbean code="edu.rpi.cmt.db.hibernate.h2.H2Db" 
          name="org.bedework:service=H2Db">
     <!-- Should be done like this
     <attribute name="Port">        

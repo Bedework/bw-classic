@@ -49,6 +49,7 @@ updateProjects="$updateProjects  webdav"
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
 access=
+bedenote=
 bedework=
 bwannotations=
 bwcalcore=
@@ -83,6 +84,7 @@ webdav=
 # Special targets - avoiding dependencies
 
 deploylog4j=
+deployActivemq=
 dirstart=
 
 specialTarget=
@@ -131,7 +133,11 @@ usage() {
   echo "      -ant-debug    Vast amounts of ant output"
   echo "      -build-debug  Some bedework build debug output"
   echo ""
-  echo "   target       Ant target to execute"
+  echo "   target       Special target or Ant target to execute"
+  echo ""
+  echo "   Special targets"
+  echo "      deploylog4j       deploys a log4j configuration"
+  echo "      deployActivemq    deploys the Activemq config"
   echo ""
   echo "   PROJECT optionally defines the package to build. If omitted the main"
   echo "           bedework calendar system will be built otherwise it is one of"
@@ -201,10 +207,17 @@ errorUsage() {
 actionUpdateall() {
   for project in $updateProjects
   do
-    echo "*********************************************************************"
-    echo "Updating project $project"
-    echo "*********************************************************************"
-    svn update $project
+    if [ ! -d "$project" ] ; then
+      echo "*********************************************************************"
+      echo "Project $project is missing. Check it out from the repository"
+      echo "*********************************************************************"
+      exit 1
+    else
+      echo "*********************************************************************"
+      echo "Updating project $project"
+      echo "*********************************************************************"
+      svn update $project
+    fi
   done
   
   exit 0
@@ -245,12 +258,25 @@ setDirectory() {
       deploylog4j=
 	  return
 	fi
+
+	if [ "$deployActivemq" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=deployActivemq
+      deployActivemq=
+	  return
+	fi
 	
 #     projects
 
 	if [ "$geronimoHib" != "" ] ; then
 	  cd $QUICKSTART_HOME/geronimo-hibernate
       geronimoHib=
+	  return
+	fi
+
+	if [ "$bedenote" != "" ] ; then
+	  cd $QUICKSTART_HOME/bedenote
+      bedenote=
 	  return
 	fi
 
@@ -601,14 +627,14 @@ fi
 if [ "$1" = "-deploywebcache" ] ; then
   cd $QUICKSTART_HOME/cachedfeeder
   $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher \
-                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel deploy-webcache
+                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib deploy-webcache
   exit
 fi
 
 if [ "$1" = "-deployurlbuilder" ] ; then
   cd $QUICKSTART_HOME/cachedfeeder
   $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher \
-                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel deploy-urlbuilder
+                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib deploy-urlbuilder
   exit
 fi
 
@@ -704,6 +730,11 @@ do
       pkgdefault=
       shift
       ;;
+    deployActivemq)
+	  deployActivemq="yes"
+      pkgdefault=
+      shift
+      ;;
 	dirstart)
 	  dirstart="yes"
       pkgdefault=
@@ -715,6 +746,11 @@ do
       
       bwxml="yes"
       rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bedenote)
+      bedenote="yes"
       pkgdefault=
       shift
       ;;
@@ -852,6 +888,7 @@ do
       access="yes"
       bwxml="yes"
       rpiutil="yes"
+      davutil="yes"
       webdav="yes"
       pkgdefault=
       shift
@@ -998,6 +1035,7 @@ do
 
       access="yes"
       bwxml="yes"
+      davutil="yes"
       rpiutil="yes"
       pkgdefault=
       shift
@@ -1077,6 +1115,7 @@ javacmd="$javacmd $ant_xmllogfile $offline"
 javacmd="$javacmd -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher"
 javacmd="$javacmd $BWCONFIG"
 javacmd="$javacmd $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
+javacmd="$javacmd -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib"
 
 while true
 do

@@ -194,7 +194,7 @@
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
-        <groupId>org.bedework.davutil</groupId>
+        <groupId>org.bedework</groupId>
         <artifactId>bw-davio</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
@@ -254,9 +254,24 @@
         <license>Apache License, Version 1.1</license>
     </artifact>
     <artifact>
+        <groupId>ch.jm.osgi</groupId>
+        <artifactId>ch.jm.osgi.util.bundle</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
         <groupId>classworlds</groupId>
         <artifactId>classworlds</artifactId>
         <license>BSD Style License</license>
+    </artifact>
+    <artifact>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-ant</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-core-uberjar</artifactId>
+        <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
         <groupId>com.carrotsearch</groupId>
@@ -410,12 +425,17 @@
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
-        <groupId>httpclient</groupId>
+        <groupId>org.fusesource.hawtdb</groupId>
+        <artifactId>hawtdb</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
-        <groupId>httpcore</groupId>
+        <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpcore</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
@@ -579,6 +599,31 @@
     <artifact>
         <groupId>org.apache.bcel</groupId>
         <artifactId>bcel</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-core</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jms</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.commons.io</groupId>
+        <artifactId>commons-io</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.commons.discovery</groupId>
+        <artifactId>commons-discovery</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.commons.logging</groupId>
+        <artifactId>commons-logging</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
@@ -758,6 +803,11 @@
         <groupId>org.hibernate.javax.persistence</groupId>
         <artifactId>hibernate-jpa-2.0-api</artifactId>
         <license>Sun Binary Code License</license>
+    </artifact>
+    <artifact>
+      <groupId>javax.ejb</groupId>
+      <artifactId>ejb-api</artifactId>
+      <license>Sun Binary Code License</license>
     </artifact>
     <artifact>
         <groupId>org.imgscalr</groupId>

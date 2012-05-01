@@ -17,7 +17,7 @@
       <fileset dir="${app.root.dir}/resources/bedework"/>
     </copy>
 
-    <!-- copy any jars required in the server lib (jdbc etc) -->
+    <!-- copy any jars required in the server lib (jdbc etc) - - >
     <if>
       <available file="${org.bedework.global.ext.lib}/server" type="dir" />
       <then>
@@ -46,6 +46,7 @@
         <copy todir="${appserver.lib.dir}" file="${java.tools.jar}"/>
       </then>
     </if>
+    -->
     
     <if>
       <isset property="org.bedework.appserver.deploy.dir" />

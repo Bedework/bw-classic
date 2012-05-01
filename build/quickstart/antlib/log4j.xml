@@ -22,7 +22,7 @@
    <!-- ================================= -->
 
    <appender name="FILE" class="org.apache.log4j.FileAppender">
-      <param name="File" value="build.log"/>
+      <param name="File" value="../build.log"/>
 
       <layout class="org.apache.log4j.PatternLayout">
          <!-- The default pattern: Date Priority [Category] Message\n -->
@@ -62,11 +62,31 @@
    <category name="org.apache.tools.ant">
       <priority value="WARN"/>
    </category>
-
+   
+   <category name="com.sun.tools.">
+      <priority value="WARN"/>
+   </category>
+   
    <category name="httpclient">
       <priority value="INFO"/>
    </category>
 
+   <category name="net.sf.antcontrib.logic.OutOfDate">
+      <priority value="INFO"/>
+   </category>
+
+   <category name="org.apache.maven.artifact.ant.DependenciesTask">
+      <priority value="ERROR"/>
+   </category>
+   
+   <category name="org.apache.maven.artifact.ant.InstallTask">
+      <priority value="WARN"/>
+   </category>
+
+   <category name="ch.jm.osgi">
+      <priority value="INFO"/>
+   </category>
+   
    <!-- Set bedework categories -->
    <category name="org.bedework">
      <priority value="DEBUG"/>

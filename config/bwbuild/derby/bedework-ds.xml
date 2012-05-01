@@ -35,7 +35,7 @@
   </local-tx-datasource>
 
   <!-- mbean for server mode -->
-  <mbean code="edu.rpi.cmt.jboss.jdbc.DerbyDb" 
+  <mbean code="edu.rpi.cmt.db.hibernate.derby.DerbyDb" 
          name="org.bedework:service=DerbyDb">
     <!-- Should be done like this
     <attribute name="Port">        

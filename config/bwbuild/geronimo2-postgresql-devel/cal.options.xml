@@ -117,8 +117,6 @@
             <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
             <baseDn>dc=bedework, dc=org</baseDn>
 
@@ -164,8 +162,6 @@
             <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
             <baseDn>ou=accounts,dc=bedework,dc=org</baseDn>
 
@@ -196,8 +192,6 @@
             <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
 
             <baseDn>ou=groups,dc=bedework,dc=org</baseDn>
@@ -230,8 +224,6 @@
             <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
 
             <baseDn>ou=locations,dc=bedework,dc=org</baseDn>
@@ -265,8 +257,6 @@
             <!-- manufacture an owner for public entities -->
             <ownerHref>/principals/users/admin</ownerHref>
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
             <baseDn>ou=people,ou=public,dc=bedework,dc=org</baseDn>
             <queryLimit>1000</queryLimit>
@@ -311,8 +301,6 @@
             <className>org.bedework.carddav.server.dirHandlers.ldap.LdapAddrBookDirHandler</className>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
 
             <baseDn>ou=users,ou=addrbooks,dc=bedework,dc=org</baseDn>
@@ -345,8 +333,6 @@
             <ownerHref>/principals/users/admin</ownerHref>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
             <baseDn>ou=locations,ou=public,dc=bedework,dc=org</baseDn>
 
@@ -379,8 +365,6 @@
             <ownerHref>/principals/users/admin</ownerHref>
 
             <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
             <providerUrl>ldap://localhost:10389/</providerUrl>
 
             <baseDn>ou=public,dc=bedework,dc=org</baseDn>
@@ -466,7 +450,7 @@
            restore or a first time build of the data. 
            
            Values in the database take precedence after that and need to be 
-           changed via the admin console on the system parameters page.
+           changed via the admin console on teh system parameters page.
        -->
       <syspars classname="org.bedework.calfacade.BwSystem">
         <!-- name must match the global system name              
@@ -517,16 +501,6 @@
         <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
 
         <indexRoot>lucene/indexroot</indexRoot>
-        
-        <useSolr>true</useSolr>
-        <solrURL>http://localhost:8080/solr/</solrURL>
-        
-        <!-- Path to the core admin handlers. Configured into solr.xml -->
-        <solrCoreAdmin>admin/cores/</solrCoreAdmin>
-        
-        <!-- The name of the default index we use in solr for public indexing.
-             As we switch cores we use this as the base.  --> 
-        <solrDefaultCore>bwpublic</solrDefaultCore>
 
         <rootUsers>admin</rootUsers>
       </syspars>

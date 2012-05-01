@@ -6,7 +6,8 @@
      Authors: Mike Douglass   douglm rpi.edu
 -->
 
-<project name="doDeftasks" basedir="." default="">
+<project name="doDeftasks" basedir="." default=""
+         xmlns:artifact="antlib:org.apache.maven.artifact.ant">
   <macrodef name="deftasks">
     <sequential>
       <property name="build.dir" location="${bedework.home}/build"/>
@@ -16,12 +17,18 @@
           <include name="*.jar"/>
         </fileset>
       </path>
-
+      
+      <!-- maven ant tasks -->
+      <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+               uri="antlib:org.apache.maven.artifact.ant"
+               classpathref="build.cp" />
+      
       <taskdef name="applicationXml"
                classname="org.bedework.deployment.ApplicationXmlTask">
         <classpath refid="build.cp"/>
       </taskdef>
 
+      <!--
       <taskdef name="artifactId"
                classname="org.bedework.deployment.ArtifactIdTask">
         <classpath refid="build.cp"/>
@@ -35,7 +42,7 @@
       <taskdef name="dependency"
                classname="org.bedework.deployment.DependencyTask">
         <classpath refid="build.cp"/>
-      </taskdef>
+      </taskdef>-->
          
       <taskdef name="forApp"
                classname="org.bedework.deployment.ForAppTask">
@@ -47,10 +54,11 @@
         <classpath refid="build.cp"/>
       </taskdef>
 
+      <!--
       <taskdef name="groupId"
                classname="org.bedework.deployment.GroupIdTask">
         <classpath refid="build.cp"/>
-      </taskdef>
+      </taskdef>-->
 
       <taskdef name="license"
                classname="org.bedework.deployment.LicenseTask">
@@ -72,6 +80,7 @@
         <classpath refid="build.cp"/>
       </taskdef>
 
+      <!--
       <taskdef name="scope"
                classname="org.bedework.deployment.ScopeTask">
         <classpath refid="build.cp"/>
@@ -85,10 +94,121 @@
       <taskdef name="version"
                classname="org.bedework.deployment.VersionTask">
         <classpath refid="build.cp"/>
-      </taskdef>
+      </taskdef>-->
     </sequential>
   </macrodef>
   
+  <macrodef name="installJar">
+    <attribute name="dir"/>
+    <attribute name="name"/>
+    <sequential>
+      <artifact:pom id="the-pom" file="@{dir}/pom.xml" />
+
+      <if>
+        <isset property="org.bedework.appserver.repository.dir" />
+        <then>
+          <!-- use this as the local repository -->
+          
+          <artifact:install file="@{name}">
+            <localRepository path="${org.bedework.appserver.repository.dir}"/>
+            <pom refid="the-pom"/>
+          </artifact:install>
+        </then>
+        <else>
+          <!-- Use default repository -->
+
+          <artifact:install file="@{name}">
+            <pom refid="the-pom"/>
+          </artifact:install>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="installPom">
+    <attribute name="dir"/>
+    <sequential>
+      <artifact:pom id="the-pom" file="@{dir}/pom.xml" />
+
+      <if>
+        <isset property="org.bedework.appserver.repository.dir" />
+        <then>
+          <!-- use this as the local repository -->
+          
+          <artifact:install file="@{dir}/pom.xml">
+            <localRepository path="${org.bedework.appserver.repository.dir}"/>
+            <pom refid="the-pom"/>
+          </artifact:install>
+        </then>
+        <else>
+          <!-- Use default repository -->
+
+          <artifact:install file="@{dir}/pom.xml">
+            <pom refid="the-pom"/>
+          </artifact:install>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <!-- Deploy into the app server -->
+  <macrodef name="deployJar">
+    <attribute name="dir"/>
+    <attribute name="name"/>
+    <sequential>
+      <if>
+        <isset property="org.bedework.appserver.repository.dir" />
+        <then>
+          <artifact:pom id="the-pom" file="@{dir}/pom.xml" />
+
+          <artifact:install file="@{name}">
+            <localRepository path="${org.bedework.appserver.repository.dir}"/>
+            <pom refid="the-pom"/>
+          </artifact:install>
+
+          <!--
+          <artifact:deploy file="@{name}">
+            <localRepository path="${org.bedework.appserver.repository.dir}"/>
+            <pom refid="the-pom"/>
+          </artifact:deploy> -->
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+  
+  <!-- Resolve dependencies with the given pom file -->
+  <macrodef name="resolveDependencies">
+    <attribute name="pomFile"/>
+    <sequential>
+      <artifact:pom id="the-pom" file="@{pomFile}" />
+
+      <if>
+        <isset property="org.bedework.appserver.repository.dir" />
+        <then>
+          <!-- use this as the local repository -->
+          <artifact:dependencies filesetId="dependency.fileset" 
+                                 useScope="compile" 
+                                 pomRefId="the-pom">
+            <localRepository path="${org.bedework.appserver.repository.dir}"/>
+          </artifact:dependencies>
+        </then>
+        <else>
+          <!-- Use default repository -->
+          <artifact:dependencies filesetId="dependency.fileset" 
+                                 useScope="compile" 
+                                 pomRefId="the-pom">
+          </artifact:dependencies>
+        </else>
+      </if>
+      
+      <copy todir="${lib.dir}">
+        <fileset refid="dependency.fileset" />
+        <!-- This mapper strips off all leading directory information -->
+        <mapper type="flatten" />
+      </copy>
+    </sequential>
+  </macrodef>
+
   <macrodef name="execProject">
     <attribute name="project"/>
     <attribute name="target"/>
@@ -183,8 +303,6 @@
                 value="${propval.app.name}"/>
         <filter token="APP-DESCRIPTION"
                 value="${propval.app.description}"/>
-        <filter token="APP-VERSION"
-                value="${org.bedework.global.version}"/>
         <filter token="WAR-NAME"
                 value="${propval.app.war.name}"/>
         <filter token="TOMCAT-DOC-BASE"
@@ -240,6 +358,67 @@
 
         <filter token="tzserverPrimaryUrl"
                 value="${org.bedework.app.tzsvr.primary.url}" />
+        
+        <filter token="APP-VERSION"
+                value="${org.bedework.global.version}"/>
+        
+        <filter token="orgBedeworkVersion"
+                value="${org.bedework.version}"/>
+        <filter token="orgBedeworkAccessVersion"
+                value="${org.bedework.access.version}"/>
+        <filter token="orgBedeworkAnnotationsVersion"
+                value="${org.bedework.annotations.version}"/>
+        <filter token="orgBedeworkBedenoteVersion"
+                value="${org.bedework.bedenote.version}"/>
+        <filter token="orgBedeworkBwcaldavVersion"
+                value="${org.bedework.bwcaldav.version}"/>
+        <filter token="orgBedeworkBwtoolsVersion"
+                value="${org.bedework.bwtools.version}"/>
+        <filter token="orgBedeworkBwxmlVersion"
+                value="${org.bedework.bwxml.version}"/>
+        <filter token="orgBedeworkCalcoreVersion"
+                value="${org.bedework.calcore.version}"/>
+        <filter token="orgBedeworkCaldavVersion"
+                value="${org.bedework.caldav.version}"/>
+        <filter token="orgBedeworkCaldavtestVersion"
+                value="${org.bedework.caldavtest.version}"/>
+        <filter token="orgBedeworkCalfacadeVersion"
+                value="${org.bedework.calfacade.version}"/>
+        <filter token="orgBedeworkCarddavVersion"
+                value="${org.bedework.carddav.version}"/>
+        <filter token="orgBedeworkDavutilVersion"
+                value="${org.bedework.davutil.version}"/>
+        <filter token="orgBedeworkDumprestoreVersion"
+                value="${org.bedework.dumprestore.version}"/>
+        <filter token="orgBedeworkExchggatewayVersion"
+                value="${org.bedework.exchggateway.version}"/>
+        <filter token="orgBedeworkIcalendarVersion"
+                value="${org.bedework.icalendar.version}"/>
+        <filter token="orgBedeworkIndexerVersion"
+                value="${org.bedework.indexer.version}"/>
+        <filter token="orgBedeworkInterfacesVersion"
+                value="${org.bedework.interfaces.version}"/>
+        <filter token="orgBedeworkMiscVersion"
+                value="${org.bedework.misc.version}"/>
+        <filter token="orgBedeworkMonitorVersion"
+                value="${org.bedework.monitor.version}"/>
+        <filter token="orgBedeworkRpiutilVersion"
+                value="${org.bedework.rpiutil.version}"/>
+        <filter token="orgBedeworkSynchVersion"
+                value="${org.bedework.synch.version}"/>
+        <filter token="orgBedeworkSyseventsVersion"
+                value="${org.bedework.sysevents.version}"/>
+        <filter token="orgBedeworkTestsuiteVersion"
+                value="${org.bedework.testsuite.version}"/>
+        <filter token="orgBedeworkBwtzsvrVersion"
+                value="${org.bedework.bwtzsvr.version}"/>
+        <filter token="orgBedeworkWebappsVersion"
+                value="${org.bedework.webapps.version}"/>
+        <filter token="orgBedeworkWebdavVersion"
+                value="${org.bedework.webdav.version}"/>
+        <filter token="orgBedeworkXmlschemaVersion"
+                value="${org.bedework.xmlschema.version}"/>
+
       </filterset>
     </sequential>
   </macrodef>
@@ -289,6 +468,38 @@
 
       <import file="${build.dir}/buildTools/getJar.xml"/>
       <import file="${build.dir}/buildTools/jdoc.xml"/>
+      
+      <!-- Now we have getjar build a classpath for the bundle tasks -->
+      <mkdir dir="${org.bedework.temp.dir}/bundle-build" />
+      <getJar name="commons-io" version="2.0.1"
+              lib="${org.bedework.temp.dir}/bundle-build"/>
+      <getJar name="bcel" version="5.3-SNAPSHOT"
+              lib="${org.bedework.temp.dir}/bundle-build"/>
+      <getJar name="ch.jm.osgi.util.bundle" version="1.0.0"
+              lib="${org.bedework.temp.dir}/bundle-build"/>
+
+      <path id="bundle-util.classpath">
+          <fileset dir="${org.bedework.temp.dir}/bundle-build"/>
+      </path>
+      <taskdef resource="ch/jm/osgi/util/bundle/ant/antlib.xml"
+          classpathref="bundle-util.classpath" onerror="fail"/>
+      
+      <!-- And the cargo tasks -->
+      <mkdir dir="${org.bedework.temp.dir}/cargo" />
+      <getJar name="cargo-ant" version="1.2.0"
+              lib="${org.bedework.temp.dir}/cargo"/>
+      <getJar name="cargo-core-uberjar" version="1.2.0"
+              lib="${org.bedework.temp.dir}/cargo"/>
+      <getJar name="commons-discovery" version="20040218.194635"
+              lib="${org.bedework.temp.dir}/cargo"/>
+      <getJar name="commons-logging"
+              lib="${org.bedework.temp.dir}/cargo"/>
+
+      <path id="cargo.classpath">
+          <fileset dir="${org.bedework.temp.dir}/cargo"/>
+      </path>
+      <taskdef resource="cargo.tasks"
+          classpathref="cargo.classpath" onerror="fail"/>
     </sequential>
   </macrodef>
 
@@ -501,6 +712,27 @@
     <deployInit ear-name="" />
   </target>
   
+  <!-- This should be called from the deploy target for bundles. -->
+  <macrodef name="deployBundle">
+    <attribute name="bundle"/>
+    <sequential>
+      <!--
+      <if>
+        <isset property="org.bedework.global.deploy.bundles" />
+        <then>
+          <cargo containerId="${org.bedework.global.deploy.platform}" 
+                 home="${org.bedework.appserver.dir}"
+                 action="deploy">
+            <configuration>
+              <deployable type="bundle" file="@{bundle}"/>
+            </configuration>
+          </cargo>
+        </then>
+      </if>
+      -->
+    </sequential>
+  </macrodef>
+  
   <!-- Override this -->
   <target name="deploy" depends="deploy-init,build" />
 
@@ -545,16 +777,16 @@
        ================================================================= -->
 
   <target name="clean-build" depends="clean,build"
-          description="Clean and compile access control classes"/>
+          description="Clean and compile classes"/>
 
   <target name="clean-build-all" depends="clean,build-all"
-          description="Clean and compile access control classes"/>
+          description="Clean and compile classes"/>
 
   <target name="build" depends="init,build-source,cleanup"
-          description="Compile access control classes"/>
+          description="Compile classes"/>
 
   <target name="build-all" depends="build"
-          description="Compile access control classes"/>
+          description="Compile classes"/>
   
   <target name="javadoc" depends="build-init"
           description="Create Javadoc API documentation">
@@ -618,6 +850,9 @@
     <attribute name="jar-dependency" default=""/>
     <attribute name="generated-sources" default=""/>
     <attribute name="property-resources" default=""/>
+    <attribute name="bundle-xml" default=""/> <!-- bundle -->
+    <attribute name="jar-name" default=""/> <!-- bundle -->
+    <attribute name="jar-version" default=""/> <!-- bundle -->
     
     <sequential>
       <if>
@@ -812,12 +1047,45 @@
                             Build jar file
                ========================================================== -->
 
-          <jar jarfile="@{jar-file}">
-            <fileset dir="${jar.temp.classes}">
-              <patternset refid="base.class.patternset"/>
-            </fileset>
-            <fileset refid="buildjar.resource.files"/>
-          </jar>
+          <if>
+            <equals arg1="@{bundle-xml}" arg2="" />
+            <then>
+              <!-- Not a bundle -->
+              <jar jarfile="@{jar-file}">
+                <fileset dir="${jar.temp.classes}">
+                  <patternset refid="base.class.patternset"/>
+                </fileset>
+                <fileset refid="buildjar.resource.files"/>
+              </jar>
+            </then>
+            <else>
+              <!-- Build manifest from bundle descriptor and add additional entries -->
+              <bundle-manifest file="${jar.temp.classes}/META-INF/MANIFEST.MF"
+                    classes="${jar.temp.classes}"
+                    descriptor="@{bundle-xml}">
+                <attribute name="Bundle-Version" value="@{jar-version}"/>
+                <attribute name="Bundle-Vendor" value="Bedework"/>
+                <attribute name="Bundle-DocURL" value="bedework.org"/>
+                <attribute name="Implementation-Title"
+                    value="@{jar-name} (${project.name})"/>
+                <attribute name="Implementation-Version" value="@{jar-version}"/>
+                <attribute name="Implementation-Vendor"
+                    value="bedework"/>
+                <attribute name="Implementation-URL"
+                    value="bedework.org"/>
+              </bundle-manifest>
+              
+              <!-- Now build the actual bundle. -->
+              <jar jarfile="@{jar-file}"
+                    filesetmanifest="merge" manifestencoding="UTF-8">
+                <fileset dir="${jar.temp.classes}"/>
+                <!--
+                <metainf dir="${project.home}" includes="LICENSE.txt,NOTICE.txt"/>
+                -->
+                <metainf dir="${project.home}" includes="LICENSE.txt"/>
+              </jar>
+            </else>
+          </if>
 
           <!-- ==========================================================
                             Clean up

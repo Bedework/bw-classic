@@ -68,14 +68,21 @@
        "build" and "clean" targets for the project
        ================================================================= -->
 
+  <!--
   <target name="build" depends="init"
           description="builds the project">
+  </target> -->
+  
+  <target name="build-source" depends="build-init" >
+    <installPom dir="${org.bedework.project.bedework}"/>
   </target>
 
+  <!--
   <target name="clean" depends="init"
           description="Remove all generated files.">
     <delete dir="${dist.home}" />
   </target>
+  -->
 
   <target name="quickstart-clean" depends="clean"
           description="extra clean up for quickstart.">
