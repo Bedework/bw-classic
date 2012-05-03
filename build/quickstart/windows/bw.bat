@@ -37,6 +37,7 @@ SET bw_loglevel=
 :: Projects we need to update - these are the svn projects - not internal variables
 :: or user parameters.
 SET "updateProjects=access"
+SET "updateProjects=%updateProjects% bedenote"
 SET "updateProjects=%updateProjects% bedework"
 SET "updateProjects=%updateProjects% bedework-carddav"
 SET "updateProjects=%updateProjects% bwannotations"
@@ -63,6 +64,7 @@ SET "updateProjects=%updateProjects% webdav"
 :: Projects we will build - pkgdefault (bedework) is built if nothing specified
 SET pkgdefault=yes
 SET access=
+SET bedenote=
 SET bedework=
 SET bwannotations=
 SET bwcalcore=
@@ -97,6 +99,7 @@ SET action=
 :: Special targets - avoiding dependencies
 
 SET deploylog4j=
+SET deployActivemq=
 SET dirstart=
 
 SET specialTarget=
@@ -174,6 +177,12 @@ GOTO branch
   SHIFT
   GOTO branch
       
+:deployActivemq
+  SET deployActivemq="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+      
 :dirstart
   SET dirstart="yes"
   SET pkgdefault=
@@ -187,6 +196,12 @@ GOTO branch
   
   SET bwxml="yes"
   SET rpiutil="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:bedenote
+  SET bedenote="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -462,6 +477,13 @@ GOTO branch
 
 :updateall
   for %%p in (%updateProjects%) do (
+    IF EXIST "%%p" GOTO foundProjectToUpdate
+     ECHO *******************************************************
+     ECHO Error: Project %%p is missing. Check it out from the repository"
+     ECHO *******************************************************
+     GOTO:EOF
+:foundProjectToUpdate
+  
     ECHO *************************************************************
     ECHO Updating project %%p
     ECHO *************************************************************
@@ -572,11 +594,13 @@ GOTO doneQB
 :: Special targets first
   IF NOT "%dirstart%empty" == "empty" GOTO cdDirstart
   IF NOT "%deploylog4j%empty" == "empty" GOTO cdDeploylog4j
+  IF NOT "%deployActivemq%empty" == "empty" GOTO cdDeployActivemq
 :: Now projects
   IF NOT "%bwdeployutil%empty" == "empty" GOTO cdBwdeployutil
   IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
   IF NOT "%rpiutil%empty" == "empty" GOTO cdRpiutil
   IF NOT "%access%empty" == "empty"  GOTO cdAccess
+  IF NOT "%bedenote%empty" == "empty"  GOTO cdBedenote
   IF NOT "%davutil%empty" == "empty"  GOTO cdDavutil
   IF NOT "%webdav%empty" == "empty"  GOTO cdWebdav
   IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
@@ -636,11 +660,22 @@ GOTO:EOF
   SET deploylog4j=
   SET specialTarget="deploylog4j"
   GOTO dospecial
+  
+:cdDeployActivemq
+  cd %QUICKSTART_HOME%
+  SET deployActivemq=
+  SET specialTarget="deployActivemq"
+  GOTO dospecial
 
 :: Projects    
 :cdAccess
   cd %QUICKSTART_HOME%\access
   SET access=
+  GOTO doant
+  
+:cdBedenote
+  cd %QUICKSTART_HOME%\bedenote
+  SET bedenote=
   GOTO doant
   
 :cdBedework
@@ -869,6 +904,10 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO.
   ECHO    -offline     Build without attempting to retrieve library jars
   ECHO    target       Ant target to execute (e.g. "start")
+  ECHO
+  ECHO    Special targets
+  ECHO      deploylog4j       deploys a log4j configuration
+  ECHO      deployActivemq    deploys the Activemq config
   ECHO.
   ECHO    PROJECT optionally defines the package to build and is one of
   ECHO            the core, ancillary or experimental targets below:
