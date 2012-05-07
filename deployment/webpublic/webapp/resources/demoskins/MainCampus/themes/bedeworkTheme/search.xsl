@@ -58,7 +58,7 @@
     <xsl:if test="/bedework/searchResults/searchResult">
       <table id="searchTable">
         <tr>
-          <th class="search_relevance"><xsl:copy-of select="$bwStr-Srch-Rank"/></th>
+          <!-- th class="search_relevance"><xsl:copy-of select="$bwStr-Srch-Rank"/></th-->
           <th class="search_date"><xsl:copy-of select="$bwStr-Srch-Date"/></th>
           <th class="search_summary"><xsl:copy-of select="$bwStr-Srch-Summary"/></th>
           <th class="search_location"><xsl:copy-of select="$bwStr-Srch-Location"/></th>
@@ -69,14 +69,14 @@
             <xsl:variable name="guid" select="event/guid" />
             <xsl:variable name="recurrenceId" select="event/recurrenceId" />
             <tr>
-              <td class="search_relevance">
+              <!-- td class="search_relevance">
                 <xsl:choose>
                   <xsl:when test="contains(score,'E')">1%</xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="ceiling(number(score)*100)" />%
                   </xsl:otherwise>
                 </xsl:choose>
-              </td>
+              </td-->
               <td class="search_date">
                 <xsl:value-of select="event/start/shortdate" />
                 <xsl:text> </xsl:text>
