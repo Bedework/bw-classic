@@ -752,7 +752,7 @@
         <xsl:if test="/bedework/tab = 'pending'">
           <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
-        <a href="{$initPendingTab}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true"><xsl:copy-of select="$bwStr-Head-PendingEvents"/></a>
+        <a href="{$initPendingTab}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true&amp;useDbSearch=true"><xsl:copy-of select="$bwStr-Head-PendingEvents"/></a>
       </li>
       <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
