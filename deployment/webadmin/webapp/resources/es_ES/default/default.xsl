@@ -862,7 +862,7 @@
       <tr>
         <td>
           <a href="{$event-initUpdateEvent}">
-            <xsl:attribute name="href"><xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="$curListDate"/>&amp;days=<xsl:value-of select="$curListDays"/>&amp;limitdays=true</xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$event-initUpdateEvent"/>&amp;useDbSearch=true&amp;start=<xsl:value-of select="$curListDate"/>&amp;days=<xsl:value-of select="$curListDays"/>&amp;limitdays=true</xsl:attribute>
             <xsl:if test="not(/bedework/currentCalSuite/name)">
               <xsl:attribute name="onclick">alert("<xsl:copy-of select="$bwStr-MMnu-YouMustBeOperating"/>");return false;</xsl:attribute>
             </xsl:if>
@@ -1079,6 +1079,7 @@
         <input id="bwListWidgetStartDate" class="noFocus" name="start" size="10" onchange="setListDate(this.form);"/>
         <input type="hidden" name="setappvar" id="curListDateHolder"/>
         <input type="hidden" name="limitdays" value="true"/>
+        <input type="hidden" name="useDbSearch" value="true"/>
         <span id="daysSetterBox">
 	        <label for="days"><xsl:copy-of select="$bwStr-EvLs-Days"/></label>
 	        <xsl:text> </xsl:text>
@@ -1118,6 +1119,7 @@
         </select>
         <input type="hidden" name="start" value="{$curListDate}"/>
         <input type="hidden" name="limitdays" value="true"/>
+        <input type="hidden" name="useDbSearch" value="true"/>
         <xsl:if test="/bedework/appvar[key='catFilter'] and /bedework/appvar[key='catFilter']/value != 'none'">
           <input type="submit" value="{$bwStr-EvLs-ClearFilter}" onclick="this.form.setappvar.selectedIndex = 0"/>
         </xsl:if>
