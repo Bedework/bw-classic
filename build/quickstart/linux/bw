@@ -86,6 +86,7 @@ webdav=
 
 deploylog4j=
 deployActivemq=
+deploySolr=
 dirstart=
 
 specialTarget=
@@ -139,6 +140,7 @@ usage() {
   echo "   Special targets"
   echo "      deploylog4j       deploys a log4j configuration"
   echo "      deployActivemq    deploys the Activemq config"
+  echo "      deploySolr        deploys the quickstart solr config"
   echo ""
   echo "   PROJECT optionally defines the package to build. If omitted the main"
   echo "           bedework calendar system will be built otherwise it is one of"
@@ -264,6 +266,13 @@ setDirectory() {
 	  cd $QUICKSTART_HOME
 	  specialTarget=deployActivemq
       deployActivemq=
+	  return
+	fi
+
+	if [ "$deploySolr" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=deploySolr
+      deploySolr=
 	  return
 	fi
 	
@@ -733,6 +742,11 @@ do
       ;;
     deployActivemq)
 	  deployActivemq="yes"
+      pkgdefault=
+      shift
+      ;;
+    deploySolr)
+	  deploySolr="yes"
       pkgdefault=
       shift
       ;;

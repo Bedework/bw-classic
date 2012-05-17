@@ -132,6 +132,23 @@
   </target>
 
   <!-- =================================================================
+       "deploySolr" target
+       ================================================================= -->
+
+  <target name="deploySolr" depends="init"
+          description="Copy the solr config into the appserver">
+    <copy file="${org.bedework.solr.configurations}/schema.xml"
+          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.publiccore}/conf/schema.xml"
+          overwrite="yes" />
+    <copy file="${org.bedework.solr.configurations}/solrconfig.xml"
+          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.publiccore}/conf/solrconfig.xml"
+          overwrite="yes" />
+    <copy file="${org.bedework.solr.configurations}/solr.xml"
+          tofile="${org.bedework.global.solr.dir}/solr.xml"
+          overwrite="yes" />
+  </target>
+
+  <!-- =================================================================
        The "deploy" target builds and deploys the applications
        ================================================================= -->
 

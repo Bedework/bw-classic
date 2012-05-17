@@ -100,6 +100,7 @@ SET action=
 
 SET deploylog4j=
 SET deployActivemq=
+SET deploySolr=
 SET dirstart=
 
 SET specialTarget=
@@ -179,6 +180,12 @@ GOTO branch
       
 :deployActivemq
   SET deployActivemq="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+      
+:deploySolr
+  SET deploySolr="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -595,6 +602,7 @@ GOTO doneQB
   IF NOT "%dirstart%empty" == "empty" GOTO cdDirstart
   IF NOT "%deploylog4j%empty" == "empty" GOTO cdDeploylog4j
   IF NOT "%deployActivemq%empty" == "empty" GOTO cdDeployActivemq
+  IF NOT "%deploySolr%empty" == "empty" GOTO cdDeploySolr
 :: Now projects
   IF NOT "%bwdeployutil%empty" == "empty" GOTO cdBwdeployutil
   IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
@@ -665,6 +673,12 @@ GOTO:EOF
   cd %QUICKSTART_HOME%
   SET deployActivemq=
   SET specialTarget="deployActivemq"
+  GOTO dospecial
+  
+:cdDeploySolr
+  cd %QUICKSTART_HOME%
+  SET deploySolr=
+  SET specialTarget="deploySolr"
   GOTO dospecial
 
 :: Projects    
@@ -908,6 +922,7 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO    Special targets
   ECHO      deploylog4j       deploys a log4j configuration
   ECHO      deployActivemq    deploys the Activemq config
+  ECHO      deploySolr        deploys the quickstart solr config
   ECHO.
   ECHO    PROJECT optionally defines the package to build and is one of
   ECHO            the core, ancillary or experimental targets below:
