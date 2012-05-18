@@ -37,7 +37,6 @@ SET bw_loglevel=
 :: Projects we need to update - these are the svn projects - not internal variables
 :: or user parameters.
 SET "updateProjects=access"
-SET "updateProjects=%updateProjects% bedenote"
 SET "updateProjects=%updateProjects% bedework"
 SET "updateProjects=%updateProjects% bedework-carddav"
 SET "updateProjects=%updateProjects% bwannotations"
@@ -64,7 +63,6 @@ SET "updateProjects=%updateProjects% webdav"
 :: Projects we will build - pkgdefault (bedework) is built if nothing specified
 SET pkgdefault=yes
 SET access=
-SET bedenote=
 SET bedework=
 SET bwannotations=
 SET bwcalcore=
@@ -484,13 +482,6 @@ GOTO branch
 
 :updateall
   for %%p in (%updateProjects%) do (
-    IF EXIST "%%p" GOTO foundProjectToUpdate
-     ECHO *******************************************************
-     ECHO Error: Project %%p is missing. Check it out from the repository"
-     ECHO *******************************************************
-     GOTO:EOF
-:foundProjectToUpdate
-  
     ECHO *************************************************************
     ECHO Updating project %%p
     ECHO *************************************************************
@@ -608,7 +599,6 @@ GOTO doneQB
   IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
   IF NOT "%rpiutil%empty" == "empty" GOTO cdRpiutil
   IF NOT "%access%empty" == "empty"  GOTO cdAccess
-  IF NOT "%bedenote%empty" == "empty"  GOTO cdBedenote
   IF NOT "%davutil%empty" == "empty"  GOTO cdDavutil
   IF NOT "%webdav%empty" == "empty"  GOTO cdWebdav
   IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
@@ -685,11 +675,6 @@ GOTO:EOF
 :cdAccess
   cd %QUICKSTART_HOME%\access
   SET access=
-  GOTO doant
-  
-:cdBedenote
-  cd %QUICKSTART_HOME%\bedenote
-  SET bedenote=
   GOTO doant
   
 :cdBedework
