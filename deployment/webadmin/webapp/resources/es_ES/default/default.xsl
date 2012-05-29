@@ -1108,6 +1108,7 @@
         <select name="setappvar" onchange="this.form.submit();">
           <option value="catFilter(none)"><xsl:copy-of select="$bwStr-EvLs-SelectCategory"/></option>
           <xsl:for-each select="/bedework/events//event/categories//category[generate-id() = generate-id(key('catUid',uid)[1])]">
+            <xsl:sort order="ascending" select="value"/>
             <xsl:variable name="uid" select="uid"/>
             <option value="catFilter({$uid})">
               <xsl:if test="/bedework/appvar[key='catFilter']/value = uid">
@@ -1366,7 +1367,7 @@
               <xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-SUBMITTEDBY']/values/text"/>
             </a><xsl:text> </xsl:text>
             (<a href="mailto:{$submitterEmail}?subject=[Event%20Submission] {$eventTitle}" title="Email {$submitterEmail}">
-              <img src="{$resourcesRoot}/resources/email.gif" border="0"/>
+              <img src="{$resourcesRoot}/resources/email.gif" border="0" alt="*"/>
               <xsl:copy-of select="$bwStr-AEEF-SendMsg"/>
             </a>)
           </div>
@@ -1654,7 +1655,7 @@
                     </select>
                   </xsl:if>
                   <xsl:text> </xsl:text>
-                  <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwStartClock"/>
+                  <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwStartClock" alt="*"/>
 
                   <select name="eventStartDate.tzid" id="startTzid" class="timezones">
                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1675,10 +1676,10 @@
               <strong><xsl:copy-of select="$bwStr-AEEF-End"/></strong>
               <xsl:choose>
                 <xsl:when test="form/end/type='E'">
-                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" checked="checked" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" checked="checked" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" onClick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
+                  <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:copy-of select="$bwStr-AEEF-Date"/>
@@ -1744,7 +1745,7 @@
                       </select>
                     </xsl:if>
                     <xsl:text> </xsl:text>
-                    <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwEndClock"/>
+                    <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwEndClock" alt="*"/>
 
                     <select name="eventEndDate.tzid" id="endTzid" class="timezones">
                       <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1768,10 +1769,10 @@
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="form/end/type='D'">
-                    <input type="radio" name="eventEndType" value="D" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="D" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 <xsl:copy-of select="$bwStr-AEEF-Duration"/>
@@ -1842,10 +1843,10 @@
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="form/end/type='N'">
-                    <input type="radio" name="eventEndType" value="N" checked="checked" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="N" onClick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
                 <xsl:copy-of select="$bwStr-AEEF-ThisEventHasNoDurationEndDate"/>
@@ -2217,13 +2218,11 @@
                             </input>
                             <xsl:copy-of select="$bwStr-AEEF-WeekOn"/>
                           </p>
-                          <p>
-                            <div id="weekRecurFields">
-                              <xsl:call-template name="byDayChkBoxList">
-                                <xsl:with-param name="name">byDayWeek</xsl:with-param>
-                              </xsl:call-template>
-                            </div>
-                          </p>
+                          <div id="weekRecurFields">
+                            <xsl:call-template name="byDayChkBoxList">
+                              <xsl:with-param name="name">byDayWeek</xsl:with-param>
+                            </xsl:call-template>
+                          </div>
                           <p class="weekRecurLinks">
                             <a href="javascript:recurSelectWeekdays('weekRecurFields')"><xsl:copy-of select="$bwStr-AEEF-SelectWeekdays"/></a> |
                             <a href="javascript:recurSelectWeekends('weekRecurFields')"><xsl:copy-of select="$bwStr-AEEF-SelectWeekends"/></a>
@@ -2256,7 +2255,7 @@
                           <div id="monthRecurFields">
                             <div id="monthRecurFields1">
                               <xsl:copy-of select="$bwStr-AEEF-On"/>
-                              <select name="bymonthposPos1" width="7em" onchange="changeClass('monthRecurFields2','shown')">
+                              <select name="bymonthposPos1" onchange="changeClass('monthRecurFields2','shown')">
                                 <xsl:call-template name="recurrenceDayPosOptions"/>
                               </select>
                               <xsl:call-template name="byDayChkBoxList"/>
@@ -2294,7 +2293,7 @@
                           <div id="yearRecurFields">
                             <div id="yearRecurFields1">
                               <xsl:copy-of select="$bwStr-AEEF-On"/>
-                              <select name="byyearposPos1" width="7em" onchange="changeClass('yearRecurFields2','shown')">
+                              <select name="byyearposPos1" onchange="changeClass('yearRecurFields2','shown')">
                                 <xsl:call-template name="recurrenceDayPosOptions"/>
                               </select>
                               <xsl:call-template name="byDayChkBoxList"/>
@@ -2446,7 +2445,7 @@
                             <option value="55">55</option>
                           </select>
                          <xsl:text> </xsl:text>
-                         <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" alt="bwClock" id="bwRecExcClock"/>
+                         <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwRecExcClock" alt="*"/>
 
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -2687,6 +2686,9 @@
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
               <xsl:if test="form/location/preferred/select/option">
                 <select name="prefLocationId" id="bwPreferredLocationList">
+                  <xsl:if test="form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected)">
+                    <xsl:attribute name="class">invisible</xsl:attribute>
+                  </xsl:if>
                   <option value="">
                     <xsl:copy-of select="$bwStr-AEEF-SelectColon"/>
                   </option>
@@ -2694,7 +2696,7 @@
                 </select>
               </xsl:if>
               <select name="allLocationId" id="bwAllLocationList">
-                <xsl:if test="form/location/preferred/select/option">
+                <xsl:if test="form/location/preferred/select/option and not(form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected))">
                   <xsl:attribute name="class">invisible</xsl:attribute>
                 </xsl:if>
                 <option value="">
@@ -2706,9 +2708,17 @@
               <!-- allow for toggling between the preferred and all location listings if preferred
                    locations exist -->
               <xsl:if test="form/location/preferred/select/option">
-                <input type="radio" name="toggleLocationLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredLocationList','shown');changeClass('bwAllLocationList','invisible');"/>
+                <input type="radio" name="toggleLocationLists" value="preferred" onclick="changeClass('bwPreferredLocationList','shown');changeClass('bwAllLocationList','invisible');">
+                  <xsl:if test="form/location/preferred/select/option and not(form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected))">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
-                <input type="radio" name="toggleLocationLists" value="all" onclick="changeClass('bwPreferredLocationList','invisible');changeClass('bwAllLocationList','shown');"/>
+                <input type="radio" name="toggleLocationLists" value="all" onclick="changeClass('bwPreferredLocationList','invisible');changeClass('bwAllLocationList','shown');">
+                  <xsl:if test="form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected)">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-All"/>
               </xsl:if>
             </span>
@@ -2763,6 +2773,9 @@
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
               <xsl:if test="form/contact/preferred/select/option">
                 <select name="prefContactId" id="bwPreferredContactList">
+                  <xsl:if test="form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected)">
+                    <xsl:attribute name="class">invisible</xsl:attribute>
+                  </xsl:if>
                   <option value="">
                     <xsl:copy-of select="$bwStr-AEEF-SelectColon"/>
                   </option>option>
@@ -2770,7 +2783,7 @@
                 </select>
               </xsl:if>
               <select name="allContactId" id="bwAllContactList">
-                <xsl:if test="form/contact/preferred/select/option">
+                <xsl:if test="form/contact/preferred/select/option and not(form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected))">
                   <xsl:attribute name="class">invisible</xsl:attribute>
                 </xsl:if>
                 <option value="">
@@ -2782,9 +2795,17 @@
               <!-- allow for toggling between the preferred and all contacts listings if preferred
                    contacts exist -->
               <xsl:if test="form/contact/preferred/select/option">
-                <input type="radio" name="toggleContactLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredContactList','shown');changeClass('bwAllContactList','invisible');"/>
+                <input type="radio" name="toggleContactLists" value="preferred" onclick="changeClass('bwPreferredContactList','shown');changeClass('bwAllContactList','invisible');">
+                  <xsl:if test="form/contact/preferred/select/option and not(form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected))">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
-                <input type="radio" name="toggleContactLists" value="all" onclick="changeClass('bwPreferredContactList','invisible');changeClass('bwAllContactList','shown');"/>
+                <input type="radio" name="toggleContactLists" value="all" onclick="changeClass('bwPreferredContactList','invisible');changeClass('bwAllContactList','shown');">
+                  <xsl:if test="form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected)">
+                    <xsl:attribute name="checked">checked</xsl:attribute>
+                  </xsl:if>
+                </input>
                 <xsl:copy-of select="$bwStr-AEEF-All"/>
               </xsl:if>
             </span>
@@ -3066,6 +3087,8 @@
     <xsl:param name="eventTitle"/>
     <xsl:param name="eventUrlPrefix"/>
     <xsl:param name="canEdit"/>
+    
+    <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="eventTitle"/></xsl:call-template></xsl:variable>
     <div class="submitBox">
       <xsl:choose>
         <!-- xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)"-->
@@ -3105,7 +3128,7 @@
                   </xsl:for-each>
                 </select>
                 <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}">
-                  <xsl:attribute name="onclick">doPublishEvent(this.form.newCalPath.value,'<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>',this.form);changeClass('publishBox','invisible');</xsl:attribute>
+                  <xsl:attribute name="onclick">doPublishEvent(this.form.newCalPath.value,"<xsl:value-of select="$escapedTitle"/>","<xsl:value-of select="$eventUrlPrefix"/>",this.form);changeClass('publishBox','invisible');</xsl:attribute>
                 </input>
                 <xsl:if test="$portalFriendly = 'false'">
                   <br/>
@@ -3122,7 +3145,7 @@
               <!-- we are using the single calendar model for public events -->
               <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-UpdateEvent}"/>
               <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}">
-                <xsl:attribute name="onclick">doPublishEvent('<xsl:value-of select="form/calendar/all/select/option/@value"/>','<xsl:value-of select="$eventTitle"/>','<xsl:value-of select="$eventUrlPrefix"/>',this.form);</xsl:attribute>
+                <xsl:attribute name="onclick">doPublishEvent("<xsl:value-of select="form/calendar/all/select/option/@value"/>","<xsl:value-of select="$escapedTitle"/>","<xsl:value-of select="$eventUrlPrefix"/>",this.form);</xsl:attribute>
               </input>
               <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}"/>
             </xsl:otherwise>
@@ -3232,7 +3255,7 @@
     <div class="invisible">
       <xsl:attribute name="id"><xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current"/></xsl:attribute>
       <xsl:copy-of select="$bwStr-BuRF-And"/>
-      <select width="12em">
+      <select>
         <xsl:attribute name="name">by<xsl:value-of select="$name"/>posPos<xsl:value-of select="$current"/></xsl:attribute>
         <xsl:if test="$current != $total">
           <xsl:attribute name="onchange">changeClass('<xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current+1"/>','shown')</xsl:attribute>
@@ -6515,12 +6538,15 @@
                 </xsl:if>
                 <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeList"/>
               </option>
+              <!-- GRID is not yet available - needs to be restored in public client -->
+              <!-- 
               <option value="grid">
                 <xsl:if test="/bedework/prefs/defaultViewMode = 'grid'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
                 <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeGrid"/>
               </option>
+              -->
             </select>
           </td>
         </tr>

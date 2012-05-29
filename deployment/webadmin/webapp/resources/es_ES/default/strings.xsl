@@ -790,10 +790,10 @@
   <xsl:variable name="bwStr-CSPf-EditCalSuitePrefs">Editar preferencias del calendar suite</xsl:variable>
   <xsl:variable name="bwStr-CSPf-CalSuite">Calendar Suite:</xsl:variable>
   <xsl:variable name="bwStr-CSPf-PreferredView">Vista preferida:</xsl:variable>
-  <xsl:variable name="bwStr-CSPf-DefaultViewMode">Modo de vista preferida:</xsl:variable>
-  <xsl:variable name="bwStr-CSPf-DefaultViewModeList">LIST (a list of discrete events from now into the future)</xsl:variable>
-  <xsl:variable name="bwStr-CSPf-DefaultViewModeDaily">DAILY (a list of events grouped by date showing entire view period)</xsl:variable>
-  <xsl:variable name="bwStr-CSPf-DefaultViewModeGrid">GRID (calendar grid - in week and month view periods)</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-DefaultViewMode">Modo de vista por defecto:</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-DefaultViewModeList">UPCOMING - a list of discrete events from now into the future</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-DefaultViewModeDaily">DAY, WEEK, MONTH - a list of events showing entire view period</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-DefaultViewModeGrid">GRID - calendar grid for week and month view periods</xsl:variable>
   <xsl:variable name="bwStr-CSPf-PreferredViewPeriod">Periodo de vista preferida:</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Day">día</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Today">hoy</xsl:variable>

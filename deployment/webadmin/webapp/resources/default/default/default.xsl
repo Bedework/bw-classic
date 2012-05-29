@@ -6537,12 +6537,15 @@
                 </xsl:if>
                 <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeList"/>
               </option>
+              <!-- GRID is not yet available - needs to be restored in public client -->
+              <!-- 
               <option value="grid">
                 <xsl:if test="/bedework/prefs/defaultViewMode = 'grid'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
                 </xsl:if>
                 <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeGrid"/>
               </option>
+              -->
             </select>
           </td>
         </tr>
