@@ -8,7 +8,7 @@
   <mbean code="org.bedework.indexer.BwIndexer"
          name="org.bedework:service=Indexer">
     <attribute name="Account">admin</attribute>
-    <attribute name="SkipPaths">/public/unbrowsable:/public/aliases</attribute>
+    <attribute name="SkipPaths">/public/unbrowsable:/public/aliases:*/Outbox:*/Inbox:*/Deleted</attribute>
     
     <attribute name="MaxPublicThreads">5</attribute>
     <attribute name="MaxUserThreads">5</attribute>
@@ -93,5 +93,35 @@
     
     <!-- We also need the bedework database -->
     <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
+  </mbean>
+  
+  <mbean code="edu.rpi.sss.util.servlets.io.PooledBufferedOutputStream"
+         name="org.bedework:service=PooledBuffers">
+    <!-- buffer size -->
+    <attribute name="SmallBufferSize"/>
+    
+    <!-- buffer size -->
+    <attribute name="MediumBufferSize"/>
+    
+    <!-- buffer size -->
+    <attribute name="LargeBufferSize"/>
+    
+    <!-- buffer pool size -->
+    <attribute name="SmallBufferPoolSize"/>
+    
+    <!-- buffer pool size -->
+    <attribute name="MediumBufferPoolSize"/>
+    
+    <!-- buffer pool size -->
+    <attribute name="LargeBufferPoolSize"/>
+    
+    <!-- buffer pool size -->
+    <attribute name="SmallBufferPoolStats"/>
+    
+    <!-- buffer pool size -->
+    <attribute name="MediumBufferPoolStats"/>
+    
+    <!-- buffer pool size -->
+    <attribute name="LargeBufferPoolStats"/>    
   </mbean>
 </server>
