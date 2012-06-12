@@ -73,6 +73,8 @@
           description="builds the project">
   </target> -->
   
+  <target name="build-init"/>  
+    
   <target name="build-source" depends="build-init" >
     <installPom dir="${org.bedework.project.bedework}"/>
   </target>

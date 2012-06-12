@@ -681,8 +681,17 @@
   
   <macrodef name="deployTerm">
     <sequential>
-      <ant antfile="${build.dir}/../deployment/termination/webapp/build.xml" 
-           target="deploy" inheritRefs="true" />
+      <if>
+        <equals arg1="${propval.app.package.type}" arg2="service" />
+      <then>
+        <ant antfile="${build.dir}/../deployment/termination/service/build.xml" 
+             target="deploy" inheritRefs="true" />
+      </then>
+      <else>
+        <ant antfile="${build.dir}/../deployment/termination/webapp/build.xml" 
+             target="deploy" inheritRefs="true" />
+      </else>
+     </if>
       
       <!-- Platform specific -->
       <ant antfile="${build.dir}/../deployment/termination/build.xml" 
@@ -701,8 +710,10 @@
   <!-- Override this -->
   <target name="init" />
   
-  <!-- Override this -->
-  <target name="build-init" />
+  <!-- Override this if needed -->
+  <target name="build-init" depends="init">
+    <resolveDependencies pomFile="pom.xml" />
+  </target>
 
   <!-- Override this -->
   <target name="build-source" />
