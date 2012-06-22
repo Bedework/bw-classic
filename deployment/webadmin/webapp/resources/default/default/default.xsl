@@ -363,6 +363,59 @@
 		                amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
 		                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
 		              });
+		              
+		              // registration open dates
+                  $("#xBwRegistrationOpensDate").datepicker({
+                    <xsl:choose>
+                      <xsl:when test="false"><!-- add a test for the existence of a regOpen xprop and use it -->
+                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      </xsl:when>
+                      <xsl:otherwise>
+                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  }).attr("readonly", "readonly");
+                  $("#xBwRegistrationOpensDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+		              
+		              // registration open time
+                  $("#xBwRegistrationOpensClock").bwTimePicker({
+                    hour24: <xsl:value-of select="/bedework/hour24"/>,
+                    attachToId: "xBwRegistrationOpensTimeFields",
+                    hourIds: ["xBwRegistrationOpensHour"],
+                    minuteIds: ["xBwRegistrationOpensMinute"],
+                    ampmIds: ["xBwRegistrationOpensAmpm"],
+                    hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                    minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+                    amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+                    pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+                  });
+
+                  // registration close dates
+                  $("#xBwRegistrationClosesDate").datepicker({
+                    <xsl:choose>
+                      <xsl:when test="false"><!-- add a test for the existence of a regOpen xprop and use it -->
+                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      </xsl:when>
+                      <xsl:otherwise>
+                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  }).attr("readonly", "readonly");
+                  $("#xBwRegistrationClosesDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+                  
+                  // registration close time
+                  $("#xBwRegistrationClosesClock").bwTimePicker({
+                    hour24: <xsl:value-of select="/bedework/hour24"/>,
+                    attachToId: "xBwRegistrationClosesTimeFields",
+                    hourIds: ["xBwRegistrationClosesHour"],
+                    minuteIds: ["xBwRegistrationClosesMinute"],
+                    ampmIds: ["xBwRegistrationClosesAmpm"],
+                    hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+                    minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+                    amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+                    pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+                  });
+                                    
                 }
                 </xsl:comment>
               </script>
@@ -2827,6 +2880,98 @@
             </td>
           </tr>
         </xsl:if>
+        
+        <!-- Registration settings -->
+        <tr class="optional">
+          <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+          <td class="fieldName">Registration:</td>
+          <td>
+            <input type="checkbox" id="bwIsRegisterableEvent" onclick="showRegistrationFields(this);">
+              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+            </input> 
+            <label for="bwIsRegisterableEvent">Users may register for this event</label>
+            
+            <div id="bwRegistrationFields" class="invisible">
+              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
+              
+	            <label for="xBwMaxTicketsHolder" class="interiorLabel">Max tickets:</label> 
+	            <input type="text"  name="xBwMaxTicketsHolder" id="xBwMaxTicketsHolder" size="3"/> 
+	            <xsl:text> </xsl:text><span class="fieldInfo">(maximum number of tickets allowed for the event)</span><br/>
+	            
+	            <label for="xBwMaxTicketsPerUserHolder" class="interiorLabel">Tickets allowed:</label> 
+              <input type="text"  name="xBwMaxTicketsPerUserHolder" id="xBwMaxTicketsPerUserHolder" value="1" size="3"/> 
+	            <xsl:text> </xsl:text><span class="fieldInfo">(maximum number of tickets per user)</span><br/>
+	            
+	            <label for="xBwRegistrationOpensDate" class="interiorLabel">Registration opens:</label>  
+              <div class="dateFields">
+                 <input type="text" name="xBwRegistrationOpensDate" id="xBwRegistrationOpensDate" size="10"/>
+              </div>
+              <div class="timeFields" id="xBwRegistrationOpensTimeFields">
+                 <select name="xBwRegistrationOpens.hour" id="xBwRegistrationOpensHour">
+                   <xsl:copy-of select="form/start/hour/select/*"/>
+                 </select>
+                 <select name="xBwRegistrationOpens.minute" id="xBwRegistrationOpensMinute">
+                   <xsl:copy-of select="form/start/minute/select/*"/>
+                 </select>
+                 <xsl:if test="form/start/ampm">
+                   <select name="xBwRegistrationOpens.ampm" id="xBwRegistrationOpensAmpm">
+                     <xsl:copy-of select="form/start/ampm/select/*"/>
+                   </select>
+                 </xsl:if>
+                 <xsl:text> </xsl:text>
+                 <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="xBwRegistrationOpensClock" alt="*"/>
+
+                 <select name="xBwRegistrationOpens.tzid" id="xBwRegistrationOpensTzid" class="timezones">
+                   <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                   <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
+                   <xsl:variable name="xBwRegistrationOpensTzId" select="form/start/tzid"/>
+                   <xsl:for-each select="/bedework/timezones/timezone">
+                     <option>
+                       <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                       <xsl:if test="$xBwRegistrationOpensTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                       <xsl:value-of select="name"/>
+                     </option>
+                   </xsl:for-each>
+                 </select>
+              </div>
+	            <xsl:text> </xsl:text><span class="fieldInfo">(date/time registration becomes available)</span><br/>
+	            
+	            <label for="xBwRegistrationClosesDate" class="interiorLabel">Registration closes:</label>
+              <div class="dateFields">
+                <input type="text" name="xBwRegistrationClosesDate" id="xBwRegistrationClosesDate" size="10"/>
+              </div>
+              <div class="timeFields" id="startTimeFields">
+                <select name="xBwRegistrationCloses.hour" id="xBwRegistrationClosesHour">
+                  <xsl:copy-of select="form/start/hour/select/*"/>
+                </select>
+                <select name="xBwRegistrationCloses.minute" id="xBwRegistrationClosesMinute">
+                  <xsl:copy-of select="form/start/minute/select/*"/>
+                </select>
+                <xsl:if test="form/start/ampm">
+                  <select name="xBwRegistrationCloses.ampm" id="xBwRegistrationClosesAmpm">
+                    <xsl:copy-of select="form/start/ampm/select/*"/>
+                  </select>
+                </xsl:if>
+                <xsl:text> </xsl:text>
+                <img src="{$resourcesRoot}/resources/clockIcon.gif" width="16" height="15" border="0" id="bwRegistrationClosesClock" alt="*"/>
+
+                <select name="xBwRegistrationCloses.tzid" id="xBwRegistrationClosesTzid" class="timezones">
+                  <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                  <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
+                  <xsl:variable name="xBwRegistrationClosesTzId" select="form/start/tzid"/>
+                  <xsl:for-each select="/bedework/timezones/timezone">
+                    <option>
+                      <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                      <xsl:if test="$xBwRegistrationClosesTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                      <xsl:value-of select="name"/>
+                    </option>
+                  </xsl:for-each>
+                </select>
+              </div>
+	            <xsl:text> </xsl:text><span class="fieldInfo">(date/time of registration cut off)</span>
+	          </div>
+          </td>
+        </tr>
 
         <!-- Topical area  -->
         <!-- By selecting one or more of these, appropriate categories will be set on the event -->
@@ -3046,12 +3191,13 @@
           <xsl:otherwise>
             <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
             <xsl:variable name="displayName" select="summary"/>
-            <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-ALIAS','{$displayName}','{$virtualPath}',this.checked)">
+            <input type="checkbox" name="alias" id="{generate-id(path)}" onclick="toggleBedeworkXProperty('X-BEDEWORK-ALIAS','{$displayName}','{$virtualPath}',this.checked)">
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
               <xsl:if test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
               <xsl:if test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
               <xsl:if test="/bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text = substring-after(aliasUri,'bwcal://')"><xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute></xsl:if>
             </input>
+            <label for="{generate-id(path)}">
             <xsl:choose>
               <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
                 <strong><xsl:value-of select="summary"/></strong>
@@ -3066,6 +3212,7 @@
                 <xsl:value-of select="summary"/>
               </xsl:otherwise>
             </xsl:choose>
+            </label>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>

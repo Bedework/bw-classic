@@ -711,7 +711,14 @@ function setRecurrence(formObj) {
   }
   return true;
 }
-
+function showRegistrationFields(obj) {
+  // toggle the registration fields
+  if (obj.checked) {
+    changeClass('bwRegistrationFields','visible');
+  } else {
+    changeClass('bwRegistrationFields','invisible');
+  }
+}
 function resetPublishBox(calSelectId) {
   // User has closed the publish box without publishing.
   // Reset the calendar select box to default value and hide the publishBox.
