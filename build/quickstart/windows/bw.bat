@@ -56,6 +56,7 @@ SET "updateProjects=%updateProjects% cachedfeeder"
 SET "updateProjects=%updateProjects% caldav"
 SET "updateProjects=%updateProjects% davutil"
 SET "updateProjects=%updateProjects% dumprestore"
+SET "updateProjects=%updateProjects% eventreg"
 SET "updateProjects=%updateProjects% indexer"
 SET "updateProjects=%updateProjects% rpiutil"
 SET "updateProjects=%updateProjects% synch"
@@ -85,6 +86,7 @@ SET catsvr=
 SET client=
 SET davutil=
 SET dumprestore=
+SET eventreg=
 SET indexer=
 SET monitor=
 SET naming=
@@ -409,6 +411,15 @@ GOTO branch
   SHIFT
   GOTO branch
   
+:eventreg
+  SET eventreg="yes"
+  
+  SET bwxml="yes"
+  SET rpiutil="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
 :indexer
   SET indexer="yes"
   
@@ -610,6 +621,7 @@ GOTO doneQB
   IF NOT "%access%empty" == "empty"  GOTO cdAccess
   IF NOT "%bedenote%empty" == "empty"  GOTO cdBedenote
   IF NOT "%davutil%empty" == "empty"  GOTO cdDavutil
+  IF NOT "%eventreg%empty" == "empty"  GOTO cdEventreg
   IF NOT "%webdav%empty" == "empty"  GOTO cdWebdav
   IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
   IF NOT "%caldavTest%empty" == "empty"  GOTO cdCaldavTest
@@ -792,6 +804,11 @@ GOTO:EOF
   SET dumprestore=
   GOTO doant
     
+:cdEventreg
+  cd %QUICKSTART_HOME%\eventreg
+  SET eventreg=
+  GOTO doant
+    
 :cdIndexer
   cd %QUICKSTART_HOME%\indexer
   SET indexer=
@@ -880,6 +897,7 @@ IF "%1" == "-client" GOTO client
 IF "%1" == "-davutil" GOTO davutil
 IF "%1" == "-deployutil" GOTO deployutil
 IF "%1" == "-dumprestore" GOTO dumprestore
+IF "%1" == "-eventreg" GOTO eventreg
 IF "%1" == "-indexer" GOTO indexer
 IF "%1" == "-monitor" GOTO monitor
 IF "%1" == "-naming" GOTO naming
@@ -948,6 +966,7 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO      -carddav deploy-addrbook    To deploy the Javascript Addressbook client.
   ECHO      -davutil     Target is for the Bedework dav util classes
   ECHO      -dumprestore  Target is for the Bedework dump/restore service
+  ECHO      -eventreg     Target is for the Bedework event registration service
   ECHO      -indexer      Target is for the Bedework indexer service
   ECHO      -rpiutil     Target is for the Bedework util classes
   ECHO      -synch        Target is for the synch build
