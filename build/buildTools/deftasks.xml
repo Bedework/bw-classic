@@ -274,6 +274,9 @@
         <filter token="JBOSS-CARDDB-DATASOURCE"
                 value="${org.bedework.global.jboss.carddb.datasource.jndiname}"/>
 
+        <filter token="JBOSS-EVENTREGDB-DATASOURCE"
+                value="${org.bedework.global.jboss.eventreg.datasource.jndiname}"/>
+
         <filter token="JBOSS-DB-DATASOURCE"
                 value="${org.bedework.global.jboss.db.datasource.jndiname}"/>
 

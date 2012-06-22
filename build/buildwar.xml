@@ -237,6 +237,13 @@
 
     <antcall target="struts-stuff" inheritRefs="true" />
 
+    <if>
+      <isset property="propval.app.spring.app" />
+      <then>
+        <antcall target="spring-stuff" inheritRefs="true" />
+      </then>
+    </if>
+
     <!-- Filter the temp copy of the web.xml file -->
     <copy tofile="${app.dest.web.xml}"
           file="${app.temp.web.xml}"
@@ -382,5 +389,25 @@ edu.rpi.sss.util.action.logprefix=@APP-NAME@
       </then>
     </if>
 
+  </target>
+
+  <!-- =================================================================
+       If this is a struts app the following gets executed.
+       We create an updated struts-config.xml file and add some jars.
+       ================================================================= -->
+
+  <target name="spring-stuff">
+    <copy todir="${app.dest.webinf}">
+      <fileset dir="${app.sou.dir}/war/WEB-INF">
+        <include name="*-servlet.xml"/>
+      </fileset>
+    </copy>
+
+    <mkdir  dir="${app.dest.webinf}/tlds"/>
+    <copy todir="${app.dest.webinf}/tlds" >
+      <fileset dir="${resources.dir}/spring/tlds">
+        <include name="*"/>
+      </fileset>
+    </copy>
   </target>
 </project>

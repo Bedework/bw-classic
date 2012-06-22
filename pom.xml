@@ -43,9 +43,11 @@
     <bedeworkBwxmlVersion>3.8</bedeworkBwxmlVersion>
     <bedeworkCalcoreVersion>3.8</bedeworkCalcoreVersion>
     <bedeworkCaldavVersion>3.8</bedeworkCaldavVersion>
+    <bedeworkCaldavTestVersion>3.8</bedeworkCaldavTestVersion>
     <bedeworkCalfacadeVersion>3.8</bedeworkCalfacadeVersion>
     <bedeworkDavutilVersion>3.8</bedeworkDavutilVersion>
     <bedeworkDumpresVersion>3.8</bedeworkDumpresVersion>
+    <bedeworkGenkeysVersion>3.8</bedeworkGenkeysVersion>
     <bedeworkIcalendarVersion>3.8</bedeworkIcalendarVersion>
     <bedeworkIndexerVersion>3.8</bedeworkIndexerVersion>
     <bedeworkInterfacesVersion>3.8</bedeworkInterfacesVersion>

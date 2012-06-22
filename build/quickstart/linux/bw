@@ -41,7 +41,9 @@ updateProjects="$updateProjects  cachedfeeder"
 updateProjects="$updateProjects  caldav"
 updateProjects="$updateProjects  davutil"
 updateProjects="$updateProjects  dumprestore"
+# updateProjects="$updateProjects  eventreg"
 # updateProjects="$updateProjects  geronimo-hib"
+updateProjects="$updateProjects  genkeys"
 updateProjects="$updateProjects  indexer"
 updateProjects="$updateProjects  rpiutil"
 updateProjects="$updateProjects  synch"
@@ -71,7 +73,9 @@ catsvr=
 client=
 davutil=
 dumprestore=
+eventreg=
 exchgGateway=
+genkeys=
 geronimoHib=
 indexer=
 monitor=
@@ -164,6 +168,8 @@ usage() {
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
   echo "     -davutil      Target is for the Bedework dav util classes"
   echo "     -dumprestore  Target is for the Bedework dump/restore service"
+  echo "     -eventreg     Target is for the event registration service build"
+  echo "     -genkeys      Target is for the genkeys module build"
   echo "     -indexer      Target is for the Bedework indexer service"
   echo "     -rpiutil      Target is for the Bedework util classes"
   echo "     -synch        Target is for the synch build"
@@ -320,6 +326,12 @@ setDirectory() {
 	  return
 	fi
 	
+	if [ "$eventreg" != "" ] ; then
+	  cd $QUICKSTART_HOME/eventreg
+      eventreg=
+	  return
+	fi
+	
 	if [ "$webdav" != "" ] ; then
 	  cd $QUICKSTART_HOME/webdav
       webdav=
@@ -359,6 +371,12 @@ setDirectory() {
 	if [ "$bwinterfaces" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwinterfaces
       bwinterfaces=
+	  return
+	fi
+
+	if [ "$genkeys" != "" ] ; then
+	  cd $QUICKSTART_HOME/genkeys
+      genkeys=
 	  return
 	fi
 
@@ -862,6 +880,7 @@ do
       bwsysevents="yes"
       
       bwinterfaces="yes"
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
@@ -970,6 +989,22 @@ do
       bwmisc="yes"
       bwsysevents="yes"
       indexer="yes"
+      rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -eventreg)
+      eventreg="yes"
+
+      bwxml="yes"
+      rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -genkeys)
+      genkeys="yes"
+      
+      bwinterfaces="yes"
       rpiutil="yes"
       pkgdefault=
       shift
