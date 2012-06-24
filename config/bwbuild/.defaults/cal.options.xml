@@ -821,6 +821,14 @@
           <!-- Comment out or delete for no web calendar service -->
           <webcalServiceURI>/webcal</webcalServiceURI>
 
+          <!-- SOAP web service 
+               This corresponds to the full uri in the properties file.
+               Defined as a global deployment property
+               
+               NOTE: tthe value below is defined in the build properties 
+                -->
+          <calSoapWsURI>@calSoapWsURI@</calSoapWsURI>
+
           <!-- The bedework end of the synch service. This is a web
                service called by the synch engine to get information out of
                bedework and to update events and status.
