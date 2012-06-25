@@ -947,6 +947,13 @@
    <field name="resources" type="text_general" indexed="true" stored="true" multiValued="true"/>
    <field name="topical_area" type="string" indexed="true" stored="true" multiValued="true"/>
 
+   <!-- Event reg fields -->
+   
+   <field name="eventreg_max_tickets" type="long" stored="true"/>
+   <field name="eventreg_max_tickets_per_user" type="long" stored="true"/>
+   <field name="eventreg_start" type="string" stored="true"/>
+   <field name="eventreg_end" type="string" stored="true"/>
+   
    <!--  Common fields  -->
 
    <field name="summary" type="text_general" indexed="true" stored="true"/>
