@@ -204,6 +204,21 @@
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
+        <groupId>org.bedework.eventreg</groupId>
+        <artifactId>bw-eventreg</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.bedework.eventreg</groupId>
+        <artifactId>bw-eventreg-common</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.bedework.eventreg</groupId>
+        <artifactId>bw-eventregsvc</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
         <groupId>org.bedework.indexer</groupId>
         <artifactId>bw-indexer</artifactId>
         <license>Apache License, Version 2.0</license>
@@ -246,6 +261,11 @@
     <artifact>
         <groupId>cglib</groupId>
         <artifactId>cglib</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
@@ -427,6 +447,11 @@
     <artifact>
         <groupId>org.fusesource.hawtdb</groupId>
         <artifactId>hawtdb</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.geronimo.modules</groupId>
+        <artifactId>geronimo-kernel</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
