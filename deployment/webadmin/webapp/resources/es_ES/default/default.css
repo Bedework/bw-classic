@@ -520,6 +520,9 @@ table.eventFormTable select.timezones {
   margin-left: 1em;
   width: 160px;
 }
+#bwRegistrationFields {
+	margin: 1em;
+}
 .shown {
   display: inline;
 }

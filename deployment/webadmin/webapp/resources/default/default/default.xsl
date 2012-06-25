@@ -2884,25 +2884,25 @@
         <!-- Registration settings -->
         <tr class="optional">
           <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-          <td class="fieldName">Registration:</td>
+          <td class="fieldName"><xsl:copy-of select="$bwStr-AEEF-Registration"/></td>
           <td>
-            <input type="checkbox" id="bwIsRegisterableEvent" onclick="showRegistrationFields(this);">
+            <input type="checkbox" id="bwIsRegisterableEvent" name="bwIsRegisterableEvent" onclick="showRegistrationFields(this);">
               <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
             </input> 
-            <label for="bwIsRegisterableEvent">Users may register for this event</label>
+            <label for="bwIsRegisterableEvent"><xsl:copy-of select="$bwStr-AEEF-UsersMayRegister"/></label>
             
             <div id="bwRegistrationFields" class="invisible">
               <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
               
-	            <label for="xBwMaxTicketsHolder" class="interiorLabel">Max tickets:</label> 
+	            <label for="xBwMaxTicketsHolder" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-MaxTickets"/></label> 
 	            <input type="text"  name="xBwMaxTicketsHolder" id="xBwMaxTicketsHolder" size="3"/> 
-	            <xsl:text> </xsl:text><span class="fieldInfo">(maximum number of tickets allowed for the event)</span><br/>
+	            <xsl:text> </xsl:text><span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-MaxTicketsInfo"/></span><br/>
 	            
-	            <label for="xBwMaxTicketsPerUserHolder" class="interiorLabel">Tickets allowed:</label> 
+	            <label for="xBwMaxTicketsPerUserHolder" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-TicketsAllowed"/></label> 
               <input type="text"  name="xBwMaxTicketsPerUserHolder" id="xBwMaxTicketsPerUserHolder" value="1" size="3"/> 
-	            <xsl:text> </xsl:text><span class="fieldInfo">(maximum number of tickets per user)</span><br/>
+	            <xsl:text> </xsl:text><span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-TicketsAllowedInfo"/></span><br/>
 	            
-	            <label for="xBwRegistrationOpensDate" class="interiorLabel">Registration opens:</label>  
+	            <label for="xBwRegistrationOpensDate" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-RegistrationOpens"/></label>  
               <div class="dateFields">
                  <input type="text" name="xBwRegistrationOpensDate" id="xBwRegistrationOpensDate" size="10"/>
               </div>
@@ -2934,9 +2934,9 @@
                    </xsl:for-each>
                  </select>
               </div>
-	            <xsl:text> </xsl:text><span class="fieldInfo">(date/time registration becomes available)</span><br/>
+	            <xsl:text> </xsl:text><span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-RegistrationOpensInfo"/></span><br/>
 	            
-	            <label for="xBwRegistrationClosesDate" class="interiorLabel">Registration closes:</label>
+	            <label for="xBwRegistrationClosesDate" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-RegistrationCloses"/></label>
               <div class="dateFields">
                 <input type="text" name="xBwRegistrationClosesDate" id="xBwRegistrationClosesDate" size="10"/>
               </div>
@@ -2968,7 +2968,7 @@
                   </xsl:for-each>
                 </select>
               </div>
-	            <xsl:text> </xsl:text><span class="fieldInfo">(date/time of registration cut off)</span>
+	            <xsl:text> </xsl:text><span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-RegistrationClosesInfo"/></span>
 	          </div>
           </td>
         </tr>

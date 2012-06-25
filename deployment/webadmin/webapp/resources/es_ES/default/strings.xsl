@@ -275,6 +275,16 @@
   <xsl:variable name="bwStr-AEEF-ContactPhone">Número de teléfono de contacto:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ContactURL">URL de contacto:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ContactEmail">Dirección de Email de contacto:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-Registration">Registration:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-UsersMayRegister">Users may register for this event</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-MaxTickets">Max tickets:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-MaxTicketsInfo">(maximum number of tickets allowed for the event)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-TicketsAllowed">Tickets allowed:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-TicketsAllowedInfo">(maximum number of tickets per user)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-RegistrationOpens">Registration opens:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-RegistrationOpensInfo">(date/time registration becomes available)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-RegistrationCloses">Registration closes:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-RegistrationClosesInfo">(date/time of registration cut off)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Optional">(opcional)</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="showEventFormAliases" -->

@@ -35,6 +35,12 @@ var bwXPropertySubmitComment = "X-BEDEWORK-SUBMIT-COMMENT";
 var bwXPropertySubmitStatus = "X-BEDEWORK-SUBMIT-STATUS";
 var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";
 var bwXPropertySubmissionClaimant = "X-BEDEWORK-SUBMISSION-CLAIMANT";
+var bwXPropertyMaxTickets = "X-BEDEWORK-MAX-TICKETS";
+var bwXPropertyMaxTicketsPerUser = "X-BEDEWORK-MAX-TICKETS-PER-USER";
+var bwXPropertyRegistrationStart = "X-BEDEWORK-REGISTRATION-START";
+var bwXPropertyRegistrationEnd = "X-BEDEWORK-REGISTRATION-END";
+var bwXPropertyInstanceOnly = "X-BEDEWORK-INSTANCE-ONLY";
+
 
 var bwXParamDisplayName = "X-BEDEWORK-PARAM-DISPLAYNAME";
 var bwXParamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";

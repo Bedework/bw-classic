@@ -357,9 +357,22 @@ function setBedeworkXProperties(formObj,submitter) {
                    formObj["xBwImageHolder"].value,true);
   }
   
-  //X-BEDEWORK-THUMB-IMAGE:
+  // X-BEDEWORK-THUMB-IMAGE:
   if (formObj["xBwImageThumbHolder"] && formObj["xBwImageThumbHolder"].value != '') {
     bwXProps.update(bwXPropertyThumbImage,[],formObj["xBwImageThumbHolder"].value,true);
+  }
+  
+  // Event registration x-properties:
+  if (formObj["bwIsRegisterableEvent"].checked) {
+    bwXProps.update(bwXPropertyMaxTickets,[],formObj["xBwMaxTicketsHolder"].value,true);
+    bwXProps.update(bwXPropertyMaxTicketsPerUser,[],formObj["xBwMaxTicketsPerUserHolder"].value,true);
+    
+    var bwRegDateString = ""
+    bwRegDateString = formObj["xBwRegistrationOpensDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationOpens.hour"].value) + padTimeUnit(formObj["xBwRegistrationOpens.minute"].value) + "00";
+    bwXProps.update(bwXPropertyRegistrationStart,[["TZID",formObj["xBwRegistrationOpensTzid"].value]],bwRegDateString,true);
+
+    bwRegDateString = formObj["xBwRegistrationClosesDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationCloses.hour"].value) + padTimeUnit(formObj["xBwRegistrationCloses.minute"].value) + "00";
+    bwXProps.update(bwXPropertyRegistrationEnd,[["TZID",formObj["xBwRegistrationClosesTzid"].value]],bwRegDateString,true);
   }
   
   // X-BEDEWORK-SUBMITTEDBY
@@ -367,6 +380,14 @@ function setBedeworkXProperties(formObj,submitter) {
 
   // commit all xproperties back to the form
   bwXProps.generate(formObj);
+}
+function padTimeUnit(val) {
+  timeUnit = parseInt(val,10);
+  if (timeUnit < 10) {
+    return "0" + timeUnit;
+  } else {
+    return String(timeUnit);
+  }
 }
 function removeEventImage(imgField,thumbField) {
   bwXProps.remove(bwXPropertyImage);
