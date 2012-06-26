@@ -329,6 +329,22 @@ function setEventFields(formObj,portalFriendly,submitter) {
   setBedeworkXProperties(formObj,submitter);
 }
 
+/* do some basic client-side validation where needed */
+function validateEventForm(formObj) {
+  if(formObj["bwIsRegisterableEvent"].checked) {
+     if(formObj["xBwMaxTicketsHolder"].value = "") {
+        alert(maxTicketsWarning);
+        formObj["xBwMaxTicketsHolder"].focus();
+        return false;
+     }
+     if(formObj["xBwMaxTicketsPerUserHolder"].value = "") {
+       alert(maxTicketsPerUserWarning);
+       formObj["xBwMaxTicketsPerUserHolder"].focus();
+       return false;
+    }
+  }
+}
+
 /* Set dates based on jQuery widgets */
 function setDates(formObj) {
   var startDate = new Date();
@@ -382,11 +398,31 @@ function setBedeworkXProperties(formObj,submitter) {
   bwXProps.generate(formObj);
 }
 function padTimeUnit(val) {
-  timeUnit = parseInt(val,10);
+  var timeUnit = parseInt(val,10);
   if (timeUnit < 10) {
     return "0" + timeUnit;
   } else {
     return String(timeUnit);
+  }
+}
+function hour24ToAmpm(val) {
+  var hour = parseInt(val,10);
+  if (hour = 0) {
+    return "12";
+  } else if (hour < 10) {
+    return "0" + hour;
+  } else if (hour > 12) {
+    return String(hour - 10);
+  } else {
+    return String(hour);
+  }
+}
+function hour24GetAmpm(val) {
+  var hour = parseInt(val,10);
+  if (hour < 12) {
+    return "am";
+  } else {
+    return "pm";
   }
 }
 function removeEventImage(imgField,thumbField) {
