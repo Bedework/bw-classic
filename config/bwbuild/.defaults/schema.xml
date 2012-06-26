@@ -17,6 +17,22 @@
 -->
 
 <!--  
+Bedework notes:
+
+Some of the fields defined below are indexed or stored versions of x-properties.
+These are stored by separating the parameters and value with a tab character.
+
+These fields MUST be stored as string values - even if the value is numeric.
+
+If you wish to store/index a numeric x-property as a numeric value you will
+need to treat that x-property specially in the implementation of the 
+bedework indexer.
+
+We could generalize that by adding more flags to the list of interesting 
+x-props.
+-->
+
+<!--  
  This is the Solr schema file. This file should be named "schema.xml" and
  should be in the conf directory under the solr home
  (i.e. ./solr/conf/schema.xml by default) 
@@ -949,8 +965,8 @@
 
    <!-- Event reg fields -->
    
-   <field name="eventreg_max_tickets" type="long" stored="true"/>
-   <field name="eventreg_max_tickets_per_user" type="long" stored="true"/>
+   <field name="eventreg_max_tickets" type="string" stored="true"/>
+   <field name="eventreg_max_tickets_per_user" type="string" stored="true"/>
    <field name="eventreg_start" type="string" stored="true"/>
    <field name="eventreg_end" type="string" stored="true"/>
    
