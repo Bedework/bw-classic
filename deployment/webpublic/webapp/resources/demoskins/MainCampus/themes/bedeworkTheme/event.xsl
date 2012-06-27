@@ -95,6 +95,17 @@
           <xsl:copy-of select="$bwStr-SgEv-NoTitle" />
         </xsl:if>
       </h2>
+      
+      <xsl:if test="$eventRegEnabled and xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']">
+        <div id="bwRegistrationBox">
+          <xsl:variable name="eventName"><xsl:value-of select="name"/></xsl:variable>
+          <iframe src="{$eventReg}?href={$calPath}%2F{$eventName}">
+	          <p>
+			        <xsl:copy-of select="$bwStr-Error-IframeUnsupported"/>
+			      </p>
+		      </iframe>
+        </div>
+      </xsl:if>
 
       <div class="eventWhen">
         <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-When"/><xsl:text> </xsl:text></span>
