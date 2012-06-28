@@ -72,7 +72,7 @@
          <type-mapping>Hypersonic SQL</type-mapping>
       </metadata>
 
-      <depends>jboss:service=HsqlBwCardDav</depends>
+      <depends>jboss:service=HsqlBwEventReg</depends>
    </local-tx-datasource>
 
    <mbean code="org.jboss.jdbc.HypersonicDatabase" 
@@ -89,7 +89,7 @@
     -->
      <attribute name="Port">1705</attribute>
      <attribute name="Silent">true</attribute>
-     <attribute name="Database">CardDb3p7</attribute>
+     <attribute name="Database">EventRegDb3p7</attribute>
      <attribute name="Trace">false</attribute>
      <attribute name="No_system_exit">true</attribute>
    </mbean>
