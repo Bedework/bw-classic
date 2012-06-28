@@ -472,7 +472,7 @@
       <import file="${build.dir}/buildTools/getJar.xml"/>
       <import file="${build.dir}/buildTools/jdoc.xml"/>
       
-      <!-- Now we have getjar build a classpath for the bundle tasks -->
+      <!-- Now we have getjar build a classpath for the bundle tasks
       <mkdir dir="${org.bedework.temp.dir}/bundle-build" />
       <getJar name="commons-io" version="2.0.1"
               lib="${org.bedework.temp.dir}/bundle-build"/>
@@ -485,9 +485,9 @@
           <fileset dir="${org.bedework.temp.dir}/bundle-build"/>
       </path>
       <taskdef resource="ch/jm/osgi/util/bundle/ant/antlib.xml"
-          classpathref="bundle-util.classpath" onerror="fail"/>
+          classpathref="bundle-util.classpath" onerror="fail"/> -->
       
-      <!-- And the cargo tasks -->
+      <!-- And the cargo tasks 
       <mkdir dir="${org.bedework.temp.dir}/cargo" />
       <getJar name="cargo-ant" version="1.2.0"
               lib="${org.bedework.temp.dir}/cargo"/>
@@ -502,7 +502,7 @@
           <fileset dir="${org.bedework.temp.dir}/cargo"/>
       </path>
       <taskdef resource="cargo.tasks"
-          classpathref="cargo.classpath" onerror="fail"/>
+          classpathref="cargo.classpath" onerror="fail"/>-->
     </sequential>
   </macrodef>
 
