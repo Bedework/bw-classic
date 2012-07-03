@@ -99,7 +99,7 @@
       <xsl:if test="$eventRegEnabled and xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']">
         <div id="bwRegistrationBox">
           <xsl:variable name="eventName"><xsl:value-of select="name"/></xsl:variable>
-          <iframe src="{$eventReg}?href={$calPath}%2F{$eventName}">
+          <iframe src="{$eventReg}?href={$calPath}%2F{$eventName}" width="300" height="175">
 	          <p>
 			        <xsl:copy-of select="$bwStr-Error-IframeUnsupported"/>
 			      </p>

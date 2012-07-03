@@ -134,6 +134,8 @@
   <xsl:variable name="ongoingEventsShowForCollection">true</xsl:variable>
 
 
+
+
   <!-- EVENT REGISTRATION SYSTEM -->
   <!-- Bedework provides an application that allows users to register for events. -->
   
@@ -145,7 +147,9 @@
   <!-- Location of the event registration application; this is set to the 
        default quickstart location. If you move it, you must change this
        value. The value includes the path to initialize the system on page load.  -->
-  <xsl:variable name="eventReg">/eventreg/init.do</xsl:variable>
+  <xsl:variable name="eventReg">/eventreg/ureg/init.do</xsl:variable>
+
+
 
 
   <!-- FEED URL AND WIDGET BUILDER -->
