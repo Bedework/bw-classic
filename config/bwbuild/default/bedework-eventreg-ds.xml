@@ -72,7 +72,7 @@
          <type-mapping>Hypersonic SQL</type-mapping>
       </metadata>
 
-      <depends>jboss:service=HsqlBwEventReg</depends>
+      <depends>jboss:service=HsqlBwEventreg</depends>
    </local-tx-datasource>
 
    <mbean code="org.jboss.jdbc.HypersonicDatabase" 
