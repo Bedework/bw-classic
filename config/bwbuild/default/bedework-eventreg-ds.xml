@@ -76,7 +76,7 @@
    </local-tx-datasource>
 
    <mbean code="org.jboss.jdbc.HypersonicDatabase" 
-     name="jboss:service=HsqlBwEventReg">
+     name="jboss:service=HsqlBwEventreg">
     <!-- Should be done like this
      <attribute name="Port">        
         <value-factory bean="ServiceBindingManager" method="getIntBinding" 
