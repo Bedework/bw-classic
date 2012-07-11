@@ -1315,10 +1315,7 @@
         <xsl:choose>
           <xsl:when test="$pending = 'true'">
             <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
-              <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="values/text"/>
-                <xsl:with-param name="char">/</xsl:with-param>
-              </xsl:call-template><br/>
+              <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/><br/>
             </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
@@ -1410,7 +1407,7 @@
             '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-PHONE']"/></xsl:call-template>',
             '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-URL']"/></xsl:call-template>',
             '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CONTACT']/parameters/node()[name()='X-BEDEWORK-PARAM-EMAIL']"/></xsl:call-template>',
-            '<xsl:for-each select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-ALIAS']/values/text"><xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:call-template name="substring-afterLastInstanceOf"><xsl:with-param name="string" select="."/><xsl:with-param name="char">/</xsl:with-param></xsl:call-template></xsl:with-param></xsl:call-template><br/></xsl:for-each>',
+            '<xsl:for-each select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-ALIAS']"><xsl:call-template name="escapeApos"><xsl:with-param name="str"><xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/></xsl:with-param></xsl:call-template><br/></xsl:for-each>', 
             '<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="form/xproperties/node()[name()='X-BEDEWORK-CATEGORIES']/values/text"/></xsl:call-template>',
             '<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="form/xproperties/node()[name()='X-BEDEWORK-SUBMIT-COMMENT']/values/text"/></xsl:call-template>');
         </script>

@@ -956,7 +956,7 @@
             </td>
           </tr>
           <!--  Status  -->
-          <tr>
+          <!-- <tr>
             <td class="fieldname">
               <xsl:copy-of select="$bwStr-FoEl-Status"/>
             </td>
@@ -974,7 +974,7 @@
               </input>
               <xsl:copy-of select="$bwStr-FoEl-Canceled"/>
             </td>
-          </tr>
+          </tr> -->
           <!-- Cost -->
           <tr>
             <td class="fieldname"><em><xsl:copy-of select="$bwStr-FoEl-Cost"/></em></td>
@@ -1326,7 +1326,7 @@
             <xsl:value-of select="summary"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="virtualPath">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
+            <xsl:variable name="virtualPath"><xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:variable>
             <xsl:variable name="displayName" select="summary"/>
             <input type="checkbox" name="alias" onclick="toggleBedeworkXProperty('X-BEDEWORK-SUBMIT-ALIAS','{$displayName}','{$virtualPath}',this.checked)">
               <xsl:attribute name="value"><xsl:value-of select="$virtualPath"/></xsl:attribute>
@@ -1585,10 +1585,7 @@
           </td>
           <td>
             <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
-              <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="values/text"/>
-                <xsl:with-param name="char">/</xsl:with-param>
-              </xsl:call-template><br/>
+              <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/><br/> 
             </xsl:for-each>
           </td>
           <td>

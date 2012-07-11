@@ -1585,10 +1585,7 @@
           </td>
           <td>
             <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
-              <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="values/text"/>
-                <xsl:with-param name="char">/</xsl:with-param>
-              </xsl:call-template><br/>
+              <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/><br/> 
             </xsl:for-each>
           </td>
           <td>
