@@ -754,6 +754,10 @@
   <xsl:variable name="bwStr-MdSP-UserGroupsClassNote">Clase usada para consultar y mantener grupos para usuarios no-administrativos. Podría cambiarse sólo mediante un recompilado de la aplicación.</xsl:variable>
   <xsl:variable name="bwStr-MdSP-DirBrowseDisallowd">Navegación de directorio deshabilitada:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-DirBrowseDisallowedNote">Verdadero si el servidor que alberga el xsl deshabilita la navegación de directorios.</xsl:variable>
+
+  <xsl:variable name="bwStr-MdSP-EvregAdmTkn">Eventreg admin token:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-EvregAdmTknNote">Token for event registration. Must be identical to token set in event reg JMX service</xsl:variable>
+
   <xsl:variable name="bwStr-MdSP-IndexRoot">Raíz del índice (indexado):</xsl:variable>
   <xsl:variable name="bwStr-MdSP-IndexRootNote">Raíz de los índices de eventos. Podría cambiarse sólo si los índices son movidos/copiados</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UseSolr">Use Solr for public indexing:</xsl:variable>

@@ -6487,6 +6487,16 @@
           </td>
         </tr>
         <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-EvregAdmTkn"/></th>
+          <td>
+            <xsl:variable name="evregAdmTkn" select="/bedework/system/eventregAdminToken"/>
+            <input value="{$evregAdmTkn}" name="eventregAdminToken" class="wide"/>
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-EvregAdmTknNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-IndexRoot"/></th>
           <td>
             <xsl:variable name="indexRoot" select="/bedework/system/indexRoot"/>
