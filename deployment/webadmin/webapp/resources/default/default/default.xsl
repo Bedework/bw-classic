@@ -76,6 +76,7 @@
   <!-- Switches for Optional Modules -->
   <!-- Use the regisration module? -->
   <xsl:variable name="bwUseRegistrationSystem">true</xsl:variable>
+  <xsl:variable name="bwRegistrationRoot">/eventreg</xsl:variable>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
@@ -3019,6 +3020,15 @@
                     });
                   </script>
                 </xsl:if>
+	              <xsl:if test="eventregAdminToken">
+	                <p>
+	                  <xsl:variable name="registrationsHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/adminAgenda.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
+	                  <xsl:variable name="registrationsDownloadHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/download.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
+	                  <button onclick="launchSizedWindow('{$registrationsHref}', '1000', '600');return false;"><xsl:copy-of select="$bwStr-AEEF-ViewRegistrations"/></button>
+	                  <xsl:text> </xsl:text>
+	                  <button onclick="location.href='{$registrationsDownloadHref}';return false;"><xsl:copy-of select="$bwStr-AEEF-DownloadRegistrations"/></button>
+	                </p>
+	              </xsl:if>
 		          </div>
 	          </td>
 	        </tr>

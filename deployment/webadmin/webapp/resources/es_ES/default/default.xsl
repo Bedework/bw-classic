@@ -73,6 +73,10 @@
   <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
   <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
 
+  <!-- Switches for Optional Modules -->
+  <!-- Use the regisration module? -->
+  <xsl:variable name="bwUseRegistrationSystem">true</xsl:variable>
+
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
@@ -3016,6 +3020,9 @@
                     });
                   </script>
                 </xsl:if>
+	              <xsl:if test="form/eventregAdminToken">
+	                <p><a href=""><xsl:copy-of select="$bwStr-AEEF-ViewRegistrations"/></a></p>
+	              </xsl:if>
 	          </div>
           </td>
         </tr>

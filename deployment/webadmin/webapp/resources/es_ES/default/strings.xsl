@@ -285,6 +285,8 @@
   <xsl:variable name="bwStr-AEEF-RegistrationOpensInfo">(date/time registration becomes available)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-RegistrationCloses">Registration closes:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-RegistrationClosesInfo">(date/time of registration cut off)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ViewRegistrations">View event registrations</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-DownloadRegistrations">Download registrations</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Optional">(opcional)</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="showEventFormAliases" -->
