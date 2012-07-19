@@ -298,7 +298,8 @@
                 function bwSetupDatePickers() {
                   // startdate
                   $("#bwEventWidgetStartDate").datepicker({
-                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>),
+                    altField: "#xBwRegistrationClosesDate"
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
@@ -372,8 +373,9 @@
 		              // registration open dates
                   $("#xBwRegistrationOpensDate").datepicker({
                     <xsl:choose>
-                      <xsl:when test="false"><!-- add a test for the existence of a regOpen xprop and use it -->
-                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      <xsl:when test="/bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-START">
+                        <xsl:variable name="regStart" select="bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-START/values/text"/>
+                        defaultDate: new Date(<xsl:value-of select="substring($regStart,1,4)"/>, <xsl:value-of select="substring($regStart,5,2)"/>, <xsl:value-of select="substring($regStart,7,2)"/>)
                       </xsl:when>
                       <xsl:otherwise>
                         defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
@@ -398,8 +400,9 @@
                   // registration close dates
                   $("#xBwRegistrationClosesDate").datepicker({
                     <xsl:choose>
-                      <xsl:when test="false"><!-- add a test for the existence of a regOpen xprop and use it -->
-                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                      <xsl:when test="/bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END">
+                        <xsl:variable name="regEnd" select="bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text"/>
+                        defaultDate: new Date(<xsl:value-of select="substring($regEnd,1,4)"/>, <xsl:value-of select="substring($regEnd,5,2)"/>, <xsl:value-of select="substring($regEnd,7,2)"/>)
                       </xsl:when>
                       <xsl:otherwise>
                         defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
