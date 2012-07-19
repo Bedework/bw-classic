@@ -3026,7 +3026,7 @@
 	                  <xsl:variable name="registrationsDownloadHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/download.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
 	                  <button onclick="launchSizedWindow('{$registrationsHref}', '1000', '600');return false;"><xsl:copy-of select="$bwStr-AEEF-ViewRegistrations"/></button>
 	                  <xsl:text> </xsl:text>
-	                  <button onclick="location.href='{$registrationsDownloadHref}';return false;"><xsl:copy-of select="$bwStr-AEEF-DownloadRegistrations"/></button>
+	                  <!--<button onclick="location.href='{$registrationsDownloadHref}';return false;"><xsl:copy-of select="$bwStr-AEEF-DownloadRegistrations"/></button>-->
 	                </p>
 	              </xsl:if>
 		          </div>
