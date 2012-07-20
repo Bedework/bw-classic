@@ -298,8 +298,8 @@
                 function bwSetupDatePickers() {
                   // startdate
                   $("#bwEventWidgetStartDate").datepicker({
-                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>),
-                    altField: "#xBwRegistrationClosesDate"
+                    <xsl:if test="translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text">altField: "#xBwRegistrationClosesDate",</xsl:if>
+                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
