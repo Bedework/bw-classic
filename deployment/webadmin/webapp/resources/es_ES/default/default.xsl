@@ -76,6 +76,7 @@
   <!-- Switches for Optional Modules -->
   <!-- Use the regisration module? -->
   <xsl:variable name="bwUseRegistrationSystem">true</xsl:variable>
+  <xsl:variable name="bwRegistrationRoot">/eventreg</xsl:variable>
 
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
@@ -297,6 +298,7 @@
                 function bwSetupDatePickers() {
                   // startdate
                   $("#bwEventWidgetStartDate").datepicker({
+                    <xsl:if test="translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text">altField: "#xBwRegistrationClosesDate",</xsl:if>
                     defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
@@ -369,16 +371,7 @@
 		              });
 		              
 		              // registration open dates
-                  $("#xBwRegistrationOpensDate").datepicker({
-                    <xsl:choose>
-                      <xsl:when test="false"><!-- add a test for the existence of a regOpen xprop and use it -->
-                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
-                      </xsl:when>
-                      <xsl:otherwise>
-                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  }).attr("readonly", "readonly");
+                  $("#xBwRegistrationOpensDate").datepicker().attr("readonly", "readonly");
                   $("#xBwRegistrationOpensDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 		              
 		              // registration open time
@@ -395,16 +388,7 @@
                   });
 
                   // registration close dates
-                  $("#xBwRegistrationClosesDate").datepicker({
-                    <xsl:choose>
-                      <xsl:when test="false"><!-- add a test for the existence of a regOpen xprop and use it -->
-                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
-                      </xsl:when>
-                      <xsl:otherwise>
-                        defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  }).attr("readonly", "readonly");
+                  $("#xBwRegistrationClosesDate").datepicker().attr("readonly", "readonly");
                   $("#xBwRegistrationClosesDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
                   
                   // registration close time
@@ -1445,7 +1429,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userInfo/currentUser"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-For"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/userInfo/group"/> (<xsl:value-of select="/bedework/userInfo/user"/>)</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
+    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return validateEventForm(this);setEventFields(this,{$portalFriendly},'{$submitter}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
@@ -2890,7 +2874,10 @@
           <td class="fieldName"><xsl:copy-of select="$bwStr-AEEF-Registration"/></td>
           <td>
 	            <input type="checkbox" id="bwIsRegisterableEvent" name="bwIsRegisterableEvent" onclick="showRegistrationFields(this);">
-              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']">
+	                <xsl:attribute name="checked">checked</xsl:attribute>
+	                <xsl:attribute name="disabled">disabled</xsl:attribute>
+	              </xsl:if>
             </input> 
             <label for="bwIsRegisterableEvent"><xsl:copy-of select="$bwStr-AEEF-UsersMayRegister"/></label>
             
@@ -3020,8 +3007,14 @@
                     });
                   </script>
                 </xsl:if>
-	              <xsl:if test="form/eventregAdminToken">
-	                <p><a href=""><xsl:copy-of select="$bwStr-AEEF-ViewRegistrations"/></a></p>
+	              <xsl:if test="eventregAdminToken">
+	                <p>
+	                  <xsl:variable name="registrationsHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/adminAgenda.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
+	                  <xsl:variable name="registrationsDownloadHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/download.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
+	                  <button onclick="launchSizedWindow('{$registrationsHref}', '1000', '600');return false;"><xsl:copy-of select="$bwStr-AEEF-ViewRegistrations"/></button>
+	                  <xsl:text> </xsl:text>
+	                  <!--<button onclick="location.href='{$registrationsDownloadHref}';return false;"><xsl:copy-of select="$bwStr-AEEF-DownloadRegistrations"/></button>-->
+	                </p>
 	              </xsl:if>
 	          </div>
           </td>

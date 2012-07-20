@@ -1428,7 +1428,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userInfo/currentUser"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-For"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/userInfo/group"/> (<xsl:value-of select="/bedework/userInfo/user"/>)</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}')">
+    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return validateEventForm(this);setEventFields(this,{$portalFriendly},'{$submitter}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
@@ -2873,7 +2873,10 @@
 	          <td class="fieldName"><xsl:copy-of select="$bwStr-AEEF-Registration"/></td>
 	          <td>
 	            <input type="checkbox" id="bwIsRegisterableEvent" name="bwIsRegisterableEvent" onclick="showRegistrationFields(this);">
-	              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']">
+	                <xsl:attribute name="checked">checked</xsl:attribute>
+	                <xsl:attribute name="disabled">disabled</xsl:attribute>
+	              </xsl:if>
 	            </input> 
 	            <label for="bwIsRegisterableEvent"><xsl:copy-of select="$bwStr-AEEF-UsersMayRegister"/></label>
 	            
@@ -2881,7 +2884,7 @@
 	              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
 	              
 		            <label for="xBwMaxTicketsHolder" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-MaxTickets"/></label> 
-		            <input type="text"  name="xBwMaxTicketsHolder" id="xBwMaxTicketsHolder" size="3">
+		            <input type="text" name="xBwMaxTicketsHolder" id="xBwMaxTicketsHolder" size="3">
 		              <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']">
 		                <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-MAX-TICKETS']/values/text"/></xsl:attribute>
 		              </xsl:if>

@@ -332,12 +332,12 @@ function setEventFields(formObj,portalFriendly,submitter) {
 /* do some basic client-side validation where needed */
 function validateEventForm(formObj) {
   if(formObj["bwIsRegisterableEvent"].checked) {
-     if(formObj["xBwMaxTicketsHolder"].value = "") {
+     if(formObj["xBwMaxTicketsHolder"].value == "") {
         alert(maxTicketsWarning);
         formObj["xBwMaxTicketsHolder"].focus();
         return false;
      }
-     if(formObj["xBwMaxTicketsPerUserHolder"].value = "") {
+     if(formObj["xBwMaxTicketsPerUserHolder"].value == "") {
        alert(maxTicketsPerUserWarning);
        formObj["xBwMaxTicketsPerUserHolder"].focus();
        return false;

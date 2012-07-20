@@ -55,8 +55,8 @@
       // recurrence strings
       var bwRecurChangeWarning = "WARNING: changing your recurrence rules\nwill destroy all existing recurrence overrides\nand exceptions when you save the event.\n\nContinue?";
       // registration strings
-      var maxTicketsWarning = "You must set the maximum number of tickets allowed for this event.";
-      var maxTicketsPerUserWarning = "You must set the maximum number of tickets each user may aquire.";
+      var maxTicketsWarning = "Event Registration Settings:\nYou must set the maximum number of tickets allowed for this event.";
+      var maxTicketsPerUserWarning = "Event Registration Settings:\nYou must set the maximum number of tickets each user may aquire.";
     </script>
   </xsl:template>
   
