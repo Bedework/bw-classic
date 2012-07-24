@@ -1598,8 +1598,16 @@
                 <xsl:attribute name="value">on</xsl:attribute>
               </xsl:if>
             </input>
-            <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
-            <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
+            <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField">
+              <xsl:if test="form/allDay/input/@checked='checked'">
+                <xsl:attribute name="value">on</xsl:attribute>
+              </xsl:if>
+            </input>
+            <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField">
+              <xsl:if test="form/allDay/input/@checked='checked'">
+                <xsl:attribute name="value">on</xsl:attribute>
+              </xsl:if>
+            </input>
             <label for="allDayFlag">
               <xsl:copy-of select="$bwStr-AEEF-AllDay"/>
             </label>
@@ -1614,8 +1622,16 @@
 	                <xsl:attribute name="value">on</xsl:attribute>
 	              </xsl:if>
               </input>
-              <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating"/>
-              <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating"/>
+              <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating">
+                <xsl:if test="form/floating/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
+              <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating">
+                <xsl:if test="form/floating/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
               <label for="floatingFlag">
                 <xsl:copy-of select="$bwStr-AEEF-Floating"/>
               </label>
@@ -1632,8 +1648,16 @@
                   <xsl:attribute name="value">on</xsl:attribute>
                 </xsl:if>
               </input>
-              <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC"/>
-              <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
+              <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC">
+                <xsl:if test="form/storeUTC/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
+              <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC">
+                <xsl:if test="form/storeUTC/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
               <xsl:copy-of select="$bwStr-AEEF-StoreAsUTC"/>
             </xsl:if>
 
@@ -2861,7 +2885,7 @@
                   </xsl:if>
                   <option value="">
                     <xsl:copy-of select="$bwStr-AEEF-SelectColon"/>
-                  </option>option>
+                  </option>
                   <xsl:copy-of select="form/contact/preferred/select/*"/>
                 </select>
               </xsl:if>
