@@ -298,8 +298,8 @@
                 function bwSetupDatePickers() {
                   // startdate
                   $("#bwEventWidgetStartDate").datepicker({
-                    <xsl:if test="translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text">altField: "#xBwRegistrationClosesDate",</xsl:if>
-                    defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
+                    <xsl:if test="/bedework/creating = 'true' or (translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text)">altField: "#xBwRegistrationClosesDate",</xsl:if><!-- 
+                 -->defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
 
@@ -409,6 +409,7 @@
               </script>
             </xsl:otherwise>
           </xsl:choose>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
           <script type="text/javascript">
@@ -948,9 +949,18 @@
         <input type="submit" name="submit" value="{$bwStr-MMnu-Go}"/>
         <div id="searchFields">
           <xsl:copy-of select="$bwStr-MMnu-Limit"/>
-          <input type="radio" name="searchLimits" value="fromToday" checked="checked"/><xsl:copy-of select="$bwStr-MMnu-TodayForward"/>
-          <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-MMnu-PastDates"/>
-          <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-MMnu-AddDates"/>
+          <input type="radio" name="searchLimits" id="bwSearchFromToday" value="fromToday" checked="checked"/>
+          <label for="bwSearchFromToday">
+            <xsl:copy-of select="$bwStr-MMnu-TodayForward"/>
+          </label>
+          <input type="radio" name="searchLimits" id="bwSearchPastDates" value="beforeToday"/>
+          <label for="bwSearchPastDates">
+            <xsl:copy-of select="$bwStr-MMnu-PastDates"/>
+          </label>
+          <input type="radio" name="searchLimits" id="bwSearchAllDates" value="none"/>
+          <label for="bwSearchAllDates">
+            <xsl:copy-of select="$bwStr-MMnu-AddDates"/>
+          </label>
         </div>
       </form>
     </div>
@@ -1429,7 +1439,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userInfo/currentUser"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-For"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/userInfo/group"/> (<xsl:value-of select="/bedework/userInfo/user"/>)</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return validateEventForm(this);setEventFields(this,{$portalFriendly},'{$submitter}')">
+    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return setEventFields(this,{$portalFriendly},'{$submitter}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
@@ -1581,37 +1591,51 @@
                 <xsl:otherwise>timeFields</xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
-            <xsl:choose>
-              <xsl:when test="form/allDay/input/@checked='checked'">
-                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="on" checked="checked"/>
-                <input type="hidden" name="eventStartDate.dateOnly" value="on" id="allDayStartDateField"/>
-                <input type="hidden" name="eventEndDate.dateOnly" value="on" id="allDayEndDateField"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="checkbox" name="allDayFlag" onclick="swapAllDayEvent(this)" value="off"/>
-                <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField"/>
-                <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:copy-of select="$bwStr-AEEF-AllDay"/>
+            
+            <!-- All day flag -->
+            <input type="checkbox" name="allDayFlag" id="allDayFlag" onclick="swapAllDayEvent(this)" value="off">
+              <xsl:if test="form/allDay/input/@checked='checked'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+                <xsl:attribute name="value">on</xsl:attribute>
+              </xsl:if>
+            </input>
+            <input type="hidden" name="eventStartDate.dateOnly" value="off" id="allDayStartDateField">
+              <xsl:if test="form/allDay/input/@checked='checked'">
+                <xsl:attribute name="value">on</xsl:attribute>
+              </xsl:if>
+            </input>
+            <input type="hidden" name="eventEndDate.dateOnly" value="off" id="allDayEndDateField">
+              <xsl:if test="form/allDay/input/@checked='checked'">
+                <xsl:attribute name="value">on</xsl:attribute>
+              </xsl:if>
+            </input>
+            <label for="allDayFlag">
+              <xsl:copy-of select="$bwStr-AEEF-AllDay"/>
+            </label>
 
             <!-- floating event: no timezone (and not UTC) -->
             <!-- let's hide it completely unless it comes in checked
                  (e.g. from import); to restore this field, remove the if  -->
             <xsl:if test="form/floating/input/@checked='checked'">
-              <xsl:choose>
-                <xsl:when test="form/floating/input/@checked='checked'">
-                  <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="on" checked="checked"/>
-                  <input type="hidden" name="eventStartDate.floating" value="on" id="startFloating"/>
-                  <input type="hidden" name="eventEndDate.floating" value="on" id="endFloating"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="off"/>
-                  <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating"/>
-                  <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating"/>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:copy-of select="$bwStr-AEEF-Floating"/>
+              <input type="checkbox" name="floatingFlag" id="floatingFlag" onclick="swapFloatingTime(this)" value="off">
+	              <xsl:if test="form/floating/input/@checked='checked'">
+	                <xsl:attribute name="checked">checked</xsl:attribute>
+	                <xsl:attribute name="value">on</xsl:attribute>
+	              </xsl:if>
+              </input>
+              <input type="hidden" name="eventStartDate.floating" value="off" id="startFloating">
+                <xsl:if test="form/floating/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
+              <input type="hidden" name="eventEndDate.floating" value="off" id="endFloating">
+                <xsl:if test="form/floating/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
+              <label for="floatingFlag">
+                <xsl:copy-of select="$bwStr-AEEF-Floating"/>
+              </label>
             </xsl:if>
 
             <!-- store time as coordinated universal time (UTC) -->
@@ -1619,18 +1643,22 @@
                  event comes in checked; (e.g. from import);
                  to restore this field, remove the if -->
             <xsl:if test="form/storeUTC/input/@checked='checked'">
-              <xsl:choose>
-                <xsl:when test="form/storeUTC/input/@checked='checked'">
-                  <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="on" checked="checked"/>
-                  <input type="hidden" name="eventStartDate.storeUTC" value="on" id="startStoreUTC"/>
-                  <input type="hidden" name="eventEndDate.storeUTC" value="on" id="endStoreUTC"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="off"/>
-                  <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC"/>
-                  <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC"/>
-                </xsl:otherwise>
-              </xsl:choose>
+              <input type="checkbox" name="storeUTCFlag" id="storeUTCFlag" onclick="swapStoreUTC(this)" value="off">
+                <xsl:if test="form/storeUTC/input/@checked='checked'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
+              <input type="hidden" name="eventStartDate.storeUTC" value="off" id="startStoreUTC">
+                <xsl:if test="form/storeUTC/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
+              <input type="hidden" name="eventEndDate.storeUTC" value="off" id="endStoreUTC">
+                <xsl:if test="form/storeUTC/input/@checked='checked'">
+                  <xsl:attribute name="value">on</xsl:attribute>
+                </xsl:if>
+              </input>
               <xsl:copy-of select="$bwStr-AEEF-StoreAsUTC"/>
             </xsl:if>
 
@@ -1720,7 +1748,9 @@
                   <input type="radio" name="eventEndType" id="bwEndDateTimeButton" value="E" onclick="changeClass('endDateTime','shown');changeClass('endDuration','invisible');"/>
                 </xsl:otherwise>
               </xsl:choose>
-              <xsl:copy-of select="$bwStr-AEEF-Date"/>
+              <label for="bwEndDateTimeButton">
+                <xsl:copy-of select="$bwStr-AEEF-Date"/>
+              </label>
               <xsl:variable name="endDateTimeClass">
                 <xsl:choose>
                   <xsl:when test="form/end/type='E'">shown</xsl:when>
@@ -1807,13 +1837,15 @@
               <div class="dateFields">
                 <xsl:choose>
                   <xsl:when test="form/end/type='D'">
-                    <input type="radio" name="eventEndType" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" id="bwEndDurationButton" value="D" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
+                    <input type="radio" name="eventEndType" id="bwEndDurationButton" value="D" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','shown');"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                <xsl:copy-of select="$bwStr-AEEF-Duration"/>
+                <label for="bwEndDurationButton">
+                  <xsl:copy-of select="$bwStr-AEEF-Duration"/>
+                </label>
                 <xsl:variable name="endDurationClass">
                   <xsl:choose>
                     <xsl:when test="form/end/type='D'">shown</xsl:when>
@@ -1881,13 +1913,15 @@
               <div class="dateFields" id="noDuration">
                 <xsl:choose>
                   <xsl:when test="form/end/type='N'">
-                    <input type="radio" name="eventEndType" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" id="bwEndNoneButton" value="N" checked="checked" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <input type="radio" name="eventEndType" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
+                    <input type="radio" name="eventEndType" id="bwEndNoneButton" value="N" onclick="changeClass('endDateTime','invisible');changeClass('endDuration','invisible');"/>
                   </xsl:otherwise>
                 </xsl:choose>
-                <xsl:copy-of select="$bwStr-AEEF-ThisEventHasNoDurationEndDate"/>
+                <label for="bwEndNoneButton">
+                  <xsl:copy-of select="$bwStr-AEEF-ThisEventHasNoDurationEndDate"/>
+                </label>
               </div>
             </div>
           </td>
@@ -1948,12 +1982,18 @@
 		                <div id="recurringSwitch">
 		                  <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
 		                  <!-- set or remove "recurring" and show or hide all recurrence fields: -->
-		                  <input type="radio" name="recurring" value="true" onclick="swapRecurrence(this)">
+		                  <input type="radio" name="recurring" id="bwRecurringOnButton" value="true" onclick="swapRecurrence(this)">
 		                    <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-		                  </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-EventRecurs"/>
-		                  <input type="radio" name="recurring" value="false" onclick="swapRecurrence(this)">
+		                  </input>
+		                  <label for="bwRecurringOnButton">
+		                    <xsl:copy-of select="$bwStr-AEEF-EventRecurs"/>
+		                  </label>
+		                  <input type="radio" name="recurring" id="bwRecurringOffButton" value="false" onclick="swapRecurrence(this)">
 		                    <xsl:if test="form/recurringEntity = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-		                  </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-EventDoesNotRecur"/>
+		                  </input>
+		                  <label for="bwRecurringOffButton">
+		                    <xsl:copy-of select="$bwStr-AEEF-EventDoesNotRecur"/>
+		                  </label>
 		                </div>
 		              </xsl:when>
 			            <xsl:otherwise>
@@ -1984,8 +2024,10 @@
                     <xsl:if test="form/recurrence">
                       <xsl:attribute name="class">invisible</xsl:attribute>
                     </xsl:if>
-                    <input type="checkbox" name="rrulesUiSwitch" value="advanced" onchange="swapVisible(this,'advancedRrules')"/>
-                    <xsl:copy-of select="$bwStr-AEEF-ShowAdvancedRecurrenceRules"/>
+                    <input type="checkbox" name="rrulesUiSwitch" id="bwRrulesAdvancedButton" value="advanced" onchange="swapVisible(this,'advancedRrules')"/>
+                    <label for="bwRrulesAdvancedButton">
+                      <xsl:copy-of select="$bwStr-AEEF-ShowAdvancedRecurrenceRules"/>
+                    </label>
                   </span>
 
                   <xsl:if test="form/recurrence">
@@ -2131,12 +2173,27 @@
                     <tr>
                       <td id="recurrenceFrequency" rowspan="2">
                         <em><xsl:copy-of select="$bwStr-AEEF-Frequency"/></em><br/>
-                        <input type="radio" name="freq" value="NONE" onclick="showRrules(this.value)" checked="checked"/><xsl:copy-of select="$bwStr-AEEF-None"/><br/>
+                        <input type="radio" name="freq" id="bwFreqNone" value="NONE" onclick="showRrules(this.value)" checked="checked"/>
+                        <label for="bwFreqNone">
+                          <xsl:copy-of select="$bwStr-AEEF-None"/>
+                        </label><br/>
                         <!--<input type="radio" name="freq" value="HOURLY" onclick="showRrules(this.value)"/>hourly<br/>-->
-                        <input type="radio" name="freq" value="DAILY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Daily"/><br/>
-                        <input type="radio" name="freq" value="WEEKLY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Weekly"/><br/>
-                        <input type="radio" name="freq" value="MONTHLY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Monthly"/><br/>
-                        <input type="radio" name="freq" value="YEARLY" onclick="showRrules(this.value)"/><xsl:copy-of select="$bwStr-AEEF-Yearly"/>
+                        <input type="radio" name="freq" id="bwFreqDaily" value="DAILY" onclick="showRrules(this.value)"/>
+                        <label for="bwFreqDaily">
+                          <xsl:copy-of select="$bwStr-AEEF-Daily"/>
+                        </label><br/>
+                        <input type="radio" name="freq" id="bwFreqWeekly" value="WEEKLY" onclick="showRrules(this.value)"/>
+                        <label for="bwFreqWeekly">
+                          <xsl:copy-of select="$bwStr-AEEF-Weekly"/>
+                        </label><br/>
+                        <input type="radio" name="freq" id="bwFreqMonthly" value="MONTHLY" onclick="showRrules(this.value)"/>
+                        <label for="bwFreqMonthly">
+                          <xsl:copy-of select="$bwStr-AEEF-Monthly"/>
+                        </label><br/>
+                        <input type="radio" name="freq" id="bwFreqYearly" value="YEARLY" onclick="showRrules(this.value)"/>
+                        <label for="bwFreqYearly">
+                          <xsl:copy-of select="$bwStr-AEEF-Yearly"/>
+                        </label>
                       </td>
                       <!-- recurrence count, until, forever -->
                       <td id="recurrenceUntil">
@@ -2564,15 +2621,24 @@
           <td>
             <span>
               <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-              <input type="radio" name="eventStatus" value="CONFIRMED" checked="checked">
+              <input type="radio" name="eventStatus" id="bwStatusConfirmedButton" value="CONFIRMED" checked="checked">
                 <xsl:if test="form/status = 'CONFIRMED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-              </input><xsl:copy-of select="$bwStr-AEEF-Confirmed"/>
-              <input type="radio" name="eventStatus" value="TENTATIVE">
+              </input>
+              <label for="bwStatusConfirmedButton">
+                <xsl:copy-of select="$bwStr-AEEF-Confirmed"/>
+              </label>
+              <input type="radio" name="eventStatus" id="bwStatusTentativeButton" value="TENTATIVE">
                 <xsl:if test="form/status = 'TENTATIVE'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-              </input><xsl:copy-of select="$bwStr-AEEF-Tentative"/>
-              <input type="radio" name="eventStatus" value="CANCELLED">
+              </input>
+              <label for="bwStatusTentativeButton">
+                <xsl:copy-of select="$bwStr-AEEF-Tentative"/>
+              </label>
+              <input type="radio" name="eventStatus" id="bwStatusCancelledButton" value="CANCELLED">
                 <xsl:if test="form/status = 'CANCELLED'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-              </input><xsl:copy-of select="$bwStr-AEEF-Canceled"/>
+              </input>
+              <label for="bwStatusCancelledButton">
+                <xsl:copy-of select="$bwStr-AEEF-Canceled"/>
+              </label>
             </span>
             <xsl:if test="$canEdit = 'false'">
               <xsl:value-of select="form/status"/>
@@ -2746,18 +2812,22 @@
               <!-- allow for toggling between the preferred and all location listings if preferred
                    locations exist -->
               <xsl:if test="form/location/preferred/select/option">
-                <input type="radio" name="toggleLocationLists" value="preferred" onclick="changeClass('bwPreferredLocationList','shown');changeClass('bwAllLocationList','invisible');">
+                <input type="radio" name="toggleLocationLists" id="bwLocationPreferredButton" value="preferred" onclick="changeClass('bwPreferredLocationList','shown');changeClass('bwAllLocationList','invisible');">
                   <xsl:if test="form/location/preferred/select/option and not(form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected))">
                     <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
                 </input>
-                <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
-                <input type="radio" name="toggleLocationLists" value="all" onclick="changeClass('bwPreferredLocationList','invisible');changeClass('bwAllLocationList','shown');">
+                <label for="bwLocationPreferredButton">
+                  <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
+                </label>
+                <input type="radio" name="toggleLocationLists" id="bwLocationAllButton" value="all" onclick="changeClass('bwPreferredLocationList','invisible');changeClass('bwAllLocationList','shown');">
                   <xsl:if test="form/location/all/select/option/@selected and not(form/location/preferred/select/option/@selected)">
                     <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
                 </input>
-                <xsl:copy-of select="$bwStr-AEEF-All"/>
+                <label for="bwLocationAllButton">
+                  <xsl:copy-of select="$bwStr-AEEF-All"/>
+                </label>
               </xsl:if>
             </span>
             <xsl:if test="$canEdit = 'false'">
@@ -2816,7 +2886,7 @@
                   </xsl:if>
                   <option value="">
                     <xsl:copy-of select="$bwStr-AEEF-SelectColon"/>
-                  </option>option>
+                  </option>
                   <xsl:copy-of select="form/contact/preferred/select/*"/>
                 </select>
               </xsl:if>
@@ -2833,18 +2903,22 @@
               <!-- allow for toggling between the preferred and all contacts listings if preferred
                    contacts exist -->
               <xsl:if test="form/contact/preferred/select/option">
-                <input type="radio" name="toggleContactLists" value="preferred" onclick="changeClass('bwPreferredContactList','shown');changeClass('bwAllContactList','invisible');">
+                <input type="radio" name="toggleContactLists" id="bwContactPreferredButton" value="preferred" onclick="changeClass('bwPreferredContactList','shown');changeClass('bwAllContactList','invisible');">
                   <xsl:if test="form/contact/preferred/select/option and not(form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected))">
                     <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
                 </input>
-                <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
-                <input type="radio" name="toggleContactLists" value="all" onclick="changeClass('bwPreferredContactList','invisible');changeClass('bwAllContactList','shown');">
+                <label for="bwContactPreferredButton">
+                  <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
+                </label>
+                <input type="radio" name="toggleContactLists" id="bwContactAllButton" value="all" onclick="changeClass('bwPreferredContactList','invisible');changeClass('bwAllContactList','shown');">
                   <xsl:if test="form/contact/all/select/option/@selected and not(form/contact/preferred/select/option/@selected)">
                     <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
                 </input>
-                <xsl:copy-of select="$bwStr-AEEF-All"/>
+                <label for="bwContactAllButton">
+                  <xsl:copy-of select="$bwStr-AEEF-All"/>
+                </label>
               </xsl:if>
             </span>
             <xsl:if test="$canEdit = 'false'">
@@ -3662,20 +3736,6 @@
         </td>
       </tr>
 
-      <tr>
-        <th>
-          <xsl:copy-of select="$bwStr-DsEv-TopicalAreas"/>
-        </th>
-        <td>
-           <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-             <xsl:call-template name="substring-afterLastInstanceOf">
-               <xsl:with-param name="string" select="values/text"/>
-               <xsl:with-param name="char">/</xsl:with-param>
-             </xsl:call-template><br/>
-           </xsl:for-each>
-        </td>
-      </tr>
-
       <!--  Description  -->
       <tr>
         <th>
@@ -3686,6 +3746,7 @@
         </td>
       </tr>
       <!-- Cost -->
+      <xsl:if test="cost and cost != ''">
       <tr class="optional">
         <th>
           <xsl:copy-of select="$bwStr-DsEv-Price"/>
@@ -3694,18 +3755,22 @@
           <xsl:value-of select="cost"/>
         </td>
       </tr>
+      </xsl:if>
+            
       <!-- Url -->
-      <tr class="optional">
-        <th>
-          <xsl:copy-of select="$bwStr-DsEv-URL"/>
-        </th>
-        <td>
-          <xsl:variable name="eventLink" select="link"/>
-          <a href="{$eventLink}">
-            <xsl:value-of select="link"/>
-          </a>
-        </td>
-      </tr>
+      <xsl:if test="link and link != ''">
+        <tr class="optional">
+          <th>
+            <xsl:copy-of select="$bwStr-DsEv-URL"/>
+          </th>
+          <td>
+            <xsl:variable name="eventLink" select="link"/>
+            <a href="{$eventLink}">
+              <xsl:value-of select="link"/>
+            </a>
+          </td>
+        </tr>
+	  </xsl:if>
 
       <!-- Location -->
       <tr>
@@ -3764,6 +3829,18 @@
         </td>
       </tr>
 
+      <tr>
+        <th>
+          <xsl:copy-of select="$bwStr-DsEv-TopicalAreas"/>
+        </th>
+        <td>
+           <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+             <xsl:sort order="ascending" select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/>
+             <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/><br/>
+           </xsl:for-each>
+        </td>
+      </tr>
+
       <!--  Categories  -->
       <tr>
         <th>
@@ -3771,7 +3848,8 @@
         </th>
         <td>
           <xsl:for-each select="categories/category">
-            <xsl:value-of select="word"/><br/>
+            <xsl:sort order="ascending" select="value"/>
+            <xsl:value-of select="value"/><br/>
           </xsl:for-each>
         </td>
       </tr>
