@@ -343,6 +343,7 @@ function validateEventForm(formObj) {
        return false;
     }
   }
+  return true;
 }
 
 /* Set dates based on jQuery widgets */
