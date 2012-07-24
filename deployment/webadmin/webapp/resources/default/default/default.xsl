@@ -3662,20 +3662,6 @@
         </td>
       </tr>
 
-      <tr>
-        <th>
-          <xsl:copy-of select="$bwStr-DsEv-TopicalAreas"/>
-        </th>
-        <td>
-           <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-             <xsl:call-template name="substring-afterLastInstanceOf">
-               <xsl:with-param name="string" select="values/text"/>
-               <xsl:with-param name="char">/</xsl:with-param>
-             </xsl:call-template><br/>
-           </xsl:for-each>
-        </td>
-      </tr>
-
       <!--  Description  -->
       <tr>
         <th>
@@ -3685,27 +3671,33 @@
           <xsl:value-of select="description"/>
         </td>
       </tr>
+      
       <!-- Cost -->
-      <tr class="optional">
-        <th>
-          <xsl:copy-of select="$bwStr-DsEv-Price"/>
-        </th>
-        <td>
-          <xsl:value-of select="cost"/>
-        </td>
-      </tr>
+      <xsl:if test="cost and cost != ''">
+	      <tr class="optional">
+	        <th>
+	          <xsl:copy-of select="$bwStr-DsEv-Price"/>
+	        </th>
+	        <td>
+	          <xsl:value-of select="cost"/>
+	        </td>
+	      </tr>
+      </xsl:if>
+            
       <!-- Url -->
-      <tr class="optional">
-        <th>
-          <xsl:copy-of select="$bwStr-DsEv-URL"/>
-        </th>
-        <td>
-          <xsl:variable name="eventLink" select="link"/>
-          <a href="{$eventLink}">
-            <xsl:value-of select="link"/>
-          </a>
-        </td>
-      </tr>
+      <xsl:if test="link and link != ''">
+	      <tr class="optional">
+	        <th>
+	          <xsl:copy-of select="$bwStr-DsEv-URL"/>
+	        </th>
+	        <td>
+	          <xsl:variable name="eventLink" select="link"/>
+	          <a href="{$eventLink}">
+	            <xsl:value-of select="link"/>
+	          </a>
+	        </td>
+	      </tr>
+	    </xsl:if>
 
       <!-- Location -->
       <tr>
@@ -3764,6 +3756,18 @@
         </td>
       </tr>
 
+      <tr>
+        <th>
+          <xsl:copy-of select="$bwStr-DsEv-TopicalAreas"/>
+        </th>
+        <td>
+           <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+             <xsl:sort order="ascending" select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/>
+             <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/><br/>
+           </xsl:for-each>
+        </td>
+      </tr>
+
       <!--  Categories  -->
       <tr>
         <th>
@@ -3771,7 +3775,8 @@
         </th>
         <td>
           <xsl:for-each select="categories/category">
-            <xsl:value-of select="word"/><br/>
+            <xsl:sort order="ascending" select="value"/>
+            <xsl:value-of select="value"/><br/>
           </xsl:for-each>
         </td>
       </tr>
