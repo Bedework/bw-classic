@@ -483,6 +483,9 @@ table.eventFormTable td.allField {
 	float: right;
 	margin: 0.5em 2em 1em 0;
 }
+label {
+	cursor: pointer;
+}
 label.interiorLabel {
   display: block;
   float: left;

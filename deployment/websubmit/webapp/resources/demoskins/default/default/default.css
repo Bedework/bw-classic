@@ -384,6 +384,9 @@ body {
   background-color: #eee;
   color: black;
 }
+#bedework label {
+  cursor: pointer;
+}
 #bedework .subForm label {
   float: left;
   text-align: right;
