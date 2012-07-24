@@ -1590,13 +1590,27 @@
           </xsl:choose>
           <td class="date">
             <xsl:value-of select="start/shortdate"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="start/time"/>
+		        <xsl:text> </xsl:text>
+		        <xsl:choose>
+		          <xsl:when test="start/allday = 'false'">
+		            <xsl:value-of select="start/time"/>
+		          </xsl:when>
+		          <xsl:otherwise>
+		            <xsl:copy-of select="$bwStr-FoEl-AllDay"/>
+		          </xsl:otherwise>
+		        </xsl:choose>
           </td>
           <td class="date">
             <xsl:value-of select="end/shortdate"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="end/time"/>
+		        <xsl:text> </xsl:text>
+		        <xsl:choose>
+		          <xsl:when test="start/allday = 'false'">
+		            <xsl:value-of select="end/time"/>
+		          </xsl:when>
+		          <xsl:otherwise>
+		            <xsl:copy-of select="$bwStr-FoEl-AllDay"/>
+		          </xsl:otherwise>
+		        </xsl:choose>
           </td>
           <td>
             <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
@@ -1609,6 +1623,7 @@
               <div class="recurrenceEditLinks">
                 <xsl:copy-of select="$bwStr-EvLC-RecurringEvent"/>
                 <xsl:copy-of select="$bwStr-EvLC-Edit"/>
+                <xsl:text> </xsl:text>
                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}">
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
                 </a> |

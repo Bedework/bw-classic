@@ -821,3 +821,8 @@ display: inline;
   color: #900 !important;
   font-style: italic;
 }
+.recurrenceEditLinks {
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+}
