@@ -1428,7 +1428,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userInfo/currentUser"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-For"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/userInfo/group"/> (<xsl:value-of select="/bedework/userInfo/user"/>)</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return validateEventForm(this);setEventFields(this,{$portalFriendly},'{$submitter}')">
+    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');return validateEventForm(this);">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
