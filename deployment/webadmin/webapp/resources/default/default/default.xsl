@@ -948,9 +948,18 @@
         <input type="submit" name="submit" value="{$bwStr-MMnu-Go}"/>
         <div id="searchFields">
           <xsl:copy-of select="$bwStr-MMnu-Limit"/>
-          <input type="radio" name="searchLimits" value="fromToday" checked="checked"/><xsl:copy-of select="$bwStr-MMnu-TodayForward"/>
-          <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-MMnu-PastDates"/>
-          <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-MMnu-AddDates"/>
+          <input type="radio" name="searchLimits" id="bwSearchFromToday" value="fromToday" checked="checked"/>
+          <label for="bwSearchFromToday">
+            <xsl:copy-of select="$bwStr-MMnu-TodayForward"/>
+          </label>
+          <input type="radio" name="searchLimits" id="bwSearchPastDates" value="beforeToday"/>
+          <label for="bwSearchPastDates">
+            <xsl:copy-of select="$bwStr-MMnu-PastDates"/>
+          </label>
+          <input type="radio" name="searchLimits" id="bwSearchAllDates" value="none"/>
+          <label for="bwSearchAllDates">
+            <xsl:copy-of select="$bwStr-MMnu-AddDates"/>
+          </label>
         </div>
       </form>
     </div>
