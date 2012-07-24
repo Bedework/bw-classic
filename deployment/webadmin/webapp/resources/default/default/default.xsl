@@ -409,6 +409,7 @@
               </script>
             </xsl:otherwise>
           </xsl:choose>
+          <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">&#160;</script>
           <script type="text/javascript" src="{$resourcesRoot}/resources/bedeworkEventForm.js">&#160;</script>
           <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
           <script type="text/javascript">
@@ -1428,7 +1429,7 @@
         <xsl:otherwise><xsl:value-of select="/bedework/userInfo/currentUser"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AEEF-For"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/userInfo/group"/> (<xsl:value-of select="/bedework/userInfo/user"/>)</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="setEventFields(this,{$portalFriendly},'{$submitter}');return validateEventForm(this);">
+    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return setEventFields(this,{$portalFriendly},'{$submitter}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>

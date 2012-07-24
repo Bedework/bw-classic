@@ -320,6 +320,9 @@ function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactN
 // ========================================================================
 
 function setEventFields(formObj,portalFriendly,submitter) {
+  if (!validateEventForm(formObj)) {
+    return false; 
+  }
   if (!portalFriendly) {
     setDates(formObj);
   }
@@ -327,20 +330,23 @@ function setEventFields(formObj,portalFriendly,submitter) {
     setRecurrence(formObj);
   } // else we are editing an instance of a recurrence
   setBedeworkXProperties(formObj,submitter);
+  return true;
 }
 
 /* do some basic client-side validation where needed */
 function validateEventForm(formObj) {
   if(formObj["bwIsRegisterableEvent"].checked) {
-     if(formObj["xBwMaxTicketsHolder"].value == "") {
-        alert(maxTicketsWarning);
-        formObj["xBwMaxTicketsHolder"].focus();
-        return false;
-     }
-     if(formObj["xBwMaxTicketsPerUserHolder"].value == "") {
-       alert(maxTicketsPerUserWarning);
-       formObj["xBwMaxTicketsPerUserHolder"].focus();
-       return false;
+    var maxTickets = trim(formObj["xBwMaxTicketsHolder"].value);
+    var maxTicketsPerUser = trim(formObj["xBwMaxTicketsPerUserHolder"].value);
+    if(maxTickets == "" || isNaN(maxTickets)) {
+      alert(maxTicketsWarning);
+      formObj["xBwMaxTicketsHolder"].focus();
+      return false;
+    }
+    if(maxTicketsPerUser == "" || isNaN(maxTicketsPerUser)) {
+      alert(maxTicketsPerUserWarning);
+      formObj["xBwMaxTicketsPerUserHolder"].focus();
+      return false;
     }
   }
   return true;
@@ -408,7 +414,7 @@ function padTimeUnit(val) {
 }
 function hour24ToAmpm(val) {
   var hour = parseInt(val,10);
-  if (hour = 0) {
+  if (hour == 0) {
     return "12";
   } else if (hour < 10) {
     return "0" + hour;
