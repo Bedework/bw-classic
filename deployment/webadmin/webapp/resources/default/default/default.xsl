@@ -1254,7 +1254,16 @@
                 </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a>
+                  <xsl:choose>
+                    <xsl:when test="recurrenceId != ''">
+                      <!-- recurrence instances should be updated like normal events - only master events should be published -->
+                      <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdatePending"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
+                    </xsl:otherwise>
+                  </xsl:choose>
                   <xsl:choose>
                     <xsl:when test="summary != ''">
                       <xsl:value-of select="summary"/>
@@ -1298,12 +1307,26 @@
       <td class="date">
         <xsl:value-of select="start/shortdate"/>
         <xsl:text> </xsl:text>
-        <xsl:value-of select="start/time"/>
+        <xsl:choose>
+	        <xsl:when test="start/allday = 'false'">
+		        <xsl:value-of select="start/time"/>
+		      </xsl:when>
+		      <xsl:otherwise>
+		        <xsl:copy-of select="$bwStr-AEEF-AllDay"/>
+		      </xsl:otherwise>
+		    </xsl:choose>
       </td>
       <td class="date">
         <xsl:value-of select="end/shortdate"/>
         <xsl:text> </xsl:text>
-        <xsl:value-of select="end/time"/>
+        <xsl:choose>
+          <xsl:when test="start/allday = 'false'">
+            <xsl:value-of select="end/time"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="$bwStr-AEEF-AllDay"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </td>
       <td class="calcat">
         <xsl:choose>
@@ -1343,10 +1366,13 @@
         <xsl:value-of select="description"/>
         <xsl:if test="recurring = 'true' or recurrenceId != ''">
           <div class="recurrenceEditLinks">
+            <xsl:text> </xsl:text>
             <xsl:copy-of select="$bwStr-EvLC-RecurringEventEdit"/>
-            <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}">
+            <!-- only master events can be published -->
+            <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}">
               <xsl:copy-of select="$bwStr-EvLC-Master"/>
             </a> |
+            <!-- recurrence instances can only be edited -->
             <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:copy-of select="$bwStr-EvLC-Instance"/>
             </a>
