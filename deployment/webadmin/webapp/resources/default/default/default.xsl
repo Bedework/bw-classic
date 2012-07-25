@@ -1996,7 +1996,15 @@
                 <!-- recurrence instances can not themselves recur,
                      so provide access to master event -->
                 <em><xsl:copy-of select="$bwStr-AEEF-ThisEventRecurrenceInstance"/></em><br/>
-                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-AEEF-EditMaster}"><xsl:copy-of select="$bwStr-AEEF-EditMasterEvent"/></a>
+                <xsl:choose>
+                  <xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)">
+                    <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-AEEF-EditMaster}"><xsl:copy-of select="$bwStr-AEEF-EditPendingMasterEvent"/></a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-AEEF-EditMaster}"><xsl:copy-of select="$bwStr-AEEF-EditMasterEvent"/></a>
+                  </xsl:otherwise>
+                </xsl:choose>
+                
               </xsl:when>
               <xsl:otherwise>
                 <!-- has recurrenceId, so is master -->

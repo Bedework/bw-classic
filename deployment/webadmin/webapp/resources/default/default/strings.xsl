@@ -178,6 +178,7 @@
   <xsl:variable name="bwStr-AEEF-SelectTimezone">select timezone...</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ThisEventRecurrenceInstance">This event is a recurrence instance.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditMasterEvent">edit master event</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EditPendingMasterEvent">edit or publish master event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditMaster">edit master (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventRecurs">event recurs</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventDoesNotRecur">event does not recur</xsl:variable>
