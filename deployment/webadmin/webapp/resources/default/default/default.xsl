@@ -68,16 +68,14 @@
        reference it explicitly.  It is not used in this stylesheet, however,
        and can be safely removed if you so choose. -->
   <xsl:variable name="appRoot" select="/bedework/approot"/>
+  
+  <!-- Registration module application context -->
+  <xsl:variable name="bwRegistrationRoot">/eventreg</xsl:variable>
 
   <!-- Root folder of the submissions calendars used by the submissions client -->
   <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
   <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
   
-  <!-- Switches for Optional Modules -->
-  <!-- Use the regisration module? -->
-  <xsl:variable name="bwUseRegistrationSystem">true</xsl:variable>
-  <xsl:variable name="bwRegistrationRoot">/eventreg</xsl:variable>
-
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
@@ -298,7 +296,7 @@
                 function bwSetupDatePickers() {
                   // startdate
                   $("#bwEventWidgetStartDate").datepicker({
-                    <xsl:if test="/bedework/creating = 'true' or (translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text)">altField: "#xBwRegistrationClosesDate",</xsl:if><!-- 
+                    <xsl:if test="/bedework/formElements/eventregAdminToken != '' and (/bedework/creating = 'true' or (translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text))">altField: "#xBwRegistrationClosesDate",</xsl:if><!-- 
                  -->defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
@@ -370,40 +368,41 @@
 		                pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
 		              });
 		              
-		              // registration open dates
-                  $("#xBwRegistrationOpensDate").datepicker().attr("readonly", "readonly");
-                  $("#xBwRegistrationOpensDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
-		              
-		              // registration open time
-                  $("#xBwRegistrationOpensClock").bwTimePicker({
-                    hour24: <xsl:value-of select="/bedework/hour24"/>,
-                    attachToId: "xBwRegistrationOpensTimeFields",
-                    hourIds: ["xBwRegistrationOpensHour"],
-                    minuteIds: ["xBwRegistrationOpensMinute"],
-                    ampmIds: ["xBwRegistrationOpensAmpm"],
-                    hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
-                    minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
-                    amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
-                    pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
-                  });
-
-                  // registration close dates
-                  $("#xBwRegistrationClosesDate").datepicker().attr("readonly", "readonly");
-                  $("#xBwRegistrationClosesDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
-                  
-                  // registration close time
-                  $("#xBwRegistrationClosesClock").bwTimePicker({
-                    hour24: <xsl:value-of select="/bedework/hour24"/>,
-                    attachToId: "xBwRegistrationClosesTimeFields",
-                    hourIds: ["xBwRegistrationClosesHour"],
-                    minuteIds: ["xBwRegistrationClosesMinute"],
-                    ampmIds: ["xBwRegistrationClosesAmpm"],
-                    hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
-                    minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
-                    amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
-                    pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
-                  });
-                                    
+		              <xsl:if test="/bedework/formElements/eventregAdminToken != ''">
+			              // registration open dates
+	                  $("#xBwRegistrationOpensDate").datepicker().attr("readonly", "readonly");
+	                  $("#xBwRegistrationOpensDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+			              
+			              // registration open time
+	                  $("#xBwRegistrationOpensClock").bwTimePicker({
+	                    hour24: <xsl:value-of select="/bedework/hour24"/>,
+	                    attachToId: "xBwRegistrationOpensTimeFields",
+	                    hourIds: ["xBwRegistrationOpensHour"],
+	                    minuteIds: ["xBwRegistrationOpensMinute"],
+	                    ampmIds: ["xBwRegistrationOpensAmpm"],
+	                    hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+	                    minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+	                    amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+	                    pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+	                  });
+	
+	                  // registration close dates
+	                  $("#xBwRegistrationClosesDate").datepicker().attr("readonly", "readonly");
+	                  $("#xBwRegistrationClosesDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
+	                  
+	                  // registration close time
+	                  $("#xBwRegistrationClosesClock").bwTimePicker({
+	                    hour24: <xsl:value-of select="/bedework/hour24"/>,
+	                    attachToId: "xBwRegistrationClosesTimeFields",
+	                    hourIds: ["xBwRegistrationClosesHour"],
+	                    minuteIds: ["xBwRegistrationClosesMinute"],
+	                    ampmIds: ["xBwRegistrationClosesAmpm"],
+	                    hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+	                    minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+	                    amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+	                    pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+	                  });
+	                </xsl:if>
                 }
                 </xsl:comment>
               </script>
@@ -2975,7 +2974,8 @@
         </xsl:if>
         
         <!-- Registration settings -->
-        <xsl:if test="$bwUseRegistrationSystem = 'true'">
+        <!-- Display and use only if we've set an event reg admin token in the admin web client's system parameters -->
+        <xsl:if test="eventregAdminToken != ''">
 	        <tr class="optional">
 	          <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
 	          <td class="fieldName"><xsl:copy-of select="$bwStr-AEEF-Registration"/></td>
@@ -3114,7 +3114,7 @@
                     });
                   </script>
                 </xsl:if>
-	              <xsl:if test="eventregAdminToken">
+	              <xsl:if test="/bedework/creating = 'false'">
 	                <p>
 	                  <xsl:variable name="registrationsHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/adminAgenda.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
 	                  <xsl:variable name="registrationsDownloadHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/download.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>

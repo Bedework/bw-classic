@@ -335,18 +335,20 @@ function setEventFields(formObj,portalFriendly,submitter) {
 
 /* do some basic client-side validation where needed */
 function validateEventForm(formObj) {
-  if(formObj["bwIsRegisterableEvent"].checked) {
-    var maxTickets = trim(formObj["xBwMaxTicketsHolder"].value);
-    var maxTicketsPerUser = trim(formObj["xBwMaxTicketsPerUserHolder"].value);
-    if(maxTickets == "" || isNaN(maxTickets)) {
-      alert(maxTicketsWarning);
-      formObj["xBwMaxTicketsHolder"].focus();
-      return false;
-    }
-    if(maxTicketsPerUser == "" || isNaN(maxTicketsPerUser)) {
-      alert(maxTicketsPerUserWarning);
-      formObj["xBwMaxTicketsPerUserHolder"].focus();
-      return false;
+  if(formObj["bwIsRegisterableEvent"] != undefined) {
+    if(formObj["bwIsRegisterableEvent"].checked) {
+      var maxTickets = trim(formObj["xBwMaxTicketsHolder"].value);
+      var maxTicketsPerUser = trim(formObj["xBwMaxTicketsPerUserHolder"].value);
+      if(maxTickets == "" || isNaN(maxTickets)) {
+        alert(maxTicketsWarning);
+        formObj["xBwMaxTicketsHolder"].focus();
+        return false;
+      }
+      if(maxTicketsPerUser == "" || isNaN(maxTicketsPerUser)) {
+        alert(maxTicketsPerUserWarning);
+        formObj["xBwMaxTicketsPerUserHolder"].focus();
+        return false;
+      }
     }
   }
   return true;
