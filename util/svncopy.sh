@@ -128,6 +128,7 @@ PROJECTS="$PROJECTS clientapp"
 #PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
+PROJECTS="$PROJECTS eventreg"
 #  exchgGateway - later
 #  exchgsynch - delete this one 
 #   freebusy   - aggregator - not supported
