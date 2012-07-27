@@ -388,16 +388,18 @@ function setBedeworkXProperties(formObj,submitter) {
   }
   
   // Event registration x-properties:
-  if (formObj["bwIsRegisterableEvent"].checked) {
-    bwXProps.update(bwXPropertyMaxTickets,[],formObj["xBwMaxTicketsHolder"].value,true);
-    bwXProps.update(bwXPropertyMaxTicketsPerUser,[],formObj["xBwMaxTicketsPerUserHolder"].value,true);
-    
-    var bwRegDateString = ""
-    bwRegDateString = formObj["xBwRegistrationOpensDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationOpens.hour"].value) + padTimeUnit(formObj["xBwRegistrationOpens.minute"].value) + "00";
-    bwXProps.update(bwXPropertyRegistrationStart,[["TZID",formObj["xBwRegistrationOpensTzid"].value]],bwRegDateString,true);
-
-    bwRegDateString = formObj["xBwRegistrationClosesDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationCloses.hour"].value) + padTimeUnit(formObj["xBwRegistrationCloses.minute"].value) + "00";
-    bwXProps.update(bwXPropertyRegistrationEnd,[["TZID",formObj["xBwRegistrationClosesTzid"].value]],bwRegDateString,true);
+  if (formObj["bwIsRegisterableEvent"] != undefined) {
+    if (formObj["bwIsRegisterableEvent"].checked) {
+      bwXProps.update(bwXPropertyMaxTickets,[],formObj["xBwMaxTicketsHolder"].value,true);
+      bwXProps.update(bwXPropertyMaxTicketsPerUser,[],formObj["xBwMaxTicketsPerUserHolder"].value,true);
+      
+      var bwRegDateString = ""
+      bwRegDateString = formObj["xBwRegistrationOpensDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationOpens.hour"].value) + padTimeUnit(formObj["xBwRegistrationOpens.minute"].value) + "00";
+      bwXProps.update(bwXPropertyRegistrationStart,[["TZID",formObj["xBwRegistrationOpensTzid"].value]],bwRegDateString,true);
+  
+      bwRegDateString = formObj["xBwRegistrationClosesDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationCloses.hour"].value) + padTimeUnit(formObj["xBwRegistrationCloses.minute"].value) + "00";
+      bwXProps.update(bwXPropertyRegistrationEnd,[["TZID",formObj["xBwRegistrationClosesTzid"].value]],bwRegDateString,true);
+    }
   }
   
   // X-BEDEWORK-SUBMITTEDBY
