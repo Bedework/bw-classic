@@ -45,6 +45,7 @@
   <xsl:include href="notifications.xsl" />
   <xsl:include href="eventForm.xsl" />
   <xsl:include href="addRef.xsl" />
+  <xsl:include href="addEventSub.xsl" />
   <xsl:include href="attendees.xsl" />
   <xsl:include href="categories.xsl" />
   <xsl:include href="calendars.xsl" />
@@ -113,6 +114,9 @@
                   </xsl:when>
                   <xsl:when test="/bedework/page='addEventRef'">
                     <xsl:apply-templates select="/bedework/event" mode="addEventRef"/>
+                  </xsl:when>
+                  <xsl:when test="/bedework/page='addEventSub'">
+                    <xsl:apply-templates select="/bedework/event" mode="addEventSub"/>
                   </xsl:when>
                   <xsl:when test="/bedework/page='alarmOptions'">
                     <xsl:call-template name="alarmOptions" />

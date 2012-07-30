@@ -70,6 +70,7 @@
   <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent"/>
   <xsl:variable name="event-initMeeting" select="/bedework/urlPrefixes/event/initMeeting"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete"/>
+  <xsl:variable name="event-addEventSubComplete" select="/bedework/urlPrefixes/event/addEventSubComplete"/>
   <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess"/>
   <!-- <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess"/>-->
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>

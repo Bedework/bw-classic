@@ -25,6 +25,7 @@
   <xsl:template match="event" mode="singleEvent">
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid" select="guid"/>
+    <xsl:variable name="name" select="name"/>
     <xsl:variable name="guidEsc" select="translate(guid, '.', '_')" />
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:variable name="statusClass">
@@ -76,7 +77,12 @@
           </xsl:choose>
         </xsl:if>
         <xsl:if test="$eventIconAddToMyCal = 'true'">
+          <!-- 
           <a class="eventIcons" href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-AddEventToMyCalendar}" target="myCalendar">
+            <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" alt="{$bwStr-SgEv-AddEventToMyCalendar}"/>
+          </a>
+           -->
+          <a class="eventIcons" href="{$privateCal}/event/addEventSub.do?calPath={$calPath}&amp;eventName={$name}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-AddEventToMyCalendar}" target="myCalendar">
             <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon.gif" alt="{$bwStr-SgEv-AddEventToMyCalendar}"/>
           </a>
         </xsl:if>

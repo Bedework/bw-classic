@@ -511,6 +511,7 @@
   <!-- xsl:template match="event" mode="addEventRef" -->
   <!-- some strings defined above -->
   <xsl:variable name="bwStr-AEEF-AddEventReference">Add Event Reference</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-AddEventSubscription">Add Event Subscription</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventColon">Event:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-NoTitle">no title</xsl:variable>
   <xsl:variable name="bwStr-AEEF-IntoCalendar">Into calendar:</xsl:variable>
