@@ -51,9 +51,6 @@
       the virtual queue bedework.sysevents
     -->
     <destinations>
-      <queue name="bedeworkSyseventsIn"
-             physicalName="bedework.sysevents" />
-             
       <!-- The listener just logs the system events -->
       <queue name="logger"
              physicalName="bedework.sysevents.logger" />
@@ -76,31 +73,14 @@
              physicalName="bedework.scheduleOut" />
 
       <!-- <topic physicalName="SOME.TOPIC" /> -->
-      
-      <!--  ================= queues for camel stuff ====================== 
-      <queue name="bedeworkSysevents"
-             physicalName="bedework.sysevents.cm.sysev" />
-      <queue name="syseventsLogger"
-             physicalName="bedework.sysevents.cm.logger" />
-      <queue name="syseventsMonitor"
-             physicalName="bedework.sysevents.cm.monitor" />
-      <queue name="syseventsCrawler"
-             physicalName="bedework.sysevents.cm.crawler" />
-      <queue name="syseventsSchedIn"
-             physicalName="bedework.sysevents.cm.schedin" />
-      <queue name="syseventsSchedOut"
-             physicalName="bedework.sysevents.cm.schedout" />
-           ================== end camel queues ============================ -->
     </destinations>
 
-    <!-- MikeD 
+    <!-- MikeD -->
     <destinationInterceptors>
       <virtualDestinationInterceptor>
         <virtualDestinations>
           <compositeQueue name="bedework.sysevents">
             <forwardTo>
-              <! - - Forward all to the camel sysevents queue for testing. - - >
-              <queue physicalName="bedework.sysevents.cm.sysev" />
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
               <queue physicalName="bedework.crawler" />
@@ -112,7 +92,7 @@
           </compositeQueue>
         </virtualDestinations>
       </virtualDestinationInterceptor>
-    </destinationInterceptors>-->
+    </destinationInterceptors>
 
     <!--
       Destination specific policies using destination names or wildcards
