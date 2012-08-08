@@ -78,6 +78,11 @@
               libcache="${org.bedework.libcache.dir}"
               name="bw-calsvc" version="${org.bedework.calcore.version}" 
               projecthome="${project.home}/../bwcalcore" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-chgnote" version="${org.bedework.calcore.version}" 
+              projecthome="${project.home}/../bwcalcore" />
 
       <!-- ================ Bedework calendar api jars ===================== -->
       

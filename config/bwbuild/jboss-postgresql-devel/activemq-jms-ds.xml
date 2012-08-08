@@ -112,8 +112,18 @@
       <attribute name="Properties">PhysicalName=bedework.scheduleIn</attribute>
    </mbean>
 
+   <!-- Bedework change processing queue -->
+   <mbean code="org.jboss.resource.deployment.AdminObject" 
+          name="activemq.queue:name=changes">
+      <attribute name="JNDIName">activemq/queue/changes</attribute>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <attribute name="Type">javax.jms.Queue</attribute>
+      <attribute name="Properties">PhysicalName=bedework.sysevents.changes</attribute>
+   </mbean>
+
    <!-- Bedework outbox processing queue -->
-   <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.queue:name=schedulerOut">
+   <mbean code="org.jboss.resource.deployment.AdminObject" 
+          name="activemq.queue:name=schedulerOut">
       <attribute name="JNDIName">activemq/queue/schedulerOut</attribute>
       <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>

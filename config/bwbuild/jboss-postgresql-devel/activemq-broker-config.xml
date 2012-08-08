@@ -51,8 +51,15 @@
       the virtual queue bedework.sysevents
     -->
     <destinations>
+      <!-- If we want to run the bedenote JMS handler we need to
+           define the sysevents queue as a physical queue as shown here
       <queue name="bedeworkSyseventsIn"
              physicalName="bedework.sysevents" />
+             -->
+             
+      <!-- The listener handles change notifications -->
+      <queue name="changes"
+             physicalName="bedework.sysevents.changes" />
              
       <!-- The listener just logs the system events -->
       <queue name="logger"
@@ -78,6 +85,9 @@
       <!-- <topic physicalName="SOME.TOPIC" /> -->
       
       <!--  ================= queues for camel stuff ====================== 
+            We need queues to take output from the bedenote notification
+            processor. We might not need all of these as some might
+            be handled as an internal camel process.
       <queue name="bedeworkSysevents"
              physicalName="bedework.sysevents.cm.sysev" />
       <queue name="syseventsLogger"
@@ -93,17 +103,21 @@
            ================== end camel queues ============================ -->
     </destinations>
 
-    <!-- MikeD 
+    <!-- These destinationInterceptors should be commented out if we
+         run bedenote.
+         They define a set of virtual destinations fanning out
+         from the physical name bedework.sysevents
+     -->
     <destinationInterceptors>
       <virtualDestinationInterceptor>
         <virtualDestinations>
           <compositeQueue name="bedework.sysevents">
             <forwardTo>
-              <! - - Forward all to the camel sysevents queue for testing. - - >
-              <queue physicalName="bedework.sysevents.cm.sysev" />
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
               <queue physicalName="bedework.crawler" />
+              <filteredDestination selector="changeEvent = 'true'"
+                                   queue="bedework.sysevents.changes" />
               <filteredDestination selector="inbox = 'true' or scheduleEvent = 'true'"
                                    queue="bedework.scheduleIn"/>
               <filteredDestination selector="outbox = 'true'"
@@ -112,7 +126,7 @@
           </compositeQueue>
         </virtualDestinations>
       </virtualDestinationInterceptor>
-    </destinationInterceptors>-->
+    </destinationInterceptors>
 
     <!--
       Destination specific policies using destination names or wildcards
