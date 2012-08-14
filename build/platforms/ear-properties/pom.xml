@@ -29,13 +29,13 @@
   <parent>
     <groupId>org.bedework</groupId>
     <artifactId>bedework</artifactId>
-    <version>3.8</version>
+    <version>3.9</version>
     <relativePath>../../../bedework</relativePath>
   </parent>
  -->
   <groupId>org.bedework</groupId>
   <artifactId>ear.properties</artifactId>
-  <version>3.8</version>
+  <version>3.9</version>
 
   <name>Properties for deployed ears</name>
   <description>Properties for deployed ears</description>

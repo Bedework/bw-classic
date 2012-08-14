@@ -6,7 +6,7 @@
   <org>
     <bedework>
       <global>
-        <version>3.8</version>
+        <version>3.9</version>
         
         <!-- This property is how the running system finds the system settings.
              In theory we could have multiple settings with different names

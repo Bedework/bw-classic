@@ -7,7 +7,7 @@
     <dep:moduleId>
       <dep:groupId>org.bedework</dep:groupId>
       <dep:artifactId>bwcal</dep:artifactId>
-      <dep:version>3.8</dep:version>
+      <dep:version>3.9</dep:version>
       <dep:type>car</dep:type>
     </dep:moduleId>
 
