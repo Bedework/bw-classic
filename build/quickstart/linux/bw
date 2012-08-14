@@ -88,6 +88,7 @@ webdav=
 
 # Special targets - avoiding dependencies
 
+cmdutil=
 deploylog4j=
 deployActivemq=
 deploySolr=
@@ -254,6 +255,13 @@ setDirectory() {
     specialTarget=
     
 #     Special targets
+  if [ "$cmdutil" != "" ] ; then
+    cd $QUICKSTART_HOME/bwtools
+    specialTarget=cmdutil
+    cmdutil=
+    return
+  fi
+
 	if [ "$dirstart" != "" ] ; then
 	  cd $QUICKSTART_HOME
 	  specialTarget=dirstart
@@ -669,7 +677,7 @@ fi
 # ---------------------------------------------------------------------------- 
 #  Here we go through looking for arguments.
 #  
-#  Look firther down for wher we are specifying projects to build. I've
+#  Look further down for where we are specifying projects to build. I've
 #  not tried specifying more than one but I think it would work.
 #  
 #  There's a hidden default project "bedework" which you get if you don't specify
@@ -753,6 +761,11 @@ do
       shift
       ;;
 # ------------------------Special targets
+    cmdutil)
+    cmdutil="yes"
+      pkgdefault=
+      shift
+      ;;
     deploylog4j)
 	  deploylog4j="yes"
       pkgdefault=
