@@ -292,8 +292,7 @@
           <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
           <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
           <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
-          <!-- NEED TO ACCOUNT FOR THE FOLLOWING: -->
-          <!-- script type="text/javascript" src="/bedework-common/javascript/bedework/lang/bwAccessStrings-es.js">&#160;</script-->
+          <xsl:call-template name="localeAccessStringsJsInclude"></xsl:call-template>
           
           <!-- initialize calendar acls, if present -->
           <xsl:if test="/bedework/currentCalendar/acl/ace">

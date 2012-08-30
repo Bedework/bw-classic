@@ -23,6 +23,10 @@
 
   <!-- LOCALE SETTINGS -->
   <!-- A place for javascript strings and locale specific javascript overrides -->
+  
+   <xsl:template name="localeAccessStringsJsInclude">
+     <!-- no JavaScript access stings needed - English is default, but this template must be here. -->
+   </xsl:template>
 
   <!-- Set up the datepicker defaults -->
   <!-- For futher configuration, see http://docs.jquery.com/UI/Datepicker -->
