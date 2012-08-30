@@ -42,7 +42,7 @@
         constrainInput: true,
         dateFormat: "yy-mm-dd",
         showOn: "both",
-        buttonImage: "<xsl:value-of select='$resourcesRoot'/>/resources/calIcon.gif",
+        buttonImage: "<xsl:value-of select='$resourcesRoot'/>/images/calIcon.gif",
         buttonImageOnly: true,
         gotoCurrent: true,
         duration: ""
