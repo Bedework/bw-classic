@@ -51,6 +51,16 @@
       the virtual queue bedework.sysevents
     -->
     <destinations>
+      <!-- If we want to run the bedenote JMS handler we need to
+           define the sysevents queue as a physical queue as shown here
+      <queue name="bedeworkSyseventsIn"
+             physicalName="bedework.sysevents" />
+             -->
+             
+      <!-- The listener handles change notifications -->
+      <queue name="changes"
+             physicalName="bedework.sysevents.changes" />
+             
       <!-- The listener just logs the system events -->
       <queue name="logger"
              physicalName="bedework.sysevents.logger" />
@@ -73,9 +83,31 @@
              physicalName="bedework.scheduleOut" />
 
       <!-- <topic physicalName="SOME.TOPIC" /> -->
+      
+      <!--  ================= queues for camel stuff ====================== 
+            We need queues to take output from the bedenote notification
+            processor. We might not need all of these as some might
+            be handled as an internal camel process.
+      <queue name="bedeworkSysevents"
+             physicalName="bedework.sysevents.cm.sysev" />
+      <queue name="syseventsLogger"
+             physicalName="bedework.sysevents.cm.logger" />
+      <queue name="syseventsMonitor"
+             physicalName="bedework.sysevents.cm.monitor" />
+      <queue name="syseventsCrawler"
+             physicalName="bedework.sysevents.cm.crawler" />
+      <queue name="syseventsSchedIn"
+             physicalName="bedework.sysevents.cm.schedin" />
+      <queue name="syseventsSchedOut"
+             physicalName="bedework.sysevents.cm.schedout" />
+           ================== end camel queues ============================ -->
     </destinations>
 
-    <!-- MikeD -->
+    <!-- These destinationInterceptors should be commented out if we
+         run bedenote.
+         They define a set of virtual destinations fanning out
+         from the physical name bedework.sysevents
+     -->
     <destinationInterceptors>
       <virtualDestinationInterceptor>
         <virtualDestinations>
@@ -84,6 +116,8 @@
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
               <queue physicalName="bedework.crawler" />
+              <filteredDestination selector="changeEvent = 'true'"
+                                   queue="bedework.sysevents.changes" />
               <filteredDestination selector="inbox = 'true' or scheduleEvent = 'true'"
                                    queue="bedework.scheduleIn"/>
               <filteredDestination selector="outbox = 'true'"
