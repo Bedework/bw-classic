@@ -51,6 +51,7 @@
   <xsl:include href="subscriptions.xsl" />
   <xsl:include href="accessControl.xsl" />
   <xsl:include href="views.xsl" />
+  <xsl:include href="resources.xsl" />
   <xsl:include href="calSuites.xsl" />
   <xsl:include href="calSuiteForm.xsl" />
   <xsl:include href="calSuitePrefs.xsl" />
@@ -164,6 +165,15 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='deleteViewConfirm'">
                   <xsl:call-template name="deleteViewConfirm"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='resources'">
+                  <xsl:call-template name="listResources"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='modResource'">
+                  <xsl:call-template name="modResource"/>
+                </xsl:when>
+                <xsl:when test="/bedework/page='deleteResourceConfirm'">
+                  <xsl:call-template name="deleteResourceConfirm"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='modSyspars'">
                   <xsl:call-template name="modSyspars"/>

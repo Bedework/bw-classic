@@ -61,6 +61,11 @@
           </a>
         </li>
         <li>
+          <a href="{$calsuite-resources-fetch}" title="suite-specific resources (images, CSS, XML configuration, etc...)">
+            <xsl:copy-of select="$bwStr-TaCS-ManageResources"/>
+          </a>
+        </li>
+        <li>
           <a href="{$calsuite-fetchPrefsForUpdate}" title="calendar suite defaults such as viewperiod and view">
             <xsl:copy-of select="$bwStr-TaCS-ManagePreferences"/>
           </a>

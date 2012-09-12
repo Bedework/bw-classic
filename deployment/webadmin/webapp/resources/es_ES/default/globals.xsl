@@ -173,6 +173,12 @@
   <!--  <xsl:variable name="calsuite-setAccess" select="/bedework/urlPrefixes/calsuite/setAccess"/> -->
   <xsl:variable name="calsuite-fetchPrefsForUpdate" select="/bedework/urlPrefixes/calsuite/fetchPrefsForUpdate"/>
   <xsl:variable name="calsuite-updatePrefs" select="/bedework/urlPrefixes/calsuite/updatePrefs"/>
+  <!-- calsuite resources -->
+  <xsl:variable name="calsuite-resources-fetch" select="/bedework/urlPrefixes/calsuiteresources/fetch"/>
+  <xsl:variable name="calsuite-resources-edit" select="/bedework/urlPrefixes/calsuiteresources/edit"/>
+  <xsl:variable name="calsuite-resources-add" select="/bedework/urlPrefixes/calsuiteresources/add"/>
+  <xsl:variable name="calsuite-resources-update" select="/bedework/urlPrefixes/calsuiteresources/update"/>
+  <xsl:variable name="calsuite-resources-remove" select="/bedework/urlPrefixes/calsuiteresources/remove"/>
   <!-- timezones and stats -->
   <xsl:variable name="timezones-initUpload" select="/bedework/urlPrefixes/timezones/initUpload"/>
   <xsl:variable name="timezones-upload" select="/bedework/urlPrefixes/timezones/upload"/>
