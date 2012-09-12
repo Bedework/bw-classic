@@ -130,6 +130,9 @@
       <xsl:when test="id='org.bedework.client.message.deleted.view'">
         View deleted
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.message.deleted.resource'">
+        Resource deleted
+      </xsl:when>
 
       <xsl:when test="id='org.bedework.client.message.freebusy.unavailable'">
         Freebusy information is (currently) unavailable for

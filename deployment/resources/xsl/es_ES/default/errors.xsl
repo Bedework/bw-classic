@@ -197,6 +197,9 @@
       <xsl:when test="id='org.bedework.client.error.unknown.view'">
         Not found: there is no view identified by the name <em><xsl:value-of select="param"/></em>.
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.unknown.resource'">
+        Not found: there is no resource identified by the name <em><xsl:value-of select="param"/></em>.
+      </xsl:when>
 
       <xsl:when test="id='org.bedework.client.error.viewnotadded'">
         Error: the view was not added.
@@ -483,6 +486,18 @@
 
       <xsl:when test="id='org.bedework.validation.error.missingname'">
         Your information is incomplete: please supply a name.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingclass'">
+        Your information is incomplete: please supply a class.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingcontenttype'">
+        Your information is incomplete: please supply a content type.
+      </xsl:when>
+
+      <xsl:when test="id='org.bedework.validation.error.missingtype'">
+        Your information is incomplete: please supply a type.
       </xsl:when>
 
       <xsl:when test="id='org.bedework.validation.error.missingorganizer'">
