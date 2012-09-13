@@ -770,10 +770,7 @@
 
           <!-- Comment out or delete for no ischedule service
                Currently under development and may present a security risk in
-               production systems
-
-               Note that the uri "/ischedule" is defined in the draft and should
-               not be changed to some other value. -->
+               production systems. -->
           <ischeduleURI>/ischedule</ischeduleURI>
 
           <!-- Comment out or delete for no freebusy url service -->

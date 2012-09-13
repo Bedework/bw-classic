@@ -16,6 +16,21 @@
     <copy todir="${startup.website.dir}">
       <fileset dir="${app.root.dir}/resources/bedework"/>
     </copy>
+    
+    <!-- Copy in the url rewrites -->
+    
+    <if>
+      <isset property="org.bedework.config.rewrite.properties" />
+      <then>
+        <copy tofile="${org.bedework.jboss.config.dir}/conf/jboss.web/localhost/rewrite.properties"
+              file="${org.bedework.config.rewrite.properties}"/>
+      </then>
+      <else>
+        <copy tofile="${org.bedework.jboss.config.dir}/conf/jboss.web/localhost/rewrite.properties"
+              file="${org.bedework.configuration.defaults}/rewrite.properties"/>
+      </else>
+    </if>
+    
 
     <!-- copy any jars required in the server lib (jdbc etc) -->
     <if>
