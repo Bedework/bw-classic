@@ -219,7 +219,7 @@
               name="commons-logging" />
               -->
 
-      <!-- ======================= httpclient jars ============================ -->
+      <!-- ======================= httpclient jars ========================= -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
@@ -228,6 +228,12 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="httpcore" version="4.1.2"/>
+
+      <!-- ========================= dkim jars ============================= -->
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="apache-jdkim-library" version="0.2.BEDEWORK"/>
 
       <!-- ======================= Hibernate jars ========================== -->
       
