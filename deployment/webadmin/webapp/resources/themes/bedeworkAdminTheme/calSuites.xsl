@@ -86,6 +86,7 @@
       <tr>
         <th><xsl:copy-of select="$bwStr-CalS-Name"/></th>
         <th><xsl:copy-of select="$bwStr-CalS-AssociatedGroup"/></th>
+        <th>Context</th>
       </tr>
       <xsl:for-each select="calSuite">
         <tr>
@@ -99,9 +100,18 @@
           <td>
             <xsl:value-of select="group"/>
           </td>
+          <td>
+            <xsl:if test="defaultContext = 'true'">
+              <em><xsl:text>* </xsl:text></em>
+            </xsl:if>
+            <xsl:value-of select="context"/>
+          </td>
         </tr>
       </xsl:for-each>
     </table>
+    
+    <br/>
+    <span><i>Note: a (*) next to the context name indicates the default context (if any).</i></span>
 
   </xsl:template>
   

@@ -57,6 +57,19 @@
             <xsl:copy-of select="$bwStr-AdCS-NameAdminGroup"/>
           </td>
         </tr>
+        <tr>
+          <th>Context:</th>
+          <td>
+            <input type="text" name="context" value="{context}" />
+            <label><input type="checkbox" name="defaultContext" value="true">
+              <xsl:if test="defaultContext = 'true'">
+                <xsl:attribute name="checked">true</xsl:attribute>
+              </xsl:if>
+              <xsl:text> </xsl:text>
+              <xsl:text>Default context</xsl:text>
+            </input></label>
+          </td>
+        </tr>
       </table>
       <div class="submitBox">
         <input type="submit" name="updateCalSuite" value="{$bwStr-AdCS-Add}"/>
@@ -98,6 +111,19 @@
             </p>
           </td>
           -->
+        </tr>
+        <tr>
+          <th>Context:</th>
+          <td>
+            <input type="text" name="context" value="{context}" />
+            <label><input type="checkbox" name="defaultContext" value="true">
+              <xsl:if test="defaultContext = 'true'">
+                <xsl:attribute name="checked">true</xsl:attribute>
+              </xsl:if>
+              <xsl:text> </xsl:text>
+              <xsl:text>Default context</xsl:text>
+            </input></label>
+          </td>
         </tr>
       </table>
 
