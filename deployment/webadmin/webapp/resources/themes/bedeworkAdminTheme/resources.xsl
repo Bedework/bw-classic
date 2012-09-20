@@ -97,6 +97,7 @@
 	    </form>
 	  </div>
 
+    <!-- The table of resources -->
     <h4><xsl:copy-of select="$bwStr-Resource-Resources"/></h4>
     <table id="commonListTable" class="resourcesTable">
       <tr>
@@ -106,6 +107,7 @@
         <xsl:if test="/bedework/userInfo/superUser = 'true'">
           <th><xsl:copy-of select="$bwStr-Resource-ResourceClassCol"/></th>
         </xsl:if>
+        <th> </th>
       </tr>
       <xsl:for-each select="/bedework/resources/resource">
         <xsl:sort select="name" order="ascending" case-order="upper-first"/>
@@ -113,6 +115,7 @@
         <xsl:variable name="resContentType" select="content-type"/>
         <xsl:variable name="resType" select="type"/>
         <xsl:variable name="resClass" select="class"/>
+        <xsl:variable name="downloadLink" select="concat('/pubcaldav', path)" />
         <tr>
           <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
@@ -131,6 +134,11 @@
 	            <xsl:value-of select="$resClass" />
 	          </td>
 	        </xsl:if>
+          <td>
+            <a href="{$downloadLink}">
+              <xsl:copy-of select="$bwStr-Resource-ResourceURL"/>
+            </a>
+          </td>
         </tr>
       </xsl:for-each>
     </table>

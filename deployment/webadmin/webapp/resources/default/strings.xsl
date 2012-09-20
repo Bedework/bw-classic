@@ -656,6 +656,7 @@
   <xsl:variable name="bwStr-Resource-CalendarSuite">Calendar Suite</xsl:variable>
   <xsl:variable name="bwStr-Resource-Admin">Admin</xsl:variable>
   <xsl:variable name="bwStr-Resource-CalendarSuite">Calendar Suite</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ResourceURL">Resource URL</xsl:variable>
 
   <!-- xsl:template name="modResource" -->
   <xsl:variable name="bwStr-ModRes-AddResource">Add Resource</xsl:variable>
