@@ -7,7 +7,7 @@
                 },
                 "source" : [
                     {
-                        "value" : "\/ucarddav\/public\/locations\/Wheeler315.vcf" 
+                        "value" : "\/ucarddavweb\/public\/locations\/Wheeler315.vcf" 
                     } 
                 ],
                 "fn" : {
@@ -29,7 +29,7 @@
                     "value" : "Wheeler (315) Maude Fife Rm" 
                 },
                 "uid" : {
-                    "value" : "\/ucarddav\/public\/locations\/Wheeler315.vcf" 
+                    "value" : "\/ucarddavweb\/public\/locations\/Wheeler315.vcf" 
                 } 
             },
             {
@@ -38,7 +38,7 @@
                 },
                 "source" : [
                     {
-                        "value" : "\/ucarddav\/public\/locations\/Dwinelle23.vcf" 
+                        "value" : "\/ucarddavweb\/public\/locations\/Dwinelle23.vcf" 
                     } 
                 ],
                 "fn" : {
@@ -60,7 +60,7 @@
                     "value" : "Dwinelle (23) Master Control" 
                 },
                 "uid" : {
-                    "value" : "\/ucarddav\/public\/locations\/Dwinelle23.vcf" 
+                    "value" : "\/ucarddavweb\/public\/locations\/Dwinelle23.vcf" 
                 } 
             },
             {
@@ -72,7 +72,7 @@
                 },
                 "source" : [
                     {
-                        "value" : "\/ucarddav\/public\/locations\/Evans1011.vcf" 
+                        "value" : "\/ucarddavweb\/public\/locations\/Evans1011.vcf" 
                     } 
                 ],
                 "fn" : {
@@ -94,7 +94,7 @@
                     "value" : "Evans (1011) Jerzy Neyman Room" 
                 },
                 "uid" : {
-                    "value" : "\/ucarddav\/public\/locations\/Evans1011.vcf" 
+                    "value" : "\/ucarddavweb\/public\/locations\/Evans1011.vcf" 
                 } 
             } 
         ] 

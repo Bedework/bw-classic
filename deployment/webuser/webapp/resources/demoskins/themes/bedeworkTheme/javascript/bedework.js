@@ -24,7 +24,7 @@
 /* Global variables / properties */
 // URLs
 var timezoneUrl = "/tzsvr/?names";
-var carddavUrl = "/ucarddav/find";
+var carddavUrl = "/ucarddavweb/find";
 
 var debug = false; // very basic debugging for now
 
