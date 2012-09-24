@@ -390,6 +390,16 @@
           </td>
         </tr>
         <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-GblResPath"/></th>
+          <td>
+            <xsl:variable name="gblResPath" select="/bedework/system/globalResourcesPath"/>
+            <input value="{$gblResPath}" name="globalResourcesPath" class="wide"/>
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-GblResPathNote"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-IndexRoot"/></th>
           <td>
             <xsl:variable name="indexRoot" select="/bedework/system/indexRoot"/>

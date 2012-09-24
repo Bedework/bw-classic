@@ -804,6 +804,9 @@
   <xsl:variable name="bwStr-MdSP-EvregAdmTkn">Eventreg admin token:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-EvregAdmTknNote">Token for event registration. Must be identical to token set in event reg JMX service</xsl:variable>
 
+  <xsl:variable name="bwStr-MdSP-GblResPath">Global resources path:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-GblResPathNote">Path for global resources</xsl:variable>
+
   <xsl:variable name="bwStr-MdSP-IndexRoot">Index root:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-IndexRootNote">Root for the event indexes. Should only be changed if the indexes are moved/copied</xsl:variable>
   <xsl:variable name="bwStr-MdSP-UseSolr">Use Solr for public indexing:</xsl:variable>
@@ -908,6 +911,8 @@
   <xsl:variable name="bwStr-MoPr-Week">week</xsl:variable>
   <xsl:variable name="bwStr-MoPr-Month">month</xsl:variable>
   <xsl:variable name="bwStr-MoPr-Year">year</xsl:variable>
+  <xsl:variable name="bwStr-MoPr-PageSize">Page Size:</xsl:variable>
+    
   <xsl:variable name="bwStr-MoPr-Update">Update</xsl:variable>
   <xsl:variable name="bwStr-MoPr-Cancel">Cancel</xsl:variable>
 
