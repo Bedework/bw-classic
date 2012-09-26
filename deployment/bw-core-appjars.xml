@@ -234,6 +234,10 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="apache-jdkim-library" version="0.2.BEDEWORK"/>
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="dnsjava" version="2.1.1"/>
 
       <!-- ======================= Hibernate jars ========================== -->
       
