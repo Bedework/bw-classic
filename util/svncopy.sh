@@ -102,13 +102,12 @@ COMMENT="$3"
 
 PROJECTS=""
 PROJECTS="$PROJECTS access"
+PROJECTS="$PROJECTS bedenote"
 PROJECTS="$PROJECTS bedework"
-#  bwalarms  - later
 PROJECTS="$PROJECTS bwannotations"
 PROJECTS="$PROJECTS bwcalcore"
 PROJECTS="$PROJECTS bwcaldav"
-PROJECTS="$PROJECTS bwcalFacade"
-#  bwcrawler - can probably delete
+PROJECTS="$PROJECTS bwcalfacade"
 PROJECTS="$PROJECTS bwdeployutil"
 PROJECTS="$PROJECTS bwical"
 PROJECTS="$PROJECTS bwinterfaces"
@@ -120,28 +119,19 @@ PROJECTS="$PROJECTS bwwebapps"
 PROJECTS="$PROJECTS bwxml"
 PROJECTS="$PROJECTS cachedfeeder"
 PROJECTS="$PROJECTS caldav"
-#  caldavimpl - dropped in 3.8 release
 PROJECTS="$PROJECTS caldavTest"
-#  calendarapi - dropped in 3.8 release
 PROJECTS="$PROJECTS carddav"
 PROJECTS="$PROJECTS clientapp"
-#PROJECTS="$PROJECTS contrib"
 PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
 PROJECTS="$PROJECTS eventreg"
 #  exchgGateway - later
-#  exchgsynch - delete this one 
-#   freebusy   - aggregator - not supported
 PROJECTS="$PROJECTS indexer"
 PROJECTS="$PROJECTS monitor"
 PROJECTS="$PROJECTS naming"
 PROJECTS="$PROJECTS rpiutil"
 PROJECTS="$PROJECTS synch"
-#   synchml  - delete?
 PROJECTS="$PROJECTS testsuite"
-#   timezones ?
-#   webapps   dropped in 3.8
-#   webcache ?
 PROJECTS="$PROJECTS webdav"
 
 for project in $PROJECTS
