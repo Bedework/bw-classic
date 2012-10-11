@@ -96,6 +96,8 @@
   <xsl:variable name="bwStr-TaSy-AdminWebClient">admin web client</xsl:variable>
   <xsl:variable name="bwStr-TaSy-PublicWebClient">public web client</xsl:variable>
   <xsl:variable name="bwStr-TaSy-ManageCalDAVFilters">Manage CalDAV filters</xsl:variable>
+  <xsl:variable name="bwStr-TaSy-ManageGlobalResources">Manage global resources</xsl:variable>
+
 
   <!--  xsl:template name="eventList" -->
   <xsl:variable name="bwStr-EvLs-ManageEvents">Manage Events</xsl:variable>
@@ -641,7 +643,9 @@
 
   <!-- xsl:template name="listResources" -->
   <xsl:variable name="bwStr-Resource-ManageResources">Manage Resources</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ManageResources-Global">Manage Global Resources</xsl:variable>
   <xsl:variable name="bwStr-Resource-ResourcesAre">Resources are files created for and owned by the calendar suite.  They can be CSS, images, or snippets of XML and are unique to each calendar suite.</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ResourcesAre-Global">Resources are files created for use by all calendar suites (or any other purpose).  They can be CSS, images, or snippets of XML and are stored in a global area in caldav.</xsl:variable>
   <xsl:variable name="bwStr-Resource-AddNewResource">Add a new resource</xsl:variable>
   <xsl:variable name="bwStr-Resource-Resources">Resources</xsl:variable>
   <xsl:variable name="bwStr-Resource-NameCol">Name</xsl:variable>

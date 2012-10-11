@@ -166,8 +166,9 @@
                 <xsl:when test="/bedework/page='deleteViewConfirm'">
                   <xsl:call-template name="deleteViewConfirm"/>
                 </xsl:when>
+                <!-- Calendar Suite Resources -->
                 <xsl:when test="/bedework/page='resources'">
-                  <xsl:call-template name="listResources"/>
+                  <xsl:call-template name="listResources" />
                 </xsl:when>
                 <xsl:when test="/bedework/page='modResource'">
                   <xsl:call-template name="modResource"/>
@@ -175,6 +176,12 @@
                 <xsl:when test="/bedework/page='deleteResourceConfirm'">
                   <xsl:call-template name="deleteResourceConfirm"/>
                 </xsl:when>
+                <!-- Global Resources -->
+                <xsl:when test="/bedework/page='globalresources'">
+                  <xsl:call-template name="listResources">
+                    <xsl:with-param name="global" select="'true'" />
+                  </xsl:call-template>
+                </xsl:when>                
                 <xsl:when test="/bedework/page='modSyspars'">
                   <xsl:call-template name="modSyspars"/>
                 </xsl:when>

@@ -35,14 +35,42 @@
 
   <!-- List all resources -->
   <xsl:template name="listResources">
-    <h2><xsl:copy-of select="$bwStr-Resource-ManageResources"/></h2>
+    <xsl:param name="global" select="'false'" />
+    <xsl:variable name="add-link">
+      <xsl:choose>
+        <xsl:when test="$global = 'true'">
+          <xsl:copy-of select="$global-resources-add"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="$calsuite-resources-add"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
+    <h2>
+      <xsl:choose>
+        <xsl:when test="$global = 'true'">
+          <xsl:copy-of select="$bwStr-Resource-ManageResources-Global"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="$bwStr-Resource-ManageResources"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </h2>
     <p>
-      <xsl:copy-of select="$bwStr-Resource-ResourcesAre"/>
+      <xsl:choose>
+        <xsl:when test="$global = 'true'">
+          <xsl:copy-of select="$bwStr-Resource-ResourcesAre-Global"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="$bwStr-Resource-ResourcesAre"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </p>
 
     <h4><xsl:copy-of select="$bwStr-Resource-AddNewResource"/></h4>
     <div class="addResourceForm" style="border: 1px solid grey; padding: 10px; display: table;">
-	    <form name="addResource" action="{$calsuite-resources-add}" method="post">
+	    <form name="addResource" action="{$add-link}" method="post">
         <span class="resFormLabel">
           <xsl:value-of select="$bwStr-Resource-NameLabel" />
           <xsl:text>: </xsl:text>
@@ -74,6 +102,9 @@
 	      <br/>
 	      
 	      <xsl:choose>
+	       <xsl:when test="$global = 'true'">
+          <input type="hidden" name="class" value="global" />
+	       </xsl:when>
 	       <xsl:when test="/bedework/userInfo/superUser = 'true'">
 	        <span class="resFormLabel">
 	          <xsl:value-of select="$bwStr-Resource-ClassLabel" />
@@ -104,7 +135,7 @@
         <th><xsl:copy-of select="$bwStr-Resource-NameCol"/></th>
         <th><xsl:copy-of select="$bwStr-Resource-ContentTypeCol"/></th>
         <th><xsl:copy-of select="$bwStr-Resource-ResourceTypeCol"/></th>
-        <xsl:if test="/bedework/userInfo/superUser = 'true'">
+        <xsl:if test="$global = 'false' and /bedework/userInfo/superUser = 'true'">
           <th><xsl:copy-of select="$bwStr-Resource-ResourceClassCol"/></th>
         </xsl:if>
         <th> </th>
@@ -116,10 +147,20 @@
         <xsl:variable name="resType" select="type"/>
         <xsl:variable name="resClass" select="class"/>
         <xsl:variable name="downloadLink" select="concat('/pubcaldav', path)" />
+        <xsl:variable name="edit-link">
+		      <xsl:choose>
+		        <xsl:when test="$global = 'true'">
+		          <xsl:copy-of select="$global-resources-edit"/>
+		        </xsl:when>
+		        <xsl:otherwise>
+		          <xsl:copy-of select="$calsuite-resources-edit"/>
+		        </xsl:otherwise>
+		      </xsl:choose>
+        </xsl:variable>
         <tr>
           <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
-            <a href="{$calsuite-resources-edit}&amp;name={$resName}&amp;class={$resClass}">
+            <a href="{$edit-link}&amp;name={$resName}&amp;class={$resClass}&amp;mod=true">
               <xsl:value-of select="$resName"/>
             </a>
           </td>
@@ -129,7 +170,7 @@
           <td>
           	<xsl:value-of select="$resType" />
           </td>
-	        <xsl:if test="/bedework/userInfo/superUser = 'true'">
+	        <xsl:if test="$global = 'false' and /bedework/userInfo/superUser = 'true'">
 	          <td>
 	            <xsl:value-of select="$resClass" />
 	          </td>
@@ -149,6 +190,7 @@
   <xsl:template name="modResource">
     <xsl:variable name="isCreating" select="/bedework/creating" />
     <xsl:variable name="resource" select="/bedework/currentResource" />
+    <xsl:variable name="global" select="$resource/class = 'global'" />
     <xsl:variable name="isText">
       <xsl:choose>
         <xsl:when test="$resource/content-type = 'text/plain'">true</xsl:when>
@@ -173,7 +215,7 @@
     </xsl:choose>
     <br/>
     
-    <xsl:if test="$isCreating = 'false'">
+    <xsl:if test="$isCreating = 'false' and $isText = 'false'">
       <a href="{$downloadLink}">
         <xsl:value-of select="$bwStr-ModRes-ClickToDownload" />
       </a>
@@ -182,7 +224,17 @@
     </xsl:if>
 
     <div class="modResourceForm">
-      <form name="modResource" action="{$calsuite-resources-update}" method="post" enctype="multipart/form-data">
+      <xsl:variable name="update-link">
+        <xsl:choose>
+          <xsl:when test="$global = 'true'">
+            <xsl:copy-of select="$global-resources-update" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="$calsuite-resources-update" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <form name="modResource" action="{$update-link}" method="post" enctype="multipart/form-data">
         <span class="resFormLabel">
           <xsl:value-of select="$bwStr-ModRes-NameLabel" />
           <xsl:text>: </xsl:text>
@@ -213,11 +265,11 @@
         </span>
         <br/>
 
-        <xsl:if test="/bedework/userInfo/superUser = 'true'">
-        <span class="resFormLabel">
-          <xsl:value-of select="$bwStr-ModRes-ClassLabel" />
-          <xsl:text>: </xsl:text>
-        </span>
+        <xsl:if test="/bedework/userInfo/superUser = 'true' and global != 'true'">
+	        <span class="resFormLabel">
+	          <xsl:value-of select="$bwStr-ModRes-ClassLabel" />
+	          <xsl:text>: </xsl:text>
+	        </span>
 	        <span class="resFormField">
 	          <xsl:value-of select="$resource/class" />
 	        </span>
@@ -273,9 +325,11 @@
 				    </xsl:choose>
           </xsl:attribute>
         </input>
-        <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveResource}" />
-        <span> - OR -</span>
-        <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}" />
+        <xsl:if test="$isCreating != 'true'">
+          <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveResource}" />
+          <span> - OR - </span>
+          <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}" />
+        </xsl:if>
       </form>
     </div>
   </xsl:template>
@@ -283,6 +337,17 @@
 
   <!-- Confirmation of resource deletion -->
   <xsl:template name="deleteResourceConfirm">
+    <xsl:variable name="global" select="/bedework/currentResource/class = 'global'" />
+    <xsl:variable name="remove-link">
+      <xsl:choose>
+        <xsl:when test="$global = 'true'">
+          <xsl:copy-of select="$global-resources-remove" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="$calsuite-resources-remove" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <h2><xsl:copy-of select="$bwStr-DelRes-RemoveResource"/></h2>
 
     <p>
@@ -298,7 +363,7 @@
 
     <p><xsl:copy-of select="$bwStr-DelRes-Continue"/></p>
 
-    <form name="removeResource" action="{$calsuite-resources-remove}" method="post">
+    <form name="removeResource" action="{$remove-link}" method="post">
       <input type="hidden" name="name" value="{/bedework/currentResource/name}" />
       <input type="hidden" name="class" value="{/bedework/currentResource/class}" />
       <input type="submit" name="delete" value="{$bwStr-DelRes-YesRemoveView}"/>

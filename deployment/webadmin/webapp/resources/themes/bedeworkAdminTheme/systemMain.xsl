@@ -48,6 +48,11 @@
             <xsl:copy-of select="$bwStr-TaSy-ManageCalSuites"/>
           </a>
         </li>
+        <li class="resources">
+          <a href="{$global-resources-fetch}">
+            <xsl:copy-of select="$bwStr-TaSy-ManageGlobalResources"/>
+          </a>
+        </li>
         <li class="upload">
           <a href="{$event-initUpload}">
             <xsl:copy-of select="$bwStr-TaSy-UploadICalFile"/>
