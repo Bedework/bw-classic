@@ -610,8 +610,12 @@
   <xsl:variable name="bwStr-CuCa-URLToCalendar">URL vom Kalender:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ID">ID (sofern ben&#246;tigt):</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Password">Kennwort (sofern ben&#246;tigt):</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Sharing">Calendar Sharing</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-ShareWith">Share calendar with:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SharePlaceholder">enter a user account</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Share">share</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Aktuelle Zugriffsrechte:</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-SharingMayBeAdded">Eine gemeinsame Benutzung kann erst hinzugef&#252;gt werden, nachdem der Kalender eingerichtet wurde.</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SharingMayBeAdded">Anmerkung: Eine gemeinsame Benutzung kann erst hinzugef&#252;gt werden, nachdem der Kalender eingerichtet wurde.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Add">Hinzuf&#252;gen</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Cancel">Abbrechen</xsl:variable>
 
@@ -632,7 +636,7 @@
   <xsl:variable name="bwStr-CuCa-ThisItemIsInaccessible">Dieser Eintrag nicht zugreifbar und wurde gesperrt. Sie m&#252;ssen in reaktivieren und k&#246;nnen es dann erneut versuchen.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-FilterExpression">Filterausdr&#252;cke:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Aktuelle Zugriffsrechte:</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Anmerkung:</strong> Wenn sie f&#252;r einen anderen Benutzer Vollzugriff auf einen Kalender gew&#228;hren und sie wollen die vom anderen Benutzer in ihren Kalender eingetragenen Termine bearbeiten k&#246;nnen,<strong>dann m&#252;ssen sie sich selber ebenfalls Vollzugriff auf ihren eigenen Kalender eintragen.</strong> Tragen sie bitte ihre eigenen Benutzerkennung als Benutzer im Feld "Who" ein und w&#228;hlen sie "All" aus im Feld "Rights".</p> <p>Dies liegt an der Standard Rechteverwaltung. Der genaue Grund wieso sie Eintr&#228;ge von anderen Benutzern in ihrem eigenen (freigegebenen) Kalender sonst nicht sehen k&#246;nnen liegt darin, dass Eintr&#228;ge von zu Veranstaltungen immer mit dem Zugriffsrecht "owner" (Eigner) versehen ist und somit in ihrem Kalender auch die Eintr&#228;ge der anderen Benutzer auch den anderen Benutzern geh&#246;ren.</p></xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Anmerkung:</strong> Advanced access controls can break standard sharing.</p><p>Wenn sie f&#252;r einen anderen Benutzer Vollzugriff auf einen Kalender gew&#228;hren und sie wollen die vom anderen Benutzer in ihren Kalender eingetragenen Termine bearbeiten k&#246;nnen,<strong>dann m&#252;ssen sie sich selber ebenfalls Vollzugriff auf ihren eigenen Kalender eintragen.</strong> Tragen sie bitte ihre eigenen Benutzerkennung als Benutzer im Feld "Who" ein und w&#228;hlen sie "All" aus im Feld "Rights". Dies liegt an der Standard Rechteverwaltung. Der genaue Grund wieso sie Eintr&#228;ge von anderen Benutzern in ihrem eigenen (freigegebenen) Kalender sonst nicht sehen k&#246;nnen liegt darin, dass Eintr&#228;ge von zu Veranstaltungen immer mit dem Zugriffsrecht "owner" (Eigner) versehen ist und somit in ihrem Kalender auch die Eintr&#228;ge der anderen Benutzer auch den anderen Benutzern geh&#246;ren.</p></xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">ausw&#228;hlen</xsl:variable>

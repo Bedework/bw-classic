@@ -1960,23 +1960,57 @@ display: inline;
 #freeBusy #timezonesButton {
   font-size: 8pt;
 }
-#bedework #sharingBox {
-  margin: 0;
-  padding: 1em 0 0 0;
+#modCalAdvancedSwitch,
+#modCalBasicSwitch {
+	display: block;
+	float: right;
+	font-style: italic;
+	margin-top: 1.5em;
+	font-size: 0.9em;
 }
-#bedework #bwEventTab-Access #sharingBox {
+#bedework .modCalAdvanced {
+	display: none;
+}
+#calAccessBoxToggle {
+  cursor: pointer;
+  color: #00A;
+}
+#calAccessBoxHolder {
+	margin-top: 1em;
+}
+#bedework .sharingNote {
+	margin-top: 1em;
+}
+#bedework #calSharingForm {
+	margin: 0 0 2em 1em;
+	font-size: 0.9em;
+}
+#bedework #accessBox {
+	display: none;
+  margin: 0;
+  padding: 0;
+}
+#bedework #accessBox.show {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+#bedework #bwEventTab-Access #accessBox {
   margin: 0;
   padding: 1em;
 }
-#bedework #sharingBox h3,
-#bedework #sharingBox h5 {
+#bedework #accessBox h3{
+  padding: 1em 0 0.5em 0;
+  border-top: 1px solid #ccc;
+}
+#bedework #accessBox h5 {
   padding: 0 0 0.5em 0;
 }
-#bedework #sharingBox ul {
+#bedework #accessBox ul {
   font-size: 0.8em;
   margin: 0 1em;
 }
-#bedework #sharingBox p {
+#bedework #accessBox p {
   font-size: 0.9em;
 }
 #bedework #shareForm {

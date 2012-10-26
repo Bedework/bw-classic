@@ -1344,7 +1344,7 @@
          the tab in the event form submenu at the top of this file -->
     <!-- ========== -->
     <div id="bwEventTab-Access" class="invisible">
-      <div id="sharingBox">
+      <div id="accessBox">
         <h3>Current Access:</h3>
         <div id="bwCurrentAccessWidget">&#160;</div>
         <script type="text/javascript">

@@ -318,6 +318,30 @@
           <xsl:when test="/bedework/page = 'modLocation'">
             focusElement('bwLocMainAddress');
           </xsl:when>
+          <xsl:when test="/bedework/page = 'modCalendar'">		     
+            $("#modCalAdvancedSwitch").click(function(event) {
+              event.preventDefault();
+              $(".modCalAdvanced").show();
+              $("#modCalBasicSwitch").show();
+              $("#modCalAdvancedSwitch").hide();
+            });
+            $("#modCalBasicSwitch").click(function(event) {
+              event.preventDefault();
+              $(".modCalAdvanced").hide();
+              $("#modCalBasicSwitch").hide();
+              $("#modCalAdvancedSwitch").show();
+            });
+               
+            $("#calAccessBoxToggle").click(function(event) {
+              event.preventDefault();
+              $("#accessBox").toggle();
+              if($("#accessBox").is(":visible")) {
+                $("#calAccessBoxToggle img").attr('src','<xsl:value-of select="$resourcesRoot"/>/images/minus.gif');
+              } else {
+                $("#calAccessBoxToggle img").attr('src','<xsl:value-of select="$resourcesRoot"/>/images/plus.gif');
+              };
+            });
+          </xsl:when>
         </xsl:choose>
       });
         

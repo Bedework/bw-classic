@@ -555,23 +555,22 @@
           </table>
         </div>
       </div>
+	    <div class="note sharingNote">
+	      <xsl:copy-of select="$bwStr-CuCa-SharingMayBeAdded"/>
+	    </div>
       <div class="submitButtons">
         <input type="submit" name="addCalendar" value="{$bwStr-CuCa-Add}"/>
         <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
       </div>
     </form>
 
-    <div id="sharingBox">
-      <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/></h3>
-      <xsl:copy-of select="$bwStr-CuCa-SharingMayBeAdded"/>
-    </div>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">
     <xsl:variable name="calPath" select="path"/>
     <xsl:variable name="calPathEncoded" select="encodedPath"/>
 
-    <form name="modCalForm" method="post" action="{$calendar-update}">
+    <form name="modCalForm" id="modCalForm" method="post" action="{$calendar-update}">
       <xsl:choose>
         <xsl:when test="isSubscription='true'">
           <h3><xsl:copy-of select="$bwStr-CuCa-ModifySubscription"/></h3>
@@ -582,44 +581,12 @@
           <input type="hidden" value="false" name="calendarCollection"/>
         </xsl:when>
         <xsl:otherwise>
+          <a href="#" id="modCalAdvancedSwitch" class="modCalBasic">advanced options</a>
+          <a href="#" id="modCalBasicSwitch" class="modCalAdvanced">basic options</a>
           <h3><xsl:copy-of select="$bwStr-CuCa-ModifyCalendar"/></h3>
           <input type="hidden" value="true" name="calendarCollection"/>
         </xsl:otherwise>
       </xsl:choose>
-
-      <table border="0" id="submitTable">
-        <tr>
-          <td>
-            <xsl:choose>
-              <xsl:when test="isSubscription='true'">
-                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateSubscription}"/>
-              </xsl:when>
-              <xsl:when test="calType = '0'">
-                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateFolder}"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <input type="submit" name="updateCalendar" value="{$bwStr-CuCa-UpdateCalendar}"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
-          </td>
-          <td align="right">
-            <xsl:if test="calType != '3' and calType != '5' and calType != '6'">
-              <xsl:choose>
-                <xsl:when test="isSubscription='true'">
-                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteSubscription}"/>
-                </xsl:when>
-                <xsl:when test="calType = '0'">
-                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteFolder}"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <input type="submit" name="delete" value="{$bwStr-CuCa-DeleteCalendar}"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:if>
-          </td>
-        </tr>
-      </table>
 
       <table class="common">
         <tr>
@@ -637,7 +604,7 @@
             </td>
           </tr>
         </xsl:if>
-        <tr>
+        <tr class="modCalAdvanced">
           <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
           <td>
             <xsl:value-of select="name"/>
@@ -656,7 +623,7 @@
             <input type="text" name="calendar.summary" value="{$curCalSummary}" size="40"/>
           </td>
         </tr>
-        <tr>
+        <tr class="modCalAdvanced">
           <th><xsl:copy-of select="$bwStr-CuCa-Description"/></th>
           <td>
             <textarea name="calendar.description" cols="40" rows="4">
@@ -685,7 +652,7 @@
             </td>
           </tr>
         <!-- /xsl:if -->
-        <tr>
+        <tr class="modCalAdvanced">
           <th><xsl:copy-of select="$bwStr-CuCa-Display"/></th>
           <td>
             <input type="hidden" name="calendar.display">
@@ -698,7 +665,7 @@
             </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-DisplayItemsInThisCollection"/>
           </td>
         </tr>
-        <tr>
+        <tr class="modCalAdvanced">
           <xsl:attribute name="class">disabled</xsl:attribute>
           <th><xsl:copy-of select="$bwStr-CuCa-Disabled"/></th>
           <td>
@@ -721,7 +688,7 @@
             </xsl:if>
           </td>
         </tr>
-        <tr>
+        <tr class="modCalAdvanced">
           <th><xsl:copy-of select="$bwStr-CuCa-FilterExpression"/></th>
           <td>
             <input type="text" name="fexpr" value="" size="40">
@@ -754,22 +721,27 @@
           </xsl:if>
         </xsl:if>
       </table>
-
-      <div id="sharingBox">
-        <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/></h3>
-        <div id="bwCurrentAccessWidget">&#160;</div>
-        <script type="text/javascript">
-          bwAcl.display("bwCurrentAccessWidget");
-        </script>
-        <xsl:call-template name="entityAccessForm">
-          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
-        </xsl:call-template>
-      </div>
-
-      <div class="note">
-        <xsl:copy-of select="$bwStr-CuCa-AccessNote"/>
-      </div>
-
+      
+	    <div id="calAccessBoxHolder" class="modCalAdvanced">
+	      <span id="calAccessBoxToggle">
+	        <img src="{$resourcesRoot}/images/plus.gif"/> Advanced Access Controls
+	      </span>
+	      <div id="accessBox">
+	        <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/></h3>
+	        <div id="bwCurrentAccessWidget">&#160;</div>
+	        <script type="text/javascript">
+	          bwAcl.display("bwCurrentAccessWidget");
+	        </script>
+	        <xsl:call-template name="entityAccessForm">
+	          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
+	        </xsl:call-template>
+	        
+	        <div class="note">
+	          <xsl:copy-of select="$bwStr-CuCa-AccessNote"/>
+	        </div>
+	      </div>
+	    </div>
+      
       <table border="0" id="submitTable">
         <tr>
           <td>
@@ -804,9 +776,24 @@
         </tr>
       </table>
     </form>
+    
+    <div id="calSharingBox">
+      <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
+      <form id="calSharingForm" name="calSharingForm" method="post" action="" onsubmit="return validateShareForm(this.shareWithAcct.value);">
+        <xsl:copy-of select="$bwStr-CuCa-ShareWith"/>
+        <xsl:text> </xsl:text>
+        <input type="text" id="shareWithAcct" name="shareWithAcct" size="18" placeholder="{$bwStr-CuCa-SharePlaceholder}"/>
+        <xsl:text> </xsl:text>
+        <button name="shareWithButton" id="shareWithButton" type="submit">
+          <xsl:copy-of select="$bwStr-CuCa-Share"/>
+        </button>
+      </form>
+    </div>
+    
+    
     <!-- Method 1 access setting is now deprecated.
          see the "entityAccessForm" template for more information -->
-    <!--  div id="sharingBox">
+    <!--  div id="accessBox">
       <xsl:apply-templates select="acl" mode="currentAccess">
         <xsl:with-param name="action" select="$calendar-setAccess"/>
         <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>

@@ -309,3 +309,10 @@ function bwUpdateColor(color,colorFieldId) {
   colorField.value = color;
   colorField.style.backgroundColor = color;
 }
+
+function validateShareForm(acct) {
+  if(acct == "") {
+    alert("Please enter an account.");
+    return false;
+  }
+}
