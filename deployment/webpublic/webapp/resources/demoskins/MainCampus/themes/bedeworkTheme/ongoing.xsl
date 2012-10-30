@@ -38,6 +38,17 @@
             </xsl:if>
           </xsl:for-each>
         </xsl:when>
+        <xsl:when test="/bedework/page = 'eventList' and /bedework/events//event[categories/category[uid = $ongoingEventsCatUid]]">
+          <xsl:for-each
+            select="/bedework/events/event[categories/category[uid = $ongoingEventsCatUid]]">
+            <xsl:sort select="start/unformatted" order="ascending" data-type="number" />
+            <xsl:sort select="guid" order="ascending" />
+            <xsl:variable name="lastId" select="guid" />
+            <xsl:if test="not(preceding::event[guid=$lastId])">
+              <xsl:call-template name="ongoingEvent" />
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:when>
         <xsl:otherwise>
           <li>
             <xsl:copy-of select="$bwStr-Ongoing-NoEvents"/>
