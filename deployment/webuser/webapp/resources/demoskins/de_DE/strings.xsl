@@ -629,6 +629,8 @@
   <xsl:variable name="bwStr-CuCa-DeleteSubscription">L&#246;schen Abonnement</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DeleteFolder">L&#246;schen Ordner</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DeleteCalendar">L&#246;schen Kalender</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AdvancedOptions">advanced options</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-BasicOptions">basic options</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Cancel">Abbrechen</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Disabled">Deaktiviert:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DisabledLabel">deaktiviert</xsl:variable>
@@ -637,6 +639,7 @@
   <xsl:variable name="bwStr-CuCa-FilterExpression">Filterausdr&#252;cke:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Aktuelle Zugriffsrechte:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Anmerkung:</strong> Advanced access controls can break standard sharing.</p><p>Wenn sie f&#252;r einen anderen Benutzer Vollzugriff auf einen Kalender gew&#228;hren und sie wollen die vom anderen Benutzer in ihren Kalender eingetragenen Termine bearbeiten k&#246;nnen,<strong>dann m&#252;ssen sie sich selber ebenfalls Vollzugriff auf ihren eigenen Kalender eintragen.</strong> Tragen sie bitte ihre eigenen Benutzerkennung als Benutzer im Feld "Who" ein und w&#228;hlen sie "All" aus im Feld "Rights". Dies liegt an der Standard Rechteverwaltung. Der genaue Grund wieso sie Eintr&#228;ge von anderen Benutzern in ihrem eigenen (freigegebenen) Kalender sonst nicht sehen k&#246;nnen liegt darin, dass Eintr&#228;ge von zu Veranstaltungen immer mit dem Zugriffsrecht "owner" (Eigner) versehen ist und somit in ihrem Kalender auch die Eintr&#228;ge der anderen Benutzer auch den anderen Benutzern geh&#246;ren.</p></xsl:variable>
+  <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">ausw&#228;hlen</xsl:variable>

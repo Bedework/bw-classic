@@ -83,6 +83,15 @@ body {
 	background-color: #DFEAFF !important;
 	color: inherit;
 }
+::-webkit-input-placeholder {
+  color: #777 !important;
+}
+:-moz-placeholder {
+  color: #777 !important;
+}
+:-ms-input-placeholder {
+  color: #777 !important;
+}
 #bedework select:focus option {
   background-color: white;
   color: inherit;
@@ -1982,8 +1991,19 @@ display: inline;
 	margin-top: 1em;
 }
 #bedework #calSharingForm {
-	margin: 0 0 2em 1em;
+	margin: 0;
 	font-size: 0.9em;
+}
+#bedework #calSharingBox table {
+	width: auto;
+	margin-top: 0.5em;
+}
+#bedework #calSharingBox td {
+  padding-left: 0.5em;
+}
+#bedework #calSharingBox .calShareField {
+	font-size: 0.9em;
+	color: #666;
 }
 #bedework #accessBox {
 	display: none;

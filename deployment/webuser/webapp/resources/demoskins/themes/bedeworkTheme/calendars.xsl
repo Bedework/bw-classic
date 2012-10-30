@@ -571,6 +571,8 @@
     <xsl:variable name="calPathEncoded" select="encodedPath"/>
 
     <form name="modCalForm" id="modCalForm" method="post" action="{$calendar-update}">
+      <a href="#" id="modCalAdvancedSwitch" class="modCalBasic"><xsl:copy-of select="$bwStr-CuCa-AdvancedOptions"/></a>
+      <a href="#" id="modCalBasicSwitch" class="modCalAdvanced"><xsl:copy-of select="$bwStr-CuCa-BasicOptions"/></a>
       <xsl:choose>
         <xsl:when test="isSubscription='true'">
           <h3><xsl:copy-of select="$bwStr-CuCa-ModifySubscription"/></h3>
@@ -581,8 +583,6 @@
           <input type="hidden" value="false" name="calendarCollection"/>
         </xsl:when>
         <xsl:otherwise>
-          <a href="#" id="modCalAdvancedSwitch" class="modCalBasic">advanced options</a>
-          <a href="#" id="modCalBasicSwitch" class="modCalAdvanced">basic options</a>
           <h3><xsl:copy-of select="$bwStr-CuCa-ModifyCalendar"/></h3>
           <input type="hidden" value="true" name="calendarCollection"/>
         </xsl:otherwise>
@@ -777,18 +777,30 @@
       </table>
     </form>
     
-    <div id="calSharingBox">
-      <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
-      <form id="calSharingForm" name="calSharingForm" method="post" action="" onsubmit="return validateShareForm(this.shareWithAcct.value);">
-        <xsl:copy-of select="$bwStr-CuCa-ShareWith"/>
-        <xsl:text> </xsl:text>
-        <input type="text" id="shareWithAcct" name="shareWithAcct" size="18" placeholder="{$bwStr-CuCa-SharePlaceholder}"/>
-        <xsl:text> </xsl:text>
-        <button name="shareWithButton" id="shareWithButton" type="submit">
-          <xsl:copy-of select="$bwStr-CuCa-Share"/>
-        </button>
-      </form>
-    </div>
+    <xsl:if test="calType = '1' and isSubscription = 'false'"><!-- only share calendars for now -->
+	    <div id="calSharingBox">
+	      <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
+	      <form id="calSharingForm" name="calSharingForm" method="post" action="/ucal/sharing/sharecol" onsubmit="return validateShareForm(this.shareWithAcct.value);">
+	        <table class="common">
+	          <tr>
+	            <td>
+	              <xsl:copy-of select="$bwStr-CuCa-ShareWith"/>
+	            </td>
+	            <td>
+	              <input type="hidden" name="colHref" value="{$calPath}"/>
+	              <input type="text" id="shareWithAcct" name="cua" size="18" placeholder="{$bwStr-CuCa-SharePlaceholder}"/><br/>
+                <span class="calShareField"><input type="checkbox" name="rw" value="true"/><xsl:copy-of select="$bwStr-CuCa-WriteAccess"/></span>
+	            </td>
+	            <td>
+	              <button name="shareWithButton" id="shareWithButton" type="submit">
+			            <xsl:copy-of select="$bwStr-CuCa-Share"/>
+			          </button>
+	            </td>
+	          </tr>
+	        </table>
+	      </form>
+	    </div>
+    </xsl:if>
     
     
     <!-- Method 1 access setting is now deprecated.

@@ -630,6 +630,8 @@
   <xsl:variable name="bwStr-CuCa-DeleteSubscription">Delete Subscription</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DeleteFolder">Delete Folder</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DeleteCalendar">Delete Calendar</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AdvancedOptions">advanced options</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-BasicOptions">basic options</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Cancel">cancel</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Disabled">Disabled:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DisabledLabel">disabled</xsl:variable>
@@ -638,6 +640,7 @@
   <xsl:variable name="bwStr-CuCa-FilterExpression">Filter Expression:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Current Access:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Note:</strong> Advanced access controls can break standard sharing.  Use this feature with care.</p><p>If you grant write access to another user, and you wish to see events added by that user in your calendar, <strong>you must explicitly grant yourself access to the same calendar.</strong>  Enter your UserID as a user in the "Who" box with "All" set in the "Rights" box. This is standard access control; the reason you will not see the other user's events without doing this is that the default access is grant:all to "owner" - and you don't own the other user's events.</p></xsl:variable>
+  <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">pick</xsl:variable>
