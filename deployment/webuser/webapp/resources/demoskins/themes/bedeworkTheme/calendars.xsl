@@ -780,7 +780,7 @@
     <xsl:if test="calType = '1' and isSubscription = 'false'"><!-- only share calendars for now -->
 	    <div id="calSharingBox">
 	      <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
-	      <form id="calSharingForm" name="calSharingForm" method="post" action="/ucal/sharing/sharecol" onsubmit="return validateShareForm(this.shareWithAcct.value);">
+	      <form id="calSharingForm" name="calSharingForm" method="post" action="/ucal/sharing/sharecol.do" onsubmit="return validateShareForm(this.shareWithAcct.value);">
 	        <table class="common">
 	          <tr>
 	            <td>
@@ -792,7 +792,7 @@
                 <span class="calShareField"><input type="checkbox" name="rw" value="true"/><xsl:copy-of select="$bwStr-CuCa-WriteAccess"/></span>
 	            </td>
 	            <td>
-	              <button name="shareWithButton" id="shareWithButton" type="submit">
+	              <button name="submit" id="shareWithButton" type="submit">
 			            <xsl:copy-of select="$bwStr-CuCa-Share"/>
 			          </button>
 	            </td>

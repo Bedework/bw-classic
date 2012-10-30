@@ -227,11 +227,13 @@
                 </xsl:choose>
               </td>
               <xsl:choose>
-                <xsl:when test="/bedework/schedulingMessages/events/event[scheduleState = 1]">
+                <xsl:when test="/bedework/schedulingMessages/events/event[scheduleState = 1] or /bedework/notifications/notification">
                   <td id="msgTaskBar" class="sideMenus">
                     <h3>messages</h3>
                     <ul>
-                      <!-- only show processed messages (scheduleState = 1) -->
+                      <!-- show notifications -->
+                      <xsl:apply-templates select="/bedework/notifications/notification"/>
+                      <!-- only show processed scheduling messages (scheduleState = 1) -->
                       <xsl:apply-templates select="/bedework/schedulingMessages/events/event[scheduleState = 1]" mode="schedNotifications"/>
                     </ul>
                   </td>

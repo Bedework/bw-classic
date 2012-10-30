@@ -19,9 +19,25 @@
 <xsl:stylesheet
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:DAV="DAV:"
+  xmlns:CSS="http://calendarserver.org/ns/"
+  xmlns:C="urn:ietf:params:xml:ns:caldav"
   xmlns="http://www.w3.org/1999/xhtml">
   
   <!--== NOTIFICATIONS ==-->
+  <xsl:template match="notification">
+    <xsl:choose>
+      <xsl:when test="type = 'invite-notification'">    
+        <li>Invitation from <em><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></em></li>
+      </xsl:when>
+      <xsl:otherwise>    
+        <li><xsl:value-of select="type"/></li>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  
+  <!-- scheduling messages -->
   <xsl:template match="event" mode="schedNotifications">
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="eventName" select="name"/>
