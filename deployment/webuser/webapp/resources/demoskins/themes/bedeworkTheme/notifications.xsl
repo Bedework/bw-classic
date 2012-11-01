@@ -50,7 +50,7 @@
 			              notificationReply("<xsl:value-of select="$sharing-reply"/>","<xsl:value-of select="name"/>","false","");
 			            },
 			            "accept" : function() {
-                    notificationReply("<xsl:value-of select="$sharing-reply"/>","<xsl:value-of select="name"/>","false","<xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:summary"/>");
+                    notificationReply("<xsl:value-of select="$sharing-reply"/>","<xsl:value-of select="name"/>","true","<xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:summary"/>");
 			            }
 			          }
 			        });
@@ -69,6 +69,18 @@
     </xsl:choose>
   </xsl:template>
   
+  <xsl:template name="notificationReplyWidgets">
+	  <xsl:if test="/bedework/notifications/notification/type = 'invite-notification'">
+	    <div id="sharingColNameWidget">
+	      <form id="sharingColNameForm">
+	        <fieldset>
+	          <label for="sharingColName">Calendar Name:</label>
+	          <input type="text" value="" name="sharingColName" id="sharingColName"/>
+	        </fieldset>
+	      </form>
+	    </div>
+	  </xsl:if>
+  </xsl:template>
   
   <!-- scheduling messages -->
   <xsl:template match="event" mode="schedNotifications">

@@ -236,6 +236,7 @@
                       <!-- only show processed scheduling messages (scheduleState = 1) -->
                       <xsl:apply-templates select="/bedework/schedulingMessages/events/event[scheduleState = 1]" mode="schedNotifications"/>
                     </ul>
+                    <xsl:call-template name="notificationReplyWidgets"/>
                   </td>
                 </xsl:when>
                 <xsl:otherwise>

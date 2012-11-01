@@ -19,6 +19,9 @@
 <xsl:stylesheet
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:DAV="DAV:"
+  xmlns:CSS="http://calendarserver.org/ns/"
+  xmlns:C="urn:ietf:params:xml:ns:caldav"
   xmlns="http://www.w3.org/1999/xhtml">
   
   
@@ -807,6 +810,24 @@
 	        </table>
 	      </form>
 	    </div>
+	    <xsl:if test="CSS:invite/CSS:user">
+	      <table id="shareesTable" class="common">
+	        <tr>
+	          <th>Shared by</th>
+	          <th>Access</th>
+	          <th>Status</th>
+	          <td></td>
+	        </tr>
+	        <xsl:for-each select="CSS:invite/CSS:user">
+		        <tr>
+		          <td><xsl:value-of select="substring-after(DAV:href,'mailto:')"/></td>
+		          <td><xsl:for-each select="CSS:access/*"><xsl:value-of select="substring-after(name(.),'CSS:')"/><xsl:if test="position() != last()">, </xsl:if></xsl:for-each></td>
+		          <td><xsl:for-each select="*"><xsl:if test="starts-with(name(.),'CSS:invite-')"><xsl:value-of select="substring-after(name(.),'CSS:invite-')"/></xsl:if></xsl:for-each></td>
+		          <td><img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/></td>
+		        </tr>
+		      </xsl:for-each>
+	      </table>
+	    </xsl:if>
     </xsl:if>
     
     
