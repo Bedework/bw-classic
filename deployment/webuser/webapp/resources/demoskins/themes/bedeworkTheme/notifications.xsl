@@ -71,7 +71,7 @@
   
   <xsl:template name="notificationReplyWidgets">
 	  <xsl:if test="/bedework/notifications/notification/type = 'invite-notification'">
-	    <div id="sharingColNameWidget">
+	    <div id="sharingColNameWidget" class="invisible">
 	      <form id="sharingColNameForm">
 	        <fieldset>
 	          <label for="sharingColName">Calendar Name:</label>
