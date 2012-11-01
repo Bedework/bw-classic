@@ -777,10 +777,17 @@
       </table>
     </form>
     
-    <xsl:if test="calType = '1' and isSubscription = 'false'"><!-- only share calendars for now -->
+    <xsl:if test="default-scheduling-collection"> 
+      <div id="calSharingBox">
+        <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
+        <!-- users may not share the default scheduling collection -->
+        <p><xsl:copy-of select="$bwStr-CuCa-DefaultSchedNotShared"/></p>
+      </div>
+    </xsl:if>
+    <xsl:if test="can-be-shared">
 	    <div id="calSharingBox">
 	      <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
-	      <form id="calSharingForm" name="calSharingForm" method="post" action="/ucal/sharing/sharecol.do" onsubmit="return validateShareForm(this.shareWithAcct.value);">
+	      <form id="calSharingForm" name="calSharingForm" method="post" action="{$sharing-shareCollection}" onsubmit="return validateShareForm(this.shareWithAcct.value);">
 	        <table class="common">
 	          <tr>
 	            <td>

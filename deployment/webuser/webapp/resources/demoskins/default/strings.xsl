@@ -611,11 +611,6 @@
   <xsl:variable name="bwStr-CuCa-URLToCalendar">URL to calendar:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ID">ID (if required):</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Password">Password (if required):</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-Sharing">Calendar Sharing</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-ShareWith">Share calendar with:</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-SharePlaceholder">enter a user account</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-Share">share</xsl:variable>
-  <xsl:variable name="bwStr-CuCa-CurrentAccess">Current Access:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-SharingMayBeAdded">Note: Sharing may be added to a calendar once created.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Add">Add</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Cancel">cancel</xsl:variable>
@@ -638,6 +633,11 @@
   <xsl:variable name="bwStr-CuCa-EnabledLabel">enabled</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ThisItemIsInaccessible">This item is inaccessible and has been disabled.  You may re-enable it to try again.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-FilterExpression">Filter Expression:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Sharing">Calendar Sharing</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-ShareWith">Share calendar with:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SharePlaceholder">enter a user account</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Share">share</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-DefaultSchedNotShared">This calendar is the default scheduling calendar; it may not be shared.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Current Access:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Note:</strong> Advanced access controls can break standard sharing.  Use this feature with care.</p><p>If you grant write access to another user, and you wish to see events added by that user in your calendar, <strong>you must explicitly grant yourself access to the same calendar.</strong>  Enter your UserID as a user in the "Who" box with "All" set in the "Rights" box. This is standard access control; the reason you will not see the other user's events without doing this is that the default access is grant:all to "owner" - and you don't own the other user's events.</p></xsl:variable>
   <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>

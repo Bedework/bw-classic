@@ -299,6 +299,9 @@ body {
   margin: 0;
   padding: 2px 4px 2px 8px;
 }
+#bedework #bodyBlock td#msgTaskBar li.shareNotification {
+	cursor: pointer;
+}
 #bedework #bodyBlock td.sideMenus h3 a:link,
 #bedework #bodyBlock td.sideMenush3 a:active,
 #bedework #bodyBlock td.sideMenus h3 a:visited {
@@ -1993,6 +1996,9 @@ display: inline;
 #bedework #calSharingForm {
 	margin: 0;
 	font-size: 0.9em;
+}
+#bedework #calSharingBox {
+  margin-bottom: 2em;
 }
 #bedework #calSharingBox table {
 	width: auto;

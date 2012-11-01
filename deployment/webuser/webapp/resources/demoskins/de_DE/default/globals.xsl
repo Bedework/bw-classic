@@ -109,6 +109,9 @@
   <xsl:variable name="calendar-listForExport" select="/bedework/urlPrefixes/calendar/listForExport"/>
   <xsl:variable name="calendar-setPropsInGrid" select="/bedework/urlPrefixes/calendar/setPropsInGrid"/>
   <xsl:variable name="calendar-setPropsInList" select="/bedework/urlPrefixes/calendar/setPropsInList"/>
+  <!-- sharing -->
+  <xsl:variable name="sharing-shareCollection" select="/bedework/urlPrefixes/sharing/shareCollection"/>
+  <xsl:variable name="sharing-reply" select="/bedework/urlPrefixes/sharing/reply"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu"/>
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch"/>

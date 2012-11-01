@@ -309,10 +309,12 @@ function bwUpdateColor(color,colorFieldId) {
   colorField.value = color;
   colorField.style.backgroundColor = color;
 }
-
 function validateShareForm(acct) {
   if(acct == "") {
     alert("Please enter an account.");
     return false;
   }
+}
+function notificationReply(href,name,accept,colName) {
+  location.href = href + "&name=" + name + "&accept=" + accept + "&colName=" + colName;
 }

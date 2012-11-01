@@ -26,9 +26,42 @@
   
   <!--== NOTIFICATIONS ==-->
   <xsl:template match="notification">
+    <xsl:variable name="position" select="position()"/>
+    <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>
+          
     <xsl:choose>
       <xsl:when test="type = 'invite-notification'">    
-        <li>Invitation from <em><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></em></li>
+        <li class="shareInvite shareNotification" id="shareNotification-{$position}">
+          Invitation from 
+          <em><xsl:value-of select="$sharer"/></em>
+          <div class="notificationDialog invisible" id="notificationDialog-{$position}" title="Sharing Invitation">
+            The user <em><xsl:value-of select="$sharer"/></em> has invited you to share the calendar
+            <xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:hosturl/DAV:href"/>
+          </div>
+          
+          <script type="text/javascript">
+			      $(document).ready(function() {
+			        $("#notificationDialog-<xsl:value-of select="$position"/>").dialog({
+			          resizable: false,
+			          modal: true,
+			          autoOpen: false,
+			          buttons: {
+			            "reject" : function() {
+			              notificationReply("<xsl:value-of select="$sharing-reply"/>","<xsl:value-of select="name"/>","false","");
+			            },
+			            "accept" : function() {
+                    notificationReply("<xsl:value-of select="$sharing-reply"/>","<xsl:value-of select="name"/>","false","<xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:summary"/>");
+			            }
+			          }
+			        });
+			         
+			        $("#shareNotification-<xsl:value-of select="$position"/>").click(function() {
+			          $("#notificationDialog-<xsl:value-of select="$position"/>").dialog("open");
+			        });
+			         
+			      });
+			    </script>
+        </li>
       </xsl:when>
       <xsl:otherwise>    
         <li><xsl:value-of select="type"/></li>
