@@ -95,6 +95,8 @@
               location="${org.bedework.project.bedework}/../carddav" />
     <property name="org.bedework.project.synch"
               location="${org.bedework.project.bedework}/../synch" />
+    <property name="org.bedework.project.monitor"
+              location="${org.bedework.project.bedework}/../MonitorApp" />
 
 
     <!-- default to debug off -->
