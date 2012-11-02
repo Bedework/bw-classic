@@ -794,18 +794,28 @@
 	        <table class="common">
 	          <tr>
 	            <td>
-	              <xsl:copy-of select="$bwStr-CuCa-ShareWith"/>
+	              <label for="shareWithAcct"><xsl:copy-of select="$bwStr-CuCa-ShareWith"/></label>
 	            </td>
 	            <td>
 	              <input type="hidden" name="colHref" value="{$calPath}"/>
-	              <input type="text" id="shareWithAcct" name="cua" size="18" placeholder="{$bwStr-CuCa-SharePlaceholder}"/><br/>
-                <span class="calShareField"><input type="checkbox" name="rw" value="true"/><xsl:copy-of select="$bwStr-CuCa-WriteAccess"/></span>
+	              <input type="text" id="shareWithAcct" name="cua" size="18" placeholder="{$bwStr-CuCa-SharePlaceholder}"/>
 	            </td>
 	            <td>
 	              <button name="submit" id="shareWithButton" type="submit">
 			            <xsl:copy-of select="$bwStr-CuCa-Share"/>
 			          </button>
 	            </td>
+	          </tr>
+	          <tr>
+	            <td>
+	              <label for="shareColName">Suggested name:</label>
+	            </td>
+	            <td>
+	              <xsl:variable name="calSummary" select="summary"/>
+	              <input type="text" id="shareColName" name="colName" size="18" value="{$calSummary}"/><br/>
+                <span class="calShareField"><input type="checkbox" name="rw" value="true"/><xsl:copy-of select="$bwStr-CuCa-WriteAccess"/></span>
+              </td>
+              <td></td>
 	          </tr>
 	        </table>
 	      </form>
@@ -814,18 +824,70 @@
 	      <table id="shareesTable" class="common">
 	        <tr>
 	          <th>Shared by</th>
-	          <th>Access</th>
 	          <th>Status</th>
-	          <td></td>
+            <th>Write access</th>
+	          <th>Remove</th>
 	        </tr>
 	        <xsl:for-each select="CSS:invite/CSS:user">
+	          <xsl:sort type="ascending" select="DAV:href"/>
+	          <xsl:variable name="sharee" select="DAV:href"/>
 		        <tr>
-		          <td><xsl:value-of select="substring-after(DAV:href,'mailto:')"/></td>
-		          <td><xsl:for-each select="CSS:access/*"><xsl:value-of select="substring-after(name(.),'CSS:')"/><xsl:if test="position() != last()">, </xsl:if></xsl:for-each></td>
-		          <td><xsl:for-each select="*"><xsl:if test="starts-with(name(.),'CSS:invite-')"><xsl:value-of select="substring-after(name(.),'CSS:invite-')"/></xsl:if></xsl:for-each></td>
-		          <td><img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/></td>
+		          <td class="sharee">
+		            <xsl:value-of select="substring-after($sharee,'mailto:')"/>
+		          </td>
+		          <td class="status">
+		            <xsl:choose>
+		              <xsl:when test="CSS:invite-noresponse"><span class="invite-pending">pending</span></xsl:when>
+		              <xsl:when test="CSS:invite-declined"><span class="invite-declined">declined</span></xsl:when>
+		              <xsl:otherwise><span class="invite-accepted">accepted</span></xsl:otherwise>
+                </xsl:choose>
+		          </td>
+              <td class="access">
+		            <form method="post" action="{$sharing-shareCollection}">
+                  <input type="hidden" name="colHref" value="{$calPath}"/>
+                  <input type="hidden" name="cua" value="{$sharee}"/>
+		              <input type="checkbox" name="rw" onclick="this.form.submit();">
+		                <xsl:if test="CSS:access/CSS:write">
+		                  <xsl:attribute name="checked">checked</xsl:attribute>
+		                </xsl:if>
+		              </input>		             
+		            </form>
+		          </td>
+		          <td class="remove">
+		            <a href="{$sharing-shareCollection}&amp;colHref={$calPath}&amp;cua={$sharee}&amp;remove=true">
+		              <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/>
+		            </a>
+		          </td>
 		        </tr>
 		      </xsl:for-each>
+		      <!-- 
+		      <xsl:for-each select="CSS:invite/CSS:user[CSS:invite-noresponse]">
+            <xsl:sort type="ascending" select="DAV:href"/>
+            <xsl:variable name="sharee" select="DAV:href"/>
+            <tr>
+              <td class="sharee"><xsl:value-of select="substring-after($sharee,'mailto:')"/></td>
+              <td colspan="2">invitation awaiting response</td>
+              <td style="text-align: center;">
+                <a href="{$sharing-shareCollection}&amp;colHref={$calPath}&amp;cua={$sharee}&amp;remove=true">
+                  <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/>
+                </a>
+              </td>
+            </tr>
+          </xsl:for-each>
+          <xsl:for-each select="CSS:invite/CSS:user[CSS:invite-declined]">
+            <xsl:sort type="ascending" select="DAV:href"/>
+            <xsl:variable name="sharee" select="DAV:href"/>
+            <tr>
+              <td><xsl:value-of select="substring-after($sharee,'mailto:')"/></td>
+              <td colspan="2">invitation declined</td>
+              <td style="text-align: center;">
+                <a href="{$sharing-shareCollection}&amp;colHref={$calPath}&amp;cua={$sharee}&amp;remove=true">
+                  <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/>
+                </a>
+              </td>
+            </tr>
+          </xsl:for-each>
+          -->
 	      </table>
 	    </xsl:if>
     </xsl:if>
