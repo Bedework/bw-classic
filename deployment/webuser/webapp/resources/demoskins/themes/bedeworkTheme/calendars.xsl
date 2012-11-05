@@ -808,7 +808,7 @@
 	          </tr>
 	          <tr>
 	            <td>
-	              <label for="shareColName">Suggested name:</label>
+	              <label for="shareColName"><xsl:copy-of select="$bwStr-CuCa-SuggestedName"/></label>
 	            </td>
 	            <td>
 	              <xsl:variable name="calSummary" select="summary"/>
@@ -823,10 +823,10 @@
 	    <xsl:if test="CSS:invite/CSS:user">
 	      <table id="shareesTable" class="common">
 	        <tr>
-	          <th>Shared by</th>
-	          <th>Status</th>
-            <th>Write access</th>
-	          <th>Remove</th>
+	          <th><xsl:copy-of select="$bwStr-CuCa-SharedBy"/></th>
+	          <th><xsl:copy-of select="$bwStr-CuCa-Status"/></th>
+            <th><xsl:copy-of select="$bwStr-CuCa-WriteAccess"/></th>
+	          <th><xsl:copy-of select="$bwStr-CuCa-Remove"/></th>
 	        </tr>
 	        <xsl:for-each select="CSS:invite/CSS:user">
 	          <xsl:sort type="ascending" select="DAV:href"/>
@@ -837,9 +837,9 @@
 		          </td>
 		          <td class="status">
 		            <xsl:choose>
-		              <xsl:when test="CSS:invite-noresponse"><span class="invite-pending">pending</span></xsl:when>
-		              <xsl:when test="CSS:invite-declined"><span class="invite-declined">declined</span></xsl:when>
-		              <xsl:otherwise><span class="invite-accepted">accepted</span></xsl:otherwise>
+		              <xsl:when test="CSS:invite-noresponse"><span class="invite-pending"><xsl:copy-of select="$bwStr-CuCa-Pending"/></span></xsl:when>
+		              <xsl:when test="CSS:invite-declined"><span class="invite-declined"><xsl:copy-of select="$bwStr-CuCa-Declined"/></span></xsl:when>
+		              <xsl:otherwise><span class="invite-accepted"><xsl:copy-of select="$bwStr-CuCa-Accepted"/></span></xsl:otherwise>
                 </xsl:choose>
 		          </td>
               <td class="access">

@@ -637,10 +637,32 @@
   <xsl:variable name="bwStr-CuCa-ShareWith">Share calendar with:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-SharePlaceholder">enter a user account</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Share">share</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SuggestedName">Suggested name:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SharedBy">Shared by</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Status">Status</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-WriteAccess">Write access</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Remove">Remove</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Pending">pending</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Declined">declined</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Accepted">accepted</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DefaultSchedNotShared">This calendar is the default scheduling calendar; it may not be shared.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Current Access:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Note:</strong> Advanced access controls can break standard sharing.  Use this feature with care.</p><p>If you grant write access to another user, and you wish to see events added by that user in your calendar, <strong>you must explicitly grant yourself access to the same calendar.</strong>  Enter your UserID as a user in the "Who" box with "All" set in the "Rights" box. This is standard access control; the reason you will not see the other user's events without doing this is that the default access is grant:all to "owner" - and you don't own the other user's events.</p></xsl:variable>
   <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
+  
+  <!-- notifications.xsl -->
+  <xsl:variable name="bwStr-Notif-SharingInvitation">Sharing Invitation</xsl:variable>
+  <xsl:variable name="bwStr-Notif-SharingReply">Sharing Reply</xsl:variable>
+  <xsl:variable name="bwStr-Notif-InviteFrom">Invitation from</xsl:variable>
+  <xsl:variable name="bwStr-Notif-ReplyFrom">Reply from</xsl:variable>
+  <xsl:variable name="bwStr-Notif-TheUser">The user</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasInvited">has invited you to share the calendar</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Reject">reject</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Accept">accept</xsl:variable>
+  <xsl:variable name="bwStr-Notif-CalendarName">Calendar Name:</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasAccepted">has accepted your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasDeclined">has declined your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Clear">clear</xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">pick</xsl:variable>

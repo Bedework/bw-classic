@@ -642,10 +642,32 @@
   <xsl:variable name="bwStr-CuCa-ShareWith">Share calendar with:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-SharePlaceholder">enter a user account</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Share">share</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SuggestedName">Suggested name:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SharedBy">Shared by</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Status">Status</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-WriteAccess">Write access</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Remove">Remove</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Pending">pending</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Declined">declined</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Accepted">accepted</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DefaultSchedNotShared">This calendar is the default scheduling calendar; it may not be shared.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Aktuelle Zugriffsrechte:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Anmerkung:</strong> Advanced access controls can break standard sharing.</p><p>Wenn sie f&#252;r einen anderen Benutzer Vollzugriff auf einen Kalender gew&#228;hren und sie wollen die vom anderen Benutzer in ihren Kalender eingetragenen Termine bearbeiten k&#246;nnen,<strong>dann m&#252;ssen sie sich selber ebenfalls Vollzugriff auf ihren eigenen Kalender eintragen.</strong> Tragen sie bitte ihre eigenen Benutzerkennung als Benutzer im Feld "Who" ein und w&#228;hlen sie "All" aus im Feld "Rights". Dies liegt an der Standard Rechteverwaltung. Der genaue Grund wieso sie Eintr&#228;ge von anderen Benutzern in ihrem eigenen (freigegebenen) Kalender sonst nicht sehen k&#246;nnen liegt darin, dass Eintr&#228;ge von zu Veranstaltungen immer mit dem Zugriffsrecht "owner" (Eigner) versehen ist und somit in ihrem Kalender auch die Eintr&#228;ge der anderen Benutzer auch den anderen Benutzern geh&#246;ren.</p></xsl:variable>
   <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
+  
+  <!-- notifications.xsl -->
+  <xsl:variable name="bwStr-Notif-SharingInvitation">Sharing Invitation</xsl:variable>
+  <xsl:variable name="bwStr-Notif-SharingReply">Sharing Reply</xsl:variable>
+  <xsl:variable name="bwStr-Notif-InviteFrom">Invitation from</xsl:variable>
+  <xsl:variable name="bwStr-Notif-ReplyFrom">Reply from</xsl:variable>
+  <xsl:variable name="bwStr-Notif-TheUser">The user</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasInvited">has invited you to share the calendar</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Reject">reject</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Accept">accept</xsl:variable>
+  <xsl:variable name="bwStr-Notif-CalendarName">Calendar Name:</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasAccepted">has accepted your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasDeclined">has declined your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Clear">clear</xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">ausw&#228;hlen</xsl:variable>

@@ -259,13 +259,13 @@ body {
   padding: 0;
 }
 #bedework #bodyBlock td#msgTaskBar {
-  width: 150px;
-  font-size: 0.8em;
+	width: 220px;
+  min-width: 150px;
+  font-size: 0.7em;
   color: black;
   background: white url("../images/sideBarGrayGradRight.gif") repeat-y left;
   border-right: 2px solid #333;
   border-bottom: 2px solid #aaa;
-  /*border-top: 24px solid #333;*/
   vertical-align: top;
   margin: 0;
   padding: 0;
@@ -276,6 +276,7 @@ body {
 }
 #bedework #bodyBlock td#msgTaskBar li {
   list-style-image: url("../images/calIconSchedule-sm.gif");
+  margin: 0 4px 8px 4px;
 }
 #bedework #bodyBlock td#msgTaskBarPlaceholder {
   border-right: 2px solid #333;
@@ -1998,7 +1999,7 @@ display: inline;
 	font-size: 0.9em;
 }
 #bedework #calSharingBox {
-  margin-bottom: 2em;
+  margin-bottom: 0.5em;
 }
 #bedework #calSharingBox table {
 	width: auto;
@@ -2010,6 +2011,19 @@ display: inline;
 #bedework #calSharingBox .calShareField {
 	font-size: 0.9em;
 	color: #666;
+}
+#bedework #shareesTable {
+   margin-bottom: 2em;
+}
+#bedework #shareesTable tr:nth-child(odd) {
+   background-color: #eee;
+}
+#bedework #shareesTable.common td {
+	padding: 0 0.5em;
+}
+#bedework #shareesTable.common td.access,
+#bedework #shareesTable.common td.remove {
+   text-align: center;
 }
 #bedework #accessBox {
 	display: none;

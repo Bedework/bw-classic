@@ -27,15 +27,21 @@
   <!--== NOTIFICATIONS ==-->
   <xsl:template match="notification">
     <xsl:variable name="position" select="position()"/>
-    <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>
-          
+
     <xsl:choose>
-      <xsl:when test="type = 'invite-notification'">    
+      <xsl:when test="type = 'invite-notification'">  
+        <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>  
+        
+        <!-- check invite status - look for invite-deleted -->
         <li class="shareInvite shareNotification" id="shareNotification-{$position}">
-          Invitation from 
+          <xsl:copy-of select="$bwStr-Notif-InviteFrom"/>
+          <xsl:text> </xsl:text>
           <em><xsl:value-of select="$sharer"/></em>
-          <div class="notificationDialog invisible" id="notificationDialog-{$position}" title="Sharing Invitation">
-            The user <em><xsl:value-of select="$sharer"/></em> has invited you to share the calendar
+          <div class="notificationDialog invisible" id="notificationDialog-{$position}">
+            <xsl:attribute name="title"><xsl:copy-of select="$bwStr-Notif-SharingInvitation"/></xsl:attribute>
+            <xsl:copy-of select="$bwStr-Notif-TheUser"/><xsl:text> </xsl:text>
+            <em><xsl:value-of select="$sharer"/></em><xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-Notif-HasInvited"/><xsl:text> </xsl:text>
             <xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:hosturl/DAV:href"/>
           </div>
           
@@ -46,10 +52,10 @@
 			          modal: true,
 			          autoOpen: false,
 			          buttons: {
-			            "reject" : function() {
+			            "<xsl:copy-of select="$bwStr-Notif-Reject"/>" : function() {
 			              notificationReply("<xsl:value-of select="$sharing-reply"/>","<xsl:value-of select="name"/>","false","");
 			            },
-			            "accept" : function() {
+			            "<xsl:copy-of select="$bwStr-Notif-Accept"/>" : function() {
                     notificationReply("<xsl:value-of select="$sharing-reply"/>","<xsl:value-of select="name"/>","true","<xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:summary"/>");
 			            }
 			          }
@@ -63,18 +69,63 @@
 			    </script>
         </li>
       </xsl:when>
+      <xsl:when test="type = 'invite-reply'">
+        <xsl:variable name="sharee"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-reply/DAV:href,'mailto:')"/></xsl:variable>  
+        
+        <li class="shareReply shareNotification" id="shareNotification-{$position}">
+          <xsl:copy-of select="$bwStr-Notif-ReplyFrom"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$sharee"/>
+          
+          <div class="notificationDialog invisible" id="notificationDialog-{$position}">
+            <xsl:attribute name="title"><xsl:copy-of select="$bwStr-Notif-SharingReply"/></xsl:attribute>
+            <xsl:copy-of select="$bwStr-Notif-TheUser"/><xsl:text> </xsl:text>
+            <em><xsl:value-of select="$sharee"/></em><xsl:text> </xsl:text>
+            <xsl:choose>
+              <xsl:when test="message/CSS:notification/CSS:invite-reply/CSS:invite-declined">
+                <xsl:copy-of select="$bwStr-Notif-HasDeclined"/><xsl:text> </xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:copy-of select="$bwStr-Notif-HasAccepted"/><xsl:text> </xsl:text>
+              </xsl:otherwise>
+            </xsl:choose> 
+            <xsl:value-of select="message/CSS:notification/CSS:invite-reply/CSS:hosturl/DAV:href"/>
+          </div>
+          
+          <script type="text/javascript">
+            $(document).ready(function() {
+              $("#notificationDialog-<xsl:value-of select="$position"/>").dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                buttons: {
+                  "<xsl:copy-of select="$bwStr-Notif-Clear"/>" : function() {
+                    $(this).dialog("close");
+                    alert("unimplemented");
+                  }
+                }
+              });
+               
+              $("#shareNotification-<xsl:value-of select="$position"/>").click(function() {
+                $("#notificationDialog-<xsl:value-of select="$position"/>").dialog("open");
+              });
+               
+            });
+          </script>
+        </li>
+      </xsl:when>
       <xsl:otherwise>    
         <li><xsl:value-of select="type"/></li>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
   
-  <xsl:template name="notificationReplyWidgets">
+  <xsl:template name="notificationReplyWidgets"><!-- not yet in use, but will be -->
 	  <xsl:if test="/bedework/notifications/notification/type = 'invite-notification'">
 	    <div id="sharingColNameWidget" class="invisible">
 	      <form id="sharingColNameForm">
 	        <fieldset>
-	          <label for="sharingColName">Calendar Name:</label>
+	          <label for="sharingColName"><xsl:copy-of select="$bwStr-Notif-CalendarName"/></label>
 	          <input type="text" value="" name="sharingColName" id="sharingColName"/>
 	        </fieldset>
 	      </form>

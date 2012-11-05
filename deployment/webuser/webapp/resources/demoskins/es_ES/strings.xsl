@@ -636,10 +636,32 @@
   <xsl:variable name="bwStr-CuCa-ShareWith">Share calendar with:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-SharePlaceholder">enter a user account</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Share">share</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SuggestedName">Suggested name:</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SharedBy">Shared by</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Status">Status</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-WriteAccess">Write access</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Remove">Remove</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Pending">pending</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Declined">declined</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-Accepted">accepted</xsl:variable>
   <xsl:variable name="bwStr-CuCa-DefaultSchedNotShared">This calendar is the default scheduling calendar; it may not be shared.</xsl:variable>
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Acceso Actual:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Nota:</strong> Advanced access controls can break standard sharing.</p><p>Si autoriza permiso de escritura a otro usuario, y desea ver los eventos que pueda introducir dicho usuario en su agenda, <strong>debe autorizar explícitamente acceso a esa agenda para usted mismo.</strong>  Introduzca su ID de usuario en el campo "Quién" mientras establece "todos" en el campo "Permisos". Este es el control de acceso estándar; el motivo por el que usted no ve los eventos introducidos por otros usuarios sin llevar a cabo esta operación es que el acceso por defecto es permitir: todo al "propietario" - y usted no es el propietario de los eventos introducidos por otros usuarios.</p></xsl:variable>
   <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
+  
+  <!-- notifications.xsl -->
+  <xsl:variable name="bwStr-Notif-SharingInvitation">Sharing Invitation</xsl:variable>
+  <xsl:variable name="bwStr-Notif-SharingReply">Sharing Reply</xsl:variable>
+  <xsl:variable name="bwStr-Notif-InviteFrom">Invitation from</xsl:variable>
+  <xsl:variable name="bwStr-Notif-ReplyFrom">Reply from</xsl:variable>
+  <xsl:variable name="bwStr-Notif-TheUser">The user</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasInvited">has invited you to share the calendar</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Reject">reject</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Accept">accept</xsl:variable>
+  <xsl:variable name="bwStr-Notif-CalendarName">Calendar Name:</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasAccepted">has accepted your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasDeclined">has declined your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-Clear">clear</xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->
   <xsl:variable name="bwStr-CoPi-Pick">elección</xsl:variable>
