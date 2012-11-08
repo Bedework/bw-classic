@@ -106,11 +106,11 @@
                     <xsl:choose>
                       <xsl:when test="$transaction = 'false'">
                         <!-- this action terminates a running transaction -->
-                        notificationRemoveReply("<xsl:value-of select="$sharing-removeReply"/>","<xsl:value-of select="name"/>"); 
+                        notificationRemoveReply("<xsl:value-of select="$notifications-remove"/>","<xsl:value-of select="name"/>"); 
                       </xsl:when>
                       <xsl:otherwise>
                         <!-- this action continues/gets added to a running transaction -->
-                        notificationRemoveReply("<xsl:value-of select="$sharing-removeReplyTrans"/>","<xsl:value-of select="name"/>");
+                        notificationRemoveReply("<xsl:value-of select="$notifications-removeTrans"/>","<xsl:value-of select="name"/>");
                       </xsl:otherwise>
                     </xsl:choose>                    
                   }
