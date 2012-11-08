@@ -113,6 +113,8 @@
   <!-- sharing -->
   <xsl:variable name="sharing-shareCollection" select="/bedework/urlPrefixes/sharing/shareCollection"/>
   <xsl:variable name="sharing-reply" select="/bedework/urlPrefixes/sharing/reply"/>
+  <xsl:variable name="sharing-removeReply" select="/bedework/urlPrefixes/sharing/removeReply"/>
+  <xsl:variable name="sharing-removeReplyTrans" select="/bedework/urlPrefixes/sharing/removeReplyTrans"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu"/>
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch"/>

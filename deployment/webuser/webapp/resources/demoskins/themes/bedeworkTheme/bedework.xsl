@@ -62,6 +62,27 @@
   <xsl:include href="showPage.xsl" />
   <xsl:include href="footer.xsl" />
   
+  <!-- THEME GLOBAL VARIABLES -->
+  
+  <!-- Are we on a page with a running transaction? 
+       Used to determine behavior for some ajax requests. -->
+  <xsl:variable name="transaction">
+    <xsl:choose>
+      <xsl:when test="/bedework/page = 'eventscalendar' or
+                      /bedework/page = 'event' or
+                      /bedework/page = 'eventList' or
+                      /bedework/page = 'categoryList' or
+                      /bedework/page = 'locationList' or
+                      /bedework/page = 'calendarList' or
+                      /bedework/page = 'inbox' or
+                      /bedework/page = 'outbox' or
+                      /bedework/page = 'searchResult' or
+                      /bedework/page = 'upload' or
+                      /bedework/page = 'other'">false</xsl:when>
+      <xsl:otherwise>true</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
   <!-- BEGIN MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">

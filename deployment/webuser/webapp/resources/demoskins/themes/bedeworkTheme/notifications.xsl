@@ -83,10 +83,10 @@
             <em><xsl:value-of select="$sharee"/></em><xsl:text> </xsl:text>
             <xsl:choose>
               <xsl:when test="message/CSS:notification/CSS:invite-reply/CSS:invite-declined">
-                <xsl:copy-of select="$bwStr-Notif-HasDeclined"/><xsl:text> </xsl:text>
+                <span class="declined"><xsl:copy-of select="$bwStr-Notif-HasDeclined"/></span><xsl:text> </xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:copy-of select="$bwStr-Notif-HasAccepted"/><xsl:text> </xsl:text>
+                <span class="accepted"><xsl:copy-of select="$bwStr-Notif-HasAccepted"/></span><xsl:text> </xsl:text>
               </xsl:otherwise>
             </xsl:choose> 
             <xsl:value-of select="message/CSS:notification/CSS:invite-reply/CSS:hosturl/DAV:href"/>
@@ -100,8 +100,19 @@
                 autoOpen: false,
                 buttons: {
                   "<xsl:copy-of select="$bwStr-Notif-Clear"/>" : function() {
+                    $("#shareNotification-<xsl:value-of select="$position"/>").hide();
                     $(this).dialog("close");
-                    alert("unimplemented");
+                    <!-- we need different actions to avoid terminating running transactions -->
+                    <xsl:choose>
+                      <xsl:when test="$transaction = 'false'">
+                        <!-- this action terminates a running transaction -->
+                        notificationRemoveReply("<xsl:value-of select="$sharing-removeReply"/>","<xsl:value-of select="name"/>"); 
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <!-- this action continues/gets added to a running transaction -->
+                        notificationRemoveReply("<xsl:value-of select="$sharing-removeReplyTrans"/>","<xsl:value-of select="name"/>");
+                      </xsl:otherwise>
+                    </xsl:choose>                    
                   }
                 }
               });

@@ -70,6 +70,7 @@
   <xsl:variable name="event-showAttendeesForEvent" select="/bedework/urlPrefixes/event/showAttendeesForEvent"/>
   <xsl:variable name="event-initMeeting" select="/bedework/urlPrefixes/event/initMeeting"/>
   <xsl:variable name="event-addEventRefComplete" select="/bedework/urlPrefixes/event/addEventRefComplete"/>
+  <xsl:variable name="event-addEventSubComplete" select="/bedework/urlPrefixes/event/addEventSubComplete"/>
   <xsl:variable name="event-showAccess" select="/bedework/urlPrefixes/event/showAccess"/>
   <!-- <xsl:variable name="event-setAccess" select="/bedework/urlPrefixes/event/setAccess"/>-->
   <xsl:variable name="editEvent" select="/bedework/urlPrefixes/event/editEvent"/>
@@ -112,6 +113,8 @@
   <!-- sharing -->
   <xsl:variable name="sharing-shareCollection" select="/bedework/urlPrefixes/sharing/shareCollection"/>
   <xsl:variable name="sharing-reply" select="/bedework/urlPrefixes/sharing/reply"/>
+  <xsl:variable name="sharing-removeReply" select="/bedework/urlPrefixes/sharing/removeReply"/>
+  <xsl:variable name="sharing-removeReplyTrans" select="/bedework/urlPrefixes/sharing/removeReplyTrans"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu"/>
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch"/>

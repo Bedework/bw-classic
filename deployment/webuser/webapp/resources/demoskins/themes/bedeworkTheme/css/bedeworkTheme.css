@@ -303,6 +303,12 @@ body {
 #bedework #bodyBlock td#msgTaskBar li.shareNotification {
 	cursor: pointer;
 }
+#bedework .accepted strong {
+	color: #0a0;
+}
+#bedework .declined strong {
+  color: #b00;
+}
 #bedework #bodyBlock td.sideMenus h3 a:link,
 #bedework #bodyBlock td.sideMenush3 a:active,
 #bedework #bodyBlock td.sideMenus h3 a:visited {

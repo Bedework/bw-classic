@@ -660,8 +660,8 @@
   <xsl:variable name="bwStr-Notif-Reject">reject</xsl:variable>
   <xsl:variable name="bwStr-Notif-Accept">accept</xsl:variable>
   <xsl:variable name="bwStr-Notif-CalendarName">Calendar Name:</xsl:variable>
-  <xsl:variable name="bwStr-Notif-HasAccepted">has accepted your invitation to share</xsl:variable>
-  <xsl:variable name="bwStr-Notif-HasDeclined">has declined your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasAccepted">has <strong>accepted</strong> your invitation to share</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasDeclined">has <strong>declined</strong> your invitation to share</xsl:variable>
   <xsl:variable name="bwStr-Notif-Clear">clear</xsl:variable>
 
   <!--  xsl:template name="colorPicker"  -->

@@ -318,3 +318,6 @@ function validateShareForm(acct) {
 function notificationReply(href,name,accept,colName) {
   location.href = href + "&name=" + name + "&accept=" + accept + "&colName=" + colName;
 }
+function notificationRemoveReply(href,notificationName) {
+  $.get(href, { name: notificationName, remove: 'true'});
+}
