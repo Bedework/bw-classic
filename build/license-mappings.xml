@@ -94,6 +94,11 @@
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
+        <groupId>org.bedework.bwcalfacade</groupId>
+        <artifactId>bw-chgnote</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
         <groupId>org.bedework.bwdeployutil</groupId>
         <artifactId>bw-deployutil</artifactId>
         <license>Apache License, Version 2.0</license>
@@ -667,6 +672,11 @@
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>apache-jdkim-library</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
         <groupId>org.apache.lucene</groupId>
         <artifactId>lucene-misc</artifactId>
         <license>Apache License, Version 2.0</license>
@@ -926,6 +936,11 @@
     <artifact>
         <groupId>org.sonatype.spice</groupId>
         <artifactId>plexus-ehcache</artifactId>
+        <license>Apache License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.solr</groupId>
+        <artifactId>solr-solrj</artifactId>
         <license>Apache License, Version 2.0</license>
     </artifact>
     <artifact>

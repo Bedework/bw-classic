@@ -233,29 +233,6 @@ actionUpdateall() {
   exit 0
 }
 
-usageZoneinfo() {
-  echo ""
-  echo "$PRG -zoneinfo -fetch"
-  echo "to have data fetched and processed. Alternatively to process a specific set of data"
-  echo "$PRG -zoneinfo -version VERSION -tzdata path-to-data" 
-  echo "for example:" 
-  echo "$PRG -zoneinfo -version 2010m -tzdata /data/olson/tzdata2010m.tar.gz" 
-  echo ""
-  echo "The code and data can be obtained manually from:"
-  echo "  http://www.iana.org/time-zones/repository/tzcode-latest.tar.gz"
-  echo "  http://www.iana.org/time-zones/repository/tzdata-latest.tar.gz"
-  echo ""
-  echo "  ftp://ftp.iana.org/tz/tzcode-latest.tar.gz"
-  echo "  ftp://ftp.iana.org/tz/tzdata-latest.tar.gz"
-  echo "e.g."  
-  echo "  wget 'ftp://ftp.iana.org/tz/tzdata-latest.tar.gz'"
-  echo ""
-  echo "For a specific version replace 'latest' with the version, e.g."
-  echo "  ftp://ftp.iana.org/tz/releases/tzcode2012e.tar.gz"
-  
-  exit 1
-}
-
 # Change to the next project to build. Exit if we're done.
 # The order below reflects the dependencies
 setDirectory() {
@@ -508,6 +485,29 @@ setDirectory() {
 	exit 0;
 }
 
+usageZoneinfo() {
+  echo ""
+  echo "$PRG -zoneinfo -fetch"
+  echo "to have data fetched and processed. Alternatively to process a specific set of data"
+  echo "$PRG -zoneinfo -version VERSION -tzdata path-to-data" 
+  echo "for example:" 
+  echo "$PRG -zoneinfo -version 2010m -tzdata /data/olson/tzdata2010m.tar.gz" 
+  echo ""
+  echo "The code and data can be obtained manually from:"
+  echo "  http://www.iana.org/time-zones/repository/tzcode-latest.tar.gz"
+  echo "  http://www.iana.org/time-zones/repository/tzdata-latest.tar.gz"
+  echo ""
+  echo "  ftp://ftp.iana.org/tz/tzcode-latest.tar.gz"
+  echo "  ftp://ftp.iana.org/tz/tzdata-latest.tar.gz"
+  echo "e.g."  
+  echo "  wget 'ftp://ftp.iana.org/tz/tzdata-latest.tar.gz'"
+  echo ""
+  echo "For a specific version replace 'latest' with the version, e.g."
+  echo "  ftp://ftp.iana.org/tz/releases/tzcode2012e.tar.gz"
+  
+  exit 1
+}
+
 # ---------------------------------------------------------------------------- 
 # Build zoneinfo - require -version -tzdata
 # The version parameter value should be the version code from the tzdata name
@@ -528,7 +528,7 @@ actionZoneinfo() {
   if [ "$1" = "-fetch" ] ; then
     shift
     cd data
-    wget 'ftp://elsie.nci.nih.gov/pub/tz*.tar.gz'
+    wget 'http://www.iana.org/time-zones/repository/tzdata-latest.tar.gz'
     gzip -dc tzdata*.tar.gz | tar -xf -
     
     filename=$(basename `ls tzdata*`)
