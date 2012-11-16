@@ -34,6 +34,10 @@
       <div id="feature">
         <!-- grab the root of the FeaturedEvent.xml document (/image[position() &lt; 4])-->
         <xsl:apply-templates select="document('../../themes/bedeworkTheme/featured/FeaturedEvent.xml')/featuredEvents"/>
+        
+        <!-- The featured events triptych can be managed from within the admin client by adding the contents of FeaturedEvent.xml 
+             as a resource in the calendar suite.  Once done, get the URL of the resource and reference it as follows:  -->
+        <!-- <xsl:apply-templates select="document('/pubcaldav/user/agrp_calsuite-MainCampus/.csResources/FeaturedTriptych')/featuredEvents"/> -->
       </div>
     </xsl:if>
   </xsl:template>

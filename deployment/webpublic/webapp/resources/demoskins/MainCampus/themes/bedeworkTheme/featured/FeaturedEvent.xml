@@ -34,17 +34,17 @@
   <generics>
     <group>
       <image>
-      <name>bede.jpg</name>
-      <toolTip>De temporum ratione</toolTip>
-    </image>
-    <image>
-      <name>gettingstarted.jpg</name>
-      <toolTip>Bedework Documentation</toolTip>
-    </image>
-    <image>
-      <name>bedework.jpg</name>
-      <toolTip>Bedework Website</toolTip>
-    </image>
+	      <name>bede.jpg</name>
+	      <toolTip>De temporum ratione</toolTip>
+	    </image>
+	    <image>
+	      <name>gettingstarted.jpg</name>
+	      <toolTip>Bedework Documentation</toolTip>
+	    </image>
+	    <image>
+	      <name>bedework.jpg</name>
+	      <toolTip>Bedework Website</toolTip>
+	    </image>
     </group>
   </generics>
 </featuredEvents>
