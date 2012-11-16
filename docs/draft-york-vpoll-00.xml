@@ -2,9 +2,11 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC2434 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2434.xml">
+<!ENTITY RFC2518 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2518.xml">
 <!ENTITY RFC3688 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3688.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC4589 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4589.xml">
+<!ENTITY RFC4791 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4791.xml">
 <!ENTITY RFC5545 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5545.xml">
 <!ENTITY RFC5546 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5546.xml">
 <!ENTITY RFC6047 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6047.xml">
@@ -160,6 +162,11 @@
             alternatives and then book that meeting or task.
           </t>
 
+          <t hangText="Active Vpoll:">
+            A vpoll may have a DTSTART, DTEND and DURATION which may define the 
+            start and end of the active voting period.
+          </t>
+
           <t hangText="Voter:">
             A participant who votes on th ealternatives. A voter need not be
             an attendee of any of the alternatives presented.
@@ -227,13 +234,22 @@
   
             <t hangText="DTEND:">
               The usual <xref target='RFC5545'/> property. This optional property
-              provides a poll closing time and date.
+              provides a poll closing time and date after which the VPOLL is no
+              longer active.
             </t>
   
             <t hangText="POLL-MODE:">
               A new property which defines how the votes are used to obtain a 
               result. For our use case it will take the value "BASIC" meaning 
               one event will be chosen from the alternatives. 
+            </t>
+  
+            <t hangText="POLL-PROPERTIES:">
+              A new property which defines which icalendar properties are being 
+              voted on. For our use case it will take the value "DTSTART, LOCATION" 
+              meaning only those properties are significant for voting.
+              Other properties in the events may differ but are not considered
+              significant for the voting process. 
             </t>
   
             <t hangText="VOTER:">
@@ -261,7 +277,8 @@
        PRODID:-//Example//Example
        METHOD:REQUEST
        BEGIN:VPOLL
-       POLL-MODE: BASIC
+       POLL-MODE:BASIC
+       POLL-PROPERTIES:DTSTART,LOCATION 
        ORGANIZER:mailto:mike@example.com
        UID:sched01-1234567890
        DTSTAMP:20120101T000000Z
@@ -782,6 +799,53 @@
             </list>
           </t>
         </section>
+         
+        <section anchor="poll_properties"
+                 title="Poll-properties">
+          <t>
+            <list style='hanging'>
+              <t hangText="Property name:">
+                POLL-PROPERTIES
+              </t>
+    
+              <t hangText="Purpose:">
+                This property is used in VPOLL to define which icalendar properties 
+                are being voted on.
+              </t>
+    
+              <t hangText="Property Parameters:">
+                Non-standard or iana parameters can be specified on this property.
+              </t>
+    
+              <t hangText="Conformance:">
+                This property MAY be specified in a VPOLL component.
+              </t>
+    
+              <t hangText="Description:">
+                This property defines which icalendar properties are significant
+                in the voting process. It may not be claer to voters which 
+                properties are varying in a significant manner. Clients may
+                use this property to highlight those listed properties.
+              </t>
+    
+              <t hangText="Format Definition:">
+                <figure>
+                  <preamble>
+                    This property is defined by the following notation:
+                  </preamble>
+    
+                  <artwork type="abnf">
+          pollproperties = "POLL-PROPERTIES" pollpropparams ":" 
+              text *("," text) CRLF
+          
+          pollpropparams = *(";" other-param)
+              
+                  </artwork>
+                </figure>
+              </t>
+            </list>
+          </t>
+        </section>
         
         <section anchor="voter"
                  title="Voter">
@@ -849,6 +913,11 @@
               
                   </artwork>
                 </figure>
+              </t>
+    
+              <t hangText="Note">
+                RSVP=TRUE MAY used by the organizer to force the voter to reset 
+                their state and re-vote.
               </t>
             </list>
           </t>
@@ -930,17 +999,27 @@
   
             <t>
               If specified, the "DTSTART" property defines the start or 
-              opening of the poll. If absent the poll is presumed to have started
+              opening of the poll active period. If absent the poll is presumed 
+              to have started when created. 
             </t>
   
             <t>
               If "DTSTART"is present "DURATION" MAY be specified and indicates
-              the duration, and hence the ending, of the poll. 
+              the duration, and hence the ending, of the poll. The value of the
+              property MUST be a positive duration.
             </t>
   
             <t>
               "DTEND" MAY be specified with or without "DTSTART" and indicates
-              the ending of the poll. 
+              the ending of the poll. If DTEND is specified it MUST be later than
+              the DTSTART or CREATED property.
+            </t>
+  
+            <t>
+              If one or more VALARM components are included in the VPOLL they
+              are not componets to be voted on adn MUST NOT contain a POLL-ITEM-ID
+              property. VALARM sub-components may be used to provide warnings to
+              the user when polls are due to start or end.
             </t>
           </list>
         </t>
@@ -992,110 +1071,618 @@
       </t>
     </section>
     
-    <section anchor="caldav_implications"
-             title="CalDAV implications">
+    <section anchor="caldav_extensions"
+             title="CalDAV Extensions">
       <t>
-        <list style='numbers'>
-          <t>
-       time range request for VPOLLs (need to define)
-          </t>
-            
-          <t>
-       How do outstanding VPOLLs affect freebusy requests?
-            <vspace/>
-         Transparency is client controlled - server/client implementations may provide defaults - ruled out TRANSP in VPOLL
-            <vspace/>
-         So freebusy handling is as standard
-          </t>
-            
-          <t>
-       VPOLLs live as resources in a calendar collection
-          </t>
-            
-          <t>
-       Book rooms right away? No impact on protocol - implementation detail only. 
-          </t>
-            
-          <t>
-       Implicit: when to send out a refresh to voters - implementation detail only
-          </t>
-            
-          <t>
-       TODO: On a collection that supports VPOLLs, define a property that contains VPOLL limits like the max number of poll items, max number of voters.
-          </t>
-            
-          <t>
-       How does the user know that need to take action on a server generated CANCELLED, CLOSED, CONFIRMED? ITIP or notification collection? Might be notification collection, a resource update notification.
-          </t>        
-        </list>
+        This specification extends <xref target='RFC4791'/> in that it defines
+        a new component and new iCalendar properties to be supported and requires extra 
+        definitions related to time-ranges and reports.
       </t>
-    
-      <section anchor="capabilities"
-               title="Capabilities">
+      
+    <section anchor="calendar_collection_properties"
+             title="Calendar Collection Properties">
+      <t>
+       This section defines new CalDAV properties for calendar collections.
+      </t>
+      
+      <section anchor="caldav_vpoll_supported_component_set"
+               title="CALDAV:vpoll-supported-component-set">
         <t>
-          Ths suggests we need some way of determining server capabilities - 
-          is this an extension to CalDAV? 
-        </t>
-        <t>
-          Information returned in a capabil        pollwinner = "POLL-WINNER" pollwinnerparams ":" text CRLF
-        pollwinnerparams = *(";" other-param)
-        ; Used with a STATUS:CONFIRMED VPOLL to indicate which components have
-        ; been confirmed
-          ities object needs to include:
-          <list style='numbers'>
-            <t>
-    List of poll modes
+          <list style='hanging'>
+            <t hangText="Name:">
+              vpoll-supported-component-set
             </t>
 
-            <t>
-    List of supported components
+            <t hangText="Namespace:">urn:ietf:params:xml:ns:caldav</t>
+
+            <t hangText="Purpose:">
+              Specifies the calendar component types (e.g., VEVENT,
+              VTODO, etc.) that may be included in a VPOLL component.
             </t>
 
-            <t>
-    Combination of components
+            <t hangText="Conformance:">
+              This property MAY be defined on any calendar
+              collection.  If defined, it MUST be protected and SHOULD NOT be
+              returned by a PROPFIND DAV:allprop request (as defined in Section
+              12.14.1 of <xref target='RFC2518'/>).
             </t>
 
-            <t>
-    Limits: 
+            <t hangText="Description:">
+              The CALDAV:vpoll-supported-component-set property is
+              used to specify restrictions on the calendar component types that
+              VPOLL components may contain in a calendar collection.
+              Any attempt by the client to store VPOLL components with
+              component types not listed in this property, if it exists, MUST
+              result in an error, with the CALDAV:vpoll-supported-component
+              precondition <xref target="additional_preconditions"/> 
+              being violated.  Since this
+              property is protected, it cannot be changed by clients using a
+              PROPPATCH request.  However, clients can initialize the value of
+              this property when creating a new calendar collection with
+              MKCALENDAR.  In the absence of
+              this property, the server MUST accept all component types, and the
+              client can assume that all component types are accepted.
             </t>
 
-            <t>
-    # of items, 
+            <t hangText="Definition:">
+              <figure>
+                <artwork><![CDATA[
+         <!ELEMENT vpoll-supported-component-set (comp+)>
+  
+]]></artwork>
+              </figure>
             </t>
 
-            <t>
-    # voters
-            </t>
-
-            <t>
-    Size of individual resources
-            </t>
-
-            <t>
-    Size of total vpoll
-            </t>
-
-            <t>
-    # active polls
-            </t>
-
-            <t>
-    Max voting period 
-            </t>
-
-            <t>
-    itip/~itip
-            </t>
-
-            <t>
-    remote attendee/voter capable
-            </t>
-
-            <t>
-    poll options - e.g "vpoll-basic" 
+            <t hangText="Example:">
+              <figure>
+                <artwork><![CDATA[
+         <C:vpoll-supported-component-set
+             xmlns:C="urn:ietf:params:xml:ns:caldav">
+           <C:comp name="VEVENT"/>
+           <C:comp name="VTODO"/>
+         </C:vpoll-supported-component-set>
+  
+]]></artwork>
+              </figure>
             </t>
           </list>
         </t>
+      </section>
+      
+      <section anchor="caldav_vpoll_max_items"
+               title="CALDAV:vpoll-max-items">
+        <t>
+          <list style='hanging'>
+            <t hangText="Name:">
+              vpoll-max-items
+            </t>
+
+            <t hangText="Namespace:">urn:ietf:params:xml:ns:caldav</t>
+
+            <t hangText="Purpose:">
+              Provides a numeric value indicating the maximum number of
+              items that may be contained in any instance of a VPOLL calendar 
+              object resource stored in the calendar collection.
+            </t>
+
+            <t hangText="Conformance:">
+              This property MAY be defined on any calendar
+              collection.  If defined, it MUST be protected and SHOULD NOT be
+              returned by a PROPFIND DAV:allprop request (as defined in Section
+              12.14.1 of <xref target='RFC2518'/>).
+            </t>
+
+            <t hangText="Description:">
+              The CALDAV:vpoll-max-items is used to
+              specify a numeric value that indicates the maximum number of
+              iCalendar components in any one instance of a VPOLL calendar
+              object resource stored in a calendar collection.  Any attempt to
+              store a calendar object resource with more components per
+              instance than this value MUST result in an error, with the CALDAV:
+              vpoll-max-items precondition <xref target="additional_preconditions"/> being
+              violated.  In the absence of this property, the client can assume
+              that the server can handle any number of items in a VPOLL
+              calendar component.
+            </t>
+
+            <t hangText="Definition:">
+              <figure>
+                <artwork><![CDATA[
+         <!ELEMENT vpoll-max-items (#PCDATA)>
+         PCDATA value: a numeric value (integer greater than zero)
+  
+]]></artwork>
+              </figure>
+            </t>
+
+            <t hangText="Example:">
+              <figure>
+                <artwork><![CDATA[
+         <C:vpoll-max-items
+              xmlns:C="urn:ietf:params:xml:ns:caldav"
+         >25</C:vpoll-max-items>
+  
+]]></artwork>
+              </figure>
+            </t>
+          </list>
+        </t>
+      </section>
+      
+      <section anchor="caldav_vpoll_max_active"
+               title="CALDAV:vpoll-max-active">
+        <t>
+          <list style='hanging'>
+            <t hangText="Name:">
+              vpoll-max-active
+            </t>
+
+            <t hangText="Namespace:">urn:ietf:params:xml:ns:caldav</t>
+
+            <t hangText="Purpose:">
+              Provides a numeric value indicating the maximum number of
+              active vpolls at any one time.
+            </t>
+
+            <t hangText="Conformance:">
+              This property MAY be defined on any calendar
+              collection.  If defined, it MUST be protected and SHOULD NOT be
+              returned by a PROPFIND DAV:allprop request (as defined in Section
+              12.14.1 of <xref target='RFC2518'/>).
+            </t>
+
+            <t hangText="Description:">
+              The CALDAV:vpoll-max-active is used to
+              specify a numeric value that indicates the maximum number of
+              active VPOLLs at any one time.  Any attempt to store a new active
+              VPOLL calendar object resource which results in exceeding this limit
+              MUST result in an error, with the CALDAV:
+              vpoll-max-active precondition <xref target="additional_preconditions"/> being
+              violated.  In the absence of this property, the client can assume
+              that the server can handle any number of active VPOLLs.
+            </t>
+
+            <t hangText="Definition:">
+              <figure>
+                <artwork><![CDATA[
+         <!ELEMENT vpoll-max-active (#PCDATA)>
+         PCDATA value: a numeric value (integer greater than zero)
+  
+]]></artwork>
+              </figure>
+            </t>
+
+            <t hangText="Example:">
+              <figure>
+                <artwork><![CDATA[
+         <C:vpoll-max-active
+              xmlns:C="urn:ietf:params:xml:ns:caldav"
+         >25</C:vpoll-max-active>
+  
+]]></artwork>
+              </figure>
+            </t>
+          </list>
+        </t>
+      </section>
+      
+      <section anchor="caldav_vpoll_max_voters"
+               title="CALDAV:vpoll-max-voters">
+        <t>
+          <list style='hanging'>
+            <t hangText="Name:">
+              vpoll-max-voters
+            </t>
+
+            <t hangText="Namespace:">urn:ietf:params:xml:ns:caldav</t>
+
+            <t hangText="Purpose:">
+              Provides a numeric value indicating the maximum number of
+              voters for any instance of a VPOLL calendar 
+              object resource stored in the calendar collection.
+            </t>
+
+            <t hangText="Conformance:">
+              This property MAY be defined on any calendar
+              collection.  If defined, it MUST be protected and SHOULD NOT be
+              returned by a PROPFIND DAV:allprop request (as defined in Section
+              12.14.1 of <xref target='RFC2518'/>).
+            </t>
+
+            <t hangText="Description:">
+              The CALDAV:vpoll-max-voters is used to
+              specify a numeric value that indicates the maximum number of
+              VOTER properties for any one instance of a VPOLL calendar
+              object resource stored in a calendar collection.  Any attempt to
+              store a calendar object resource with more VOTER properties per
+              instance than this value MUST result in an error, with the CALDAV:
+              vpoll-max-voters precondition <xref target="additional_preconditions"/> being
+              violated.  In the absence of this property, the client can assume
+              that the server can handle any number of voters in a VPOLL
+              calendar component.
+            </t>
+
+            <t hangText="Definition:">
+              <figure>
+                <artwork><![CDATA[
+         <!ELEMENT vpoll-max-voters (#PCDATA)>
+         PCDATA value: a numeric value (integer greater than zero)
+  
+]]></artwork>
+              </figure>
+            </t>
+
+            <t hangText="Example:">
+              <figure>
+                <artwork><![CDATA[
+         <C:vpoll-max-voters
+              xmlns:C="urn:ietf:params:xml:ns:caldav"
+         >25</C:vpoll-max-voters>
+  
+]]></artwork>
+              </figure>
+            </t>
+          </list>
+        </t>
+      </section>
+
+      <section anchor="caldav_even_more_properties"
+               title="CalDAV:even-more-properties">
+        <t>
+          <list style='numbers'>
+<t>    List of poll modes
+</t><t>    Combination of components -        
+For a caldav server, a capability dav property similar to support component 
+sets which specifies what sets of icalendar components are supports for voting, 
+for example, only support VEVENTs.            
+</t><t>    Limits:Size of individual resources
+</t><t>    Limits:Size of total vpoll
+</t><t>    Limits:Max voting period 
+</t><t>    Limits:itip/~itip
+</t><t>    Limits:remote attendee/voter capable
+</t><t>    poll options - e.g "vpoll-basic" 
+        </t>
+        </list>
+        </t>
+      </section>
+    </section>
+    
+    <section anchor="additional_preconditions"
+             title="Additional Preconditions for PUT, COPY, and MOVE">
+      <t>
+        This specification creates additional Preconditions for PUT, COPY,
+        and MOVE methods.  These preconditions apply when a PUT operation of
+        a VPOLL calendar object resource into a calendar collection occurs, or when
+        a COPY or MOVE operation of a calendar object resource into a
+        calendar collection occurs, or when a COPY or MOVE operation occurs
+        on a calendar collection.
+      </t>
+
+      <t>    
+        The new preconditions are:
+        <list style='hanging'>
+          <t hangText="(CALDAV:vpoll-supported-component):">
+            The VPOLL resource submitted in the PUT request, or targeted by a 
+            COPY or MOVE request, MUST contain a type of calendar component 
+            that is supported in the targeted calendar collection;
+          </t>
+
+          <t hangText="(CALDAV:vpoll-max-items):">
+            The VPOLL resource submitted in the PUT request, or targeted by a 
+            COPY or MOVE request, MUST have a number of sub-components
+            (excluding VTIMEZONE) 
+            less than or equal to the value of the CALDAV:vpoll-max-items
+            property value <xref target="caldav_vpoll_max_items"/> on the 
+            calendar collection where  the resource will be stored;;
+          </t>
+
+          <t hangText="(CALDAV:vpoll-max-active):">
+            The PUT request, or COPY or MOVE request, MUST not result in the
+            number of active VPOLLsbeing greater than the value of the 
+            CALDAV:vpoll-max-active
+            property value <xref target="caldav_vpoll_max_active"/> on the 
+            calendar collection where  the resource will be stored;;
+          </t>
+
+          <t hangText="(CALDAV:vpoll-max-voters):">
+            The VPOLL resource submitted in the PUT request, or targeted by a 
+            COPY or MOVE request, MUST have a number of VOTER properties 
+            less than or equal to the value of the CALDAV:vpoll-max-voters
+            property value <xref target="caldav_vpoll_max_voters"/> on the 
+            calendar collection where  the resource will be stored;;
+          </t>
+        </list>
+      </t>
+    </section>
+
+    <section anchor="caldav_calendar_query_report"
+             title="CalDAV:calendar-query Report">
+      <t>
+        This allows the retrieval of VPOLLs and their included components. 
+        The query specification allows queries to be directed at the contained
+        sub-components
+      </t>
+        
+      <section anchor="example_partial_retrieval_of_vpoll"
+               title="Example: Partial Retrieval of VPOLL">
+        <t>
+          In this example, the client requests the server to return specific
+          components and properties of the VPOLL components that overlap the
+          time range from December 4, 2012, at 00:00:00 A.M. UTC to December 5,
+          2012, at 00:00:00 A.M. UTC.  In addition, the DAV:getetag property is
+          also requested and returned as part of the response. 
+          Note that due to the CALDAV:
+          calendar-data element restrictions, the DTSTAMP property in VPOLL
+          components has not been returned, and the only property returned in
+          the VCALENDAR object is VERSION.
+          
+          <figure>
+            <artwork><![CDATA[
+   >> Request <<
+
+   REPORT /cyrus/work/ HTTP/1.1
+   Host: cal.example.com
+   Depth: 1
+   Content-Type: application/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   <?xml version="1.0" encoding="utf-8" ?>
+   <C:calendar-query xmlns:D="DAV:"
+                 xmlns:C="urn:ietf:params:xml:ns:caldav">
+     <D:prop>
+       <D:getetag/>
+       <C:calendar-data>
+         <C:comp name="VCALENDAR">
+           <C:prop name="VERSION"/>
+           <C:comp name="VPOLL">
+             <C:prop name="SUMMARY"/>
+             <C:prop name="UID"/>
+             <C:prop name="DTSTART"/>
+             <C:prop name="DTEND"/>
+             <C:prop name="DURATION"/>
+           </C:comp>
+         </C:comp>
+       </C:calendar-data>
+     </D:prop>
+     <C:filter>
+       <C:comp-filter name="VCALENDAR">
+         <C:comp-filter name="VPOLL">
+           <C:time-range start="20121204T000000Z"
+                         end="20121205T000000Z"/>
+         </C:comp-filter>
+       </C:comp-filter>
+     </C:filter>
+   </C:calendar-query>
+
+   >> Response <<
+
+   HTTP/1.1 207 Multi-Status
+   Date: Sat, 11 Nov 2012 09:32:12 GMT
+   Content-Type: application/xml; charset="utf-8"
+   Content-Length: xxxx
+   
+   <?xml version="1.0" encoding="utf-8" ?>
+   <D:multistatus xmlns:D="DAV:"
+              xmlns:C="urn:ietf:params:xml:ns:caldav">
+     <D:response>
+       <D:href>http://cal.example.com/cyrus/work/poll2.ics</D:href>
+       <D:propstat>
+         <D:prop>
+           <D:getetag>"fffff-abcd2"</D:getetag>
+           <C:calendar-data>BEGIN:VCALENDAR
+   VERSION:2.0
+   BEGIN:VEVENT
+   DTSTART;TZID=US/Eastern:20121202T120000
+   DURATION:PT4D
+   SUMMARY:Poll #2
+   UID:00959BC664CA650E933C892C@example.com
+   END:VPOLL
+   END:VCALENDAR
+   </C:calendar-data>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+       </D:propstat>
+     </D:response>
+     <D:response>
+       <D:href>http://cal.example.com/cyrus/work/poll3.ics</D:href>
+       <D:propstat>
+         <D:prop>
+           <D:getetag>"fffff-abcd3"</D:getetag>
+           <C:calendar-data>BEGIN:VCALENDAR
+   VERSION:2.0
+   PRODID:-//Example Corp.//CalDAV Client//EN
+   BEGIN:VPOLL
+   DTSTART;TZID=US/Eastern:20121204T100000
+   DURATION:PT4D
+   SUMMARY:Poll #3
+   UID:DC6C50A017428C5216A2F1CD@example.com
+   END:VPOLL
+   END:VCALENDAR
+   </C:calendar-data>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+       </D:propstat>
+     </D:response>
+   </D:multistatus>
+
+]]></artwork>
+          </figure>
+        </t>
+      </section>
+        
+      <section anchor="example_retrieval_of_vpolls_by_sub_component_time_range"
+               title="Example: Retrieval of Vpolls by sub-component Time Range">
+        <t>
+         In this example, the client requests the server to return the VPOLL
+         components that have an alarm trigger scheduled in the specified time
+         range.      
+          <figure>
+            <artwork><![CDATA[
+   >> Request <<
+
+   REPORT /cyrus/work/ HTTP/1.1
+   Host: cal.example.com
+   Depth: 1
+   Content-Type: application/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   <?xml version="1.0" encoding="utf-8" ?>
+   <C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav">
+     <D:prop xmlns:D="DAV:">
+       <D:getetag/>
+       <C:calendar-data/>
+     </D:prop>
+     <C:filter>
+       <C:comp-filter name="VCALENDAR">
+         <C:comp-filter name="VPOLL">
+           <C:comp-filter name="*">
+             <C:time-range start="20121206T100000Z"
+                             end="20121207T100000Z"/>
+           </C:comp-filter>
+         </C:comp-filter>
+       </C:comp-filter>
+     </C:filter>
+   </C:calendar-query>
+
+   >> Response <<
+
+   HTTP/1.1 207 Multi-Status
+   Date: Sat, 11 Nov 2012 09:32:12 GMT
+   Content-Type: application/xml; charset="utf-8"
+   Content-Length: xxxx
+
+   <?xml version="1.0" encoding="utf-8" ?>
+   <D:multistatus xmlns:D="DAV:"
+                  xmlns:C="urn:ietf:params:xml:ns:caldav">
+     <D:response>
+       <D:href>http://cal.example.com/cyrus/work/poll4.ics</D:href>
+       <D:propstat>
+         <D:prop>
+           <D:getetag>"fffff-abcd4"</D:getetag>
+           <C:calendar-data>BEGIN:VCALENDAR
+   VERSION:2.0
+   PRODID:-//Example Corp.//CalDAV Client//EN
+   BEGIN:VPOLL
+   DTSTAMP:20121205T235300Z
+   DTEND;TZID=US/Eastern:20121206T120000
+   LAST-MODIFIED:20121205T235308Z
+   SEQUENCE:1
+   SUMMARY:Poll #4
+   UID:E10BA47467C5C69BB74E8720@example.com
+   BEGIN:VEVENT
+   ...
+   END:VEVENT
+   BEGIN:VEVENT
+   ...
+   END:VEVENT
+   BEGIN:VEVENT
+   ...
+   DTSTART;TZID=US/Eastern:20120606T150000
+   ...
+   END:VEVENT
+   END:VPOLL
+   END:VCALENDAR
+   </C:calendar-data>
+         </D:prop>
+         <D:status>HTTP/1.1 200 OK</D:status>
+       </D:propstat>
+     </D:response>
+   </D:multistatus>]]></artwork>
+          </figure>
+        </t>
+      </section>
+    </section>
+    
+    <section anchor="caldav_time_range"
+             title="CalDAV time ranges">
+      <t>
+        Section 9.9 "CALDAV:time-range XML Element" in <xref target='RFC4791'/>
+        describes how to specify time ranges to limit the set of calendar
+        components returned by the server. This specification extends
+        <xref target='RFC4791'/> to describe the meaning of time ranges for 
+        VPOLL
+      </t>
+      
+      <t>
+        A VPOLL component is said to overlap a given time range if the
+        condition for the corresponding component state specified in the
+        table below is satisfied.  The conditions depend on the presence
+        of the DTSTART, DURATION, DTEND, and CREATED properties
+        in the VPOLL component.  Note that, as specified above, the
+        DTEND value MUST be a DATE-TIME value equal to or after the DTSTART
+        value if specified.
+        <figure>
+          <artwork><![CDATA[
+   +---------------------------------------------------------------+
+   | VPOLL has the DTSTART property?                               |
+   |   +-----------------------------------------------------------+
+   |   |   VPOLL has the DURATION property?                        |
+   |   |   +-------------------------------------------------------+
+   |   |   | VPOLL has the DTEND property?                         |
+   |   |   |   +---------------------------------------------------+
+   |   |   |   | VPOLL has the CREATED property?                   |
+   |   |   |   |   +-----------------------------------------------+
+   |   |   |   |   | Condition to evaluate                         |
+   +---+---+---+---+-----------------------------------------------+
+   | Y | Y | N | * | (start  <= DTSTART+DURATION) AND              |
+   |   |   |   |   | ((end   >  DTSTART) OR                        |
+   |   |   |   |   |  (end   >= DTSTART+DURATION))                 |
+   +---+---+---+---+-----------------------------------------------+
+   | Y | N | Y | * | ((start <  DTEND)    OR  (start <= DTSTART))  |
+   |   |   |   |   | AND                                           |
+   |   |   |   |   | ((end   >  DTSTART)  OR  (end >= DTEND))      |
+   +---+---+---+---+-----------------------------------------------+
+   | Y | N | N | * | (start  <= DTSTART)  AND (end >  DTSTART)     |
+   +---+---+---+---+-----------------------------------------------+
+   | N | N | Y | * | (start  <  DTEND)    AND (end >= DTEND)       |
+   +---+---+---+---+-----------------------------------------------+
+   | N | N | N | Y | (start <= CREATED)   AND (end   >= CREATED)   |
+   +---+---+---+---+-----------------------------------------------+
+   | N | N | N | Y | (end    >  CREATED)                           |
+   +---+---+---+---+-----------------------------------------------+
+   | N | N | N | N | TRUE                                          |
+   +---+---+---+---+-----------------------------------------------+          
+]]></artwork>
+          </figure>
+        </t>
+      </section>
+      
+      <section anchor="vpoll_freebusy"
+               title="freebusy reports">
+        <t>
+         How do outstanding VPOLLs affect freebusy requests? Still an outstanding issue.
+         Transparency is client controlled - server/client implementations may 
+         provide defaults.  We previously ruled out TRANSP in VPOLL. Following
+         are some notes.
+        </t>
+                
+        <t>
+          It seems appropriate to allow end-users to specify that they wish time 
+          to be reserved when voting in favor of a given event.
+        </t>
+        
+        <t>
+          The default for VPOLL should be that all contained events are marked
+          transparent - note the default for VEVENT is OPAQUE so should all
+          contained VEVENTS have the TRANSP added when created?
+        </t>
+        
+        <t>
+          Should we create temporary related events to block time if the user 
+          requests? Or just treat the VPOLL as a psuedo-collection and add it to 
+          the freebusy set?
+        </t>
+      </section>
+      
+      <section anchor="vpoll_scheduling_issues"
+               title="Scheduling Issues">
+        <t>
+          How does the user know that need to take action on a server generated CANCELLED, CLOSED, CONFIRMED? ITIP or notification collection? 
+        </t>
+        
+        <t>
+          Answer: it's iTip - it's in the inbox.
+        </t>        
       </section>
     </section>
 
@@ -1158,11 +1745,8 @@ END:VCALENDAR
           </t>
             
           <t>
-            VOTER in VPOLL request refers to each person who will be voting - RSVP=TRUE is used by the organizer to force the voter to reset their state and re-vote
-          </t>
-            
-          <t>
-            Then the VOTER property with a RESPONSE parameter can be in every child component to show each voters current response
+            Then the VOTER property with a RESPONSE parameter can be in every 
+            child component to show each voters current response
           </t>
             
           <t>
@@ -1170,7 +1754,8 @@ END:VCALENDAR
           </t>
             
           <t>
-            If the Organizer does send out a full update (METHOD:REQUEST), then VOTER properties are included in the child components
+            If the Organizer does send out a full update (METHOD:REQUEST), then 
+            VOTER properties are included in the child components
           </t>
             
           <t>
@@ -1182,7 +1767,9 @@ END:VCALENDAR
           </t>
             
           <t>
-            Keep polls around after confirm or cancel. Use STATUS parameter inside VPOLL with states: NEEDS-ACTION, CANCELLED, CLOSED, CONFIRMED. Use POLL-ITEM-ID to identify the confirmed component.
+            Keep polls around after confirm or cancel. Use STATUS parameter 
+            inside VPOLL with states: NEEDS-ACTION, CANCELLED, CLOSED, CONFIRMED. 
+            Use POLL-ITEM-ID to identify the confirmed component.
           </t>
             
           <t>
@@ -1190,15 +1777,20 @@ END:VCALENDAR
           </t>
             
           <t>
-            POLL-ITEM-ID  SHOULD be a unique ID. If it remains the same between REQUESTs then the  previous response for that component MAY be re-used. To force a re-vote on a component due to a significant change, the POLL-ITEM-ID MUST change.
+            POLL-ITEM-ID  SHOULD be a unique ID. If it remains the same between 
+            REQUESTs then the  previous response for that component MAY be re-used. 
+            To force a re-vote on a component due to a significant change, the 
+            POLL-ITEM-ID MUST change.
           </t>
             
           <t>
-            A good client will remember the DTSTAMP of each VOTER and not allow an older DTSTAMP to override a newer DTSTAMP.
+            A good client will remember the DTSTAMP of each VOTER and not allow 
+            an older DTSTAMP to override a newer DTSTAMP.
           </t>
             
           <t>
-            Fill out VOTER with the rest of the ATTENDEE properties (SCHEDULE-STATUS, SCHEDULE-AGENT)
+            Fill out VOTER with the rest of the ATTENDEE properties 
+            (SCHEDULE-STATUS, SCHEDULE-AGENT)
           </t>
             
           <t>
@@ -1226,19 +1818,15 @@ END:VCALENDAR
           </t>
             
           <t>
-Use RELATED-TO in a icalendar component such as VEVENT or VTODO with a new reltypeparam to specify the relationship to a VPOLL. May need a reltypeparam for both an active and confirmed poll, or may only need one reltypeparam. Need to pick a new reltypeparam name.
+            Use RELATED-TO in a icalendar component such as VEVENT or VTODO with 
+            a new reltypeparam to specify the relationship to a VPOLL. May need 
+            a reltypeparam for both an active and confirmed poll, or may only 
+            need one reltypeparam. Need to pick a new reltypeparam name.
           </t>
             
           <t>
-Support a mask on what icalendar properties are being voted on, something like MASK: DTSTART, DTEND, SUMMARY. Other icalendar properties may be different like the ATTENDEE list but they won't be part of the vote in this example. Need to pick a icalendar property name for this mask. 
-          </t>
-            
-          <t>
-Like MASK, but for a caldav server, a dav property that specify what icalender properties this server supports for voting. 
-          </t>
-            
-          <t>
-For a caldav server, a compatibility dav property similar to support component sets which specifies what sets of icalendar components are supports for voting, for example, only support VEVENTs. 
+            Like POLL-PROPERTIES, but for a caldav server, a dav property that specify what 
+            icalender properties this server supports for voting. 
           </t>
             
           <t>
@@ -1248,11 +1836,13 @@ Need to do a section on what Notifications to support.
           </t>
             
           <t>
-Need to pick: SCHEDULED-AGENT=NONE or STATUS:DRAFT or a non-calendar collection for drafts. Each one has it's pluses and minuses. 
+            Need to pick: SCHEDULED-AGENT=NONE or STATUS:DRAFT or a non-calendar 
+            collection for drafts. Each one has it's pluses and minuses. 
           </t>
             
           <t>
-What to do with changes to STATUS:CONFIRMED? Allow them or not? What do to that poll had a winning event or todo.
+            What to do with changes to STATUS:CONFIRMED? Allow them or not? 
+            What do to that poll had a winning event or todo.
           </t>
             
           <t>
@@ -1263,7 +1853,12 @@ Need to write down what isn't vaild in a VPOLL.
           </t>
             
           <t>
-Can a user create a poll with scheduled events where that user's isn't the oranizer of the event? So is there a requirment that the account that poll is on is able to create each on of the resources in the poll? i.e. I can't create a poll with a set of events where I am just the attendee of the events. Are there any other restrictions for components in a VPOLL?
+            Can a user create a poll with scheduled events where that user's 
+            isn't the oranizer of the event? So is there a requirment that the 
+            account that poll is on is able to create each one of the resources 
+            in the poll? i.e. I can't create a poll with a set of events where 
+            I am just the attendee of the events. Are there any other 
+            restrictions for components in a VPOLL?
           </t>
             
           <t>
@@ -1272,7 +1867,13 @@ Add a dav property which will specify when a poll will expire and therfore be de
             
           <t>
 Guide for ATTENDEE roles chair, NON-PARTICIPANT etc
-          </t>          
+          </t>
+            
+          <t>
+Shared Calendars
+            <vspace/>
+    Only voters (or delegates) can manipulate votes.    
+          </t>
         </list>
       </t>
     </section>
@@ -1376,9 +1977,11 @@ Guide for ATTENDEE roles chair, NON-PARTICIPANT etc
     <references title="Normative References">
       &RFC2119;
       &RFC2434;
+      &RFC2518;
       &RFC3688;
       &RFC3986;
       &RFC4589;
+      &RFC4791;
       &RFC5545;
       &RFC5546;
       &RFC6047;
