@@ -658,10 +658,13 @@
   <!-- notifications.xsl -->
   <xsl:variable name="bwStr-Notif-SharingInvitation">Sharing Invitation</xsl:variable>
   <xsl:variable name="bwStr-Notif-SharingReply">Sharing Reply</xsl:variable>
+  <xsl:variable name="bwStr-Notif-SharingRemoval">Sharing Removal</xsl:variable>
+  <xsl:variable name="bwStr-Notif-NotificationFrom">Notification from</xsl:variable>
   <xsl:variable name="bwStr-Notif-InviteFrom">Invitation from</xsl:variable>
   <xsl:variable name="bwStr-Notif-ReplyFrom">Reply from</xsl:variable>
   <xsl:variable name="bwStr-Notif-TheUser">The user</xsl:variable>
   <xsl:variable name="bwStr-Notif-HasInvited">has invited you to share the calendar</xsl:variable>
+  <xsl:variable name="bwStr-Notif-HasRemoved">has removed sharing to the calendar</xsl:variable>
   <xsl:variable name="bwStr-Notif-Reject">reject</xsl:variable>
   <xsl:variable name="bwStr-Notif-Accept">accept</xsl:variable>
   <xsl:variable name="bwStr-Notif-CalendarName">Calendar Name:</xsl:variable>

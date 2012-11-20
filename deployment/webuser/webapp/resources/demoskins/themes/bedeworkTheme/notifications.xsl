@@ -29,10 +29,58 @@
     <xsl:variable name="position" select="position()"/>
 
     <xsl:choose>
+      <!-- check invite status - look for invite-deleted --> 
+      <xsl:when test="type = 'invite-notification' and message/CSS:notification/CSS:invite-notification/CSS:invite-deleted">
+        <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>  
+        
+        <li class="shareRemove shareNotification" id="shareNotification-{$position}">
+          <xsl:copy-of select="$bwStr-Notif-NotificationFrom"/>
+          <xsl:text> </xsl:text>
+          <em><xsl:value-of select="$sharer"/></em>
+          <div class="notificationDialog invisible" id="notificationDialog-{$position}">
+            <xsl:attribute name="title"><xsl:copy-of select="$bwStr-Notif-SharingRemoval"/></xsl:attribute>
+            <xsl:copy-of select="$bwStr-Notif-TheUser"/><xsl:text> </xsl:text>
+            <em><xsl:value-of select="$sharer"/></em><xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-Notif-HasRemoved"/><xsl:text> </xsl:text>
+            <xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:hosturl/DAV:href"/>
+          </div>
+
+          <script type="text/javascript">
+            $(document).ready(function() {
+              $("#notificationDialog-<xsl:value-of select="$position"/>").dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                buttons: {
+                   "<xsl:copy-of select="$bwStr-Notif-Clear"/>" : function() {
+                     $("#shareNotification-<xsl:value-of select="$position"/>").hide();
+                     $(this).dialog("close");
+                     <!-- we need different actions to avoid terminating running transactions -->
+                     <xsl:choose>
+                       <xsl:when test="$transaction = 'false'">
+                         <!-- this action terminates a running transaction -->
+                         notificationRemoveReply("<xsl:value-of select="$notifications-remove"/>","<xsl:value-of select="name"/>"); 
+                       </xsl:when>
+                       <xsl:otherwise>
+                         <!-- this action continues/gets added to a running transaction -->
+                         notificationRemoveReply("<xsl:value-of select="$notifications-removeTrans"/>","<xsl:value-of select="name"/>");
+                       </xsl:otherwise>
+                     </xsl:choose>                    
+                   }
+                 }
+               });
+                
+               $("#shareNotification-<xsl:value-of select="$position"/>").click(function() {
+                 $("#notificationDialog-<xsl:value-of select="$position"/>").dialog("open");
+               });
+                
+            });
+          </script>
+        </li>
+      </xsl:when>
       <xsl:when test="type = 'invite-notification'">  
         <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>  
         
-        <!-- check invite status - look for invite-deleted -->
         <li class="shareInvite shareNotification" id="shareNotification-{$position}">
           <xsl:copy-of select="$bwStr-Notif-InviteFrom"/>
           <xsl:text> </xsl:text>
@@ -44,7 +92,7 @@
             <xsl:copy-of select="$bwStr-Notif-HasInvited"/><xsl:text> </xsl:text>
             <xsl:value-of select="message/CSS:notification/CSS:invite-notification/CSS:hosturl/DAV:href"/>
           </div>
-          
+
           <script type="text/javascript">
 			      $(document).ready(function() {
 			        $("#notificationDialog-<xsl:value-of select="$position"/>").dialog({
