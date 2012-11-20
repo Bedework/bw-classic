@@ -861,12 +861,13 @@
   <xsl:variable name="bwStr-CSPf-DefaultViewModeList">UPCOMING - a list of discrete events from now into the future</xsl:variable>
   <xsl:variable name="bwStr-CSPf-DefaultViewModeDaily">DAY, WEEK, MONTH - a list of events showing entire view period</xsl:variable>
   <xsl:variable name="bwStr-CSPf-DefaultViewModeGrid">GRID - calendar grid for week and month view periods</xsl:variable>
-  <xsl:variable name="bwStr-CSPf-PreferredViewPeriod">Preferred view period:</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-PreferredViewPeriod">Preferred view period for<br/>DAY,WEEk,MONTH mode:</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Day">day</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Today">today</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Week">week</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Month">month</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Year">year</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-DefaultPageSize">Default number of events to display<br/>for 'UPCOMDING' mode (paging):</xsl:variable>
   <xsl:variable name="bwStr-CSPf-DefaultCategories">Default Categories:</xsl:variable>
   <xsl:variable name="bwStr-CSPf-ShowHideUnusedCategories">show/hide unused categories</xsl:variable>
   <xsl:variable name="bwStr-CSPf-PreferredTimeType">Preferred time type:</xsl:variable>

@@ -43,19 +43,22 @@
         </tr>
         <tr>
           <th>
-            <xsl:copy-of select="$bwStr-CSPf-PreferredView"/>
+            <label for="csPreferredView">
+              <xsl:copy-of select="$bwStr-CSPf-PreferredView"/>
+            </label>
           </th>
-          <td>
-            <xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
-            <input type="text" name="preferredView" value="{$preferredView}" size="40"/>
+          <td><xsl:variable name="preferredView" select="/bedework/prefs/preferredView"/>
+            <input type="text" id="csPreferredView" name="preferredView" value="{$preferredView}" size="40"/>
           </td>
         </tr>
         <tr>
           <th>
-            <xsl:copy-of select="$bwStr-CSPf-DefaultViewMode"/>
+            <label for="csDefaultViewMode">
+              <xsl:copy-of select="$bwStr-CSPf-DefaultViewMode"/>
+            </label>
           </th>
           <td>
-            <select name="defaultViewMode">
+            <select name="defaultViewMode" id="csDefaultViewMode">
               <option value="daily">
                 <xsl:if test="/bedework/prefs/defaultViewMode = 'daily'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
@@ -78,15 +81,18 @@
               </option>
               -->
             </select>
+            
           </td>
         </tr>
         <tr>
           <th>
-            <xsl:copy-of select="$bwStr-CSPf-PreferredViewPeriod"/>
+            <label for="csViewPeriod">
+              <xsl:copy-of select="$bwStr-CSPf-PreferredViewPeriod"/>
+            </label>
           </th>
           <td>
             <xsl:variable name="preferredViewPeriod" select="/bedework/prefs/preferredViewPeriod"/>
-            <select name="viewPeriod">
+            <select name="viewPeriod" id="csViewPeriod">
               <!-- picking the selected item could be done with javascript. for
                    now, this will do.  -->
               <xsl:choose>
@@ -133,16 +139,25 @@
           </td>
         </tr>
         <tr>
+          <th><xsl:copy-of select="$bwStr-CSPf-DefaultPageSize"/></th>
+	        <td>
+	          <input type="text" name="pageSize" id="csPageSize" value="" size="40">
+	            <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/pageSize"/></xsl:attribute>
+	          </input>
+	        </td>
+	      </tr>
+        <tr>
           <th><xsl:copy-of select="$bwStr-CSPf-DefaultCategories"/></th>
           <td>
             <!-- show the selected categories -->
             <ul class="catlist">
               <xsl:for-each select="/bedework/categories/current/category">
                 <xsl:sort select="value" order="ascending"/>
+                <xsl:variable name="selCatId">selCat<xsl:value-of select="position()"/></xsl:variable>
                 <li>
-                  <input type="checkbox" name="defaultCategory" checked="checked">
+                  <input type="checkbox" name="defaultCategory" id="{$selCatId}" checked="checked">
                     <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                    <xsl:value-of select="value"/>
+                    <label for="{$selCatId}"><xsl:value-of select="value"/></label>
                   </input>
                 </li>
               </xsl:for-each>
@@ -154,12 +169,13 @@
               <ul class="catlist">
                 <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="value" order="ascending"/>
+                  <xsl:variable name="catId">selCat<xsl:value-of select="position()"/></xsl:variable>
                   <!-- don't duplicate the selected categories -->
                   <xsl:if test="not(uid = ../../current//category/uid)">
                     <li>
-                      <input type="checkbox" name="defaultCategory">
+                      <input type="checkbox" name="defaultCategory" id="{$catId}">
                         <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:value-of select="value"/>
+                        <label for="{$catId}"><xsl:value-of select="value"/></label>
                       </input>
                     </li>
                   </xsl:if>
@@ -170,10 +186,12 @@
         </tr>
         <tr>
           <th>
-            <xsl:copy-of select="$bwStr-CSPf-PreferredTimeType"/>
+            <label for="csHour24">
+              <xsl:copy-of select="$bwStr-CSPf-PreferredTimeType"/>
+            </label>
           </th>
           <td>
-            <select name="hour24">
+            <select name="hour24" id="csHour24">
               <option value="false">
                 <xsl:if test="/bedework/prefs/hour24 = 'false'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
@@ -191,10 +209,12 @@
         </tr>
         <tr>
           <th>
-            <xsl:copy-of select="$bwStr-CSPf-PreferredEndDateTimeType"/>
+            <label for="csPreferredEndType">
+              <xsl:copy-of select="$bwStr-CSPf-PreferredEndDateTimeType"/>
+            </label>
           </th>
           <td>
-            <select name="preferredEndType">
+            <select name="preferredEndType" id="csPreferredEndType">
               <option value="duration">
                 <xsl:if test="/bedework/prefs/preferredEndType = 'duration'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
@@ -212,7 +232,9 @@
         </tr>
         <tr>
           <th>
-            <xsl:copy-of select="$bwStr-CSPf-DefaultTimezone"/>
+            <label for="defaultTzid">
+              <xsl:copy-of select="$bwStr-CSPf-DefaultTimezone"/>
+            </label>
           </th>
           <td>
             <xsl:variable name="tzid" select="/bedework/prefs/tzid"/>
@@ -226,20 +248,24 @@
         <xsl:if test="/bedework/userInfo/superUser = 'true'">
           <tr>
             <th>
-              <xsl:copy-of select="$bwStr-CSPf-DefaultImageDirectory"/>
+              <label for="csDefaultImageDirectory">
+                <xsl:copy-of select="$bwStr-CSPf-DefaultImageDirectory"/>
+              </label>
             </th>
             <td>
-              <input type="text" name="defaultImageDirectory" value="" size="40">
+              <input type="text" name="defaultImageDirectory" id="csDefaultImageDirectory" value="" size="40">
                 <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/defaultImageDirectory"/></xsl:attribute>
               </input>
             </td>
           </tr>
           <tr>
             <th>
-              <xsl:copy-of select="$bwStr-CSPf-MaxEntitySize"/>
+              <label for="csMaxEntitySize">
+                <xsl:copy-of select="$bwStr-CSPf-MaxEntitySize"/>
+              </label>
             </th>
             <td>
-              <input type="text" name="maxEntitySize" value="" size="40">
+              <input type="text" name="maxEntitySize" id="csMaxEntitySize" value="" size="40">
                 <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/maxEntitySize"/></xsl:attribute>
               </input>
             </td>
