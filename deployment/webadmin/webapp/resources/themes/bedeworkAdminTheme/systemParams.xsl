@@ -459,6 +459,16 @@
             </div>
           </td>
         </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-MdSP-DefaultNotifications"/></th>
+          <td>
+            <xsl:variable name="defaultChangesNotifications" select="/bedework/system/defaultChangesNotifications"/>
+            <input value="{$defaultChangesNotifications}" name="defaultChangesNotifications" class="wide"/>
+            <div class="desc">
+              <xsl:copy-of select="$bwStr-MdSP-DefaultNotificationsNote"/>
+            </div>
+          </td>
+        </tr>
       </table>
       <div class="submitBox">
         <input type="submit" name="updateSystemParams" value="{$bwStr-MdSP-Update}"/>

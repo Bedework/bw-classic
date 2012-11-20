@@ -124,6 +124,35 @@
           </td>
         </tr>
         -->
+        <tr>
+          <td class="fieldName">
+            <xsl:copy-of select="$bwStr-MoPr-PageSize"/>
+          </td>
+          <td>
+            <xsl:variable name="pageSize" select="/bedework/prefs/pageSize"/>
+            <input type="text" name="pageSize" value="{pageSize}" size="40"/>
+          </td>
+        </tr>
+        <!-- 
+        <tr>
+          <td class="fieldName">
+            <xsl:copy-of select="$bwStr-MoPr-AdminResourcesDirectory"/>
+          </td>
+          <td>
+            <xsl:variable name="adminResourcesDirectory" select="/bedework/prefs/adminResourcesDirectory"/>
+            <input type="text" name="adminResourcesDirectory" value="{adminResourcesDirectory}" size="40"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
+            <xsl:copy-of select="$bwStr-MoPr-SuiteResourcesDirectory"/>
+          </td>
+          <td>
+            <xsl:variable name="suiteResourcesDirectory" select="/bedework/prefs/suiteResourcesDirectory"/>
+            <input type="text" name="suiteResourcesDirectory" value="{suiteResourcesDirectory}" size="40"/>
+          </td>
+        </tr>
+         -->
       </table>
       <br />
 

@@ -825,6 +825,8 @@
   <xsl:variable name="bwStr-MdSP-ListOfSupportedLocales">List of supported locales. The format is a rigid, comma separated list of 2 letter language, underscore, 2 letter country. No spaces. Example: en_US,fr_CA</xsl:variable>
   <xsl:variable name="bwStr-MdSP-Update">Update</xsl:variable>
   <xsl:variable name="bwStr-MdSP-Cancel">Cancel</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-DefaultNotifications">Default Receive Notifications:</xsl:variable>
+  <xsl:variable name="bwStr-MdSP-DefaultNotificationsNote">Default when user has not specified if they wish to receive change notifications for a collection</xsl:variable>
 
   <!--  xsl:template match="calSuites" mode="calSuiteList" -->
   <xsl:variable name="bwStr-CalS-ManageCalendarSuites">Manage Calendar Suites</xsl:variable>
