@@ -863,7 +863,7 @@
   <xsl:variable name="bwStr-CSPf-Week">semana</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Month">mes</xsl:variable>
   <xsl:variable name="bwStr-CSPf-Year">año</xsl:variable>
-  <xsl:variable name="bwStr-CSPf-DefaultPageSize">Default number of events to display<br/>for 'UPCOMDING' mode (paging):</xsl:variable>
+  <xsl:variable name="bwStr-CSPf-DefaultPageSize">Default number of events to display<br/>for 'UPCOMING' mode (paging):</xsl:variable>
   <xsl:variable name="bwStr-CSPf-DefaultCategories">Categorías por defecto:</xsl:variable>
   <xsl:variable name="bwStr-CSPf-ShowHideUnusedCategories">mostrar/ocultar categorías sin usar</xsl:variable>
   <xsl:variable name="bwStr-CSPf-PreferredTimeType">Tipo de horario preferido:</xsl:variable>

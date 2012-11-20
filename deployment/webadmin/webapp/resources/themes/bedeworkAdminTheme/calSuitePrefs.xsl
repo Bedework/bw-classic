@@ -138,14 +138,20 @@
             </select>
           </td>
         </tr>
+        <!--
         <tr>
-          <th><xsl:copy-of select="$bwStr-CSPf-DefaultPageSize"/></th>
+          <th>
+            <label for="csDefaultPageSize">
+              <xsl:copy-of select="$bwStr-CSPf-DefaultPageSize"/>
+            </label>
+          </th>
 	        <td>
-	          <input type="text" name="pageSize" id="csPageSize" value="" size="40">
+	          <input type="text" name="pageSize" id="csDefaultPageSize" value="" size="40">
 	            <xsl:attribute name="value"><xsl:value-of select="/bedework/prefs/pageSize"/></xsl:attribute>
 	          </input>
 	        </td>
 	      </tr>
+	      -->
         <tr>
           <th><xsl:copy-of select="$bwStr-CSPf-DefaultCategories"/></th>
           <td>
