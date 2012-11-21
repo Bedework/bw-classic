@@ -472,7 +472,7 @@
 	        </div>
 	        
 	        <h3>
-            <xsl:if test="featuresOn = 'true'">
+            <xsl:if test="featuresOn = 'true' and singleMode = 'false'">
               <xsl:attribute name="class">active</xsl:attribute>
               <div id="activeLabel">active</div>
             </xsl:if>
@@ -490,19 +490,19 @@
 		          </a>
 		          <label class="field" for="image{$index}-name">Image URL:</label>
 		          <div class="value">
-		            <input type="text" size="80" name="image{$index}-name" id="image{$index}-name">
+		            <input type="text" size="83" name="image{$index}-name" id="image{$index}-name">
 		              <xsl:attribute name="value"><xsl:value-of select="name"/></xsl:attribute>
 		            </input>
 		          </div>
 		          <label class="field" for="image{$index}-link">Link:</label>
 		          <div class="value">
-		            <input type="text" size="80" name="image{$index}-link" id="image{$index}-link">
+		            <input type="text" size="83" name="image{$index}-link" id="image{$index}-link">
 	                <xsl:attribute name="value"><xsl:value-of select="link"/></xsl:attribute>
 	              </input>
 		          </div>
 		          <label class="field" for="image{$index}-toolTip">Tooltip:</label>
 		          <div class="value">
-		            <input type="text" size="80" name="image{$index}-toolTip" id="image{$index}-toolTip">
+		            <input type="text" size="83" name="image{$index}-toolTip" id="image{$index}-toolTip">
 	                <xsl:attribute name="value"><xsl:value-of select="toolTip"/></xsl:attribute>
 		            </input>
 		          </div>
@@ -510,7 +510,7 @@
 	        </xsl:for-each> 
 	               
 	        <h3>
-            <xsl:if test="singleMode = 'true'">
+            <xsl:if test="featuresOn = 'true' and singleMode = 'true'">
               <xsl:attribute name="class">active</xsl:attribute>
               <div id="activeLabel">active</div>
             </xsl:if>
@@ -519,26 +519,26 @@
 	        <div class="fieldGroup">
 	          <a>
 	            <xsl:attribute name="href"><xsl:value-of select="features/single/image/link"/></xsl:attribute>
-	            <img width="100">
+	            <img width="300">
 	              <xsl:attribute name="src"><xsl:value-of select="features/single/image/name"/></xsl:attribute>
 	              <xsl:attribute name="alt"><xsl:value-of select="features/single/image/toolTip"/></xsl:attribute>
 	            </img>
 	          </a>
 	          <label class="field" for="singleImage-name">Image URL:</label>
 	          <div class="value">
-	            <input type="text" size="80" name="singleImage-name" id="singleImage-name">
+	            <input type="text" size="50" name="singleImage-name" id="singleImage-name">
 	              <xsl:attribute name="value"><xsl:value-of select="features/single/image/name"/></xsl:attribute>
 	            </input>
 	          </div>
 	          <label class="field" for="singleImage-link">Link:</label>
 	          <div class="value">
-	            <input type="text" size="80" name="singleImage-link" id="singleImage-link">
+	            <input type="text" size="50" name="singleImage-link" id="singleImage-link">
 	              <xsl:attribute name="value"><xsl:value-of select="features/single/image/link"/></xsl:attribute>
 	            </input>
 	          </div>
 	          <label class="field" for="singleImage-toolTip">Tooltip:</label>
 	          <div class="value">
-	            <input type="text" size="80" name="singleImage-toolTip" id="singleImage-toolTip">
+	            <input type="text" size="50" name="singleImage-toolTip" id="singleImage-toolTip">
 	              <xsl:attribute name="value"><xsl:value-of select="features/single/image/toolTip"/></xsl:attribute>
 	            </input>
 	          </div>
@@ -560,13 +560,13 @@
 	            </img>
 	            <label class="field" for="genImage{$index}-name">Image URL:</label>
 		          <div class="value">
-		            <input type="text" size="80" name="genImage{$index}-name" id="genImage{$index}-name">
+		            <input type="text" size="83" name="genImage{$index}-name" id="genImage{$index}-name">
 	                <xsl:attribute name="value"><xsl:value-of select="name"/></xsl:attribute>
 	              </input>
 		          </div>
 		          <label class="field" for="genImage{$index}-toolTip">Tooltip:</label>
 		          <div class="value">
-		            <input type="text" size="80" name="genImage{$index}-toolTip" id="genImage{$index}-toolTip">
+		            <input type="text" size="83" name="genImage{$index}-toolTip" id="genImage{$index}-toolTip">
 	                <xsl:attribute name="value"><xsl:value-of select="toolTip"/></xsl:attribute>
 	              </input>
 		          </div>
