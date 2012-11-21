@@ -593,7 +593,17 @@
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Calendar"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
-            <xsl:value-of select="calendar/summary"/>
+            <xsl:choose>
+              <xsl:when test="not(starts-with(calendar/path,/bedework/myCalendars/calendars/calendar/path))">
+                <!-- this event comes from a subscription / shared calendar; look up and display the local name -->
+                <xsl:variable name="remotePath"><xsl:value-of select="calendar/path"/></xsl:variable>
+                <xsl:value-of select="/bedework/myCalendars/calendars//calendar[substring-after(aliasUri,'bwcal://')=$remotePath]/summary"/>
+                <br/><em>(<xsl:value-of select="$remotePath"/>)</em>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="calendar/summary"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </td>
         </tr>
       </xsl:if>

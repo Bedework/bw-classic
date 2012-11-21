@@ -223,7 +223,7 @@
             </xsl:choose>
           </xsl:variable>
           <xsl:if test="recurring='true' or recurrenceId != ''">
-            <xsl:copy-of select="$bwStr-EvCG-Recurring"/>
+            <xsl:copy-of select="$bwStr-EvCG-Recurring"/><xsl:text> </xsl:text>
           </xsl:if>
           <xsl:variable name="userStr"><xsl:value-of select="/bedework/syspars/userPrincipalRoot"/>/<xsl:value-of select="/bedework/userid"/></xsl:variable>
           <xsl:choose>
@@ -238,13 +238,14 @@
             </xsl:otherwise>
           </xsl:choose><br/>
           <xsl:copy-of select="$bwStr-EvCG-Calendar"/>
-          <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
           <xsl:choose>
-            <xsl:when test="contains(calendar/path,$userPath)">
-              <xsl:value-of select="substring-after(calendar/path,$userPath)"/>
+            <xsl:when test="not(starts-with(calendar/path,/bedework/myCalendars/calendars/calendar/path))">
+              <!-- this event comes from a subscription / shared calendar; look up and display the local name -->
+              <xsl:variable name="remotePath"><xsl:value-of select="calendar/path"/></xsl:variable>
+              <xsl:value-of select="/bedework/myCalendars/calendars//calendar[substring-after(aliasUri,'bwcal://')=$remotePath]/summary"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="calendar/path"/>
+              <xsl:value-of select="calendar/summary"/>
             </xsl:otherwise>
           </xsl:choose>
         </div>

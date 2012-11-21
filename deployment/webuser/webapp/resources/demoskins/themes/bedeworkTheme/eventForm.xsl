@@ -223,7 +223,17 @@
                 <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
               </input>
               <span id="bwEventCalDisplay">
-                <xsl:value-of select="form/calendar/summary"/>
+                <xsl:choose>
+		              <xsl:when test="not(starts-with(form/calendar/path,/bedework/myCalendars/calendars/calendar/path))">
+		                <!-- this event comes from a subscription / shared calendar; look up and display the local name -->
+		                <xsl:variable name="remotePath"><xsl:value-of select="form/calendar/path"/></xsl:variable>
+		                <strong><xsl:value-of select="/bedework/myCalendars/calendars//calendar[substring-after(aliasUri,'bwcal://')=$remotePath]/summary"/></strong>
+		                <br/><em>(<xsl:value-of select="$remotePath"/>)</em>
+		              </xsl:when>
+		              <xsl:otherwise>
+		                <strong><xsl:value-of select="form/calendar/summary"/></strong>
+		              </xsl:otherwise>
+		            </xsl:choose>
                 <xsl:text> </xsl:text>
               </span>
               <xsl:call-template name="selectCalForEvent"/>
