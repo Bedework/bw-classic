@@ -42,7 +42,7 @@
           var startTzid = "<xsl:value-of select="/bedework/formElements/form/start/tzid"/>";
           var endTzid = "<xsl:value-of select="/bedework/formElements/form/end/dateTime/tzid"/>";
           var resourcesRoot = "<xsl:value-of select="$resourcesRoot"/>";
-          var imagesRoot = resourcesRoot + "/resources";
+          var imagesRoot = resourcesRoot + "/images";
           </xsl:comment>
         </script>
         <!-- load jQuery  -->
