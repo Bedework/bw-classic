@@ -32,12 +32,12 @@
                    ($featuredEventsForMonth = 'true' and /bedework/periodname = 'Month') or
                    ($featuredEventsForYear = 'true' and /bedework/periodname = 'Year')))">
       <div id="feature">
-        <!-- grab the root of the FeaturedEvent.xml document (/image[position() &lt; 4])-->
-        <xsl:apply-templates select="document('../../themes/bedeworkTheme/featured/FeaturedEvent.xml')/featuredEvents"/>
-        
         <!-- The featured events triptych can be managed from within the admin client by adding the contents of FeaturedEvent.xml 
-             as a resource in the calendar suite.  Once done, get the URL of the resource and reference it as follows:  -->
-        <!-- <xsl:apply-templates select="document('/pubcaldav/user/agrp_calsuite-MainCampus/.csResources/FeaturedTriptych')/featuredEvents"/> -->
+             as a resource in the calendar suite.  The URL of the resource is referenced as follows:  -->
+        <xsl:apply-templates select="document('/pubcaldav/user/agrp_calsuite-MainCampus/.csResources/FeaturedEvents')/featuredEvents"/>
+        
+        <!-- If you prefer to reference the static XML document found in the theme, use the following instead. -->
+        <!-- <xsl:apply-templates select="document('../../themes/bedeworkTheme/featured/FeaturedEvent.xml')/featuredEvents"/>-->
       </div>
     </xsl:if>
   </xsl:template>

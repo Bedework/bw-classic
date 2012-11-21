@@ -319,6 +319,9 @@
         <xsl:if test="/bedework/page='calendarDescriptions' or /bedework/page='displayCalendar'">
           <link rel="stylesheet" href="{$resourcesRoot}/css/calendarDescriptions.css"/>
         </xsl:if>
+        <xsl:if test="/bedework/page='modResource'">
+          <link rel="stylesheet" href="{$resourcesRoot}/css/featuredEventsForm.css"/>
+        </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />
       </head>
   </xsl:template>
