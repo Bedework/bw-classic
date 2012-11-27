@@ -224,6 +224,7 @@
               </input>
               <span id="bwEventCalDisplay">
                 <xsl:choose>
+                  <xsl:when test="/bedework/creating = 'true'"><!-- display nothing --></xsl:when>
 		              <xsl:when test="not(starts-with(form/calendar/path,/bedework/myCalendars/calendars/calendar/path))">
 		                <!-- this event comes from a subscription / shared calendar; look up and display the local name -->
 		                <xsl:variable name="remotePath"><xsl:value-of select="form/calendar/path"/></xsl:variable>
