@@ -138,7 +138,6 @@
             </select>
           </td>
         </tr>
-        <!--
         <tr>
           <th>
             <label for="csDefaultPageSize">
@@ -151,7 +150,6 @@
 	          </input>
 	        </td>
 	      </tr>
-	      -->
         <tr>
           <th><xsl:copy-of select="$bwStr-CSPf-DefaultCategories"/></th>
           <td>
