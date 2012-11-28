@@ -113,7 +113,7 @@
         <xsl:variable name="currentClass">current</xsl:variable>
         <li>
           <a
-            href="{$listEvents}">
+            href="{$listEvents}&amp;p=1">
             <xsl:if test="/bedework/page='eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />

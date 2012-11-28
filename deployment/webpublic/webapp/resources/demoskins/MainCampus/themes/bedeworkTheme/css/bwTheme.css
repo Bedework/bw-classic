@@ -757,6 +757,9 @@ div.yearMonthRow {
  font-weight: bold;
  color: black;
 }
+#listEvents #resultsBottom {
+	font-size: 1.4em;
+}
 .resultPages a:hover {
  text-decoration: underline;
 }
