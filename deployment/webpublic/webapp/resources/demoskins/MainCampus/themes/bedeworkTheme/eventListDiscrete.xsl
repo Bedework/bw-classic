@@ -247,47 +247,54 @@
           </xsl:otherwise>
         </xsl:choose>
       </ul>
-    </div>
     
-    <xsl:if test="paged = 'true' and numPages &gt; 1">
-      <span class="resultPages" id="resultsBottom">
-        <xsl:copy-of select="$bwStr-Srch-Pages" />
-        <xsl:variable name="curPage" select="number(curPage)" />
-        <xsl:if test="$curPage != 1">
-          <xsl:variable name="prevPage" select="$curPage - 1" />
-          <a href="{$search-next}&amp;pageNum={$prevPage}">
-            &#171; <!-- left double arrow -->
-          </a>
-        </xsl:if>
-        <xsl:text> </xsl:text>
-        <xsl:call-template name="searchResultPageNav">
-          <xsl:with-param name="page">
-            <xsl:choose>
-              <xsl:when test="$curPage - 10 &lt; 1">
-                1
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="$curPage - 6" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:with-param>
-        </xsl:call-template>
-        <xsl:text> </xsl:text>
-        <xsl:choose>
-          <xsl:when test="curPage != numPages">
-            <xsl:variable name="nextPage" select="$curPage + 1" />
-            <a href="{$search-next}&amp;pageNum={$nextPage}">
-              &#187; <!-- right double arrow -->
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <span class="hidden">&#171;<!-- left double arrow --></span>
-            <!-- occupy the space to keep the navigation from moving around -->
-          </xsl:otherwise>
-        </xsl:choose>
-      </span>
-    </xsl:if>
+	    <xsl:if test="paged = 'true' and numPages &gt; 1">
+	      <span class="resultPages" id="resultsBottom">
+	        <xsl:copy-of select="$bwStr-Srch-Pages" />
+	        <xsl:if test="number(curPage) != 1">
+	          <xsl:variable name="prevPage" select="number(curPage) - 1" />
+	          <a href="{$listEvents}&amp;p={$prevPage}">
+	            &#171; <!-- left double arrow -->
+	          </a>
+	        </xsl:if>
+	        <xsl:text> </xsl:text>
+	        <xsl:call-template name="listEventsPageNav"/>
+	        <xsl:text> </xsl:text>
+	        <xsl:choose>
+	          <xsl:when test="curPage != numPages">
+	            <xsl:variable name="nextPage" select="number(curPage) + 1" />
+	            <a href="{$listEvents}&amp;p={$nextPage}">
+	              &#187; <!-- right double arrow -->
+	            </a>
+	          </xsl:when>
+	        </xsl:choose>
+	      </span>
+	    </xsl:if>
+	    
+    </div>
     
   </xsl:template>
 
+  <xsl:template name="listEventsPageNav">
+    <xsl:param name="page">1</xsl:param>
+    <xsl:choose>
+      <xsl:when test="$page = /bedework/events/curPage">
+        <span class="current">
+          <xsl:value-of select="$page" />
+        </span>
+      </xsl:when>
+      <xsl:otherwise>
+        <a href="{$listEvents}&amp;p={$page}">
+          <xsl:value-of select="$page" />
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:text> </xsl:text>
+    <xsl:if test="number($page) &lt; number(/bedework/events/numPages)">
+      <xsl:call-template name="listEventsPageNav">
+        <xsl:with-param name="page" select="number($page)+1" />
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  
 </xsl:stylesheet>

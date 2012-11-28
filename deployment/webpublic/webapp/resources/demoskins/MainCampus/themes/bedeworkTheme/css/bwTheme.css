@@ -743,17 +743,21 @@ div.yearMonthRow {
  letter-spacing: 1px;
 }
 .secondaryColHeader span.resultPages .current {
- text-decoration: underline;
+ font-weight: bold;
 }
 .secondaryColHeader span.resultPages a {
  color: #FFF;
 }
-.resultPages#resultsBottom {
+#resultsBottom {
  display: block;
  clear: both;
  margin: 10px 0;
 }
-.resultPages#resultsBottom .current {
+#resultsBottom .current {
+ font-weight: bold;
+ color: black;
+}
+.resultPages a:hover {
  text-decoration: underline;
 }
 .resultPages#resultsBottom {
