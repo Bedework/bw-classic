@@ -248,6 +248,46 @@
         </xsl:choose>
       </ul>
     </div>
+    
+    <xsl:if test="paged = 'true' and numPages &gt; 1">
+      <span class="resultPages" id="resultsBottom">
+        <xsl:copy-of select="$bwStr-Srch-Pages" />
+        <xsl:variable name="curPage" select="number(curPage)" />
+        <xsl:if test="$curPage != 1">
+          <xsl:variable name="prevPage" select="$curPage - 1" />
+          <a href="{$search-next}&amp;pageNum={$prevPage}">
+            &#171; <!-- left double arrow -->
+          </a>
+        </xsl:if>
+        <xsl:text> </xsl:text>
+        <xsl:call-template name="searchResultPageNav">
+          <xsl:with-param name="page">
+            <xsl:choose>
+              <xsl:when test="$curPage - 10 &lt; 1">
+                1
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="$curPage - 6" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:call-template>
+        <xsl:text> </xsl:text>
+        <xsl:choose>
+          <xsl:when test="curPage != numPages">
+            <xsl:variable name="nextPage" select="$curPage + 1" />
+            <a href="{$search-next}&amp;pageNum={$nextPage}">
+              &#187; <!-- right double arrow -->
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <span class="hidden">&#171;<!-- left double arrow --></span>
+            <!-- occupy the space to keep the navigation from moving around -->
+          </xsl:otherwise>
+        </xsl:choose>
+      </span>
+    </xsl:if>
+    
   </xsl:template>
 
 </xsl:stylesheet>

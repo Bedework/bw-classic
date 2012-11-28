@@ -317,7 +317,7 @@
   <xsl:variable name="bwStr-Srch-Date">Date</xsl:variable>
   <xsl:variable name="bwStr-Srch-Summary">Summary</xsl:variable>
   <xsl:variable name="bwStr-Srch-Location">Location</xsl:variable>
-  <xsl:variable name="bwStr-Srch-Pages">Pages(s):</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Pages">Page:</xsl:variable>
   <xsl:variable name="bwStr-Srch-AdvancedSearch">Advanced Search</xsl:variable>
   <xsl:variable name="bwStr-Srch-CatsToSearch">Select Categories to Search (Optional)</xsl:variable>
   <xsl:variable name="bwStr-Srch-SearchTermNotice">A search term is not required if at least one category is selected.</xsl:variable>
