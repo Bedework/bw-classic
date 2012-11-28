@@ -782,9 +782,11 @@
   <xsl:variable name="bwStr-MdSP-DefaultUserViewNameNote">Nombre usado para la vista por defecto creada cuando un nuevo usuario es añadido</xsl:variable>
   <xsl:variable name="bwStr-MdSP-MaxAttendees">Máximo asistentes:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-MaxAttendeesNote">El número máximo de asistentes al evento (para el calendario de usuario)</xsl:variable>
+  <!--  Following not used
   <xsl:variable name="bwStr-MdSP-HTTPConnectionsPerUser">Conexiones Http por usuario:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-HTTPConnectionsPerHost">Conexiones Http por host:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-TotalHTTPConnections">Total de conexiones http:</xsl:variable>
+  -->
   <xsl:variable name="bwStr-MdSP-MaxLengthPubEventDesc">Máxima longitud de la descripción de evento público:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-MaxLengthUserEventDesc">Máxima longitud de la descripción de evento de usuario:</xsl:variable>
   <xsl:variable name="bwStr-MdSP-MaxSizeUserEntity">Máximo tamaño de la entidad de un usuario:</xsl:variable>

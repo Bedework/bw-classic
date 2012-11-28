@@ -246,6 +246,7 @@
             </div>
           </td>
         </tr>
+        <!--  Following not used
         <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-HTTPConnectionsPerUser"/></th>
           <td>
@@ -273,6 +274,7 @@
             </div>
           </td>
         </tr>
+        -->
         <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-MaxLengthPubEventDesc"/></th>
           <td>
