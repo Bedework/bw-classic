@@ -205,7 +205,7 @@
       <xsl:when test="$resource/type = 'FeaturedEvents'">
         <!-- specialized resource handling for Featured Events images -->
         <!-- note: we will never be creating when we edit this form -->
-        <h2>Featured Events Admin</h2>
+        <h2><xsl:value-of select="$bwStr-ModRes-FeaturedEventsAdmin"/></h2>
         <div id="modFeaturedEventsForm">
           <xsl:variable name="update-link">
             <xsl:choose>
@@ -229,46 +229,34 @@
                dataFilter: function(data, type) { return data; },
                success: function(data) { $("#resourceContent").val(data); }, 
                cache: false,
-               dataType: "text"});</xsl:text>
-            <xsl:text>
+               dataType: "text"});
               });
             </xsl:text>
           </script>
           
-          <br/>
-          <form name="modResource" action="{$update-link}" method="post" enctype="multipart/form-data">
+          <xsl:apply-templates select="document($downloadLink)/featuredEvents"/>
+          
+          <form name="modResource" action="{$update-link}" method="post" enctype="multipart/form-data" onsubmit="return writeFeaturedEventsXml();">
             <input type="hidden" name="name" value="{$resource/name}"/>
             <input type="hidden" name="ct" value="{$resource/content-type}"/>
             <input type="hidden" name="type" value="{$resource/type}"/>
             <input type="hidden" name="class" value="{$resource/class}" />
-            <!-- input type="hidden" name="content" id="resourceContent"/-->
-            <textarea name="content" rows="20" cols="120" id="resourceContent" style="display:block;"></textarea>
+            
+            <!-- trade the following two fields to see the featured events content
+                 rendered in a textarea -->
+            <input type="hidden" name="content" id="resourceContent"/>
+            <!-- textarea name="content" rows="20" cols="120" id="resourceContent" style="display:block;"></textarea-->
           
-            <input type="submit" name="update">
-              <xsl:attribute name="value">
-                <xsl:choose>
-                  <xsl:when test="$isCreating = 'true'">
-                    <xsl:value-of select="$bwStr-ModRes-AddResource" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="$bwStr-ModRes-UpdateResource" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:attribute>
-            </input>
-            <xsl:if test="$isCreating != 'true'">
-              <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveResource}" />
-              <span> - OR - </span>
-              <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}" />
-            </xsl:if>
+            <input type="submit" name="update" value="{$bwStr-ModRes-UpdateFeaturedEvents}"/>
+            <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveFeaturedEvents}" />
+            <span> - OR - </span>
+            <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}" />
           </form>
           
-          <xsl:apply-templates select="document($downloadLink)/featuredEvents"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <!-- normal resource handling  -->
-            
 		    <xsl:choose>
 		      <xsl:when test="$isCreating = 'true'">
 		        <h2>
@@ -443,64 +431,63 @@
   <xsl:template match="featuredEvents">
     <div id="featuredEventsForm">
     
-      <p><em>The following form will be active in the 3.9 release. Make changes above, for now.</em></p>
 	    <fieldset> 
 	      <div class="formData">
 	        <div class="controlBox">
-	          Featured events:<br/>
-	          <input type="radio" name="enabled" value="true">
+	          <xsl:value-of select="$bwStr-ModRes-FeaturedEvents"/><br/>
+	          <input type="radio" name="enabled" id="enabledOn" value="true">
 	            <xsl:if test="featuresOn = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
-	          enabled<br/>
+	          <label for="enabledOn"><xsl:value-of select="$bwStr-ModRes-FeEnabled"/></label><br/>
 	          
-	          <input type="radio" name="enabled" value="false">
+	          <input type="radio" name="enabled" id="enabledOff" value="false">
 	            <xsl:if test="featuresOn = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
-	          disabled
+	          <label for="enabledOff"><xsl:value-of select="$bwStr-ModRes-FeDisabled"/></label>
 	        </div>
 	        <div class="controlBox">
-	          Mode:<br/>
-	          <input type="radio" name="singleMode" value="false">
+	          <xsl:value-of select="$bwStr-ModRes-FeMode"/><br/>
+	          <input type="radio" name="singleMode" id="singleModeOff" value="false">
 	            <xsl:if test="singleMode = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
-	          triptych mode (3 panels, 241 x 189 pixels)<br/>
+	          <label for="singleModeOff"><xsl:value-of select="$bwStr-ModRes-FeTriptychMode"/></label><br/>
 	
-	          <input type="radio" name="singleMode" value="true">
+	          <input type="radio" name="singleMode" id="singleModeOn" value="true">
 	            <xsl:if test="singleMode = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
-	          single mode (1 panel 725 x 189 pixels)
+	          <label for="singleModeOn"><xsl:value-of select="$bwStr-ModRes-FeSingleMode"/></label>
 	        </div>
 	        
 	        <h3>
             <xsl:if test="featuresOn = 'true' and singleMode = 'false'">
               <xsl:attribute name="class">active</xsl:attribute>
-              <div id="activeLabel">active</div>
+              <div id="activeLabel"><xsl:value-of select="$bwStr-ModRes-FeActive"/></div>
             </xsl:if>
-	          Triptych panels:
+	          <xsl:value-of select="$bwStr-ModRes-FePanels"/>
 	        </h3>
 	        <xsl:for-each select="features/group/image">
 	          <xsl:variable name="index"><xsl:value-of select="position()"/></xsl:variable>
 		        <div class="fieldGroup">
-		          <a>
+		          <a target="bwFeature">
 		            <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
 		            <img width="100">
 		              <xsl:attribute name="src"><xsl:value-of select="name"/></xsl:attribute>
 		              <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
 		            </img>
 		          </a>
-		          <label class="field" for="image{$index}-name">Image URL:</label>
+		          <label class="field" for="image{$index}-name"><xsl:value-of select="$bwStr-ModRes-FeImageUrl"/></label>
 		          <div class="value">
 		            <input type="text" size="83" name="image{$index}-name" id="image{$index}-name">
 		              <xsl:attribute name="value"><xsl:value-of select="name"/></xsl:attribute>
 		            </input>
 		          </div>
-		          <label class="field" for="image{$index}-link">Link:</label>
+		          <label class="field" for="image{$index}-link"><xsl:value-of select="$bwStr-ModRes-FeLink"/></label>
 		          <div class="value">
 		            <input type="text" size="83" name="image{$index}-link" id="image{$index}-link">
 	                <xsl:attribute name="value"><xsl:value-of select="link"/></xsl:attribute>
 	              </input>
 		          </div>
-		          <label class="field" for="image{$index}-toolTip">Tooltip:</label>
+		          <label class="field" for="image{$index}-toolTip"><xsl:value-of select="$bwStr-ModRes-FeTooltip"/></label>
 		          <div class="value">
 		            <input type="text" size="83" name="image{$index}-toolTip" id="image{$index}-toolTip">
 	                <xsl:attribute name="value"><xsl:value-of select="toolTip"/></xsl:attribute>
@@ -512,31 +499,31 @@
 	        <h3>
             <xsl:if test="featuresOn = 'true' and singleMode = 'true'">
               <xsl:attribute name="class">active</xsl:attribute>
-              <div id="activeLabel">active</div>
+              <div id="activeLabel"><xsl:value-of select="$bwStr-ModRes-FeActive"/></div>
             </xsl:if>
-	          Single panel:
+	          <xsl:value-of select="$bwStr-ModRes-FeSinglePanel"/>
 	        </h3>
 	        <div class="fieldGroup">
-	          <a>
+	          <a target="bwFeature">
 	            <xsl:attribute name="href"><xsl:value-of select="features/single/image/link"/></xsl:attribute>
 	            <img width="300">
 	              <xsl:attribute name="src"><xsl:value-of select="features/single/image/name"/></xsl:attribute>
 	              <xsl:attribute name="alt"><xsl:value-of select="features/single/image/toolTip"/></xsl:attribute>
 	            </img>
 	          </a>
-	          <label class="field" for="singleImage-name">Image URL:</label>
+	          <label class="field" for="singleImage-name"><xsl:value-of select="$bwStr-ModRes-FeImageUrl"/></label>
 	          <div class="value">
 	            <input type="text" size="50" name="singleImage-name" id="singleImage-name">
 	              <xsl:attribute name="value"><xsl:value-of select="features/single/image/name"/></xsl:attribute>
 	            </input>
 	          </div>
-	          <label class="field" for="singleImage-link">Link:</label>
+	          <label class="field" for="singleImage-link"><xsl:value-of select="$bwStr-ModRes-FeLink"/></label>
 	          <div class="value">
 	            <input type="text" size="50" name="singleImage-link" id="singleImage-link">
 	              <xsl:attribute name="value"><xsl:value-of select="features/single/image/link"/></xsl:attribute>
 	            </input>
 	          </div>
-	          <label class="field" for="singleImage-toolTip">Tooltip:</label>
+	          <label class="field" for="singleImage-toolTip"><xsl:value-of select="$bwStr-ModRes-FeTooltip"/></label>
 	          <div class="value">
 	            <input type="text" size="50" name="singleImage-toolTip" id="singleImage-toolTip">
 	              <xsl:attribute name="value"><xsl:value-of select="features/single/image/toolTip"/></xsl:attribute>
@@ -547,9 +534,9 @@
 	        <h3>
 	          <xsl:if test="featuresOn = 'false'">
 		          <xsl:attribute name="class">active</xsl:attribute>
-		          <div id="activeLabel">active</div>
+		          <div id="activeLabel"><xsl:value-of select="$bwStr-ModRes-FeActive"/></div>
 		        </xsl:if>
-	          Generic panels (when featured events are disabled):
+	          <xsl:value-of select="$bwStr-ModRes-FeGenericPanels"/>
 	        </h3>
 	        <xsl:for-each select="generics/group/image">
 	          <xsl:variable name="index"><xsl:value-of select="position()"/></xsl:variable>
@@ -558,13 +545,13 @@
 	              <xsl:attribute name="src"><xsl:value-of select="name"/></xsl:attribute>
 	              <xsl:attribute name="alt"><xsl:value-of select="tooltip"/></xsl:attribute>
 	            </img>
-	            <label class="field" for="genImage{$index}-name">Image URL:</label>
+	            <label class="field" for="genImage{$index}-name"><xsl:value-of select="$bwStr-ModRes-FeImageUrl"/></label>
 		          <div class="value">
 		            <input type="text" size="83" name="genImage{$index}-name" id="genImage{$index}-name">
 	                <xsl:attribute name="value"><xsl:value-of select="name"/></xsl:attribute>
 	              </input>
 		          </div>
-		          <label class="field" for="genImage{$index}-toolTip">Tooltip:</label>
+		          <label class="field" for="genImage{$index}-toolTip"><xsl:value-of select="$bwStr-ModRes-FeTooltip"/></label>
 		          <div class="value">
 		            <input type="text" size="83" name="genImage{$index}-toolTip" id="genImage{$index}-toolTip">
 	                <xsl:attribute name="value"><xsl:value-of select="toolTip"/></xsl:attribute>

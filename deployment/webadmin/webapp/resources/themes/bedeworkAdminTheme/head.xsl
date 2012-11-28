@@ -320,6 +320,7 @@
           <link rel="stylesheet" href="{$resourcesRoot}/css/calendarDescriptions.css"/>
         </xsl:if>
         <xsl:if test="/bedework/page='modResource'">
+          <script type="text/javascript" src="{$resourcesRoot}/javascript/modResources.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/css/featuredEventsForm.css"/>
         </xsl:if>
         <link rel="icon" type="image/ico" href="{$resourcesRoot}/images/bedework.ico" />

@@ -674,6 +674,24 @@
   <xsl:variable name="bwStr-ModRes-UploadLabel">Upload Content</xsl:variable>
   <xsl:variable name="bwStr-ModRes-RemoveResource">Remove Resource</xsl:variable>
   <xsl:variable name="bwStr-ModRes-BackToList">Back to Resource List</xsl:variable>
+  
+  <!-- xsl:template name="modResource: featured events strings" -->
+  <xsl:variable name="bwStr-ModRes-FeaturedEventsAdmin">Featured Events Admin</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-UpdateFeaturedEvents">Update Featured Events</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-RemoveFeaturedEvents">Remove Featured Events</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeaturedEvents">Featured events:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeEnabled">enabled</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeDisabled">disabled</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeMode">Mode:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeTriptychMode">triptych mode (3 panels, 241 x 189 pixels)</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeSingleMode">single mode (1 panel 725 x 189 pixels)</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeActive">active</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FePanels">Triptych panels:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeImageUrl">Image URL:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeLink">Link:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeTooltip">Tooltip:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeSinglePanel">Single panel:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-FeGenericPanels">Generic panels (when featured events are disabled):</xsl:variable>
 
   <!--  xsl:template name="deleteResourceConfirm" -->
   <xsl:variable name="bwStr-DelRes-RemoveResource">Remove Resource?</xsl:variable>
