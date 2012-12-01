@@ -206,10 +206,19 @@
           <div class="recurrenceEditLinks">
             <xsl:text> </xsl:text>
             <xsl:copy-of select="$bwStr-EvLC-RecurringEventEdit"/>
-            <!-- only master events can be published -->
-            <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}">
-              <xsl:copy-of select="$bwStr-EvLC-Master"/>
-            </a> |
+            <xsl:choose>
+              <xsl:when test="$pending = 'true'">
+                <!-- only master events can be published -->
+                <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}">
+                  <xsl:copy-of select="$bwStr-EvLC-Master"/>
+                </a> |
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}">
+                  <xsl:copy-of select="$bwStr-EvLC-Master"/>
+                </a> |
+              </xsl:otherwise>
+            </xsl:choose>
             <!-- recurrence instances can only be edited -->
             <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:copy-of select="$bwStr-EvLC-Instance"/>
