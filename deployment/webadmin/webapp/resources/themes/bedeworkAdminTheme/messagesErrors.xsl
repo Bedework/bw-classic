@@ -42,10 +42,10 @@
           <li>
             <xsl:apply-templates select="."/>
             <!-- Special cases for handling error conditions: -->
+            <!-- Moving directly to "overwrite" on duplicateimage error is deprecated.  Better for user to try again.
             <xsl:if test="/bedework/error/id = 'org.bedework.client.error.duplicateimage'">
               <input type="checkbox" id="overwriteEventImage" onclick="setOverwriteImageField(this);"/><label for="overwriteEventImage"><xsl:copy-of select="$bwStr-AEEF-Overwrite"/></label><xsl:text> </xsl:text>
-              <!-- input type="checkbox" id="reuseEventImage"/><label for="reuseEventImage">Reuse</label>-->
-            </xsl:if>
+            </xsl:if> -->
           </li>
         </xsl:for-each>
       </ul>

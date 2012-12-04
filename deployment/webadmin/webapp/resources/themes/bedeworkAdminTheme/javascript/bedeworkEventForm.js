@@ -372,9 +372,10 @@ function setBedeworkXProperties(formObj,submitter) {
   // Set up specific Bedework X-Properties on event form submission
   // Depends on bedeworkXProperties.js
   // Set application local x-properties here.
-
+ 
   // X-BEDEWORK-IMAGE and its parameters:
-  if (formObj["xBwImageHolder"] && formObj["xBwImageHolder"].value != '') {
+  if (formObj["xBwImageHolder"] && 
+      formObj["xBwImageHolder"].value != '') {
     bwXProps.update(bwXPropertyImage,
                   [[bwXParamDescription,''],
                    [bwXParamWidth,''],
@@ -383,8 +384,17 @@ function setBedeworkXProperties(formObj,submitter) {
   }
   
   // X-BEDEWORK-THUMB-IMAGE:
-  if (formObj["xBwImageThumbHolder"] && formObj["xBwImageThumbHolder"].value != '') {
+  if (formObj["xBwImageThumbHolder"] && 
+      formObj["xBwImageThumbHolder"].value != '') {
     bwXProps.update(bwXPropertyThumbImage,[],formObj["xBwImageThumbHolder"].value,true);
+  }
+
+  // UPLOADING AN IMAGE
+  // If the imageUpload field is not empty or the "overwrite" flag is checked, 
+  // don't send the image field x-properties. This enables uploads to override
+  // existing images. Comment this out to disable.
+  if (formObj["eventImageUpload"].value != '') {
+    removeEventImage(formObj["xBwImageHolder"],formObj["xBwImageThumbHolder"]);
   }
   
   // Event registration x-properties:
