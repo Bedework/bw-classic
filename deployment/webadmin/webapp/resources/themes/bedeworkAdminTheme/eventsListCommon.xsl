@@ -77,6 +77,12 @@
       <xsl:if test="$pending = 'true' and not(xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT)">
         <xsl:attribute name="class">highlight</xsl:attribute>
       </xsl:if>
+      <xsl:if test="status = 'TENTATIVE'">
+        <xsl:attribute name="class">tentative</xsl:attribute>
+      </xsl:if>
+      <xsl:if test="status = 'CANCELLED'">
+        <xsl:attribute name="class">cancelled</xsl:attribute>
+      </xsl:if>
       <td>
         <xsl:choose>
           <xsl:when test="$pending = 'true'">
@@ -115,6 +121,10 @@
             </xsl:choose>
           </xsl:when>
           <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="status = 'CANCELLED'"><strong><xsl:copy-of select="$bwStr-EvLC-Cancelled"/></strong><br/></xsl:when>
+              <xsl:when test="status = 'TENTATIVE'"><xsl:copy-of select="$bwStr-EvLC-Tentative"/><br/></xsl:when>
+            </xsl:choose>
             <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
               <xsl:choose>
                 <xsl:when test="summary != ''">

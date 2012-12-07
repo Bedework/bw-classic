@@ -129,6 +129,8 @@
   <xsl:variable name="bwStr-EvLC-RecurringEventEdit">Evento recurrente. Editar:</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Master">maestro</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Instance">instance</xsl:variable>
+  <xsl:variable name="bwStr-EvLC-Cancelled">CANCELLED:</xsl:variable>
+  <xsl:variable name="bwStr-EvLC-Tentative">TENTATIVE:</xsl:variable>
 
   <!--  xsl:template match="formElements" mode="modEvent" -->
   <xsl:variable name="bwStr-AEEF-Recurrence">recurrencia</xsl:variable>

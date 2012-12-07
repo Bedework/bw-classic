@@ -403,6 +403,14 @@ ul.adminMenu li {
   background-color: #eee;
   color: black;
 }
+#commonListTable tr.cancelled td {
+  background: #fff url("../images/cancelledLines.gif") repeat top left;;
+  color: black;
+}
+#commonListTable tr.tentative td {
+  background: #fff url("../images/tentativeLines.gif") repeat top left;
+  color: black;
+}
 #commonListTable td.unclaimed {
   background-color: #eee;
   color: #900 !important;
