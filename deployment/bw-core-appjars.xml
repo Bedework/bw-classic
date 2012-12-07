@@ -229,6 +229,18 @@
               libcache="${org.bedework.libcache.dir}"
               name="httpcore" version="4.2.2"/>
 
+      <!-- ======================== json jars ============================== -->
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="jackson-core" version="2.1.1" />
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="jackson-annotations" version="2.1.1" />
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="jackson-databind" version="2.1.1" />
+
       <!-- ========================= dkim jars ============================= -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
