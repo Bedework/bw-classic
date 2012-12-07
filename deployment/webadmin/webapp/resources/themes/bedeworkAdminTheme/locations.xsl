@@ -84,10 +84,10 @@
       <table id="eventFormTable">
         <tr>
           <td class="fieldName">
-            <xsl:copy-of select="$bwStr-MoLo-Address"/>
+            <label for="locationAddress"><xsl:copy-of select="$bwStr-MoLo-Address"/></label>
           </td>
           <td>
-            <input type="text" name="locationAddress.value" size="80">
+            <input type="text" name="locationAddress.value" id="locationAddress" size="80">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/address/input/@value"/></xsl:attribute>
             </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Address-Placeholder"/></span>
@@ -95,10 +95,10 @@
         </tr>
         <tr class="optional">
           <td>
-            <xsl:copy-of select="$bwStr-MoLo-SubAddress"/>
+            <label for="locationSubAddress"><xsl:copy-of select="$bwStr-MoLo-SubAddress"/></label>
           </td>
           <td>
-            <input type="text" name="locationSubaddress.value" size="80">
+            <input type="text" name="locationSubaddress.value" id="locationSubAddress" size="80">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/subaddress/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-SubAddress-Placeholder"/></xsl:attribute>
             </input>
@@ -107,10 +107,10 @@
         </tr>
         <tr class="optional">
           <td>
-            <xsl:copy-of select="$bwStr-MoLo-LocationURL"/>
+            <label for="locationUrl"><xsl:copy-of select="$bwStr-MoLo-LocationURL"/></label>
           </td>
           <td>
-            <input type="text" name="location.link" size="80">
+            <input type="text" name="location.link" id="locationUrl" size="80">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/link/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-LocationURL-Placeholder"/></xsl:attribute>
             </input>

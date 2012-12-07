@@ -252,10 +252,10 @@
               <!-- allow for toggling between the preferred and all calendars listings if preferred
                    calendars exist -->
               <xsl:if test="form/calendar/preferred/select/option">
-                <input type="radio" name="toggleCalendarLists" value="preferred" checked="checked" onclick="changeClass('bwPreferredCalendars','shown');changeClass('bwAllCalendars','invisible');this.form.newCalPath.value = this.form.bwPreferredCalendars.value;"/>
-                <xsl:copy-of select="$bwStr-AEEF-Preferred"/>
-                <input type="radio" name="toggleCalendarLists" value="all" onclick="changeClass('bwPreferredCalendars','invisible');changeClass('bwAllCalendars','shown');this.form.newCalPath.value = this.form.bwAllCalendars.value;"/>
-                <xsl:copy-of select="$bwStr-AEEF-All"/>
+                <input type="radio" name="toggleCalendarLists" id="toggleCalendarListsPreferred" value="preferred" checked="checked" onclick="changeClass('bwPreferredCalendars','shown');changeClass('bwAllCalendars','invisible');this.form.newCalPath.value = this.form.bwPreferredCalendars.value;"/>
+                <label for="toggleCalendarListsPreferred"><xsl:copy-of select="$bwStr-AEEF-Preferred"/></label>
+                <input type="radio" name="toggleCalendarLists" id="toggleCalendarListsAll" value="all" onclick="changeClass('bwPreferredCalendars','invisible');changeClass('bwAllCalendars','shown');this.form.newCalPath.value = this.form.bwAllCalendars.value;"/>
+                <label for="toggleCalendarListsAll"><xsl:copy-of select="$bwStr-AEEF-All"/></label>
               </xsl:if>
             </td>
           </tr>

@@ -84,10 +84,10 @@
       <table id="eventFormTable">
         <tr>
           <td class="fieldName">
-            <xsl:copy-of select="$bwStr-MdCo-ContactName"/>
+            <label for="contactName"><xsl:copy-of select="$bwStr-MdCo-ContactName"/></label>
           </td>
           <td>
-            <input type="text" name="contactName.value" size="40">
+            <input type="text" name="contactName.value" id="contactName" size="40">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/name/input/@value"/></xsl:attribute>
             </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-ContactName-Placeholder"/></span>
@@ -95,10 +95,10 @@
         </tr>
         <tr>
           <td class="fieldName">
-            <xsl:copy-of select="$bwStr-MdCo-ContactPhone"/>
+            <label for="contactPhone"><xsl:copy-of select="$bwStr-MdCo-ContactPhone"/></label>
           </td>
           <td>
-            <input type="text" name="contact.phone" size="40">
+            <input type="text" name="contact.phone" id="contactPhone" size="40">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/phone/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MdCo-ContactPhone-Placeholder"/></xsl:attribute>
             </input>
@@ -107,10 +107,10 @@
         </tr>
         <tr class="optional">
           <td>
-            <xsl:copy-of select="$bwStr-MdCo-ContactURL"/>
+            <label for="contactUrl"><xsl:copy-of select="$bwStr-MdCo-ContactURL"/></label>
           </td>
           <td>
-            <input type="text" name="contact.link" size="40">
+            <input type="text" name="contact.link" id="contactUrl" size="40">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/link/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MdCo-ContactURL-Placeholder"/></xsl:attribute>
             </input>
@@ -119,10 +119,10 @@
         </tr>
         <tr class="optional">
           <td>
-            <xsl:copy-of select="$bwStr-MdCo-ContactEmail"/>
+            <label for="contactEmail"><xsl:copy-of select="$bwStr-MdCo-ContactEmail"/></label>
           </td>
           <td>
-            <input type="text" name="contact.email" size="40">
+            <input type="text" name="contact.email" id="contactEmail" size="40">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/email/input/@value"/></xsl:attribute>
             </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MdCo-Optional"/></span>

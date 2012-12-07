@@ -651,14 +651,14 @@
   <xsl:variable name="bwStr-Resource-AddNewResource">Add a new resource</xsl:variable>
   <xsl:variable name="bwStr-Resource-Resources">Resources</xsl:variable>
   <xsl:variable name="bwStr-Resource-NameCol">Name</xsl:variable>
-  <xsl:variable name="bwStr-Resource-ContentTypeCol">Content Type</xsl:variable>
-  <xsl:variable name="bwStr-Resource-ResourceTypeCol">Resource Type</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ContentTypeCol">Content Type:</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ResourceTypeCol">Resource Type:</xsl:variable>
   <xsl:variable name="bwStr-Resource-ResourceClassCol">Class</xsl:variable>
   <xsl:variable name="bwStr-Resource-Text">Text</xsl:variable>
-  <xsl:variable name="bwStr-Resource-NameLabel">Name</xsl:variable>
-  <xsl:variable name="bwStr-Resource-ContentTypeLabel">Content Type</xsl:variable>
-  <xsl:variable name="bwStr-Resource-ResourceTypeLabel">Resource Type</xsl:variable>
-  <xsl:variable name="bwStr-Resource-ClassLabel">Class</xsl:variable>
+  <xsl:variable name="bwStr-Resource-NameLabel">Name:</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ContentTypeLabel">Content Type:</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ResourceTypeLabel">Resource Type:</xsl:variable>
+  <xsl:variable name="bwStr-Resource-ClassLabel">Class:</xsl:variable>
   <xsl:variable name="bwStr-Resource-CalendarSuite">Calendar Suite</xsl:variable>
   <xsl:variable name="bwStr-Resource-Admin">Admin</xsl:variable>
   <xsl:variable name="bwStr-Resource-CalendarSuite">Calendar Suite</xsl:variable>
@@ -669,12 +669,12 @@
   <xsl:variable name="bwStr-ModRes-UpdateResource">Update Resource</xsl:variable>
   <xsl:variable name="bwStr-ModRes-EditResource">Edit Resource</xsl:variable>
   <xsl:variable name="bwStr-ModRes-ClickToDownload">Click here to download the current resource content</xsl:variable>
-  <xsl:variable name="bwStr-ModRes-NameLabel">Name</xsl:variable>
-  <xsl:variable name="bwStr-ModRes-ContentTypeLabel">Content Type</xsl:variable>
-  <xsl:variable name="bwStr-ModRes-ResourceTypeLabel">Resource Type</xsl:variable>
-  <xsl:variable name="bwStr-ModRes-ClassLabel">Class</xsl:variable>
-  <xsl:variable name="bwStr-ModRes-ResourceContentLabel">Resource Content</xsl:variable>
-  <xsl:variable name="bwStr-ModRes-UploadLabel">Upload Content</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-NameLabel">Name:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-ContentTypeLabel">Content Type:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-ResourceTypeLabel">Resource Type:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-ClassLabel">Class:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-ResourceContentLabel">Resource Content:</xsl:variable>
+  <xsl:variable name="bwStr-ModRes-UploadLabel">Upload Content:</xsl:variable>
   <xsl:variable name="bwStr-ModRes-RemoveResource">Remove Resource</xsl:variable>
   <xsl:variable name="bwStr-ModRes-BackToList">Back to Resource List</xsl:variable>
   
@@ -968,6 +968,7 @@
   <xsl:variable name="bwStr-MoAG-Name">Nombre:</xsl:variable>
   <xsl:variable name="bwStr-MoAG-Description">Descripción:</xsl:variable>
   <xsl:variable name="bwStr-MoAG-GroupOwner">Propietario del grupo:</xsl:variable>
+  <xsl:variable name="bwStr-MoAG-GroupOwnerFieldInfo">User responsible for the group, e.g. "admin"</xsl:variable>
   <xsl:variable name="bwStr-MoAG-EventsOwner">Propietario de eventos:</xsl:variable>
   <xsl:variable name="bwStr-MoAG-Delete">Borrar</xsl:variable>
   <xsl:variable name="bwStr-MoAG-AddAdminGroup">Añadir grupo de administración</xsl:variable>

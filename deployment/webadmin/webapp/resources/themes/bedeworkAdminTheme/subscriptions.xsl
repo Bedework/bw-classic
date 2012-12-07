@@ -192,8 +192,12 @@
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-TopicalArea"/></th>
           <td>
-            <input type="radio" name="calendar.isTopicalArea" value="true" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-True"/>
-            <input type="radio" name="calendar.isTopicalArea" value="false"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-False"/>
+            <input type="radio" name="calendar.isTopicalArea" id="isTaTrue" value="true" checked="checked"/>
+            <xsl:text> </xsl:text>
+            <label for="isTaTrue"><xsl:copy-of select="$bwStr-CuCa-True"/></label>
+            <input type="radio" name="calendar.isTopicalArea" id="isTaFalse" value="false"/>
+            <xsl:text> </xsl:text>
+            <label for="isTaFalse"><xsl:copy-of select="$bwStr-CuCa-False"/></label>
           </td>
         </tr>
         <tr>
@@ -239,8 +243,9 @@
                   <li>
                     <input type="checkbox" name="filterCatUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                      <xsl:value-of select="value"/>
+                      <xsl:attribute name="id">f<xsl:value-of select="generate-id(uid)"/></xsl:attribute>
                     </input>
+                    <label for="f{generate-id(uid)}"><xsl:value-of select="value"/></label>
                   </li>
                 </xsl:for-each>
               </ul>
@@ -260,11 +265,12 @@
                   <li>
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                      <xsl:attribute name="id">c<xsl:value-of select="generate-id(uid)"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
                       <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                         <xsl:attribute name="disabled">disabled</xsl:attribute>
                       </xsl:if>
-                      <xsl:value-of select="value"/>
+                      <label for="c{generate-id(uid)}"><xsl:value-of select="value"/></label>
                     </input>
                   </li>
                 </xsl:for-each>
@@ -286,9 +292,15 @@
 
             <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
             <input type="hidden" value="public" name="subType" id="bwSubType"/>
-            <input type="radio" name="subTypeSwitch" value="folder" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');setField('bwType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-FOLDER"/>
-            <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-PublicAlias"/>
-            <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-URL"/>
+            <input type="radio" name="subTypeSwitch" id="subTypeFolder" value="folder" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');setField('bwType',this.value);"/>
+            <xsl:text> </xsl:text>
+            <label for="subTypeFolder"><xsl:copy-of select="$bwStr-CuCa-FOLDER"/></label>
+            <input type="radio" name="subTypeSwitch" id="subTypePublic" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/>
+            <xsl:text> </xsl:text>
+            <label for="subTypePublic"><xsl:copy-of select="$bwStr-CuCa-PublicAlias"/></label>
+            <input type="radio" name="subTypeSwitch" id="subTypeExternal" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/>
+            <xsl:text> </xsl:text>
+            <label for="subTypeExternal"><xsl:copy-of select="$bwStr-CuCa-URL"/></label>
 
               <div id="subscriptionTypePublic">
                 <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>

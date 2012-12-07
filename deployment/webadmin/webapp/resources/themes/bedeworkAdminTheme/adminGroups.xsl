@@ -189,27 +189,36 @@
     </xsl:choose>
     <form name="peForm" method="post" action="{$admingroup-update}">
       <table id="adminGroupFormTable">
-        <tr>
-          <td class="fieldName">
-            <xsl:copy-of select="$bwStr-MoAG-Name"/>
-          </td>
-          <td>
-            <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true'">
-                <xsl:copy-of select="/bedework/formElements/form/name/*"/>
-              </xsl:when>
-              <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="/bedework/creating = 'true'">
+		        <tr>
+		          <td class="fieldName">
+		            <label for="adminGroupName"><xsl:copy-of select="$bwStr-MoAG-Name"/></label>
+		          </td>
+		          <td>
+		            <input type="text" name="updAdminGroup.account" id="adminGroupName" value="">
+		              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/name/input/@value"/></xsl:attribute>
+		            </input>
+			        </td>
+			      </tr>
+           </xsl:when>
+           <xsl:otherwise>
+            <tr>
+              <td class="fieldName">
+                <xsl:copy-of select="$bwStr-MoAG-Name"/>
+              </td>
+              <td>
                 <xsl:value-of select="/bedework/formElements/form/name"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
+              </td>
+            </tr>
+           </xsl:otherwise>
+         </xsl:choose>
         <tr>
           <td class="fieldName">
-            <xsl:copy-of select="$bwStr-MoAG-Description"/>
+            <label for="adminGroupDesc"><xsl:copy-of select="$bwStr-MoAG-Description"/></label>
           </td>
           <td>
-            <textarea name="updAdminGroup.description" cols="50" rows="3">
+            <textarea name="updAdminGroup.description" id="adminGroupDesc" cols="50" rows="3">
               <xsl:value-of select="/bedework/formElements/form/desc/textarea"/>
               <xsl:if test="normalize-space(/bedework/formElements/form/desc/textarea) = ''">
                 <xsl:text> </xsl:text>
@@ -221,27 +230,35 @@
         </tr>
         <tr>
           <td class="fieldName">
-            <xsl:copy-of select="$bwStr-MoAG-GroupOwner"/>
+            <label for="adminGroupOwner"><xsl:copy-of select="$bwStr-MoAG-GroupOwner"/></label>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/groupOwner/*"/>
+            <input type="text" name="adminGroupGroupOwner" id="adminGroupOwner" size="60">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/groupOwner/input/@value"/></xsl:attribute>
+            </input><br/>
+            <span class="fieldInfo"><xsl:copy-of select="$bwStr-MoAG-GroupOwnerFieldInfo"/></span>
           </td>
         </tr>
-        <tr>
-          <td class="fieldName">
-            <xsl:copy-of select="$bwStr-MoAG-EventsOwner"/>
-          </td>
-          <td>
-           <xsl:choose>
-              <xsl:when test="/bedework/creating = 'true'">
-                <xsl:copy-of select="/bedework/formElements/form/eventsOwner/*"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="/bedework/formElements/form/eventsOwner/input/@value"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
+        <xsl:choose>
+          <xsl:when test="/bedework/creating = 'true'">
+             <tr>
+               <td colspan="2">
+                 <!-- send an empty value, and the back-end will create the owner -->
+		             <input type="hidden" name="adminGroupEventOwner" value=""/>
+		           </td>
+		         </tr>
+           </xsl:when>
+           <xsl:otherwise>
+             <tr>
+               <td class="fieldName">
+                 <xsl:copy-of select="$bwStr-MoAG-EventsOwner"/>
+               </td>
+               <td>
+                 <xsl:value-of select="/bedework/formElements/form/eventsOwner/input/@value"/>
+               </td>
+             </tr>
+           </xsl:otherwise>
+         </xsl:choose>
       </table>
       <div class="submitBox">
         <div class="right">

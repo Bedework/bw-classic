@@ -1063,10 +1063,13 @@ table.common th.thin {
 #viewsTable table td.arrows {
   width: 15px;
 }
-span.resFormLabel {
+.addResourceForm label,
+.resFormLabel {
 	width: 145px;
-	font-weight: bold;
 	display: inline-block;
+}
+.resFormLabel {
+  font-weight: bold;
 }
 #authUserInputForms {
   margin: 1em 0;

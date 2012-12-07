@@ -43,23 +43,28 @@
           </input>
           <input type="submit" name="submit" value="{$bwStr-Srch-Go}"/>
           <xsl:copy-of select="$bwStr-Srch-Limit"/>
-          <xsl:choose>
-            <xsl:when test="/bedework/searchResults/searchLimits = 'beforeToday'">
-              <input type="radio" name="searchLimits" value="fromToday"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
-              <input type="radio" name="searchLimits" value="beforeToday" checked="checked"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
-              <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
-            </xsl:when>
-            <xsl:when test="/bedework/searchResults/searchLimits = 'none'">
-              <input type="radio" name="searchLimits" value="fromToday"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
-              <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
-              <input type="radio" name="searchLimits" value="none" checked="checked"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <input type="radio" name="searchLimits" value="fromToday" checked="checked"/><xsl:copy-of select="$bwStr-Srch-TodayForward"/>
-              <input type="radio" name="searchLimits" value="beforeToday"/><xsl:copy-of select="$bwStr-Srch-PastDates"/>
-              <input type="radio" name="searchLimits" value="none"/><xsl:copy-of select="$bwStr-Srch-AllDates"/>
-            </xsl:otherwise>
-          </xsl:choose>
+          
+          <input type="radio" name="searchLimits" id="searchFromToday" value="fromToday">
+            <xsl:if test="/bedework/searchResults/searchLimits = 'fromToday'">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+          <label for="searchFromToday"><xsl:copy-of select="$bwStr-Srch-TodayForward"/></label>
+          
+          <input type="radio" name="searchLimits" id="searchBeforeToday" value="beforeToday">
+            <xsl:if test="/bedework/searchResults/searchLimits = 'beforeToday'">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+          <label for="searchBeforeToday"><xsl:copy-of select="$bwStr-Srch-PastDates"/></label>
+          
+          <input type="radio" name="searchLimits" id="searchNoLimits" value="none">
+            <xsl:if test="/bedework/searchResults/searchLimits = 'none'">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+          <label for="searchNoLimits"><xsl:copy-of select="$bwStr-Srch-AllDates"/></label>
+          
         </form>
       </div>
       <xsl:copy-of select="$bwStr-Srch-SearchResult"/>
@@ -98,8 +103,10 @@
               </xsl:choose>
             </div>
           </xsl:if>
-          <xsl:value-of select="/bedework/searchResults/resultSize"/>
-          <xsl:copy-of select="$bwStr-Srch-ResultReturnedFor"/><xsl:text> </xsl:text><em><xsl:value-of select="/bedework/searchResults/query"/></em>
+          <strong><xsl:value-of select="/bedework/searchResults/resultSize"/></strong>
+          <xsl:text> </xsl:text>
+          <xsl:copy-of select="$bwStr-Srch-ResultReturnedFor"/><xsl:text> </xsl:text>
+          <strong><em><xsl:value-of select="/bedework/searchResults/query"/></em></strong>
         </th>
       </tr>
       <xsl:if test="/bedework/searchResults/searchResult">

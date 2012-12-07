@@ -74,18 +74,18 @@
           <table id="eventFormTable">
             <tr>
               <td class="fieldName">
-                <xsl:copy-of select="$bwStr-MoCa-Keyword"/>
+                <label for="categoryKeyword"><xsl:copy-of select="$bwStr-MoCa-Keyword"/></label>
               </td>
               <td>
-                <input type="text" name="categoryWord.value" value="" size="40"/>
+                <input type="text" name="categoryWord.value" id="categoryKeyword" value="" size="40"/>
               </td>
             </tr>
             <tr class="optional">
               <td>
-                <xsl:copy-of select="$bwStr-MoCa-Description"/>
+                <label for="categoryDesc"><xsl:copy-of select="$bwStr-MoCa-Description"/></label>
               </td>
               <td>
-                <textarea name="categoryDesc.value" rows="3" cols="60">
+                <textarea name="categoryDesc.value" id="categoryDesc" rows="3" cols="60">
                   <xsl:text> </xsl:text>
                 </textarea>
               </td>
@@ -103,20 +103,20 @@
           <table id="eventFormTable">
             <tr>
               <td class="fieldName">
-                <xsl:copy-of select="$bwStr-MoCa-Keyword"/>
+                <label for="categoryKeyword"><xsl:copy-of select="$bwStr-MoCa-Keyword"/></label>
               </td>
               <td>
-                <input type="text" name="categoryWord.value" value="" size="40">
+                <input type="text" name="categoryWord.value" id="categoryKeyword" value="" size="40">
                   <xsl:attribute name="value"><xsl:value-of select="normalize-space(/bedework/currentCategory/category/value)"/></xsl:attribute>
                 </input>
               </td>
             </tr>
             <tr class="optional">
               <td>
-                <xsl:copy-of select="$bwStr-MoCa-Description"/>
+                <label for="categoryDesc"><xsl:copy-of select="$bwStr-MoCa-Description"/></label>
               </td>
               <td>
-                <textarea name="categoryDesc.value" rows="3" cols="60">
+                <textarea name="categoryDesc.value" id="categoryDesc" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedework/currentCategory/category/description)"/>
                   <xsl:if test="/bedework/currentCategory/category/description = ''"><xsl:text> </xsl:text></xsl:if>
                 </textarea>

@@ -71,18 +71,16 @@
     <h4><xsl:copy-of select="$bwStr-Resource-AddNewResource"/></h4>
     <div class="addResourceForm" style="border: 1px solid grey; padding: 10px; display: table;">
 	    <form name="addResource" action="{$add-link}" method="post">
-        <span class="resFormLabel">
+        <label for="resName">
           <xsl:value-of select="$bwStr-Resource-NameLabel" />
-          <xsl:text>: </xsl:text>
-        </span>
-	      <input type="text" name="name" size="60"/>
+        </label>
+	      <input type="text" name="name" id="resName" size="60"/>
 	      <br/>
 	      
-        <span class="resFormLabel">
+        <label for="resCt">
           <xsl:value-of select="$bwStr-Resource-ContentTypeLabel" />
-          <xsl:text>: </xsl:text>
-        </span>
-	      <select name="ct">
+        </label>
+	      <select name="ct" id="resCt">
 	      	<option value="text/plain" selected="true">
 	      	  <xsl:value-of select="$bwStr-Resource-Text" />
           </option>
@@ -94,11 +92,10 @@
 	      </select>
 	      <br/>
 	      
-        <span class="resFormLabel">
+        <label for="resType">
           <xsl:value-of select="$bwStr-Resource-ResourceTypeLabel" />
-          <xsl:text>: </xsl:text>
-        </span>
-	      <input type="text" name="type" size="40" />
+        </label>
+	      <input type="text" name="type" id="resType" size="40" />
 	      <br/>
 	      
 	      <xsl:choose>
@@ -106,11 +103,10 @@
           <input type="hidden" name="class" value="global" />
 	       </xsl:when>
 	       <xsl:when test="/bedework/userInfo/superUser = 'true'">
-	        <span class="resFormLabel">
-	          <xsl:value-of select="$bwStr-Resource-ClassLabel" />
-	          <xsl:text>: </xsl:text>
-	        </span>
-	         <select name="class">
+		       <label for="resClass">
+		         <xsl:value-of select="$bwStr-Resource-ClassLabel" />
+		       </label>
+	         <select name="class" id="resClass">
 	           <option value="calsuite" selected="true">
 	             <xsl:value-of select="$bwStr-Resource-CalendarSuite" />
 	           </option>
@@ -293,7 +289,6 @@
 		      <form name="modResource" action="{$update-link}" method="post" enctype="multipart/form-data">
 		        <span class="resFormLabel">
 		          <xsl:value-of select="$bwStr-ModRes-NameLabel" />
-		          <xsl:text>: </xsl:text>
 		        </span>
 		        <input type="hidden" name="name" value="{$resource/name}"/>
 		        <span class="resFormField">
@@ -303,7 +298,6 @@
 		        
 		        <span class="resFormLabel">
 		          <xsl:value-of select="$bwStr-ModRes-ContentTypeLabel" />
-		          <xsl:text>: </xsl:text>
 		        </span>
 		        <input type="hidden" name="ct" value="{$resource/content-type}"/>
 		        <span class="resFormField">
@@ -313,7 +307,6 @@
 		        
 		        <span class="resFormLabel">
 		          <xsl:value-of select="$bwStr-ModRes-ResourceTypeLabel" />
-		          <xsl:text>: </xsl:text>
 		        </span>
 		        <input type="hidden" name="type" value="{$resource/type}"/>
 		        <span class="resFormField">
@@ -324,7 +317,6 @@
 		        <xsl:if test="/bedework/userInfo/superUser = 'true' and global != 'true'">
 			        <span class="resFormLabel">
 			          <xsl:value-of select="$bwStr-ModRes-ClassLabel" />
-			          <xsl:text>: </xsl:text>
 			        </span>
 			        <span class="resFormField">
 			          <xsl:value-of select="$resource/class" />
@@ -359,11 +351,10 @@
 		          </xsl:if>
 		        </xsl:if>
 		        <xsl:if test="$isText = 'false'">
-			        <span class="resFormLabel">
+			        <label for="resFile" class="resFormLabel">
 			          <xsl:value-of select="$bwStr-ModRes-UploadLabel" />
-			          <xsl:text>: </xsl:text>
-			        </span>
-		          <input type="file" name="uploadFile" size="60" />
+			        </label>
+		          <input type="file" name="uploadFile" id="resFile" size="60" />
 		          <br/>
 		        </xsl:if>
 		        
