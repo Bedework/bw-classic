@@ -102,8 +102,10 @@ SET action=
 
 SET deploylog4j=
 SET deployActivemq=
+SET deployData=
 SET deploySolr=
 SET dirstart=
+SET saveData=
 
 SET specialTarget=
 
@@ -186,6 +188,12 @@ GOTO branch
   SHIFT
   GOTO branch
       
+:deployData
+  SET deployData="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+      
 :deploySolr
   SET deploySolr="yes"
   SET pkgdefault=
@@ -194,6 +202,12 @@ GOTO branch
       
 :dirstart
   SET dirstart="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+      
+:saveData
+  SET saveData="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -613,7 +627,9 @@ GOTO doneQB
   IF NOT "%dirstart%empty" == "empty" GOTO cdDirstart
   IF NOT "%deploylog4j%empty" == "empty" GOTO cdDeploylog4j
   IF NOT "%deployActivemq%empty" == "empty" GOTO cdDeployActivemq
+  IF NOT "%deployData%empty" == "empty" GOTO cdDeployData
   IF NOT "%deploySolr%empty" == "empty" GOTO cdDeploySolr
+  IF NOT "%saveData%empty" == "empty" GOTO cdSaveData
 :: Now projects
   IF NOT "%bwdeployutil%empty" == "empty" GOTO cdBwdeployutil
   IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
@@ -687,10 +703,22 @@ GOTO:EOF
   SET specialTarget="deployActivemq"
   GOTO dospecial
   
+:cdDeployData
+  cd %QUICKSTART_HOME%
+  SET deployData=
+  SET specialTarget="deployData"
+  GOTO dospecial
+  
 :cdDeploySolr
   cd %QUICKSTART_HOME%
   SET deploySolr=
   SET specialTarget="deploySolr"
+  GOTO dospecial
+  
+:cdSaveData
+  cd %QUICKSTART_HOME%
+  SET saveData=
+  SET specialTarget="saveData"
   GOTO dospecial
 
 :: Projects    
@@ -857,8 +885,10 @@ GOTO:EOF
 :: Special targets 
 IF "%1" == "deploylog4j" GOTO deploylog4j
 IF "%1" == "deployActivemq" GOTO deployActivemq
+IF "%1" == "deployData" GOTO deployData
 IF "%1" == "deploySolr" GOTO deploySolr
 IF "%1" == "dirstart" GOTO dirstart
+IF "%1" == "saveData" GOTO saveData
 
 :: projects
 IF "%1" == "-quickstart" GOTO quickstart

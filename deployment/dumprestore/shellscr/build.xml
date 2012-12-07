@@ -47,10 +47,10 @@
   	<if>
   		<equals arg1="jboss" arg2="${org.bedework.global.deploy.platform}"/>
   		<then>
-        <mkdir dir="${org.bedework.jboss.data.dir}/dumprestore"/>
-        <copy todir="${org.bedework.jboss.data.dir}/dumprestore" 
+        <mkdir dir="${org.bedework.data.dir}/dumprestore"/>
+        <copy todir="${org.bedework.data.dir}/dumprestore" 
               file="${app.sou.dir}/resources/initbedework.xml" />
-        <copy todir="${org.bedework.jboss.data.dir}/dumprestore" 
+        <copy todir="${org.bedework.data.dir}/dumprestore" 
               file="${app.sou.dir}/resources/initbedework-sparse.xml" />
   	  </then>
   		<else>

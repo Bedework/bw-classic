@@ -149,6 +149,74 @@
   </target>
 
   <!-- =================================================================
+       "saveData" target
+       ================================================================= -->
+
+  <target name="saveData" depends="init"
+          description="Save the quickstart data ready for commit for use by deployData">
+    <property name="org.bedework.savadata.temp"
+              location="${org.bedework.project.bedework}/dist/dataTemp" />
+    
+    <delete dir="${org.bedework.savadata.temp}" />
+    
+    <mkdir dir="${org.bedework.savadata.temp}" />
+    <mkdir dir="${org.bedework.savadata.temp}/db" />
+    <mkdir dir="${org.bedework.savadata.temp}/bedework" />
+    <mkdir dir="${org.bedework.savadata.temp}/solr" />
+    
+    <copy todir="${org.bedework.savadata.temp}/db">
+      <fileset dir="${org.bedework.jboss.data.dir}/hypersonic" />
+    </copy>
+    
+    <copy todir="${org.bedework.savadata.temp}/bedework">
+      <fileset dir="${org.bedework.jboss.data.dir}/bedework" />
+    </copy>
+    
+    <copy todir="${org.bedework.savadata.temp}/solr">
+      <fileset dir="${org.bedework.jboss.data.dir}/solr" />
+    </copy>
+    
+    <delete file="${org.bedework.project.bedework}/resources/data.zip" />
+    
+    <zip destfile="${org.bedework.project.bedework}/resources/data.zip"
+         encoding="UTF-8"
+         basedir="${org.bedework.savadata.temp}" />
+  </target>
+
+  <!-- =================================================================
+       "deployData" target
+       ================================================================= -->
+
+  <target name="deployData" depends="init"
+          description="Copy the quickstart data into the appserver">
+    <property name="org.bedework.savadata.temp"
+              location="${org.bedework.project.bedework}/dist/dataTemp" />
+    
+    <delete dir="${org.bedework.savadata.temp}" />
+    
+    <mkdir dir="${org.bedework.savadata.temp}" />
+    
+    <unzip src="${org.bedework.project.bedework}/resources/data.zip"
+           dest="${org.bedework.savadata.temp}" />
+    
+    <delete dir="${org.bedework.jboss.data.dir}/hypersonic" />
+    <delete dir="${org.bedework.jboss.data.dir}/bedework" />
+    <delete dir="${org.bedework.jboss.data.dir}/solr" />
+    
+    <copy todir="${org.bedework.jboss.data.dir}/hypersonic">
+      <fileset dir="${org.bedework.savadata.temp}/db" />
+    </copy>
+    
+    <copy todir="${org.bedework.jboss.data.dir}/bedework">
+      <fileset dir="${org.bedework.savadata.temp}/bedework" />
+    </copy>
+    
+    <copy todir="${org.bedework.jboss.data.dir}/solr">
+      <fileset dir="${org.bedework.savadata.temp}/solr" />
+    </copy>
+  </target>
+
+  <!-- =================================================================
        The "deploy" target builds and deploys the applications
        ================================================================= -->
 
