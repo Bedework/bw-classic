@@ -303,6 +303,7 @@
   <xsl:variable name="bwStr-SEBu-SubmittedEvents">submitted events</xsl:variable>
   <xsl:variable name="bwStr-SEBu-CalendarDescriptions">calendar descriptions</xsl:variable>
   <xsl:variable name="bwStr-SEBu-DeleteEvent">Delete Event</xsl:variable>
+  <xsl:variable name="bwStr-SEBu-ReturnToList">Return to list</xsl:variable>
   <xsl:variable name="bwStr-SEBu-UpdateEvent">Update Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-PublishEvent">Publish Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-Cancel">Cancel</xsl:variable>

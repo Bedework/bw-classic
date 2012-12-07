@@ -2135,11 +2135,11 @@
                 </div>
               </xsl:if>
               <input type="submit" name="updateEvent" value="{$bwStr-SEBu-UpdateEvent}"/>
-              <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}"/>
               <xsl:if test="form/recurringEntity != 'true' and recurrenceId = '' and $canEdit = 'true'">
                 <!-- cannot duplicate recurring events for now -->
                 <input type="submit" name="copy" value="{$bwStr-SEBu-CopyEvent}"/>
               </xsl:if>
+              <input type="submit" name="cancelled" value="{$bwStr-SEBu-ReturnToList}"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:otherwise>
