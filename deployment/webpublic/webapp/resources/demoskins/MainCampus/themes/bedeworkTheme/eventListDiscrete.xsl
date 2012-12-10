@@ -56,7 +56,7 @@
             <li><xsl:copy-of select="$bwStr-LsEv-NoEventsToDisplay"/></li>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:for-each select="event">
+            <xsl:for-each select="event[not(categories/category[uid = $ongoingEventsCatUid])]">
               <xsl:variable name="id" select="id"/>
               <xsl:variable name="calPath" select="calendar/encodedPath"/>
               <xsl:variable name="guid" select="guid"/>
