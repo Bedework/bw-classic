@@ -393,8 +393,10 @@ function setBedeworkXProperties(formObj,submitter) {
   // If the imageUpload field is not empty or the "overwrite" flag is checked, 
   // don't send the image field x-properties. This enables uploads to override
   // existing images. Comment this out to disable.
-  if (formObj["eventImageUpload"].value != '') {
-    removeEventImage(formObj["xBwImageHolder"],formObj["xBwImageThumbHolder"]);
+  if (formObj["eventImageUpload"] != undefined) {
+    if (formObj["eventImageUpload"].value != '') {
+      removeEventImage(formObj["xBwImageHolder"],formObj["xBwImageThumbHolder"]);
+    }
   }
   
   // Event registration x-properties:
