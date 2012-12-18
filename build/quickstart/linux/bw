@@ -46,6 +46,7 @@ updateProjects="$updateProjects  eventreg"
 # updateProjects="$updateProjects  genkeys"
 updateProjects="$updateProjects  indexer"
 updateProjects="$updateProjects  rpiutil"
+updateProjects="$updateProjects  selfreg"
 updateProjects="$updateProjects  synch"
 updateProjects="$updateProjects  webdav"
 
@@ -81,6 +82,7 @@ indexer=
 monitor=
 naming=
 rpiutil=
+selfreg=
 synch=
 testsuite=
 tzsvr=
@@ -175,6 +177,7 @@ usage() {
   echo "     -genkeys      Target is for the genkeys module build"
   echo "     -indexer      Target is for the Bedework indexer service"
   echo "     -rpiutil      Target is for the Bedework util classes"
+#  echo "     -selfreg      Target is for the self registration build"
   echo "     -synch        Target is for the synch build"
   echo "     -tzsvr        Target is for the timezones server build"
   echo "     -webdav       Target is for the WebDAV build"
@@ -472,11 +475,17 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$synch" != "" ] ; then
-	  cd $QUICKSTART_HOME/synch
-      synch=
+	if [ "$selfreg" != "" ] ; then
+	  cd $QUICKSTART_HOME/selfreg
+      selfreg=
 	  return
 	fi
+
+  if [ "$synch" != "" ] ; then
+    cd $QUICKSTART_HOME/synch
+      synch=
+    return
+  fi
 	
 	if [ "$testsuite" != "" ] ; then
 	  cd $QUICKSTART_HOME/testsuite
@@ -1098,6 +1107,13 @@ do
       bwxml="yes"
 #      davutil="yes"
 #      rpiutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    -selfreg)
+      selfreg="yes"
+      
+      rpiutil="yes"
       pkgdefault=
       shift
       ;;
