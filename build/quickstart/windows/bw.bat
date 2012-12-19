@@ -59,6 +59,7 @@ SET "updateProjects=%updateProjects% dumprestore"
 SET "updateProjects=%updateProjects% eventreg"
 SET "updateProjects=%updateProjects% indexer"
 SET "updateProjects=%updateProjects% rpiutil"
+SET "updateProjects=%updateProjects% selfreg"
 SET "updateProjects=%updateProjects% synch"
 SET "updateProjects=%updateProjects% webdav"
 
@@ -91,6 +92,7 @@ SET indexer=
 SET monitor=
 SET naming=
 SET rpiutil=
+SET selfreg=
 SET synch=
 SET testsuite=
 SET tzsvr=
@@ -470,6 +472,14 @@ GOTO branch
   SHIFT
   GOTO branch
   
+:selfreg
+  SET selfreg="yes"
+      
+  SET rpiutil="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+  
 :synch
   SET synch="yes"
 
@@ -572,6 +582,7 @@ IF NOT "%pkgdefault%" == "yes" GOTO notdefault
   SET dumprestore="yes"
   SET indexer="yes"
   SET rpiutil="yes"
+  SET selfreg="yes"
   SET webdav="yes"
 
 :notdefault
@@ -662,6 +673,7 @@ GOTO doneQB
   IF NOT "%testsuite%empty" == "empty"  GOTO cdTestsuite
   IF NOT "%bwtools%empty" == "empty"  GOTO cdBwtools
   IF NOT "%tzsvr%empty" == "empty"   GOTO cdTzsvr
+  IF NOT "%selfreg%empty" == "empty" GOTO cdSelfreg
   
 GOTO:EOF
     
@@ -856,6 +868,11 @@ GOTO:EOF
   cd %QUICKSTART_HOME%\rpiutil
   SET rpiutil=
   GOTO doant
+
+:cdSelfreg
+  cd %QUICKSTART_HOME%\selfreg
+  SET selfreg=
+  GOTO doant
     
 :cdSynch
   cd %QUICKSTART_HOME%\synch
@@ -932,6 +949,7 @@ IF "%1" == "-indexer" GOTO indexer
 IF "%1" == "-monitor" GOTO monitor
 IF "%1" == "-naming" GOTO naming
 IF "%1" == "-rpiutil" GOTO rpiutil
+IF "%1" == "-selfreg" GOTO selfreg
 IF "%1" == "-synch" GOTO synch
 IF "%1" == "-testsuite" GOTO testsuite
 IF "%1" == "-tzsvr" GOTO tzsvr
@@ -989,16 +1007,17 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO      -bwmisc       Target is for misc classes
   ECHO      -bwsysevents  Target is for the system JMS event classes
   ECHO      -bwwebapps    Target is for the bedework web ui classes
-  ECHO      -bwxml       Target is for the Bedework XML schemas build
+  ECHO      -bwxml        Target is for the Bedework XML schemas build
   ECHO                       (usually built automatically be dependent projects
   ECHO      -caldav       Target is for the generic CalDAV server
-  ECHO      -carddav     Target is for the CardDAV build
+  ECHO      -carddav      Target is for the CardDAV build
   ECHO      -carddav deploy-addrbook    To deploy the Javascript Addressbook client.
-  ECHO      -davutil     Target is for the Bedework dav util classes
+  ECHO      -davutil      Target is for the Bedework dav util classes
   ECHO      -dumprestore  Target is for the Bedework dump/restore service
   ECHO      -eventreg     Target is for the Bedework event registration service
   ECHO      -indexer      Target is for the Bedework indexer service
-  ECHO      -rpiutil     Target is for the Bedework util classes
+  ECHO      -rpiutil      Target is for the Bedework util classes
+  ECHO      -selfreg      Target is for the self registration build
   ECHO      -synch        Target is for the synch build
   ECHO      -tzsvr       Target is for the timezones server build
   ECHO   Ancillary projects: not required
