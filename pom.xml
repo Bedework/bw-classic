@@ -57,6 +57,7 @@
     <bedeworkMiscVersion>${defaultedVersion}</bedeworkMiscVersion>
     <bedeworkMonitorVersion>${defaultedVersion}</bedeworkMonitorVersion>
     <bedeworkRpiutilVersion>${defaultedVersion}</bedeworkRpiutilVersion>
+    <bedeworkSelfregVersion>${defaultedVersion}</bedeworkSynchVersion>
     <bedeworkSynchVersion>${defaultedVersion}</bedeworkSynchVersion>
     <bedeworkSyseventsVersion>${defaultedVersion}</bedeworkSyseventsVersion>
     <bedeworkWebappsVersion>${defaultedVersion}</bedeworkWebappsVersion>

@@ -177,7 +177,7 @@ usage() {
   echo "     -genkeys      Target is for the genkeys module build"
   echo "     -indexer      Target is for the Bedework indexer service"
   echo "     -rpiutil      Target is for the Bedework util classes"
-#  echo "     -selfreg      Target is for the self registration build"
+  echo "     -selfreg      Target is for the self registration build"
   echo "     -synch        Target is for the synch build"
   echo "     -tzsvr        Target is for the timezones server build"
   echo "     -webdav       Target is for the WebDAV build"

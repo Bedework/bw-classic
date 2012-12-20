@@ -946,18 +946,6 @@
           <guestMode>true</guestMode>
           <debugEntity>false</debugEntity>
         </iosched>
-        
-        <selfreg classname="org.bedework.selfreg.common.SelfregConfigProperties">
-        
-          <!-- Parameters for outbound mailer -->
-          <protocol>smtp</protocol>
-          <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
-          <serverIp>localhost</serverIp>
-          <from>bedework@bedework.org</from>
-          <subject>Bedework self registration service</subject>
-          <disabled>false</disabled>
-        </selfreg>
-        
 
         <!-- ===============================================================
                           User CardDAV server usercarddav
