@@ -136,8 +136,6 @@
 
             <authDn>uid=admin,ou=system</authDn>
             <authPw>secret</authPw>
-
-            <debug>true</debug>
           </principal-dirHandler>
 
           <user-principal-dirHandler classname="org.bedework.carddav.util.LdapDirHandlerConfig" >
@@ -214,6 +212,9 @@
             <addressbookEntryObjectClass>groupOfUniqueNames</addressbookEntryObjectClass>
             <addressbookEntryIdAttr>cn</addressbookEntryIdAttr>
 
+            <folderObjectClass>organizationalUnit</folderObjectClass>
+            <folderIdAttr>ou</folderIdAttr>
+            
             <principalIdAttr>cn</principalIdAttr>
 
             <authDn>uid=admin,ou=system</authDn>
@@ -273,9 +274,9 @@
             
             <attrIds></attrIds>
             
-            <folderObjectClass>organizationalUnit</folderObjectClass>
             <addressbookObjectClass>organizationalUnit</addressbookObjectClass>
             <addressbookEntryObjectClass>inetOrgPerson</addressbookEntryObjectClass>
+            <folderObjectClass>organizationalUnit</folderObjectClass>
             <folderIdAttr>ou</folderIdAttr>
             <addressbookIdAttr>ou</addressbookIdAttr>
             <addressbookEntryIdAttr>cn</addressbookEntryIdAttr>
@@ -361,6 +362,9 @@
 
             <addressbookEntryObjectClass>CalendarResource</addressbookEntryObjectClass>
             <addressbookEntryIdAttr>cn</addressbookEntryIdAttr>
+
+            <folderObjectClass>organizationalUnit</folderObjectClass>
+            <folderIdAttr>ou</folderIdAttr>
 
             <principalIdAttr>calcaladruri</principalIdAttr>
 
