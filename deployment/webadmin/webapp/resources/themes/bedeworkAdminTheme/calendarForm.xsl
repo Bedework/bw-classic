@@ -251,12 +251,14 @@
           <tr>
             <th><xsl:copy-of select="$bwStr-CuCa-TopicalArea"/></th>
             <td>
-              <input type="radio" name="calendar.isTopicalArea" value="true">
+              <input type="radio" name="calendar.isTopicalArea" id="topicalAreaTrue" value="true">
                 <xsl:if test="isTopicalArea = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-              </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-True"/>
-              <input type="radio" name="calendar.isTopicalArea" value="false">
+              </input><xsl:text> </xsl:text>
+              <label for="topicalAreaTrue"><xsl:copy-of select="$bwStr-CuCa-True"/></label>
+              <input type="radio" name="calendar.isTopicalArea" id="topicalAreaFalse" value="false">
                 <xsl:if test="isTopicalArea = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-              </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-False"/>
+              </input><xsl:text> </xsl:text>
+              <label for="topicalAreaFalse"><xsl:copy-of select="$bwStr-CuCa-False"/></label>
             </td>
           </tr>
         </xsl:if>
@@ -285,11 +287,12 @@
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Display"/></th>
           <td>
-            <input type="checkbox" name="calendar.display" size="40">
+            <input type="checkbox" name="calendar.display" id="calDisplay" size="40">
               <xsl:if test="display = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-            </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-DisplayItemsInCollection"/>
+            </input><xsl:text> </xsl:text>
+            <label for="calDisplay"><xsl:copy-of select="$bwStr-CuCa-DisplayItemsInCollection"/></label>
           </td>
         </tr>
         <tr>
@@ -298,18 +301,18 @@
           </xsl:if>
           <th><xsl:copy-of select="$bwStr-CuCa-Disabled"/></th>
           <td>
-            <input type="radio" name="calendar.disabled" value="false">
+            <input type="radio" name="calendar.disabled" id="calDisabledFalse" value="false">
               <xsl:if test="disabled = 'false'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
             </input>
-            <xsl:copy-of select="$bwStr-CuCa-EnabledLabel"/>
-            <input type="radio" name="calendar.disabled" value="true">
+            <label for="calDisabledFalse"><xsl:copy-of select="$bwStr-CuCa-EnabledLabel"/></label>
+            <input type="radio" name="calendar.disabled" id="calDisabledTrue" value="true">
               <xsl:if test="disabled = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
             </input>
-            <xsl:copy-of select="$bwStr-CuCa-DisabledLabel"/>
+            <label for="calDisabledTrue"><xsl:copy-of select="$bwStr-CuCa-DisabledLabel"/></label>
             <xsl:if test="disabled = 'true'">
               <span class="disabledNote">
                 <xsl:copy-of select="$bwStr-CuCa-ItemIsInaccessible"/>
@@ -329,10 +332,12 @@
                 <xsl:for-each select="/bedework/categories/all/category">
                   <xsl:sort select="value" order="ascending"/>
                   <xsl:if test="contains($filterUids,uid)">
+                    <xsl:variable name="catUid" select="uid"/>
                     <li>
                       <input type="checkbox" name="filterCatUid" checked="checked">
-                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:value-of select="value"/>
+                        <xsl:attribute name="value"><xsl:value-of select="$catUid"/></xsl:attribute>
+                        <xsl:attribute name="id">f<xsl:value-of select="$catUid"/></xsl:attribute>
+                        <label for="f{$catUid}"><xsl:value-of select="value"/></label>
                       </input>
                     </li>
                   </xsl:if>
@@ -353,10 +358,12 @@
                   <xsl:sort select="value" order="ascending"/>
                   <!-- don't duplicate the selected filters -->
                   <xsl:if test="not(contains($filterUids,uid))">
+                    <xsl:variable name="catUid" select="uid"/>
                     <li>
                       <input type="checkbox" name="filterCatUid">
-                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:value-of select="value"/>
+                        <xsl:attribute name="value"><xsl:value-of select="$catUid"/></xsl:attribute>
+                        <xsl:attribute name="id">f<xsl:value-of select="$catUid"/></xsl:attribute>
+                        <label for="f{$catUid}"><xsl:value-of select="value"/></label>
                       </input>
                     </li>
                   </xsl:if>
@@ -372,13 +379,15 @@
             <ul class="catlist">
               <xsl:for-each select="/bedework/categories/current/category">
                 <xsl:sort select="value" order="ascending"/>
+                <xsl:variable name="catUid" select="uid"/>
                 <li>
                   <input type="checkbox" name="catUid" checked="checked">
-                    <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="$catUid"/></xsl:attribute>
+                    <xsl:attribute name="id"><xsl:value-of select="$catUid"/></xsl:attribute>
                     <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                       <xsl:attribute name="disabled">disabled</xsl:attribute>
                     </xsl:if>
-                    <xsl:value-of select="value"/>
+                    <label for="{$catUid}"><xsl:value-of select="value"/></label>
                   </input>
                 </li>
               </xsl:for-each>
@@ -392,11 +401,13 @@
                   <xsl:sort select="value" order="ascending"/>
                   <!-- don't duplicate the selected categories -->
                   <xsl:if test="not(uid = ../../current//category/uid)">
+                    <xsl:variable name="catUid" select="uid"/>
                     <li>
                       <input type="checkbox" name="catUid">
-                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+		                    <xsl:attribute name="value"><xsl:value-of select="$catUid"/></xsl:attribute>
+		                    <xsl:attribute name="id"><xsl:value-of select="$catUid"/></xsl:attribute>
                       </input>
-                      <xsl:value-of select="value"/>
+                      <label for="{$catUid}"><xsl:value-of select="value"/></label>
                     </li>
                   </xsl:if>
                 </xsl:for-each>

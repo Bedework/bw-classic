@@ -61,9 +61,12 @@
             <xsl:copy-of select="$bwStr-Upld-AffectsFreeBusy"/>
           </th>
           <td align="left" class="padMeTop">
-            <input type="radio" value="" name="transparency" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-AcceptEventsSettings"/><br/>
-            <input type="radio" value="OPAQUE" name="transparency"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-Upld-Opaque"/></span><br/>
-            <input type="radio" value="TRANSPARENT" name="transparency"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-Upld-Transparent"/></span><br/>
+            <input type="radio" value="" name="transparency" id="transAccept" checked="checked"/><xsl:text> </xsl:text>
+            <label for="transAccept"><xsl:copy-of select="$bwStr-Upld-AcceptEventsSettings"/></label><br/>
+            <input type="radio" value="OPAQUE" name="transparency" id="transYes"/><xsl:text> </xsl:text>
+            <label for="transYes"><xsl:copy-of select="$bwStr-Upld-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-Upld-Opaque"/></span></label><br/>
+            <input type="radio" value="TRANSPARENT" name="transparency" id="transNo"/><xsl:text> </xsl:text>
+            <label for="transNo"><xsl:copy-of select="$bwStr-Upld-No"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-Upld-Transparent"/></span></label>
           </td>
         </tr>
         <tr>
@@ -71,10 +74,14 @@
             <xsl:copy-of select="$bwStr-Upld-Status"/>
           </th>
           <td align="left" class="padMeTop">
-            <input type="radio" value="" name="status" checked="checked"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-AcceptEventsStatus"/><br/>
-            <input type="radio" value="CONFIRMED" name="status"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Confirmed"/><br/>
-            <input type="radio" value="TENTATIVE" name="status"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Tentative"/><br/>
-            <input type="radio" value="CANCELLED" name="status"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-Upld-Canceled"/><br/>
+            <input type="radio" value="" name="status" id="statAccept" checked="checked"/><xsl:text> </xsl:text>
+            <label for="statAccept"><xsl:copy-of select="$bwStr-Upld-AcceptEventsStatus"/></label><br/>
+            <input type="radio" value="CONFIRMED" name="status" id="statConf"/><xsl:text> </xsl:text>
+            <label for="statConf"><xsl:copy-of select="$bwStr-Upld-Confirmed"/></label><br/>
+            <input type="radio" value="TENTATIVE" name="status" id="statTent"/><xsl:text> </xsl:text>
+            <label for="statTent"><xsl:copy-of select="$bwStr-Upld-Tentative"/></label><br/>
+            <input type="radio" value="CANCELLED" name="status" id="statCanc"/><xsl:text> </xsl:text>
+            <label for="statCanc"><xsl:copy-of select="$bwStr-Upld-Canceled"/></label>
           </td>
         </tr>
       </table>

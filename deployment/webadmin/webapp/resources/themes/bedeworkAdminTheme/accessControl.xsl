@@ -34,6 +34,7 @@
          - currentAccess  
    --> 
    
+  <!-- schedulingAccessForm template may be deprecated -->
   <xsl:template name="schedulingAccessForm">
     <xsl:param name="what"/>
     <input type="hidden" name="what">
@@ -41,8 +42,14 @@
     </input>
     <p>
       <input type="text" name="who" width="40"/>
-      <span class="nowrap"><input type="radio" name="whoType" value="user" checked="checked"/><xsl:copy-of select="$bwStr-ScAF-User"/></span>
-      <span class="nowrap"><input type="radio" name="whoType" value="group"/><xsl:copy-of select="$bwStr-ScAF-Group"/></span>
+      <span class="nowrap">
+        <input type="radio" name="whoType" id="whoTypeUser" value="user" checked="checked"/>
+        <label for="whoTypeUser"><xsl:copy-of select="$bwStr-ScAF-User"/></label>
+      </span>
+      <span class="nowrap">
+        <input type="radio" name="whoType" id="whoTypeGroup" value="group"/>
+        <label for="whoTypeGroup"><xsl:copy-of select="$bwStr-ScAF-Group"/></label>
+      </span>
     </p>
     <p>
       <strong><xsl:copy-of select="$bwStr-ScAF-Or"/></strong>

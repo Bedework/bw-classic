@@ -42,16 +42,16 @@
     <form name="adminGroupMembersForm" method="post" action="{$admingroup-initUpdate}">
       <xsl:choose>
         <xsl:when test="/bedework/groups/showMembers='true'">
-          <input type="radio" name="showAgMembers" value="false" onclick="document.adminGroupMembersForm.submit();"/>
-          <xsl:copy-of select="$bwStr-LsAG-HideMembers"/>
-          <input type="radio" name="showAgMembers" value="true" checked="checked" onclick="document.adminGroupMembersForm.submit();"/>
-          <xsl:copy-of select="$bwStr-LsAG-ShowMembers"/>
+          <input type="radio" name="showAgMembers" id="hideAgMembers" value="false" onclick="document.adminGroupMembersForm.submit();"/>
+          <label for="hideAgMembers"><xsl:copy-of select="$bwStr-LsAG-HideMembers"/></label>
+          <input type="radio" name="showAgMembers" id="displayAgMembers" value="true" checked="checked" onclick="document.adminGroupMembersForm.submit();"/>
+          <label for="displayAgMembers"><xsl:copy-of select="$bwStr-LsAG-ShowMembers"/></label>
         </xsl:when>
         <xsl:otherwise>
-          <input type="radio" name="showAgMembers" value="false" checked="checked" onclick="document.adminGroupMembersForm.submit();"/>
-          <xsl:copy-of select="$bwStr-LsAG-HideMembers"/>
-          <input type="radio" name="showAgMembers" value="true" onclick="document.adminGroupMembersForm.submit();"/>
-          <xsl:copy-of select="$bwStr-LsAG-ShowMembers"/>
+          <input type="radio" name="showAgMembers" id="hideAgMembers" value="false" checked="checked" onclick="document.adminGroupMembersForm.submit();"/>
+          <label for="hideAgMembers"><xsl:copy-of select="$bwStr-LsAG-HideMembers"/></label>
+          <input type="radio" name="showAgMembers" id="displayAgMembers" value="true" onclick="document.adminGroupMembersForm.submit();"/>
+          <label for="displayAgMembers"><xsl:copy-of select="$bwStr-LsAG-ShowMembers"/></label>
         </xsl:otherwise>
       </xsl:choose>
     </form>
@@ -285,10 +285,15 @@
     <p><xsl:copy-of select="$bwStr-MAGM-EnterUserID"/></p>
 
     <form name="adminGroupMembersForm" method="post" action="{$admingroup-updateMembers}">
-      <p><xsl:copy-of select="$bwStr-MAGM-AddMember"/>
-        <input type="text" name="updGroupMember" size="15"/>
-        <input type="radio" value="user" name="kind" checked="checked"/><xsl:copy-of select="$bwStr-MAGM-User"/>
-        <input type="radio" value="group" name="kind"/><xsl:copy-of select="$bwStr-MAGM-Group"/>
+      <p>
+        <label for="agMember"><xsl:copy-of select="$bwStr-MAGM-AddMember"/></label>
+        <xsl:text> </xsl:text>
+        <input type="text" id="agMember" name="updGroupMember" size="15"/>
+        <input type="radio" value="user" id="agUser" name="kind" checked="checked"/>
+        <label for="agUser"><xsl:copy-of select="$bwStr-MAGM-User"/></label>
+        <input type="radio" value="group" id="agGroup" name="kind"/>
+        <label for="agGroup"><xsl:copy-of select="$bwStr-MAGM-Group"/></label>
+        <xsl:text> </xsl:text>
         <input type="submit" name="addGroupMember" value="{$bwStr-MAGM-Add}"/>
       </p>
     </form>
