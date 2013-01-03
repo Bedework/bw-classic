@@ -1121,6 +1121,7 @@ do
       synch="yes"
       
       access="yes"
+      bwsysevents="yes"
       bwxml="yes"
       davutil="yes"
       rpiutil="yes"

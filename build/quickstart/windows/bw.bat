@@ -484,6 +484,7 @@ GOTO branch
   SET synch="yes"
 
   SET access="yes"
+  SET bwsysevents="yes"
   SET bwxml="yes"
   SET davutil="yes"
   SET rpiutil="yes"
