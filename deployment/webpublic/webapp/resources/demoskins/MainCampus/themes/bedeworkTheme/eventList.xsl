@@ -75,8 +75,7 @@
             </td>
           </tr>
         </xsl:when>
-        <xsl:when test="$ongoingEventsEnabled = 'true'
-               and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))
+        <xsl:when test="$ongoingEventsEnabled = 'true' and $ongoingEventsShowForCollection = 'true'
                and not(/bedework/eventscalendar/year/month/week/day/event[not(categories/category/uid = $ongoingEventsCatUid)])">
             <tr>
               <td class="noEventsCell">
@@ -86,8 +85,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:choose>
-            <xsl:when test="$ongoingEventsEnabled = 'true'
-                   and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))">
+            <xsl:when test="$ongoingEventsEnabled = 'true' and $ongoingEventsShowForCollection = 'true'">
               <xsl:apply-templates select="/bedework/eventscalendar/year/month/week/day[event[not(categories/category/uid = $ongoingEventsCatUid)]]" mode="dayInList"/>
             </xsl:when>
             <xsl:otherwise>
@@ -109,8 +107,7 @@
        </td>
      </tr>
       <xsl:choose>
-       <xsl:when test="$ongoingEventsEnabled = 'true'
-                  and ($ongoingEventsShowForCollection = 'true' and not(/bedework/selectionState/selectionType = 'collections'))">
+       <xsl:when test="$ongoingEventsEnabled = 'true' and $ongoingEventsShowForCollection = 'true'">
          <xsl:apply-templates select="event[not(categories/category/uid = $ongoingEventsCatUid)]" mode="eventInList"/>
        </xsl:when>
        <xsl:otherwise>
