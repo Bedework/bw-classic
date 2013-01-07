@@ -484,6 +484,11 @@ GOTO branch
   SET synch="yes"
 
   SET access="yes"
+  SET bwannotations="yes"  
+  SET bwinterfaces="yes"
+  SET webdav="yes"
+  SET caldav="yes"
+  SET bwcalfacade="yes"
   SET bwsysevents="yes"
   SET bwxml="yes"
   SET davutil="yes"

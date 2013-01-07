@@ -1121,6 +1121,11 @@ do
       synch="yes"
       
       access="yes"
+      bwannotations="yes"  
+      bwinterfaces="yes"
+      webdav="yes"
+      caldav="yes"
+      bwcalfacade="yes"
       bwsysevents="yes"
       bwxml="yes"
       davutil="yes"
