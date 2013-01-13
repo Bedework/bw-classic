@@ -149,7 +149,7 @@
   </target>
 
   <!-- =================================================================
-       "saveData" target
+       "saveData" target - for use by quickstart maintainers
        ================================================================= -->
 
   <target name="saveData" depends="init"
