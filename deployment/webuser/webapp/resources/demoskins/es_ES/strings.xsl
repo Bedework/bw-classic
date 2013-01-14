@@ -586,7 +586,11 @@
   <!--  xsl:template match="calendar" mode="selectCalForPublicAliasCalTree" -->
 
   <!--  xsl:template match="currentCalendar" mode="addCalendar" -->
+  <xsl:variable name="bwStr-CuCa-AddCalOrFolder">Añadir Agenda o Carpeta</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AddSubscription">Añadir Suscripción</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddCalFolderOrSubscription">Añadir Agenda, Carpeta o Suscripción</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AddCalText">añadir</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AddSubText">Añadir suscripción</xsl:variable>
   <xsl:variable name="bwStr-CuCa-HttpStatus">Estado HTTP:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Name">Nombre:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Summary">Sumario:</xsl:variable>

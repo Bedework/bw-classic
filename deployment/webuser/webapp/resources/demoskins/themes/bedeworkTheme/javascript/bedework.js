@@ -191,9 +191,12 @@ function updateEventFormCalendar(newCalPath,calDisplay,calendarCollection) {
 function updatePublicCalendarAlias(newCalPath,calDisplay,calendarCollection) {
   var calendarAliasHolder = document.getElementById("publicAliasHolder");
   var bwCalDisplay = document.getElementById("bwPublicCalDisplay");
+  var calDisplayName = document.getElementById("intSubDisplayName");
   calendarAliasHolder.value = newCalPath;
+  calDisplayName.value = calDisplay.substring(calDisplay.lastIndexOf("/")+1);
   bwCalDisplay.innerHTML = '<strong>' + calDisplay + '</strong> <button type="button" onclick="showPublicCalAliasTree();">change</button>';
   changeClass("publicSubscriptionTree","invisible");
+  changeClass("bwPublicCalSubscribe","visible");
 }
 function showPublicCalAliasTree() {
   changeClass("publicSubscriptionTree","calendarTree");

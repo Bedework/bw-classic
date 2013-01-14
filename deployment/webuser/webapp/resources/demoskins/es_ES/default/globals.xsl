@@ -117,12 +117,13 @@
   <xsl:variable name="notifications-remove" select="/bedework/urlPrefixes/notifications/remove"/>
   <xsl:variable name="notifications-removeTrans" select="/bedework/urlPrefixes/notifications/removeTrans"/>
   <!-- subscriptions -->
+  <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/sharing/initAddSubscription"/>
+  <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/sharing/subscribe"/>
+  <!-- 
   <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu"/>
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate"/>
-  <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/subscriptions/initAdd"/>
-  <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/subscriptions/subscribe"/>
-  <xsl:variable name="subscriptions-inaccessible" select="/bedework/urlPrefixes/subscriptions/inaccessible"/>
+  <xsl:variable name="subscriptions-inaccessible" select="/bedework/urlPrefixes/subscriptions/inaccessible"/> -->
   <!-- preferences -->
   <xsl:variable name="prefs-fetchForUpdate" select="/bedework/urlPrefixes/prefs/fetchForUpdate"/>
   <xsl:variable name="prefs-update" select="/bedework/urlPrefixes/prefs/update"/>

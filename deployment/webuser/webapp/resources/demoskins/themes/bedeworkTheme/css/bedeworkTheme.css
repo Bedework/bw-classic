@@ -1714,6 +1714,13 @@ display: inline;
 #bedework #subsTable td.cals {
   white-space: nowrap;
 }
+#addSubText {
+	padding-left: 10px;
+}
+#bedework #addSubText li {
+	list-style: none;
+	margin-top: 2em;
+}
 #bedework .calendarTree ul {
   padding-left: 10px;
   margin-left: 10px;
@@ -1775,6 +1782,10 @@ display: inline;
 #bedework .calendarTree a:hover {
   color: black;
   background-color: #ff3;
+}
+#bedework .addCalText {
+	font-size: 0.8em;
+	font-style: italic;
 }
 #bedework .inoutboxActive {
   font-weight: bold;
@@ -2093,6 +2104,10 @@ display: inline;
 }
 #bedework #subscriptionTypes {
   font-size: 0.9em;
+}
+#bedework #subscriptionTypeExternal td,
+#bedework #subscriptionTypeExternal th {
+	text-align: right;
 }
 #bedework a:link,
 #bedework a:active {

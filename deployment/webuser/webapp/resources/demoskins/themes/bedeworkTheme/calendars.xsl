@@ -59,6 +59,15 @@
               </xsl:otherwise>
             </xsl:choose>
           </ul>
+          <ul id="addSubText">
+            <li>
+              <xsl:variable name="calPath" select="/bedework/calendars/calendar/encodedPath"/>
+              <a href="{$sharing-initAddSubscription}&amp;calPath={$calPath}">
+                <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="*" border="0"/>
+                <xsl:copy-of select="$bwStr-CuCa-AddSubText"/>
+              </a>
+            </li>
+          </ul>
         </td>
         <td class="calendarContent">
           <xsl:choose>
@@ -75,6 +84,9 @@
             <xsl:when test="/bedework/page='deleteCalendarConfirm'">
               <xsl:apply-templates select="/bedework/currentCalendar" mode="deleteCalendarConfirm"/>
             </xsl:when>
+             <xsl:when test="/bedework/page='addSubscription'">
+               <xsl:call-template name="addSubscription"/>
+             </xsl:when>
             <xsl:when test="/bedework/creating='true'">
               <xsl:apply-templates select="/bedework/currentCalendar" mode="addCalendar"/>
             </xsl:when>
@@ -253,7 +265,8 @@
       <xsl:if test="calType = '0' and isSubscription = 'false'">
         <xsl:text> </xsl:text>
         <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="{$bwStr-Cals-AddCalendarOrFolder}">
-          <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="add a calendar or folder" border="0"/>
+          <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="*" border="0"/>
+          <span class="addCalText"><xsl:copy-of select="$bwStr-CuCa-AddCalText"/></span>
         </a>
       </xsl:if>
       <xsl:if test="calendar and isSubscription='false'">
@@ -421,7 +434,7 @@
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="addCalendar">
-    <h3><xsl:copy-of select="$bwStr-CuCa-AddCalFolderOrSubscription"/></h3>
+    <h3><xsl:copy-of select="$bwStr-CuCa-AddCalOrFolder"/></h3>
     <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="return setCalendarAlias(this)">
       <table class="common">
         <tr>
@@ -466,19 +479,26 @@
             <input type="hidden" name="calendar.display">
               <xsl:attribute name="value"><xsl:value-of select="display"/></xsl:attribute>
             </input>
-            <input type="checkbox" name="displayHolder" size="40" onclick="setCalDisplayFlag(this.form['calendar.display'],this.checked);">
+            <input type="checkbox" name="displayHolder" id="calDisplayHolder" size="40" onclick="setCalDisplayFlag(this.form['calendar.display'],this.checked);">
               <xsl:if test="display = 'true'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
-            </input><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-DisplayItemsInThisCollection"/>
+            </input>
+            <xsl:text> </xsl:text>
+            <label for="calDisplayHolder">
+              <xsl:copy-of select="$bwStr-CuCa-DisplayItemsInThisCollection"/>
+            </label>
           </td>
         </tr>
+        <!-- hide filter expression for now -->
+        <!--  
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-FilterExpression"/></th>
           <td>
             <input type="text" name="fexpr" value="" size="40"/>
           </td>
         </tr>
+        -->
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Type"/></th>
           <td>
@@ -487,77 +507,23 @@
             <input type="hidden" value="true" name="calendarCollection"/>
             <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
             <input type="hidden" value="calendar" name="type" id="bwCalType"/>
-            <input type="radio" value="calendar" name="typeSwitch" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-Calendar"/>
-            <input type="radio" value="folder" name="typeSwitch" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-Folder"/>
+            <input type="radio" value="calendar" name="typeSwitch" id="bwCalTypeCal" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/>
+            <xsl:text> </xsl:text>
+            <label for="bwCalTypeCal">
+              <xsl:copy-of select="$bwStr-CuCa-Calendar"/>
+            </label>
+            <input type="radio" value="folder" name="typeSwitch" id="bwCalTypeFolder" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/>
+            <xsl:text> </xsl:text>
+            <label for="bwCalTypeFolder">
+              <xsl:copy-of select="$bwStr-CuCa-Folder"/>
+            </label>
+            <!-- subscription method is changing - this way is deprecated -->
+            <!-- 
             <input type="radio" value="subscription" name="typeSwitch" onclick="changeClass('subscriptionTypes','visible');setField('bwCalType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-Subscription"/>
+            -->
           </td>
         </tr>
       </table>
-      <div id="subscriptionTypes" class="invisible">
-        <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
-             on the subscription type. -->
-        <input type="hidden" name="aliasUri" value=""/>
-        <p>
-          <strong><xsl:copy-of select="$bwStr-CuCa-SubscriptionType"/></strong><br/>
-          <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
-          <input type="hidden" value="public" name="subType" id="bwSubType"/>
-          <input type="radio" name="subTypeSwitch" value="public" checked="checked" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-PublicCalendar"/>
-          <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-UserCalendar"/>
-          <input type="radio" name="subTypeSwitch" value="external" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');changeClass('subscriptionTypeUser','invisible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-URL"/>
-        </p>
-
-        <div id="subscriptionTypePublic">
-          <input type="hidden" value="" name="publicAliasHolder" id="publicAliasHolder"/>
-          <div id="bwPublicCalDisplay">
-            <button type="button" onclick="showPublicCalAliasTree();"><xsl:copy-of select="$bwStr-CuCa-SelectAPublicCalOrFolder"/></button>
-          </div>
-          <ul id="publicSubscriptionTree" class="invisible">
-            <xsl:apply-templates select="/bedework/publicCalendars/calendar" mode="selectCalForPublicAliasCalTree"/>
-          </ul>
-        </div>
-
-        <div id="subscriptionTypeUser" class="invisible">
-          <table class="common">
-            <tr>
-              <th><xsl:copy-of select="$bwStr-CuCa-UsersID"/></th>
-              <td>
-                <input type="text" name="userIdHolder" value="" size="40"/>
-              </td>
-            </tr>
-            <tr>
-              <th><xsl:copy-of select="$bwStr-CuCa-CalendarPath"/></th>
-              <td>
-                <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
-                <span class="note"><xsl:copy-of select="$bwStr-CuCa-DefaultCalendarOrSomeCalendar"/></span>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-
-        <div class="invisible" id="subscriptionTypeExternal">
-          <table class="common">
-            <tr>
-              <th><xsl:copy-of select="$bwStr-CuCa-URLToCalendar"/></th>
-              <td>
-                <input type="text" name="aliasUriHolder" id="aliasUriHolder" value="" size="40"/>
-              </td>
-            </tr>
-            <tr>
-              <th><xsl:copy-of select="$bwStr-CuCa-ID"/></th>
-              <td>
-                <input type="text" name="remoteId" value="" size="40"/>
-              </td>
-            </tr>
-            <tr>
-              <th><xsl:copy-of select="$bwStr-CuCa-Password"/></th>
-              <td>
-                <input type="password" name="remotePw" value="" size="40"/>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
 	    <div class="note sharingNote">
 	      <xsl:copy-of select="$bwStr-CuCa-SharingMayBeAdded"/>
 	    </div>
@@ -566,7 +532,141 @@
         <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
       </div>
     </form>
+    
+  </xsl:template>
+  
+  <xsl:template name="addSubscription">
+    <h3><xsl:value-of select="$bwStr-CuCa-AddSubscription"/></h3>
+    <div id="subscriptionTypes">
+       <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
+            on the subscription type. -->
+       <input type="hidden" name="aliasUri" value=""/>
+       <p>
+         <strong><xsl:copy-of select="$bwStr-CuCa-SubscriptionType"/></strong>
+         <xsl:text> </xsl:text>
+         <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
+         <input type="hidden" value="public" name="subType" id="bwSubType"/><br/>
+         
+         <input type="radio" name="subTypeSwitch" id="subSwitchExternal" value="external" checked="checked" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/>
+         <xsl:text> </xsl:text>
+         <label for="subSwitchExternal">
+           <xsl:copy-of select="$bwStr-CuCa-URL"/>
+         </label>
+         
+         <input type="radio" name="subTypeSwitch" id="subSwitchPublic" value="public" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/>
+         <xsl:text> </xsl:text>
+         <label for="subSwitchPublic">
+           <xsl:copy-of select="$bwStr-CuCa-PublicCalendar"/>
+         </label>
+         
+         <!-- type user is deprecated in this way - will stick with new sharing model as of version 3.9 -->
+         <!-- 
+         <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-UserCalendar"/>
+         -->
+       </p>
 
+       <div id="subscriptionTypePublic" class="invisible">
+         <form id="intSubscription" name="intSubscription" action="{$sharing-subscribe}" method="post">
+	         <input type="hidden" value="" name="colHref" id="publicAliasHolder"/>
+	         <div id="bwPublicCalSubscribe" class="invisible">
+	           <table class="common">
+	             <tr>
+	               <th>
+	                 Path:
+	               </th>
+	               <td>
+	                 <div id="bwPublicCalDisplay"></div>
+	                 <!-- button type="button" onclick="showPublicCalAliasTree();"><xsl:copy-of select="$bwStr-CuCa-SelectAPublicCalOrFolder"/></button-->
+	               </td>
+	             </tr>
+	             <tr>
+	               <th>
+	                 <xsl:copy-of select="$bwStr-CuCa-Summary"/>
+	               </th>
+	               <td>
+	                 <input type="text" name="colName" id="intSubDisplayName" value="" size="40"/>
+	               </td>
+	             </tr>
+	             <tr>
+	               <td colspan="2">
+	                 <input type="submit">
+	                   <xsl:attribute name="value"><xsl:value-of select="$bwStr-CuCa-Add"/></xsl:attribute>
+	                 </input>
+	               </td>
+	             </tr>
+	           </table>
+	         </div>
+         </form>
+         <ul id="publicSubscriptionTree">
+           <xsl:apply-templates select="/bedework/publicCalendars/calendar/calendar[name='aliases']/calendar" mode="selectCalForPublicAliasCalTree"/>
+         </ul>
+       </div>
+
+       <!-- deprecated version 3.9 -->
+       <!-- 
+       <div id="subscriptionTypeUser" class="invisible">
+         <table class="common">
+           <tr>
+             <th><xsl:copy-of select="$bwStr-CuCa-UsersID"/></th>
+             <td>
+               <input type="text" name="userIdHolder" value="" size="40"/>
+             </td>
+           </tr>
+           <tr>
+             <th><xsl:copy-of select="$bwStr-CuCa-CalendarPath"/></th>
+             <td>
+               <input type="text" name="userCalHolder" value="calendar" size="40"/><br/>
+               <span class="note"><xsl:copy-of select="$bwStr-CuCa-DefaultCalendarOrSomeCalendar"/></span>
+             </td>
+           </tr>
+           <tr>
+             <td colspan="2">
+               <button><xsl:value-of select="$bwStr-CuCa-Add"/></button>
+             </td>
+           </tr>
+         </table>
+       </div>
+       -->
+
+
+       <div id="subscriptionTypeExternal">
+         <form id="extSubscription" name="extSubscription" action="{$sharing-subscribe}" method="post">
+          <table class="common">
+            <tr>
+              <th><xsl:copy-of select="$bwStr-CuCa-URLToCalendar"/></th>
+              <td>
+                <input type="text" name="extUrl" id="extUrl" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <th><xsl:copy-of select="$bwStr-CuCa-Summary"/></th>
+              <td>
+                <input type="text" name="colName" id="extSubDisplayName" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <td><xsl:copy-of select="$bwStr-CuCa-ID"/></td>
+              <td>
+                <input type="text" name="remoteId" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <td><xsl:copy-of select="$bwStr-CuCa-Password"/></td>
+              <td>
+                <input type="password" name="remotePw" value="" size="40"/>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <input type="submit">
+                  <xsl:attribute name="value"><xsl:value-of select="$bwStr-CuCa-Add"/></xsl:attribute>
+                </input>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:template match="currentCalendar" mode="modCalendar">

@@ -21,6 +21,12 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
   
+  <!-- ***************************************************** 
+       ALL TEMPLATES BELOW ARE DEPRECATED AS OF BEDEWORK 3.9 
+       Subscriptions are maintained in calendars.xsl using   
+       new sharing methods.
+       ***************************************************** -->
+  
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
   <xsl:template name="subsMenu">
     <!-- This top-level menu adds subscriptions to the root of the user's calendar tree.

@@ -49,7 +49,7 @@
   <xsl:include href="attendees.xsl" />
   <xsl:include href="categories.xsl" />
   <xsl:include href="calendars.xsl" />
-  <xsl:include href="subscriptions.xsl" />
+  <!-- xsl:include href="subscriptions.xsl" /-->
   <xsl:include href="alarms.xsl" />
   <xsl:include href="upload.xsl" />
   <xsl:include href="email.xsl" />
@@ -163,23 +163,25 @@
                   <xsl:when test="/bedework/page='deleteLocationConfirm'">
                     <xsl:call-template name="deleteLocationConfirm"/>
                   </xsl:when>
+                  <!-- DEPRECATED
                   <xsl:when test="/bedework/page='subsMenu'">
                     <xsl:call-template name="subsMenu"/>
                   </xsl:when>
-                  <!-- DEPRECATED
                   <xsl:when test="/bedework/page='subscriptions' or
                                   /bedework/page='modSubscription'">
                     <xsl:apply-templates select="/bedework/subscriptions"/>
-                  </xsl:when> -->
+                  </xsl:when> 
                   <xsl:when test="/bedework/page='addAlias'">
                     <xsl:call-template name="addAlias"/>
                   </xsl:when>
+                  -->
                   <xsl:when test="/bedework/page='calendarList' or
                                   /bedework/page='calendarDescriptions' or
                                   /bedework/page='displayCalendar' or
                                   /bedework/page='modCalendar' or
                                   /bedework/page='deleteCalendarConfirm' or
-                                  /bedework/page='calendarReferenced'">
+                                  /bedework/page='calendarReferenced' or
+                                  /bedework/page='addSubscription'">
                     <xsl:apply-templates select="/bedework/calendars" mode="manageCalendars"/>
                   </xsl:when>
                    <xsl:when test="/bedework/page='calendarListForExport'">
