@@ -591,6 +591,7 @@
   <xsl:variable name="bwStr-CuCa-AddSubscription">Add Subscription</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddCalFolderOrSubscription">Add Calendar, Folder, or Subscription</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddCalText">add</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AddCalTextLabel">Add:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddSubText">Add subscription</xsl:variable>
   <xsl:variable name="bwStr-CuCa-HttpStatus">HTTP Status:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Name">System Name:</xsl:variable>

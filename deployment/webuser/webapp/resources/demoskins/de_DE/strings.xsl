@@ -590,6 +590,7 @@
   <xsl:variable name="bwStr-CuCa-AddSubscription">Hinzuf&#252;gen Abonnement</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddCalFolderOrSubscription">Hinzuf&#252;gen Kalender, Ordner oder Abonnement</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddCalText">hinzuf&#252;gen</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-AddCalTextLabel">Hinzuf&#252;gen:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddSubText">Hinzuf&#252;gen abonnement</xsl:variable>
   <xsl:variable name="bwStr-CuCa-HttpStatus">HTTP Status:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Name">Name:</xsl:variable>

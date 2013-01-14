@@ -59,15 +59,16 @@
               </xsl:otherwise>
             </xsl:choose>
           </ul>
-          <ul id="addSubText">
-            <li>
-              <xsl:variable name="calPath" select="/bedework/calendars/calendar/encodedPath"/>
-              <a href="{$sharing-initAddSubscription}&amp;calPath={$calPath}">
-                <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="*" border="0"/>
-                <xsl:copy-of select="$bwStr-CuCa-AddSubText"/>
-              </a>
-            </li>
-          </ul>
+          <div id="addCalSubButtons">
+	          <xsl:value-of select="$bwStr-CuCa-AddCalTextLabel"/><br/>
+	          <xsl:variable name="calPath" select="/bedework/calendars/calendar/encodedPath"/>
+	          <button type="button" onclick="location.href='{$calendar-initAdd}&amp;calPath={$calPath}'">
+	            <xsl:value-of select="$bwStr-CuCa-Calendar"/>
+	          </button>
+	          <button type="button" onclick="location.href='{$sharing-initAddSubscription}&amp;calPath={$calPath}'">
+	            <xsl:value-of select="$bwStr-CuCa-Subscription"/>
+	          </button>
+	        </div>
         </td>
         <td class="calendarContent">
           <xsl:choose>

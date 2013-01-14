@@ -1714,9 +1714,16 @@ display: inline;
 #bedework #subsTable td.cals {
   white-space: nowrap;
 }
-#addSubText {
+#addCalSubButtons {
 	padding-left: 10px;
+	margin: 2em 0;
 }
+#addCalSubButtons button {
+  font-size: 0.8em;
+  text-transform: lowercase;
+  padding-bottom: 2px;
+}
+
 #bedework #addSubText li {
 	list-style: none;
 	margin-top: 2em;
