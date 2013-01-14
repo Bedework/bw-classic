@@ -62,10 +62,10 @@
           <div id="addCalSubButtons">
 	          <xsl:value-of select="$bwStr-CuCa-AddCalTextLabel"/><br/>
 	          <xsl:variable name="calPath" select="/bedework/calendars/calendar/encodedPath"/>
-	          <button type="button" onclick="location.href='{$calendar-initAdd}&amp;calPath={$calPath}'">
+	          <button type="button" id="addCalButton" onclick="location.href='{$calendar-initAdd}&amp;calPath={$calPath}'">
 	            <xsl:value-of select="$bwStr-CuCa-Calendar"/>
 	          </button>
-	          <button type="button" onclick="location.href='{$sharing-initAddSubscription}&amp;calPath={$calPath}'">
+	          <button type="button" id="addSubButton" onclick="location.href='{$sharing-initAddSubscription}&amp;calPath={$calPath}'">
 	            <xsl:value-of select="$bwStr-CuCa-Subscription"/>
 	          </button>
 	        </div>
