@@ -99,6 +99,9 @@
       <xsl:when test="id='org.bedework.client.error.missingcalendarpath'">
         Error: missing calendar path.
       </xsl:when>
+      <xsl:when test="id='org.bedework.client.error.already.subscribed'">
+        You are already subscribed to that calendar.
+      </xsl:when>
       <xsl:when test="id='org.bedework.client.error.missingeventkeyfields'">
         Error: missing event key fields
       </xsl:when>
