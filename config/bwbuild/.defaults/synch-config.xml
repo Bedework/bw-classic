@@ -62,7 +62,7 @@
     <property name="connectors">
       <set>
         <ref bean="manager"/>     
-        <ref bean="exdemo"/>     
+        <!-- <ref bean="exdemo"/> -->     
         <ref bean="localBedework" />
         <ref bean="read-only-file" />
       </set>
@@ -83,7 +83,7 @@
     <property name="trustLastmod" value="true" />
   </bean>
 
-  <!-- An exchange connector  -->
+  <!-- An exchange connector - not implemented - - >
   <bean id="exdemo" 
         class="org.bedework.synch.db.ConnectorConfig">
     <property name="name" value="exdemo" />
@@ -96,10 +96,10 @@
 
     <property name="properties">
       <set>
-        <!-- location of the WSDL - modified to include server element 
+        < ! - - location of the WSDL - modified to include server element 
              This corresponds to the wsdl deploy location defined in the
              build properties file.
-        -->
+        - - >
         <bean class="org.bedework.synch.db.SynchProperty">
           <property name="name" value="exchangeWSDLURI" />
           <property name="value" 
@@ -108,6 +108,7 @@
       </set>
     </property>
   </bean>
+  -->
   
   <!-- A local bedework connector. This handles connections to the local
        bedework system. This name is configured in to bedework so that

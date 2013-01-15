@@ -245,7 +245,7 @@
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="apache-jdkim-library" version="0.2.BEDEWORK"/>
+              name="apache-jdkim-library" version="0.2.BEDEWORK-SNAPSHOT"/>
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"

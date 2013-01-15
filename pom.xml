@@ -60,6 +60,7 @@
     <bedeworkSelfregVersion>${defaultedVersion}</bedeworkSelfregVersion>
     <bedeworkSynchVersion>${defaultedVersion}</bedeworkSynchVersion>
     <bedeworkSyseventsVersion>${defaultedVersion}</bedeworkSyseventsVersion>
+    <bedeworkTestSuiteVersion>${defaultedVersion}</bedeworkTestSuiteVersion>
     <bedeworkWebappsVersion>${defaultedVersion}</bedeworkWebappsVersion>
     <bedeworkWebdavVersion>${defaultedVersion}</bedeworkWebdavVersion>
     <bedeworkXmlschemaVersion>${defaultedVersion}</bedeworkXmlschemaVersion>
