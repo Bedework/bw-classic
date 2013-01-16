@@ -590,7 +590,7 @@
 	             </tr>
 	             <tr>
 	               <td colspan="2">
-	                 <input type="submit">
+	                 <input type="submit" id="intSubSubmit">
 	                   <xsl:attribute name="value"><xsl:value-of select="$bwStr-CuCa-Add"/></xsl:attribute>
 	                 </input>
 	               </td>
@@ -659,7 +659,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <input type="submit">
+                <input type="submit" id="extSubSubmit">
                   <xsl:attribute name="value"><xsl:value-of select="$bwStr-CuCa-Add"/></xsl:attribute>
                 </input>
               </td>
