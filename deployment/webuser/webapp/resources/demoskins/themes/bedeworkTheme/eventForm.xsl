@@ -62,9 +62,22 @@
           <xsl:apply-templates select="form" mode="addEditEventFormButtons" />
         </span>
         <xsl:choose>
-          <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-EdtE-EditTask"/></xsl:when>
-          <xsl:when test="form/scheduleMethod = '2'"><xsl:copy-of select="$bwStr-EdtE-EditMeeting"/></xsl:when>
-          <xsl:otherwise><xsl:copy-of select="$bwStr-EdtE-EditEvent"/></xsl:otherwise>
+          <xsl:when test="guid=''">
+            <!-- we are copying an existing event, so we are actually "adding" -->
+            <xsl:choose>
+              <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-AddE-AddTask"/></xsl:when>
+              <xsl:when test="form/scheduleMethod = '2'"><xsl:copy-of select="$bwStr-AddE-AddMeeting"/></xsl:when>
+              <xsl:otherwise><xsl:copy-of select="$bwStr-AddE-AddEvent"/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- we are just editing -->
+            <xsl:choose>
+			        <xsl:when test="form/entityType = '2'"><xsl:copy-of select="$bwStr-EdtE-EditTask"/></xsl:when>
+			        <xsl:when test="form/scheduleMethod = '2'"><xsl:copy-of select="$bwStr-EdtE-EditMeeting"/></xsl:when>
+			        <xsl:otherwise><xsl:copy-of select="$bwStr-EdtE-EditEvent"/></xsl:otherwise>
+			      </xsl:choose>
+          </xsl:otherwise>
         </xsl:choose>
       </h2>
       <xsl:for-each select="form/xproperties/xproperty">
