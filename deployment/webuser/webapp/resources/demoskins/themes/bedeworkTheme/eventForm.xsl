@@ -698,16 +698,12 @@
           <td class="fieldval">
             <xsl:choose>
               <xsl:when test="normalize-space(form/desc/textarea) = ''">
-                <textarea name="description" cols="60" rows="4">
-                  <xsl:text> </xsl:text>
-                </textarea>
+                <textarea name="description" id="description" cols="60" rows="4"><xsl:text> </xsl:text></textarea>
                 <!-- keep this space to avoid browser
                 rendering errors when the text area is empty -->
               </xsl:when>
               <xsl:otherwise>
-                <textarea name="description" cols="60" rows="4">
-                  <xsl:value-of select="form/desc/textarea"/>
-                </textarea>
+                <textarea name="description" id="description" cols="60" rows="4"><xsl:value-of select="form/desc/textarea"/></textarea>
               </xsl:otherwise>
             </xsl:choose>
           </td>

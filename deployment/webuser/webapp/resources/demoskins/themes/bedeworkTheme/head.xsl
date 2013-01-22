@@ -299,50 +299,52 @@
       }
       
       $(document).ready(function() {
-        <xsl:choose>
-          <xsl:when test="/bedework/page = 'addEvent' or bedework/page = 'editEvent'">
-            focusElement('bwEventTitle');
-            bwSetupDatePickers();
-            bwGrid.init();
-            bwGridSetSize();
-          </xsl:when>
-          <xsl:when test="/bedework/page = 'editEvent'">
-            <xsl:if test="/bedework/formElements/recurrenceId = ''">
-              initRXDates();
-            </xsl:if>
-            initXProperties();
-          </xsl:when>
-          <xsl:when test="/bedework/page = 'attendees'">
-            focusElement('bwRaUri');
-          </xsl:when>
-          <xsl:when test="/bedework/page = 'modLocation'">
-            focusElement('bwLocMainAddress');
-          </xsl:when>
-          <xsl:when test="/bedework/page = 'modCalendar'">		     
-            $("#modCalAdvancedSwitch").click(function(event) {
-              event.preventDefault();
-              $(".modCalAdvanced").show();
-              $("#modCalBasicSwitch").show();
-              $("#modCalAdvancedSwitch").hide();
-            });
-            $("#modCalBasicSwitch").click(function(event) {
-              event.preventDefault();
-              $(".modCalAdvanced").hide();
-              $("#modCalBasicSwitch").hide();
-              $("#modCalAdvancedSwitch").show();
-            });
-               
-            $("#calAccessBoxToggle").click(function(event) {
-              event.preventDefault();
-              $("#accessBox").toggle();
-              if($("#accessBox").is(":visible")) {
-                $("#calAccessBoxToggle img").attr('src','<xsl:value-of select="$resourcesRoot"/>/images/minus.gif');
-              } else {
-                $("#calAccessBoxToggle img").attr('src','<xsl:value-of select="$resourcesRoot"/>/images/plus.gif');
-              };
-            });
-          </xsl:when>
-        </xsl:choose>
+         <xsl:if test="/bedework/page = 'addEvent' or bedework/page = 'editEvent'">
+           focusElement('bwEventTitle');
+           bwSetupDatePickers();
+           bwGrid.init();
+           bwGridSetSize();
+         </xsl:if>
+         <xsl:if test="/bedework/page = 'addEvent'">
+           // trim the event description:
+           $("#description").val($.trim($("#description").val()));
+         </xsl:if>
+         <xsl:if test="/bedework/page = 'editEvent'">
+           <xsl:if test="/bedework/formElements/recurrenceId = ''">
+             initRXDates();
+           </xsl:if>
+           initXProperties();
+         </xsl:if>
+         <xsl:if test="/bedework/page = 'attendees'">
+           focusElement('bwRaUri');
+         </xsl:if>
+         <xsl:if test="/bedework/page = 'modLocation'">
+           focusElement('bwLocMainAddress');
+         </xsl:if>
+         <xsl:if test="/bedework/page = 'modCalendar'">		     
+           $("#modCalAdvancedSwitch").click(function(event) {
+             event.preventDefault();
+             $(".modCalAdvanced").show();
+             $("#modCalBasicSwitch").show();
+             $("#modCalAdvancedSwitch").hide();
+           });
+           $("#modCalBasicSwitch").click(function(event) {
+             event.preventDefault();
+             $(".modCalAdvanced").hide();
+             $("#modCalBasicSwitch").hide();
+             $("#modCalAdvancedSwitch").show();
+           });
+              
+           $("#calAccessBoxToggle").click(function(event) {
+             event.preventDefault();
+             $("#accessBox").toggle();
+             if($("#accessBox").is(":visible")) {
+               $("#calAccessBoxToggle img").attr('src','<xsl:value-of select="$resourcesRoot"/>/images/minus.gif');
+             } else {
+               $("#calAccessBoxToggle img").attr('src','<xsl:value-of select="$resourcesRoot"/>/images/plus.gif');
+             };
+           });
+         </xsl:if>
       });
         
       </xsl:comment>
