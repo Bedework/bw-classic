@@ -210,7 +210,10 @@
     <li>
       <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
         <xsl:if test="scheduleMethod=3"><xsl:copy-of select="$bwStr-ScN-Re"/><xsl:text> </xsl:text></xsl:if>
-        <xsl:value-of select="summary"/>
+        <xsl:choose>
+          <xsl:when test="summary = ''"><xsl:copy-of select="$bwStr-EvCG-NoTitle"/></xsl:when>
+          <xsl:otherwise><xsl:value-of select="summary"/></xsl:otherwise>
+        </xsl:choose>
       </a>
     </li>
   </xsl:template>

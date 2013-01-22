@@ -687,7 +687,7 @@
         </tr>
         <tr>
           <td class="fieldname">
-            <xsl:copy-of select="$bwStr-AtRe-Title"/>Title:
+            <xsl:copy-of select="$bwStr-AtRe-Title"/>
           </td>
           <td class="fieldval">
             <strong><xsl:value-of select="form/title/input/@value"/></strong>
