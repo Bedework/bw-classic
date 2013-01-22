@@ -43,7 +43,7 @@
           </a>
         </xsl:when>
         <xsl:when test="summary = ''">
-          <xsl:copy-of select="$bwStr-SgEv-Event"/> <em>(<xsl:copy-of select="$bwStr-SgEv-NoTitle"/>)</em>
+          <xsl:copy-of select="$bwStr-SgEv-Event"/><xsl:text> </xsl:text><em>(<xsl:copy-of select="$bwStr-SgEv-NoTitle"/>)</em>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="summary"/>

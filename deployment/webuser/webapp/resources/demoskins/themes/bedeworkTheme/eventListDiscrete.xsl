@@ -57,7 +57,10 @@
                 <xsl:if test="status='TENTATIVE'"><em><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></em></xsl:if>
 
                 <a class="title" href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                  <xsl:value-of select="summary"/>
+                  <xsl:choose>
+					          <xsl:when test="summary = ''"><xsl:copy-of select="$bwStr-EvCG-NoTitle"/></xsl:when>
+					          <xsl:otherwise><xsl:value-of select="summary"/></xsl:otherwise>
+					        </xsl:choose>
                 </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
                 <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
                   <xsl:if test="location/subaddress != ''">
