@@ -588,7 +588,6 @@ IF NOT "%pkgdefault%" == "yes" GOTO notdefault
   SET dumprestore="yes"
   SET indexer="yes"
   SET rpiutil="yes"
-  SET selfreg="yes"
   SET webdav="yes"
 
 :notdefault
