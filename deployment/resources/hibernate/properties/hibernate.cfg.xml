@@ -27,7 +27,9 @@
     <mapping resource="EventAnnotation.hbm.xml"/>
     <mapping resource="Filter.hbm.xml"/>
     <mapping resource="Group.hbm.xml"/>
+    <!-- Save as JMX resource files
     <mapping resource="HostInfo.hbm.xml"/>
+     -->
     <mapping resource="Category.hbm.xml"/>
     <mapping resource="FreebusyComponent.hbm.xml"/>
     <mapping resource="Location.hbm.xml"/>

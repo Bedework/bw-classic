@@ -20,13 +20,15 @@
     <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
   </mbean>
   
+  <!-- 
   <mbean code="org.bedework.calsvc.scheduling.ischedule.BwIschedule"
          name="org.bedework:service=Ischedule">
     <attribute name="Account">admin</attribute>
     
-    <!-- We also need the bedework database -->
+    < ! - - We also need the bedework database - - >
     <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
   </mbean>
+   -->
   
   <mbean code="org.bedework.chgnote.BwChgNote"
          name="org.bedework:service=BwChgNote">
@@ -48,6 +50,7 @@
     <attribute name="Account">admin</attribute>
     <attribute name="SkipPaths">/public/unbrowsable:/public/aliases</attribute>
     -->
+    <attribute name="HostsConfigDir">${jboss.server.data.dir}/bedework/hosts</attribute>
 
     <!-- We need activemq -->    
     <depends>jboss.jca:service=ConnectionFactoryBinding,name=activemq/QueueConnectionFactory</depends>

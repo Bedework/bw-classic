@@ -83,7 +83,7 @@
       <dep:dependency>
         <dep:groupId>net.fortuna.ical4j</dep:groupId>
         <dep:artifactId>ical4j</dep:artifactId>
-        <dep:version>head-20100601</dep:version>
+        <dep:version>1.0-BW-SNAPSHOT</dep:version>
       </dep:dependency>
 
       <dep:dependency>
