@@ -107,6 +107,17 @@ echo ""
 
 PRG="$0"
 
+# project directories
+
+if [ "$1" = "-nosql" ] ; then
+  shift
+  bwcalcoreDir="bwcalcorenosql"
+  bwcalfacadeDir="bwcalfacadenosql"
+else
+  bwcalcoreDir="bwcalcore"
+  bwcalfacadeDir="bwcalFacade"
+fi
+
 usage() {
   echo "  $PRG ACTION"
   echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [LOG_LEVEL] [ target ] "
@@ -374,7 +385,7 @@ setDirectory() {
 	fi
 
 	if [ "$bwcalfacade" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwcalFacade
+	  cd $QUICKSTART_HOME/$bwcalfacadeDir
       bwcalfacade=
 	  return
 	fi
@@ -422,7 +433,7 @@ setDirectory() {
 	fi
 
 	if [ "$bwcalcore" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwcalcore
+	  cd $QUICKSTART_HOME/$bwcalcoreDir
       bwcalcore=
 	  return
 	fi

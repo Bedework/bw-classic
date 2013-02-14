@@ -49,21 +49,4 @@
     <property name="link" column="bw_link" type="string"
               length="500" />
   </class>
-
-  <!-- =================================================================
-       Contact queries
-       ================================================================= -->
-
-  <query name="getContactRefs"><![CDATA[
-    select new org.bedework.calsvci.EventProperties$PropertyRef(
-            ev.colPath,ev.uid) 
-      from org.bedework.calfacade.BwEvent as ev
-      where :ent in elements(ev.contacts)
-  ]]></query>
-
-  <query name="getContactRefsCount"><![CDATA[
-    select count(*) from org.bedework.calfacade.BwEvent as ev
-      where :ent in elements(ev.contacts)
-  ]]></query>
-  </hibernate-mapping>
-
+</hibernate-mapping>

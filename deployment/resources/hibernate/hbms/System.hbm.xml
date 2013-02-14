@@ -98,14 +98,4 @@
       </composite-element>
     </set>
   </class>
-
-  <!-- =================================================================
-       System parameters queries
-       ================================================================= -->
-
-  <query name="getSystemPars"><![CDATA[
-    from org.bedework.calfacade.BwSystem as sys
-      where sys.name = :name
-  ]]></query>
 </hibernate-mapping>
-

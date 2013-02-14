@@ -46,19 +46,4 @@
               type="string" length="3000"
               index="bwidx_cs_subroot" />
   </class>
-
-  <!-- =================================================================
-                  Calendar suite queries
-       ================================================================= -->
-
-  <query name="getCalSuite"><![CDATA[
-    from org.bedework.calfacade.svc.BwCalSuite cal
-      where cal.name=:name
-  ]]></query>
-
-  <query name="getCalSuiteByGroup"><![CDATA[
-    from org.bedework.calfacade.svc.BwCalSuite cal
-      where cal.group=:group
-  ]]></query>
 </hibernate-mapping>
-

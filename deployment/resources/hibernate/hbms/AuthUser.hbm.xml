@@ -14,7 +14,7 @@
      ================================================================= -->
 
 <hibernate-mapping>
-  <class name="org.bedework.calfacade.svc.BwAuthUser"
+  <class name="org.bedework.calfacade.BwAuthUser"
          table="bw_auth">
     <id name="id" type="integer" column="userid" unsaved-value="-1">
       <generator class="native"/>
@@ -128,46 +128,5 @@
     <id name="id" column="userid" unsaved-value="-1"/>
     <property name="calendarid" column="calendarid" type="integer" not-null="true"/>
   </class>
-
-  <!-- =================================================================
-       Authuser queries
-       ================================================================= -->
-
-  <query name="getAllAuthUsers"><![CDATA[
-    from org.bedework.calfacade.svc.BwAuthUser au
-      order by au.userHref
-  ]]></query>
-
-  <!--  <query name="getPrefsWithContact"><![CDATA[
-    from org.bedework.calfacade.svc.prefs.BwAuthUserPrefs pref
-          where :sp in elements(pref.preferredContacts)
-  ]]></query>
-
- We want something like this
-  <sql-query name="removeContactForAll"><![CDATA[
-    delete from authprefContacts where contactid=:id
-  ]]></sql-query>
-   -->
-
-  <!-- But cheat -->
-  <query name="removeCategoryPrefForAll"><![CDATA[
-    delete from org.bedework.calfacade.svc.prefs.BwAuthUserPrefsCategory
-           where categoryid=:id
-  ]]></query>
-
-  <query name="removeLocationPrefForAll"><![CDATA[
-    delete from org.bedework.calfacade.svc.prefs.BwAuthUserPrefsLocation
-           where locationid=:id
-  ]]></query>
-
-  <query name="removeContactPrefForAll"><![CDATA[
-    delete from org.bedework.calfacade.svc.prefs.BwAuthUserPrefsContact
-           where contactid=:id
-  ]]></query>
-
-  <query name="removeCalendarPrefForAll"><![CDATA[
-    delete from org.bedework.calfacade.svc.prefs.BwAuthUserPrefsCalendar
-           where calendarid=:id
-  ]]></query>
 </hibernate-mapping>
 

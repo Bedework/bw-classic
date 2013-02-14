@@ -80,7 +80,8 @@ check() {
 copyproject() {
   echo "copyproject $1 $2 from $4"
 
-  svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2
+  echo "svn copy -m \"$3\" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2"
+#  svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2
 }
 
 SOURCE="trunk"

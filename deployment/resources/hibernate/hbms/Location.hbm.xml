@@ -54,21 +54,5 @@
 
     <property name="link" column="bw_link" type="string" length="500"/>
   </class>
-
-  <!-- =================================================================
-       Location queries
-       ================================================================= -->
-
-  <query name="getLocationRefs"><![CDATA[
-    select new org.bedework.calsvci.EventProperties$PropertyRef(
-            ev.colPath,ev.uid) 
-      from org.bedework.calfacade.BwEvent as ev
-      where ev.location = :ent
-  ]]></query>
-
-  <query name="getLocationRefsCount"><![CDATA[
-    select count(*) from org.bedework.calfacade.BwEvent as ev
-      where ev.location = :ent
-  ]]></query>
 </hibernate-mapping>
 

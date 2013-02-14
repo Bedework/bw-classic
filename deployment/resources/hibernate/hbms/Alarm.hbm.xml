@@ -139,24 +139,11 @@
       where al.expired = false and al.ownerHref=:userHref
   ]]></query>
 
-  <query name="getUnexpiredAlarms"><![CDATA[
-    from org.bedework.calfacade.BwAlarm as al
-      where al.expired = false
-  ]]></query>
-
   <!-- Return all unexpired alarms for the given user before the given time
     -->
   <query name="getUnexpiredAlarmsUserTime"><![CDATA[
     from org.bedework.calfacade.BwAlarm as al
       where al.expired = false and al.ownerHref=:userHref and
-            al.triggerTime <= :tt
-  ]]></query>
-
-  <!-- Return all unexpired alarms before the given time
-    -->
-  <query name="getUnexpiredAlarmsTime"><![CDATA[
-    from org.bedework.calfacade.BwAlarm as al
-      where al.expired = false and
             al.triggerTime <= :tt
   ]]></query>
 </hibernate-mapping>

@@ -375,11 +375,6 @@
        Event queries
        ================================================================= -->
 
-  <query name="eventAnnotationsByName"><![CDATA[
-    from org.bedework.calfacade.BwEventAnnotation as ev
-      where ev.name = :name and ev.colPath = :colPath and ev.tombstoned=false
-  ]]></query>
-
   <query name="annotationsByTarget"><![CDATA[
     from org.bedework.calfacade.BwEventAnnotation as ev
       where ev.target = :target and ev.tombstoned=false

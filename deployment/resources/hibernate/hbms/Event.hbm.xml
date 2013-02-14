@@ -395,20 +395,10 @@
        Event queries
        ================================================================= -->
 
-  <query name="eventsByName"><![CDATA[
-    from org.bedework.calfacade.BwEventObj as ev
-      where ev.name = :name and ev.tombstoned=false and ev.colPath = :colPath
-  ]]></query>
-
   <!-- Use this to see if a uid exists. -->
   <query name="getGuidCount"><![CDATA[
     select count(*) from org.bedework.calfacade.BwEventObj as ev
       where ev.uid = :guid and ev.tombstoned=false
   ]]></query>
-
-  <query name="eventByAlarm"><![CDATA[
-    from org.bedework.calfacade.BwEventObj as ev 
-      where ev.tombstoned=false and :alarm in alarms
-  ]]></query>  
 </hibernate-mapping>
 

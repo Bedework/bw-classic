@@ -54,33 +54,5 @@
               not-null="true"
               index="bwidx_category_uid" />
   </class>
-
-  <!-- =================================================================
-       Category queries
-       ================================================================= -->
-
-  <query name="getCategoryRefs"><![CDATA[
-    select new org.bedework.calsvci.EventProperties$PropertyRef(
-            ev.colPath,ev.uid) 
-      from org.bedework.calfacade.BwEvent as ev
-      where :ent in elements(ev.categories)
-  ]]></query>
-
-  <query name="getCategoryRefsCol"><![CDATA[
-    select new org.bedework.calsvci.EventProperties$PropertyRef(
-            col.path)
-      from org.bedework.calfacade.BwCalendar as col
-      where :ent in elements(col.categories)
-  ]]></query>
-
-  <query name="getCategoryRefsCount"><![CDATA[
-    select count(*) from org.bedework.calfacade.BwEvent as ev
-      where :ent in elements(ev.categories)
-  ]]></query>
-
-  <query name="getCategoryRefsColCount"><![CDATA[
-    select count(*) from org.bedework.calfacade.BwCalendar as col
-      where :ent in elements(col.categories)
-  ]]></query>
 </hibernate-mapping>
 

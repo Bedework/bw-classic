@@ -8,7 +8,7 @@
      =================================================================== -->
 
 <hibernate-mapping>
-  <class name="org.bedework.calfacade.svc.prefs.BwPreferences"
+  <class name="org.bedework.calfacade.BwPreferences"
          table="bw_preferences" >
     <cache usage="read-write"/>
     <id name="id" type="integer" column="prefid" unsaved-value="-1">
@@ -79,13 +79,8 @@
        Preferences queries
        ================================================================= -->
 
-  <query name="getOwnerPreferences"><![CDATA[
-    from org.bedework.calfacade.svc.prefs.BwPreferences p
-      where p.ownerHref=:ownerHref
-  ]]></query>
-
   <query name="getAllPreferences"><![CDATA[
-    from org.bedework.calfacade.svc.prefs.BwPreferences p
+    from org.bedework.calfacade.BwPreferences p
       order by p.ownerHref
   ]]></query>
 </hibernate-mapping>
