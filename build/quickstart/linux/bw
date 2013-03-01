@@ -948,7 +948,6 @@ do
       bwinterfaces="yes"
       bwxml="yes"
       caldav="yes"
-      davutil="yes"
       rpiutil="yes"
       webdav="yes"
       pkgdefault=
