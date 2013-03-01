@@ -1116,7 +1116,6 @@ do
       bwcalfacade="yes"
       bwsysevents="yes"
       bwxml="yes"
-      davutil="yes"
       rpiutil="yes"
       pkgdefault=
       shift

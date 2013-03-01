@@ -475,7 +475,6 @@ GOTO branch
   SET bwcalfacade="yes"
   SET bwsysevents="yes"
   SET bwxml="yes"
-  SET davutil="yes"
   SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
