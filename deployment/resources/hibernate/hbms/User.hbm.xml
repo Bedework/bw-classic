@@ -28,6 +28,13 @@
 
     <property name="principalRef" column="bw_principal_ref" type="string"
               index="bwidx_user_href" not-null="true" />
+              
+    <!-- This is no longer needed. Still here to let old data work -->
+    <property name="instanceOwner" type="true_false" >
+      <column name="instance_owner" index="bwidx_user_instance_owner" 
+              not-null="true"
+               />
+    </property>
 
     <property name="created" column="bw_created"
               type="timestamp"/>

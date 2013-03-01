@@ -64,6 +64,7 @@
         <privKeys>@KEYFILE-DIR@/privkeys</privKeys>
         <pubKeys>@KEYFILE-DIR@/pubkeys</pubKeys>
 
+        <!-- Make this fixed for the moment - jmx modifiable if desired
         <systemRoots classname="org.bedework.calfacade.configs.SystemRoots" >
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
@@ -74,6 +75,7 @@
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </systemRoots>
+         -->
         
         <synchWsdlUri>@synchWsdlURI@</synchWsdlUri>
         <synchManagerUri>@synchServiceManager@</synchManagerUri>
@@ -170,7 +172,6 @@
         <tzid>America/New_York</tzid>
         <systemid>demobedework@mysite.edu</systemid>
 
-        <!-- These become part of system roots -->
         <publicCalendarRoot>public</publicCalendarRoot>
         <userCalendarRoot>user</userCalendarRoot>
         <userDefaultCalendar>calendar</userDefaultCalendar>
