@@ -965,7 +965,6 @@ do
       access="yes"
       bwxml="yes"
       rpiutil="yes"
-      davutil="yes"
       webdav="yes"
       pkgdefault=
       shift

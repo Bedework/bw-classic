@@ -352,7 +352,6 @@ GOTO branch
   SET access="yes"
   SET bwxml="yes"
   SET rpiutil="yes"
-  SET davutil="yes"
   SET webdav="yes"
   SET pkgdefault=
   SHIFT
