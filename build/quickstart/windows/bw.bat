@@ -277,7 +277,6 @@ GOTO branch
   SET bwannotations="yes"
   SET bwxml="yes"
   SET caldav="yes"
-  SET davutil="yes"
   SET rpiutil="yes"
   SET webdav="yes"
   SET pkgdefault=
