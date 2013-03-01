@@ -1138,8 +1138,6 @@ do
       webdav="yes"
 
       access="yes"
-      bwxml="yes"
-      davutil="yes"
       rpiutil="yes"
       pkgdefault=
       shift
