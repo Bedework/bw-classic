@@ -83,6 +83,11 @@
               libcache="${org.bedework.libcache.dir}"
               name="bw-chgnote" version="${org.bedework.calcore.version}" 
               projecthome="${project.home}/../bwcalcore" />
+      
+      <getJar lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-mail" version="${org.bedework.calcore.version}" 
+              projecthome="${project.home}/../bwcalcore" />
 
       <!-- ================ Bedework calendar api jars ===================== -->
       
@@ -95,11 +100,6 @@
               libcache="${org.bedework.libcache.dir}"
               name="bw-calfacade" version="${org.bedework.calfacade.version}" 
               projecthome="${project.home}/../bwcalFacade" />
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-misc" version="${org.bedework.misc.version}" 
-              projecthome="${project.home}/../bwmisc" />
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"

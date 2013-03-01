@@ -54,7 +54,6 @@
     <bedeworkIcalendarVersion>${defaultedVersion}</bedeworkIcalendarVersion>
     <bedeworkIndexerVersion>${defaultedVersion}</bedeworkIndexerVersion>
     <bedeworkInterfacesVersion>${defaultedVersion}</bedeworkInterfacesVersion>
-    <bedeworkMiscVersion>${defaultedVersion}</bedeworkMiscVersion>
     <bedeworkMonitorVersion>${defaultedVersion}</bedeworkMonitorVersion>
     <bedeworkRpiutilVersion>${defaultedVersion}</bedeworkRpiutilVersion>
     <bedeworkSelfregVersion>${defaultedVersion}</bedeworkSelfregVersion>

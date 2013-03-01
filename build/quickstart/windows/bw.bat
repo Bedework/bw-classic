@@ -47,7 +47,6 @@ SET "updateProjects=%updateProjects% bwcalFacade"
 SET "updateProjects=%updateProjects% bwdeployutil"
 SET "updateProjects=%updateProjects% bwical"
 SET "updateProjects=%updateProjects% bwinterfaces"
-SET "updateProjects=%updateProjects% bwmisc"
 SET "updateProjects=%updateProjects% bwsysevents"
 SET "updateProjects=%updateProjects% bwtzsvr"
 SET "updateProjects=%updateProjects% bwwebapps"
@@ -75,7 +74,6 @@ SET bwcalfacade=
 SET bwdeployutil=
 SET bwicalendar=
 SET bwinterfaces=
-SET bwmisc=
 SET bwsysevents=
 SET bwtools=
 SET bwwebapps=
@@ -262,7 +260,6 @@ GOTO branch
   SET bwcalfacade="yes"
   SET bwicalendar="yes"
   SET bwinterfaces="yes"
-  SET bwmisc="yes"
   SET bwsysevents="yes"
   SET bwxml="yes"
   SET caldav="yes"
@@ -308,17 +305,6 @@ GOTO branch
   SET davutil="yes"
   SET rpiutil="yes"
   SET webdav="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-  
-:bwmisc
-  SET bwmisc="yes"
-  
-  SET bwannotations="yes"
-  SET bwcalfacade="yes"
-  SET bwicalendar="yes"
-  SET davutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -419,7 +405,6 @@ GOTO branch
   SET bwcalfacade="yes"
   SET bwicalendar="yes"
   SET bwinterfaces="yes"
-  SET bwmisc="yes"
   SET bwsysevents="yes"
   SET indexer="yes"
   SET rpiutil="yes"
@@ -445,7 +430,6 @@ GOTO branch
   SET bwcalfacade="yes"
   SET bwicalendar="yes"
   SET bwinterfaces="yes"
-  SET bwmisc="yes"
   SET bwsysevents="yes"
   SET rpiutil="yes"
   SET pkgdefault=
@@ -579,7 +563,6 @@ IF NOT "%pkgdefault%" == "yes" GOTO notdefault
   SET bwcalfacade="yes"
   SET bwicalendar="yes"
   SET bwinterfaces="yes"
-  SET bwmisc="yes"
   SET bwsysevents="yes"
   SET bwwebapps="yes"
   SET bwxml="yes"
@@ -663,7 +646,6 @@ GOTO doneQB
   IF NOT "%bwinterfaces%empty" == "empty" GOTO cdBwinterfaces
   IF NOT "%bwsysevents%empty" == "empty" GOTO cdBwsysevents
   IF NOT "%bwicalendar%empty" == "empty" GOTO cdBwicalendar
-  IF NOT "%bwmisc%empty" == "empty" GOTO cdBwmisc
   IF NOT "%bwwebapps%empty" == "empty" GOTO cdBwwebapps
   IF NOT "%bwcaldav%empty" == "empty" GOTO cdBwcaldav
   IF NOT "%bwcalcore%empty" == "empty" GOTO cdBwcalcore
@@ -787,11 +769,6 @@ GOTO:EOF
 :cdBwinterfaces
   cd %QUICKSTART_HOME%\bwinterfaces
   SET bwinterfaces=
-  GOTO doant
-    
-:cdBwmisc
-  cd %QUICKSTART_HOME%\bwmisc
-  SET bwmisc=
   GOTO doant
     
 :cdBwsysevents
@@ -937,7 +914,6 @@ IF "%1" == "-bwcalcore" GOTO bwcalcore
 IF "%1" == "-bwcalfacade" GOTO bwcalfacade 
 IF "%1" == "-bwicalendar" GOTO bwicalendar 
 IF "%1" == "-bwinterfaces" GOTO bwinterfaces 
-IF "%1" == "-bwmisc" GOTO bwmisc 
 IF "%1" == "-bwsysevents" GOTO bwsysevents 
 IF "%1" == "-bwtools" GOTO bwtools 
 IF "%1" == "-bwwebapps" GOTO bwwebapps 
@@ -1009,7 +985,6 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO      -bwcalfacade  Target is for the bedework api interface classes
   ECHO      -bwicalendar  Target is for the bedework icalendar classes
   ECHO      -bwinterfaces Target is for the bedework service and api interfaces
-  ECHO      -bwmisc       Target is for misc classes
   ECHO      -bwsysevents  Target is for the system JMS event classes
   ECHO      -bwwebapps    Target is for the bedework web ui classes
   ECHO      -bwxml        Target is for the Bedework XML schemas build

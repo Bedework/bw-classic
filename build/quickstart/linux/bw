@@ -32,7 +32,6 @@ updateProjects="$updateProjects  bwcalFacade"
 updateProjects="$updateProjects  bwdeployutil"
 updateProjects="$updateProjects  bwical"
 updateProjects="$updateProjects  bwinterfaces"
-updateProjects="$updateProjects  bwmisc"
 updateProjects="$updateProjects  bwsysevents"
 updateProjects="$updateProjects  bwtzsvr"
 updateProjects="$updateProjects  bwwebapps"
@@ -62,7 +61,6 @@ bwcalfacade=
 bwdeployutil=
 bwicalendar=
 bwinterfaces=
-bwmisc=
 bwsysevents=
 bwtools=
 bwwebapps=
@@ -174,7 +172,6 @@ usage() {
   echo "     -bwcalfacade  Target is for the bedework api interface classes"
   echo "     -bwicalendar  Target is for the bedework icalendar classes"
   echo "     -bwinterfaces Target is for the bedework service and api interfaces"
-  echo "     -bwmisc       Target is for misc classes"
   echo "     -bwsysevents  Target is for the system JMS event classes"
   echo "     -bwwebapps    Target is for the bedework web ui classes"
   echo "     -bwxml        Target is for the Bedework XML schemas build"
@@ -411,12 +408,6 @@ setDirectory() {
 	if [ "$bwicalendar" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwical
       bwicalendar=
-	  return
-	fi
-
-	if [ "$bwmisc" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwmisc
-      bwmisc=
 	  return
 	fi
 	
@@ -864,7 +855,6 @@ do
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
-#      bwmisc="yes"
       bwsysevents="yes"
       bwxml="yes"
       caldav="yes"
@@ -882,7 +872,6 @@ do
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
-      bwmisc="yes"
       bwsysevents="yes"
       bwxml="yes"
       caldav="yes"
@@ -927,16 +916,6 @@ do
       rpiutil="yes"
       webdav="yes"
       
-      pkgdefault=
-      shift
-      ;;
-    -bwmisc)
-      bwmisc="yes"
-      
-      bwannotations="yes"  
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      davutil="yes"
       pkgdefault=
       shift
       ;;
@@ -1050,7 +1029,6 @@ do
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
-      bwmisc="yes"
       bwsysevents="yes"
       indexer="yes"
       rpiutil="yes"
@@ -1088,7 +1066,6 @@ do
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
-      bwmisc="yes"
       bwsysevents="yes"
       rpiutil="yes"
       pkgdefault=
@@ -1188,7 +1165,6 @@ if [ "$pkgdefault" = "yes" ] ; then
   bwcalfacade="yes"
   bwicalendar="yes"
   bwinterfaces="yes"
-  bwmisc="yes"
   bwsysevents="yes"
   bwwebapps="yes"
   bwxml="yes"
