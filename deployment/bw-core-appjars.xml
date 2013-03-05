@@ -116,13 +116,6 @@
               name="bw-sysevents" version="${org.bedework.sysevents.version}" 
               projecthome="${project.home}/../bwsysevents" />
 
-      <!-- ===================== Bedework dav jars ========================= -->
-      
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="bw-davio" version="${org.bedework.davutil.version}" 
-              projecthome="${project.home}/../davutil" />
-
       <!-- =================== Bedework indexer jars ======================= -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"

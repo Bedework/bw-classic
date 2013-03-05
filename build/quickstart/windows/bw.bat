@@ -53,7 +53,6 @@ SET "updateProjects=%updateProjects% bwwebapps"
 SET "updateProjects=%updateProjects% bwxml"
 SET "updateProjects=%updateProjects% cachedfeeder"
 SET "updateProjects=%updateProjects% caldav"
-SET "updateProjects=%updateProjects% davutil"
 SET "updateProjects=%updateProjects% dumprestore"
 SET "updateProjects=%updateProjects% eventreg"
 SET "updateProjects=%updateProjects% indexer"
@@ -83,7 +82,6 @@ SET caldavTest=
 SET carddav=
 SET catsvr=
 SET client=
-SET davutil=
 SET dumprestore=
 SET eventreg=
 SET indexer=
@@ -263,7 +261,6 @@ GOTO branch
   SET bwsysevents="yes"
   SET bwxml="yes"
   SET caldav="yes"
-  SET davutil="yes"
   SET rpiutil="yes"
   SET webdav="yes"
   SET pkgdefault=
@@ -301,7 +298,6 @@ GOTO branch
   SET bwcalfacade="yes"
   SET bwxml="yes"
   SET caldav="yes"
-  SET davutil="yes"
   SET rpiutil="yes"
   SET webdav="yes"
   SET pkgdefault=
@@ -371,7 +367,6 @@ GOTO branch
 
   SET access="yes"
   SET bwxml="yes"
-  SET davutil="yes"
   SET rpiutil="yes"
   SET webdav="yes"
   SET pkgdefault=
@@ -380,15 +375,6 @@ GOTO branch
   
 :client
   SET client="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-  
-:davutil
-  SET davutil="yes"
-
-  SET bwxml="yes"
-  SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -561,7 +547,6 @@ IF NOT "%pkgdefault%" == "yes" GOTO notdefault
   SET bwwebapps="yes"
   SET bwxml="yes"
   SET caldav="yes"
-  SET davutil="yes"
   SET dumprestore="yes"
   SET indexer="yes"
   SET rpiutil="yes"
@@ -629,7 +614,6 @@ GOTO doneQB
   IF NOT "%rpiutil%empty" == "empty" GOTO cdRpiutil
   IF NOT "%access%empty" == "empty"  GOTO cdAccess
   IF NOT "%bedenote%empty" == "empty"  GOTO cdBedenote
-  IF NOT "%davutil%empty" == "empty"  GOTO cdDavutil
   IF NOT "%eventreg%empty" == "empty"  GOTO cdEventreg
   IF NOT "%webdav%empty" == "empty"  GOTO cdWebdav
   IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
@@ -805,11 +789,6 @@ GOTO:EOF
   SET client=
   GOTO doant
     
-:cdDavutil
-  cd %QUICKSTART_HOME%\davutil
-  SET davutil=
-  GOTO doant
-    
 :cdDeploytil
   cd %QUICKSTART_HOME%\deploytil
   SET deploytil=
@@ -916,7 +895,6 @@ IF "%1" == "-caldav" GOTO caldav
 IF "%1" == "-caldavTest" GOTO caldavTest
 IF "%1" == "-carddav" GOTO carddav 
 IF "%1" == "-client" GOTO client
-IF "%1" == "-davutil" GOTO davutil
 IF "%1" == "-deployutil" GOTO deployutil
 IF "%1" == "-dumprestore" GOTO dumprestore
 IF "%1" == "-eventreg" GOTO eventreg
@@ -986,7 +964,6 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO      -caldav       Target is for the generic CalDAV server
   ECHO      -carddav      Target is for the CardDAV build
   ECHO      -carddav deploy-addrbook    To deploy the Javascript Addressbook client.
-  ECHO      -davutil      Target is for the Bedework dav util classes
   ECHO      -dumprestore  Target is for the Bedework dump/restore service
   ECHO      -eventreg     Target is for the Bedework event registration service
   ECHO      -indexer      Target is for the Bedework indexer service

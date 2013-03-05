@@ -38,7 +38,6 @@ updateProjects="$updateProjects  bwwebapps"
 updateProjects="$updateProjects  bwxml"
 updateProjects="$updateProjects  cachedfeeder"
 updateProjects="$updateProjects  caldav"
-updateProjects="$updateProjects  davutil"
 updateProjects="$updateProjects  dumprestore"
 updateProjects="$updateProjects  eventreg"
 # updateProjects="$updateProjects  geronimo-hib"
@@ -70,7 +69,6 @@ caldavTest=
 carddav=
 catsvr=
 client=
-davutil=
 dumprestore=
 eventreg=
 exchgGateway=
@@ -179,7 +177,6 @@ usage() {
   echo "     -caldav       Target is for the generic CalDAV server"
   echo "     -carddav      Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
-  echo "     -davutil      Target is for the Bedework dav util classes"
   echo "     -dumprestore  Target is for the Bedework dump/restore service"
   echo "     -eventreg     Target is for the event registration service build"
   echo "     -genkeys      Target is for the genkeys module build"
@@ -336,12 +333,6 @@ setDirectory() {
 	if [ "$access" != "" ] ; then
 	  cd $QUICKSTART_HOME/access
       access=
-	  return
-	fi
-	
-	if [ "$davutil" != "" ] ; then
-	  cd $QUICKSTART_HOME/davutil
-      davutil=
 	  return
 	fi
 	
@@ -874,7 +865,6 @@ do
       bwsysevents="yes"
       bwxml="yes"
       caldav="yes"
-      davutil="yes"
       rpiutil="yes"
       webdav="yes"
       pkgdefault=
@@ -910,7 +900,6 @@ do
       bwcalfacade="yes"
       bwxml="yes"
       caldav="yes"
-      davutil="yes"
       rpiutil="yes"
       webdav="yes"
       
@@ -981,7 +970,6 @@ do
 
       access="yes"
       bwxml="yes"
-      davutil="yes"
       rpiutil="yes"
       webdav="yes"
       pkgdefault=
@@ -999,14 +987,6 @@ do
       ;;
     -client)
       client="yes"
-      pkgdefault=
-      shift
-      ;;
-    -davutil)
-      davutil="yes"
-
-      bwxml="yes"
-      rpiutil="yes"
       pkgdefault=
       shift
       ;;
@@ -1089,7 +1069,6 @@ do
       
 #      access="yes"
       bwxml="yes"
-#      davutil="yes"
 #      rpiutil="yes"
       pkgdefault=
       shift
@@ -1162,7 +1141,6 @@ if [ "$pkgdefault" = "yes" ] ; then
   bwwebapps="yes"
   bwxml="yes"
   caldav="yes"
-  davutil="yes"
   dumprestore="yes"
   indexer="yes"
   rpiutil="yes"
