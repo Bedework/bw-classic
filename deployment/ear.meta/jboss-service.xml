@@ -124,7 +124,7 @@
     <attribute name="LargeBufferPoolStats"/>    
   </mbean>
   
-  <mbean code="org.bedework.http.service.HttpOut"
+  <mbean code="edu.rpi.sss.util.http.service.HttpOut"
          name="org.bedework:service=BwHttpOut">
   </mbean>
 </server>

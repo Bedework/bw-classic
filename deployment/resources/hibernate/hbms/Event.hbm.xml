@@ -188,15 +188,13 @@
     <property name="completed" column="completed"
               type="string" length="16" />
 
-    <set name="categories" table="bw_event_categories"
+    <set name="categoryUids" table="bw_event_categories"
          sort="natural"
          lazy="false"
          cascade="lock" >
       <!-- <cache usage="read-write"/> -->
       <key column="eventid" foreign-key="bw_eventcat_eid_fk" />
-      <many-to-many class="org.bedework.calfacade.BwCategory"
-                    column="categoryid"
-                    foreign-key="bw_event_cat_fk" />
+      <element type="string" column="bw_uid" not-null="true"/>
     </set>
 
     <set name="alarms" table="bw_entity_alarms"

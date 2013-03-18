@@ -37,9 +37,7 @@
           <key foreign-key="bw_apcat_ap_fk1">
             <column name="userid" not-null="true" />
           </key>
-          <many-to-many class="org.bedework.calfacade.BwCategory"
-                        column="categoryid"
-                        foreign-key="bw_apcat_cat_fk1"/>
+          <element type="string" column="bw_uid" not-null="true"/>
         </set>
       </component>
 
@@ -105,12 +103,13 @@
        I added a bogus class and mapped it here.
     -->
 
+<!-- 
   <class name="org.bedework.calfacade.svc.prefs.BwAuthUserPrefsCategory"
          table="bw_authprefCategories">
     <id name="id" column="userid" unsaved-value="-1"/>
-    <property name="categoryid" column="categoryid" type="integer" not-null="true"/>
+    <property name="bw_uid" column="bw_uid" type="string" not-null="true"/>
   </class>
-
+ -->
   <class name="org.bedework.calfacade.svc.prefs.BwAuthUserPrefsLocation"
          table="bw_authprefLocations">
     <id name="id" column="userid" unsaved-value="-1"/>

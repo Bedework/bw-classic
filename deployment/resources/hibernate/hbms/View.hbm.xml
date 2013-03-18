@@ -27,7 +27,7 @@
           lazy="false" >
       <key column="viewid" foreign-key="bw_cal_vid_fk" />
       <list-index column="bw_path_positon"/>
-      <element type="string" column="bw_calpath" not-null="true"/>
+      <element type="string" column="bw_colpath" not-null="true"/>
     </list>
   </class>
 

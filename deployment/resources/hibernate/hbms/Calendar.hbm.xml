@@ -97,13 +97,11 @@
     <property name="remotePw" column="bwrpw" type="string"
               length="500" />
 
-    <set name="categories" table="bw_calendar_categories"
+    <set name="categoryUids" table="bw_calendar_categories"
          lazy="false">
       <cache usage="read-write"/>
       <key column="calendarid" foreign-key="bw_calcat_cid_fk" />
-      <many-to-many class="org.bedework.calfacade.BwCategory"
-                    column="categoryid"
-                    foreign-key="bw_cal_cat_fk" />
+      <element type="string" column="bw_uid" not-null="true"/>
     </set>
 
     <set name="properties" table="bw_calendar_properties"

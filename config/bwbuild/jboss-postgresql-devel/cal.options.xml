@@ -64,6 +64,7 @@
         <privKeys>@KEYFILE-DIR@/privkeys</privKeys>
         <pubKeys>@KEYFILE-DIR@/pubkeys</pubKeys>
 
+        <!-- Now in system config class
         <systemRoots classname="org.bedework.calfacade.configs.SystemRoots" >
           <principalRoot>/principals</principalRoot>
           <userPrincipalRoot>/principals/users</userPrincipalRoot>
@@ -74,6 +75,7 @@
           <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
           <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
         </systemRoots>
+         -->
         
         <synchWsdlUri>@synchWsdlURI@</synchWsdlUri>
         <synchManagerUri>@synchServiceManager@</synchManagerUri>
