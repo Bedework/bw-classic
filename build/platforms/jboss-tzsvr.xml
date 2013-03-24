@@ -18,5 +18,15 @@
               overwrite="yes" />
       </then>
     </if>
+    
+    <if>
+      <not>
+        <available file="${org.bedework.data.dir}/tzsvr/config.xml" />
+      </not>
+      <then>
+        <copy file="${org.bedework.config.home}/tzsvrConfig.xml"
+              tofile="${org.bedework.data.dir}/tzsvr/config.xml" />
+      </then>
+    </if>
   </target>
 </project>
