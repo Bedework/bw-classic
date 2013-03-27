@@ -2049,7 +2049,7 @@
     <xsl:param name="eventUrlPrefix"/>
     <xsl:param name="canEdit"/>
     
-    <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="eventTitle"/></xsl:call-template></xsl:variable>
+    <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="$eventTitle"/></xsl:call-template></xsl:variable>
     <div class="submitBox">
       <xsl:choose>
         <!-- xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)"-->
