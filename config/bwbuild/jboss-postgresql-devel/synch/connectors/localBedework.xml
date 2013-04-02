@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <synch-connector>
   <name>localBedework</name>
-  <className>org.bedework.synch.cnctrs.manager.SynchConnector</className>
+  <className>org.bedework.synch.cnctrs.bedework.BedeworkConnector</className>
               
   <readOnly type="java.lang.Boolean">false</readOnly>
 
