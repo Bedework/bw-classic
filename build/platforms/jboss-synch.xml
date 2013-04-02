@@ -8,7 +8,7 @@
 
 <project name="bedework.platformTermination" default="doPlatform" >
   <target name="doPlatform" >
-    <!-- If requested copy in the db configuration. -->
+    <!-- If requested copy in the db configuration.
 
     <if>
       <istrue value="${org.bedework.global.copy.bedeworksynchds.config}" />
@@ -16,6 +16,19 @@
         <copy file="${org.bedework.config.home}/bedework-synch-ds.xml"
               tofile="${org.bedework.appserver.deploy.dir}/bedework-synch-ds.xml"
               overwrite="yes" />
+      </then>
+    </if>
+     -->
+    <!-- Copy in the default configuration(s) if they appear to be missing -->
+    <if>
+      <not>
+        <available file="${org.bedework.data.dir}/synch/conf/" />
+      </not>
+      <then>
+        <copy todir="${org.bedework.data.dir}/synch/conf/" >
+          <fileset dir="${org.bedework.config.home}/synch/" />
+          <filterset refid="property.filters" />
+        </copy>
       </then>
     </if>
   </target>

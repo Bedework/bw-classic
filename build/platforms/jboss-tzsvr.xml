@@ -8,7 +8,7 @@
 
 <project name="bedework.platformTermination" default="doPlatform" >
   <target name="doPlatform" >
-    <!-- If requested copy in the db configuration. -->
+    <!-- If requested copy in the db configuration.
 
     <if>
       <istrue value="${org.bedework.global.copy.bedeworktzds.config}" />
@@ -18,7 +18,8 @@
               overwrite="yes" />
       </then>
     </if>
-    
+     -->
+    <!-- Copy in the default configuration(s) if they appear to be missing -->
     <if>
       <not>
         <available file="${org.bedework.data.dir}/tzsvr/config.xml" />
