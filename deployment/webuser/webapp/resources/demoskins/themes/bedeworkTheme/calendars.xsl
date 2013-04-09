@@ -930,7 +930,7 @@
 	          <th><xsl:copy-of select="$bwStr-CuCa-Remove"/></th>
 	        </tr>
 	        <xsl:for-each select="CSS:invite/CSS:user">
-	          <xsl:sort type="ascending" select="DAV:href"/>
+	          <xsl:sort order="ascending" select="DAV:href"/>
 	          <xsl:variable name="sharee" select="DAV:href"/>
 		        <tr>
 		          <td class="sharee">
