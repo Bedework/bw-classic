@@ -5,6 +5,9 @@
 # within the svn repository.
 #
 
+# Make this a par
+REPO_HOME=/home/douglm/bw-git
+
 ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
 ANT_HOME=`cd "$ANT_HOME" && pwd`
 
@@ -24,7 +27,6 @@ bw_loglevel=""
 updateProjects="access"
 updateProjects="$updateProjects  bedenote"
 updateProjects="$updateProjects  bedework"
-updateProjects="$updateProjects  bedework-carddav"
 updateProjects="$updateProjects  bwannotations"
 updateProjects="$updateProjects  bwcalcore"
 updateProjects="$updateProjects  bwcaldav"
@@ -33,19 +35,16 @@ updateProjects="$updateProjects  bwdeployutil"
 updateProjects="$updateProjects  bwical"
 updateProjects="$updateProjects  bwinterfaces"
 updateProjects="$updateProjects  bwsysevents"
-updateProjects="$updateProjects  bwtzsvr"
 updateProjects="$updateProjects  bwwebapps"
 updateProjects="$updateProjects  bwxml"
 updateProjects="$updateProjects  cachedfeeder"
 updateProjects="$updateProjects  caldav"
 updateProjects="$updateProjects  dumprestore"
 updateProjects="$updateProjects  eventreg"
-# updateProjects="$updateProjects  geronimo-hib"
 # updateProjects="$updateProjects  genkeys"
 updateProjects="$updateProjects  indexer"
 updateProjects="$updateProjects  rpiutil"
 updateProjects="$updateProjects  selfreg"
-updateProjects="$updateProjects  synch"
 updateProjects="$updateProjects  webdav"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
@@ -79,10 +78,20 @@ monitor=
 naming=
 rpiutil=
 selfreg=
-synch=
 testsuite=
 tzsvr=
 webdav=
+
+maven=
+
+# git projects
+bw_ws=
+bw_util=
+bw_access=
+bw_carddav=
+bw_synch=
+bw_tzsvr=
+bw_webdav=
 
 # Special targets - avoiding dependencies
 
@@ -323,6 +332,14 @@ setDirectory() {
       bwxml=
 	  return
 	fi
+
+	if [ "$bw_ws" != "" ] ; then
+      echo "Build ws"
+      cd $REPO_HOME/bw-ws
+      maven=yes
+      bw_ws=
+      return
+    fi
 	
 	if [ "$rpiutil" != "" ] ; then
 	  cd $QUICKSTART_HOME/rpiutil
@@ -330,9 +347,25 @@ setDirectory() {
 	  return
 	fi
 	
+	if [ "$bw_util" != "" ] ; then
+      echo "Build util"
+      cd $REPO_HOME/bw-util
+      maven=yes
+      bw_util=
+	  return
+	fi
+	
 	if [ "$access" != "" ] ; then
 	  cd $QUICKSTART_HOME/access
       access=
+	  return
+	fi
+	
+	if [ "$bw_access" != "" ] ; then
+      echo "Build access"
+      cd $REPO_HOME/bw-access
+      maven=yes
+      bw_access=
 	  return
 	fi
 	
@@ -347,6 +380,13 @@ setDirectory() {
       webdav=
 	  return
 	fi
+  
+  if [ "$bw_webdav" != "" ] ; then
+      cd $REPO_HOME/bw-webdav
+      maven=yes
+      bw_webdav=
+    return
+  fi
 	
 	if [ "$caldav" != "" ] ; then
 	  cd $QUICKSTART_HOME/caldav
@@ -365,6 +405,14 @@ setDirectory() {
       carddav=
 	  return
 	fi
+  
+  if [ "$bw_carddav" != "" ] ; then
+      echo "Build carddav"
+      cd $REPO_HOME/bw-carddav
+      maven=yes
+      bw_carddav=
+    return
+  fi
 
 	if [ "$bwannotations" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwannotations
@@ -474,11 +522,13 @@ setDirectory() {
 	  return
 	fi
 
-  if [ "$synch" != "" ] ; then
-    cd $QUICKSTART_HOME/synch
-      synch=
-    return
-  fi
+    if [ "$bw_synch" != "" ] ; then
+      echo "Build synch"
+      cd $REPO_HOME/bw-synch
+      maven=yes
+      bw_synch=
+      return
+    fi
 	
 	if [ "$testsuite" != "" ] ; then
 	  cd $QUICKSTART_HOME/testsuite
@@ -486,9 +536,11 @@ setDirectory() {
 	  return
 	fi
 	
-	if [ "$tzsvr" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwtzsvr
-      tzsvr=
+	if [ "$bw_tzsvr" != "" ] ; then
+      echo "Build tzsvr"
+      cd $REPO_HOME/bw-timezone-server
+      maven=yes
+      bw_tzsvr=
 	  return
 	fi
 	
@@ -795,31 +847,86 @@ do
       shift
       ;;
     deployActivemq)
-	  deployActivemq="yes"
+  	  deployActivemq="yes"
       pkgdefault=
       shift
       ;;
-  deployData)
-    deployData="yes"
+    deployData)
+      deployData="yes"
       pkgdefault=
       shift
       ;;
-  deploySolr)
-	  deploySolr="yes"
+    deploySolr)
+  	  deploySolr="yes"
       pkgdefault=
       shift
       ;;
-	dirstart)
-	  dirstart="yes"
+  	dirstart)
+  	  dirstart="yes"
       pkgdefault=
       shift
       ;;
-  saveData)
-    saveData="yes"
+    saveData)
+      saveData="yes"
       pkgdefault=
       shift
       ;;
-# ------------------------Projects
+# ------------------------GIT Projects
+    -bw_access)
+      bw_access="yes"
+      
+      bw_ws="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bw_ws)
+      bw_ws="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bw_util)
+      bw_util="yes"
+
+      bw_ws="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bw_webdav)
+      bw_webdav="yes"
+
+      bw_access="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -synch)
+      bw_synch="yes"
+      
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -tzsvr)
+      bw_tzsvr="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -carddav)
+      bw_carddav="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
+      pkgdefault=
+      shift
+      ;;
+# ------------------------SVN Projects
     -access)
       access="yes"
       
@@ -965,16 +1072,6 @@ do
       pkgdefault=
       shift
       ;;
-    -carddav)
-      carddav="yes"
-
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
     -catsvr)
       catsvr="yes"
 
@@ -1080,26 +1177,10 @@ do
       pkgdefault=
       shift
       ;;
-    -synch)
-      synch="yes"
-      
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      pkgdefault=
-      shift
-      ;;
     -testsuite)
       testsuite="yes"
       
       pkgdefault="yes"
-      shift
-      ;;
-    -tzsvr)
-      tzsvr="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      pkgdefault=
       shift
       ;;
     -webdav)
@@ -1122,6 +1203,7 @@ do
 done
 
 if [ "$pkgdefault" = "yes" ] ; then
+  echo "Build default bedework project"
   bedework="yes"
 
   access="yes"
@@ -1185,14 +1267,24 @@ javacmd="$javacmd $BWCONFIG"
 javacmd="$javacmd $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
 javacmd="$javacmd -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib"
 
+if [ "$1" != "" ] ; then
+  mvncmd="mvn -q -Dmaven.test.skip=true $1"
+else
+  mvncmd="mvn -q -Dmaven.test.skip=true install"
+fi
+
+#echo "mvncmd = $mvncmd"
+
 while true
 do
+  maven=
   setDirectory
   
   if [ "$specialTarget" != "" ] ; then
     $javacmd $specialTarget
+  elif [ "$maven" != "" ] ; then
+    $mvncmd
   else  
-#    echo $javacmd $*
     $javacmd $*
   fi
 done

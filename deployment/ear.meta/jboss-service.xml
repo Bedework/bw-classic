@@ -50,7 +50,6 @@
     <attribute name="Account">admin</attribute>
     <attribute name="SkipPaths">/public/unbrowsable:/public/aliases</attribute>
     -->
-    <attribute name="HostsConfigDir">${jboss.server.data.dir}/bedework/hosts</attribute>
 
     <!-- We need activemq -->    
     <depends>jboss.jca:service=ConnectionFactoryBinding,name=activemq/QueueConnectionFactory</depends>

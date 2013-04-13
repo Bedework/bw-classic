@@ -81,12 +81,14 @@ copyproject() {
   echo "copyproject $1 $2 from $4"
 
   echo "svn copy -m \"$3\" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2"
-#  svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2
+  svn copy -m "$3" -rHEAD $SVNREPOSITORY/$1/$4 $SVNREPOSITORY/$1/$2
 }
 
 SOURCE="trunk"
 
-if [ "${4}" = "from" ]
+
+echo "par 4 is \"$4\""
+if [ "$4" = "from" ]
 then
   checkbranchtag "$5"
   check "from-Name" "$6"
@@ -112,7 +114,7 @@ PROJECTS="$PROJECTS bwcalfacade"
 PROJECTS="$PROJECTS bwdeployutil"
 PROJECTS="$PROJECTS bwical"
 PROJECTS="$PROJECTS bwinterfaces"
-PROJECTS="$PROJECTS bwmisc"
+# PROJECTS="$PROJECTS bwmisc"
 PROJECTS="$PROJECTS bwsysevents"
 PROJECTS="$PROJECTS bwtools"
 PROJECTS="$PROJECTS bwtzsvr"
@@ -123,7 +125,7 @@ PROJECTS="$PROJECTS caldav"
 PROJECTS="$PROJECTS caldavTest"
 PROJECTS="$PROJECTS carddav"
 PROJECTS="$PROJECTS clientapp"
-PROJECTS="$PROJECTS davutil"
+# PROJECTS="$PROJECTS davutil"
 PROJECTS="$PROJECTS dumprestore"
 PROJECTS="$PROJECTS eventreg"
 #  exchgGateway - later
