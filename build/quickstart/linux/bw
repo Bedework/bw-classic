@@ -6,7 +6,7 @@
 #
 
 # Make this a par
-REPO_HOME=/home/douglm/bw-git
+#REPO_HOME=/home/douglm/bw-git
 
 ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
 ANT_HOME=`cd "$ANT_HOME" && pwd`
@@ -335,7 +335,7 @@ setDirectory() {
 
 	if [ "$bw_ws" != "" ] ; then
       echo "Build ws"
-      cd $REPO_HOME/bw-ws
+      cd $GIT_HOME/bw-ws
       maven=yes
       bw_ws=
       return
@@ -349,7 +349,7 @@ setDirectory() {
 	
 	if [ "$bw_util" != "" ] ; then
       echo "Build util"
-      cd $REPO_HOME/bw-util
+      cd $GIT_HOME/bw-util
       maven=yes
       bw_util=
 	  return
@@ -363,7 +363,7 @@ setDirectory() {
 	
 	if [ "$bw_access" != "" ] ; then
       echo "Build access"
-      cd $REPO_HOME/bw-access
+      cd $GIT_HOME/bw-access
       maven=yes
       bw_access=
 	  return
@@ -382,7 +382,7 @@ setDirectory() {
 	fi
   
   if [ "$bw_webdav" != "" ] ; then
-      cd $REPO_HOME/bw-webdav
+      cd $GIT_HOME/bw-webdav
       maven=yes
       bw_webdav=
     return
@@ -408,7 +408,7 @@ setDirectory() {
   
   if [ "$bw_carddav" != "" ] ; then
       echo "Build carddav"
-      cd $REPO_HOME/bw-carddav
+      cd $GIT_HOME/bw-carddav
       maven=yes
       bw_carddav=
     return
@@ -524,7 +524,7 @@ setDirectory() {
 
     if [ "$bw_synch" != "" ] ; then
       echo "Build synch"
-      cd $REPO_HOME/bw-synch
+      cd $GIT_HOME/bw-synch
       maven=yes
       bw_synch=
       return
@@ -538,7 +538,7 @@ setDirectory() {
 	
 	if [ "$bw_tzsvr" != "" ] ; then
       echo "Build tzsvr"
-      cd $REPO_HOME/bw-timezone-server
+      cd $GIT_HOME/bw-timezone-server
       maven=yes
       bw_tzsvr=
 	  return
@@ -782,6 +782,11 @@ do
     -bwchome)         # Define location of configs
       shift
       BWCONFIGS="$1"
+      shift
+      ;;
+    -githome)         # Define location of git repos
+      shift
+      GIT_HOME="$1"
       shift
       ;;
     -quickstart)
@@ -1256,6 +1261,8 @@ export BWCONFIG="-Dorg.bedework.build.properties=$BEDEWORK_CONFIG/build.properti
 
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
+
+export GIT_HOME
 
 javacmd="$JAVA_HOME/bin/java -classpath $CLASSPATH"
 # Build (of bwxml) blew up with permgen error

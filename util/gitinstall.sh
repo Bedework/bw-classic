@@ -17,5 +17,6 @@ install() {
 #install "bw-access"
 #install "bw-synch"
 #install "bw-timezone-server"
-install "bw-webdav"
-install "bw-carddav"
+#install "bw-webdav"
+#install "bw-carddav"
+install "bw-self-registration"

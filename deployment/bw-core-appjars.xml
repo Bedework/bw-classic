@@ -161,10 +161,17 @@
               name="rpiaccess" version="${org.bedework.access.version}" 
               projecthome="${project.home}/../access" />
 
+      <!--
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="rpiutil" version="${org.bedework.rpiutil.version}" 
               projecthome="${project.home}/../rpiutil" />
+              -->
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util" version="${org.bedework.bw-util.version}" 
+              projecthome="${org.bedework.git.project.home}/bw-util" />
       
       <!-- ======================= Ical4j jars ============================ -->
 

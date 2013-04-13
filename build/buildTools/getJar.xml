@@ -24,6 +24,7 @@
 <project name="getJar" basedir="." default="">
   <macrodef name="getJar">
     <attribute name="name"/>
+    <attribute name="mvn" default="no" />
     <attribute name="version" default="" />
     <attribute name="src" default="http://dev.bedework.org/downloads/lib"/>
     <attribute name="lib" default="${lib.dir}"/>
@@ -117,8 +118,17 @@
           </not>
         </or>
         <then>
-          <var name="org.bedework.getjar.project.jar"
-               value="${org.bedework.getjar.projecthome}/dist/${org.bedework.getjar.jarname}" />
+          <if>
+            <equals arg1="@{mvn}" arg2="no" />
+            <then>
+              <var name="org.bedework.getjar.project.jar"
+                 value="${org.bedework.getjar.projecthome}/dist/${org.bedework.getjar.jarname}" />
+            </then>
+            <else>
+              <var name="org.bedework.getjar.project.jar"
+                 value="${org.bedework.getjar.projecthome}/target/${org.bedework.getjar.jarname}" />
+            </else>
+          </if>
           <noisyMsg message="check ${org.bedework.getjar.project.jar}" />
         	
           <if>
