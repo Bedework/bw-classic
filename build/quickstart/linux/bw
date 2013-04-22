@@ -22,6 +22,8 @@ ant_logger=
 ant_loglevel="-quiet"
 bw_loglevel=""
 
+mvn_quiet="-q"
+
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
 updateProjects="access"
@@ -49,7 +51,6 @@ updateProjects="$updateProjects  webdav"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
-access=
 bedenote=
 bedework=
 bwannotations=
@@ -62,8 +63,6 @@ bwinterfaces=
 bwsysevents=
 bwtools=
 bwwebapps=
-bwxml=
-caldav=
 caldavTest=
 carddav=
 catsvr=
@@ -76,22 +75,21 @@ geronimoHib=
 indexer=
 monitor=
 naming=
-rpiutil=
 selfreg=
 testsuite=
 tzsvr=
-webdav=
 
 maven=
 
 # git projects
-bw_ws=
-bw_util=
 bw_access=
+bw_caldav=
 bw_carddav=
 bw_synch=
 bw_tzsvr=
+bw_util=
 bw_webdav=
+bw_ws=
 
 # Special targets - avoiding dependencies
 
@@ -172,7 +170,7 @@ usage() {
   echo "           the core, ancillary or experimental targets below:"
   echo ""
   echo "   Core sub-projects: required for a functioning system"
-  echo "     -access       Target is for the access classes"
+  echo "     -bw_access    Target is for the access classes"
   echo "     -bwann        Target is for the annotation classes"
   echo "     -bwcalcore    Target is for the bedework core api implementation"
   echo "     -bwcaldav     Target is for the bedework CalDAV implementation"
@@ -181,20 +179,20 @@ usage() {
   echo "     -bwinterfaces Target is for the bedework service and api interfaces"
   echo "     -bwsysevents  Target is for the system JMS event classes"
   echo "     -bwwebapps    Target is for the bedework web ui classes"
-  echo "     -bwxml        Target is for the Bedework XML schemas build"
+  echo "     -bw_xml       Target is for the Bedework XML schemas build"
   echo "                        (usually built automatically be dependent projects"
-  echo "     -caldav       Target is for the generic CalDAV server"
+  echo "     -bw_caldav    Target is for the generic CalDAV server"
   echo "     -carddav      Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
   echo "     -dumprestore  Target is for the Bedework dump/restore service"
   echo "     -eventreg     Target is for the event registration service build"
   echo "     -genkeys      Target is for the genkeys module build"
   echo "     -indexer      Target is for the Bedework indexer service"
-  echo "     -rpiutil      Target is for the Bedework util classes"
+  echo "     -bw_util      Target is for the Bedework util classes"
   echo "     -selfreg      Target is for the self registration build"
   echo "     -synch        Target is for the synch build"
   echo "     -tzsvr        Target is for the timezones server build"
-  echo "     -webdav       Target is for the WebDAV build"
+  echo "     -bw_webdav    Target is for the WebDAV build"
   echo "   Ancillary projects: not required"
   echo "     -bwtools      Target is for the Bedework tools build"
   echo "     -caldavTest   Target is for the CalDAV Test build"
@@ -327,12 +325,6 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$bwxml" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwxml
-      bwxml=
-	  return
-	fi
-
 	if [ "$bw_ws" != "" ] ; then
       echo "Build ws"
       cd $GIT_HOME/bw-ws
@@ -341,23 +333,11 @@ setDirectory() {
       return
     fi
 	
-	if [ "$rpiutil" != "" ] ; then
-	  cd $QUICKSTART_HOME/rpiutil
-      rpiutil=
-	  return
-	fi
-	
 	if [ "$bw_util" != "" ] ; then
       echo "Build util"
       cd $GIT_HOME/bw-util
       maven=yes
       bw_util=
-	  return
-	fi
-	
-	if [ "$access" != "" ] ; then
-	  cd $QUICKSTART_HOME/access
-      access=
 	  return
 	fi
 	
@@ -374,12 +354,6 @@ setDirectory() {
       eventreg=
 	  return
 	fi
-	
-	if [ "$webdav" != "" ] ; then
-	  cd $QUICKSTART_HOME/webdav
-      webdav=
-	  return
-	fi
   
   if [ "$bw_webdav" != "" ] ; then
       cd $GIT_HOME/bw-webdav
@@ -388,9 +362,10 @@ setDirectory() {
     return
   fi
 	
-	if [ "$caldav" != "" ] ; then
-	  cd $QUICKSTART_HOME/caldav
-      caldav=
+	if [ "$bw_caldav" != "" ] ; then
+      cd $GIT_HOME/bw-caldav
+      maven=yes
+      bw_caldav=
 	  return
 	fi
 	
@@ -763,14 +738,14 @@ fi
 #  on. That processing is done in dependency order. Of course this whole process
 #  fails if we ever build in a circular dependency - that's why it's important to
 #  do a clean build fairly regularly. So as an example
-#   -webdav)
-#      webdav="yes"
+#   -bw_webdav)
+#      bw_webdav="yes"
 #
-#      access="yes"
-#      bwxml="yes"
-#      rpiutil="yes"
+#      bw_access="yes"
+#      bw_ws="yes"
+#      bw_util="yes"
 #      pkgdefault=
-#  Turns on the webdav build and also access, bwxml and rpiutil because it depends
+#  Turns on the webdav build and also access, bw_xml and util because it depends
 #  on them.
 # ---------------------------------------------------------------------------- 
 
@@ -808,6 +783,14 @@ do
       shift
       ;;
 # ----------------------- Log level       
+    -mvn-quiet)
+      mvn_quiet="-q"
+      shift
+      ;;
+    -mvn-verbose)
+      mvn_quiet=""
+      shift
+      ;;
     -log-silent)
       ant_loglevel="-quiet"
       bw_loglevel="-Dorg.bedework.build.silent=true"
@@ -885,6 +868,16 @@ do
       pkgdefault=
       shift
       ;;
+    -bw_caldav)
+      bw_caldav="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
+      pkgdefault=
+      shift
+      ;;
     -bw_ws)
       bw_ws="yes"
       pkgdefault=
@@ -932,14 +925,6 @@ do
       shift
       ;;
 # ------------------------SVN Projects
-    -access)
-      access="yes"
-      
-      bwxml="yes"
-      rpiutil="yes"
-      pkgdefault=
-      shift
-      ;;
     -bedenote)
       bedenote="yes"
       pkgdefault=
@@ -953,44 +938,44 @@ do
     -bwcaldav)
       bwcaldav="yes"
       
-      access="yes"
+      bw_access="yes"
       bwannotations="yes"  
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
       bwsysevents="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_ws="yes"
+      bw_caldav="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
     -bwcalcore)
       bwcalcore="yes"
       
-      access="yes"
+      bw_access="yes"
       bwannotations="yes"  
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
       bwsysevents="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_ws="yes"
+      bw_caldav="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
     -bwcalfacade)
       bwcalfacade="yes"
     
-      access="yes"
+      bw_access="yes"
       bwannotations="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_ws="yes"
+      bw_caldav="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
@@ -999,7 +984,7 @@ do
     
       bwannotations="yes"
       bwcalfacade="yes"
-      bwxml="yes"
+      bw_ws="yes"
       
       pkgdefault=
       shift
@@ -1007,13 +992,13 @@ do
     -bwinterfaces)
       bwinterfaces="yes"
     
-      access="yes"
+      bw_access="yes"
       bwannotations="yes"
       bwcalfacade="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_ws="yes"
+      bw_caldav="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       
       pkgdefault=
       shift
@@ -1022,7 +1007,7 @@ do
       bwsysevents="yes"
       
       bwinterfaces="yes"
-      rpiutil="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1032,58 +1017,43 @@ do
       bwannotations="yes"  
       bwcalfacade="yes"
       bwinterfaces="yes"
-      bwxml="yes"
-      rpiutil="yes"
+      bw_ws="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
     -bwwebapps)
       bwwebapps="yes"
       
-      access="yes"
+      bw_access="yes"
       bwannotations="yes"  
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwxml)
-      bwxml="yes"
-      pkgdefault=
-      shift
-      ;;
-    -caldav)
-      caldav="yes"
-
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_ws="yes"
+      bw_caldav="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
     -caldavTest)
       caldavTest="yes"
 
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
     -catsvr)
       catsvr="yes"
 
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
@@ -1101,7 +1071,7 @@ do
     -dumprestore)
       dumprestore="yes"
       
-      access="yes"
+      bw_access="yes"
       bwannotations="yes"  
       bwcalcore="yes"   
       bwcalfacade="yes"
@@ -1109,15 +1079,15 @@ do
       bwinterfaces="yes"
       bwsysevents="yes"
       indexer="yes"
-      rpiutil="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
     -eventreg)
       eventreg="yes"
 
-      bwxml="yes"
-      rpiutil="yes"
+      bw_ws="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1125,7 +1095,7 @@ do
       genkeys="yes"
       
       bwinterfaces="yes"
-      rpiutil="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1138,14 +1108,14 @@ do
     -indexer)
       indexer="yes"
       
-      access="yes"
+      bw_access="yes"
       bwannotations="yes"  
       bwcalcore="yes"   
       bwcalfacade="yes"
       bwicalendar="yes"
       bwinterfaces="yes"
       bwsysevents="yes"
-      rpiutil="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1159,26 +1129,19 @@ do
       pkgdefault=
       shift
       ;;
-    -rpiutil)
-      rpiutil="yes"
-
-      bwxml="yes"
-      pkgdefault=
-      shift
-      ;;
     -exchgGateway)
       exchgGateway="yes"
       
-#      access="yes"
-      bwxml="yes"
-#      rpiutil="yes"
+#      bw_access="yes"
+      bw_ws="yes"
+#      bw_util="yes"
       pkgdefault=
       shift
       ;;
     -selfreg)
       selfreg="yes"
       
-      rpiutil="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1186,14 +1149,6 @@ do
       testsuite="yes"
       
       pkgdefault="yes"
-      shift
-      ;;
-    -webdav)
-      webdav="yes"
-
-      access="yes"
-      rpiutil="yes"
-      pkgdefault=
       shift
       ;;
     -*)
@@ -1211,7 +1166,7 @@ if [ "$pkgdefault" = "yes" ] ; then
   echo "Build default bedework project"
   bedework="yes"
 
-  access="yes"
+  bw_access="yes"
   bwannotations="yes"  
   bwcalcore="yes"   
   bwcaldav="yes"   
@@ -1220,12 +1175,12 @@ if [ "$pkgdefault" = "yes" ] ; then
   bwinterfaces="yes"
   bwsysevents="yes"
   bwwebapps="yes"
-  bwxml="yes"
-  caldav="yes"
+  bw_ws="yes"
+  bw_caldav="yes"
   dumprestore="yes"
   indexer="yes"
-  rpiutil="yes"
-  webdav="yes"
+  bw_util="yes"
+  bw_webdav="yes"
 fi
 
 if [ "$quickstart" != "" ] ; then
@@ -1274,13 +1229,13 @@ javacmd="$javacmd $BWCONFIG"
 javacmd="$javacmd $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
 javacmd="$javacmd -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib"
 
-if [ "$1" != "" ] ; then
-  mvncmd="mvn -q -Dmaven.test.skip=true $1"
-else
-  mvncmd="mvn -q -Dmaven.test.skip=true install"
-fi
+#if [ "$1" != "" ] ; then
+#  mvncmd="mvn $mvn_quiet -Dmaven.test.skip=true $1"
+#else
+  mvncmd="mvn $mvn_quiet -Dmaven.test.skip=true install"
+#fi
 
-#echo "mvncmd = $mvncmd"
+echo "mvncmd = $mvncmd"
 
 while true
 do

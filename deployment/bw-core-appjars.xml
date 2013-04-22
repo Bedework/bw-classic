@@ -16,40 +16,40 @@
               name="bw-caldav" version="${org.bedework.bwcaldav.version}"
               projecthome="${bw.project.home}/../bwcaldav" />
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-cdvutil" version="${org.bedework.caldav.version}"
-              projecthome="${bw.project.home}/../caldav" />
+              name="bw-caldav-util" version="${org.bedework.bw-caldav.version}"
+              projecthome="${org.bedework.git.project.home}/bw-caldav/bw-caldav-util" />
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-cdvserver" version="${org.bedework.caldav.version}"
-              projecthome="${bw.project.home}/../caldav" />
+              name="bw-caldav-server" version="${org.bedework.bw-caldav.version}"
+              projecthome="${org.bedework.git.project.home}/bw-caldav/bw-caldav-server" />
 
       <!-- ===================== Bedework schema jars ====================== -->
       
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-synchwsschema" version="${org.bedework.bwxml.version}"
-              projecthome="${project.home}/../bwxml" />
+              name="bw-ws-synchws" version="${org.bedework.bw-ws.version}"
+              projecthome="${org.bedework.git.project.home}/bw-ws/bw-ws-synchws" />
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-calws-soapschema" 
-              version="${org.bedework.bwxml.version}" 
-              projecthome="${project.home}/../bwxml" />
+              name="bw-ws-calws-soap" 
+              version="${org.bedework.bw-ws.version}" 
+              projecthome="${org.bedework.git.project.home}/bw-ws/bw-ws-calws-soap" />
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-caldavschema" 
-              version="${org.bedework.bwxml.version}" 
-              projecthome="${project.home}/../bwxml" />
+              name="bw-ws-caldav" 
+              version="${org.bedework.bw-ws.version}" 
+              projecthome="${org.bedework.git.project.home}/bw-ws/bw-ws-caldav" />
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-tzschema" version="${org.bedework.bwxml.version}"
-              projecthome="${project.home}/../bwxml" />
-
+              name="bw-ws-tzsvr" version="${org.bedework.bw-ws.version}"
+              projecthome="${org.bedework.git.project.home}/bw-ws/bw-ws-tzsvr" />
+      
       <!-- ================= Bedework dump/restore jars ==================== -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
@@ -129,18 +129,6 @@
               libcache="${org.bedework.libcache.dir}"
               name="bw-appcommon" version="${org.bedework.webapps.version}" 
               projecthome="${project.home}/../bwwebapps" />
-
-      <!-- Only for portlet - maybe
-        <getJar lib="${org.bedework.temp.extrajars.dir}"
-                libcache="${org.bedework.libcache.dir}"
-                name="bw-liferay" version="${org.bedework.webapps.version}" 
-                projecthome="${project.home}/projects/webapps" />
-                  
-        <getJar lib="${org.bedework.temp.extrajars.dir}"
-                libcache="${org.bedework.libcache.dir}"
-                name="bw-uportal" version="${org.bedework.webapps.version}" 
-                projecthome="${project.home}/projects/webapps" />
-                -->
       
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
@@ -149,24 +137,17 @@
 
       <!-- =================== Bedework webdav jars ======================== -->
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-webdavserver" version="${org.bedework.webdav.version}"
-              projecthome="${project.home}/../webdav" />
+              name="bw-webdav" version="${org.bedework.bw-webdav.version}"
+              projecthome="${org.bedework.git.project.home}/bw-webdav" />
 
       <!-- ==================== Bedework other jars ======================== -->
       
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="rpiaccess" version="${org.bedework.access.version}" 
-              projecthome="${project.home}/../access" />
-
-      <!--
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="rpiutil" version="${org.bedework.rpiutil.version}" 
-              projecthome="${project.home}/../rpiutil" />
-              -->
+              name="bw-access" version="${org.bedework.bw-access.version}" 
+              projecthome="${org.bedework.git.project.home}/bw-access" />
 
       <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
