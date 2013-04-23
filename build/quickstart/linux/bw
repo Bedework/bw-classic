@@ -38,16 +38,11 @@ updateProjects="$updateProjects  bwical"
 updateProjects="$updateProjects  bwinterfaces"
 updateProjects="$updateProjects  bwsysevents"
 updateProjects="$updateProjects  bwwebapps"
-updateProjects="$updateProjects  bwxml"
 updateProjects="$updateProjects  cachedfeeder"
-updateProjects="$updateProjects  caldav"
 updateProjects="$updateProjects  dumprestore"
 updateProjects="$updateProjects  eventreg"
 # updateProjects="$updateProjects  genkeys"
 updateProjects="$updateProjects  indexer"
-updateProjects="$updateProjects  rpiutil"
-updateProjects="$updateProjects  selfreg"
-updateProjects="$updateProjects  webdav"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
@@ -75,16 +70,22 @@ geronimoHib=
 indexer=
 monitor=
 naming=
-selfreg=
 testsuite=
-tzsvr=
 
 maven=
+
+# update from git
+#pdateProjects="$updateProjects  bw-ws"
+#updateProjects="$updateProjects  bw-caldav"
+#updateProjects="$updateProjects  bw-util"
+#updateProjects="$updateProjects  bw-self-registration"
+#updateProjects="$updateProjects  bw-webdav"
 
 # git projects
 bw_access=
 bw_caldav=
 bw_carddav=
+bw_selfreg=
 bw_synch=
 bw_tzsvr=
 bw_util=
@@ -356,6 +357,7 @@ setDirectory() {
 	fi
   
   if [ "$bw_webdav" != "" ] ; then
+      echo "Build webdav"
       cd $GIT_HOME/bw-webdav
       maven=yes
       bw_webdav=
@@ -363,6 +365,7 @@ setDirectory() {
   fi
 	
 	if [ "$bw_caldav" != "" ] ; then
+      echo "Build caldav"
       cd $GIT_HOME/bw-caldav
       maven=yes
       bw_caldav=
@@ -491,9 +494,11 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$selfreg" != "" ] ; then
-	  cd $QUICKSTART_HOME/selfreg
-      selfreg=
+	if [ "$bw_selfreg" != "" ] ; then
+      echo "Build selfreg"
+      cd $GIT_HOME/bw-self-registration
+      maven=yes
+      bw_selfreg=
 	  return
 	fi
 
@@ -1139,7 +1144,7 @@ do
       shift
       ;;
     -selfreg)
-      selfreg="yes"
+      bw_selfreg="yes"
       
       bw_util="yes"
       pkgdefault=
