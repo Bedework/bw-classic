@@ -946,6 +946,8 @@ x-props.
    <field name="start_present" type="boolean" stored="true" />
    <field name="end_type" type="string" stored="true" />
 
+   <field name="duration" type="string" stored="true" />
+   
    <field name="recurrenceid" type="string" stored="true" />
 
    <field name="comment" type="text_general" indexed="true" stored="true"/>
