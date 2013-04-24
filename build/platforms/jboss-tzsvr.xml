@@ -25,8 +25,10 @@
         <available file="${org.bedework.data.dir}/tzsvr/config.xml" />
       </not>
       <then>
-        <copy file="${org.bedework.config.home}/tzsvrConfig.xml"
-              tofile="${org.bedework.data.dir}/tzsvr/config.xml" />
+        <copy file="${org.bedework.tzsvr.configs}"
+              tofile="${org.bedework.data.dir}/tzsvr/config.xml" >
+          <filterset refid="property.filters" />
+        </copy>
       </then>
     </if>
   </target>

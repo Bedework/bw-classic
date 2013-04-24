@@ -21,3 +21,4 @@ install() {
 #install "bw-caldav"
 #install "bw-carddav"
 #install "bw-self-registration"
+install "bw-calendar-engine"
