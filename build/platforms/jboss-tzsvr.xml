@@ -8,6 +8,8 @@
 
 <project name="bedework.platformTermination" default="doPlatform" >
   <target name="doPlatform" >
+    <buildfilters/>
+    
     <!-- If requested copy in the db configuration.
 
     <if>
