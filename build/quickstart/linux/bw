@@ -26,48 +26,26 @@ mvn_quiet="-q"
 
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
-updateProjects="access"
-updateProjects="$updateProjects  bedenote"
-updateProjects="$updateProjects  bedework"
-updateProjects="$updateProjects  bwannotations"
-updateProjects="$updateProjects  bwcalcore"
-updateProjects="$updateProjects  bwcaldav"
-updateProjects="$updateProjects  bwcalFacade"
-updateProjects="$updateProjects  bwdeployutil"
-updateProjects="$updateProjects  bwical"
-updateProjects="$updateProjects  bwinterfaces"
-updateProjects="$updateProjects  bwsysevents"
-updateProjects="$updateProjects  bwwebapps"
-updateProjects="$updateProjects  cachedfeeder"
-updateProjects="$updateProjects  dumprestore"
-updateProjects="$updateProjects  eventreg"
+updateSvnProjects="bedenote"
+updateSvnProjects="$updateSvnProjects  bedework"
+updateSvnProjects="$updateSvnProjects  bwdeployutil"
+updateSvnProjects="$updateSvnProjects  bwwebapps"
+updateSvnProjects="$updateSvnProjects  cachedfeeder"
 # updateProjects="$updateProjects  genkeys"
-updateProjects="$updateProjects  indexer"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
 bedenote=
 bedework=
-bwannotations=
-bwcalcore=
-bwcaldav=
-bwcalfacade=
 bwdeployutil=
-bwicalendar=
-bwinterfaces=
-bwsysevents=
 bwtools=
 bwwebapps=
 caldavTest=
-carddav=
 catsvr=
 client=
-dumprestore=
-eventreg=
 exchgGateway=
 genkeys=
 geronimoHib=
-indexer=
 monitor=
 naming=
 testsuite=
@@ -75,15 +53,21 @@ testsuite=
 maven=
 
 # update from git
-#pdateProjects="$updateProjects  bw-ws"
+#updateProjects="bw-access"
 #updateProjects="$updateProjects  bw-caldav"
-#updateProjects="$updateProjects  bw-util"
+#updateProjects="$updateProjects  bw-carddav"
+#updateProjects="$updateProjects  bw-calendar-engine"
 #updateProjects="$updateProjects  bw-self-registration"
+#updateProjects="$updateProjects  bw-synch"
+#updateProjects="$updateProjects  bw-tzsvr"
+#updateProjects="$updateProjects  bw-util"
 #updateProjects="$updateProjects  bw-webdav"
+#updateProjects="$updateProjects  bw-ws"
 
 # git projects
 bw_access=
 bw_caldav=
+bw_calengine=
 bw_carddav=
 bw_selfreg=
 bw_synch=
@@ -173,22 +157,15 @@ usage() {
   echo "   Core sub-projects: required for a functioning system"
   echo "     -bw_access    Target is for the access classes"
   echo "     -bwann        Target is for the annotation classes"
-  echo "     -bwcalcore    Target is for the bedework core api implementation"
-  echo "     -bwcaldav     Target is for the bedework CalDAV implementation"
-  echo "     -bwcalfacade  Target is for the bedework api interface classes"
-  echo "     -bwicalendar  Target is for the bedework icalendar classes"
-  echo "     -bwinterfaces Target is for the bedework service and api interfaces"
-  echo "     -bwsysevents  Target is for the system JMS event classes"
+  echo "     -bw_calengine Target is for the bedework calendar engine"
   echo "     -bwwebapps    Target is for the bedework web ui classes"
   echo "     -bw_xml       Target is for the Bedework XML schemas build"
   echo "                        (usually built automatically be dependent projects"
   echo "     -bw_caldav    Target is for the generic CalDAV server"
   echo "     -carddav      Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
-  echo "     -dumprestore  Target is for the Bedework dump/restore service"
   echo "     -eventreg     Target is for the event registration service build"
   echo "     -genkeys      Target is for the genkeys module build"
-  echo "     -indexer      Target is for the Bedework indexer service"
   echo "     -bw_util      Target is for the Bedework util classes"
   echo "     -selfreg      Target is for the self registration build"
   echo "     -synch        Target is for the synch build"
@@ -233,9 +210,24 @@ errorUsage() {
 # Update the projects
 # ---------------------------------------------------------------------------- 
 actionUpdateall() {
-  for project in $updateProjects
+  for project in $updateSvnProjects
   do
     if [ ! -d "$project" ] ; then
+      echo "*********************************************************************"
+      echo "SVN Project $project is missing. Check it out from the repository"
+      echo "*********************************************************************"
+      exit 1
+    else
+      echo "*********************************************************************"
+      echo "Updating svn project $project"
+      echo "*********************************************************************"
+      svn update $project
+    fi
+  done
+  
+  for project in $updateProjects
+  do
+    if [ ! -d "cd $GIT_HOME/$project" ] ; then
       echo "*********************************************************************"
       echo "Project $project is missing. Check it out from the repository"
       echo "*********************************************************************"
@@ -244,7 +236,8 @@ actionUpdateall() {
       echo "*********************************************************************"
       echo "Updating project $project"
       echo "*********************************************************************"
-      svn update $project
+      cd $GIT_HOME/$project
+      git pull
     fi
   done
   
@@ -392,57 +385,23 @@ setDirectory() {
     return
   fi
 
-	if [ "$bwannotations" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwannotations
-      bwannotations=
-	  return
-	fi
-
-	if [ "$bwcalfacade" != "" ] ; then
-	  cd $QUICKSTART_HOME/$bwcalfacadeDir
-      bwcalfacade=
-	  return
-	fi
-
-	if [ "$bwinterfaces" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwinterfaces
-      bwinterfaces=
-	  return
-	fi
-
 	if [ "$genkeys" != "" ] ; then
 	  cd $QUICKSTART_HOME/genkeys
       genkeys=
 	  return
 	fi
-
-	if [ "$bwsysevents" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwsysevents
-      bwsysevents=
-	  return
-	fi
-
-	if [ "$bwicalendar" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwical
-      bwicalendar=
-	  return
-	fi
+  
+  if [ "$bw_calengine" != "" ] ; then
+      echo "Build calendar engine"
+      cd $GIT_HOME/bw-calendar-engine
+      maven=yes
+      bw_calengine=
+    return
+  fi
 	
 	if [ "$bwwebapps" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwwebapps
       bwwebapps=
-	  return
-	fi
-
-	if [ "$bwcaldav" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwcaldav
-      bwcaldav=
-	  return
-	fi
-
-	if [ "$bwcalcore" != "" ] ; then
-	  cd $QUICKSTART_HOME/$bwcalcoreDir
-      bwcalcore=
 	  return
 	fi
 	
@@ -455,18 +414,6 @@ setDirectory() {
 	if [ "$client" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwclient
       client=
-	  return
-	fi
-	
-	if [ "$indexer" != "" ] ; then
-	  cd $QUICKSTART_HOME/indexer
-      indexer=
-	  return
-	fi
-	
-	if [ "$dumprestore" != "" ] ; then
-	  cd $QUICKSTART_HOME/dumprestore
-      dumprestore=
 	  return
 	fi
 	
@@ -883,6 +830,17 @@ do
       pkgdefault=
       shift
       ;;
+    -bw_calengine)
+      bw_calengine="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
+      bw_caldav="yes"
+      pkgdefault=
+      shift
+      ;;
     -bw_ws)
       bw_ws="yes"
       pkgdefault=
@@ -940,82 +898,6 @@ do
       pkgdefault=
       shift
       ;;
-    -bwcaldav)
-      bwcaldav="yes"
-      
-      bw_access="yes"
-      bwannotations="yes"  
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      bw_ws="yes"
-      bw_caldav="yes"
-      bw_util="yes"
-      bw_webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwcalcore)
-      bwcalcore="yes"
-      
-      bw_access="yes"
-      bwannotations="yes"  
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      bw_ws="yes"
-      bw_caldav="yes"
-      bw_util="yes"
-      bw_webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwcalfacade)
-      bwcalfacade="yes"
-    
-      bw_access="yes"
-      bwannotations="yes"
-      bw_ws="yes"
-      bw_caldav="yes"
-      bw_util="yes"
-      bw_webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwicalendar)
-      bwicalendar="yes"
-    
-      bwannotations="yes"
-      bwcalfacade="yes"
-      bw_ws="yes"
-      
-      pkgdefault=
-      shift
-      ;;
-    -bwinterfaces)
-      bwinterfaces="yes"
-    
-      bw_access="yes"
-      bwannotations="yes"
-      bwcalfacade="yes"
-      bw_ws="yes"
-      bw_caldav="yes"
-      bw_util="yes"
-      bw_webdav="yes"
-      
-      pkgdefault=
-      shift
-      ;;
-    -bwsysevents)
-      bwsysevents="yes"
-      
-      bwinterfaces="yes"
-      bw_util="yes"
-      pkgdefault=
-      shift
-      ;;
     -bwtools)
       bwtools="yes"
       
@@ -1031,14 +913,11 @@ do
       bwwebapps="yes"
       
       bw_access="yes"
-      bwannotations="yes"  
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
       bw_ws="yes"
       bw_caldav="yes"
       bw_util="yes"
       bw_webdav="yes"
+      bw_calengine="yes"
       pkgdefault=
       shift
       ;;
@@ -1073,21 +952,6 @@ do
       pkgdefault=
       shift
       ;;
-    -dumprestore)
-      dumprestore="yes"
-      
-      bw_access="yes"
-      bwannotations="yes"  
-      bwcalcore="yes"   
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      indexer="yes"
-      bw_util="yes"
-      pkgdefault=
-      shift
-      ;;
     -eventreg)
       eventreg="yes"
 
@@ -1107,20 +971,6 @@ do
     -geronimohib)
       geronimoHib="yes"
 
-      pkgdefault=
-      shift
-      ;;
-    -indexer)
-      indexer="yes"
-      
-      bw_access="yes"
-      bwannotations="yes"  
-      bwcalcore="yes"   
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1171,21 +1021,13 @@ if [ "$pkgdefault" = "yes" ] ; then
   echo "Build default bedework project"
   bedework="yes"
 
-  bw_access="yes"
-  bwannotations="yes"  
-  bwcalcore="yes"   
-  bwcaldav="yes"   
-  bwcalfacade="yes"
-  bwicalendar="yes"
-  bwinterfaces="yes"
-  bwsysevents="yes"
-  bwwebapps="yes"
   bw_ws="yes"
-  bw_caldav="yes"
-  dumprestore="yes"
-  indexer="yes"
   bw_util="yes"
+  bw_access="yes"
   bw_webdav="yes"
+  bw_caldav="yes"
+  bw_calengine="yes"
+  bwwebapps="yes"
 fi
 
 if [ "$quickstart" != "" ] ; then

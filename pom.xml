@@ -36,32 +36,27 @@
   
   <properties>
     <defaultedVersion>3.9</defaultedVersion>
+    <gitDefaultedVersion>4.0.0-SNAPSHOT</gitDefaultedVersion>
     
     <bedeworkVersion>${defaultedVersion}</bedeworkVersion>
-    <bedeworkAnnotationsVersion>${defaultedVersion}</bedeworkAnnotationsVersion>
-    <bedeworkAccessVersion>${defaultedVersion}</bedeworkAccessVersion>
+    <bedeworkEngineVersion>${gitDefaultedVersion}</bedeworkEngineVersion>
+    <bedeworkAccessVersion>${gitDefaultedVersion}</bedeworkAccessVersion>
     <bedeworkBedenoteVersion>${defaultedVersion}</bedeworkBedenoteVersion>
-    <bedeworkBwcaldavVersion>${defaultedVersion}</bedeworkBwcaldavVersion>
-    <bedeworkBwxmlVersion>${defaultedVersion}</bedeworkBwxmlVersion>
-    <bedeworkCalcoreVersion>${defaultedVersion}</bedeworkCalcoreVersion>
-    <bedeworkCaldavVersion>${defaultedVersion}</bedeworkCaldavVersion>
-    <bedeworkCaldavTestVersion>${defaultedVersion}</bedeworkCaldavTestVersion>
-    <bedeworkCalfacadeVersion>${defaultedVersion}</bedeworkCalfacadeVersion>
-    <bedeworkDavutilVersion>${defaultedVersion}</bedeworkDavutilVersion>
-    <bedeworkDumpresVersion>${defaultedVersion}</bedeworkDumpresVersion>
+    <bedeworkBwcaldavVersion>${gitDefaultedVersion}</bedeworkBwcaldavVersion>
+    <bedeworkBwxmlVersion>${gitDefaultedVersion}</bedeworkBwxmlVersion>
+    <bedeworkCalcoreVersion>${gitDefaultedVersion}</bedeworkCalcoreVersion>
+    <bedeworkCaldavVersion>${gitDefaultedVersion}</bedeworkCaldavVersion>
+    <bedeworkCaldavTestVersion>${gitDefaultedVersion}</bedeworkCaldavTestVersion>
     <bedeworkEventregVersion>${defaultedVersion}</bedeworkEventregVersion>
     <bedeworkGenkeysVersion>${defaultedVersion}</bedeworkGenkeysVersion>
-    <bedeworkIcalendarVersion>${defaultedVersion}</bedeworkIcalendarVersion>
-    <bedeworkIndexerVersion>${defaultedVersion}</bedeworkIndexerVersion>
-    <bedeworkInterfacesVersion>${defaultedVersion}</bedeworkInterfacesVersion>
+    <bedeworkInterfacesVersion>${gitDefaultedVersion}</bedeworkInterfacesVersion>
     <bedeworkMonitorVersion>${defaultedVersion}</bedeworkMonitorVersion>
-    <bedeworkRpiutilVersion>${defaultedVersion}</bedeworkRpiutilVersion>
+    <bedeworkRpiutilVersion>${gitDefaultedVersion}</bedeworkRpiutilVersion>
     <bedeworkSelfregVersion>${defaultedVersion}</bedeworkSelfregVersion>
     <bedeworkSynchVersion>${defaultedVersion}</bedeworkSynchVersion>
-    <bedeworkSyseventsVersion>${defaultedVersion}</bedeworkSyseventsVersion>
     <bedeworkTestSuiteVersion>${defaultedVersion}</bedeworkTestSuiteVersion>
     <bedeworkWebappsVersion>${defaultedVersion}</bedeworkWebappsVersion>
-    <bedeworkWebdavVersion>${defaultedVersion}</bedeworkWebdavVersion>
+    <bedeworkWebdavVersion>${gitDefaultedVersion}</bedeworkWebdavVersion>
     <bedeworkXmlschemaVersion>${defaultedVersion}</bedeworkXmlschemaVersion>
   </properties>
   

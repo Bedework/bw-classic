@@ -143,18 +143,14 @@
             <authPw>secret</authPw>
           </user-ldap-group>
 
-          <testmail classname="org.bedework.mail.MailConfigProperties">
+          <mailer classname="org.bedework.mail.MailConfigProperties">
             <protocol>smtp</protocol>
             <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
             <serverIp>localhost</serverIp>
             <from>calendar.myplace.edu</from>
             <subject>Message from demo calendar server</subject>
             <disabled>false</disabled>
-          </testmail>
-
-          <dummymail classname="org.bedework.mail.MailConfigProperties">
-            <disabled>false</disabled>
-          </dummymail>
+          </mailer>
         </module>
       </global>
 
