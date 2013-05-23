@@ -16,7 +16,7 @@
          =============================================================== -->
 
     <copy todir="${app.dest.webinf}"
-          file="${app.sou.dir}/war/WEB-INF/jboss-web.xml">
+          file="${app.sou.dir}/webapp/WEB-INF/jboss-web.xml">
       <filterset refid="property.filters" />
     </copy>
 

@@ -18,7 +18,8 @@
     <property name="app.war.file"
               location="${dist.home}/${propval.app.war.name}.war" />
 
-    <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
+    <property name="app.sou.dir" 
+              location="${org.bedework.git.project.home}/${propval.app.gitsou}/src/main/" />
 
     <property name="org.bedework.use.dojo" value="true" />
 
@@ -26,12 +27,6 @@
 
     <!-- Flag as struts -->
     <property name="org.bedework.strutsapp" value="true" />
-
-    <!-- Properties that differ from the personal client -->
-    <!--
-    <property name="app.web.xml"
-              value="${app.sou.dir}/war/WEB-INF/web.xml" />
-              -->
 
     <property name="app.resources.dir"
               location="${this.dir}/resources" />

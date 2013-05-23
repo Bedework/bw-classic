@@ -14,7 +14,8 @@
   <target name="init" >
     <getExtraJars />
 
-    <property name="app.sou.dir" location="${org.bedework.deploy.app.sou}" />
+    <property name="app.sou.dir" 
+              location="${org.bedework.git.project.home}/${propval.app.gitsou}/src/main/" />
 
     <property name="app.resources.dir"
               location="${this.dir}/resources" />

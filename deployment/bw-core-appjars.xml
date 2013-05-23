@@ -115,15 +115,17 @@
 
       <!-- ================== Bedework webapps jars ======================== -->
       
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-appcommon" version="${org.bedework.webapps.version}" 
-              projecthome="${project.home}/../bwwebapps" />
+              name="bw-calendar-client-appcommon" 
+      	      version="${org.bedework.bw-calendar-client.version}" 
+              projecthome="${org.bedework.git.project.home}/bw-calendar-client/bw-calendar-client-appcommon" />
       
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-webcommon" version="${org.bedework.webapps.version}"
-              projecthome="${project.home}/../bwwebapps" />
+              name="bw-calendar-client-webcommon" 
+      	      version="${org.bedework.bw-calendar-client.version}"
+              projecthome="${org.bedework.git.project.home}/bw-calendar-client/bw-calendar-client-webcommon" />
 
       <!-- =================== Bedework webdav jars ======================== -->
 

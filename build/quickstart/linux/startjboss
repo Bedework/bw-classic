@@ -140,30 +140,35 @@ BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=$BW_DATA_DIR/
 # configurations. 
 # For the moment configurations are file based within the data directory.
 
+#         Calendar engine config and data dir
+BW_BWENGINE_DATAURI=$BW_DATA_DIR/bwengine
+BW_BWENGINE_DATAURI_DEF=-Dorg.bedework.bwengine.datauri=$BW_BWENGINE_DATAURI/
+BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_BWENGINE_DATAURI_DEF"
+
 #         carddav data dir
 BW_CARDDAV_DATAURI=$BW_DATA_DIR/carddavConfig
 BW_CARDDAV_DATAURI_DEF=-Dorg.bedework.carddav.datauri=$BW_CARDDAV_DATAURI/
-BW_DATA_DIR_DEF=$BW_DATA_DIR_DEF $BW_CARDDAV_DATAURI_DEF
+BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_CARDDAV_DATAURI_DEF"
 
 #         hosts data dir
 BW_HOSTS_DATAURI=$BW_DATA_DIR/hosts
 BW_HOSTS_DATAURI_DEF=-Dorg.bedework.hosts.datauri=$BW_HOSTS_DATAURI/
-BW_DATA_DIR_DEF=$BW_DATA_DIR_DEF $BW_HOSTS_DATAURI_DEF
+BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_HOSTS_DATAURI_DEF"
 
 #         selfreg data dir
 BW_SELFREG_DATAURI=$BW_DATA_DIR/selfreg
 BW_SELFREG_DATAURI_DEF=-Dorg.bedework.selfreg.datauri=$BW_SELFREG_DATAURI/
-BW_DATA_DIR_DEF=$BW_DATA_DIR_DEF $BW_SELFREG_DATAURI_DEF
+BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_SELFREG_DATAURI_DEF"
 
 #         synch data dir
 BW_SYNCH_DATAURI=$BW_DATA_DIR/synch
 BW_SYNCH_DATAURI_DEF=-Dorg.bedework.synch.datauri=$BW_SYNCH_DATAURI/
-BW_DATA_DIR_DEF=$BW_DATA_DIR_DEF $BW_SYNCH_DATAURI_DEF
+BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_SYNCH_DATAURI_DEF"
 
 #         tzsvr data dir
 BW_TZS_DATAURI=$BW_DATA_DIR/tzsvr
 BW_TZS_DATAURI_DEF=-Dorg.bedework.tzs.datauri=$BW_TZS_DATAURI/
-BW_DATA_DIR_DEF=$BW_DATA_DIR_DEF $BW_TZS_DATAURI_DEF
+BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_TZS_DATAURI_DEF"
 
 JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 # Don't set since java 1.4JAVA_OPTS="$JAVA_OPTS -XX:NewSize=$newsize -XX:MaxNewSize=$newsize"

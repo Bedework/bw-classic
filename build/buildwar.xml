@@ -93,7 +93,7 @@
 
     <!-- default web.xml -->
     <property name="propval.app.web.xml"
-              value="war/WEB-INF/web.xml" />
+              value="WEB-INF/web.xml" />
 
               <!--
     <property name="app.web.xml"
@@ -101,10 +101,7 @@
               -->
     <resolveFile name="app.web.xml"
                  file="${propval.app.web.xml}"
-                 base="${app.sou.dir}"/>
-
-    <property name="app.sou.properties"
-              location="${app.sou.dir}/war/WEB-INF/classes/servlet.properties" />
+                 base="${app.sou.dir}/webapp/"/>
   </target>
 
   <target name="build" depends="init">
@@ -125,7 +122,7 @@
     </if>
 
     <if>
-      <available file="${app.sou.dir}/war/docs" type="dir" />
+      <available file="${app.sou.dir}/webapp/docs" type="dir" />
       <then>
         <!-- Add modifed login pages -->
         <copy todir="${app.dest.docs}/login" failonerror="false" >
@@ -149,34 +146,16 @@
          =============================================================== -->
 
     <if>
-      <available file="${app.sou.dir}/war/docs" type="dir" />
+      <available file="${app.sou.dir}/webapp/docs" type="dir" />
       <then>
         <copy todir="${app.dest.docs}">
-          <fileset dir="${app.sou.dir}/war/docs" />
+          <fileset dir="${app.sou.dir}/webapp/docs" />
         </copy>
       </then>
     </if>
 
-    <!-- ===============================================================
-         Any property files we need for configuration, other than the
-         standard struts file, should be in the "${app.sou.dir}/properties
-         directory. They will be copied into the appropriate place for the
-         war and transformed by the above filter.
-         =============================================================== -->
-
-    <!-- Create the runtime options file -->
+    <!-- Create the runtime options directory -->
     <mkdir dir="${app.dest.properties}" />
-
-    <if>
-      <available file="${app.sou.dir}/properties" type="dir" />
-      <then>
-        <copy todir="${app.dest.properties}" overwrite="yes" >
-          <fileset dir="${app.sou.dir}/properties"
-                   includes="*.properties"/>
-          <filterset refid="property.filters" />
-        </copy>
-      </then>
-    </if>
 
     <copy tofile="${app.dest.properties}/options.xml"
           file="${org.bedework.config.options}" >
@@ -369,11 +348,11 @@ edu.rpi.sss.util.action.logprefix=@APP-NAME@
       
     <!-- Copy a dummy startup file into the war. -->
     <copy todir="${app.dest.war}">
-      <fileset dir="${app.sou.dir}/war/" includes="setup.do" />
+      <fileset dir="${app.sou.dir}/webapp/" includes="setup.do" />
     </copy>
 
     <copy todir="${app.dest.webinf}"
-          file="${app.sou.dir}/war/WEB-INF/struts-config.xml"/>
+          file="${app.sou.dir}/webapp/WEB-INF/struts-config.xml"/>
 
     <mkdir  dir="${app.dest.webinf}/tlds"/>
     <copy todir="${app.dest.webinf}/tlds" >
@@ -398,7 +377,7 @@ edu.rpi.sss.util.action.logprefix=@APP-NAME@
 
   <target name="spring-stuff">
     <copy todir="${app.dest.webinf}">
-      <fileset dir="${app.sou.dir}/war/WEB-INF">
+      <fileset dir="${app.sou.dir}/webapp/WEB-INF">
         <include name="*-servlet.xml"/>
       </fileset>
     </copy>

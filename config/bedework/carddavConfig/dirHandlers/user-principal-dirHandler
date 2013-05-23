@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<bwcarddav-dirhandler xmlns="http://bedework.org/ns/" type="org.bedework.carddav.util.LdapDirHandlerConfig">
+  <pathPrefix>/principals/users</pathPrefix>
+  <addressBook type="java.lang.Boolean">true</addressBook>
+  <cardPathPrefix>/public/people</cardPathPrefix>
+  <cardPathPrefixes>/public/people,loc_:/public/locations</cardPathPrefixes>
+  <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
+  <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
+  <securityAuthentication>simple</securityAuthentication>
+  <securityProtocol>NONE</securityProtocol>
+  <providerUrl>ldap://localhost:10389/</providerUrl>
+  <baseDn>ou=accounts,dc=bedework,dc=org</baseDn>
+  <queryLimit type="java.lang.Integer">1000</queryLimit>
+  <attrIds></attrIds>
+  <cardKind>individual</cardKind>
+  <addressbookObjectClass>organizationalUnit</addressbookObjectClass>
+  <addressbookIdAttr>ou</addressbookIdAttr>
+  <addressbookEntryObjectClass>inetOrgPerson</addressbookEntryObjectClass>
+  <addressbookEntryIdAttr>uid</addressbookEntryIdAttr>
+  <principalIdAttr>uid</principalIdAttr>
+  <authDn>uid=admin,ou=system</authDn>
+  <authPw>secret</authPw>
+  <confClass>org.bedework.carddav.util.LdapDirHandlerConfig</confClass>
+  <confBeanClass>org.bedework.carddav.server.jmx.LdapDirHandlerConf</confBeanClass>
+  <folderObjectClass>organizationalUnit</folderObjectClass>
+  <folderIdAttr>ou</folderIdAttr>
+</bwcarddav-dirhandler>

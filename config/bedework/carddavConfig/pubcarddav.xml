@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<bwcarddav xmlns="http://bedework.org/ns/" type="org.bedework.carddav.util.CardDAVContextConfig">
+  <addressBookHandlerPrefix>/public</addressBookHandlerPrefix>
+  <defaultAddressbook>addressbook</defaultAddressbook>
+  <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
+  <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
+  <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
+  <name>pubcarddav</name>
+  <principalRoot>/principals</principalRoot>
+  <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
+  <sysintfImpl>org.bedework.carddav.bwserver.BwSysIntfImpl</sysintfImpl>
+  <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
+  <userHomeRoot>/user</userHomeRoot>
+  <userPrincipalRoot>/principals/users</userPrincipalRoot>
+  <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
+  <webaddrPublicAddrbook>/principals/users</webaddrPublicAddrbook>
+  <webaddrServicePropertiesList>fn,note,org</webaddrServicePropertiesList>
+  <webaddrServiceURI>/find</webaddrServiceURI>
+</bwcarddav>

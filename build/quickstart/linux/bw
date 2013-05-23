@@ -29,7 +29,6 @@ mvn_quiet="-q"
 updateSvnProjects="bedenote"
 updateSvnProjects="$updateSvnProjects  bedework"
 updateSvnProjects="$updateSvnProjects  bwdeployutil"
-updateSvnProjects="$updateSvnProjects  bwwebapps"
 updateSvnProjects="$updateSvnProjects  cachedfeeder"
 # updateProjects="$updateProjects  genkeys"
 
@@ -39,7 +38,6 @@ bedenote=
 bedework=
 bwdeployutil=
 bwtools=
-bwwebapps=
 caldavTest=
 catsvr=
 client=
@@ -56,6 +54,7 @@ maven=
 #updateProjects="bw-access"
 #updateProjects="$updateProjects  bw-caldav"
 #updateProjects="$updateProjects  bw-carddav"
+#updateProjects="$updateProjects  bw-calendar-client"
 #updateProjects="$updateProjects  bw-calendar-engine"
 #updateProjects="$updateProjects  bw-self-registration"
 #updateProjects="$updateProjects  bw-synch"
@@ -73,6 +72,7 @@ bw_selfreg=
 bw_synch=
 bw_tzsvr=
 bw_util=
+bw_webclients=
 bw_webdav=
 bw_ws=
 
@@ -158,7 +158,7 @@ usage() {
   echo "     -bw_access    Target is for the access classes"
   echo "     -bwann        Target is for the annotation classes"
   echo "     -bw_calengine Target is for the bedework calendar engine"
-  echo "     -bwwebapps    Target is for the bedework web ui classes"
+  echo "     -bw_webclients Target is for the bedework web ui classes"
   echo "     -bw_xml       Target is for the Bedework XML schemas build"
   echo "                        (usually built automatically be dependent projects"
   echo "     -bw_caldav    Target is for the generic CalDAV server"
@@ -399,9 +399,11 @@ setDirectory() {
     return
   fi
 	
-	if [ "$bwwebapps" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwwebapps
-      bwwebapps=
+	if [ "$bw_webclients" != "" ] ; then
+      echo "Build calendar clients"
+      cd $GIT_HOME/bw-calendar-client
+      maven=yes
+      bw_webclients=
 	  return
 	fi
 	
@@ -909,8 +911,8 @@ do
       pkgdefault=
       shift
       ;;
-    -bwwebapps)
-      bwwebapps="yes"
+    -bw_webclients)
+      bw_webclients="yes"
       
       bw_access="yes"
       bw_ws="yes"
@@ -1027,7 +1029,7 @@ if [ "$pkgdefault" = "yes" ] ; then
   bw_webdav="yes"
   bw_caldav="yes"
   bw_calengine="yes"
-  bwwebapps="yes"
+  bw_webclients="yes"
 fi
 
 if [ "$quickstart" != "" ] ; then

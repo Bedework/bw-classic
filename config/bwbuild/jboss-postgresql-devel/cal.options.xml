@@ -15,10 +15,6 @@
          -->
         <systemName>bedework</systemName>
 
-        <!-- This is used to prefix administrative group names to distinguish
-             them from user group names. -->
-        <adminGroupsIdPrefix>agrp_</adminGroupsIdPrefix>
-
         <!-- Uncomment this and set the value to one of the supported portals
              Values that will result in something happening are
              liferay5
@@ -27,19 +23,20 @@
         <portalPlatform>your-portal</portalPlatform>
          -->
 
-        <!-- uris to cross link apps - of dubious usefulness -->
-        <publicAdminUri>/caladmin</publicAdminUri>
-        <publicCalendarUri>/cal</publicCalendarUri>
-        <personalCalendarUri>/ucal</personalCalendarUri>
-
         <!-- CardDAV server locations -->
-        <publicCardDAVHost>localhost</publicCardDAVHost>
-        <publicCardDAVPort>8080</publicCardDAVPort>
-        <publicCardDAVContext>/pubcarddav</publicCardDAVContext>
+        <unauthCardDAVInfo classname="org.bedework.calfacade.configs.CardDavInfo" >
+          <auth>false</auth>
+          <host>localhost</host>
+          <port>8080</port>
+          <contextPath>/pubcarddav</contextPath>
+        </unauthCardDAVInfo>
         
-        <personalCardDAVHost>localhost</personalCardDAVHost>
-        <personalCardDAVPort>8080</personalCardDAVPort>
-        <personalCardDAVContext>/ucarddav</personalCardDAVContext>
+        <authCardDAVInfo classname="org.bedework.calfacade.configs.CardDavInfo" >
+          <auth>true</auth>
+          <host>localhost</host>
+          <port>8080</port>
+          <contextPath>/ucarddav</contextPath>
+        </authCardDAVInfo>
            
         <!-- ===============================================================
                          Timezone server information
@@ -77,27 +74,34 @@
         </systemRoots>
          -->
         
-        <synchWsdlUri>@synchWsdlURI@</synchWsdlUri>
-        <synchManagerUri>@synchServiceManager@</synchManagerUri>
-        
-        <!-- This must match the connector id in the synch config. 
-             It identifies which connection we are using for communication
-             with the synch engine.
-          -->
-        <synchConnectorId>localBedework</synchConnectorId>
+        <synch classname="org.bedework.calfacade.configs.SynchConfig" >
+          <wsdlUri>@synchWsdlURI@</wsdlUri>
+          <managerUri>@synchServiceManager@</managerUri>
+         
+          <!-- This must match the connector id in the synch config.
+               It identifies which connection we are using for communication
+               with the synch engine.
+            -->
+          <connectorId>localBedework</connectorId>
+        </synch>
 
         <!-- To enable mapping of calendar addresses e.g. mailto:fred@example.org
              on to principals we need to either do a directory lookup or have
              some sort of pattern map. 
              
              Setting a caladdr prefix enables pattern mapping. By default 
-             calendar addresses are users -->
+             calendar addresses are users 
              
-          <!-- 
+            This would specify that any calendar user address starting with loc_
+            is to be treated as a location, e.g. we might get 
+                mailto:loc_vcc315@example.org
+              <caladdrPrefixes classname="org.bedework.calfacade.configs.CalAddrPrefixes">
+                <location>loc_</location>
+              </caladdrPrefixes>     
+             -->
+             
         <caladdrPrefixes classname="org.bedework.calfacade.configs.CalAddrPrefixes">
-          <location>loc_</location>
         </caladdrPrefixes>     
-           -->
         
         <!-- ===============================================================
                          Calendar system modules
@@ -118,8 +122,6 @@
             <!-- defaultDomain can be left unspecified for no default or a single
                    exactly specified domain  -->
             <defaultDomain>mysite.edu</defaultDomain>
-
-            <debug>true</debug>
           </dir-config>
 
           <!-- An example of how we might configure an ldap directory module. -->
@@ -135,7 +137,6 @@
             <userDnSuffix>,ou=accounts, dc=bedework, dc=org</userDnSuffix>
             <groupDnPrefix>cn=</groupDnPrefix>
             <groupDnSuffix>,ou=groups,dc=bedework, dc=org</groupDnSuffix>
-            <debug>true</debug>
 
             <securityAuthentication>simple</securityAuthentication>
             <securityProtocol>NONE</securityProtocol>
@@ -154,81 +155,16 @@
         </module>
       </global>
 
-      <!-- System parameters are used to INITIALISE the system settings during
-           restore or a first time build of the data. 
-           
-           Values in the database take precedence after that and need to be 
-           changed via the admin console on the system parameters page.
-       -->
-      <syspars classname="org.bedework.calfacade.BwSystem">
-        <!-- name must match the global system name              
-             DO NOT CHANGE
-          -->
-        <name>bedework</name>
-        <tzid>America/New_York</tzid>
-        <systemid>demobedework@mysite.edu</systemid>
-
-        <!-- These become part of system roots -->
-        <publicCalendarRoot>public</publicCalendarRoot>
-        <userCalendarRoot>user</userCalendarRoot>
-        <userDefaultCalendar>calendar</userDefaultCalendar>
-        <defaultTrashCalendar>Trash</defaultTrashCalendar>
-        <userInbox>Inbox</userInbox>
-        <userOutbox>Outbox</userOutbox>
-        <deletedCalendar>Deleted</deletedCalendar>
-        <busyCalendar>Busy</busyCalendar>
-
-        <defaultUserViewName>All</defaultUserViewName>
-        <defaultUserHour24>true</defaultUserHour24>
-
-        <publicUser>public-user</publicUser>
-
-        <httpConnectionsPerUser>10</httpConnectionsPerUser>
-        <httpConnectionsPerHost>50</httpConnectionsPerHost>
-        <httpConnections>200</httpConnections>
-
-        <!-- size limits -->
-        <maxPublicDescriptionLength>500</maxPublicDescriptionLength>
-        <maxUserDescriptionLength>5000</maxUserDescriptionLength>
-        <maxUserEntitySize>100000</maxUserEntitySize>
-        <defaultUserQuota>10000000</defaultUserQuota> <!-- 10 Meg OK? -->
-
-        <!-- Max number of instances per recurring event -->
-        <maxInstances>1000</maxInstances>
-
-        <!-- Max number of years per recurring event -->
-        <maxYears>50</maxYears>
-
-        <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
-        <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
-        <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
-        <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
-        <!--
-        <usergroupsClass>org.bedework.calsvc.directory.GroupsDbImpl</usergroupsClass>
-        -->
-
-        <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
-
-        <indexRoot>lucene/indexroot</indexRoot>
-        
-        <useSolr>true</useSolr>
-        <solrURL>http://localhost:8080/solr/</solrURL>
-        
-        <!-- Path to the core admin handlers. Configured into solr.xml -->
-        <solrCoreAdmin>admin/cores/</solrCoreAdmin>
-        
-        <!-- The name of the default index we use in solr for public indexing.
-             As we switch cores we use this as the base.  --> 
-        <solrDefaultCore>bwpublic</solrDefaultCore>
-
-        <rootUsers>admin</rootUsers>
-      </syspars>
-
       <app>
         <!-- ===============================================================
                           Admin web client CalAdmin
              =============================================================== -->
         <CalAdmin classname="org.bedework.calfacade.configs.AdminConfig">
+          <!-- uris to cross link apps -->
+          <publicAdminUri>/caladmin</publicAdminUri>
+          <publicCalendarUri>/cal</publicCalendarUri>
+          <personalCalendarUri>/ucal</personalCalendarUri>
+
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
@@ -270,6 +206,11 @@
                           Public event submission web client EventSubmit
              ================================================================== -->
         <EventSubmit classname="org.bedework.calfacade.configs.ClientConfig">
+          <!-- uris to cross link apps -->
+          <publicAdminUri>/caladmin</publicAdminUri>
+          <publicCalendarUri>/cal</publicCalendarUri>
+          <personalCalendarUri>/ucal</personalCalendarUri>
+
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
@@ -306,6 +247,11 @@
                           Public web client Events
              ================================================================== -->
         <Events classname="org.bedework.calfacade.configs.ClientConfig">
+          <!-- uris to cross link apps -->
+          <publicAdminUri>/caladmin</publicAdminUri>
+          <publicCalendarUri>/cal</publicCalendarUri>
+          <personalCalendarUri>/ucal</personalCalendarUri>
+
           <cachingOn>true</cachingOn>
           <cachePrefix>bwpubevents</cachePrefix>
 
@@ -344,6 +290,11 @@
                           Feed Service
              ================================================================== -->
         <Feeder classname="org.bedework.calfacade.configs.ClientConfig">
+          <!-- uris to cross link apps -->
+          <publicAdminUri>/caladmin</publicAdminUri>
+          <publicCalendarUri>/cal</publicCalendarUri>
+          <personalCalendarUri>/ucal</personalCalendarUri>
+
           <cachingOn>true</cachingOn>
           <cachePrefix>bwfeeder</cachePrefix>
 
@@ -382,6 +333,11 @@
                           Demo departmental Public web client SoEDept
              ================================================================== -->
         <SoEDept classname="org.bedework.calfacade.configs.ClientConfig">
+          <!-- uris to cross link apps -->
+          <publicAdminUri>/caladmin</publicAdminUri>
+          <publicCalendarUri>/cal</publicCalendarUri>
+          <personalCalendarUri>/ucal</personalCalendarUri>
+
           <cachingOn>true</cachingOn>
           <cachePrefix>bwpubevents</cachePrefix>
 
@@ -420,6 +376,11 @@
                           User web client UserCal
              ================================================================== -->
         <UserCal classname="org.bedework.calfacade.configs.ClientConfig">
+          <!-- uris to cross link apps -->
+          <publicAdminUri>/caladmin</publicAdminUri>
+          <publicCalendarUri>/cal</publicCalendarUri>
+          <personalCalendarUri>/ucal</personalCalendarUri>
+
           <autoCreateContacts>false</autoCreateContacts>
           <autoDeleteContacts>false</autoDeleteContacts>
           <autoCreateLocations>false</autoCreateLocations>
@@ -574,18 +535,6 @@
           <publicAdmin>false</publicAdmin>
           <guestMode>false</guestMode>
         </test>
-
-        <!-- ==================================================================
-                          Dump restore program dumpres
-             ================================================================== -->
-        <dumpres classname="org.bedework.calfacade.configs.DumpRestoreConfig">
-          <debug>true</debug>
-          <appType>dumprestore</appType>
-          <guestMode>true</guestMode>
-          <debugEntity>false</debugEntity>
-          <superGroupName>campusAdminGroups</superGroupName>
-          <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
-        </dumpres>
 
         <!-- ==================================================================
                           Crawler program
