@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<mailer xmlns="http://bedework.org/ns/" 
+        type="org.bedework.calfacade.mail.MailConfigPropertiesImpl">
+  <protocol>smtp</protocol>
+  <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
+  <serverIp>localhost</serverIp>
+  <from>calendar.myplace.edu</from>
+  <subject>Message from demo calendar server</subject>
+  <disabled>false</disabled>
+</mailer>

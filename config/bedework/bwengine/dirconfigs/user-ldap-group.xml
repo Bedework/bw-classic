@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<user-ldap-group xmlns="http://bedework.org/ns/" 
+                 type="org.bedework.calfacade.configs.LdapConfigProperties">
+  <name>user-ldap-group</name>
+  <mbeanClassName>org.bedework.calsvc.jmx.LdapDirConf</mbeanClassName>
+  <domains>mysite.edu</domains>
+  <defaultDomain>mysite.edu</defaultDomain>
+
+  <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
+  <providerUrl>ldap://localhost:10389</providerUrl>
+  <groupContextDn>ou=groups, dc=bedework, dc=org</groupContextDn>
+  <groupMemberAttr>member</groupMemberAttr>
+  <userDnPrefix>uid=</userDnPrefix>
+  <userDnSuffix>,ou=accounts, dc=bedework, dc=org</userDnSuffix>
+  <groupDnPrefix>cn=</groupDnPrefix>
+  <groupDnSuffix>,ou=groups,dc=bedework, dc=org</groupDnSuffix>
+
+  <securityAuthentication>simple</securityAuthentication>
+  <securityProtocol>NONE</securityProtocol>
+  <authDn>uid=admin,ou=system</authDn>
+  <authPw>secret</authPw>
+</user-ldap-group>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<synch xmlns="http://bedework.org/ns/" 
+        type="org.bedework.calfacade.configs.SynchConfig">
+  <wsdlUri>http://localhost:8080/wsdls/synch/wssvc.wsdl</wsdlUri>
+  <managerUri>http://localhost:8080/synch/manager</managerUri>
+ 
+  <!-- This must match the connector id in the synch config.
+       It identifies which connection we are using for communication
+       with the synch engine.
+    -->
+  <connectorId>localBedework</connectorId>
+</synch>  

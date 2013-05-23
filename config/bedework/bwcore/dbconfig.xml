@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch-confinfo xmlns="http://bedework.org/ns/" 
-                type="org.bedework.synch.conf.SynchConfig">
-  <synchlingPoolSize>20</synchlingPoolSize>
-  <synchlingPoolTimeout>5000</synchlingPoolTimeout>
-  <missingTargetRetries>10</missingTargetRetries>
-  <callbackURI>http://localhost:8080/synch/</callbackURI>
-  <privKeys>/home/douglm/bedeworkqs/quickstart/bedework/../jboss-5.1.0.GA/server/default/data/bedework/privkeys</privKeys>
-  <pubKeys>/home/douglm/bedeworkqs/quickstart/bedework/../jboss-5.1.0.GA/server/default/data/bedework/pubkeys</pubKeys>
-  <timezonesURI>http://localhost:8080/tzsvr</timezonesURI>
+<bwcore-dbconfig xmlns="http://bedework.org/ns/" type="org.bedework.calcore.hibernate.DbConfig">
   <hibernateProperties>
-    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect</hibernateProperty>
-    <hibernateProperty>hibernate.connection.datasource=java:/SynchDS</hibernateProperty>
+    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
+    <hibernateProperty>hibernate.connection.datasource=java:/CardDS</hibernateProperty>
     <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
     <hibernateProperty>hibernate.show_sql=false</hibernateProperty>
     <hibernateProperty>hibernate.format_sql=true</hibernateProperty>
@@ -23,5 +15,9 @@
     <hibernateProperty>hibernate.cache.use_second_level_cache=false</hibernateProperty>
     <hibernateProperty>hibernate.cache.use_query_cache=true</hibernateProperty>
     <hibernateProperty>hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider</hibernateProperty>
+
+    <hibernate.connection.pool_size>1</hibernate.connection.pool_size>
+    <hibernate.query.substitutions>true 'T', false 'F', yes 'Y', no 'N'</hibernate.query.substitutions>    
+ 
   </hibernateProperties>
-</synch-confinfo>
+</bwcore-dbconfig>

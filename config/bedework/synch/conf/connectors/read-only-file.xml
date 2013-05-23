@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch-connector xmlns="http://bedework.org/ns/" type="java.util.List">
+<synch-connector xmlns="http://bedework.org/ns/" 
+                 type="org.bedework.synch.cnctrs.file.FileConnectorConfig">
   <name>read-only-file</name>
-  <className>org.bedework.synch.cnctrs.file.FileConnector</className>
-  <readOnly type="java.lang.Boolean">true</readOnly>
-  <trustLastmod type="java.lang.Boolean">false</trustLastmod>
-  <minPoll type="java.lang.Integer">15</minPoll>
+  <connectorClassName>org.bedework.synch.cnctrs.file.FileConnector</connectorClassName>
+  <mbeanClassName>org.bedework.synch.cnctrs.file.FileConnConf</mbeanClassName>
+  <readOnly>true</readOnly>
+  <trustLastmod>false</trustLastmod>
+  <minPoll>15</minPoll>
 </synch-connector>

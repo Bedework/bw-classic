@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<system-properties xmlns="http://bedework.org/ns/" 
+                   type="org.bedework.calfacade.configs.SystemProperties">
+    <maxUserEntitySize>100000</maxUserEntitySize>
+
+    <!-- Max number of instances per recurring event -->
+    <maxInstances>1000</maxInstances>
+
+    <tzid>America/New_York</tzid>
+    <tzServeruri>localhost:8080</tzServeruri>
+    
+    <systemid>demobedework@mysite.edu</systemid>
+
+    <defaultChangesNotifications>true</defaultChangesNotifications>
+
+    <rootUsers>admin</rootUsers>
+
+    <defaultUserViewName>All</defaultUserViewName>
+    <defaultUserHour24>true</defaultUserHour24>
+
+    <maxPublicDescriptionLength>500</maxPublicDescriptionLength>
+    <maxUserDescriptionLength>5000</maxUserDescriptionLength>
+    <defaultUserQuota>100000000</defaultUserQuota>
+    
+    <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
+    
+    <timezonesByReference>false</timezonesByReference>
+
+    <!-- Max number of years per recurring event -->
+    <maxYears>50</maxYears>
+    
+    <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
+    <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
+    <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
+    <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
+    
+    <useSolr>true</useSolr>
+    <solrURL>http://localhost:8080/solr/</solrURL>
+    
+    <!-- Path to the core admin handlers. Configured into solr.xml -->
+    <solrCoreAdmin>admin/cores/</solrCoreAdmin>
+    
+    <!-- The name of the default index we use in solr for public indexing.
+         As we switch cores we use this as the base.  --> 
+    <solrDefaultCore>bwpublic</solrDefaultCore>
+    
+    <eventregUrl>http://localhost:8080/eventreg/</eventregUrl>
+
+    <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
+</system-properties>

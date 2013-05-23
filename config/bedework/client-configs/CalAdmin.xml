@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<client-config xmlns="http://bedework.org/ns/" 
+               type="org.bedework.webcommon.config.AdminConfigImpl">
+  <mbeanClassName>org.bedework.webcommon.config.AdminConf</mbeanClassName>
+  <publicAdminUri>/caladmin</publicAdminUri>
+  <publicCalendarUri>/cal</publicCalendarUri>
+  <personalCalendarUri>/ucal</personalCalendarUri>
+
+  <autoCreateContacts>false</autoCreateContacts>
+  <autoDeleteContacts>false</autoDeleteContacts>
+  <autoCreateLocations>false</autoCreateLocations>
+  <autoDeleteLocations>false</autoDeleteLocations>
+
+  <!-- if these are false only superuser can maintain public
+       categories, locations and contacts -->
+  <allowEditAllCategories>true</allowEditAllCategories>
+  <allowEditAllLocations>true</allowEditAllLocations>
+  <allowEditAllContacts>true</allowEditAllContacts>
+
+  <categoryOptional>true</categoryOptional>
+
+  <noGroupAllowed>false</noGroupAllowed>
+
+  <appType>webadmin</appType>
+  <publicAdmin>true</publicAdmin>
+  <guestMode>false</guestMode>
+
+  <!-- This will become a system configuration in time -->
+  <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
+
+  <!-- Default value for 24 hour mode -->
+  <hour24>true</hour24>
+
+  <!-- Default value for minute increments -->
+  <minIncrement>5</minIncrement>
+
+  <logPrefix>PubEventsAdmin</logPrefix>
+  
+  <!-- Where the browser finds css and other resources -->    
+  <browserResourceRoot>/caladminrsrc</browserResourceRoot>
+  
+  <!-- Where the server finds xsl etc -->    
+  <appRoot>http://localhost:8080/caladminrsrc</appRoot>
+</client-config>

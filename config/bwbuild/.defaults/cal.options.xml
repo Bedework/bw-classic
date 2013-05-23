@@ -14,29 +14,6 @@
              DO NOT CHANGE
          -->
         <systemName>bedework</systemName>
-
-        <!-- Uncomment this and set the value to one of the supported portals
-             Values that will result in something happening are
-             liferay5
-             liferay4
-             uportal2
-        <portalPlatform>your-portal</portalPlatform>
-         -->
-
-        <!-- CardDAV server locations -->
-        <unauthCardDAVInfo classname="org.bedework.calfacade.configs.CardDavInfo" >
-          <auth>false</auth>
-          <host>localhost</host>
-          <port>8080</port>
-          <contextPath>/pubcarddav</contextPath>
-        </unauthCardDAVInfo>
-        
-        <authCardDAVInfo classname="org.bedework.calfacade.configs.CardDavInfo" >
-          <auth>true</auth>
-          <host>localhost</host>
-          <port>8080</port>
-          <contextPath>/ucarddav</contextPath>
-        </authCardDAVInfo>
            
         <!-- ===============================================================
                          Timezone server information
@@ -60,382 +37,24 @@
         <!-- Public/private key locations -->
         <privKeys>@KEYFILE-DIR@/privkeys</privKeys>
         <pubKeys>@KEYFILE-DIR@/pubkeys</pubKeys>
-
-        <!-- Now in system config class
-        <systemRoots classname="org.bedework.calfacade.configs.SystemRoots" >
-          <principalRoot>/principals</principalRoot>
-          <userPrincipalRoot>/principals/users</userPrincipalRoot>
-          <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
-          <bwadmingroupPrincipalRoot>/principals/groups/bwadmin</bwadmingroupPrincipalRoot>
-          <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
-          <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
-          <ticketPrincipalRoot>/principals/tickets</ticketPrincipalRoot>
-          <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
-        </systemRoots>
-         -->
-        
-        <synch classname="org.bedework.calfacade.configs.SynchConfig" >
-          <wsdlUri>@synchWsdlURI@</wsdlUri>
-          <managerUri>@synchServiceManager@</managerUri>
-         
-          <!-- This must match the connector id in the synch config.
-               It identifies which connection we are using for communication
-               with the synch engine.
-            -->
-          <connectorId>localBedework</connectorId>
-        </synch>
-
-        <!-- To enable mapping of calendar addresses e.g. mailto:fred@example.org
-             on to principals we need to either do a directory lookup or have
-             some sort of pattern map. 
-             
-             Setting a caladdr prefix enables pattern mapping. By default 
-             calendar addresses are users -->
-             
-        <caladdrPrefixes classname="org.bedework.calfacade.configs.CalAddrPrefixes">
-          <!-- 
-            This would specify that any calendar user address starting with loc_
-            is to be treated as a location, e.g. we might get 
-                mailto:loc_vcc315@example.org
-          <location>loc_</location>
-           -->
-        </caladdrPrefixes>     
         
         <!-- ===============================================================
                          Calendar system modules
              =============================================================== -->
 
-        <module>
-          <!-- A dummy module with no directory. -->
-          <dir-config classname="org.bedework.calfacade.configs.DirConfigProperties">
-            <!-- List domains at your site separated by commas.
-                    A single leading wildcard "*" is allowed.
-                    If there is a single domain with no wildcard it wil be stripped from
-                    user accounts as they are entered and added as they are turned
-                    back into CUAs.
-                    Wildcarded or multiple domains will cause retention of the domain
-                    (partially untested feature) -->
-            <domains>mysite.edu</domains>
-
-            <!-- defaultDomain can be left unspecified for no default or a single
-                   exactly specified domain  -->
-            <defaultDomain>mysite.edu</defaultDomain>
-          </dir-config>
-
-          <!-- An example of how we might configure an ldap directory module. -->
-          <user-ldap-group classname="org.bedework.calfacade.configs.LdapConfigProperties">
-            <domains>mysite.edu</domains>
-            <defaultDomain>mysite.edu</defaultDomain>
-
-            <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
-            <providerUrl>ldap://localhost:10389</providerUrl>
-            <groupContextDn>ou=groups, dc=bedework, dc=org</groupContextDn>
-            <groupMemberAttr>member</groupMemberAttr>
-            <userDnPrefix>uid=</userDnPrefix>
-            <userDnSuffix>,ou=accounts, dc=bedework, dc=org</userDnSuffix>
-            <groupDnPrefix>cn=</groupDnPrefix>
-            <groupDnSuffix>,ou=groups,dc=bedework, dc=org</groupDnSuffix>
-
-            <securityAuthentication>simple</securityAuthentication>
-            <securityProtocol>NONE</securityProtocol>
-            <authDn>uid=admin,ou=system</authDn>
-            <authPw>secret</authPw>
-          </user-ldap-group>
-
-          <mailer classname="org.bedework.mail.MailConfigProperties">
-            <protocol>smtp</protocol>
-            <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
-            <serverIp>localhost</serverIp>
-            <from>calendar.myplace.edu</from>
-            <subject>Message from demo calendar server</subject>
-            <disabled>false</disabled>
-          </mailer>
-        </module>
       </global>
 
       <app>
-        <!-- ===============================================================
-                          Admin web client CalAdmin
-             =============================================================== -->
-        <CalAdmin classname="org.bedework.calfacade.configs.AdminConfig">
-          <!-- uris to cross link apps -->
-          <publicAdminUri>/caladmin</publicAdminUri>
-          <publicCalendarUri>/cal</publicCalendarUri>
-          <personalCalendarUri>/ucal</personalCalendarUri>
-
-          <autoCreateContacts>false</autoCreateContacts>
-          <autoDeleteContacts>false</autoDeleteContacts>
-          <autoCreateLocations>false</autoCreateLocations>
-          <autoDeleteLocations>false</autoDeleteLocations>
-
-          <!-- if these are false only superuser can maintain public
-               categories, locations and contacts -->
-          <allowEditAllCategories>true</allowEditAllCategories>
-          <allowEditAllLocations>true</allowEditAllLocations>
-          <allowEditAllContacts>true</allowEditAllContacts>
-
-          <categoryOptional>true</categoryOptional>
-
-          <noGroupAllowed>false</noGroupAllowed>
-
-          <appType>webadmin</appType>
-          <publicAdmin>true</publicAdmin>
-          <guestMode>false</guestMode>
-
-          <!-- This will become a system configuration in time -->
-          <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
-
-          <!-- Default value for 24 hour mode -->
-          <hour24>true</hour24>
-
-          <!-- Default value for minute increments -->
-          <minIncrement>5</minIncrement>
-
-          <logPrefix>PubEventsAdmin</logPrefix>
-          
-          <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/caladminrsrc</browserResourceRoot>
-          
-          <!-- Where the server finds xsl etc -->    
-          <appRoot>http://localhost:8080/caladminrsrc</appRoot>
-        </CalAdmin>
-
-        <!-- ==================================================================
-                          Public event submission web client EventSubmit
-             ================================================================== -->
-        <EventSubmit classname="org.bedework.calfacade.configs.ClientConfig">
-          <!-- uris to cross link apps -->
-          <publicAdminUri>/caladmin</publicAdminUri>
-          <publicCalendarUri>/cal</publicCalendarUri>
-          <personalCalendarUri>/ucal</personalCalendarUri>
-
-          <autoCreateContacts>false</autoCreateContacts>
-          <autoDeleteContacts>false</autoDeleteContacts>
-          <autoCreateLocations>false</autoCreateLocations>
-          <autoDeleteLocations>false</autoDeleteLocations>
-
-          <appType>websubmit</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>false</guestMode>
-
-          <!-- This will become a system configuration in time -->
-          <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
-
-          <!-- Default value for 24 hour mode -->
-          <hour24>true</hour24>
-
-          <!-- Default value for minute increments -->
-          <minIncrement>5</minIncrement>
-
-          <showYearData>false</showYearData>
-
-          <logPrefix>EventSubmit</logPrefix>
-
-          <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/eventsubmitrsrc</browserResourceRoot>
-          
-          <!-- Where the server finds xsl etc -->    
-          <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
-
-          <refreshAction>setup.do</refreshAction>
-          <refreshInterval>900</refreshInterval>
-        </EventSubmit>
-
-        <!-- ==================================================================
-                          Public web client Events
-             ================================================================== -->
-        <Events classname="org.bedework.calfacade.configs.ClientConfig">
-          <!-- uris to cross link apps -->
-          <publicAdminUri>/caladmin</publicAdminUri>
-          <publicCalendarUri>/cal</publicCalendarUri>
-          <personalCalendarUri>/ucal</personalCalendarUri>
-
-          <cachingOn>true</cachingOn>
-          <cachePrefix>bwpubevents</cachePrefix>
-
-          <autoCreateContacts>false</autoCreateContacts>
-          <autoDeleteContacts>false</autoDeleteContacts>
-          <autoCreateLocations>false</autoCreateLocations>
-          <autoDeleteLocations>false</autoDeleteLocations>
-
-          <appType>webpublic</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>true</guestMode>
-
-          <!-- Default value for 24 hour mode -->
-          <hour24>true</hour24>
-
-          <!-- Default value for minute increments -->
-          <minIncrement>5</minIncrement>
-
-          <showYearData>false</showYearData>
-
-          <logPrefix>PubEvents</logPrefix>
-
-          <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/calrsrc</browserResourceRoot>
-          
-          <!-- Where the server finds xsl etc -->    
-          <appRoot>http://localhost:8080/calrsrc</appRoot>
-
-          <refreshAction>setup.do</refreshAction>
-          <refreshInterval>300</refreshInterval>
-
-          <calSuite>MainCampus</calSuite>
-        </Events>
-
-        <!-- ==================================================================
-                          Feed Service
-             ================================================================== -->
-        <Feeder classname="org.bedework.calfacade.configs.ClientConfig">
-          <!-- uris to cross link apps -->
-          <publicAdminUri>/caladmin</publicAdminUri>
-          <publicCalendarUri>/cal</publicCalendarUri>
-          <personalCalendarUri>/ucal</personalCalendarUri>
-
-          <cachingOn>true</cachingOn>
-          <cachePrefix>bwfeeder</cachePrefix>
-
-          <autoCreateContacts>false</autoCreateContacts>
-          <autoDeleteContacts>false</autoDeleteContacts>
-          <autoCreateLocations>false</autoCreateLocations>
-          <autoDeleteLocations>false</autoDeleteLocations>
-
-          <appType>feeder</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>true</guestMode>
-
-          <!-- Default value for 24 hour mode -->
-          <hour24>true</hour24>
-
-          <!-- Default value for minute increments -->
-          <minIncrement>5</minIncrement>
-
-          <showYearData>false</showYearData>
-
-          <logPrefix>Feeder</logPrefix>
-
-          <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/calfeedrsrc</browserResourceRoot>
-          
-          <!-- Where the server finds xsl etc -->    
-          <appRoot>http://localhost:8080/calfeedrsrc</appRoot>
-
-          <refreshAction>setup.do</refreshAction>
-          <refreshInterval>300</refreshInterval>
-
-          <calSuite>MainCampus</calSuite>
-        </Feeder>
-
-        <!-- ==================================================================
-                          Demo departmental Public web client SoEDept
-             ================================================================== -->
-        <SoEDept classname="org.bedework.calfacade.configs.ClientConfig">
-          <!-- uris to cross link apps -->
-          <publicAdminUri>/caladmin</publicAdminUri>
-          <publicCalendarUri>/cal</publicCalendarUri>
-          <personalCalendarUri>/ucal</personalCalendarUri>
-
-          <cachingOn>true</cachingOn>
-          <cachePrefix>bwpubevents</cachePrefix>
-
-          <autoCreateContacts>false</autoCreateContacts>
-          <autoDeleteContacts>false</autoDeleteContacts>
-          <autoCreateLocations>false</autoCreateLocations>
-          <autoDeleteLocations>false</autoDeleteLocations>
-
-          <appType>webpublic</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>true</guestMode>
-
-          <!-- Default value for 24 hour mode -->
-          <hour24>true</hour24>
-
-          <!-- Default value for minute increments -->
-          <minIncrement>5</minIncrement>
-
-          <showYearData>false</showYearData>
-
-          <logPrefix>SoEDept</logPrefix>
-
-          <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/calrsrc</browserResourceRoot>
-          
-          <!-- Where the server finds xsl etc -->    
-          <appRoot>http://localhost:8080/calrsrc</appRoot>
-
-          <refreshAction>setup.do</refreshAction>
-          <refreshInterval>300</refreshInterval>
-
-          <calSuite>SoEDepartmental</calSuite>
-        </SoEDept>
-
-        <!-- ==================================================================
-                          User web client UserCal
-             ================================================================== -->
-        <UserCal classname="org.bedework.calfacade.configs.ClientConfig">
-          <!-- uris to cross link apps -->
-          <publicAdminUri>/caladmin</publicAdminUri>
-          <publicCalendarUri>/cal</publicCalendarUri>
-          <personalCalendarUri>/ucal</personalCalendarUri>
-
-          <autoCreateContacts>false</autoCreateContacts>
-          <autoDeleteContacts>false</autoDeleteContacts>
-          <autoCreateLocations>false</autoCreateLocations>
-          <autoDeleteLocations>false</autoDeleteLocations>
-
-          <appType>webuser</appType>
-          <publicAdmin>false</publicAdmin>
-          <guestMode>false</guestMode>
-
-          <!-- Default value for 24 hour mode -->
-          <hour24>true</hour24>
-
-          <!-- Default value for minute increments -->
-          <minIncrement>5</minIncrement>
-
-          <showYearData>false</showYearData>
-
-          <logPrefix>PersonalCalendar</logPrefix>
-
-          <!-- Where the browser finds css and other resources -->    
-          <browserResourceRoot>/ucalrsrc</browserResourceRoot>
-          
-          <!-- Where the server finds xsl etc -->    
-          <appRoot>http://localhost:8080/ucalrsrc</appRoot>
-
-          <refreshAction>setup.do</refreshAction>
-          <refreshInterval>300</refreshInterval>
-        </UserCal>
-
+ 
         <!-- ===============================================================
                           User CalDAV server UserCalDAV
              =============================================================== -->
         <Usercaldav classname="org.bedework.caldav.util.CalDAVConfig">
-          <appType>usercaldav</appType>
-          <!--
-          <publicAdmin>false</publicAdmin>
-          -->
-          <guestMode>false</guestMode>
-
-          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
-
-          <!-- Comment out or delete for no ischedule service
-               Currently under development and may present a security risk in
-               production systems -->
-          <ischeduleURI>/ischedule</ischeduleURI>
-
-          <!-- Comment out or delete for no freebusy url service -->
-          <fburlServiceURI>/fbsvc</fburlServiceURI>
-
-          <!-- Comment out or delete for no web calendar service -->
-          <webcalServiceURI>/webcal</webcalServiceURI>
-
           <!-- SOAP web service 
                This corresponds to the full uri in the properties file.
                Defined as a global deployment property
                
-               NOTE: tthe value below is defined in the build properties 
+               NOTE: the value below is defined in the build properties 
                 -->
           <calSoapWsURI>@calSoapWsURI@</calSoapWsURI>
           
@@ -448,72 +67,25 @@
                           Public (unauthenticated) CalDAV server PublicCalDAV
              ================================================================== -->
         <Pubcaldav classname="org.bedework.caldav.util.CalDAVConfig">
-          <appType>publiccaldav</appType>
-          <!--
-          <publicAdmin>false</publicAdmin>
-           -->
-          <guestMode>true</guestMode>
-
-          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
-
-          <!-- Comment out or delete for no ischedule service
-               Currently under development and may present a security risk in
-               production systems
-
-               Note that the uri "/ischedule" is defined in the draft and should
-               not be changed to some other value. -->
-          <ischeduleURI>/ischedule</ischeduleURI>
-
-          <!-- Comment out or delete for no freebusy url service -->
-          <fburlServiceURI>/fbsvc</fburlServiceURI>
-
-          <!-- Comment out or delete for no web calendar service -->
-          <webcalServiceURI>/webcal</webcalServiceURI>
-
           <!-- SOAP web service 
                This corresponds to the full uri in the properties file.
                Defined as a global deployment property
                
-               NOTE: tthe value below is defined in the build properties 
+               NOTE: the value below is defined in the build properties 
                 -->
           <calSoapWsURI>@calSoapWsURI@</calSoapWsURI>
-
-          <!-- The bedework end of the synch service. This is a web
-               service called by the synch engine to get information out of
-               bedework and to update events and status.
-               
-               This path should probably be restricted to a given host only.
-               
-               Coming up on a separate port might help to lock it down.
-               Comment out or delete for no synch service 
-               -->
-          <synchWsURI>/synchws/</synchWsURI>
         </Pubcaldav>
 
         <!-- ==================================================================
                           User CalWS server Usercalws
              ================================================================== -->
         <Usercalws classname="org.bedework.caldav.util.CalDAVConfig">
-          <appType>usercalws</appType>
-          <!--
-          <publicAdmin>false</publicAdmin>
-          -->
-          <guestMode>false</guestMode>
-
-          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
         </Usercalws>
 
         <!-- ==================================================================
                           Public (unauthenticated) CalWS server Pubcalws
              ================================================================== -->
         <Pubcalws classname="org.bedework.caldav.util.CalDAVConfig">
-          <appType>publiccalws</appType>
-          <!--
-          <publicAdmin>false</publicAdmin>
-           -->
-          <guestMode>true</guestMode>
-
-          <sysintfImpl>org.bedework.caldav.bwserver.BwSysIntfImpl</sysintfImpl>
         </Pubcalws>
 
         <!-- ==================================================================
@@ -533,6 +105,18 @@
           <publicAdmin>false</publicAdmin>
           <guestMode>false</guestMode>
         </test>
+
+        <!-- ==================================================================
+                          Dump restore program dumpres
+             ================================================================== -->
+        <dumpres classname="org.bedework.calfacade.configs.DumpRestoreConfig">
+          <debug>true</debug>
+          <appType>dumprestore</appType>
+          <guestMode>true</guestMode>
+          <debugEntity>false</debugEntity>
+          <superGroupName>campusAdminGroups</superGroupName>
+          <defaultPublicCalPath>/public/Other Events/Other</defaultPublicCalPath>
+        </dumpres>
 
         <!-- ==================================================================
                           Crawler program

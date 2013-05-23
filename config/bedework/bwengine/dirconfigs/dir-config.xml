@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<dir-config xmlns="http://bedework.org/ns/" 
+            type="org.bedework.calfacade.configs.DirConfigProperties">
+  <name>dir-config</name>
+  <mbeanClassName>org.bedework.calsvc.jmx.DirConf</mbeanClassName>
+  <!-- List domains at your site separated by commas.
+          A single leading wildcard "*" is allowed.
+          If there is a single domain with no wildcard it wil be stripped from
+          user accounts as they are entered and added as they are turned
+          back into CUAs.
+          Wildcarded or multiple domains will cause retention of the domain
+          (partially untested feature) -->
+  <domains>mysite.edu</domains>
+
+  <!-- defaultDomain can be left unspecified for no default or a single
+         exactly specified domain  -->
+  <defaultDomain>mysite.edu</defaultDomain>
+</dir-config>

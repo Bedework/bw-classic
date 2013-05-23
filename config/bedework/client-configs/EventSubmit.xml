@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<client-config xmlns="http://bedework.org/ns/" 
+               type="org.bedework.webcommon.config.ConfigCommonImpl">
+  <mbeanClassName>org.bedework.webcommon.config.ClientConf</mbeanClassName>
+  <!-- uris to cross link apps -->
+  <publicAdminUri>/caladmin</publicAdminUri>
+  <publicCalendarUri>/cal</publicCalendarUri>
+  <personalCalendarUri>/ucal</personalCalendarUri>
+
+  <autoCreateContacts>false</autoCreateContacts>
+  <autoDeleteContacts>false</autoDeleteContacts>
+  <autoCreateLocations>false</autoCreateLocations>
+  <autoDeleteLocations>false</autoDeleteLocations>
+
+  <appType>websubmit</appType>
+  <publicAdmin>false</publicAdmin>
+  <guestMode>false</guestMode>
+
+  <!-- This will become a system configuration in time -->
+  <submissionRoot>/public/unbrowsable/submissions</submissionRoot>
+
+  <!-- Default value for 24 hour mode -->
+  <hour24>true</hour24>
+
+  <!-- Default value for minute increments -->
+  <minIncrement>5</minIncrement>
+
+  <showYearData>false</showYearData>
+
+  <logPrefix>EventSubmit</logPrefix>
+
+  <!-- Where the browser finds css and other resources -->    
+  <browserResourceRoot>/eventsubmitrsrc</browserResourceRoot>
+  
+  <!-- Where the server finds xsl etc -->    
+  <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
+
+  <refreshAction>setup.do</refreshAction>
+  <refreshInterval>900</refreshInterval>
+</client-config>
