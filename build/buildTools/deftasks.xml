@@ -538,8 +538,9 @@
         <!-- Load the run time options and define some properties based on some
              of the values -->
   
-        <!-- Load the general bedework options -->
+        <!-- Load the general bedework options 
         <xmlproperty file="${org.bedework.config.options}"/>
+        -->
   
         <!-- Load the extra options 
         <xmlproperty file="@{extra.options}"/>-->
@@ -566,12 +567,14 @@
             <property file="${org.bedework.configurations.home}/.platform/standalone.properties" />
           </else>
         </if>
-  
+        	
+         <!--
         <property name="org.bedework.global.version"
                   value="${bedework-options.org.bedework.global.version}" />
   
         <property name="org.bedework.global.directory.browsing.disallowed"
                   value="${bedework-options.org.bedework.syspars.directoryBrowsingDisallowed}" />
+                  -->
         </then>
       </if>
     </sequential>

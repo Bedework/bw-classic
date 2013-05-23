@@ -140,6 +140,11 @@ BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=$BW_DATA_DIR/
 # configurations. 
 # For the moment configurations are file based within the data directory.
 
+#         Calendar core config and data dir
+BW_BWCORE_DATAURI=$BW_DATA_DIR/bwcore
+BW_BWCORE_DATAURI_DEF=-Dorg.bedework.bwcore.datauri=$BW_BWCORE_DATAURI/
+BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_BWCORE_DATAURI_DEF"
+
 #         Calendar engine config and data dir
 BW_BWENGINE_DATAURI=$BW_DATA_DIR/bwengine
 BW_BWENGINE_DATAURI_DEF=-Dorg.bedework.bwengine.datauri=$BW_BWENGINE_DATAURI/

@@ -208,7 +208,7 @@
 
   <target name="build.available.configured.app">
     <propertycopy name="propval.app.type"
-                  from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.appType" />
+                  from="org.bedework.app.${org.bedework.deploy.name}.type" />
     <property name="org.bedework.deploy.type.dir"
               location="${app.root.dir}/${org.bedework.deploy.name}/${propval.app.type}" />
     <if>
@@ -226,8 +226,6 @@
           <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
         </propertyset>
 
-        <propertycopy name="propval.app.unauthenticated"
-                      from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
         <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
              inheritrefs="true" target="build.configured" >
           <propertyset refid="deploy-app-properties" />
@@ -254,7 +252,7 @@
 
   <target name="deploy.available.app">
     <propertycopy name="propval.app.type"
-                  from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.appType" />
+                  from="org.bedework.app.${org.bedework.deploy.name}.type" />
     <property name="org.bedework.deploy.type.dir"
               location="${app.root.dir}/${propval.app.type}" />
     <if>
@@ -264,6 +262,10 @@
       </then>
     </if>
 
+  	<!--
+    <echo message="*********************** org.bedework.deploy.type.dir=${org.bedework.deploy.type.dir}  org.bedework.deploy.kind=${org.bedework.deploy.kind}"/>
+    -->
+
     <if>
       <available file="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"/>
       <then>
@@ -271,10 +273,7 @@
           <propertyref prefix="org.bedework.app.${org.bedework.deploy.name}."/>
           <globmapper from="org.bedework.app.${org.bedework.deploy.name}.*" to="propval.app.*"/>
         </propertyset>
-      	
-        <propertycopy name="propval.app.unauthenticated"
-                      from="bedework-options.org.bedework.app.${org.bedework.deploy.name}.guestMode" />
-        
+
         <ant antfile="${org.bedework.deploy.type.dir}/${org.bedework.deploy.kind}/build.xml"
              inheritrefs="true" target="deploy" >
           <propertyset refid="deploy-app-properties" />

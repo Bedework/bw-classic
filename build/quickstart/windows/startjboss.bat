@@ -78,6 +78,15 @@ SET LOG_THRESHOLD=-Djboss.server.log.threshold=DEBUG
 SET BW_DATA_DIR=%JBOSS_DATA_DIR%\bedework
 SET BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=%BW_DATA_DIR%\
 
+:: Define the system properties used to locate the module specific data and 
+:: configurations. 
+:: For the moment configurations are file based within the data directory.
+
+::         synch data dir
+SET BW_SYNCH_DATAURI=%BW_DATA_DIR%\synch
+SET BW_SYNCH_DATAURI_DEF=-Dorg.bedework.synch.datauri=%BW_SYNCH_DATAURI%\
+SET BW_DATA_DIR_DEF=%BW_DATA_DIR_DEF% %BW_SYNCH_DATAURI_DEF%
+
 SET JAVA_OPTS=%JAVA_OPTS% -Xms%heap% -Xmx%heap%
 :: Don't do this SET JAVA_OPTS=%JAVA_OPTS% -XX:NewSize=%newsize% -XX:MaxNewSize=%newsize%
 SET JAVA_OPTS=%JAVA_OPTS% -XX:PermSize=%permsize% -XX:MaxPermSize=%permsize%
