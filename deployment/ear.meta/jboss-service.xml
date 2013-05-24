@@ -68,15 +68,6 @@
     
     <attribute name="Appname"/>
     
-    <!-- Statement delimiter -->
-    <attribute name="Delimiter">;</attribute>
-    
-    <!-- Export to database? - false for safety - set true in console -->
-    <attribute name="Export">false</attribute>
-    
-    <!-- Schema Output file name - full path, folders must exist -->
-    <attribute name="SchemaOutFile">${jboss.server.data.dir}/bedework/dumprestore/schema.txt</attribute>
-    
     <!-- XML data input file name - full path. Used for data restore -->
     <attribute name="DataIn">${jboss.server.data.dir}/bedework/dumprestore/initbedework.xml</attribute>
     
