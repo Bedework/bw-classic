@@ -4,7 +4,7 @@
         type="org.bedework.calfacade.mail.MailConfigPropertiesImpl">
   <protocol>smtp</protocol>
   <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
-  <serverIp>localhost</serverIp>
+  <serverUri>localhost</serverUri>
   <from>calendar.myplace.edu</from>
   <subject>Message from demo calendar server</subject>
   <disabled>false</disabled>

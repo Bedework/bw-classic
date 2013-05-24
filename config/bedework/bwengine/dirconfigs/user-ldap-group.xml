@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <user-ldap-group xmlns="http://bedework.org/ns/" 
-                 type="org.bedework.calfacade.configs.LdapConfigProperties">
+                 type="org.bedework.calsvc.jmx.LdapConfigPropertiesImpl">
   <name>user-ldap-group</name>
   <mbeanClassName>org.bedework.calsvc.jmx.LdapDirConf</mbeanClassName>
   <domains>mysite.edu</domains>

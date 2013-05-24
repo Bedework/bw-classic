@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<bwcore-dbconfig xmlns="http://bedework.org/ns/" type="org.bedework.calcore.hibernate.DbConfig">
+<bwcore-dbconfig xmlns="http://bedework.org/ns/" 
+                 type="org.bedework.calcore.hibernate.DbConfig">
   <hibernateProperties>
     <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
     <hibernateProperty>hibernate.connection.datasource=java:/CardDS</hibernateProperty>
@@ -16,8 +17,8 @@
     <hibernateProperty>hibernate.cache.use_query_cache=true</hibernateProperty>
     <hibernateProperty>hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider</hibernateProperty>
 
-    <hibernate.connection.pool_size>1</hibernate.connection.pool_size>
-    <hibernate.query.substitutions>true 'T', false 'F', yes 'Y', no 'N'</hibernate.query.substitutions>    
+    <hibernateProperty>hibernate.connection.pool_size=1</hibernateProperty>
+    <hibernateProperty>hibernate.query.substitutions=true 'T', false 'F', yes 'Y', no 'N'</hibernateProperty>    
  
   </hibernateProperties>
 </bwcore-dbconfig>
