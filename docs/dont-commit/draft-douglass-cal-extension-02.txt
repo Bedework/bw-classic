@@ -3,12 +3,12 @@
 
 Network Working Group                                        M. Douglass
 Internet-Draft                                                       RPI
-Intended status: Standards Track                        November 2, 2012
-Expires: May 6, 2013
+Intended status: Standards Track                       February 20, 2013
+Expires: August 24, 2013
 
 
-                Event Publishing Extensions to Icalendar
-                  draft-douglass-calendar-extension-01
+                Event Publishing Extensions to iCalendar
+                  draft-douglass-calendar-extension-02
 
 Abstract
 
@@ -31,11 +31,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 6, 2013.
+   This Internet-Draft will expire on August 24, 2013.
 
 Copyright Notice
 
-   Copyright (c) 2012 IETF Trust and the persons identified as the
+   Copyright (c) 2013 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Douglass                   Expires May 6, 2013                  [Page 1]
+Douglass                 Expires August 24, 2013                [Page 1]
 
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
 
 
 Table of Contents
@@ -65,33 +65,34 @@ Table of Contents
      2.1.  Use Cases  . . . . . . . . . . . . . . . . . . . . . . . .  4
        2.1.1.  Piano Concert Performance  . . . . . . . . . . . . . .  4
        2.1.2.  Itineraries  . . . . . . . . . . . . . . . . . . . . .  4
-   3.  Relating Component Properties  . . . . . . . . . . . . . . . .  5
-   4.  New Property Parameters  . . . . . . . . . . . . . . . . . . .  5
-     4.1.  Hash . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     4.2.  Id . . . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-     4.3.  Loctype  . . . . . . . . . . . . . . . . . . . . . . . . .  7
-     4.4.  Parttype . . . . . . . . . . . . . . . . . . . . . . . . .  7
-     4.5.  Restype  . . . . . . . . . . . . . . . . . . . . . . . . .  8
-     4.6.  Order  . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-     4.7.  Title  . . . . . . . . . . . . . . . . . . . . . . . . . .  9
-   5.  New Properties . . . . . . . . . . . . . . . . . . . . . . . .  9
-     5.1.  Participant  . . . . . . . . . . . . . . . . . . . . . . .  9
-     5.2.  Styled-Description . . . . . . . . . . . . . . . . . . . . 11
-     5.3.  Structured-Location  . . . . . . . . . . . . . . . . . . . 13
-     5.4.  Structured-Resource  . . . . . . . . . . . . . . . . . . . 14
-   6.  Participant Types  . . . . . . . . . . . . . . . . . . . . . . 16
-   7.  Extended examples  . . . . . . . . . . . . . . . . . . . . . . 16
-     7.1.  Example 1  . . . . . . . . . . . . . . . . . . . . . . . . 17
-   8.  Security Considerations  . . . . . . . . . . . . . . . . . . . 17
-   9.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 17
-     9.1.  Property Registrations . . . . . . . . . . . . . . . . . . 17
-     9.2.  Parameter Registrations  . . . . . . . . . . . . . . . . . 18
-     9.3.  Participant Type Registrations . . . . . . . . . . . . . . 18
-   10. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 18
-   11. Normative References . . . . . . . . . . . . . . . . . . . . . 19
-   Appendix A.  Open issues . . . . . . . . . . . . . . . . . . . . . 19
-   Appendix B.  Change log  . . . . . . . . . . . . . . . . . . . . . 20
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 20
+   3.  Modifications to Calendar Components . . . . . . . . . . . . .  5
+   4.  Relating Component Properties  . . . . . . . . . . . . . . . .  5
+   5.  New Property Parameters  . . . . . . . . . . . . . . . . . . .  6
+     5.1.  Hash . . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     5.2.  Id . . . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     5.3.  Loctype  . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     5.4.  Parttype . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     5.5.  Restype  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     5.6.  Order  . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     5.7.  Label  . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+   6.  New Properties . . . . . . . . . . . . . . . . . . . . . . . . 10
+     6.1.  Participant  . . . . . . . . . . . . . . . . . . . . . . . 10
+     6.2.  Styled-Description . . . . . . . . . . . . . . . . . . . . 12
+     6.3.  Structured-Location  . . . . . . . . . . . . . . . . . . . 14
+     6.4.  Structured-Resource  . . . . . . . . . . . . . . . . . . . 15
+   7.  Participant Types  . . . . . . . . . . . . . . . . . . . . . . 17
+   8.  Extended examples  . . . . . . . . . . . . . . . . . . . . . . 18
+     8.1.  Example 1  . . . . . . . . . . . . . . . . . . . . . . . . 18
+   9.  Security Considerations  . . . . . . . . . . . . . . . . . . . 18
+   10. IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 18
+     10.1. Property Registrations . . . . . . . . . . . . . . . . . . 18
+     10.2. Parameter Registrations  . . . . . . . . . . . . . . . . . 19
+     10.3. Participant Type Registrations . . . . . . . . . . . . . . 19
+   11. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 20
+   12. Normative References . . . . . . . . . . . . . . . . . . . . . 20
+   Appendix A.  Open issues . . . . . . . . . . . . . . . . . . . . . 21
+   Appendix B.  Change log  . . . . . . . . . . . . . . . . . . . . . 21
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 21
 
 
 
@@ -107,10 +108,9 @@ Table of Contents
 
 
 
-
-Douglass                   Expires May 6, 2013                  [Page 2]
+Douglass                 Expires August 24, 2013                [Page 2]
 
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
 
 
 1.  Introduction
@@ -121,9 +121,10 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
    This document defines a number of properties referencing external
    information that can provide additional information about an
-   iCalendar component.  The intent is that such information can be
-   automatically discovered and used by clients.  Formats such as VCARD
-   are likely to be most useful.
+   iCalendar component.  The intent is to allow interchange of such
+   information between applications or systems (e.g., between clients,
+   between client and server, and between servers).  Formats such as
+   VCARD are likely to be most useful.
 
    In addition a new property is defined to support HTML descriptions.
 
@@ -160,27 +161,21 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
    Using STRUCTURED-LOCATION, information about a number of interesting
    locations can be communicated, for example, parking, restaurants and
-   the venue.  Servers and clients can retrieve the objects when storing
 
 
 
-Douglass                   Expires May 6, 2013                  [Page 3]
+Douglass                 Expires August 24, 2013                [Page 3]
 
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
 
 
+   the venue.  Servers and clients can retrieve the objects when storing
    the event and use them to index by geographic location.
 
    When a calendar client receives a calendar component it can search
    the set of supplied properties looking for those of particular
    interest.  The TYPE and FMTTYPE parameters, if supplied, can be used
    to help the selection.
-
-   Having located such a property, e.g.  STRUCTURED-LOCATION with
-   TYPE=PARKING, the client can use http GET on the supplied URL perhaps
-   with an ACCEPT header set to specify the desired format.  The
-   targeted server SHOULD respond with a 406 if the resource is not
-   available in the desired format(s).
 
 2.1.  Use Cases
 
@@ -217,23 +212,58 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
    The embedded location information can guide the traveller at the
    airport or to their final destination.  The contact information can
-
-
-
-Douglass                   Expires May 6, 2013                  [Page 4]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
    provide detailed information about the booking agent, the airlines
    and car hire companies and the hotel.
 
 
-3.  Relating Component Properties
+
+
+
+
+Douglass                 Expires August 24, 2013                [Page 4]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
+3.  Modifications to Calendar Components
+
+   The following changes to the syntax defined in iCalendar [RFC5545]
+   are made here.  New elements are defined in subsequent sections.
+
+
+   eventprop /= *(
+                 ;
+                 ; The following are OPTIONAL,
+                 ; and MAY occur more than once.
+                 ;
+                 styleddescription / strucloc / strucres / participant
+                 ;
+                 )
+
+   todoprop /= *(
+                ;
+                ; The following are OPTIONAL,
+                ; and MAY occur more than once.
+                ;
+                styleddescription / strucloc / strucres / participant
+                ;
+                )
+
+   jourprop /= *(
+                ;
+                ; The following are OPTIONAL,
+                ; and MAY occur more than once.
+                ;
+                styleddescription / participant
+                ;
+                )
+
+
+4.  Relating Component Properties
 
    Within a single component we sometimes need to specify which
    properties are related to each other and their state.  For example,
-   by relating a STYLED_DESCRIPTION property to the DESCRIPTION property
+   by relating a STYLED-DESCRIPTION property to the DESCRIPTION property
    and saving an indication of state, clients can know if one of them
    has changed and notify the user.
 
@@ -243,17 +273,25 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
    The ID parameter provides a small integer identifier, unique for each
    property on which it is specified.
 
+
+
+
+Douglass                 Expires August 24, 2013                [Page 5]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
    The HASH parameter has a structured value with parts:
 
    id-value:  The id of the property to which the current property is
       related
 
-   hash-value:  The base65 encoded hashed value of the property to which
-      the current property is related
+   hash-value:  The base-64 encoded hashed value of the property to
+      which the current property is related
 
    hash-method:  Method used to create that hash.
 
-   In the example below a STYLED-DESCRIPTION proeprty is related to the
+   In the example below a STYLED-DESCRIPTION property is related to the
    DESCRIPTION property which has an ID value of 2.  If the DESCRIPTION
    property value is changed then the hash-value stored with the STYLED-
    DESCRIPTION will no longer match.
@@ -264,22 +302,11 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
            4E5k=,SHA-1":<p>Some Text</p>
 
 
-4.  New Property Parameters
+5.  New Property Parameters
 
-4.1.  Hash
+5.1.  Hash
 
    Parameter name:  HASH
-
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                  [Page 5]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
 
    Purpose:  To specify the identifier value and hash value and method
       of another property.
@@ -299,21 +326,32 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
         hashname = *QSAFE-CHAR
         ; Name of the hash function used to calculate the hash value
 
+
+
+
+
+
+
+Douglass                 Expires August 24, 2013                [Page 6]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
    Description:  This parameter can be specified on properties that are
       variants of another property and is used to detect changes in that
       property to enable the values of all variants to be kept
       synchronized.
 
       The text value should be an identifier value which SHOULD be a
-      value specified on another propety within the component, a hash
+      value specified on another property within the component, a hash
       value (encoded as a base-64 string), followed by a token
       describing the algorithm used to calculate the hash value.
       Algorithm names from the IANA Hash Function Textual Names registry
       [] MUST be used.
 
-      Each element of the value is separated by a single ",",
+      Each element of the value is separated by a COMMA character,
 
-4.2.  Id
+5.2.  Id
 
    Parameter name:  ID
 
@@ -325,18 +363,6 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
      idparam      = "ID" "=" integer
 
-
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                  [Page 6]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
    Description:  This parameter can be specified on any property.  It is
       used to uniquely identify the property so it can be related to
       other properties within the same component that specify a "HASH"
@@ -345,7 +371,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       Properties within the same component MUST NOT have an "ID"
       parameter with the same value.
 
-4.3.  Loctype
+5.3.  Loctype
 
    Parameter name:  LOCTYPE
 
@@ -357,6 +383,16 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
      loctypeparam   = "LOCTYPE" "=" param-value
 
+
+
+
+
+
+Douglass                 Expires August 24, 2013                [Page 7]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
    Description:  This parameter MAY be specified on STRUCTURED-LOCATION
       and provides a way to differentiate multiple properties.  For
       example, it allows event producers to provide location information
@@ -366,7 +402,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       [RFC5545].  New location types SHOULD be registered in the manner
       laid down in that specification
 
-4.4.  Parttype
+5.4.  Parttype
 
    Parameter name:  PARTTYPE
 
@@ -376,24 +412,13 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
       This parameter is defined by the following notation:
 
-     parttypeparam   = "PARTTYPE" "=" text
+     parttypeparam   = "PARTTYPE" "=" param-value
 
    Description:  This parameter MAY be specified on the PARTICIPANT
       property, and defines the type of participation.  Allowable values
-      are defined in Section 6.
+      are defined in Section 7.
 
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                  [Page 7]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
-4.5.  Restype
+5.5.  Restype
 
    Parameter name:  RESTYPE
 
@@ -412,7 +437,19 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       [todo].  New resource types SHOULD be registered in the manner
       laid down in that specification
 
-4.6.  Order
+
+
+
+
+
+
+
+Douglass                 Expires August 24, 2013                [Page 8]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
+5.6.  Order
 
    Parameter name:  ORDER
 
@@ -422,8 +459,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
       This parameter is defined by the following notation:
 
-     orderparam    = "ORDER" "=" (1*3DIGIT / "100")
-                                   ; An integer between 1 and 100.
+     orderparam    = "ORDER" "=" integer ;Must be in the range [1..100]
 
    Description:  The ORDER parameter is OPTIONAL and is used to indicate
       the relative ordering of the corresponding instance of a property.
@@ -435,43 +471,43 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       property instance as being at the lowest level of ordering.
 
       Note that the value of this parameter is to be interpreted only in
-      relation to values assigned to other correcsponding instances of
+      relation to values assigned to other corresponding instances of
       the same property in the same entity.  A given value, or the
       absence of a value, MUST NOT be interpreted on its own.
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                  [Page 8]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
 
       This parameter MAY be applied to any property that allows multiple
       instances.
 
-4.7.  Title
+5.7.  Label
 
-   Parameter name:  TITLE
+   Parameter name:  LABEL
 
-   Purpose:  To provide a human readable title.
+   Purpose:  To provide a human readable label.
 
    Format Definition:
 
       This parameter is defined by the following notation:
 
-     titleparam     = "TITLE" "=" DQUOTE text DQUOTE
+     labelparam     = "LABEL" "=" DQUOTE text DQUOTE
 
-   Description:  This parameter MAY be specified on all properties
-      defined in this specification, and provides a human readable
-      label, perhaps for icons or links..
+   Description:  This parameter MAY be specified on STYLED-DESCRIPTION,
+      PARTICIPANT, STRUCTURED-LOCATION and STRUCTURED-RESOURCE and
+      provides a human readable label, perhaps for icons or links..
 
 
-5.  New Properties
 
-5.1.  Participant
+
+
+
+
+Douglass                 Expires August 24, 2013                [Page 9]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
+6.  New Properties
+
+6.1.  Participant
 
    Property name:  PARTICIPANT
 
@@ -482,7 +518,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
    Value type:  The default value type for this property is URI.  The
       value type can also be set to TEXT to indicate plain text content.
 
-   Property Parameters:  Non-standard, title, parttype, order or format
+   Property Parameters:  Non-standard, label, parttype, order or format
       type parameters can be specified on this property.
 
    Conformance:  This property MAY be specified in any iCalendar
@@ -495,17 +531,35 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       individuals or organizations, for example a soccer team, the
       spectators, or the musicians.
 
-
-
-
-
-
-Douglass                   Expires May 6, 2013                  [Page 9]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
    Format Definition:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 10]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
 
       This property is defined by the following notation:
 
@@ -525,7 +579,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                      ; but MUST NOT occur more than once
 
                      (";" fmttypeparam) /
-                     (";" titleparam) /
+                     (";" labelparam) /
                      (";" orderparam) /
                      (";" parttypeparam) /
 
@@ -549,25 +603,25 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                     PARTICIPANT;PARTTYPE=PRINCIPAL_PERFORMER:
                       http://dir.example.com/vcard/aviolinist.vcf
 
-
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 10]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
    Example:
+
+
+
+
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 11]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
 
       The following is an example referring to a VCARD providing
       information on the primary contact.
 
                     PARTICIPANT;FMTTYPE=text/vcard;
-                      PARTTYPE=PRIMARY-CONTACT;TITLE=A contact:
+                      PARTTYPE=PRIMARY-CONTACT;LABEL=A contact:
                       http://dir.example.com/vcard/contacts/contact1.vcf
 
    Example:
@@ -576,15 +630,16 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       information on the event planner.
 
                     PARTICIPANT;FMTTYPE=text/vcard;
-                      PARTTYPE=PLANNER-CONTACT;TITLE=ClownsIsUs:
+                      PARTTYPE=PLANNER-CONTACT;LABEL=ClownsIsUs:
                       http://dir.example.com/vcard/clowns-is-us.vcf
 
-5.2.  Styled-Description
+6.2.  Styled-Description
 
    Property name:  STYLED-DESCRIPTION
 
-   Purpose:  This property provides a more complete description of the
-      calendar component than that provided by the "SUMMARY" property.
+   Purpose:  This property provides for one or more rich-text
+      descriptions to replace or augment that provided by the
+      DESCRIPTION property.
 
    Value type:  There is no default value type for this property.  The
       value type can be set to URI or TEXT.  Other text-based value
@@ -606,21 +661,19 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       text for a DISPLAY category of alarm, and to capture the body text
       for an EMAIL category of alarm.
 
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 11]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
-      VALUE=TEXT is used to provide html variants of the plain-text
+      VALUE=TEXT is used to provide rich-text variants of the plain-text
       DESCRIPTION property.
 
-      VALUE=URI is used to provide a link to html content which is
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 12]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
+      VALUE=URI is used to provide a link to rich-text content which is
       expected to be displayed inline as part of the event.
 
       The "HASH" parameter value is calculated from the value of any
@@ -629,8 +682,18 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       present.
 
       The intent of this property is limited to providing a styled
-      version of the DESCRIPTION property.  The URL property should be
-      used to link to websites or other related information.
+      and/or language specific version of the DESCRIPTION property.  The
+      URL property should be used to link to websites or other related
+      information.
+
+      Applications MAY attempt to guess the media type of the resource
+      via inspection of its content if and only if the media type of the
+      resource is not given by the "FMTTYPE" parameter.  If the media
+      type remains unknown, calendar applications SHOULD treat it as
+      type "text/html".
+
+      Multiple STYLED-DESCRIPTION properties may be used to provide
+      different formats or different language variants.
 
    Format Definition:
 
@@ -645,7 +708,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                   ; but MUST NOT occur more than once.
                   ;
                   (";" altrepparam) / (";" languageparam) /
-                  (";" hashparam) / (";" idparam) /
+                  (";" fmttypeparam) / (";" hashparam) / (";" idparam) /
                   ;
                   ; The following is OPTIONAL,
                   ; and MAY occur more than once.
@@ -655,25 +718,26 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                   ; data supplied in the value of the property
 
 
+
+
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 13]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
    Example:
 
       The following is an example of this property.  It points to a
       venue.
 
-                    STRUCTURED-LOCATION;TITLE="The venue":
+                    STRUCTURED-LOCATION;LABEL="The venue":
                       http://dir.example.com/venues/big-hall.vcf
 
-
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 12]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
-5.3.  Structured-Location
+6.3.  Structured-Location
 
    Property name:  STRUCTURED-LOCATION
 
@@ -685,7 +749,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       value type can be set to URI or TEXT.  Other text-based value
       types
 
-   Property Parameters:  IANA, non-standard, title, loctype or format
+   Property Parameters:  IANA, non-standard, label, loctype or format
       type parameters can be specified on this property.
 
    Conformance:  This property MAY be specified zero or more times in
@@ -694,6 +758,10 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
    Description:  When used in a component the value of this property
       provides information about the event venue or of related services
       such as parking, dining, stations etc..
+
+      When a LABEL parameter is supplied the language of the label must
+      match that of the content and of the LANGUAGE parameter if
+      present.
 
    Format Definition:
 
@@ -712,21 +780,9 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 13]
+Douglass                 Expires August 24, 2013               [Page 14]
 
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
 
 
       This property is defined by the following notation:
@@ -748,7 +804,8 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                      ; but MUST NOT occur more than once
 
                      (";" fmttypeparam) /
-                     (";" titleparam) /
+                     (";" labelparam) /
+                     (";" languageparam) /
                      (";" loctypeparam) /
 
                      ; the following is OPTIONAL
@@ -764,10 +821,10 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
       The following is an example of this property.  It points to a
       venue.
 
-                    STRUCTURED-LOCATION;TITLE="The venue":
+                    STRUCTURED-LOCATION;LABEL="The venue":
                       http://dir.example.com/venues/big-hall.vcf
 
-5.4.  Structured-Resource
+6.4.  Structured-Resource
 
    Property name:  STRUCTURED-RESOURCE
 
@@ -779,16 +836,15 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
 
 
-
-Douglass                   Expires May 6, 2013                 [Page 14]
+Douglass                 Expires August 24, 2013               [Page 15]
 
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
 
 
    Value type:  The default value type for this property is URI.  The
       value type can also be set to TEXT to indicate plain text content.
 
-   Property Parameters:  IANA, non-standard, title, restype or format
+   Property Parameters:  IANA, non-standard, label, restype or format
       type parameters can be specified on this property.
 
    Conformance:  This property MAY be specified zero or more times in
@@ -796,6 +852,10 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
    Description:  When used in a component the value of this property
       provides information about resources used for the event.
+
+      When a LABEL parameter is supplied the language of the label must
+      match that of the content and of the LANGUAGE parameter if
+      present.
 
    Format Definition:
 
@@ -814,7 +874,8 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                      ; but MUST NOT occur more than once
 
                      (";" fmttypeparam) /
-                     (";" titleparam) /
+                     (";" labelparam) /
+                     (";" languageparam) /
                      (";" restypeparam) /
 
                      ; the following is OPTIONAL
@@ -823,6 +884,17 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                      (";" other-param)
 
                      )
+
+
+
+
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 16]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
 
 
    Example:
@@ -834,14 +906,7 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
                       http://dir.example.com/projectors/3d.vcf
 
 
-
-
-Douglass                   Expires May 6, 2013                 [Page 15]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
-6.  Participant Types
+7.  Participant Types
 
    This section describes types of participation and provide registered
    values for the PARTICPANT property TYPE parameter.
@@ -877,27 +942,24 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
    SPEAKER:  Speaker at an event
 
 
-7.  Extended examples
+
+
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 17]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
+8.  Extended examples
 
    The following are some examples of the use of the properties defined
    in this specification.  They include additional properties defined in
    [I-D.daboo-icalendar-extensions] which includes IMAGE and LIVEFEED.
 
-
-
-
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 16]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
-7.1.  Example 1
+8.1.  Example 1
 
    The following is an example of a VEVENT describing a concert.  It
    includes location information for the venue itself as well as
@@ -913,9 +975,9 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
    LAST-MODIFIED:20101116T145739Z
    SUMMARY:Beethoven Piano Sonatas
    UID:123456
-   STRUCTURED-LOCATION;TITLE="The venue":
+   STRUCTURED-LOCATION;LABEL="The venue":
     http://dir.example.com/venues/big-hall.vcf
-   STRUCTURED-LOCATION;TITLE="The venue":
+   STRUCTURED-LOCATION;LABEL="The venue":
     http://dir.example.com/venues/parking.vcf
    PARTICIPANT;PARTTYPE=SPONSOR:http://example.com/sponsor.vcf
    PARTICIPANT;PARTTYPE=PERFORMER:
@@ -924,39 +986,39 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
 
 
 
-8.  Security Considerations
+9.  Security Considerations
 
    Applications using these property need to be aware of the risks
    entailed in using the URIs provided as values.  See [RFC3986] for a
    discussion of the security considerations relating to URIs.
 
 
-9.  IANA Considerations
+10.  IANA Considerations
 
-9.1.  Property Registrations
+10.1.  Property Registrations
 
    This document defines the following new iCalendar properties to be
    added to the registry defined in Section 8.2.3 of [RFC5545]:
 
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 18]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
          +---------------------+---------+----------------------+
          | Property            | Status  | Reference            |
          +---------------------+---------+----------------------+
-         | PARTICIPANT         | Current | RFCXXXX, Section 5.1 |
-         | STYLED-DESCRIPTION  | Current | RFCXXXX, Section 5.2 |
-         | STRUCTURED-LOCATION | Current | RFCXXXX, Section 5.3 |
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 17]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
-         | STRUCTURED-RESOURCE | Current | RFCXXXX, Section 5.4 |
+         | PARTICIPANT         | Current | RFCXXXX, Section 6.1 |
+         | STYLED-DESCRIPTION  | Current | RFCXXXX, Section 6.2 |
+         | STRUCTURED-LOCATION | Current | RFCXXXX, Section 6.3 |
+         | STRUCTURED-RESOURCE | Current | RFCXXXX, Section 6.4 |
          +---------------------+---------+----------------------+
 
-9.2.  Parameter Registrations
+10.2.  Parameter Registrations
 
    This document defines the following new iCalendar property parameters
    to be added to the registry defined in Section 8.2.4 of [RFC5545]:
@@ -964,16 +1026,16 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
           +--------------------+---------+----------------------+
           | Property Parameter | Status  | Reference            |
           +--------------------+---------+----------------------+
-          | HASH               | Current | RFCXXXX, Section 4.1 |
-          | ID                 | Current | RFCXXXX, Section 4.2 |
-          | LOCTYPE            | Current | RFCXXXX, Section 4.3 |
-          | PARTTYPE           | Current | RFCXXXX, Section 4.4 |
-          | RESTYPE            | Current | RFCXXXX, Section 4.5 |
-          | ORDER              | Current | RFCXXXX, Section 4.6 |
-          | TITLE              | Current | RFCXXXX, Section 4.7 |
+          | HASH               | Current | RFCXXXX, Section 5.1 |
+          | ID                 | Current | RFCXXXX, Section 5.2 |
+          | LOCTYPE            | Current | RFCXXXX, Section 5.3 |
+          | PARTTYPE           | Current | RFCXXXX, Section 5.4 |
+          | RESTYPE            | Current | RFCXXXX, Section 5.5 |
+          | ORDER              | Current | RFCXXXX, Section 5.6 |
+          | LABEL              | Current | RFCXXXX, Section 5.7 |
           +--------------------+---------+----------------------+
 
-9.3.  Participant Type Registrations
+10.3.  Participant Type Registrations
 
    The following table has been used to initialize the participant types
    registry.
@@ -981,34 +1043,35 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
            +-------------------+---------+--------------------+
            | Participant Type  | Status  | Reference          |
            +-------------------+---------+--------------------+
-           | ACTIVE            | Current | RFCXXXX, Section 6 |
-           | INACTIVE          | Current | RFCXXXX, Section 6 |
-           | SPONSOR           | Current | RFCXXXX, Section 6 |
-           | CONTACT           | Current | RFCXXXX, Section 6 |
-           | BOOKING-CONTACT   | Current | RFCXXXX, Section 6 |
-           | EMERGENCY-CONTACT | Current | RFCXXXX, Section 6 |
-           | PUBLICITY-CONTACT | Current | RFCXXXX, Section 6 |
-           | PLANNER-CONTACT   | Current | RFCXXXX, Section 6 |
-           | PERFORMER         | Current | RFCXXXX, Section 6 |
-           | SPEAKER           | Current | RFCXXXX, Section 6 |
+           | ACTIVE            | Current | RFCXXXX, Section 7 |
+           | INACTIVE          | Current | RFCXXXX, Section 7 |
+           | SPONSOR           | Current | RFCXXXX, Section 7 |
+           | CONTACT           | Current | RFCXXXX, Section 7 |
+           | BOOKING-CONTACT   | Current | RFCXXXX, Section 7 |
+           | EMERGENCY-CONTACT | Current | RFCXXXX, Section 7 |
+           | PUBLICITY-CONTACT | Current | RFCXXXX, Section 7 |
+           | PLANNER-CONTACT   | Current | RFCXXXX, Section 7 |
+           | PERFORMER         | Current | RFCXXXX, Section 7 |
+           | SPEAKER           | Current | RFCXXXX, Section 7 |
            +-------------------+---------+--------------------+
 
 
-10.  Acknowledgements
+
+
+
+
+Douglass                 Expires August 24, 2013               [Page 19]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
+11.  Acknowledgements
 
    The author would like to thank Chuck Norris of eventful.com for his
    work which led to the development of this RFC.
 
    The author would also like to thank the members of the Calendaring
    and Scheduling Consortium Event Publication technical committee and
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 18]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
-
    the following individuals for contributing their ideas and support:
 
    Cyrus Daboo, John Haug, Dan Mendell, Scott Otis,
@@ -1017,12 +1080,12 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
    Consortium for advice with this specification.
 
 
-11.  Normative References
+12.  Normative References
 
    [I-D.daboo-icalendar-extensions]
               Daboo, C., "New Properties for iCalendar",
-              draft-daboo-icalendar-extensions-05 (work in progress),
-              June 2012.
+              draft-daboo-icalendar-extensions-06 (work in progress),
+              January 2013.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -1050,20 +1113,18 @@ Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
               Sperberg-McQueen, "Extensible Markup Language (XML) 1.0
               (Fourth Edition)", World Wide Web Consortium
               FirstEdition REC-xml-20060816, August 2006,
+
+
+
+Douglass                 Expires August 24, 2013               [Page 20]
+
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
+
+
               <http://www.w3.org/TR/2006/REC-xml-20060816>.
 
 
 Appendix A.  Open issues
-
-
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 19]
-
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
-
 
    restype values:  Need to determine what if nay registry of resource
       tyes already exists and use that.
@@ -1111,14 +1172,9 @@ Appendix B.  Change log
 
 
 
-
-
-
-
-
-Douglass                   Expires May 6, 2013                 [Page 20]
+Douglass                 Expires August 24, 2013               [Page 21]
 
-Internet-Draft  Event Publishing Extensions to Icalendar   November 2012
+Internet-Draft  Event Publishing Extensions to iCalendar   February 2013
 
 
 Author's Address
@@ -1172,5 +1228,5 @@ Author's Address
 
 
 
-Douglass                   Expires May 6, 2013                 [Page 21]
+Douglass                 Expires August 24, 2013               [Page 22]
 

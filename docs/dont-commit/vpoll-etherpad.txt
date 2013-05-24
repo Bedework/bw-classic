@@ -1,0 +1,111 @@
+TC-FREEBUSY-VPOLL - as of end of call 31 October 2012
+=======================================================
+VPOLL specification 
+=======================================================
+Spec outline:
+Abstract
+Introduction
+
+    Describe issues with current freebusy-based booking process
+
+    Describe how "consensus" based scheduling solves these problems
+
+    Poll will have "profiles" - easy ones to start with, then getting more complex
+
+    What is in-scope and out-of-scope
+
+Open Issues
+
+    ...
+
+Conventions
+
+    Usual IETF ABNF, XML text
+
+Overview
+
+    Describe VPOLL and and simple use case - flow diagram?
+
+    Different profiles....
+
+iCalendar Changes
+
+    VPOLL Definition
+
+    + new props/params etc
+
+iTIP Changes
+
+    New method
+
+    Changes to existing methods as they relate to VPOLL components
+
+iMIP Changes
+
+    ....
+
+CalDAV Changes
+
+    Implicit behaviors
+
+iSchedule Changes
+
+    ...
+
+IANA Considerations
+Security Considerations
+Acks
+References
+Appendix
+
+    Example 1:
+
+    Example 2:
+
+    ...
+
+
+
+
+
+Slide Topics:
+1. VOTER might not be one of the ATTENDEEs in an event.
+2. SEQ and DTSTAMP examples
+3. Response to METHOD:REFRESH
+4. Who is doing a client/server?
+5. Power grid example by Mike.
+6. What to do? What subset of feature to target for first client/server test?
+7. ACCEPT-RESPONSE note
+8. If VOTER voted yes for an event which they are also an ATTENDEE, can the server mark the ATTENDEE as accepted?
+TODO:
+
+    1. Define property for ical property that are being voted on i.e DTSTART, DTEND, LOCATATION, SUMMARY
+
+    2. Example of how a client checks a VPOLL to see if it can support it.
+
+ITIP Issues:
+
+    1. None so far.
+
+iSchedule Isssues:
+
+    1. None so far.
+
+
+
+
+Capabilities
+
+
+Slide Topics:
+
+    1. Based on old slides.
+
+    2. Overview of VPOLL
+
+    3. Small demo.
+
+    4.ATTENDEE with NON-PARTICIPANT (gets iTIP messages)  and new PARTICIPANT property (no ITIP messages)
+
+    5. Examples of common use-cases: party, open house, scheduled-events.
+

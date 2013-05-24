@@ -17,10 +17,9 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-douglass-calendar-extension-02" ipr="trust200902">
-
+<rfc category="std" docName="draft-douglass-calendar-extension-03" ipr="trust200902">
   <front>
-    <title abbrev="Event Publishing Extensions to Icalendar">Event Publishing Extensions to Icalendar</title>
+    <title abbrev="Event Publishing Extensions to iCalendar">Event Publishing Extensions to iCalendar</title>
 
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -39,7 +38,7 @@
       </address>
     </author>
 
-    <date year="2012" />
+    <date year="2013" />
 
     <area>Applications</area>
 
@@ -67,8 +66,9 @@
       <t>
         This document defines a number of properties referencing external
         information that can provide additional information about an iCalendar
-        component. The intent is that such information can be automatically
-        discovered and used by clients. Formats such as VCARD are likely to be
+        component. The intent is to allow interchange of such information between  
+        applications or systems (e.g., between clients, between client and  server, 
+        and between servers). Formats such as VCARD are likely to be
         most useful. 
       </t>
 
@@ -101,8 +101,8 @@
         publication. It is generally important to provide information about the 
         organizers of such events. Sponsors wish to be referenced in a 
         prominent manner. In social calendaring it is often important to 
-        identify the active participants in the event, for example a school 
-        sports team, and the inactive participants, for example the parents.
+        identify the active associates in the event, for example a school 
+        sports team, and the inactive associates, for example the parents.
       </t>
 
       <t>
@@ -127,13 +127,6 @@
         The TYPE and FMTTYPE parameters, if supplied, can be used to help the 
         selection.
       </t>
-      
-      <t>
-        Having located such a property, e.g. STRUCTURED-LOCATION with TYPE=PARKING, 
-        the client can use http GET on the supplied URL perhaps with an ACCEPT header set
-        to specify the desired format. The targeted server SHOULD respond with
-        a 406 if the resource is not available in the desired format(s).
-      </t>
 
       <section title="Use Cases">
         <t>
@@ -144,7 +137,7 @@
         
         <section title="Piano Concert Performance">
           <t>
-            In putting together a concert there are many participants: piano tuner,
+            In putting together a concert there are many associates: piano tuner,
             performer, stage hands etc. In addition there are sponsors and various 
             contacts to be provided. There will also be a number of related locations.
             A number of events can be created, all of
@@ -158,7 +151,7 @@
           </t>
           
           <t>
-            An event can also be created for publication which will have a PARTICIPANT
+            An event can also be created for publication which will have an ASSOCIATE
             reference to the pianist providing vcard information about the performer.
             This event would also hold information about parking, local subway stations
             and the venue itself. In addition, there will be sponsorship information 
@@ -185,55 +178,87 @@
       </section>
     </section>
 
+    <section title="Modifications to Calendar Components">
+      <t>
+        The following changes to the syntax defined in 
+        <xref target='RFC5545'>iCalendar</xref> are made here. New elements are 
+        defined in subsequent sections. 
+      <figure>
+        <artwork name="abnf"><![CDATA[
+
+eventprop /= *(
+              ;
+              ; The following are OPTIONAL,
+              ; and MAY occur more than once.
+              ;
+              styleddescription / strucloc / strucres / associate
+              ;
+              )
+
+todoprop /= *(
+             ;
+             ; The following are OPTIONAL,
+             ; and MAY occur more than once.
+             ;
+             styleddescription / strucloc / strucres / associate
+             ;
+             )
+
+jourprop /= *(
+             ;
+             ; The following are OPTIONAL,
+             ; and MAY occur more than once.
+             ;
+             styleddescription / associate
+             ;
+             )
+]]></artwork>
+      </figure></t>
+    </section>
+    
     <section anchor="relating_properties"
              title="Relating Component Properties">
       <t>
         Within a single component we sometimes need to specify which properties
         are related to each other and their state. For example, by relating a 
-        STYLED_DESCRIPTION property to the DESCRIPTION property and saving an
+        STYLED-DESCRIPTION property to the DESCRIPTION property and saving an
         indication of state, clients can know if one of them has changed and 
         notify the user. 
       </t>
       
       <t>
         This specification defines two new property parameters to enable this
-        relating of properties, the ID and the HASH.
+        relating of properties, GROUP and HASH.
       </t>
       
       <t>
-        The ID parameter provides a small integer identifier, unique for each 
-        property on which it is specified. 
+        The GROUP parameter provides identifiers for each group within
+        the component in which it is specified. It may be specified on any property.
       </t>
       
       <t>
-        The HASH parameter has a structured value with parts: 
-        <list style='hanging'>
-          <t hangText="id-value:">
-            The id of the property to which the current 
-            property is related
-          </t>
-          <t hangText="hash-value:">
-            The base65 encoded hashed value of the property to which the current 
-            property is related
-          </t>
-          <t hangText="hash-method:">
-            Method used to create that hash.
-          </t>
-        </list>  
+        The HASH parameter is intended to facilitate backwards compatability, 
+        allowing clients aware of the new STYLED-DESCRIPTION property to determine
+        if an older client has modified the DESCRIPTION.  
+      </t>
+      
+      <t>
+        The value of HASH is the base-64 encoded hashed value of the property 
+        to which the current property is related
       </t>
       
       <t>
         In the example below a STYLED-DESCRIPTION property is related to the 
-        DESCRIPTION property which has an ID value of 2. If the DESCRIPTION
-        property value is changed then the hash-value stored with the
-        STYLED-DESCRIPTION will no longer match.
+        DESCRIPTION property both of which have a GROUP value of "DESC". 
+        If the DESCRIPTION property value is changed then the hash-value stored 
+        with the STYLED-DESCRIPTION will no longer match.
       </t>
   
       <t hangText="Example:">
         <figure>
           <artwork><![CDATA[
-       DESCRIPTION;ID=2:Some Text
-       STYLED-DESCRIPTION;HASH="2,zlWCFIxvDBKCM1uH317Uvkt
+       DESCRIPTION;GROUP=DESC:Some Text
+       STYLED-DESCRIPTION;GROUP=DESC;HASH="zlWCFIxvDBKCM1uH317Uvkt
         4E5k=,SHA-1":<p>Some Text</p>
 ]]></artwork>
         </figure>
@@ -251,8 +276,7 @@
             </t>
   
             <t hangText="Purpose:">
-              To specify the identifier value and hash value and method of 
-              another property.
+              To specify the hash value and method of the DESCRIPTION.
             </t>
   
             <t hangText="Format Definition:">
@@ -263,10 +287,8 @@
   
                 <artwork type="abnf">
        hashparam = "HASH" "="    /
-                      DQUOTE idval "," hashval "," hashname DQUOTE
+                      DQUOTE hashval "," hashname DQUOTE
        ; A structured value with the following components:
-       idval = integer
-       ; Value of an ID parameter
        hashval = *QSAFE-CHAR
        ; Base64 encoded hash of the value of the property referenced by 
        ; the idval segment
@@ -277,15 +299,13 @@
             </t>
   
             <t hangText="Description:">
-              This parameter can be specified on properties that are
-              variants of another property and is used to detect 
-              changes in that property to enable the values of all variants to be
-              kept synchronized. 
+              This parameter can be specified on STYLED-DESCRIPTION and is used 
+              to detect changes in that property to enable the values of all 
+              variants to be kept synchronized. 
             </t>
       
             <t>
-              The text value should be an identifier value which SHOULD be a 
-              value specified on another property within the component, a hash 
+              The text value is a hash 
               value (encoded as a base-64 string), followed by a token describing
               the algorithm used to calculate the hash value. Algorithm
               names from the IANA Hash Function Textual Names registry [] MUST 
@@ -293,22 +313,29 @@
             </t>
             
             <t>
-              Each element of the value is separated by a single ",", 
+              Each element of the value is separated by a COMMA character, 
+            </t>
+            
+            <t>
+              Clients maintaining multiple versions of a description MAY use
+              this parameter to indicate that the associated 
+              STYLED-DESCRIPTION property needs to be updated, Removing the
+              parameter indicates that the property may be out of synch.
             </t>
           </list>
         </t>
       </section>
        
-      <section anchor="parameter_id"
-               title="Id">
+      <section anchor="parameter_group"
+               title="Group">
         <t>
           <list style='hanging'>
             <t hangText="Parameter name:">
-              ID
+              GROUP
             </t>
   
             <t hangText="Purpose:">
-              To uniquely identify a property.
+              To identify groups of properties.
             </t>
   
             <t hangText="Format Definition:">
@@ -318,20 +345,29 @@
                 </preamble>
   
                 <artwork type="abnf">
-  idparam      = "ID" "=" integer
+  groupparam   = "GROUP" "=" paramtext *("," paramtext)
                 </artwork>
               </figure>
             </t>
   
             <t hangText="Description:">
               This parameter can be specified on any property. It is used
-              to uniquely identify the property so it can be related to other 
-              properties within the same component that specify a "HASH" 
-              parameter id-value element matches the "ID" value.
+              to identify properties which are related to other 
+              properties within the same component.
             </t>
+            
             <t>
-              Properties within the same component MUST NOT have an "ID" 
-              parameter with the same value. 
+              Rather than adding extra parameters to properties the GROUP parameter
+              allow one or more properties to provide extra metadata. For example
+              we may wish to relate some form of status property to an ATTENDEE
+              to describe the status of a task. 
+            </t>
+            
+            <t>
+              It is the responsibility of calendar applications to maintain the
+              relationships between grouped items. Deleting one member of a 
+              group may imply deleting others or removing GROUP parameters from 
+              other properties. 
             </t>
           </list>
         </t>
@@ -377,16 +413,16 @@
         </t>
       </section>
 
-      <section anchor="parameter_parttype"
-               title="Parttype">
+      <section anchor="parameter_assoctype"
+               title="Assoctype">
         <t>
           <list style='hanging'>
             <t hangText="Parameter name:">
-              PARTTYPE
+              ASSOCTYPE
             </t>
   
             <t hangText="Purpose:">
-              To specify the type of participant.
+              To specify the type of associate.
             </t>
   
             <t hangText="Format Definition:">
@@ -396,15 +432,15 @@
                 </preamble>
   
                 <artwork type="abnf">
-  parttypeparam   = "PARTTYPE" "=" text
+  assoctypeparam   = "ASSOCTYPE" "=" param-value
                 </artwork>
               </figure>
             </t>
   
             <t hangText="Description:">
-              This parameter MAY be specified on the PARTICIPANT property, and
-              defines the type of participation. Allowable values are defined
-              in <xref target="participant_types"/>.
+              This parameter MAY be specified on the ASSOCIATE property, and
+              defines the type of association. Allowable values are defined
+              in <xref target="associate_types"/>.
             </t>
           </list>
         </t>
@@ -467,8 +503,7 @@
                 </preamble>
   
                 <artwork type="abnf">
-  orderparam    = "ORDER" "=" (1*3DIGIT / "100")
-                                ; An integer between 1 and 100.
+  orderparam    = "ORDER" "=" integer ;Must be in the range [1..100]
                 </artwork>
               </figure>
             </t>
@@ -501,16 +536,16 @@
         </t>
       </section>
       
-      <section anchor="parameter_title"
-               title="Title">
+      <section anchor="parameter_label"
+               title="Label">
         <t>
           <list style='hanging'>
             <t hangText="Parameter name:">
-              TITLE
+              LABEL
             </t>
   
             <t hangText="Purpose:">
-              To provide a human readable title.
+              To provide a human readable label.
             </t>
   
             <t hangText="Format Definition:">
@@ -520,14 +555,14 @@
                 </preamble>
   
                 <artwork type="abnf">
-  titleparam     = "TITLE" "=" DQUOTE text DQUOTE
+  labelparam     = "LABEL" "=" DQUOTE text DQUOTE
                 </artwork>
               </figure>
             </t>
   
             <t hangText="Description:">
-              This parameter MAY be specified on all properties defined in this 
-              specification, and
+              This parameter MAY be specified on STYLED-DESCRIPTION, ASSOCIATE,
+              STRUCTURED-LOCATION and STRUCTURED-RESOURCE and
               provides a human readable label, perhaps for icons or links..
             </t>
           </list>
@@ -537,17 +572,17 @@
 
     <section anchor="new_properties"
              title="New Properties">
-      <section anchor="participant"
-               title="Participant">
+      <section anchor="associate"
+               title="Associate">
         <t>
           <list style='hanging'>
             <t hangText="Property name:">
-              PARTICIPANT
+              ASSOCIATE
             </t>
   
             <t hangText="Purpose:">
               This property provides a typed reference to external information 
-              about participants in an event or optionally a plain text typed value.
+              about associates in an event or optionally a plain text typed value.
             </t>
   
             <t hangText="Value type:">
@@ -557,7 +592,7 @@
             </t>
   
             <t hangText="Property Parameters:">
-              Non-standard, title, parttype, order or format type parameters 
+              Non-standard, label, assoctype, order or format type parameters 
               can be specified on this property.
             </t>
   
@@ -567,9 +602,9 @@
   
             <t hangText="Description:">
               When used in a component the value of this property points to
-              information about an event participant. This is NOT an attendee
+              information about an event associate. This is NOT an attendee
               in a scheduling sense and the ATTENDEE property may in fact be 
-              specified in addition. Participants in events can be individuals
+              specified in addition. Associates in events can be individuals
               or organizations, for example a soccer team, the spectators, or
               the musicians.
             </t>
@@ -581,7 +616,7 @@
                 </preamble>
   
                 <artwork>
-  participant     = "PARTICIPANT" partparam 
+  associate     = "ASSOCIATE" assocparam 
                     (
                       ";" "VALUE" "=" "URI"
                       ":" uri)  /
@@ -591,15 +626,16 @@
                     )
                     CRLF
 
-  partparam      = *(
+  assocparam      = *(
 
                   ; the following are OPTIONAL
                   ; but MUST NOT occur more than once
 
                   (";" fmttypeparam) /
-                  (";" titleparam) /
+                  (";" labelparam) /
                   (";" orderparam) /
-                  (";" parttypeparam) /
+                  (";" assoctypeparam) /
+                  (";" groupparam) /
 
                   ; the following is OPTIONAL
                   ; and MAY occur more than once
@@ -614,18 +650,18 @@
   
             <t hangText="Note:">
               When the ORDER parameter is supplied it defines the ordering of
-              PARTICIPANT properties with the same value for the TYPE parameter.
+              ASSOCIATE properties with the same value for the TYPE parameter.
             </t>
   
             <t hangText="Example:">
               <figure>
                 <preamble>
                   The following is an example of this property.  It points to a
-                  VCARD providing information on an event participant.
+                  VCARD providing information on an event associate.
                 </preamble>
   
                 <artwork>
-                 PARTICIPANT;PARTTYPE=PRINCIPAL_PERFORMER:
+                 ASSOCIATE;ASSOCTYPE=PRINCIPAL_PERFORMER:
                    http://dir.example.com/vcard/aviolinist.vcf
                 </artwork>
               </figure>
@@ -639,8 +675,8 @@
                 </preamble>
   
                 <artwork>
-                 PARTICIPANT;FMTTYPE=text/vcard;
-                   PARTTYPE=PRIMARY-CONTACT;TITLE=A contact:
+                 ASSOCIATE;FMTTYPE=text/vcard;
+                   ASSOCTYPE=PRIMARY-CONTACT;LABEL=A contact:
                    http://dir.example.com/vcard/contacts/contact1.vcf
                 </artwork>
               </figure>
@@ -654,8 +690,8 @@
                 </preamble>
   
                 <artwork>
-                 PARTICIPANT;FMTTYPE=text/vcard;
-                   PARTTYPE=PLANNER-CONTACT;TITLE=ClownsIsUs:
+                 ASSOCIATE;FMTTYPE=text/vcard;
+                   ASSOCTYPE=PLANNER-CONTACT;LABEL=ClownsIsUs:
                    http://dir.example.com/vcard/clowns-is-us.vcf
                 </artwork>
               </figure>
@@ -673,8 +709,8 @@
             </t>
   
             <t hangText="Purpose:">
-              This property provides a more complete description of the
-              calendar component than that provided by the "SUMMARY" property.
+              This property provides for one or more rich-text descriptions to 
+              replace or augment that provided by the DESCRIPTION property.
             </t>
   
             <t hangText="Value type:">
@@ -706,12 +742,12 @@
             </t>
             
             <t>
-              VALUE=TEXT is used to provide html variants of the plain-text
+              VALUE=TEXT is used to provide rich-text variants of the plain-text
               DESCRIPTION property.
             </t>
             
             <t>
-              VALUE=URI is used to provide a link to html content which is 
+              VALUE=URI is used to provide a link to rich-text content which is 
               expected to be displayed inline as part of the event.
             </t>
             
@@ -722,11 +758,27 @@
             </t>
             
             <t>
-              The intent of this property is limited to providing a styled 
-              version of the DESCRIPTION property. The URL property should be 
-              used to link to websites or other related information.
+              The intent of this property is limited to providing a styled and/or
+              language specific version of the DESCRIPTION property. The URL 
+              property should be used to link to websites or other related information.
             </t>
-  
+
+            <t>
+              Applications MAY attempt to guess the media type of the
+              resource via inspection of its content if and only if the media
+              type of the resource is not given by the "FMTTYPE" parameter.  If
+              the media type remains unknown, calendar applications SHOULD treat
+              it as type "text/html".
+            </t>
+
+            <t>
+              Multiple STYLED-DESCRIPTION properties may be used to provide
+              different formats or different language variants. The GROUP 
+              paramater may be used to relate members of the group This is useful
+              for VJOURNAL for example which allows multiple, unrelated, 
+              DESCRIPTION properties.
+            </t>  
+            
             <t hangText="Format Definition:">
               <figure>
                 <preamble>
@@ -735,22 +787,29 @@
   
                 <artwork>
   styleddescription = "STYLED-DESCRIPTION" styleddescparam ":" 
-                                      text CRLF
+                    (
+                      ";" "VALUE" "=" "URI"
+                      ":" uri)  /
+                    (
+                    (
+                      ";" "VALUE" "=" "TEXT"
+                      ":" text
+                    )
+                    CRLF
 
   styleddescparam   = *(
-               ;
-               ; The following are OPTIONAL,
-               ; but MUST NOT occur more than once.
-               ;
-               (";" altrepparam) / (";" languageparam) /
-               (";" hashparam) / (";" idparam) / 
-               ;
-               ; The following is OPTIONAL,
-               ; and MAY occur more than once.
-               ;
-               (";" valueparam)
-               ; The value of this parameter MUST match the type of
-               ; data supplied in the value of the property
+                 ;
+                 ; The following are OPTIONAL,
+                 ; but MUST NOT occur more than once.
+                 ;
+                 (";" altrepparam) / (";" languageparam) / 
+                 (";" fmttypeparam) / (";" hashparam) / 
+                 (";" groupparam) / 
+  
+                 ; the following is OPTIONAL
+                 ; and MAY occur more than once
+  
+                 (";" other-param)
 
                 </artwork>
               </figure>
@@ -759,13 +818,12 @@
             <t hangText="Example:">
               <figure>
                 <preamble>
-                  The following is an example of this property.  It points to a
-                  venue.
+                  The following is an example of this property.  It points to an
+                  html description.
                 </preamble>
   
                 <artwork>
-                 STRUCTURED-LOCATION;TITLE="The venue":
-                   http://dir.example.com/venues/big-hall.vcf
+       STYLED-DESCRIPTION;VALUE=URI:http://example.org/desc001.html
                 </artwork>
               </figure>
             </t>
@@ -792,7 +850,7 @@
             </t>
   
             <t hangText="Property Parameters:">
-              IANA, non-standard, title, loctype or format type parameters can be
+              IANA, non-standard, label, loctype or format type parameters can be
               specified on this property.
             </t>
   
@@ -805,6 +863,11 @@
               When used in a component the value of this property provides
               information about the event venue or of related services such as
               parking, dining, stations etc..
+            </t>
+            
+            <t>
+              When a LABEL parameter is supplied the language of the label must
+              match that of the content and of the LANGUAGE parameter if present.
             </t>
   
             <t hangText="Format Definition:">
@@ -831,8 +894,10 @@
                   ; but MUST NOT occur more than once
 
                   (";" fmttypeparam) /
-                  (";" titleparam) /
+                  (";" labelparam) /
+                  (";" languageparam) /
                   (";" loctypeparam) /
+                  (";" groupparam) /
 
                   ; the following is OPTIONAL
                   ; and MAY occur more than once
@@ -853,7 +918,7 @@
                 </preamble>
   
                 <artwork>
-                 STRUCTURED-LOCATION;TITLE="The venue":
+                 STRUCTURED-LOCATION;LABEL="The venue":
                    http://dir.example.com/venues/big-hall.vcf
                 </artwork>
               </figure>
@@ -882,7 +947,7 @@
             </t>
   
             <t hangText="Property Parameters:">
-              IANA, non-standard, title, restype or format type parameters can be
+              IANA, non-standard, label, restype or format type parameters can be
               specified on this property.
             </t>
   
@@ -894,6 +959,11 @@
             <t hangText="Description:">
               When used in a component the value of this property provides
               information about resources used for the event.
+            </t>
+            
+            <t>
+              When a LABEL parameter is supplied the language of the label must
+              match that of the content and of the LANGUAGE parameter if present.
             </t>
   
             <t hangText="Format Definition:">
@@ -916,8 +986,10 @@
                   ; but MUST NOT occur more than once
 
                   (";" fmttypeparam) /
-                  (";" titleparam) /
+                  (";" labelparam) /
+                  (";" languageparam) /
                   (";" restypeparam) /
+                  (";" groupparam) /
 
                   ; the following is OPTIONAL
                   ; and MAY occur more than once
@@ -948,29 +1020,29 @@
       </section>
     </section>
 
-    <section anchor="participant_types"
-             title="Participant Types">
+    <section anchor="associate_types"
+             title="Associate Types">
       <t>
-        This section describes types of participation and provide registered
-        values for the PARTICPANT property PARTTYPE parameter.
+        This section describes types of association and provide registered
+        values for the ASSOCIATE property ASSOCTYPE parameter.
       </t>
       <t>
         <list style='hanging'>
           <t hangText="ACTIVE:" >
-            A participant taking an active role - for example a team member.
+            An associate taking an active role - for example a team member.
           </t>
           
           <t hangText="INACTIVE:">
-            A particpant taking an inactive part - for example an audience member.
+            An associate taking an inactive part - for example an audience member.
           </t>
           
           <t hangText="SPONSOR:">
             A sponsor of the event. The ORDER parameter may be used with this
-            participant type to define the relative order of multiple sponsors.
+            associate type to define the relative order of multiple sponsors.
           </t>
           <t hangText="CONTACT:">
             Contact information for the event. The ORDER parameter may be used with this
-            participant type to define the relative order of multiple contacts.
+            associate type to define the relative order of multiple contacts.
           </t>
           
           <t hangText="BOOKING-CONTACT:">
@@ -991,7 +1063,7 @@
           
           <t hangText="PERFORMER:">
             A performer - for example the soloist or the accompianist.  The 
-            ORDER parameter may be used with this  participant type to define 
+            ORDER parameter may be used with this  associate type to define 
             the relative order of multiple sponsors. For example,ORDER=1 could
             define the principal performer or soloist.
           </t>
@@ -1030,12 +1102,12 @@ DTEND;TZID=America/New_York:20110315T163000Z
 LAST-MODIFIED:20101116T145739Z
 SUMMARY:Beethoven Piano Sonatas
 UID:123456
-STRUCTURED-LOCATION;TITLE="The venue":
+STRUCTURED-LOCATION;LABEL="The venue":
  http://dir.example.com/venues/big-hall.vcf
-STRUCTURED-LOCATION;TITLE="The venue":
+STRUCTURED-LOCATION;LABEL="The venue":
  http://dir.example.com/venues/parking.vcf
-PARTICIPANT;PARTTYPE=SPONSOR:http://example.com/sponsor.vcf 
-PARTICIPANT;PARTTYPE=PERFORMER:
+ASSOCIATE;ASSOCTYPE=SPONSOR:http://example.com/sponsor.vcf 
+ASSOCIATE;ASSOCTYPE=PERFORMER:
  http://www.example.com/people/johndoe.vcf
 END:VEVENT
 
@@ -1064,9 +1136,9 @@ END:VEVENT
           <ttcol align="left">Status</ttcol>
           <ttcol align="left">Reference</ttcol>
 
-          <c>PARTICIPANT</c>
+          <c>ASSOCIATE</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant"/></c>
+          <c>RFCXXXX, <xref target="associate"/></c>
 
           <c>STYLED-DESCRIPTION</c>
           <c>Current</c>
@@ -1093,86 +1165,86 @@ END:VEVENT
           <ttcol align="left">Status</ttcol>
           <ttcol align="left">Reference</ttcol>
 
+          <c>ASSOCTYPE</c>
+          <c>Current</c>
+          <c>RFCXXXX, <xref target="parameter_assoctype"/></c>
+
+          <c>GROUP</c>
+          <c>Current</c>
+          <c>RFCXXXX, <xref target="parameter_group"/></c>
+
           <c>HASH</c>
           <c>Current</c>
           <c>RFCXXXX, <xref target="parameter_hash"/></c>
 
-          <c>ID</c>
+          <c>LABEL</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="parameter_id"/></c>
+          <c>RFCXXXX, <xref target="parameter_label"/></c>
 
           <c>LOCTYPE</c>
           <c>Current</c>
           <c>RFCXXXX, <xref target="parameter_loctype"/></c>
 
-          <c>PARTTYPE</c>
-          <c>Current</c>
-          <c>RFCXXXX, <xref target="parameter_parttype"/></c>
-
-          <c>RESTYPE</c>
-          <c>Current</c>
-          <c>RFCXXXX, <xref target="parameter_restype"/></c>
-
           <c>ORDER</c>
           <c>Current</c>
           <c>RFCXXXX, <xref target="parameter_order"/></c>
 
-          <c>TITLE</c>
+          <c>RESTYPE</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="parameter_title"/></c>
+          <c>RFCXXXX, <xref target="parameter_restype"/></c>
         </texttable>
       </section>
       
-      <section anchor="participant_type_registrations"
-               title="Participant Type Registrations" >
+      <section anchor="associate_type_registrations"
+               title="Associate Type Registrations" >
         <t>
-          The following table has been used to initialize the participant
+          The following table has been used to initialize the associate
    types registry.
         </t>
         <texttable>
-          <ttcol align="left">Participant Type</ttcol>
+          <ttcol align="left">Associate Type</ttcol>
           <ttcol align="left">Status</ttcol>
           <ttcol align="left">Reference</ttcol>
 
           <c>ACTIVE</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>INACTIVE</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>SPONSOR</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>CONTACT</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>BOOKING-CONTACT</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>EMERGENCY-CONTACT</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>PUBLICITY-CONTACT</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>PLANNER-CONTACT</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>PERFORMER</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
 
           <c>SPEAKER</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="participant_types"/></c>
+          <c>RFCXXXX, <xref target="associate_types"/></c>
         </texttable>
       </section>
     </section>
@@ -1228,11 +1300,7 @@ END:VEVENT
       <t>
         <list style='hanging'>
           <t hangText="restype values:" >
-            Need to determine what if any registry of resource tyes already
-            exists and use that.
-          </t>
-          <t hangText="hash methods:" >
-            Need to determine what if any registry of hash methods already
+            Need to determine what if nay registry of resource tyes already
             exists and use that.
           </t>
         </list>
@@ -1241,7 +1309,27 @@ END:VEVENT
     
     <section title="Change log">
       <t>
-        v01 2012-11-02  MD   
+        v03 2013-03-06  MD   
+        <list style='symbols'>
+          <t>
+            Replace PARTICIPANT with ASSOCIATE plus related changes.
+          </t>
+          <t>
+            Added section showing modifications to components.
+          </t>
+          <t>
+            Replace ID with GROUP and modify HASH.
+          </t>
+          <t>
+            Replace TITLE param with LABEL.
+          </t>
+          <t>
+            Fixed STYLED-DESCRIPTION in various ways, correct example.
+          </t>
+        </list>
+      </t>
+      <t>
+        v02 2012-11-02  MD   
         <list style='symbols'>
           <t>
             Collapse sections with description of properties and the use cases 

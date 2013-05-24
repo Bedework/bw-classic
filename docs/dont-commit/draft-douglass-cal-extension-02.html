@@ -1,0 +1,1709 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>Event Publishing Extensions to Icalendar</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Event Publishing Extensions to Icalendar">
+<meta name="keywords" content="icalendar, properties">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">M. Douglass</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">RPI</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">November 2, 2012</td></tr>
+<tr><td class="header">Expires: May 6, 2013</td><td class="header">&nbsp;</td></tr>
+</table></td></tr></table>
+<h1><br />Event Publishing Extensions to Icalendar<br />draft-douglass-calendar-extension-02</h1>
+
+<h3>Abstract</h3>
+
+<p>
+        This specification introduces a number of new iCalendar properties
+        which are of particular use for event publishers and in social
+        networking.
+      
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on May 6, 2013.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2012 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#conventions">1.1.</a>&nbsp;
+Conventions Used in This Document<br />
+<a href="#anchor2">2.</a>&nbsp;
+Typed References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">2.1.</a>&nbsp;
+Use Cases<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">2.1.1.</a>&nbsp;
+Piano Concert Performance<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">2.1.2.</a>&nbsp;
+Itineraries<br />
+<a href="#relating_properties">3.</a>&nbsp;
+Relating Component Properties<br />
+<a href="#new_property_parameters">4.</a>&nbsp;
+New Property Parameters<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_hash">4.1.</a>&nbsp;
+Hash<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_id">4.2.</a>&nbsp;
+Id<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_loctype">4.3.</a>&nbsp;
+Loctype<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_parttype">4.4.</a>&nbsp;
+Parttype<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_restype">4.5.</a>&nbsp;
+Restype<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_order">4.6.</a>&nbsp;
+Order<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_title">4.7.</a>&nbsp;
+Title<br />
+<a href="#new_properties">5.</a>&nbsp;
+New Properties<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#participant">5.1.</a>&nbsp;
+Participant<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#styled-description">5.2.</a>&nbsp;
+Styled-Description<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#structured-location">5.3.</a>&nbsp;
+Structured-Location<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#structured-resource">5.4.</a>&nbsp;
+Structured-Resource<br />
+<a href="#participant_types">6.</a>&nbsp;
+Participant Types<br />
+<a href="#anchor6">7.</a>&nbsp;
+Extended examples<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">7.1.</a>&nbsp;
+Example 1<br />
+<a href="#anchor8">8.</a>&nbsp;
+Security Considerations<br />
+<a href="#iana_considerations">9.</a>&nbsp;
+IANA Considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#property_registrations">9.1.</a>&nbsp;
+Property Registrations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#parameter_registrations">9.2.</a>&nbsp;
+Parameter Registrations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#participant_type_registrations">9.3.</a>&nbsp;
+Participant Type Registrations<br />
+<a href="#anchor9">10.</a>&nbsp;
+Acknowledgements<br />
+<a href="#rfc.references1">11.</a>&nbsp;
+Normative References<br />
+<a href="#anchor11">Appendix&nbsp;A.</a>&nbsp;
+Open issues<br />
+<a href="#anchor12">Appendix&nbsp;B.</a>&nbsp;
+Change log<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Author's Address<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>
+        The currently existing iCalendar standard <a class='info' href='#RFC5545'>[RFC5545]<span> (</span><span class='info'>Desruisseaux, B., &ldquo;Internet Calendaring and Scheduling Core Object Specification (iCalendar),&rdquo; September&nbsp;2009.</span><span>)</span></a> lacks
+        useful methods for referencing additional, external information
+        relating to calendar components.
+      
+</p>
+<p>
+        This document defines a number of properties referencing external
+        information that can provide additional information about an iCalendar
+        component. The intent is that such information can be automatically
+        discovered and used by clients. Formats such as VCARD are likely to be
+        most useful. 
+      
+</p>
+<p>
+        In addition a new property is defined to support HTML descriptions. 
+      
+</p>
+<a name="conventions"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+Conventions Used in This Document</h3>
+
+<p>
+          The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+          NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+          "MAY", and "OPTIONAL" in this document are to be interpreted as
+          described in <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+        
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Typed References</h3>
+
+<p>
+        The properties defined here can all reference external meta-data which  
+        may be used by applications to
+        provide enhanced value to users. By providing type information  
+        as parameters, clients and servers are able to discover interesting 
+        references and make use of them, perhaps for indexing or the 
+        presentation of additional related information for the user. 
+      
+</p>
+<p>
+        These properties are designed to handle common use cases in event 
+        publication. It is generally important to provide information about the 
+        organizers of such events. Sponsors wish to be referenced in a 
+        prominent manner. In social calendaring it is often important to 
+        identify the active participants in the event, for example a school 
+        sports team, and the inactive participants, for example the parents.
+      
+</p>
+<p>
+        The <a class='info' href='#RFC5545'>[RFC5545]<span> (</span><span class='info'>Desruisseaux, B., &ldquo;Internet Calendaring and Scheduling Core Object Specification (iCalendar),&rdquo; September&nbsp;2009.</span><span>)</span></a> LOCATION property provides only
+        an unstructured single text value for specifying the location where an event
+        (or "TODO" item) will occur. This is inadequate for use cases where
+        structured location information (e.g. address, region, country, 
+        postal code) is required or preferred, and limits widespread adoption of
+        iCalendar in those settings. 
+      
+</p>
+<p>
+        Using STRUCTURED-LOCATION, information about a number of interesting 
+        locations can be communicated, for example, parking, restaurants and
+        the venue. Servers and clients can retrieve the objects when
+        storing the event and use them to index by geographic location.
+      
+</p>
+<p>
+        When a calendar client receives a calendar component it can search the 
+        set of supplied properties looking for those of particular interest.
+        The TYPE and FMTTYPE parameters, if supplied, can be used to help the 
+        selection.
+      
+</p>
+<p>
+        Having located such a property, e.g. STRUCTURED-LOCATION with TYPE=PARKING, 
+        the client can use http GET on the supplied URL perhaps with an ACCEPT header set
+        to specify the desired format. The targeted server SHOULD respond with
+        a 406 if the resource is not available in the desired format(s).
+      
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
+Use Cases</h3>
+
+<p>
+          The main motivation for these properties has been event publication but 
+          there are opportunities for use elsewhere. The following use cases will
+          describe some possible scenarios.
+        
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1.1"></a><h3>2.1.1.&nbsp;
+Piano Concert Performance</h3>
+
+<p>
+            In putting together a concert there are many participants: piano tuner,
+            performer, stage hands etc. In addition there are sponsors and various 
+            contacts to be provided. There will also be a number of related locations.
+            A number of events can be created, all of
+            which relate to the performance in different ways. 
+          
+</p>
+<p>
+            There may be an iTip meeting request for the piano tuner who will arrive 
+            before the performance. Other members of staff may also receive meeting
+            requests.
+          
+</p>
+<p>
+            An event can also be created for publication which will have a PARTICIPANT
+            reference to the pianist providing vcard information about the performer.
+            This event would also hold information about parking, local subway stations
+            and the venue itself. In addition, there will be sponsorship information 
+            for sponsors of the event and perhaps paid sponsorship properties
+            essentially advertising local establishments.
+          
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1.2"></a><h3>2.1.2.&nbsp;
+Itineraries</h3>
+
+<p>
+            These properties also provide opportunities for the travel industry.
+            When booking a flight the SPONSOR property can be used to provide 
+            references to businesses at the airports and to car hire businesses
+            at the destination.
+          
+</p>
+<p>
+            The embedded location information can guide the traveller at the airport
+            or to their final destination. The contact information can provide
+            detailed information about the booking agent, the airlines and car hire 
+            companies and the hotel. 
+          
+</p>
+<a name="relating_properties"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Relating Component Properties</h3>
+
+<p>
+        Within a single component we sometimes need to specify which properties
+        are related to each other and their state. For example, by relating a 
+        STYLED_DESCRIPTION property to the DESCRIPTION property and saving an
+        indication of state, clients can know if one of them has changed and 
+        notify the user. 
+      
+</p>
+<p>
+        This specification defines two new property parameters to enable this
+        relating of properties, the ID and the HASH.
+      
+</p>
+<p>
+        The ID parameter provides a small integer identifier, unique for each 
+        property on which it is specified. 
+      
+</p>
+<p>
+        The HASH parameter has a structured value with parts: 
+        </p>
+<blockquote class="text"><dl>
+<dt>id-value:</dt>
+<dd>
+            The id of the property to which the current 
+            property is related
+          
+</dd>
+<dt>hash-value:</dt>
+<dd>
+            The base65 encoded hashed value of the property to which the current 
+            property is related
+          
+</dd>
+<dt>hash-method:</dt>
+<dd>
+            Method used to create that hash.
+          
+</dd>
+</dl></blockquote><p>  
+      
+</p>
+<p>
+        In the example below a STYLED-DESCRIPTION proeprty is related to the 
+        DESCRIPTION property which has an ID value of 2. If the DESCRIPTION
+        property value is changed then the hash-value stored with the
+        STYLED-DESCRIPTION will no longer match.
+      
+</p>
+<p>
+        </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+       DESCRIPTION;ID=2:Some Text
+       STYLED-DESCRIPTION;HASH="2,zlWCFIxvDBKCM1uH317Uvkt
+        4E5k=,SHA-1":&lt;p&gt;Some Text&lt;/p&gt;
+</pre></div><p>
+
+      
+</p>
+<a name="new_property_parameters"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+New Property Parameters</h3>
+
+<a name="parameter_hash"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+Hash</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+              HASH
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              To specify the identifier value and hash value and method of 
+              another property.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This parameter is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+       <dfn>hashparam</dfn> = "<span class='str'>HASH</span>" "<span class='str'>=</span>"    /
+                      <cite class='key'>DQUOTE</cite> <cite class='id'>idval</cite> "<span class='str'>,</span>" <cite class='id'>hashval</cite> "<span class='str'>,</span>" <cite class='id'>hashname</cite> <cite class='key'>DQUOTE</cite>
+       <em>; A structured value with the following components:</em>
+       <dfn>idval</dfn> = <cite class='id'>integer</cite>
+       <em>; Value of an ID parameter</em>
+       <dfn>hashval</dfn> = <span class='rep'>*</span><cite class='id'>QSAFE-CHAR</cite>
+       <em>; Base64 encoded hash of the value of the property referenced by </em>
+       <em>; the idval segment</em>
+       <dfn>hashname</dfn> = <span class='rep'>*</span><cite class='id'>QSAFE-CHAR</cite>
+       <em>; Name of the hash function used to calculate the hash value</em>
+</pre></div>
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              This parameter can be specified on properties that are
+              variants of another property and is used to detect 
+              changes in that property to enable the values of all variants to be
+              kept synchronized. 
+            
+</dd>
+<dt></dt>
+<dd>
+              The text value should be an identifier value which SHOULD be a 
+              value specified on another propety within the component, a hash 
+              value (encoded as a base-64 string), followed by a token describing
+              the algorithm used to calculate the hash value. Algorithm
+              names from the IANA Hash Function Textual Names registry [] MUST 
+              be used.
+            
+</dd>
+<dt></dt>
+<dd>
+              Each element of the value is separated by a single ",", 
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="parameter_id"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+Id</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+              ID
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              To uniquely identify a property.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This parameter is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  <dfn>idparam</dfn>      = "<span class='str'>ID</span>" "<span class='str'>=</span>" <cite class='id'>integer</cite>
+</pre></div>
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              This parameter can be specified on any property. It is used
+              to uniquely identify the property so it can be related to other 
+              properties within the same component that specify a "HASH" 
+              parameter id-value element matches the "ID" value.
+            
+</dd>
+<dt></dt>
+<dd>
+              Properties within the same component MUST NOT have an "ID" 
+              parameter with the same value. 
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="parameter_loctype"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
+Loctype</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+              LOCTYPE
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              To specify the type of location.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This parameter is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  <dfn>loctypeparam</dfn>   = "<span class='str'>LOCTYPE</span>" "<span class='str'>=</span>" <cite class='id'>param-value</cite>
+</pre></div>
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              This parameter MAY be specified on STRUCTURED-LOCATION and
+              provides a way to differentiate multiple properties. For example, 
+              it allows event producers to provide location information for 
+              the venue and the parking.
+            
+</dd>
+<dt></dt>
+<dd>
+              Values for this parameter are taken from the values defined in 
+              <a class='info' href='#RFC5545'>[RFC5545]<span> (</span><span class='info'>Desruisseaux, B., &ldquo;Internet Calendaring and Scheduling Core Object Specification (iCalendar),&rdquo; September&nbsp;2009.</span><span>)</span></a>. New location types SHOULD be 
+              registered in the manner laid down in that specification
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="parameter_parttype"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
+Parttype</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+              PARTTYPE
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              To specify the type of participant.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This parameter is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  <dfn>parttypeparam</dfn>   = "<span class='str'>PARTTYPE</span>" "<span class='str'>=</span>" <cite class='id'>text</cite>
+</pre></div>
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              This parameter MAY be specified on the PARTICIPANT property, and
+              defines the type of participation. Allowable values are defined
+              in <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a>.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="parameter_restype"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.5"></a><h3>4.5.&nbsp;
+Restype</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+              RESTYPE
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              To specify the type of resource.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This parameter is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  <dfn>restypeparam</dfn>   = "<span class='str'>RESTYPE</span>" "<span class='str'>=</span>" <cite class='id'>param-value</cite>
+</pre></div>
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              This parameter MAY be specified on STRUCTURED-RESOURCE and
+              provides a way to differentiate multiple properties.
+            
+</dd>
+<dt></dt>
+<dd>
+              Values for this parameter are taken from the values defined in 
+              [todo]. New resource types SHOULD be 
+              registered in the manner laid down in that specification
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="parameter_order"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.6"></a><h3>4.6.&nbsp;
+Order</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+              ORDER
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              To define ordering for the associated property.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This parameter is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  <dfn>orderparam</dfn>    = "<span class='str'>ORDER</span>" "<span class='str'>=</span>" (<span class='rep'>1*3</span><cite class='key'>DIGIT</cite> / "<span class='str'>100</span>")
+                                <em>; An integer between 1 and 100.</em>
+</pre></div>
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              The ORDER parameter is OPTIONAL and is used to indicate the
+              relative ordering of the corresponding instance of a property.
+              Its value MUST be an integer between 1 and 100 that
+              quantifies the order.  Lower values correspond to a
+              higher level of ordering, with 1 being the highest.
+            
+</dd>
+<dt></dt>
+<dd>
+              When the parameter is absent, the default MUST be to interpret the
+              property instance as being at the lowest level of ordering.
+            
+</dd>
+<dt></dt>
+<dd>
+              Note that the value of this parameter is to be interpreted only in
+              relation to values assigned to other correcsponding instances of 
+              the same property in the same entity. A given value, or the 
+              absence of a value, MUST NOT be interpreted on its own.
+            
+</dd>
+<dt></dt>
+<dd>
+              This parameter MAY be applied to any property that allows multiple
+              instances.
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="parameter_title"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.7"></a><h3>4.7.&nbsp;
+Title</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Parameter name:</dt>
+<dd>
+              TITLE
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              To provide a human readable title.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This parameter is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  <dfn>titleparam</dfn>     = "<span class='str'>TITLE</span>" "<span class='str'>=</span>" <cite class='key'>DQUOTE</cite> <cite class='id'>text</cite> <cite class='key'>DQUOTE</cite>
+</pre></div>
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              This parameter MAY be specified on all properties defined in this 
+              specification, and
+              provides a human readable label, perhaps for icons or links..
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="new_properties"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+New Properties</h3>
+
+<a name="participant"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+Participant</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Property name:</dt>
+<dd>
+              PARTICIPANT
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              This property provides a typed reference to external information 
+              about participants in an event or optionally a plain text typed value.
+            
+</dd>
+<dt>Value type:</dt>
+<dd>
+              The default value type for this property is URI.  The
+              value type can also be set to TEXT to indicate plain text
+              content.
+            
+</dd>
+<dt>Property Parameters:</dt>
+<dd>
+              Non-standard, title, parttype, order or format type parameters 
+              can be specified on this property.
+            
+</dd>
+<dt>Conformance:</dt>
+<dd>
+              This property MAY be specified in any iCalendar component.
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              When used in a component the value of this property points to
+              information about an event participant. This is NOT an attendee
+              in a scheduling sense and the ATTENDEE property may in fact be 
+              specified in addition. Participants in events can be individuals
+              or organizations, for example a soccer team, the spectators, or
+              the musicians.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This property is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  participant     = "PARTICIPANT" partparam
+                    (
+                      ";" "VALUE" "=" "URI"
+                      ":" uri)  /
+                    (
+                      ";" "VALUE" "=" "TEXT"
+                      ":" text
+                    )
+                    CRLF
+
+  partparam      = *(
+
+                  ; the following are OPTIONAL
+                  ; but MUST NOT occur more than once
+
+                  (";" fmttypeparam) /
+                  (";" titleparam) /
+                  (";" orderparam) /
+                  (";" parttypeparam) /
+
+                  ; the following is OPTIONAL
+                  ; and MAY occur more than once
+
+                  (";" other-param)
+
+                  )
+
+</pre></div>
+            
+</dd>
+<dt>Note:</dt>
+<dd>
+              When the ORDER parameter is supplied it defines the ordering of
+              PARTICIPANT properties with the same value for the TYPE parameter.
+            
+</dd>
+<dt>Example:</dt>
+<dd>
+              
+<p>
+                  The following is an example of this property.  It points to a
+                  VCARD providing information on an event participant.
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+                 PARTICIPANT;PARTTYPE=PRINCIPAL_PERFORMER:
+                   http://dir.example.com/vcard/aviolinist.vcf
+</pre></div>
+            
+</dd>
+<dt>Example:</dt>
+<dd>
+              
+<p>
+                  The following is an example referring to a
+                  VCARD providing information on the primary contact.
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+                 PARTICIPANT;FMTTYPE=text/vcard;
+                   PARTTYPE=PRIMARY-CONTACT;TITLE=A contact:
+                   http://dir.example.com/vcard/contacts/contact1.vcf
+</pre></div>
+            
+</dd>
+<dt>Example:</dt>
+<dd>
+              
+<p>
+                  The following is an example of the property used to link to
+                  VCARD information on the event planner.
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+                 PARTICIPANT;FMTTYPE=text/vcard;
+                   PARTTYPE=PLANNER-CONTACT;TITLE=ClownsIsUs:
+                   http://dir.example.com/vcard/clowns-is-us.vcf
+</pre></div>
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="styled-description"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Styled-Description</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Property name:</dt>
+<dd>
+              STYLED-DESCRIPTION
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              This property provides a more complete description of the
+              calendar component than that provided by the "SUMMARY" property.
+            
+</dd>
+<dt>Value type:</dt>
+<dd>
+              There is no default value type for this property.  The value type
+              can be set to URI or TEXT. Other text-based value types
+              can be used when defined in the future. Clients MUST ignore any properties
+              with value types they do not understand.
+            
+</dd>
+<dt>Property Parameters:</dt>
+<dd>
+              IANA, non-standard, hash, id, alternate text
+              representation, and language property parameters can be specified
+              on this property.
+            
+</dd>
+<dt>Conformance:</dt>
+<dd>
+              The property can be specified multiple times in the "VEVENT", "VTODO",
+      "VJOURNAL", or "VALARM" calendar components.
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              This property is used in the "VEVENT" and "VTODO" to
+              capture lengthy textual descriptions associated with the activity.
+              This property is used in the "VJOURNAL" calendar component to
+              capture one or more textual journal entries.
+              This property is used in the "VALARM" calendar component to
+              capture the display text for a DISPLAY category of alarm, and to
+              capture the body text for an EMAIL category of alarm.
+            
+</dd>
+<dt></dt>
+<dd>
+              VALUE=TEXT is used to provide html variants of the plain-text
+              DESCRIPTION property.
+            
+</dd>
+<dt></dt>
+<dd>
+              VALUE=URI is used to provide a link to html content which is 
+              expected to be displayed inline as part of the event.
+            
+</dd>
+<dt></dt>
+<dd>
+              The "HASH" parameter value is calculated from the value of any  
+              "DESCRIPTION" property present in the same component. If no  
+              "DESCRIPTION" is present, then the "HASH" parameter MUST NOT be present.
+            
+</dd>
+<dt></dt>
+<dd>
+              The intent of this property is limited to providing a styled 
+              version of the DESCRIPTION property. The URL property should be 
+              used to link to websites or other related information.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This property is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  styleddescription = "STYLED-DESCRIPTION" styleddescparam ":"
+                                      text CRLF
+
+  styleddescparam   = *(
+               ;
+               ; The following are OPTIONAL,
+               ; but MUST NOT occur more than once.
+               ;
+               (";" altrepparam) / (";" languageparam) /
+               (";" hashparam) / (";" idparam) /
+               ;
+               ; The following is OPTIONAL,
+               ; and MAY occur more than once.
+               ;
+               (";" valueparam)
+               ; The value of this parameter MUST match the type of
+               ; data supplied in the value of the property
+
+</pre></div>
+            
+</dd>
+<dt>Example:</dt>
+<dd>
+              
+<p>
+                  The following is an example of this property.  It points to a
+                  venue.
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+                 STRUCTURED-LOCATION;TITLE="The venue":
+                   http://dir.example.com/venues/big-hall.vcf
+</pre></div>
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="structured-location"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+Structured-Location</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Property name:</dt>
+<dd>
+              STRUCTURED-LOCATION
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              This property provides a typed reference to external information 
+              about the location of an event or optionally a plain text typed value.
+            
+</dd>
+<dt>Value type:</dt>
+<dd>
+              There is no default value type for this property.  The value type
+              can be set to URI or TEXT. Other text-based value types
+            
+</dd>
+<dt>Property Parameters:</dt>
+<dd>
+              IANA, non-standard, title, loctype or format type parameters can be
+              specified on this property.
+            
+</dd>
+<dt>Conformance:</dt>
+<dd>
+              This property MAY be specified zero or more times in any iCalendar 
+              component.
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              When used in a component the value of this property provides
+              information about the event venue or of related services such as
+              parking, dining, stations etc..
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This property is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  strucloc        = "STRUCTURED-LOCATION" struclocparam
+                    (
+                      ";" "VALUE" "=" "URI"
+                      ":" uri)  /
+                    (
+                    (
+                      ";" "VALUE" "=" "TEXT"
+                      ":" text
+                    )
+                    CRLF
+
+  struclocparam   = *(
+
+                  ; the following are OPTIONAL
+                  ; but MUST NOT occur more than once
+
+                  (";" fmttypeparam) /
+                  (";" titleparam) /
+                  (";" loctypeparam) /
+
+                  ; the following is OPTIONAL
+                  ; and MAY occur more than once
+
+                  (";" other-param)
+
+                  )
+
+</pre></div>
+            
+</dd>
+<dt>Example:</dt>
+<dd>
+              
+<p>
+                  The following is an example of this property.  It points to a
+                  venue.
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+                 STRUCTURED-LOCATION;TITLE="The venue":
+                   http://dir.example.com/venues/big-hall.vcf
+</pre></div>
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="structured-resource"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+Structured-Resource</h3>
+
+<p>
+          </p>
+<blockquote class="text"><dl>
+<dt>Property name:</dt>
+<dd>
+              STRUCTURED-RESOURCE
+            
+</dd>
+<dt>Purpose:</dt>
+<dd>
+              This property provides a typed reference to external information 
+              about a resource or optionally a plain text typed value.
+            
+</dd>
+<dt>Value type:</dt>
+<dd>
+              The default value type for this property is URI.  The
+              value type can also be set to TEXT to indicate plain text
+              content.
+            
+</dd>
+<dt>Property Parameters:</dt>
+<dd>
+              IANA, non-standard, title, restype or format type parameters can be
+              specified on this property.
+            
+</dd>
+<dt>Conformance:</dt>
+<dd>
+              This property MAY be specified zero or more times in any iCalendar 
+              component.
+            
+</dd>
+<dt>Description:</dt>
+<dd>
+              When used in a component the value of this property provides
+              information about resources used for the event.
+            
+</dd>
+<dt>Format Definition:</dt>
+<dd>
+              
+<p>
+                  This property is defined by the following notation:
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+  strucres       = "STRUCTURED-LOCATION" strucresparam (":" uri)  /
+                    (
+                      ";" "VALUE" "=" "TEXT"
+                      ":" text
+                    )
+                    CRLF
+
+  strucresparam  = *(
+
+                  ; the following are OPTIONAL
+                  ; but MUST NOT occur more than once
+
+                  (";" fmttypeparam) /
+                  (";" titleparam) /
+                  (";" restypeparam) /
+
+                  ; the following is OPTIONAL
+                  ; and MAY occur more than once
+
+                  (";" other-param)
+
+                  )
+
+</pre></div>
+            
+</dd>
+<dt>Example:</dt>
+<dd>
+              
+<p>
+                  The following is an example of this property. It refers to a
+                  projector.
+                
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+                 STRUCTURED-RESOURCE;restype="projector":
+                   http://dir.example.com/projectors/3d.vcf
+</pre></div>
+            
+</dd>
+</dl></blockquote><p>
+        
+</p>
+<a name="participant_types"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+Participant Types</h3>
+
+<p>
+        This section describes types of participation and provide registered
+        values for the PARTICPANT property TYPE parameter.
+      
+</p>
+<p>
+        </p>
+<blockquote class="text"><dl>
+<dt>ACTIVE:</dt>
+<dd>
+            A participant taking an active role - for example a team member.
+          
+</dd>
+<dt>INACTIVE:</dt>
+<dd>
+            A particpant taking an inactive part - for example an audience member.
+          
+</dd>
+<dt>SPONSOR:</dt>
+<dd>
+            A sponsor of the event. The ORDER parameter may be used with this
+            participant type to define the relative order of multiple sponsors.
+          
+</dd>
+<dt>CONTACT:</dt>
+<dd>
+            Contact information for the event. The ORDER parameter may be used with this
+            participant type to define the relative order of multiple contacts.
+          
+</dd>
+<dt>BOOKING-CONTACT:</dt>
+<dd>
+            Contact information for reservations or payment
+          
+</dd>
+<dt>EMERGENCY-CONTACT:</dt>
+<dd>
+            Contact in case of emergency
+          
+</dd>
+<dt>PUBLICITY-CONTACT:</dt>
+<dd>
+            Contact for publicity 
+          
+</dd>
+<dt>PLANNER-CONTACT:</dt>
+<dd>
+            Contact for the event planner or organizer
+          
+</dd>
+<dt>PERFORMER:</dt>
+<dd>
+            A performer - for example the soloist or the accompianist.  The 
+            ORDER parameter may be used with this  participant type to define 
+            the relative order of multiple sponsors. For example,ORDER=1 could
+            define the principal performer or soloist.
+          
+</dd>
+<dt>SPEAKER:</dt>
+<dd>
+            Speaker at an event 
+          
+</dd>
+</dl></blockquote><p>
+      
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+Extended examples</h3>
+
+<p>
+       The following are some examples of the use of the properties defined in 
+       this specification. They include additional properties defined in 
+       <a class='info' href='#I-D.daboo-icalendar-extensions'>[I&#8209;D.daboo&#8209;icalendar&#8209;extensions]<span> (</span><span class='info'>Daboo, C., &ldquo;New Properties for iCalendar,&rdquo; June&nbsp;2012.</span><span>)</span></a> which includes IMAGE and LIVEFEED.  
+      
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+Example 1</h3>
+
+<p>
+            The following is an example of a VEVENT describing a concert. 
+            It includes location 
+            information for the venue itself as well as references to parking and 
+            restaurants. 
+          
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+BEGIN:VEVENT
+CREATED:20101116T145739Z
+DESCRIPTION: Piano Sonata No 3\n
+ Piano Sonata No 30
+DTSTAMP:20101116T145739Z
+DTSTART;TZID=America/New_York:20110315T150000Z
+DTEND;TZID=America/New_York:20110315T163000Z
+LAST-MODIFIED:20101116T145739Z
+SUMMARY:Beethoven Piano Sonatas
+UID:123456
+STRUCTURED-LOCATION;TITLE="The venue":
+ http://dir.example.com/venues/big-hall.vcf
+STRUCTURED-LOCATION;TITLE="The venue":
+ http://dir.example.com/venues/parking.vcf
+PARTICIPANT;PARTTYPE=SPONSOR:http://example.com/sponsor.vcf
+PARTICIPANT;PARTTYPE=PERFORMER:
+ http://www.example.com/people/johndoe.vcf
+END:VEVENT
+
+</pre></div>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Security Considerations</h3>
+
+<p>
+       Applications using these property need to be aware of the risks 
+       entailed in using the URIs provided as values. See [RFC3986] for 
+       a discussion of the security considerations relating to URIs. 
+      
+</p>
+<a name="iana_considerations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9"></a><h3>9.&nbsp;
+IANA Considerations</h3>
+
+<a name="property_registrations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.1"></a><h3>9.1.&nbsp;
+Property Registrations</h3>
+
+<p>
+          This document defines the following new iCalendar properties to be
+          added to the registry defined in Section 8.2.3 of <a class='info' href='#RFC5545'>[RFC5545]<span> (</span><span class='info'>Desruisseaux, B., &ldquo;Internet Calendaring and Scheduling Core Object Specification (iCalendar),&rdquo; September&nbsp;2009.</span><span>)</span></a>:
+        
+</p><table class="full" align="center" border="0" cellpadding="2" cellspacing="2">
+<col align="left"><col align="left"><col align="left">
+<tr><th align="left">Property</th><th align="left">Status</th><th align="left">Reference</th></tr>
+<tr>
+<td align="left">PARTICIPANT</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant'>Section&nbsp;5.1<span> (</span><span class='info'>Participant</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">STYLED-DESCRIPTION</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#styled-description'>Section&nbsp;5.2<span> (</span><span class='info'>Styled-Description</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">STRUCTURED-LOCATION</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#structured-location'>Section&nbsp;5.3<span> (</span><span class='info'>Structured-Location</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">STRUCTURED-RESOURCE</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#structured-resource'>Section&nbsp;5.4<span> (</span><span class='info'>Structured-Resource</span><span>)</span></a></td>
+</tr>
+</table>
+<br clear="all" />
+
+<a name="parameter_registrations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.2"></a><h3>9.2.&nbsp;
+Parameter Registrations</h3>
+
+<p>
+          This document defines the following new iCalendar property parameters
+          to be added to the registry defined in Section 8.2.4 of <a class='info' href='#RFC5545'>[RFC5545]<span> (</span><span class='info'>Desruisseaux, B., &ldquo;Internet Calendaring and Scheduling Core Object Specification (iCalendar),&rdquo; September&nbsp;2009.</span><span>)</span></a>:
+        
+</p><table class="full" align="center" border="0" cellpadding="2" cellspacing="2">
+<col align="left"><col align="left"><col align="left">
+<tr><th align="left">Property Parameter</th><th align="left">Status</th><th align="left">Reference</th></tr>
+<tr>
+<td align="left">HASH</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#parameter_hash'>Section&nbsp;4.1<span> (</span><span class='info'>Hash</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">ID</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#parameter_id'>Section&nbsp;4.2<span> (</span><span class='info'>Id</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">LOCTYPE</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#parameter_loctype'>Section&nbsp;4.3<span> (</span><span class='info'>Loctype</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">PARTTYPE</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#parameter_parttype'>Section&nbsp;4.4<span> (</span><span class='info'>Parttype</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">RESTYPE</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#parameter_restype'>Section&nbsp;4.5<span> (</span><span class='info'>Restype</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">ORDER</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#parameter_order'>Section&nbsp;4.6<span> (</span><span class='info'>Order</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">TITLE</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#parameter_title'>Section&nbsp;4.7<span> (</span><span class='info'>Title</span><span>)</span></a></td>
+</tr>
+</table>
+<br clear="all" />
+
+<a name="participant_type_registrations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.3"></a><h3>9.3.&nbsp;
+Participant Type Registrations</h3>
+
+<p>
+          The following table has been used to initialize the participant
+   types registry.
+        
+</p><table class="full" align="center" border="0" cellpadding="2" cellspacing="2">
+<col align="left"><col align="left"><col align="left">
+<tr><th align="left">Participant Type</th><th align="left">Status</th><th align="left">Reference</th></tr>
+<tr>
+<td align="left">ACTIVE</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">INACTIVE</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">SPONSOR</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">CONTACT</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">BOOKING-CONTACT</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">EMERGENCY-CONTACT</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">PUBLICITY-CONTACT</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">PLANNER-CONTACT</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">PERFORMER</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+<tr>
+<td align="left">SPEAKER</td>
+<td align="left">Current</td>
+<td align="left">RFCXXXX, <a class='info' href='#participant_types'>Section&nbsp;6<span> (</span><span class='info'>Participant Types</span><span>)</span></a></td>
+</tr>
+</table>
+<br clear="all" />
+
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.10"></a><h3>10.&nbsp;
+Acknowledgements</h3>
+
+<p>
+        The author would like to thank Chuck Norris of eventful.com for his work 
+        which led to the development of this RFC.  
+      
+</p>
+<p>
+        The author would also like to thank the members of the Calendaring and
+        Scheduling Consortium Event Publication technical committee and the following
+        individuals for contributing their ideas and support:
+      
+</p>
+<p>
+        Cyrus Daboo, John Haug, Dan Mendell, Scott Otis,
+      
+</p>
+<p>
+        The authors would also like to thank the Calendaring and
+        Scheduling Consortium for advice with this specification.
+      
+</p>
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>11.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="I-D.daboo-icalendar-extensions">[I-D.daboo-icalendar-extensions]</a></td>
+<td class="author-text">Daboo, C., &ldquo;<a href="http://tools.ietf.org/html/draft-daboo-icalendar-extensions-05">New Properties for iCalendar</a>,&rdquo; draft-daboo-icalendar-extensions-05 (work in progress), June&nbsp;2012 (<a href="http://www.ietf.org/internet-drafts/draft-daboo-icalendar-extensions-05.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2434">[RFC2434]</a></td>
+<td class="author-text"><a href="mailto:narten@raleigh.ibm.com">Narten, T.</a> and <a href="mailto:Harald@Alvestrand.no">H. Alvestrand</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2434">Guidelines for Writing an IANA Considerations Section in RFCs</a>,&rdquo; BCP&nbsp;26, RFC&nbsp;2434, October&nbsp;1998 (<a href="http://www.rfc-editor.org/rfc/rfc2434.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2434.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2434.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3688">[RFC3688]</a></td>
+<td class="author-text">Mealling, M., &ldquo;<a href="http://tools.ietf.org/html/rfc3688">The IETF XML Registry</a>,&rdquo; BCP&nbsp;81, RFC&nbsp;3688, January&nbsp;2004 (<a href="http://www.rfc-editor.org/rfc/rfc3688.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[RFC3986]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4589">[RFC4589]</a></td>
+<td class="author-text">Schulzrinne, H. and H. Tschofenig, &ldquo;<a href="http://tools.ietf.org/html/rfc4589">Location Types Registry</a>,&rdquo; RFC&nbsp;4589, July&nbsp;2006 (<a href="http://www.rfc-editor.org/rfc/rfc4589.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5545">[RFC5545]</a></td>
+<td class="author-text">Desruisseaux, B., &ldquo;<a href="http://tools.ietf.org/html/rfc5545">Internet Calendaring and Scheduling Core Object Specification (iCalendar)</a>,&rdquo; RFC&nbsp;5545, September&nbsp;2009 (<a href="http://www.rfc-editor.org/rfc/rfc5545.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="W3C.REC-xml-20060816">[W3C.REC-xml-20060816]</a></td>
+<td class="author-text">Yergeau, F., Paoli, J., Bray, T., Maler, E., and C. Sperberg-McQueen, &ldquo;<a href="http://www.w3.org/TR/2006/REC-xml-20060816">Extensible Markup Language (XML) 1.0 (Fourth Edition)</a>,&rdquo; World Wide Web Consortium FirstEdition&nbsp;REC-xml-20060816, August&nbsp;2006 (<a href="http://www.w3.org/TR/2006/REC-xml-20060816">HTML</a>).</td></tr>
+</table>
+
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Open issues</h3>
+
+<p>
+        </p>
+<blockquote class="text"><dl>
+<dt>restype values:</dt>
+<dd>
+            Need to determine what if nay registry of resource tyes already
+            exists and use that.
+          
+</dd>
+</dl></blockquote><p>
+      
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+Change log</h3>
+
+<p>
+        v01 2012-11-02  MD   
+        </p>
+<ul class="text">
+<li>
+            Collapse sections with description of properties and the use cases 
+            into a section with sub-sections.
+          
+</li>
+<li>
+            New section to describe relating properties.
+          
+</li>
+<li>
+            Remove idref and upgrade hash to have the reference
+          
+</li>
+<li>
+            No default value types on properties..
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        v01 2012-10-18  MD    Many changes.
+        </p>
+<ul class="text">
+<li>
+            SPONSOR and STRUCTURED-CONTACT are now in PARTICIPANT
+          
+</li>
+<li>
+            Add a STRUCTURED-RESOURCE property
+          
+</li>
+<li>
+            STYLED-DESCRIPTION to handle rich text
+          
+</li>
+<li>
+            Much more...
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        2011-01-07 
+        </p>
+<ul class="text">
+<li>
+            Remove MEDIA - it's going in the Cyrus RFC
+          
+</li>
+<li>
+            Rename EXTENDED-... to STRUCTURED-...
+          
+</li>
+<li>
+            Add TYPE parameter to SPONSOR
+          
+</li>
+</ul><p>
+      
+</p>
+<p>
+        v00 2007-10-19  MD    Initial version
+      
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Author's Address</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Michael Douglass</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Rensselaer Polytechnic Institute</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">110 8th Street</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Troy, NY  12180</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">USA</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:douglm@rpi.edu">douglm@rpi.edu</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://www.rpi.edu/">http://www.rpi.edu/</a></td></tr>
+</table>
+</body></html>
