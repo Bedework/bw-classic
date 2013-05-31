@@ -374,6 +374,30 @@
       <key column="eventid" foreign-key="bw_event_avluid_fk" />
       <element type="string" column="avluid" not-null="true"/>
     </set>
+    
+    <!-- =============== Polls =============== -->
+
+    <property name="pollItemId"
+              column="bw_poll_itemid"
+              type="integer" />
+              
+    <property name="pollMode" type="string"
+              column="bw_poll_mode" length="50" />
+              
+    <property name="pollProperties" type="string"
+              column="bw_poll_properties" length="500" />
+              
+    <property name="pollAcceptResponse" type="string"
+              column="bw_poll_accept_response" length="500" />
+
+    <set name="pollItemNames" lazy="true" table="bw_event_pollitemnames">
+      <key column="eventid" foreign-key="bw_event_pitm_fk" />
+      <element type="string" column="bw_pitemname" not-null="true"/>
+    </set>
+
+    <property name="pollCandidate"
+              column="bw_poll_candidate"
+              type="boolean" />
   </class>
 
   <!--

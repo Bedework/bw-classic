@@ -14,6 +14,8 @@
       <generator class="native"/>
     </id>
 
+    <property name="type" column="bwtype" type="integer" />
+    
     <property name="cn" type="string" length="2000" />
     <property name="cuType" column="cutype" type="string" length="2000"/>
     <property name="delegatedFrom" column="delegated_from" type="string"
@@ -37,6 +39,9 @@
               length="100"/>
 
     <property name="dtstamp" column="dtstamp" type="string" length="16" />
+
+    <property name="response" column="bw_response" type="integer" />
+    <property name="stayInformed" type="true_false"/>
   </class>
 </hibernate-mapping>
 

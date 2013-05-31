@@ -5,6 +5,8 @@
     <publicCalendarRoot>public</publicCalendarRoot>
     <userCalendarRoot>user</userCalendarRoot>
     <userDefaultCalendar>calendar</userDefaultCalendar>
+    <userDefaultTasksCalendar>tasks</userDefaultTasksCalendar>
+    <userDefaultPollsCalendar>polls</userDefaultPollsCalendar>
     <defaultNotificationsName>Notifications</defaultNotificationsName>
     <defaultReferencesName>References</defaultReferencesName>
     <userInbox>Inbox</userInbox>

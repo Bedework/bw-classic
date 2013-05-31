@@ -1078,11 +1078,13 @@ javacmd="$javacmd $BWCONFIG"
 javacmd="$javacmd $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
 javacmd="$javacmd -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib"
 
-#if [ "$1" != "" ] ; then
-#  mvncmd="mvn $mvn_quiet -Dmaven.test.skip=true $1"
-#else
+#echo "par 1 = $1"
+
+if [ "$1" = "clean" ] ; then
+  mvncmd="mvn clean"
+else
   mvncmd="mvn $mvn_quiet -Dmaven.test.skip=true install"
-#fi
+fi
 
 echo "mvncmd = $mvncmd"
 
