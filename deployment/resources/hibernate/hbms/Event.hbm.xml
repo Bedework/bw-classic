@@ -390,9 +390,9 @@
     <property name="pollAcceptResponse" type="string"
               column="bw_poll_accept_response" length="500" />
 
-    <set name="pollItemNames" lazy="true" table="bw_event_pollitemnames">
+    <set name="pollItems" lazy="true" table="bw_event_pollitems">
       <key column="eventid" foreign-key="bw_event_pitm_fk" />
-      <element type="string" column="bw_pitemname" not-null="true"/>
+      <element type="string" column="bw_pitem" not-null="true"/>
     </set>
 
     <property name="pollCandidate"
