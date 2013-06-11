@@ -912,6 +912,9 @@ x-props.
    <!-- key is a manufactured multi-part string - will be unique -->
    <field name="key" type="string" indexed="true" stored="true" required="true" /> 
 
+   <!-- _version_ is a name known to solr. This field is required for optimistic locking -->
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+
    <!-- type of the indexed entity - related to class of object calendar/event etc-->
    <field name="itemType" type="string" indexed="true" stored="true" required="true" />
 
@@ -987,7 +990,7 @@ x-props.
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
-   <field name="default" type="text_general" indexed="true" stored="false" multiValued="true"/>
+   <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
    <!-- catchall text field that indexes tokens both normally and in reverse for efficient
         leading wildcard queries. -->
@@ -1066,12 +1069,12 @@ x-props.
         is added to the index.  It's used either to index the same field differently,
         or to add multiple fields to the same field for easier/faster searching.  -->
 
-   <copyField source="comment" dest="default"/>
-   <copyField source="contact" dest="default"/>
-   <copyField source="location_str" dest="default"/>
-   <copyField source="resources" dest="default"/>
-   <copyField source="summary" dest="default"/>
-   <copyField source="description" dest="default"/>
+   <copyField source="comment" dest="text"/>
+   <copyField source="contact" dest="text"/>
+   <copyField source="location_str" dest="text"/>
+   <copyField source="resources" dest="text"/>
+   <copyField source="summary" dest="text"/>
+   <copyField source="description" dest="text"/>
 
    <!-- Above, multiple source fields are copied to the [text] field. 
 	  Another way to map multiple source fields to the same 
