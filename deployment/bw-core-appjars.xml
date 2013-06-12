@@ -370,7 +370,7 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="solr-solrj" version="3.6.0"/>
+              name="solr-solrj" version="4.3.0"/>
       
       <!-- Might be able to get rid of this if we use system xalan -->
       <getJar lib="${org.bedework.temp.extrajars.dir}"
