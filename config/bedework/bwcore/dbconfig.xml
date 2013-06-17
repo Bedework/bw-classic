@@ -4,7 +4,7 @@
                  type="org.bedework.calcore.hibernate.DbConfig">
   <hibernateProperties>
     <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
-    <hibernateProperty>hibernate.connection.datasource=java:/CardDS</hibernateProperty>
+    <hibernateProperty>hibernate.connection.datasource=java:/CalendarDS</hibernateProperty>
     <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
     <hibernateProperty>hibernate.show_sql=false</hibernateProperty>
     <hibernateProperty>hibernate.format_sql=true</hibernateProperty>

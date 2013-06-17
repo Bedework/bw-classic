@@ -35,15 +35,13 @@
     <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
     <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
     
-    <useSolr>true</useSolr>
     <solrURL>http://localhost:8080/solr/</solrURL>
     
     <!-- Path to the core admin handlers. Configured into solr.xml -->
     <solrCoreAdmin>admin/cores/</solrCoreAdmin>
     
-    <!-- The name of the default index we use in solr for public indexing.
-         As we switch cores we use this as the base.  --> 
-    <solrDefaultCore>bwpublic</solrDefaultCore>
+    <solrPublicCore>bwpublic</solrPublicCore>
+    <solrUserCore>bwpublic</solrUserCore>
     
     <eventregUrl>http://localhost:8080/eventreg/</eventregUrl>
 

@@ -13,8 +13,6 @@
     <userOutbox>Outbox</userOutbox>
 
     <publicUser>public-user</publicUser>
-
-    <indexRoot>lucene/indexroot</indexRoot>
     
     <globalResourcesPath>/Resources/</globalResourcesPath>
     
