@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<bwselfreg xmlns="http://bedework.org/ns/"
+           type="SelfregConfigProperties">
+  <ldapUrl>ldap://localhost:10389</ldapUrl>
+  <baseDn>dc=bedework, dc=org</baseDn>
+  <accountsOu>accounts</accountsOu>
+  <accountsDn>ou=accounts, dc=bedework, dc=org</accountsDn>
+  <accountsAttr>uid</accountsAttr>
+  <groupsOu>groups</groupsOu>
+  <groupsDn>ou=groups, dc=bedework, dc=org</groupsDn>
+  <adminId>uid=admin,ou=system</adminId>
+  <adminPw>secret</adminPw>
+  <mailProtocol>smtp</mailProtocol>
+  <mailProtocolClass>com.sun.mail.smtp.SMTPTransport</mailProtocolClass>
+  <mailServerIp>localhost</mailServerIp>
+  <mailFrom>bedework@bedework.org</mailFrom>
+  <mailSubject>Bedework self registration</mailSubject>
+  <mailDisabled>false</mailDisabled>
+</bwselfreg>
