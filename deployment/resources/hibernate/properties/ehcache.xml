@@ -285,7 +285,7 @@
     <!-- preferences cache - these change infrequently and we should be able to cache all entries
          in use
         -->
-    <cache name="bwpubevents.org.bedework.calfacade.svc.prefs.BwPreferences"
+    <cache name="bwpubevents.org.bedework.calfacade.BwPreferences"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
@@ -293,7 +293,7 @@
         overflowToDisk="true"
         />
 
-    <cache name="bwpubevents.org.bedework.calfacade.svc.prefs.BwPreferences.subscriptions"
+    <cache name="bwpubevents.org.bedework.calfacade.BwPreferences.subscriptions"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
@@ -301,7 +301,7 @@
         overflowToDisk="true"
         />
 
-    <cache name="bwpubevents.org.bedework.calfacade.svc.prefs.BwPreferences.views"
+    <cache name="bwpubevents.org.bedework.calfacade.BwPreferences.views"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
@@ -447,7 +447,7 @@
     <!-- preferences cache - these change infrequently and we should be able to cache all entries
          in use
         -->
-    <cache name="calendardb.org.bedework.calfacade.svc.prefs.BwPreferences"
+    <cache name="calendardb.org.bedework.calfacade.BwPreferences"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
@@ -455,7 +455,7 @@
         overflowToDisk="true"
         />
 
-    <cache name="calendardb.org.bedework.calfacade.svc.prefs.BwPreferences.subscriptions"
+    <cache name="calendardb.org.bedework.calfacade.BwPreferences.subscriptions"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
@@ -463,7 +463,7 @@
         overflowToDisk="true"
         />
 
-    <cache name="calendardb.org.bedework.calfacade.svc.prefs.BwPreferences.views"
+    <cache name="calendardb.org.bedework.calfacade.BwPreferences.views"
         maxElementsInMemory="10000"
         eternal="false"
         timeToIdleSeconds="300"
