@@ -22,6 +22,7 @@ SET CLASSPATH=%CLASSPATH%;"%QUICKSTART_HOME%\bedework\build\quickstart\antlib"
 
 :: Default some parameters
 SET BWCONFIGS=
+SET BWJMXCONFIG=
 SET bwc=default
 SET BWCONFIG=
 SET offline=
@@ -100,6 +101,7 @@ SET action=
 
 SET deploylog4j=
 SET deployActivemq=
+SET deployConf=
 SET deployData=
 SET deploySolr=
 SET dirstart=
@@ -114,6 +116,13 @@ GOTO branch
 :quickstart
   ECHO     Preparing quickstart build ...
   SET quickstart="yes"
+  SHIFT
+  GOTO branch
+
+:bwjmxconf
+  :: Define location of jmx configs
+  SHIFT
+  SET BWJMXCONFIG=%1
   SHIFT
   GOTO branch
 
@@ -135,9 +144,9 @@ GOTO branch
   SET offline="-Dorg.bedework.offline.build=yes"
   SHIFT
   GOTO branch
-  
 
-:: ----------------------- Log level       
+
+:: ----------------------- Log level
 
 :log-silent
   SET ant_loglevel="-quiet"
@@ -172,49 +181,55 @@ GOTO branch
   SET bw_loglevel="-Dorg.bedework.build.inform=true -Dorg.bedework.build.noisy=true -Dorg.bedework.build.debug=true "
   SHIFT
   GOTO branch
-      
+
 :: ----------------------- Special targets
 :deploylog4j
   SET deploylog4j="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-      
+
 :deployActivemq
   SET deployActivemq="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-      
+
+:deployConf
+  SET deployConf="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
 :deployData
   SET deployData="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-      
+
 :deploySolr
   SET deploySolr="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-      
+
 :dirstart
   SET dirstart="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-      
+
 :saveData
   SET saveData="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-      
+
 :: ----------------------- PROJECTS
 
 :access
   SET access="yes"
-  
+
   SET bwxml="yes"
   SET rpiutil="yes"
   SET pkgdefault=
@@ -226,16 +241,16 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwann
   SET bwannotations="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwcaldav
   SET bwcaldav="yes"
-  
+
   SET access="yes"
   SET bwannotations="yes"
   SET bwcalfacade="yes"
@@ -249,10 +264,10 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwcalcore
   SET bwcalcore="yes"
-  
+
   SET access="yes"
   SET bwannotations="yes"
   SET bwcalfacade="yes"
@@ -266,10 +281,10 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwcalfacade
   SET bwcalfacade="yes"
-  
+
   SET access="yes"
   SET bwannotations="yes"
   SET bwxml="yes"
@@ -279,20 +294,20 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwicalendar
   SET bwicalendar="yes"
-  
+
   SET bwannotations="yes"
   SET bwcalfacade="yes"
   SET bwxml="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwinterfaces
   SET bwinterfaces="yes"
-  
+
   SET access="yes"
   SET bwannotations="yes"
   SET bwcalfacade="yes"
@@ -303,7 +318,7 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwsysevents
   SET bwsysevents="yes"
 
@@ -311,16 +326,16 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwtools
   SET bwtools="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwwebapps
   SET bwwebapps="yes"
-  
+
   SET access="yes"
   SET bwannotations="yes"
   SET bwcalfacade="yes"
@@ -333,13 +348,13 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :bwxml
   SET bwxml="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :caldav
   SET caldav="yes"
 
@@ -350,7 +365,7 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :caldavTest
   SET caldavTest="yes"
 
@@ -361,7 +376,7 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :carddav
   SET carddav="yes"
 
@@ -372,16 +387,16 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :client
   SET client="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :dumprestore
   SET dumprestore="yes"
-  
+
   SET access="yes"
   SET bwannotations="yes"
   SET bwcalcore="yes"
@@ -394,19 +409,19 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :eventreg
   SET eventreg="yes"
-  
+
   SET bwxml="yes"
   SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :indexer
   SET indexer="yes"
-  
+
   SET access="yes"
   SET bwannotations="yes"
   SET bwcalcore="yes"
@@ -418,7 +433,7 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :monitor
   SET monitor="yes"
   SET pkgdefault=
@@ -430,7 +445,7 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :rpiutil
   SET rpiutil="yes"
 
@@ -438,15 +453,15 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :selfreg
   SET selfreg="yes"
-      
+
   SET rpiutil="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :synch
   SET synch="yes"
 
@@ -456,13 +471,13 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :testsuite
   SET testsuite="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :tzsvr
   SET tzsvr="yes"
 
@@ -471,7 +486,7 @@ GOTO branch
   SET pkgdefault=
   SHIFT
   GOTO branch
-  
+
 :webdav
   SET webdav="yes"
 
@@ -489,20 +504,20 @@ GOTO branch
   rem    ECHO *******************************************************
   rem    GOTO:EOF
 rem :foundProjectToUpdate
-  
+
     ECHO *************************************************************
     ECHO Updating project %%p
     ECHO *************************************************************
-    
+
     svn update %%p
   )
 
   GOTO:EOF
-  
+
 :zoneinfo
    ECHO    zoneinfo target is not supported on Windows
    GOTO:EOF
-   
+
 :buildwebcache
    cd %QUICKSTART_HOME%\cachedfeeder
    buildWebCache.bat
@@ -512,18 +527,11 @@ rem :foundProjectToUpdate
   cd %QUICKSTART_HOME%\cachedfeeder
   "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" deploy-webcache
    GOTO:EOF
-   
+
 :deployurlbuilder
   cd %QUICKSTART_HOME%\cachedfeeder
   "%JAVA_HOME%\bin\java.exe" -classpath %CLASSPATH% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" deploy-urlbuilder
    GOTO:EOF
-   
-:jbossNotice 
-  ECHO *************************************************************
-  ECHO The jboss configuration has been removed from the quickstart.
-  ECHO It is now the default.  Remove the '-bwc jboss' option.
-  ECHO *************************************************************
-  GOTO:EOF
 
 :doneWithArgs
 
@@ -548,8 +556,6 @@ IF NOT "%pkgdefault%" == "yes" GOTO notdefault
 
 :notdefault
 
-IF "%bwc%" == "jboss" GOTO jbossNotice
-
 IF NOT "%quickstart%empty" == "empty" GOTO checkBwConfig
 IF NOT "%BWCONFIGS%empty" == "empty" GOTO DoneQB
 SET BWCONFIGS=%HOMEPATH%\bwbuild
@@ -560,8 +566,14 @@ GOTO doneQB
   SET BWCONFIGS=%QUICKSTART_HOME%\bedework\config\bwbuild
 
 :doneQB
+
+IF NOT "%$BWJMXCONFIG%empty" == "empty" GOTO DoneJmxConfig
+  SET BWJMXCONFIG=%QUICKSTART_HOME%\bedework\config\bedework
+:DoneJmxConfig
+
   SET BEDEWORK_CONFIGS_HOME=%BWCONFIGS%
   SET BEDEWORK_CONFIG=%BWCONFIGS%\%bwc%
+  SET BEDEWORK_JMX_CONFIG=%BWJMXCONFIG%
 
   IF EXIST "%BEDEWORK_CONFIGS_HOME%\.platform" GOTO foundDotPlatform
   ECHO *******************************************************
@@ -599,6 +611,7 @@ GOTO doneQB
   IF NOT "%dirstart%empty" == "empty" GOTO cdDirstart
   IF NOT "%deploylog4j%empty" == "empty" GOTO cdDeploylog4j
   IF NOT "%deployActivemq%empty" == "empty" GOTO cdDeployActivemq
+  IF NOT "%deployConf%empty" == "empty" GOTO cdDeployConf
   IF NOT "%deployData%empty" == "empty" GOTO cdDeployData
   IF NOT "%deploySolr%empty" == "empty" GOTO cdDeploySolr
   IF NOT "%saveData%empty" == "empty" GOTO cdSaveData
@@ -613,7 +626,7 @@ GOTO doneQB
   IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
   IF NOT "%caldavTest%empty" == "empty"  GOTO cdCaldavTest
   IF NOT "%carddav%empty" == "empty" GOTO cdCarddav
-  IF NOT "%bwannotations%empty" == "empty" GOTO cdBwannotations  
+  IF NOT "%bwannotations%empty" == "empty" GOTO cdBwannotations
   IF NOT "%bwcalfacade%empty" == "empty" GOTO cdBwcalFacade
   IF NOT "%bwinterfaces%empty" == "empty" GOTO cdBwinterfaces
   IF NOT "%bwsysevents%empty" == "empty" GOTO cdBwsysevents
@@ -633,9 +646,9 @@ GOTO doneQB
   IF NOT "%bwtools%empty" == "empty"  GOTO cdBwtools
   IF NOT "%tzsvr%empty" == "empty"   GOTO cdTzsvr
   IF NOT "%selfreg%empty" == "empty" GOTO cdSelfreg
-  
+
 GOTO:EOF
-    
+
 :doant
   ECHO     WORKING DIRECTORY = %cd%
   ECHO     COMMAND =  "%JAVA_HOME%\bin\java.exe" -Xmx512M -XX:MaxPermSize=512M -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
@@ -644,7 +657,7 @@ GOTO:EOF
   "%JAVA_HOME%\bin\java.exe" -Xmx512M -XX:MaxPermSize=512M -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %1
 
   GOTO runBedework
-    
+
 :dospecial
   ECHO     WORKING DIRECTORY = %cd%
   ECHO     COMMAND =  "%JAVA_HOME%\bin\java.exe" -Xmx512M -XX:MaxPermSize=512M -classpath %CLASSPATH% %offline% -Dant.home="%ANT_HOME%" org.apache.tools.ant.launch.Launcher "%BWCONFIG%" %ant_listener% %ant_logger% %ant_loglevel% %bw_loglevel% %specialTarget%
@@ -655,164 +668,170 @@ GOTO:EOF
   GOTO runBedework
 
 :: Special targets
-  
+
 :cdDirstart
   cd %QUICKSTART_HOME%
   SET dirstart=
   SET specialTarget="dirstart"
   GOTO dospecial
-  
+
 :cdDeploylog4j
   cd %QUICKSTART_HOME%
   SET deploylog4j=
   SET specialTarget="deploylog4j"
   GOTO dospecial
-  
+
 :cdDeployActivemq
   cd %QUICKSTART_HOME%
   SET deployActivemq=
   SET specialTarget="deployActivemq"
   GOTO dospecial
-  
+
+:cdDeployConf
+  cd %QUICKSTART_HOME%
+  SET deployConf=
+  SET specialTarget="deployConf"
+  GOTO dospecial
+
 :cdDeployData
   cd %QUICKSTART_HOME%
   SET deployData=
   SET specialTarget="deployData"
   GOTO dospecial
-  
+
 :cdDeploySolr
   cd %QUICKSTART_HOME%
   SET deploySolr=
   SET specialTarget="deploySolr"
   GOTO dospecial
-  
+
 :cdSaveData
   cd %QUICKSTART_HOME%
   SET saveData=
   SET specialTarget="saveData"
   GOTO dospecial
 
-:: Projects    
+:: Projects
 :cdAccess
   cd %QUICKSTART_HOME%\access
   SET access=
   GOTO doant
-  
+
 :cdBedenote
   cd %QUICKSTART_HOME%\bedenote
   SET bedenote=
   GOTO doant
-  
+
 :cdBedework
   cd %QUICKSTART_HOME%
   SET bedework=
   GOTO doant
-    
+
 :cdBwannotations
   cd %QUICKSTART_HOME%\bwannotations
   SET bwannotations=
   GOTO doant
-    
+
 :cdBwcalcore
   cd %QUICKSTART_HOME%\bwcalcore
   SET bwcalcore=
   GOTO doant
-    
+
 :cdBwcaldav
   cd %QUICKSTART_HOME%\bwcaldav
   SET bwcaldav=
   GOTO doant
-    
+
 :cdBwcalfacade
   cd %QUICKSTART_HOME%\bwcalfacade
   SET bwcalfacade=
   GOTO doant
-    
+
 :cdBwdeployutil
   cd %QUICKSTART_HOME%\bwdeployutil
   SET bwdeployutil=
   GOTO doant
-    
+
 :cdBwicalendar
   cd %QUICKSTART_HOME%\bwical
   SET bwicalendar=
   GOTO doant
-    
+
 :cdBwinterfaces
   cd %QUICKSTART_HOME%\bwinterfaces
   SET bwinterfaces=
   GOTO doant
-    
+
 :cdBwsysevents
   cd %QUICKSTART_HOME%\bwsysevents
   SET bwsysevents=
   GOTO doant
-    
+
 :cdBwtools
   cd %QUICKSTART_HOME%\bwtools
   SET bwtools=
   GOTO doant
-    
+
 :cdBwwebapps
   cd %QUICKSTART_HOME%\bwwebapps
   SET bwwebapps=
   GOTO doant
-    
+
 :cdBwxml
   cd %QUICKSTART_HOME%\bwxml
   SET bwxml=
   GOTO doant
-    
+
 :cdCaldav
   cd %QUICKSTART_HOME%\caldav
   SET caldav=
   GOTO doant
-    
+
 :cdCaldavTest
   cd %QUICKSTART_HOME%\caldavTest
   SET caldavTest=
   GOTO doant
-    
+
 :cdCarddav
   cd %QUICKSTART_HOME%\bedework-carddav
   SET carddav=
   GOTO doant
-    
+
 :cdClient
   cd %QUICKSTART_HOME%\client
   SET client=
   GOTO doant
-    
+
 :cdDeploytil
   cd %QUICKSTART_HOME%\deploytil
   SET deploytil=
   GOTO doant
-    
+
 :cdDumprestore
   cd %QUICKSTART_HOME%\dumprestore
   SET dumprestore=
   GOTO doant
-    
+
 :cdEventreg
   cd %QUICKSTART_HOME%\eventreg
   SET eventreg=
   GOTO doant
-    
+
 :cdIndexer
   cd %QUICKSTART_HOME%\indexer
   SET indexer=
   GOTO doant
-    
+
 :cdMonitor
   cd %QUICKSTART_HOME%\MonitorApp
   SET monitor=
   GOTO doant
-    
+
 :cdNaming
   cd %QUICKSTART_HOME%\naming
   SET naming=
   GOTO doant
-    
+
 :cdRpiutil
   cd %QUICKSTART_HOME%\rpiutil
   SET rpiutil=
@@ -822,35 +841,36 @@ GOTO:EOF
   cd %QUICKSTART_HOME%\selfreg
   SET selfreg=
   GOTO doant
-    
+
 :cdSynch
   cd %QUICKSTART_HOME%\synch
   SET synch=
   GOTO doant
-    
+
 :cdTestsuite
   cd %QUICKSTART_HOME%\testsuite
   SET testsuite=
   GOTO doant
-    
+
 :cdTzsvr
   cd %QUICKSTART_HOME%\bwtzsvr
   SET tzsvr=
   GOTO doant
-    
+
 :cdWebdav
   cd %QUICKSTART_HOME%\webdav
   SET webdav=
   GOTO doant
-  
+
 
 :: Iterate over the command line arguments;
 :: DOS Batch labels can't contain hyphens, so convert them
 :: (otherwise, we could just "GOTO %1")
 :branch
-:: Special targets 
+:: Special targets
 IF "%1" == "deploylog4j" GOTO deploylog4j
 IF "%1" == "deployActivemq" GOTO deployActivemq
+IF "%1" == "deployConf" GOTO deployConf
 IF "%1" == "deployData" GOTO deployData
 IF "%1" == "deploySolr" GOTO deploySolr
 IF "%1" == "dirstart" GOTO dirstart
@@ -874,20 +894,20 @@ IF "%1" == "-log-verbose" GOTO log-verbose
 IF "%1" == "-ant-debug" GOTO ant-debug
 IF "%1" == "-build-debug" GOTO build-debug
 
-IF "%1" == "-access" GOTO access 
-IF "%1" == "-bwann" GOTO bwannotations 
-IF "%1" == "-bwcaldav" GOTO bwcaldav 
-IF "%1" == "-bwcalcore" GOTO bwcalcore 
-IF "%1" == "-bwcalfacade" GOTO bwcalfacade 
-IF "%1" == "-bwicalendar" GOTO bwicalendar 
-IF "%1" == "-bwinterfaces" GOTO bwinterfaces 
-IF "%1" == "-bwsysevents" GOTO bwsysevents 
-IF "%1" == "-bwtools" GOTO bwtools 
-IF "%1" == "-bwwebapps" GOTO bwwebapps 
-IF "%1" == "-bwxml" GOTO bwxml 
+IF "%1" == "-access" GOTO access
+IF "%1" == "-bwann" GOTO bwannotations
+IF "%1" == "-bwcaldav" GOTO bwcaldav
+IF "%1" == "-bwcalcore" GOTO bwcalcore
+IF "%1" == "-bwcalfacade" GOTO bwcalfacade
+IF "%1" == "-bwicalendar" GOTO bwicalendar
+IF "%1" == "-bwinterfaces" GOTO bwinterfaces
+IF "%1" == "-bwsysevents" GOTO bwsysevents
+IF "%1" == "-bwtools" GOTO bwtools
+IF "%1" == "-bwwebapps" GOTO bwwebapps
+IF "%1" == "-bwxml" GOTO bwxml
 IF "%1" == "-caldav" GOTO caldav
 IF "%1" == "-caldavTest" GOTO caldavTest
-IF "%1" == "-carddav" GOTO carddav 
+IF "%1" == "-carddav" GOTO carddav
 IF "%1" == "-client" GOTO client
 IF "%1" == "-deployutil" GOTO deployutil
 IF "%1" == "-dumprestore" GOTO dumprestore
@@ -919,7 +939,7 @@ REM   Don't support zoneinfo command on Windows for now
 REM   ECHO      -zoneinfo - builds zoneinfo data for the timezones server
 REM   ECHO                  requires -version and -tzdata parameters
   ECHO      -buildwebcache    builds webcache
-  ECHO      -deploywebcache   deploys webcache 
+  ECHO      -deploywebcache   deploys webcache
   ECHO      -deployurlbuilder deploys url/widget builder
   ECHO.
   ECHO    CONFIG-SOURCE optionally defines the location of configurations and is one or none of
@@ -938,6 +958,7 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO    Special targets
   ECHO      deploylog4j       deploys a log4j configuration
   ECHO      deployActivemq    deploys the Activemq config
+  ECHO      deployConf        deploys the configuration files
   ECHO      deploySolr        deploys the quickstart solr config
   ECHO.
   ECHO    PROJECT optionally defines the package to build and is one of

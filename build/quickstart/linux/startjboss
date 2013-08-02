@@ -148,53 +148,13 @@ BW_SYNCH_DATAURI=$BW_DATA_DIR/synch
 BW_SYNCH_DATAURI_DEF=-Dorg.bedework.synch.datauri=$BW_SYNCH_DATAURI/
 BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_SYNCH_DATAURI_DEF"
 
-# Configurations for each module
+# Configurations property file
 
 BW_CONF_DIR="$JBOSS_SERVER_DIR/conf/bedework"
-BW_CONF_DIR_DEF=
-
-#         Calendar clients config dir
-BW_BWCLIENTS_CONFURI=$BW_CONF_DIR/client-configs
-BW_BWCLIENTS_CONFURI_DEF=-Dorg.bedework.clients.confuri=$BW_BWCLIENTS_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_BWCLIENTS_CONFURI_DEF"
-
-#         Calendar core config dir
-BW_BWCORE_CONFURI=$BW_CONF_DIR/bwcore
-BW_BWCORE_CONFURI_DEF=-Dorg.bedework.bwcore.confuri=$BW_BWCORE_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_BWCORE_CONFURI_DEF"
-
-#         Calendar engine config dir
-BW_BWENGINE_CONFURI=$BW_CONF_DIR/bwengine
-BW_BWENGINE_CONFURI_DEF=-Dorg.bedework.bwengine.confuri=$BW_BWENGINE_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_BWENGINE_CONFURI_DEF"
-
-#         carddav conf dir
-BW_CARDDAV_CONFURI=$BW_CONF_DIR/carddavConfig
-BW_CARDDAV_CONFURI_DEF=-Dorg.bedework.carddav.confuri=$BW_CARDDAV_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_CARDDAV_CONFURI_DEF"
-
-#         hosts conf dir
-BW_HOSTS_CONFURI=$BW_CONF_DIR/hosts
-BW_HOSTS_CONFURI_DEF=-Dorg.bedework.hosts.confuri=$BW_HOSTS_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_HOSTS_CONFURI_DEF"
-
-#         selfreg conf dir
-BW_SELFREG_CONFURI=$BW_CONF_DIR/selfreg
-BW_SELFREG_CONFURI_DEF=-Dorg.bedework.selfreg.confuri=$BW_SELFREG_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_SELFREG_CONFURI_DEF"
-
-#         synch conf dir
-BW_SYNCH_CONFURI=$BW_CONF_DIR/synch
-BW_SYNCH_CONFURI_DEF=-Dorg.bedework.synch.confuri=$BW_SYNCH_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_SYNCH_CONFURI_DEF"
-
-#         tzsvr conf dir
-BW_TZS_CONFURI=$BW_CONF_DIR/tzsvr
-BW_TZS_CONFURI_DEF=-Dorg.bedework.tzs.confuri=$BW_TZS_CONFURI/
-BW_CONF_DIR_DEF="$BW_CONF_DIR_DEF $BW_TZS_CONFURI_DEF"
+BW_CONF_DIR_DEF="-Dorg.bedework.config.pfile=$BW_CONF_DIR/config.defs"
 
 JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
-# Don't set since java 1.4JAVA_OPTS="$JAVA_OPTS -XX:NewSize=$newsize -XX:MaxNewSize=$newsize"
+
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
 RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
@@ -202,4 +162,3 @@ RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $
 echo $RUN_CMD
 
 $RUN_CMD
- 

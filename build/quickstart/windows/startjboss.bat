@@ -78,20 +78,28 @@ SET LOG_THRESHOLD=-Djboss.server.log.threshold=DEBUG
 SET BW_DATA_DIR=%JBOSS_DATA_DIR%\bedework
 SET BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=%BW_DATA_DIR%\
 
-:: Define the system properties used to locate the module specific data and 
-:: configurations. 
-:: For the moment configurations are file based within the data directory.
+:: Define the system properties used to locate the module specific data
+
+::         carddav data dir
+SET BW_CARDDAV_DATAURI=%BW_DATA_DIR%\carddavConfig
+SET BW_CARDDAV_DATAURI_DEF=-Dorg.bedework.carddav.datauri=%BW_CARDDAV_DATAURI%/
+SET BW_DATA_DIR_DEF=%BW_DATA_DIR_DEF% %BW_CARDDAV_DATAURI_DEF%
 
 ::         synch data dir
 SET BW_SYNCH_DATAURI=%BW_DATA_DIR%\synch
 SET BW_SYNCH_DATAURI_DEF=-Dorg.bedework.synch.datauri=%BW_SYNCH_DATAURI%\
 SET BW_DATA_DIR_DEF=%BW_DATA_DIR_DEF% %BW_SYNCH_DATAURI_DEF%
 
+:: Configurations property file
+
+SET BW_CONF_DIR=%JBOSS_SERVER_DIR%\conf\bedework
+SET BW_CONF_DIR_DEF=-Dorg.bedework.config.pfile=%BW_CONF_DIR%\config.defs
+
 SET JAVA_OPTS=%JAVA_OPTS% -Xms%heap% -Xmx%heap%
 :: Don't do this SET JAVA_OPTS=%JAVA_OPTS% -XX:NewSize=%newsize% -XX:MaxNewSize=%newsize%
 SET JAVA_OPTS=%JAVA_OPTS% -XX:PermSize=%permsize% -XX:MaxPermSize=%permsize%
 
-SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat -c %JBOSS_CONFIG% %JBOSS_BIND% %JBOSS_PORTS% %LOG_THRESHOLD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI% %BW_DATA_DIR_DEF%
+SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat -c %JBOSS_CONFIG% %JBOSS_BIND% %JBOSS_PORTS% %LOG_THRESHOLD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI% %BW_DATA_DIR_DEF% %BW_CONF_DIR_DEF%
 
 ECHO.
 ECHO Starting Bedework JBoss:
@@ -114,7 +122,7 @@ IF "%1" == "-permsize" GOTO permsize
 IF "%1" == "-portoffset" GOTO portoffset
 IF "%1" == "-activemquri" GOTO activemquri
 GOTO doneWithArgs
- 
+
 :usage
 ECHO.
 ECHO.

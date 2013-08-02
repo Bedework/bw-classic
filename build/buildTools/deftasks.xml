@@ -17,12 +17,12 @@
           <include name="*.jar"/>
         </fileset>
       </path>
-      
+
       <!-- maven ant tasks -->
       <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
                uri="antlib:org.apache.maven.artifact.ant"
                classpathref="build.cp" />
-      
+
       <taskdef name="applicationXml"
                classname="org.bedework.deployment.ApplicationXmlTask">
         <classpath refid="build.cp"/>
@@ -43,12 +43,12 @@
                classname="org.bedework.deployment.DependencyTask">
         <classpath refid="build.cp"/>
       </taskdef>-->
-         
+
       <taskdef name="forApp"
                classname="org.bedework.deployment.ForAppTask">
         <classpath refid="build.cp"/>
       </taskdef>
-  
+
       <taskdef name="forEachApp"
                classname="org.bedework.deployment.ForEachAppTask">
         <classpath refid="build.cp"/>
@@ -97,7 +97,7 @@
       </taskdef>-->
     </sequential>
   </macrodef>
-  
+
   <macrodef name="installJar">
     <attribute name="dir"/>
     <attribute name="name"/>
@@ -108,7 +108,7 @@
         <isset property="org.bedework.appserver.repository.dir" />
         <then>
           <!-- use this as the local repository -->
-          
+
           <artifact:install file="@{name}">
             <localRepository path="${org.bedework.appserver.repository.dir}"/>
             <pom refid="the-pom"/>
@@ -124,7 +124,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <macrodef name="installPom">
     <attribute name="dir"/>
     <sequential>
@@ -134,7 +134,7 @@
         <isset property="org.bedework.appserver.repository.dir" />
         <then>
           <!-- use this as the local repository -->
-          
+
           <artifact:install file="@{dir}/pom.xml">
             <localRepository path="${org.bedework.appserver.repository.dir}"/>
             <pom refid="the-pom"/>
@@ -150,7 +150,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <!-- Deploy into the app server -->
   <macrodef name="deployJar">
     <attribute name="dir"/>
@@ -175,7 +175,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <!-- Resolve dependencies with the given pom file -->
   <macrodef name="resolveDependencies">
     <attribute name="pomFile"/>
@@ -186,21 +186,21 @@
         <isset property="org.bedework.appserver.repository.dir" />
         <then>
           <!-- use this as the local repository -->
-          <artifact:dependencies filesetId="dependency.fileset" 
-                                 useScope="compile" 
+          <artifact:dependencies filesetId="dependency.fileset"
+                                 useScope="compile"
                                  pomRefId="the-pom">
             <localRepository path="${org.bedework.appserver.repository.dir}"/>
           </artifact:dependencies>
         </then>
         <else>
           <!-- Use default repository -->
-          <artifact:dependencies filesetId="dependency.fileset" 
-                                 useScope="compile" 
+          <artifact:dependencies filesetId="dependency.fileset"
+                                 useScope="compile"
                                  pomRefId="the-pom">
           </artifact:dependencies>
         </else>
       </if>
-      
+
       <copy todir="${lib.dir}">
         <fileset refid="dependency.fileset" />
         <!-- This mapper strips off all leading directory information -->
@@ -213,12 +213,12 @@
     <attribute name="project"/>
     <attribute name="target"/>
     <sequential>
-      <ant antfile="${bedework.home}/../@{project}/build.xml" 
+      <ant antfile="${bedework.home}/../@{project}/build.xml"
            inheritall="false"
            target="@{target}" />
     </sequential>
   </macrodef>
-    
+
   <macrodef name="buildfilters">
     <sequential>
       <filterset id="property.filters" >
@@ -228,7 +228,10 @@
 
         <filter token="APPSERVER-DATA-DIR"
                 value="${org.bedework.data.dir}"/>
-      	
+
+        <filter token="APPSERVER-CONF-DIR"
+                value="${org.bedework.jboss.conf.dir}"/>
+
         <filter token="DATA_DIR"
                 value="${org.bedework.data.dir}"/>
 
@@ -361,10 +364,10 @@
 
         <filter token="tzserverPrimaryUrl"
                 value="${org.bedework.app.tzsvr.primary.url}" />
-        
+
         <filter token="APP-VERSION"
                 value="${org.bedework.global.version}"/>
-        
+
         <filter token="orgBedeworkVersion"
                 value="${org.bedework.version}"/>
         <filter token="orgBedeworkAccessVersion"
@@ -425,7 +428,7 @@
       </filterset>
     </sequential>
   </macrodef>
-      
+
   <macrodef name="projectDefs">
     <attribute name="name"/>
     <attribute name="version"/>
@@ -433,9 +436,9 @@
     <attribute name="subproject" default="false"/>
     <sequential>
       <property name="project.name" value="@{name}"/>
-      
+
       <property name="project.version" value="@{version}"/>
-      
+
       <property name="dist.home" location="${project.home}/dist"/>
       <mkdir dir="${dist.home}" />
 
@@ -449,7 +452,7 @@
 
       <property name="org.bedework.libcache.dir"
                 location="${bedework.home}/libcache"/>
-      
+
       <property name="org.bedework.temp.dir"
                 location="${dist.home}/temp" />
 
@@ -461,7 +464,7 @@
         <else>
           <delete dir="${org.bedework.temp.dir}" />
           <mkdir dir="${org.bedework.temp.dir}" />
-          
+
           <property name="org.bedework.deployment.name"
                     value="@{deployment-name}" />
 
@@ -471,7 +474,7 @@
 
       <import file="${build.dir}/buildTools/getJar.xml"/>
       <import file="${build.dir}/buildTools/jdoc.xml"/>
-      
+
       <!-- Now we have getjar build a classpath for the bundle tasks
       <mkdir dir="${org.bedework.temp.dir}/bundle-build" />
       <getJar name="commons-io" version="2.0.1"
@@ -486,8 +489,8 @@
       </path>
       <taskdef resource="ch/jm/osgi/util/bundle/ant/antlib.xml"
           classpathref="bundle-util.classpath" onerror="fail"/> -->
-      
-      <!-- And the cargo tasks 
+
+      <!-- And the cargo tasks
       <mkdir dir="${org.bedework.temp.dir}/cargo" />
       <getJar name="cargo-ant" version="1.2.0"
               lib="${org.bedework.temp.dir}/cargo"/>
@@ -515,63 +518,63 @@
     <!--<attribute name="extra.options" default="${org.bedework.carddav.options}"/> -->
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-    
+
       <if>
         <not>
           <isset property="bedework-options.org.bedework.global.portal.platform"/>
         </not>
         <then>
         <property environment="env"/>
-  
+
         <!-- Load build property definition overrides -->
         <property file="${org.bedework.build.properties}" />
-  
+
         <configMsg message="Loading build properties from ${org.bedework.build.properties}" />
         <configMsg message="Use config override properties ${org.bedework.config.override.properties}" />
         <configMsg message="Use config properties ${org.bedework.config.properties}" />
         <configMsg message="Runtime options from ${org.bedework.config.options}" />
-  
+
         <property file="${org.bedework.configuration.versions}" />
         <property file="${org.bedework.config.override.properties}" />
         <property file="${org.bedework.config.properties}" />
-  
+
         <!-- Load the run time options and define some properties based on some
              of the values -->
-  
-        <!-- Load the general bedework options 
+
+        <!-- Load the general bedework options
         <xmlproperty file="${org.bedework.config.options}"/>
         -->
-  
-        <!-- Load the extra options 
+
+        <!-- Load the extra options
         <xmlproperty file="@{extra.options}"/>-->
-  
+
         <if>
           <isset property="bedework-options.org.bedework.global.portal.platform"/>
           <then>
             <property name="org.bedework.global.portal.platform"
                       value="${bedework-options.org.bedework.global.portal.platform}" />
-  
+
             <property name="org.bedework.config.portal.home"
                       value="${org.bedework.configurations.home}/.portal/${org.bedework.global.portal.platform}" />
-  
+
             <property name="org.bedework.config.portal.common.home"
                       value="${org.bedework.configurations.home}/.portal/common-resources" />
-  
+
             <debugMsg message="******************* load from ${org.bedework.config.portal.home}/portal.properties" />
-  
+
             <property file="${org.bedework.config.portal.home}/portal.properties" />
           </then>
           <else>
             <debugMsg message="******************* load from ${org.bedework.configurations.home}/.standalone/standalone.properties" />
-  
+
             <property file="${org.bedework.configurations.home}/.platform/standalone.properties" />
           </else>
         </if>
-        	
+
          <!--
         <property name="org.bedework.global.version"
                   value="${bedework-options.org.bedework.global.version}" />
-  
+
         <property name="org.bedework.global.directory.browsing.disallowed"
                   value="${bedework-options.org.bedework.syspars.directoryBrowsingDisallowed}" />
                   -->
@@ -588,7 +591,7 @@
       <infoMsg message="* =========== Building ${project.name}" />
 
       <loadDeployConfig/>
-      
+
       <delete dir="${lib.dir}" />
       <mkdir dir="${lib.dir}" />
 
@@ -648,10 +651,10 @@
           <mkdir dir="${org.bedework.ear.properties.dir}" />
         </then>
       </if>
-      
+
       <property name="org.bedework.global.build.common.context.war.name"
                 value="bw-common" />
-      
+
       <property name="org.bedework.temp.wars.home"
                 location="${org.bedework.temp.dir}/wars" />
 
@@ -665,14 +668,14 @@
       <!-- Preserve extra jars for ear builds -->
       <property name="org.bedework.temp.ear.extrajars.dir"
                 location="${org.bedework.temp.dir}/earextrajars" />
-      
+
       <property name="org.bedework.global.context.roots"
                 location="${org.bedework.temp.dir}/context-roots.properties" />
 
       <tempfile property="org.bedework.global.context.roots"
                 destdir="${org.bedework.temp.dir}"
                 prefix="context-roots" suffix=".properties" />
-      
+
       <!-- Clean up before we start -->
       <delete dir="${org.bedework.temp.wars.home}" />
       <mkdir dir="${org.bedework.temp.wars.home}" />
@@ -684,38 +687,38 @@
       <mkdir dir="${org.bedework.temp.extrajars.dir}" />
     </sequential>
   </macrodef>
-  
+
   <macrodef name="deployTerm">
     <sequential>
       <if>
         <equals arg1="${propval.app.package.type}" arg2="service" />
       <then>
-        <ant antfile="${build.dir}/../deployment/termination/service/build.xml" 
+        <ant antfile="${build.dir}/../deployment/termination/service/build.xml"
              target="deploy" inheritRefs="true" />
       </then>
       <else>
-        <ant antfile="${build.dir}/../deployment/termination/webapp/build.xml" 
+        <ant antfile="${build.dir}/../deployment/termination/webapp/build.xml"
              target="deploy" inheritRefs="true" />
       </else>
      </if>
-      
+
       <!-- Platform specific -->
-      <ant antfile="${build.dir}/../deployment/termination/build.xml" 
+      <ant antfile="${build.dir}/../deployment/termination/build.xml"
            target="deploy" inheritRefs="true" />
     </sequential>
   </macrodef>
 
   <!-- =================================================================
-       Standard targets for build files. Two targets (at least) need to be 
+       Standard targets for build files. Two targets (at least) need to be
        overridden by the importing task
-       
+
        init - carry out project specific initialisation
        build-source - builds the source to creat ejars.
        =================================================================-->
-  
+
   <!-- Override this -->
   <target name="init" />
-  
+
   <!-- Override this if needed -->
   <target name="build-init" depends="init">
     <resolveDependencies pomFile="pom.xml" />
@@ -723,12 +726,12 @@
 
   <!-- Override this -->
   <target name="build-source" />
-  
+
   <!-- Override this -->
   <target name="deploy-init" depends="init">
     <deployInit ear-name="" />
   </target>
-  
+
   <!-- This should be called from the deploy target for bundles. -->
   <macrodef name="deployBundle">
     <attribute name="bundle"/>
@@ -737,7 +740,7 @@
       <if>
         <isset property="org.bedework.global.deploy.bundles" />
         <then>
-          <cargo containerId="${org.bedework.global.deploy.platform}" 
+          <cargo containerId="${org.bedework.global.deploy.platform}"
                  home="${org.bedework.appserver.dir}"
                  action="deploy">
             <configuration>
@@ -749,7 +752,7 @@
       -->
     </sequential>
   </macrodef>
-  
+
   <!-- Override this -->
   <target name="deploy" depends="deploy-init,build" />
 
@@ -804,12 +807,12 @@
 
   <target name="build-all" depends="build"
           description="Compile classes"/>
-  
+
   <target name="javadoc" depends="build-init"
           description="Create Javadoc API documentation">
     <jdoc/>
   </target>
-  
+
   <macrodef name="build-jar-stats">
     <sequential>
       <if>
@@ -825,7 +828,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <!-- This macro builds a single jar file. It just sets defaults for the java
        compiler then invokes it.
 
@@ -870,7 +873,7 @@
     <attribute name="bundle-xml" default=""/> <!-- bundle -->
     <attribute name="jar-name" default=""/> <!-- bundle -->
     <attribute name="jar-version" default=""/> <!-- bundle -->
-    
+
     <sequential>
       <if>
         <not>
@@ -881,9 +884,9 @@
           <var name="org.bedework.jars.checked" value="0" />
         </then>
       </if>
-      
-      <math result="org.bedework.jars.checked" 
-            operand1="${org.bedework.jars.checked}" 
+
+      <math result="org.bedework.jars.checked"
+            operand1="${org.bedework.jars.checked}"
             operation="+" operand2="1" datatype="int"/>
 
       <if>
@@ -926,7 +929,7 @@
           <var name="build.jar.dependency" value="@{jar-dependency}" />
         </then>
       </if>
-      
+
       <!--  =================== Compilation Control Options ===============
         These properties control option settings on the Javac compiler when it
         is invoked using the <javac> task.
@@ -956,7 +959,7 @@
            ============================================================== -->
 
       <noisyMsg message="build.jar.file=@{jar-file}" />
-      
+
       <if>
         <isset property="build.jar.dependency"/>
         <then>
@@ -971,12 +974,12 @@
         <else>
           <fileset refid="empty.fileset" id="dependency.fileset"/>
         </else>
-      </if>      
+      </if>
 
-      <!-- See if the libraries are later than any classes --> 
+      <!-- See if the libraries are later than any classes -->
 
       <var name="org.bedework.libraries.changed" value="false" />
-      
+
       <outofdate outputsources="org.bedework,changed.sources">
         <sourcefiles>
           <fileset dir="${lib.dir}">
@@ -984,7 +987,7 @@
           </fileset>
           <!-- This makes almost everything rebuild all the time
                because it has the generated jars for the current package
-          <path refid="compile.classpath"/> 
+          <path refid="compile.classpath"/>
           -->
         </sourcefiles>
         <targetfiles>
@@ -995,7 +998,7 @@
           <noisyMsg message="**** @{jar-file} needs rebuilding - libraries changed" />
         </sequential>
       </outofdate>
-      
+
       <noisyMsg message="**** org.bedework,changed.sources = ${org.bedework,changed.sources}" />
       <noisyMsg message="**** org.bedework.libraries.changed = ${org.bedework.libraries.changed}" />
 
@@ -1017,8 +1020,8 @@
         <else>
           <noisyMsg message="**** @{jar-file} needs rebuilding" />
 
-          <math result="org.bedework.jars.built" 
-                operand1="${org.bedework.jars.built}" 
+          <math result="org.bedework.jars.built"
+                operand1="${org.bedework.jars.built}"
                 operation="+" operand2="1" datatype="int"/>
 
           <!-- Delete jar file -->
@@ -1036,7 +1039,7 @@
                directory. -->
           <delete dir="${jar.temp.sources}" />
           <mkdir dir="${jar.temp.sources}" />
-          
+
           <copy toDir="${jar.temp.sources}">
             <fileset refid="buildjar.java.sources" />
             <fileset refid="buildjar.generated.java.sources" />
@@ -1044,7 +1047,7 @@
           </copy>
 
           <mkdir dir="${jar.temp.classes}"/>
-          
+
           <debugMsg message="About to build jar @{jar-file}"/>
           <debugCpid idpar="compile.classpath" />
 
@@ -1091,7 +1094,7 @@
                 <attribute name="Implementation-URL"
                     value="bedework.org"/>
               </bundle-manifest>
-              
+
               <!-- Now build the actual bundle. -->
               <jar jarfile="@{jar-file}"
                     filesetmanifest="merge" manifestencoding="UTF-8">
@@ -1114,7 +1117,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <macrodef name="infoMsg">
     <attribute name="message"/>
     <sequential>
@@ -1128,7 +1131,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <macrodef name="noisyMsg">
     <attribute name="message"/>
     <sequential>
@@ -1140,7 +1143,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <macrodef name="configMsg">
     <attribute name="message"/>
     <sequential>
@@ -1152,7 +1155,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <macrodef name="debugMsg">
     <attribute name="message"/>
     <sequential>
@@ -1164,7 +1167,7 @@
       </if>
     </sequential>
   </macrodef>
-  
+
   <macrodef name="debugCpid">
     <attribute name="idpar"/>
     <sequential>
