@@ -27,7 +27,7 @@
   <solrUserCore>bwuser</solrUserCore>
   <systemid>demobedework@mysite.edu</systemid>
   <timezonesByReference>false</timezonesByReference>
-  <tzServeruri>localhost:8080</tzServeruri>
+  <tzServeruri>http://localhost:8080/tzsvr</tzServeruri>
   <tzid>America/New_York</tzid>
   <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
   <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
