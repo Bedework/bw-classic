@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<carddav-info xmlns="http://bedework.org/ns/" 
-              type="org.bedework.calfacade.configs.CardDavInfo" >
+<carddav-info xmlns="http://bedework.org/ns/"
+              type="org.bedework.calsvc.jmx.CardDavInfoImpl" >
   <auth>true</auth>
+  <contextPath>/ucarddav</contextPath>
   <host>localhost</host>
   <port>8080</port>
-  <contextPath>/ucarddav</contextPath>
 </carddav-info>
-        

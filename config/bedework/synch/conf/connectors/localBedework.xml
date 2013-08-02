@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch-connector xmlns="http://bedework.org/ns/" 
+<synch-connector xmlns="http://bedework.org/ns/"
                  type="org.bedework.synch.cnctrs.bedework.BedeworkConnectorConfig">
-  <name>localBedework</name>
-  <connectorClassName>org.bedework.synch.cnctrs.bedework.BedeworkConnector</connectorClassName>
-  <mbeanClassName>org.bedework.synch.cnctrs.bedework.BedeworkConnConf</mbeanClassName>
-  <readOnly>false</readOnly>
-  <trustLastmod>true</trustLastmod>
   <bwWSDLURI>http://localhost:8080/wsdls/synch/wssvc.wsdl</bwWSDLURI>
-  <retryInterval>10</retryInterval>
+  <connectorClassName>org.bedework.synch.cnctrs.bedework.BedeworkConnector</connectorClassName>
   <keepAliveInterval>300</keepAliveInterval>
+  <mbeanClassName>org.bedework.synch.cnctrs.bedework.BedeworkConnConf</mbeanClassName>
+  <name>localBedework</name>
+  <readOnly>false</readOnly>
+  <retryInterval>10</retryInterval>
+  <trustLastmod>true</trustLastmod>
 </synch-connector>

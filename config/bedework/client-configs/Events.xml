@@ -2,14 +2,12 @@
 
 <client-config xmlns="http://bedework.org/ns/" 
                type="org.bedework.webcommon.config.ConfigCommonImpl">
+  <name>Events</name>
   <mbeanClassName>org.bedework.webcommon.config.ClientConf</mbeanClassName>
   <!-- uris to cross link apps -->
   <publicAdminUri>/caladmin</publicAdminUri>
   <publicCalendarUri>/cal</publicCalendarUri>
   <personalCalendarUri>/ucal</personalCalendarUri>
-
-  <cachingOn>true</cachingOn>
-  <cachePrefix>bwpubevents</cachePrefix>
 
   <autoCreateContacts>false</autoCreateContacts>
   <autoDeleteContacts>false</autoDeleteContacts>

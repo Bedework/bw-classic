@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch-connector xmlns="http://bedework.org/ns/" 
+<synch-connector xmlns="http://bedework.org/ns/"
                  type="org.bedework.synch.cnctrs.file.FileConnectorConfig">
-  <name>read-only-file</name>
   <connectorClassName>org.bedework.synch.cnctrs.file.FileConnector</connectorClassName>
   <mbeanClassName>org.bedework.synch.cnctrs.file.FileConnConf</mbeanClassName>
+  <minPoll>15</minPoll>
+  <name>read-only-file</name>
   <readOnly>true</readOnly>
   <trustLastmod>false</trustLastmod>
-  <minPoll>15</minPoll>
 </synch-connector>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<org.bedework.carddav.util.DbDirHandlerConfig xmlns="http://bedework.org/ns/" type="org.bedework.carddav.util.DbDirHandlerConfig">
+<bwcarddav-dirhandler xmlns="http://bedework.org/ns/" type="org.bedework.carddav.util.DbDirHandlerConfig">
   <addressBook>false</addressBook>
   <className>org.bedework.carddav.server.dirHandlers.db.DbAddrBookDirHandler</className>
   <confBeanClass>org.bedework.carddav.server.jmx.DbDirHandlerConf</confBeanClass>
@@ -26,4 +26,4 @@
   <queryLimit>1000</queryLimit>
   <rootAccess>WONyA WANyFyS</rootAccess>
   <rootOwner>/principals/users/root</rootOwner>
-</org.bedework.carddav.util.DbDirHandlerConfig>
+</bwcarddav-dirhandler>

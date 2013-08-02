@@ -2,6 +2,7 @@
 
 <client-config xmlns="http://bedework.org/ns/" 
                type="org.bedework.webcommon.config.ConfigCommonImpl">
+  <name>EventSubmit</name>
   <mbeanClassName>org.bedework.webcommon.config.ClientConf</mbeanClassName>
   <!-- uris to cross link apps -->
   <publicAdminUri>/caladmin</publicAdminUri>
