@@ -29,10 +29,10 @@
   <deftasks/>
 
   <projectDefs name="bedework main project"
-               version="${org.bedework.version}" 
+               version="${org.bedework.version}"
                deployment-name="bedework"
   />
-  
+
   <var name="org.bedework.jars.built" value="0" />
   <var name="org.bedework.jars.checked" value="0" />
 
@@ -65,6 +65,25 @@
   </target>
 
   <!-- =================================================================
+       "deployConf" target
+       ================================================================= -->
+
+  <target name="deployConf" depends="init"
+          description="Copy the solr config into the appserver">
+    <makeurl file="${org.bedework.jboss.conf.dir}"
+             property="org.bedework.jboss.conf.dir.url"/>
+
+    <buildfilters/>
+    <delete dir="${org.bedework.jboss.conf.dir}/bedework"/>
+    <mkdir dir="${org.bedework.jboss.conf.dir}/bedework"/>
+
+    <copy todir="${org.bedework.jboss.conf.dir}/bedework">
+      <fileset dir="${env.BEDEWORK_JMX_CONFIG}"/>
+      <filterset refid="property.filters" />
+    </copy>
+  </target>
+
+  <!-- =================================================================
        "build" and "clean" targets for the project
        ================================================================= -->
 
@@ -72,9 +91,9 @@
   <target name="build" depends="init"
           description="builds the project">
   </target> -->
-  
-  <target name="build-init"/>  
-    
+
+  <target name="build-init"/>
+
   <target name="build-source" depends="build-init" >
     <installPom dir="${org.bedework.project.bedework}"/>
   </target>
@@ -94,7 +113,7 @@
   <!-- =================================================================
        The "deploy" target deploys the applications
        ================================================================= -->
-  
+
   <target name="deploy-init" depends="init">
     <deployInit ear-name="bwcal" />
   </target>

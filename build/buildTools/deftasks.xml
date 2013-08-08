@@ -232,6 +232,9 @@
         <filter token="APPSERVER-CONF-DIR"
                 value="${org.bedework.jboss.conf.dir}"/>
 
+        <filter token="APPSERVER-CONF-DIR-URL"
+                value="${org.bedework.jboss.conf.dir.url}"/>
+
         <filter token="DATA_DIR"
                 value="${org.bedework.data.dir}"/>
 
