@@ -147,13 +147,20 @@
 
   <target name="deploySolr" depends="init"
           description="Copy the solr config into the appserver">
-    <copy file="${org.bedework.solr.configurations}/schema.xml"
+    description="Copy the solr config into the appserver">
+    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/schema.xml"
           tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.publiccore}/conf/schema.xml"
           overwrite="yes" />
-    <copy file="${org.bedework.solr.configurations}/solrconfig.xml"
+    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/solrconfig.xml"
           tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.publiccore}/conf/solrconfig.xml"
           overwrite="yes" />
-    <copy file="${org.bedework.solr.configurations}/solr.xml"
+    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/schema.xml"
+          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.usercore}/conf/schema.xml"
+          overwrite="yes" />
+    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/solrconfig.xml"
+          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.usercore}/conf/solrconfig.xml"
+          overwrite="yes" />
+    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/solr.xml"
           tofile="${org.bedework.global.solr.dir}/solr.xml"
           overwrite="yes" />
   </target>
