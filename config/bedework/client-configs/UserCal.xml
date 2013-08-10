@@ -1,39 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<client-config xmlns="http://bedework.org/ns/" 
-               type="org.bedework.webcommon.config.ConfigCommonImpl">
-  <name>UserCal</name>
+<client-config xmlns="http://bedework.org/ns/" type="org.bedework.webcommon.config.ConfigCommonImpl">
+  <appRoot>http://localhost:8080/ucalrsrc</appRoot>
+  <appType>webuser</appType>
+  <autoCreateContacts>false</autoCreateContacts>
+  <autoCreateLocations>false</autoCreateLocations>
+  <autoDeleteContacts>false</autoDeleteContacts>
+  <autoDeleteLocations>false</autoDeleteLocations>
+  <browserResourceRoot>/ucalrsrc</browserResourceRoot>
+  <guestMode>false</guestMode>
+  <hour24>true</hour24>
+  <logPrefix>PersonalCalendar</logPrefix>
   <mbeanClassName>org.bedework.webcommon.config.ClientConf</mbeanClassName>
-  <!-- uris to cross link apps -->
+  <minIncrement>5</minIncrement>
+  <name>UserCal</name>
+  <personalCalendarUri>/ucal</personalCalendarUri>
+  <publicAdmin>false</publicAdmin>
   <publicAdminUri>/caladmin</publicAdminUri>
   <publicCalendarUri>/cal</publicCalendarUri>
-  <personalCalendarUri>/ucal</personalCalendarUri>
-
-  <autoCreateContacts>false</autoCreateContacts>
-  <autoDeleteContacts>false</autoDeleteContacts>
-  <autoCreateLocations>false</autoCreateLocations>
-  <autoDeleteLocations>false</autoDeleteLocations>
-
-  <appType>webuser</appType>
-  <publicAdmin>false</publicAdmin>
-  <guestMode>false</guestMode>
-
-  <!-- Default value for 24 hour mode -->
-  <hour24>true</hour24>
-
-  <!-- Default value for minute increments -->
-  <minIncrement>5</minIncrement>
-
-  <showYearData>false</showYearData>
-
-  <logPrefix>PersonalCalendar</logPrefix>
-
-  <!-- Where the browser finds css and other resources -->    
-  <browserResourceRoot>/ucalrsrc</browserResourceRoot>
-  
-  <!-- Where the server finds xsl etc -->    
-  <appRoot>http://localhost:8080/ucalrsrc</appRoot>
-
   <refreshAction>setup.do</refreshAction>
   <refreshInterval>300</refreshInterval>
+  <showYearData>false</showYearData>
 </client-config>
