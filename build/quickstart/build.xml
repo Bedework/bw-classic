@@ -147,7 +147,6 @@
 
   <target name="deploySolr" depends="init"
           description="Copy the solr config into the appserver">
-    description="Copy the solr config into the appserver">
     <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/schema.xml"
           tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.publiccore}/conf/schema.xml"
           overwrite="yes" />
