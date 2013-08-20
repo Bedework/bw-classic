@@ -95,6 +95,11 @@ SET BW_DATA_DIR_DEF=%BW_DATA_DIR_DEF% %BW_SYNCH_DATAURI_DEF%
 SET BW_CONF_DIR=%JBOSS_SERVER_DIR%\conf\bedework
 SET BW_CONF_DIR_DEF=-Dorg.bedework.config.pfile=%BW_CONF_DIR%\config.defs
 
+;; Elastic search home
+
+SET ES_HOME=%BW_DATA_DIR%\elasticsearch"
+SET JAVA_OPTS=%JAVA_OPTS% -Des.path.home=%ES_HOME%
+
 SET JAVA_OPTS=%JAVA_OPTS% -Xms%heap% -Xmx%heap%
 :: Don't do this SET JAVA_OPTS=%JAVA_OPTS% -XX:NewSize=%newsize% -XX:MaxNewSize=%newsize%
 SET JAVA_OPTS=%JAVA_OPTS% -XX:PermSize=%permsize% -XX:MaxPermSize=%permsize%

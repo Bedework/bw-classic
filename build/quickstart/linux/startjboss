@@ -153,6 +153,11 @@ BW_DATA_DIR_DEF="$BW_DATA_DIR_DEF $BW_SYNCH_DATAURI_DEF"
 BW_CONF_DIR="$JBOSS_SERVER_DIR/conf/bedework"
 BW_CONF_DIR_DEF="-Dorg.bedework.config.pfile=$BW_CONF_DIR/config.defs"
 
+# Elastic search home
+
+export ES_HOME="$BW_DATA_DIR/elasticsearch"
+JAVA_OPTS="$JAVA_OPTS -Des.path.home=$ES_HOME"
+
 JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
