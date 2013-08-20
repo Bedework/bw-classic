@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<system-properties xmlns="http://bedework.org/ns/"
+                   type="org.bedework.calsvc.jmx.SystemPropertiesImpl">
+  <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
+  <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
+  <eventregUrl>http://localhost:8080/eventreg/</eventregUrl>
+  <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
+  <rootUsers>admin</rootUsers>
+  <solrCoreAdmin>admin/cores/</solrCoreAdmin>
+  <publicIndexName>bwpublic</publicIndexName>
+  <indexerConfig>@APPSERVER-CONF-DIR-URL@solr/mappings.json</indexerConfig>
+  <indexerURL>http://localhost:8080/solr/</indexerURL>
+  <userIndexName>bwuser</userIndexName>
+  <systemid>demobedework@mysite.edu</systemid>
+  <timezonesByReference>false</timezonesByReference>
+  <tzServeruri>http://localhost:8080/tzsvr</tzServeruri>
+  <tzid>America/New_York</tzid>
+  <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
+  <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
+</system-properties>

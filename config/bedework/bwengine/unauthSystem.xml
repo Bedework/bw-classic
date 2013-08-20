@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<system-properties xmlns="http://bedework.org/ns/"
-                   type="org.bedework.calsvc.jmx.SystemPropertiesImpl">
-  <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
-  <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
+<auth-properties xmlns="http://bedework.org/ns/"
+                 type="org.bedework.calsvc.jmx.AuthPropertiesImpl">
   <defaultChangesNotifications>true</defaultChangesNotifications>
   <defaultFBPeriod>31</defaultFBPeriod>
   <defaultUserHour24>true</defaultUserHour24>
@@ -11,8 +9,6 @@
   <defaultUserViewName>All</defaultUserViewName>
   <defaultWebCalPeriod>31</defaultWebCalPeriod>
   <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
-  <eventregUrl>http://localhost:8080/eventreg/</eventregUrl>
-  <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
   <maxFBPeriod>96</maxFBPeriod>
   <maxInstances>1000</maxInstances>
   <maxPublicDescriptionLength>500</maxPublicDescriptionLength>
@@ -20,15 +16,4 @@
   <maxUserEntitySize>100000</maxUserEntitySize>
   <maxWebCalPeriod>96</maxWebCalPeriod>
   <maxYears>50</maxYears>
-  <rootUsers>admin</rootUsers>
-  <solrCoreAdmin>admin/cores/</solrCoreAdmin>
-  <solrPublicCore>bwpublic</solrPublicCore>
-  <solrURL>http://localhost:8080/solr/</solrURL>
-  <solrUserCore>bwuser</solrUserCore>
-  <systemid>demobedework@mysite.edu</systemid>
-  <timezonesByReference>false</timezonesByReference>
-  <tzServeruri>http://localhost:8080/tzsvr</tzServeruri>
-  <tzid>America/New_York</tzid>
-  <userauthClass>org.bedework.calsvc.directory.UserAuthUWDbImpl</userauthClass>
-  <usergroupsClass>org.bedework.calsvc.directory.UserGroupsLdapImpl</usergroupsClass>
-</system-properties>
+</auth-properties>

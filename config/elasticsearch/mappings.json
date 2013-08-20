@@ -1,0 +1,375 @@
+{
+    "mappings" : {
+        "event" : {
+            "_source" : { "enabled" : false },
+            "properties" : {
+                "key" : {
+                    "type" : "string",
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "itemType" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "name" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "path" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "creator" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "owner" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "acl" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "no"
+                },
+                "created" : {
+                    "type" : "date",
+                        "format": "basic_date_time_no_millis",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "last_modified" : {
+                    "type" : "date",
+                        "format": "basic_date_time_no_millis",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "summary" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true
+                },
+                "description" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true
+                },
+                "uid" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "eventType" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "start_utc" : {
+                    "type" : "date",
+                        "format": "basic_date_time_no_millis",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "start_local" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "start_tzid" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true,
+                        "index" : "not_analyzed"
+                },
+                "start_floating" : {
+                    "type" : "boolean",
+                        "store" : "yes",
+                        "include_in_all": true,
+                        "index" : "not_analyzed"
+                },
+                "end_utc" : {
+                    "type" : "date",
+                        "format": "basic_date_time_no_millis",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "end_local" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "end_tzid" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true,
+                        "index" : "not_analyzed"
+                },
+                "end_floating" : {
+                    "type" : "boolean",
+                        "store" : "yes",
+                        "include_in_all": true,
+                        "index" : "not_analyzed"
+                },
+
+                "start_present" : {
+                    "type" : "boolean",
+                        "store" : "yes",
+                        "include_in_all": true,
+                        "index" : "not_analyzed"
+                },
+                "end_type" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "duration" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "status" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "recurrenceid" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "category" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true,
+                        "index" : "not_analyzed"
+                },
+                "category_uid" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "location_uid" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "location_str" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+
+                "image_url" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "thumb_image_url" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "topical_area" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+
+                "eventreg_max_tickets" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "eventreg_max_tickets_per_user" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "eventreg_start" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "eventreg_end" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                }
+            }
+        },
+
+        "calendar" : {
+            "_source" : { "enabled" : false },
+            "properties" : {
+                "key" : {
+                    "type" : "string",
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "itemType" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "name" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "path" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "creator" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "owner" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "acl" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "no"
+                },
+                "created" : {
+                    "type" : "date",
+                        "format": "basic_date_time_no_millis",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "last_modified" : {
+                    "type" : "date",
+                        "format": "basic_date_time_no_millis",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "summary" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true
+                },
+                "description" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true
+                }
+            }
+        },
+
+        "category" : {
+            "_source" : { "enabled" : false },
+            "properties" : {
+                "key" : {
+                    "type" : "string",
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "itemType" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "name" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "path" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "creator" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "owner" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "acl" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "no"
+                },
+                "uid" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": false,
+                        "index" : "not_analyzed"
+                },
+                "description" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true
+                },
+                "category" : {
+                    "type" : "string",
+                        "store" : "yes",
+                        "include_in_all": true,
+                        "index" : "not_analyzed"
+                }
+            }
+        }
+    },
+    "settings":{
+    }
+}
