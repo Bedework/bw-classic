@@ -1,7 +1,7 @@
 {
     "mappings" : {
         "event" : {
-            "_source" : { "enabled" : false },
+            "_source" : { "enabled" : true },
             "properties" : {
                 "key" : {
                     "type" : "string",
@@ -234,7 +234,7 @@
         },
 
         "collection" : {
-            "_source" : { "enabled" : false },
+            "_source" : { "enabled" : true },
             "properties" : {
                 "key" : {
                     "type" : "string",
@@ -306,7 +306,7 @@
         },
 
         "category" : {
-            "_source" : { "enabled" : false },
+            "_source" : { "enabled" : true },
             "properties" : {
                 "key" : {
                     "type" : "string",
