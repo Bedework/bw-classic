@@ -233,7 +233,7 @@
             }
         },
 
-        "calendar" : {
+        "collection" : {
             "_source" : { "enabled" : false },
             "properties" : {
                 "key" : {
@@ -369,7 +369,5 @@
                 }
             }
         }
-    },
-    "settings":{
     }
 }
