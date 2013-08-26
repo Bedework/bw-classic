@@ -20,18 +20,5 @@
               overwrite="yes" />
       </then>
     </if>
-
-    <!-- Copy in the default configuration(s) if they appear to be missing -->
-    <if>
-      <not>
-        <available file="${org.bedework.data.dir}/synch/conf/" />
-      </not>
-      <then>
-        <copy todir="${org.bedework.data.dir}/synch/conf/" >
-          <fileset dir="${org.bedework.synch.configs}" />
-          <filterset refid="property.filters" />
-        </copy>
-      </then>
-    </if>
   </target>
 </project>
