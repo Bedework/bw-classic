@@ -165,6 +165,17 @@
   </target>
 
   <!-- =================================================================
+       "deployEs" target
+       ================================================================= -->
+
+  <target name="deployEs" depends="init"
+          description="Copy the es config into the appserver">
+    <copy file="${env.BEDEWORK_JMX_CONFIG}/../elasticsearch/mappings.json"
+          tofile="${org.bedework.global.elasticsearch.dir}/mappings.json"
+          overwrite="yes" />
+  </target>
+
+  <!-- =================================================================
        "saveData" target - for use by quickstart maintainers
        ================================================================= -->
 

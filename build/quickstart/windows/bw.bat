@@ -103,6 +103,7 @@ SET deploylog4j=
 SET deployActivemq=
 SET deployConf=
 SET deployData=
+SET deployEs=
 SET deploySolr=
 SET dirstart=
 SET saveData=
@@ -203,6 +204,12 @@ GOTO branch
 
 :deployData
   SET deployData="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:deployEs
+  SET deployEs="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -613,6 +620,7 @@ IF NOT "%$BWJMXCONFIG%empty" == "empty" GOTO DoneJmxConfig
   IF NOT "%deployActivemq%empty" == "empty" GOTO cdDeployActivemq
   IF NOT "%deployConf%empty" == "empty" GOTO cdDeployConf
   IF NOT "%deployData%empty" == "empty" GOTO cdDeployData
+  IF NOT "%deployEs%empty" == "empty" GOTO cdDeployEs
   IF NOT "%deploySolr%empty" == "empty" GOTO cdDeploySolr
   IF NOT "%saveData%empty" == "empty" GOTO cdSaveData
 :: Now projects
@@ -697,6 +705,12 @@ GOTO:EOF
   cd %QUICKSTART_HOME%
   SET deployData=
   SET specialTarget="deployData"
+  GOTO dospecial
+
+:cdDeployEs
+  cd %QUICKSTART_HOME%
+  SET deployEs=
+  SET specialTarget="deployEs"
   GOTO dospecial
 
 :cdDeploySolr
@@ -872,6 +886,7 @@ IF "%1" == "deploylog4j" GOTO deploylog4j
 IF "%1" == "deployActivemq" GOTO deployActivemq
 IF "%1" == "deployConf" GOTO deployConf
 IF "%1" == "deployData" GOTO deployData
+IF "%1" == "deployEs" GOTO deployEs
 IF "%1" == "deploySolr" GOTO deploySolr
 IF "%1" == "dirstart" GOTO dirstart
 IF "%1" == "saveData" GOTO saveData
@@ -959,7 +974,7 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO      deploylog4j       deploys a log4j configuration
   ECHO      deployActivemq    deploys the Activemq config
   ECHO      deployConf        deploys the configuration files
-  ECHO      deploySolr        deploys the quickstart solr config
+  ECHO      deployEs          deploys the quickstart elasticsearch config
   ECHO.
   ECHO    PROJECT optionally defines the package to build and is one of
   ECHO            the core, ancillary or experimental targets below:

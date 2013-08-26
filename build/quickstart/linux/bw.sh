@@ -92,6 +92,7 @@ deployActivemq=
 deployConf=
 deployData=
 deploySolr=
+deployEs=
 dirstart=
 saveData=
 
@@ -151,7 +152,7 @@ usage() {
   echo "      deploylog4j       deploys a log4j configuration"
   echo "      deployActivemq    deploys the Activemq config"
   echo "      deployConf        deploys the configuration files"
-  echo "      deploySolr        deploys the quickstart solr config"
+  echo "      deployEs          deploys the quickstart elasticsearch config"
   echo ""
   echo "   PROJECT optionally defines the package to build. If omitted the main"
   echo "           bedework calendar system will be built otherwise it is one of"
@@ -286,12 +287,19 @@ setDirectory() {
     return
   fi
 
-	if [ "$deploySolr" != "" ] ; then
-	  cd $QUICKSTART_HOME
-	  specialTarget=deploySolr
-      deploySolr=
-	  return
-	fi
+  if [ "$deploySolr" != "" ] ; then
+    cd $QUICKSTART_HOME
+    specialTarget=deploySolr
+    deploySolr=
+    return
+  fi
+
+  if [ "$deployEs" != "" ] ; then
+    cd $QUICKSTART_HOME
+    specialTarget=deployEs
+    deployEs=
+    return
+  fi
 
   if [ "$saveData" != "" ] ; then
     cd $QUICKSTART_HOME
@@ -814,6 +822,11 @@ do
       ;;
   deployData)
     deployData="yes"
+      pkgdefault=
+      shift
+      ;;
+  deployEs)
+	  deployEs="yes"
       pkgdefault=
       shift
       ;;
