@@ -7,11 +7,6 @@
   <eventregUrl>http://localhost:8080/eventreg/</eventregUrl>
   <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
   <rootUsers>admin</rootUsers>
-  <solrCoreAdmin>admin/cores/</solrCoreAdmin>
-  <publicIndexName>bwpublic</publicIndexName>
-  <indexerConfig>@APPSERVER-CONF-DIR-URL@solr/mappings.json</indexerConfig>
-  <indexerURL>localhost:9300</indexerURL>
-  <userIndexName>bwuser</userIndexName>
   <systemid>demobedework@mysite.edu</systemid>
   <timezonesByReference>false</timezonesByReference>
   <tzServeruri>http://localhost:8080/tzsvr</tzServeruri>
