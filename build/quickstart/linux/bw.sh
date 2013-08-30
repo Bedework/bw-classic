@@ -5,6 +5,9 @@
 # within the svn repository.
 #
 
+# Make this a par
+#REPO_HOME=/home/douglm/bw-git
+
 ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
 ANT_HOME=`cd "$ANT_HOME" && pwd`
 
@@ -19,70 +22,59 @@ ant_logger=
 ant_loglevel="-quiet"
 bw_loglevel=""
 
+mvn_quiet="-q"
+
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
-updateProjects="access"
-updateProjects="$updateProjects  bedenote"
-updateProjects="$updateProjects  bedework"
-updateProjects="$updateProjects  bedework-carddav"
-updateProjects="$updateProjects  bwannotations"
-updateProjects="$updateProjects  bwcalcore"
-updateProjects="$updateProjects  bwcaldav"
-updateProjects="$updateProjects  bwcalFacade"
-updateProjects="$updateProjects  bwdeployutil"
-updateProjects="$updateProjects  bwical"
-updateProjects="$updateProjects  bwinterfaces"
-updateProjects="$updateProjects  bwsysevents"
-updateProjects="$updateProjects  bwtzsvr"
-updateProjects="$updateProjects  bwwebapps"
-updateProjects="$updateProjects  bwxml"
-updateProjects="$updateProjects  cachedfeeder"
-updateProjects="$updateProjects  caldav"
-updateProjects="$updateProjects  dumprestore"
-updateProjects="$updateProjects  eventreg"
-# updateProjects="$updateProjects  geronimo-hib"
+updateSvnProjects="bedenote"
+updateSvnProjects="$updateSvnProjects  bedework"
+updateSvnProjects="$updateSvnProjects  bwdeployutil"
+updateSvnProjects="$updateSvnProjects  cachedfeeder"
 # updateProjects="$updateProjects  genkeys"
-updateProjects="$updateProjects  indexer"
-updateProjects="$updateProjects  rpiutil"
-updateProjects="$updateProjects  selfreg"
-updateProjects="$updateProjects  synch"
-updateProjects="$updateProjects  webdav"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
-access=
 bedenote=
 bedework=
-bwannotations=
-bwcalcore=
-bwcaldav=
-bwcalfacade=
 bwdeployutil=
-bwicalendar=
-bwinterfaces=
-bwsysevents=
 bwtools=
-bwwebapps=
-bwxml=
-caldav=
 caldavTest=
-carddav=
 catsvr=
 client=
-dumprestore=
-eventreg=
 exchgGateway=
 genkeys=
 geronimoHib=
-indexer=
 monitor=
 naming=
-rpiutil=
-selfreg=
-synch=
 testsuite=
-tzsvr=
-webdav=
+
+maven=
+
+# update from git
+#updateProjects="bw-access"
+#updateProjects="$updateProjects  bw-caldav"
+#updateProjects="$updateProjects  bw-carddav"
+#updateProjects="$updateProjects  bw-calendar-client"
+#updateProjects="$updateProjects  bw-calendar-engine"
+#updateProjects="$updateProjects  bw-self-registration"
+#updateProjects="$updateProjects  bw-synch"
+#updateProjects="$updateProjects  bw-tzsvr"
+#updateProjects="$updateProjects  bw-util"
+#updateProjects="$updateProjects  bw-webdav"
+#updateProjects="$updateProjects  bw-ws"
+
+# git projects
+bw_access=
+bw_caldav=
+bw_calengine=
+bw_carddav=
+bw_selfreg=
+bw_synch=
+bw_tzsvr=
+bw_util=
+bw_webclients=
+bw_webdav=
+bw_ws=
 
 # Special targets - avoiding dependencies
 
@@ -104,6 +96,17 @@ echo "  ------------------------"
 echo ""
 
 PRG="$0"
+
+# project directories
+
+if [ "$1" = "-nosql" ] ; then
+  shift
+  bwcalcoreDir="bwcalcorenosql"
+  bwcalfacadeDir="bwcalfacadenosql"
+else
+  bwcalcoreDir="bwcalcore"
+  bwcalfacadeDir="bwcalFacade"
+fi
 
 usage() {
   echo "  $PRG ACTION"
@@ -159,29 +162,22 @@ usage() {
   echo "           the core, ancillary or experimental targets below:"
   echo ""
   echo "   Core sub-projects: required for a functioning system"
-  echo "     -access       Target is for the access classes"
+  echo "     -bw_access    Target is for the access classes"
   echo "     -bwann        Target is for the annotation classes"
-  echo "     -bwcalcore    Target is for the bedework core api implementation"
-  echo "     -bwcaldav     Target is for the bedework CalDAV implementation"
-  echo "     -bwcalfacade  Target is for the bedework api interface classes"
-  echo "     -bwicalendar  Target is for the bedework icalendar classes"
-  echo "     -bwinterfaces Target is for the bedework service and api interfaces"
-  echo "     -bwsysevents  Target is for the system JMS event classes"
-  echo "     -bwwebapps    Target is for the bedework web ui classes"
-  echo "     -bwxml        Target is for the Bedework XML schemas build"
+  echo "     -bw_calengine Target is for the bedework calendar engine"
+  echo "     -bw_webclients Target is for the bedework web ui classes"
+  echo "     -bw_xml       Target is for the Bedework XML schemas build"
   echo "                        (usually built automatically be dependent projects"
-  echo "     -caldav       Target is for the generic CalDAV server"
+  echo "     -bw_caldav    Target is for the generic CalDAV server"
   echo "     -carddav      Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
-  echo "     -dumprestore  Target is for the Bedework dump/restore service"
   echo "     -eventreg     Target is for the event registration service build"
   echo "     -genkeys      Target is for the genkeys module build"
-  echo "     -indexer      Target is for the Bedework indexer service"
-  echo "     -rpiutil      Target is for the Bedework util classes"
+  echo "     -bw_util      Target is for the Bedework util classes"
   echo "     -selfreg      Target is for the self registration build"
   echo "     -synch        Target is for the synch build"
   echo "     -tzsvr        Target is for the timezones server build"
-  echo "     -webdav       Target is for the WebDAV build"
+  echo "     -bw_webdav    Target is for the WebDAV build"
   echo "   Ancillary projects: not required"
   echo "     -bwtools      Target is for the Bedework tools build"
   echo "     -caldavTest   Target is for the CalDAV Test build"
@@ -221,9 +217,24 @@ errorUsage() {
 # Update the projects
 # ----------------------------------------------------------------------------
 actionUpdateall() {
-  for project in $updateProjects
+  for project in $updateSvnProjects
   do
     if [ ! -d "$project" ] ; then
+      echo "*********************************************************************"
+      echo "SVN Project $project is missing. Check it out from the repository"
+      echo "*********************************************************************"
+      exit 1
+    else
+      echo "*********************************************************************"
+      echo "Updating svn project $project"
+      echo "*********************************************************************"
+      svn update $project
+    fi
+  done
+
+  for project in $updateProjects
+  do
+    if [ ! -d "cd $GIT_HOME/$project" ] ; then
       echo "*********************************************************************"
       echo "Project $project is missing. Check it out from the repository"
       echo "*********************************************************************"
@@ -232,7 +243,8 @@ actionUpdateall() {
       echo "*********************************************************************"
       echo "Updating project $project"
       echo "*********************************************************************"
-      svn update $project
+      cd $GIT_HOME/$project
+      git pull
     fi
   done
 
@@ -252,26 +264,26 @@ setDirectory() {
     return
   fi
 
-    if [ "$dirstart" != "" ] ; then
-      cd $QUICKSTART_HOME
-      specialTarget=dirstart
+	if [ "$dirstart" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=dirstart
       dirstart=
-      return
-    fi
+	  return
+	fi
 
-    if [ "$deploylog4j" != "" ] ; then
-      cd $QUICKSTART_HOME
-      specialTarget=deploylog4j
+	if [ "$deploylog4j" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=deploylog4j
       deploylog4j=
-      return
-    fi
+	  return
+	fi
 
-    if [ "$deployActivemq" != "" ] ; then
-      cd $QUICKSTART_HOME
-      specialTarget=deployActivemq
+	if [ "$deployActivemq" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=deployActivemq
       deployActivemq=
-      return
-    fi
+	  return
+	fi
 
   if [ "$deployConf" != "" ] ; then
     cd $QUICKSTART_HOME
@@ -283,16 +295,16 @@ setDirectory() {
   if [ "$deployData" != "" ] ; then
     cd $QUICKSTART_HOME
     specialTarget=deployData
-    deployData=
+      deployData=
     return
   fi
 
-  if [ "$deploySolr" != "" ] ; then
-    cd $QUICKSTART_HOME
-    specialTarget=deploySolr
-    deploySolr=
-    return
-  fi
+	if [ "$deploySolr" != "" ] ; then
+	  cd $QUICKSTART_HOME
+	  specialTarget=deploySolr
+      deploySolr=
+	  return
+	fi
 
   if [ "$deployEs" != "" ] ; then
     cd $QUICKSTART_HOME
@@ -328,21 +340,27 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$bwxml" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwxml
-      bwxml=
+	if [ "$bw_ws" != "" ] ; then
+      echo "Build ws"
+      cd $GIT_HOME/bw-ws
+      maven=yes
+      bw_ws=
+      return
+    fi
+
+	if [ "$bw_util" != "" ] ; then
+      echo "Build util"
+      cd $GIT_HOME/bw-util
+      maven=yes
+      bw_util=
 	  return
 	fi
 
-	if [ "$rpiutil" != "" ] ; then
-	  cd $QUICKSTART_HOME/rpiutil
-      rpiutil=
-	  return
-	fi
-
-	if [ "$access" != "" ] ; then
-	  cd $QUICKSTART_HOME/access
-      access=
+	if [ "$bw_access" != "" ] ; then
+      echo "Build access"
+      cd $GIT_HOME/bw-access
+      maven=yes
+      bw_access=
 	  return
 	fi
 
@@ -352,15 +370,19 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$webdav" != "" ] ; then
-	  cd $QUICKSTART_HOME/webdav
-      webdav=
-	  return
-	fi
+  if [ "$bw_webdav" != "" ] ; then
+      echo "Build webdav"
+      cd $GIT_HOME/bw-webdav
+      maven=yes
+      bw_webdav=
+    return
+  fi
 
-	if [ "$caldav" != "" ] ; then
-	  cd $QUICKSTART_HOME/caldav
-      caldav=
+	if [ "$bw_caldav" != "" ] ; then
+      echo "Build caldav"
+      cd $GIT_HOME/bw-caldav
+      maven=yes
+      bw_caldav=
 	  return
 	fi
 
@@ -376,23 +398,13 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$bwannotations" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwannotations
-      bwannotations=
-	  return
-	fi
-
-	if [ "$bwcalfacade" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwcalFacade
-      bwcalfacade=
-	  return
-	fi
-
-	if [ "$bwinterfaces" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwinterfaces
-      bwinterfaces=
-	  return
-	fi
+  if [ "$bw_carddav" != "" ] ; then
+      echo "Build carddav"
+      cd $GIT_HOME/bw-carddav
+      maven=yes
+      bw_carddav=
+    return
+  fi
 
 	if [ "$genkeys" != "" ] ; then
 	  cd $QUICKSTART_HOME/genkeys
@@ -400,33 +412,19 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$bwsysevents" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwsysevents
-      bwsysevents=
-	  return
-	fi
+  if [ "$bw_calengine" != "" ] ; then
+      echo "Build calendar engine"
+      cd $GIT_HOME/bw-calendar-engine
+      maven=yes
+      bw_calengine=
+    return
+  fi
 
-	if [ "$bwicalendar" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwical
-      bwicalendar=
-	  return
-	fi
-
-	if [ "$bwwebapps" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwwebapps
-      bwwebapps=
-	  return
-	fi
-
-	if [ "$bwcaldav" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwcaldav
-      bwcaldav=
-	  return
-	fi
-
-	if [ "$bwcalcore" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwcalcore
-      bwcalcore=
+	if [ "$bw_webclients" != "" ] ; then
+      echo "Build calendar clients"
+      cd $GIT_HOME/bw-calendar-client
+      maven=yes
+      bw_webclients=
 	  return
 	fi
 
@@ -439,18 +437,6 @@ setDirectory() {
 	if [ "$client" != "" ] ; then
 	  cd $QUICKSTART_HOME/bwclient
       client=
-	  return
-	fi
-
-	if [ "$indexer" != "" ] ; then
-	  cd $QUICKSTART_HOME/indexer
-      indexer=
-	  return
-	fi
-
-	if [ "$dumprestore" != "" ] ; then
-	  cd $QUICKSTART_HOME/dumprestore
-      dumprestore=
 	  return
 	fi
 
@@ -478,17 +464,21 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$selfreg" != "" ] ; then
-	  cd $QUICKSTART_HOME/selfreg
-      selfreg=
+	if [ "$bw_selfreg" != "" ] ; then
+      echo "Build selfreg"
+      cd $GIT_HOME/bw-self-registration
+      maven=yes
+      bw_selfreg=
 	  return
 	fi
 
-  if [ "$synch" != "" ] ; then
-    cd $QUICKSTART_HOME/synch
-      synch=
-    return
-  fi
+    if [ "$bw_synch" != "" ] ; then
+      echo "Build synch"
+      cd $GIT_HOME/bw-synch
+      maven=yes
+      bw_synch=
+      return
+    fi
 
 	if [ "$testsuite" != "" ] ; then
 	  cd $QUICKSTART_HOME/testsuite
@@ -496,9 +486,11 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$tzsvr" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwtzsvr
-      tzsvr=
+	if [ "$bw_tzsvr" != "" ] ; then
+      echo "Build tzsvr"
+      cd $GIT_HOME/bw-timezone-server
+      maven=yes
+      bw_tzsvr=
 	  return
 	fi
 
@@ -722,14 +714,14 @@ fi
 #  on. That processing is done in dependency order. Of course this whole process
 #  fails if we ever build in a circular dependency - that's why it's important to
 #  do a clean build fairly regularly. So as an example
-#   -webdav)
-#      webdav="yes"
+#   -bw_webdav)
+#      bw_webdav="yes"
 #
-#      access="yes"
-#      bwxml="yes"
-#      rpiutil="yes"
+#      bw_access="yes"
+#      bw_ws="yes"
+#      bw_util="yes"
 #      pkgdefault=
-#  Turns on the webdav build and also access, bwxml and rpiutil because it depends
+#  Turns on the webdav build and also access, bw_xml and util because it depends
 #  on them.
 # ----------------------------------------------------------------------------
 
@@ -741,6 +733,11 @@ do
     -bwchome)         # Define location of configs
       shift
       BWCONFIGS="$1"
+      shift
+      ;;
+    -githome)         # Define location of git repos
+      shift
+      GIT_HOME="$1"
       shift
       ;;
     -quickstart)
@@ -767,6 +764,14 @@ do
       shift
       ;;
 # ----------------------- Log level
+    -mvn-quiet)
+      mvn_quiet="-q"
+      shift
+      ;;
+    -mvn-verbose)
+      mvn_quiet=""
+      shift
+      ;;
     -log-silent)
       ant_loglevel="-quiet"
       bw_loglevel="-Dorg.bedework.build.silent=true"
@@ -811,7 +816,7 @@ do
       shift
       ;;
     deployActivemq)
-	  deployActivemq="yes"
+  	  deployActivemq="yes"
       pkgdefault=
       shift
       ;;
@@ -820,8 +825,8 @@ do
       pkgdefault=
       shift
       ;;
-  deployData)
-    deployData="yes"
+    deployData)
+      deployData="yes"
       pkgdefault=
       shift
       ;;
@@ -830,30 +835,98 @@ do
       pkgdefault=
       shift
       ;;
-  deploySolr)
-	  deploySolr="yes"
+    deploySolr)
+  	  deploySolr="yes"
       pkgdefault=
       shift
       ;;
-	dirstart)
-	  dirstart="yes"
+  	dirstart)
+  	  dirstart="yes"
       pkgdefault=
       shift
       ;;
-  saveData)
-    saveData="yes"
+    saveData)
+      saveData="yes"
       pkgdefault=
       shift
       ;;
-# ------------------------Projects
-    -access)
-      access="yes"
+# ------------------------GIT Projects
+    -bw_access)
+      bw_access="yes"
 
-      bwxml="yes"
-      rpiutil="yes"
+      bw_ws="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
+    -bw_caldav)
+      bw_caldav="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bw_calengine)
+      bw_calengine="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
+      bw_caldav="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bw_ws)
+      bw_ws="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bw_util)
+      bw_util="yes"
+
+      bw_ws="yes"
+      pkgdefault=
+      shift
+      ;;
+    -bw_webdav)
+      bw_webdav="yes"
+
+      bw_access="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -synch)
+      bw_synch="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -tzsvr)
+      bw_tzsvr="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -carddav)
+      bw_carddav="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
+      pkgdefault=
+      shift
+      ;;
+# ------------------------SVN Projects
     -bedenote)
       bedenote="yes"
       pkgdefault=
@@ -864,150 +937,46 @@ do
       pkgdefault=
       shift
       ;;
-    -bwcaldav)
-      bwcaldav="yes"
-
-      access="yes"
-      bwannotations="yes"
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwcalcore)
-      bwcalcore="yes"
-
-      access="yes"
-      bwannotations="yes"
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwcalfacade)
-      bwcalfacade="yes"
-
-      access="yes"
-      bwannotations="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwicalendar)
-      bwicalendar="yes"
-
-      bwannotations="yes"
-      bwcalfacade="yes"
-      bwxml="yes"
-
-      pkgdefault=
-      shift
-      ;;
-    -bwinterfaces)
-      bwinterfaces="yes"
-
-      access="yes"
-      bwannotations="yes"
-      bwcalfacade="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
-
-      pkgdefault=
-      shift
-      ;;
-    -bwsysevents)
-      bwsysevents="yes"
-
-      bwinterfaces="yes"
-      rpiutil="yes"
-      pkgdefault=
-      shift
-      ;;
     -bwtools)
       bwtools="yes"
 
       bwannotations="yes"
       bwcalfacade="yes"
       bwinterfaces="yes"
-      bwxml="yes"
-      rpiutil="yes"
+      bw_ws="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
-    -bwwebapps)
-      bwwebapps="yes"
+    -bw_webclients)
+      bw_webclients="yes"
 
-      access="yes"
-      bwannotations="yes"
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwxml="yes"
-      caldav="yes"
-      rpiutil="yes"
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -bwxml)
-      bwxml="yes"
-      pkgdefault=
-      shift
-      ;;
-    -caldav)
-      caldav="yes"
-
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_access="yes"
+      bw_ws="yes"
+      bw_caldav="yes"
+      bw_util="yes"
+      bw_webdav="yes"
+      bw_calengine="yes"
       pkgdefault=
       shift
       ;;
     -caldavTest)
       caldavTest="yes"
 
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
-      pkgdefault=
-      shift
-      ;;
-    -carddav)
-      carddav="yes"
-
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
     -catsvr)
       catsvr="yes"
 
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      webdav="yes"
+      bw_access="yes"
+      bw_ws="yes"
+      bw_util="yes"
+      bw_webdav="yes"
       pkgdefault=
       shift
       ;;
@@ -1022,26 +991,11 @@ do
       pkgdefault=
       shift
       ;;
-    -dumprestore)
-      dumprestore="yes"
-
-      access="yes"
-      bwannotations="yes"
-      bwcalcore="yes"
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      indexer="yes"
-      rpiutil="yes"
-      pkgdefault=
-      shift
-      ;;
     -eventreg)
       eventreg="yes"
 
-      bwxml="yes"
-      rpiutil="yes"
+      bw_ws="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1049,27 +1003,13 @@ do
       genkeys="yes"
 
       bwinterfaces="yes"
-      rpiutil="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
     -geronimohib)
       geronimoHib="yes"
 
-      pkgdefault=
-      shift
-      ;;
-    -indexer)
-      indexer="yes"
-
-      access="yes"
-      bwannotations="yes"
-      bwcalcore="yes"
-      bwcalfacade="yes"
-      bwicalendar="yes"
-      bwinterfaces="yes"
-      bwsysevents="yes"
-      rpiutil="yes"
       pkgdefault=
       shift
       ;;
@@ -1083,35 +1023,19 @@ do
       pkgdefault=
       shift
       ;;
-    -rpiutil)
-      rpiutil="yes"
-
-      bwxml="yes"
-      pkgdefault=
-      shift
-      ;;
     -exchgGateway)
       exchgGateway="yes"
 
-#      access="yes"
-      bwxml="yes"
-#      rpiutil="yes"
+#      bw_access="yes"
+      bw_ws="yes"
+#      bw_util="yes"
       pkgdefault=
       shift
       ;;
     -selfreg)
-      selfreg="yes"
+      bw_selfreg="yes"
 
-      rpiutil="yes"
-      pkgdefault=
-      shift
-      ;;
-    -synch)
-      synch="yes"
-
-      access="yes"
-      bwxml="yes"
-      rpiutil="yes"
+      bw_util="yes"
       pkgdefault=
       shift
       ;;
@@ -1119,21 +1043,6 @@ do
       testsuite="yes"
 
       pkgdefault="yes"
-      shift
-      ;;
-    -tzsvr)
-      tzsvr="yes"
-      bwxml="yes"
-      rpiutil="yes"
-      pkgdefault=
-      shift
-      ;;
-    -webdav)
-      webdav="yes"
-
-      access="yes"
-      rpiutil="yes"
-      pkgdefault=
       shift
       ;;
     -*)
@@ -1148,23 +1057,16 @@ do
 done
 
 if [ "$pkgdefault" = "yes" ] ; then
+  echo "Build default bedework project"
   bedework="yes"
 
-  access="yes"
-  bwannotations="yes"
-  bwcalcore="yes"
-  bwcaldav="yes"
-  bwcalfacade="yes"
-  bwicalendar="yes"
-  bwinterfaces="yes"
-  bwsysevents="yes"
-  bwwebapps="yes"
-  bwxml="yes"
-  caldav="yes"
-  dumprestore="yes"
-  indexer="yes"
-  rpiutil="yes"
-  webdav="yes"
+  bw_ws="yes"
+  bw_util="yes"
+  bw_access="yes"
+  bw_webdav="yes"
+  bw_caldav="yes"
+  bw_calengine="yes"
+  bw_webclients="yes"
 fi
 
 if [ "$quickstart" != "" ] ; then
@@ -1203,6 +1105,8 @@ export BWCONFIG="-Dorg.bedework.build.properties=$BEDEWORK_CONFIG/build.properti
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"
 
+export GIT_HOME
+
 javacmd="$JAVA_HOME/bin/java -classpath $CLASSPATH"
 # Build (of bwxml) blew up with permgen error
 javacmd="$javacmd -Xmx512M -XX:MaxPermSize=512M"
@@ -1213,14 +1117,26 @@ javacmd="$javacmd $BWCONFIG"
 javacmd="$javacmd $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
 javacmd="$javacmd -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib"
 
+#echo "par 1 = $1"
+
+if [ "$1" = "clean" ] ; then
+  mvncmd="mvn clean"
+else
+  mvncmd="mvn $mvn_quiet -Dmaven.test.skip=true install"
+fi
+
+echo "mvncmd = $mvncmd"
+
 while true
 do
+  maven=
   setDirectory
 
   if [ "$specialTarget" != "" ] ; then
     $javacmd $specialTarget
+  elif [ "$maven" != "" ] ; then
+    $mvncmd
   else
-#    echo $javacmd $*
     $javacmd $*
   fi
 done
