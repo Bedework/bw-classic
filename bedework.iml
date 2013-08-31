@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
-  <component name="EclipseModuleManager">
-    <varelement var="file://$USER_HOME$/eclipse-build/bedework/bedework/bedework/bedework/bedework/bedework-trunk/bedework-trunk" value="link:.eclipse/bedework/bedework/bedework/bedework/bedework-trunk/bedework-trunk" />
-    <src_description expected_position="0" />
-  </component>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$USER_HOME$/eclipse-build/bedework/bedework/bedework/bedework/bedework/bedework-trunk/bedework-trunk" />
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
-    <orderEntry type="sourceFolder" forTests="false" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: log4j:log4j:1.2.15" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.4" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:dsn:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:imap:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:pop3:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:smtp:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.5.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
   </component>
 </module>
 
