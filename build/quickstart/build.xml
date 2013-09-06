@@ -30,7 +30,7 @@
    <dirname property="quickstart.dir" file="${ant.file}"/>
 
    <property name="org.bedework.project.bedework"
-             location="${basedir}/bedework" />
+             location="${basedir}/bw-classic" />
 
    <loadDeployConfig />
 

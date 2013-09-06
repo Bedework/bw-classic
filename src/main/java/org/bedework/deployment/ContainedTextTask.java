@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+/* ********************************************************************
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -17,27 +15,27 @@
     KIND, either express or implied. See the License for the
     specific language governing permissions and limitations
     under the License.
--->
+*/
+package org.bedework.deployment;
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+import org.apache.tools.ant.Task;
 
-<!--
-  <parent>
-    <groupId>org.bedework</groupId>
-    <artifactId>bedework</artifactId>
-    <version>4.0</version>
-    <relativePath>../../../bedework</relativePath>
-  </parent>
- -->
-  <groupId>org.bedework</groupId>
-  <artifactId>ear.properties</artifactId>
-  <version>4.0</version>
+/** Base task that contains text.
+ *
+ * @author douglm @ rpi.edu
+ */
+public class ContainedTextTask extends Task {
+  private String text;
 
-  <name>Properties for deployed ears</name>
-  <description>Properties for deployed ears</description>
-  <url>http://bedework.org/</url>
-</project>
+  public void addText(final String text) {
+    if (this.text== null) {
+      this.text = text;
+    } else {
+      this.text += text;
+    }
+  }
+
+  public String getText() {
+    return text;
+  }
+}

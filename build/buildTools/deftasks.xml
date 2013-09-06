@@ -373,6 +373,7 @@
 
         <filter token="orgBedeworkVersion"
                 value="${org.bedework.version}"/>
+        <!--
         <filter token="orgBedeworkAccessVersion"
                 value="${org.bedework.access.version}"/>
         <filter token="orgBedeworkAnnotationsVersion"
@@ -426,7 +427,7 @@
         <filter token="orgBedeworkWebdavVersion"
                 value="${org.bedework.webdav.version}"/>
         <filter token="orgBedeworkXmlschemaVersion"
-                value="${org.bedework.xmlschema.version}"/>
+                value="${org.bedework.xmlschema.version}"/>-->
 
       </filterset>
     </sequential>

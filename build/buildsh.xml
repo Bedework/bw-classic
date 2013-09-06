@@ -17,7 +17,7 @@
 <project name="bw.buildsh" default="build">
   <!--<import file="${build.dir}/buildfilters.xml" />-->
   <buildfilters/>
-  
+
   <import file="${build.dir}/platforms/${org.bedework.global.deploy.platform}Service.xml" />
 
   <target name="init">
@@ -66,7 +66,7 @@
           <fileset dir="${org.bedework.sou.hibernate.properties}/properties" />
           <filterset refid="property.filters" />
         </copy>
-    
+
         <copy todir="${app.dest.classes}">
           <fileset dir="${org.bedework.sou.hibernate.properties}/hbms" />
           <filterset refid="property.filters" />
@@ -93,14 +93,6 @@
     <!-- Create the env.properties file -->
     <mkdir dir="${app.dest.properties}" />
 
-    <copy tofile="${app.dest.properties}/options.xml"
-          file="${org.bedework.config.options}" >
-      <filterset>
-        <filter token="RPI-DEBUG" value="${app.debug.val}"/>
-      </filterset>
-      <filterset refid="property.filters" />
-    </copy>
-
     <!-- ===============================================================
                        Add any resource files
          =============================================================== -->
@@ -116,7 +108,7 @@
       <istrue value="${org.bedework.shellscr.copy.data}" />
       <then>
         <mkdir dir="${app.dest.data}" />
-    
+
         <copy todir="${app.dest.data}" overwrite="yes" >
           <fileset refid="org.bedework.shellscr.data" />
           <filterset refid="property.filters" />
@@ -130,7 +122,7 @@
 
     <!-- Platform specific -->
     <antcall target="addExtras" inheritRefs="true" />
-    
+
     <!-- ================================================================
          Build the zip file
          ================================================================ -->

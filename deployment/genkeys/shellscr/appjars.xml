@@ -9,20 +9,21 @@
       <delete dir="${org.bedework.temp.extrajars.dir}" />
       <mkdir dir="${org.bedework.temp.extrajars.dir}" />
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-calfacade" version="${org.bedework.calfacade.version}"
-              projecthome="${bw.project.home}/../bwcalFacade" />
+              name="bw-calendar-engine-facade"
+              version="${org.bedework.bw-calendar-engine.version}"
+              projecthome="${org.bedework.git.project.home}/bw-calendar-engine/bw-calendar-engine-facade" />
 
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="rpiutil" version="${org.bedework.rpiutil.version}" project="rpiutil"
-              projecthome="${bedework.home}/../rpiutil" />
+              name="bw-util" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util" />
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="commons-codec" version="1.3"/>
-      
+
     </sequential>
  </macrodef>
 </project>

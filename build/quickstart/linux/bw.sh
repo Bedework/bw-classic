@@ -1,20 +1,22 @@
 #! /bin/sh
 
 #
-# This file is included by the quickstart script file "bw" so that it can live
-# within the svn repository.
+# This file is included by the bw-classic script file "bw" so that it can live
+# within the repository.
 #
 
 # Make this a par
 #REPO_HOME=/home/douglm/bw-git
-
-ANT_HOME=`dirname "$PRG"`/apache-ant-1.7.0
-ANT_HOME=`cd "$ANT_HOME" && pwd`
+GIT_HOME=`dirname "$PRG"`/..
+GIT_HOME=`cd "$GIT_HOME" && pwd`
 
 #ant_listener="-listener org.apache.tools.ant.listener.Log4jListener"
 #ant_xmllogfile="-DXmlLogger.file=log.xml"
 #ant_logger="-logger org.apache.tools.ant.XmlLogger"
 
+antHome=
+jbossHome=
+dsHome=
 ant_listener=
 ant_xmllogfile=
 ant_logger=
@@ -35,7 +37,6 @@ updateSvnProjects="$updateSvnProjects  cachedfeeder"
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
 bedenote=
-bedework=
 bwdeployutil=
 bwtools=
 caldavTest=
@@ -68,6 +69,7 @@ bw_access=
 bw_caldav=
 bw_calengine=
 bw_carddav=
+bw_classic=
 bw_selfreg=
 bw_synch=
 bw_tzsvr=
@@ -87,6 +89,9 @@ deploySolr=
 deployEs=
 dirstart=
 saveData=
+buildwebcache=
+deploywebcache=
+deployurlbuilder=
 
 specialTarget=
 
@@ -110,7 +115,7 @@ fi
 
 usage() {
   echo "  $PRG ACTION"
-  echo "  $PRG [CONFIG-SOURCE] [CONFIG] [PROJECT] [ -offline ] [LOG_LEVEL] [ target ] "
+  echo "  $PRG [OPTIONS] [PROJECT] [LOG_LEVEL] [ target ] "
   echo ""
   echo " where:"
   echo ""
@@ -121,24 +126,22 @@ usage() {
   echo "      -zoneinfo   builds zoneinfo data for the timezones server"
   echo "                  requires -version and -tzdata parameters.   "
   echo "                  NOTE: build depends on glib2 and only works on Linux/Unix"
-  echo "      -buildwebcache     builds webcache"
-  echo "      -deploywebcache    deploys webcache"
-  echo "      -deployurlbuilder  deploys url/widget builder"
   echo ""
-  echo "   CONFIG-SOURCE optionally defines the location of configurations and"
-  echo "                 is one or none of  "
+  echo "   OPTIONS is zero or more from:"
   echo "     -quickstart    to use the configurations within the quickstart"
   echo "     -bwchome path  to specify the location of the bwbuild directory"
-  echo "   The default is to look in the user home for the bwbuild directory."
+  echo "                    The default is to look in the user home for"
+  echo "                      the bwbuild directory."
   echo ""
-  echo "   CONFIG optionally defines the configuration to build"
-  echo "      -bwc configname"
-  echo "      -bwjmxconf location of jmx configuration files"
-  echo "   The -bwjmxconf parameter specifies the location of a "
-  echo "   directory which contains all the run-time configuration for"
-  echo "   the system."
-  echo ""
-  echo "   -offline     Build without attempting to retrieve library jars"
+  echo "      -antHome      location of ant"
+  echo "      -jbossHome    location of jboss to deploy into"
+  echo "      -dsHome       location of apache directory server"
+  echo "      -bwc name     optionally defines the configuration to build"
+  echo "      -bwjmxconf    location of jmx configuration files"
+  echo "   T                specifies the location of a directory which "
+  echo "                    contains all the run-time configuration for"
+  echo "                    the system."
+  echo "      -offline      Build without attempting to retrieve library jars"
   echo ""
   echo "   LOG_LEVEL sets the level of logging and can be"
   echo "      -log-silent   Nearly silent"
@@ -156,6 +159,9 @@ usage() {
   echo "      deployActivemq    deploys the Activemq config"
   echo "      deployConf        deploys the configuration files"
   echo "      deployEs          deploys the quickstart elasticsearch config"
+  echo "      buildwebcache     builds webcache"
+  echo "      deploywebcache    deploys webcache"
+  echo "      deployurlbuilder  deploys url/widget builder"
   echo ""
   echo "   PROJECT optionally defines the package to build. If omitted the main"
   echo "           bedework calendar system will be built otherwise it is one of"
@@ -265,56 +271,70 @@ setDirectory() {
   fi
 
 	if [ "$dirstart" != "" ] ; then
-	  cd $QUICKSTART_HOME
+	  cd $GIT_HOME
 	  specialTarget=dirstart
       dirstart=
 	  return
 	fi
 
+	if [ "$deploywebcache" != "" ] ; then
+      cd $GIT_HOME/bw-cachedfeeder
+	  specialTarget=deploy-webcache
+      deploywebcache=
+	  return
+	fi
+
+	if [ "$buildwebcache" != "" ] ; then
+      cd $GIT_HOME/bw-cachedfeeder
+	  specialTarget=build-webCache
+      buildwebcache=
+	  return
+	fi
+
+	if [ "$deployurlbuilder" != "" ] ; then
+      cd $GIT_HOME/bw-cachedfeeder
+	  specialTarget=deploy-urlbuilder
+      deployurlbuilder=
+	  return
+	fi
+
 	if [ "$deploylog4j" != "" ] ; then
-	  cd $QUICKSTART_HOME
+	  cd $GIT_HOME
 	  specialTarget=deploylog4j
       deploylog4j=
 	  return
 	fi
 
 	if [ "$deployActivemq" != "" ] ; then
-	  cd $QUICKSTART_HOME
+	  cd $GIT_HOME
 	  specialTarget=deployActivemq
       deployActivemq=
 	  return
 	fi
 
   if [ "$deployConf" != "" ] ; then
-    cd $QUICKSTART_HOME
+    cd $GIT_HOME
     specialTarget=deployConf
     deployConf=
     return
   fi
 
   if [ "$deployData" != "" ] ; then
-    cd $QUICKSTART_HOME
+    cd $GIT_HOME
     specialTarget=deployData
       deployData=
     return
   fi
 
-	if [ "$deploySolr" != "" ] ; then
-	  cd $QUICKSTART_HOME
-	  specialTarget=deploySolr
-      deploySolr=
-	  return
-	fi
-
   if [ "$deployEs" != "" ] ; then
-    cd $QUICKSTART_HOME
+    cd $GIT_HOME
     specialTarget=deployEs
     deployEs=
     return
   fi
 
   if [ "$saveData" != "" ] ; then
-    cd $QUICKSTART_HOME
+    cd $GIT_HOME
     specialTarget=saveData
       saveData=
     return
@@ -322,23 +342,17 @@ setDirectory() {
 
 #     projects
 
-	if [ "$geronimoHib" != "" ] ; then
-	  cd $QUICKSTART_HOME/geronimo-hibernate
-      geronimoHib=
-	  return
-	fi
-
-	if [ "$bedenote" != "" ] ; then
-	  cd $QUICKSTART_HOME/bedenote
-      bedenote=
-	  return
-	fi
-
 	if [ "$bwdeployutil" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwdeployutil
+	  cd $GIT_HOME/bw-classic
       bwdeployutil=
 	  return
 	fi
+
+    if [ "$bedenote" != "" ] ; then
+      cd $GIT_HOME/bedenote
+      bedenote=
+      return
+    fi
 
 	if [ "$bw_ws" != "" ] ; then
       echo "Build ws"
@@ -365,7 +379,7 @@ setDirectory() {
 	fi
 
 	if [ "$eventreg" != "" ] ; then
-	  cd $QUICKSTART_HOME/eventreg
+	  cd $GIT_HOME/eventreg
       eventreg=
 	  return
 	fi
@@ -387,13 +401,13 @@ setDirectory() {
 	fi
 
 	if [ "$caldavTest" != "" ] ; then
-	  cd $QUICKSTART_HOME/caldavTest
+	  cd $GIT_HOME/caldavTest
       caldavTest=
 	  return
 	fi
 
 	if [ "$carddav" != "" ] ; then
-	  cd $QUICKSTART_HOME/bedework-carddav
+	  cd $GIT_HOME/bedework-carddav
       carddav=
 	  return
 	fi
@@ -407,7 +421,7 @@ setDirectory() {
   fi
 
 	if [ "$genkeys" != "" ] ; then
-	  cd $QUICKSTART_HOME/genkeys
+	  cd $GIT_HOME/genkeys
       genkeys=
 	  return
 	fi
@@ -429,37 +443,37 @@ setDirectory() {
 	fi
 
 	if [ "$catsvr" != "" ] ; then
-	  cd $QUICKSTART_HOME/catsvr
+	  cd $GIT_HOME/catsvr
       catsvr=
 	  return
 	fi
 
 	if [ "$client" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwclient
+	  cd $GIT_HOME/bwclient
       client=
 	  return
 	fi
 
-	if [ "$bedework" != "" ] ; then
-	  cd $QUICKSTART_HOME
-      bedework=
+	if [ "$bw_classic" != "" ] ; then
+	  cd $GIT_HOME/bw-classic
+      bw_classic=
 	  return
 	fi
 
 	if [ "$monitor" != "" ] ; then
-	  cd $QUICKSTART_HOME/MonitorApp
+	  cd $GIT_HOME/MonitorApp
       monitor=
 	  return
 	fi
 
 	if [ "$naming" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwnaming
+	  cd $GIT_HOME/bwnaming
       naming=
 	  return
 	fi
 
 	if [ "$exchgGateway" != "" ] ; then
-	  cd $QUICKSTART_HOME/exchgGateway
+	  cd $GIT_HOME/exchgGateway
       exchgGateway=
 	  return
 	fi
@@ -481,7 +495,7 @@ setDirectory() {
     fi
 
 	if [ "$testsuite" != "" ] ; then
-	  cd $QUICKSTART_HOME/testsuite
+	  cd $GIT_HOME/testsuite
       testsuite=
 	  return
 	fi
@@ -495,7 +509,7 @@ setDirectory() {
 	fi
 
 	if [ "$bwtools" != "" ] ; then
-	  cd $QUICKSTART_HOME/bwtools
+	  cd $GIT_HOME/bwtools
       bwtools=
 	  return
 	fi
@@ -644,15 +658,15 @@ if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   errorUsage "JAVA_HOME is not defined correctly for bedework."
 fi
 
-saveddir=`pwd`
+#saveddir=`pwd`
+saveddir=$GIT_HOME
 
 trap 'cd $saveddir' 0
 trap "exit 2" 1 2 3 15
 
-export QUICKSTART_HOME=$saveddir
+#export GIT_HOME=$saveddir
 
-CLASSPATH=$ANT_HOME/lib/ant-launcher.jar
-CLASSPATH=$CLASSPATH:$QUICKSTART_HOME/bedework/build/quickstart/antlib
+echo "*************** GIT_HOME=$GIT_HOME"
 
 # Default some parameters
 
@@ -670,6 +684,11 @@ if [ "$1" = "" ] ; then
   exit 1
 fi
 
+if [ "$1" = "?" ] ; then
+  usage
+  exit 1
+fi
+
 # look for actions first
 
 if [ "$1" = "-updateall" ] ; then
@@ -678,26 +697,6 @@ fi
 
 if [ "$1" = "-zoneinfo" ] ; then
   actionZoneinfo $*
-fi
-
-if [ "$1" = "-buildwebcache" ] ; then
-  cd $QUICKSTART_HOME/cachedfeeder
-  ./buildWebCache
-  exit
-fi
-
-if [ "$1" = "-deploywebcache" ] ; then
-  cd $QUICKSTART_HOME/cachedfeeder
-  $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher \
-                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib deploy-webcache
-  exit
-fi
-
-if [ "$1" = "-deployurlbuilder" ] ; then
-  cd $QUICKSTART_HOME/cachedfeeder
-  $JAVA_HOME/bin/java -classpath $CLASSPATH $ant_xmllogfile -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher \
-                 $BWCONFIG $ant_listener $ant_logger $ant_loglevel $bw_loglevel -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib deploy-urlbuilder
-  exit
 fi
 
 # ----------------------------------------------------------------------------
@@ -735,9 +734,19 @@ do
       BWCONFIGS="$1"
       shift
       ;;
-    -githome)         # Define location of git repos
+    -antHome)
       shift
-      GIT_HOME="$1"
+      antHome="$1"
+      shift
+      ;;
+    -jbossHome)
+      shift
+      jbossHome="$1"
+      shift
+      ;;
+    -dsHome)
+      shift
+      dsHome="$1"
       shift
       ;;
     -quickstart)
@@ -807,6 +816,21 @@ do
 # ------------------------Special targets
     cmdutil)
     cmdutil="yes"
+      pkgdefault=
+      shift
+      ;;
+    deploywebcache)
+	  deploywebcache="yes"
+      pkgdefault=
+      shift
+      ;;
+    buildwebcache)
+	  buildwebcache="yes"
+      pkgdefault=
+      shift
+      ;;
+    deployurlbuilder)
+	  deployurlbuilder="yes"
       pkgdefault=
       shift
       ;;
@@ -1058,7 +1082,7 @@ done
 
 if [ "$pkgdefault" = "yes" ] ; then
   echo "Build default bedework project"
-  bedework="yes"
+  bw_classic="yes"
 
   bw_ws="yes"
   bw_util="yes"
@@ -1069,23 +1093,42 @@ if [ "$pkgdefault" = "yes" ] ; then
   bw_webclients="yes"
 fi
 
+if [ "x" = "x$antHome" ]; then
+    antHome=$GIT_HOME/apache-ant-1.7.0
+    antHome=`cd "$antHome" && pwd`
+fi
+
+if [ "x" = "x$jbossHome" ]; then
+    jbossHome=`dirname "$antHome"`/jboss-5.1.0.GA
+fi
+
+if [ "x" = "x$dsHome" ]; then
+    dsHome=`dirname "$antHome"`/apacheds-1.5.3-fixed
+fi
+
+CLASSPATH=$antHome/lib/ant-launcher.jar
+CLASSPATH=$CLASSPATH:$GIT_HOME/bedework/build/quickstart/antlib
+
 if [ "$quickstart" != "" ] ; then
   if [ "$BWCONFIGS" != "" ] ; then
     errorUsage "Cannot specify both -quickstart and -bwchome"
   fi
 
-  BWCONFIGS=$QUICKSTART_HOME/bedework/config/bwbuild
+  BWCONFIGS=$GIT_HOME/bw-classic/config/bwbuild
 elif [ "$BWCONFIGS" = "" ] ; then
   BWCONFIGS=$HOME/bwbuild
 fi
 
 if [ "$BWJMXCONFIG" = "" ] ; then
-  BWJMXCONFIG=$QUICKSTART_HOME/bedework/config/bedework
+  BWJMXCONFIG=$GIT_HOME/bw-classic/config/bedework
 fi
 
 export BEDEWORK_CONFIGS_HOME=$BWCONFIGS
 export BEDEWORK_CONFIG=$BWCONFIGS/$bwc
 export BEDEWORK_JMX_CONFIG=$BWJMXCONFIG
+export ANT_HOME=$antHome
+export JBOSS_HOME=$jbossHome
+export DS_HOME=$dsHome
 
 if [ ! -d "$BEDEWORK_CONFIGS_HOME/.platform" ] ; then
   errorUsage "Configurations directory $BEDEWORK_CONFIGS_HOME is missing directory '.platform'."
@@ -1112,10 +1155,10 @@ javacmd="$JAVA_HOME/bin/java -classpath $CLASSPATH"
 javacmd="$javacmd -Xmx512M -XX:MaxPermSize=512M"
 
 javacmd="$javacmd $ant_xmllogfile $offline"
-javacmd="$javacmd -Dant.home=$ANT_HOME org.apache.tools.ant.launch.Launcher"
+javacmd="$javacmd -Dant.home=$antHome org.apache.tools.ant.launch.Launcher"
 javacmd="$javacmd $BWCONFIG"
 javacmd="$javacmd $ant_listener $ant_logger $ant_loglevel $bw_loglevel"
-javacmd="$javacmd -lib $QUICKSTART_HOME/bedework/build/quickstart/antlib"
+javacmd="$javacmd -lib $GIT_HOME/bw-classic/build/quickstart/antlib"
 
 #echo "par 1 = $1"
 

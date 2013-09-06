@@ -6,15 +6,15 @@
   <org>
     <bedework>
       <global>
-        <version>3.9</version>
-        
+        <version>4.0</version>
+
         <!-- This property is how the running system finds the system settings.
              In theory we could have multiple settings with different names
-             
+
              DO NOT CHANGE
          -->
         <systemName>bedework</systemName>
-           
+
         <!-- ===============================================================
                          Timezone server information
              =============================================================== -->
@@ -37,7 +37,7 @@
         <!-- Public/private key locations -->
         <privKeys>@KEYFILE-DIR@/privkeys</privKeys>
         <pubKeys>@KEYFILE-DIR@/pubkeys</pubKeys>
-        
+
         <!-- ===============================================================
                          Calendar system modules
              =============================================================== -->
@@ -45,19 +45,19 @@
       </global>
 
       <app>
- 
+
         <!-- ===============================================================
                           User CalDAV server UserCalDAV
              =============================================================== -->
         <Usercaldav classname="org.bedework.caldav.util.CalDAVConfig">
-          <!-- SOAP web service 
+          <!-- SOAP web service
                This corresponds to the full uri in the properties file.
                Defined as a global deployment property
-               
-               NOTE: the value below is defined in the build properties 
+
+               NOTE: the value below is defined in the build properties
                 -->
           <calSoapWsURI>@calSoapWsURI@</calSoapWsURI>
-          
+
           <!-- This corresponds to the deployment path in the properties file.
                Defined as a global deployment property  -->
           <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
@@ -67,11 +67,11 @@
                           Public (unauthenticated) CalDAV server PublicCalDAV
              ================================================================== -->
         <Pubcaldav classname="org.bedework.caldav.util.CalDAVConfig">
-          <!-- SOAP web service 
+          <!-- SOAP web service
                This corresponds to the full uri in the properties file.
                Defined as a global deployment property
-               
-               NOTE: the value below is defined in the build properties 
+
+               NOTE: the value below is defined in the build properties
                 -->
           <calSoapWsURI>@calSoapWsURI@</calSoapWsURI>
         </Pubcaldav>
