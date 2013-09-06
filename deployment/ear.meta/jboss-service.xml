@@ -98,8 +98,4 @@
     <!-- buffer pool size -->
     <attribute name="LargeBufferPoolStats"/>
   </mbean>
-
-  <mbean code="edu.rpi.sss.util.http.service.HttpOut"
-         name="org.bedework:service=BwHttpOut">
-  </mbean>
 </server>
