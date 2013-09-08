@@ -151,6 +151,8 @@ usage() {
   echo "      -log-configs  Some info about configurations"
   echo "      -ant-debug    Vast amounts of ant output"
   echo "      -build-debug  Some bedework build debug output"
+  echo "      -mvn-quiet    the default"
+  echo "      -mvn-verbose  noisier"
   echo ""
   echo "   target       Special target or Ant target to execute"
   echo ""
@@ -1163,9 +1165,9 @@ javacmd="$javacmd -lib $GIT_HOME/bw-classic/build/quickstart/antlib"
 #echo "par 1 = $1"
 
 if [ "$1" = "clean" ] ; then
-  mvncmd="mvn clean"
+  mvncmd="mvn3 clean"
 else
-  mvncmd="mvn $mvn_quiet -Dmaven.test.skip=true install"
+  mvncmd="mvn3 $mvn_quiet -Dmaven.test.skip=true install"
 fi
 
 echo "mvncmd = $mvncmd"

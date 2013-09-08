@@ -19,11 +19,11 @@
 
     <connection-url>jdbc:derby://localhost:1527/${jboss.server.data.dir}/bedework/derby/SynchDb3p6;create=true</connection-url>
 
-    <!-- If bedework calendar is deployed the DerbyDb mbean may be defined there 
+    <!-- If bedework calendar is deployed the DerbyDb mbean may be defined there
       The definition is commented out below.
     -->
     <depends>org.bedework:service=DerbyDb</depends>
-    
+
     <user-name>sa</user-name>
     <password>bw</password>
     <min-pool-size>5</min-pool-size>
@@ -37,21 +37,21 @@
     </metadata>
   </local-tx-datasource>
 
-  <!-- mbean for server mode 
-  <mbean code="edu.rpi.cmt.db.hibernate.derby.DerbyDb" 
+  <!-- mbean for server mode
+  <mbean code="org.bedework.util.hibernate.derby.DerbyDb"
          name="org.bedework:service=DerbyDb">
     < ! - - Should be done like this
-    <attribute name="Port">        
-      <value-factory bean="ServiceBindingManager" method="getIntBinding" 
+    <attribute name="Port">
+      <value-factory bean="ServiceBindingManager" method="getIntBinding"
            parameter="jboss:service=Hypersonic"/>
     </attribute>
     - - >
     <attribute name="Port">1527</attribute>
     < ! - -
-    <attribute name="BindAddress">        
-        <value-factory bean="ServiceBindingManager" method="getStringBinding" 
+    <attribute name="BindAddress">
+        <value-factory bean="ServiceBindingManager" method="getStringBinding"
            parameter="jboss:service=Hypersonic"/>
-    </attribute>     
+    </attribute>
     - - >
     <attribute name="Account">sa</attribute>
     <attribute name="Pw">bw</attribute>

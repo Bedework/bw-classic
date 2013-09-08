@@ -69,7 +69,7 @@
     <depends>jboss.jca:service=DataSourceBinding,name=CalendarDS</depends>
   </mbean>
 
-  <mbean code="edu.rpi.sss.util.servlets.io.PooledBufferedOutputStream"
+  <mbean code="org.bedework.util.servlet.io.PooledBufferedOutputStream"
          name="org.bedework:service=PooledBuffers">
     <!-- buffer size -->
     <attribute name="SmallBufferSize"/>

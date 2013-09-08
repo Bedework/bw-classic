@@ -35,20 +35,20 @@
   </local-tx-datasource>
 
   <!-- mbean for server mode -->
-  <mbean code="edu.rpi.cmt.db.hibernate.derby.DerbyDb" 
+  <mbean code="org.bedework.util.hibernate.derby.DerbyDb"
          name="org.bedework:service=DerbyDb">
     <!-- Should be done like this
-    <attribute name="Port">        
-      <value-factory bean="ServiceBindingManager" method="getIntBinding" 
+    <attribute name="Port">
+      <value-factory bean="ServiceBindingManager" method="getIntBinding"
            parameter="jboss:service=Hypersonic"/>
     </attribute>
     -->
     <attribute name="Port">1527</attribute>
     <!--
-    <attribute name="BindAddress">        
-        <value-factory bean="ServiceBindingManager" method="getStringBinding" 
+    <attribute name="BindAddress">
+        <value-factory bean="ServiceBindingManager" method="getStringBinding"
            parameter="jboss:service=Hypersonic"/>
-    </attribute>     
+    </attribute>
     -->
     <attribute name="Account">sa</attribute>
     <attribute name="Pw">bw</attribute>
