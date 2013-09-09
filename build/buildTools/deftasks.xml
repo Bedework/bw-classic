@@ -3,7 +3,7 @@
      projectDefs: standard project definitions
      xMsg: x=info,debug etc. For message output
 
-     Authors: Mike Douglass   douglm rpi.edu
+     Authors: Mike Douglass   douglm bedework.edu
 -->
 
 <project name="doDeftasks" basedir="." default=""
@@ -866,7 +866,7 @@
        and a jar file
           ${build.jar.file}
 
-       Authors: Mike Douglass   douglm rpi.edu
+       Authors: Mike Douglass   douglm bedework.edu
   -->
   <macrodef name="build-jar">
     <attribute name="module-base"/>

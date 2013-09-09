@@ -5,7 +5,7 @@
      It is imported by the quickstart build.xml ensuring all changes to this file
      appear in the repository.
 
-     Authors: Mike Douglass   douglm@rpi.edu
+     Authors: Mike Douglass   douglm@bedework.edu
 -->
 
 <project name="quickstart-build-file" default="deploy" basedir=".">

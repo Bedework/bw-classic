@@ -3,34 +3,34 @@
 <!-- ===================== Deployment build file =======================
      This directory and the files within it are to be part of the config
      and deployment process.
-     
+
      ======================== new comment ========================
      Modules are of type and kind.
-     
+
      The type is for example, webadmin, usercaldav etc.
-     
+
      The kind is webapp, shellscr etc.
-     
-     We cycle over the information we have for each application we want to 
-     build and for each application use ants property mapping to map the 
-     properties onto a constant set of names, e.g. the applicfation specific 
-     name 
+
+     We cycle over the information we have for each application we want to
+     build and for each application use ants property mapping to map the
+     properties onto a constant set of names, e.g. the applicfation specific
+     name
          org.bedework.app.CalAdmin.deploy.dir
-     would be mapped onto 
+     would be mapped onto
          propval.app.deploy.dir
-         
-     We then look for build.xml files on a path given by the type and kind, 
-     for example 
+
+     We then look for build.xml files on a path given by the type and kind,
+     for example
          webadmin/webapp/build.xml
      or
          indexer/shellscr/build.xml
-         
+
      The intent was to allow certain modules to be built in different forms.
      At one point it was also the case that we tried to deal with platform
      specific issues through this scheme. Now that is handled by importing
      platform specific build files into a generic build file.
-     
-     That may allow for some simplification. 
+
+     That may allow for some simplification.
      ======================== old comment ========================
 
      A number of properties of the form org.bedework.install.XXX will be
@@ -51,17 +51,17 @@
 
         Add an antcall for each component and a corresponding target
 
-     Authors: Mike Douglass   douglm rpi.edu
+     Authors: Mike Douglass   douglm bedework.edu
      =================================================================== -->
 
 <project name="deploy.bedework" default="init">
   <dirname property="this.build.dir" file="${ant.file}"/>
 
   <property name="bedework.deployment.base" location="${this.build.dir}" />
-  
-  <property name="org.bedework.deployment.resources" 
+
+  <property name="org.bedework.deployment.resources"
             location="${bedework.deployment.base}/resources" />
-  
+
   <property name="ear.meta.dir" location="${this.build.dir}/ear.meta"/>
 
   <target name="init" >
@@ -104,13 +104,13 @@
 
     <!-- set these for the war builds -->
     <dirname property="app.root.dir" file="${ant.file}"/>
-    
+
     <property name="org.bedework.sou.hibernate.properties"
               location="${org.bedework.deployment.resources}/hibernate" />
-    
+
     <property name="org.bedework.jboss.datasource.jndiname"
               value="${org.bedework.global.jboss.db.datasource.jndiname}" />
-    
+
     <!-- Common resources directory -->
     <property name="org.bedework.common.resources"
               location="${app.root.dir}/resources" />

@@ -2,7 +2,7 @@
 
 <!-- This is the ant build file for the bedework uber project.
 
-     Authors: Mike Douglass   douglm @ rpi.edu
+     Authors: Mike Douglass   douglm @ bedework.edu
 -->
 
 <project name="bedework.build" default="deploy" basedir=".">

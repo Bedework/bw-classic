@@ -119,7 +119,7 @@
      <priority value="DEBUG"/>
    </category>
 
-   <!-- Set rpi categories -->
+   <!-- Set bedework categories -->
    <category name="edu.rpi">
      <priority value="DEBUG"/>
    </category>

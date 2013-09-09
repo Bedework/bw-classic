@@ -3,7 +3,7 @@
   Based on jpetstore example application with contributions from:
 
   Author: Xavier Lawrence @ jahia . com
-  Author: Mike Douglass    douglm@rpi.edu
+  Author: Mike Douglass    douglm@bedework.edu
 -->
 <portlet-app id="calAdmin" version="1.0">
   <portlet id="@CONTEXT-ROOT@.@PORTLET-NAME@">

@@ -155,8 +155,83 @@
 
       <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-util" version="${org.bedework.bw-util.version}"
-              projecthome="${org.bedework.git.project.home}/bw-util" />
+              name="bw-util-caching" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-caching" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-calendar" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-calendar" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-config" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-config" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-config-http" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-config-http" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-dav" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-dav" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-http" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-http" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-indexing" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-indexing" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-jmx" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-jmx" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-json" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-json" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-misc" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-misc" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-security" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-security" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-servlet" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-servlet" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-servlet-filters" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-servlet-filters" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-struts" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-struts" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-timezones" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-timezones" />
+
+      <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
+              libcache="${org.bedework.libcache.dir}"
+              name="bw-util-xml" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-xml" />
 
       <!-- ======================= Ical4j jars ============================ -->
 

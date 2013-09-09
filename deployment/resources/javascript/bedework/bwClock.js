@@ -6,31 +6,31 @@
    Version 2.0 (the "License"); you may not use this file
    except in compliance with the License. You may obtain a
    copy of the License at:
-  
+
    http://www.apache.org/licenses/LICENSE-2.0
-  
+
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on
    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
    KIND, either express or implied. See the License for the
    specific language governing permissions and limitations
-   under the License.  
+   under the License.
 */
 
 
-/** A basic jQuery plug-in for building a time picker. 
- *  With a little effort this could be generalized; 
+/** A basic jQuery plug-in for building a time picker.
+ *  With a little effort this could be generalized;
  *  at the moment, it is somewhat Bedework-centric.
- *  
+ *
  *  Styles are defined in bwClock.css
- * 
- * @author Arlen Johnson       johnsa - rpi.edu
+ *
+ * @author Arlen Johnson       johnsa - bedework.edu
  */
 
-(function($){  
-  $.fn.bwTimePicker = function(options) { 
-    
-    var defaults = {  
+(function($){
+  $.fn.bwTimePicker = function(options) {
+
+    var defaults = {
       hour24: false,      // are we in 24 hour clock mode?
       withPadding: false, // pad the hours with a zero if below 10
       attachToId: null,   // id of element which when clicked will launch the time picker
@@ -41,9 +41,9 @@
       minuteLabel: "Minute", // default text for "Minute"
       amLabel: "am",      // default text for "am"
       pmLabel: "pm"      // default text for "pm"
-    };  
+    };
     var options = $.extend(defaults, options);
-    
+
     var bwTimePickerContent = "";
     bwTimePickerContent += '<div class="bwTimePicker">';
     bwTimePickerContent += '<div class="bwTimePickerCloser">x</div>';
@@ -67,13 +67,13 @@
       bwTimePickerContent += '<div class="bwTimePickerColumn bwTimePickerAmPm"><ul><li>' + options.amLabel + '</li><li>' + options.pmLabel + '</li></ul></div>';
     }
     bwTimePickerContent += '</div>';
-    return this.each(function() {  
-      var obj = $(this); 
-      
+    return this.each(function() {
+      var obj = $(this);
+
       obj.addClass('bwTimePickerLink');
       $("#" + options.attachToId).css("position","relative");
       $("#" + options.attachToId).css("display","inline-block");
-      
+
       obj.toggle(
         function(){
           $("#" + options.attachToId).append(bwTimePickerContent);
@@ -88,7 +88,7 @@
               hours = 0;
             }
             if (hours < 10 && options.withPadding) {
-              hours = "0" + hours; 
+              hours = "0" + hours;
             }
             for (var i=0; i < options.hourIds.length; i++) {
               $("#" + options.hourIds[i]).val(hours);
@@ -113,6 +113,6 @@
           $("#" + options.attachToId + " .bwTimePicker").remove();
         }
       );
-    });  
-  };  
-})(jQuery); 
+    });
+  };
+})(jQuery);
