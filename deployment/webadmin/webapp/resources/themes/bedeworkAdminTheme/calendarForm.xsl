@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -27,12 +27,12 @@
      standalone="yes"
      omit-xml-declaration="yes"/>
   <xsl:strip-space elements="*"/>
-  
+
   <!--+++++++++++++++ Calendar Lists ++++++++++++++++++++-->
-  <!-- templates: 
+  <!-- templates:
          - addCalendar
          - modCalendar (edit)
-   --> 
+   -->
 
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3><xsl:copy-of select="$bwStr-CuCa-AddCalFileOrSub"/></h3>
@@ -118,7 +118,7 @@
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                      <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                      <xsl:if test="uid = /bedework/defaultCategories//category/uid">
                         <xsl:attribute name="disabled">disabled</xsl:attribute>
                       </xsl:if>
                       <xsl:value-of select="value"/>
@@ -384,7 +384,7 @@
                   <input type="checkbox" name="catUid" checked="checked">
                     <xsl:attribute name="value"><xsl:value-of select="$catUid"/></xsl:attribute>
                     <xsl:attribute name="id"><xsl:value-of select="$catUid"/></xsl:attribute>
-                    <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
+                    <xsl:if test="uid = /bedework/defaultCategories//category/uid">
                       <xsl:attribute name="disabled">disabled</xsl:attribute>
                     </xsl:if>
                     <label for="{$catUid}"><xsl:value-of select="value"/></label>
@@ -499,5 +499,5 @@
       </form>
     </div-->
   </xsl:template>
-  
+
 </xsl:stylesheet>
