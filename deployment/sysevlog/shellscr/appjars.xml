@@ -28,8 +28,8 @@
 
       <getJar mvn="yes" lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="bw-util" version="${org.bedework.bw-util.version}"
-              projecthome="${org.bedework.git.project.home}/bw-util" />
+              name="bw-util-misc" version="${org.bedework.bw-util.version}"
+              projecthome="${org.bedework.git.project.home}/bw-util/bw-util-misc" />
     </sequential>
  </macrodef>
 </project>
