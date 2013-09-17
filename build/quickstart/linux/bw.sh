@@ -263,6 +263,7 @@ actionUpdateall() {
 # The order below reflects the dependencies
 setDirectory() {
     specialTarget=
+    deploy=
 
 #     Special targets
   if [ "$cmdutil" != "" ] ; then
@@ -315,7 +316,7 @@ setDirectory() {
 	fi
 
   if [ "$deployConf" != "" ] ; then
-    cd $GIT_HOME
+    cd $GIT_HOME/bw-classic
     specialTarget=deployConf
     deployConf=
     return
@@ -493,6 +494,7 @@ setDirectory() {
       cd $GIT_HOME/bw-synch
       maven=yes
       bw_synch=
+      deploy="$GIT_HOME/bw-synch/bw-synch-ear/target/bw-synch*ear"
       return
     fi
 
@@ -507,6 +509,7 @@ setDirectory() {
       cd $GIT_HOME/bw-timezone-server
       maven=yes
       bw_tzsvr=
+      deploy="$GIT_HOME/bw-timezone-server/bw-timezone-server-ear/target/bw-timezone-server*ear"
 	  return
 	fi
 
@@ -1183,6 +1186,11 @@ do
     $mvncmd
   else
     $javacmd $*
+  fi
+
+  if [ "$deploy" != "" ] ; then
+    cp $deploy $jbossHome/server/default/bwdeploy/
+    deploy=
   fi
 done
 

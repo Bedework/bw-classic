@@ -4,7 +4,7 @@
 # This currently needs to be executed out of the quickstart directory
 # (via a source)
 
-BASE_DIR=`pwd`
+BASE_DIR=`pwd`/..
 
 PRG="$0"
 
@@ -162,7 +162,7 @@ JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
-RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
+RUN_CMD="$BASE_DIR/$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
 
 echo $RUN_CMD
 
