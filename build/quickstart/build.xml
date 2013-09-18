@@ -171,8 +171,12 @@
   <target name="deployEs" depends="init"
           description="Copy the es config into the appserver">
     <copy file="${env.BEDEWORK_JMX_CONFIG}/../elasticsearch/mappings.json"
-          tofile="${org.bedework.global.elasticsearch.dir}/mappings.json"
+          tofile="${org.bedework.jboss.conf.dir}/elasticsearch/mappings.json"
           overwrite="yes" />
+    <copy todir="${org.bedework.jboss.data.dir}/bedework/elasticsearch/config"
+          overwrite="yes" >
+      <fileset dir="${env.BEDEWORK_JMX_CONFIG}/../elasticsearch/config" />
+    </copy>
   </target>
 
   <!-- =================================================================

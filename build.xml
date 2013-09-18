@@ -2,7 +2,7 @@
 
 <!-- This is the ant build file for the bedework uber project.
 
-     Authors: Mike Douglass   douglm @ bedework.edu
+     Authors: Mike Douglass   douglm @ rpi.edu
 -->
 
 <project name="bedework.build" default="deploy" basedir=".">
@@ -14,6 +14,10 @@
 
   <property name="bedework.home"
             location="${project.home}" />
+
+  <property name="bedework.qs.build"
+            location="${project.home}/build/quickstart/build.xml" />
+
 
   <!-- this project -->
   <property name="org.bedework.project.bedework"
@@ -81,6 +85,16 @@
       <fileset dir="${env.BEDEWORK_JMX_CONFIG}"/>
       <filterset refid="property.filters" />
     </copy>
+  </target>
+
+  <!-- =================================================================
+       "deployEs" target
+       ================================================================= -->
+
+  <target name="deployEs" depends="init"
+          description="Copy the es config into the appserver">
+    <ant antfile="${bedework.qs.build}" inheritrefs="true"
+         target="deployEs" />
   </target>
 
   <!-- =================================================================

@@ -26,6 +26,8 @@ bw_loglevel=""
 
 mvn_quiet="-q"
 
+mvn_binary="/usr/share/maven/bin/mvn";
+
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
 updateSvnProjects="bedenote"
@@ -302,14 +304,14 @@ setDirectory() {
 	fi
 
 	if [ "$deploylog4j" != "" ] ; then
-	  cd $GIT_HOME
+	  cd $GIT_HOME/bw-classic
 	  specialTarget=deploylog4j
       deploylog4j=
 	  return
 	fi
 
 	if [ "$deployActivemq" != "" ] ; then
-	  cd $GIT_HOME
+	  cd $GIT_HOME/bw-classic
 	  specialTarget=deployActivemq
       deployActivemq=
 	  return
@@ -323,21 +325,21 @@ setDirectory() {
   fi
 
   if [ "$deployData" != "" ] ; then
-    cd $GIT_HOME
+    cd $GIT_HOME/bw-classic
     specialTarget=deployData
       deployData=
     return
   fi
 
   if [ "$deployEs" != "" ] ; then
-    cd $GIT_HOME
+    cd $GIT_HOME/bw-classic
     specialTarget=deployEs
     deployEs=
     return
   fi
 
   if [ "$saveData" != "" ] ; then
-    cd $GIT_HOME
+    cd $GIT_HOME/bw-classic
     specialTarget=saveData
       saveData=
     return
@@ -1168,9 +1170,9 @@ javacmd="$javacmd -lib $GIT_HOME/bw-classic/build/quickstart/antlib"
 #echo "par 1 = $1"
 
 if [ "$1" = "clean" ] ; then
-  mvncmd="mvn3 clean"
+  mvncmd="$mvn_binary clean"
 else
-  mvncmd="mvn3 $mvn_quiet -Dmaven.test.skip=true install"
+  mvncmd="$mvn_binary $mvn_quiet -Dmaven.test.skip=true install"
 fi
 
 echo "mvncmd = $mvncmd"
