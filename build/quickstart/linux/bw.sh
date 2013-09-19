@@ -10,6 +10,8 @@
 GIT_HOME=`dirname "$PRG"`/..
 GIT_HOME=`cd "$GIT_HOME" && pwd`
 
+echo "+++++++++++++GIT_HOME=$GIT_HOME"
+
 #ant_listener="-listener org.apache.tools.ant.listener.Log4jListener"
 #ant_xmllogfile="-DXmlLogger.file=log.xml"
 #ant_logger="-logger org.apache.tools.ant.XmlLogger"
