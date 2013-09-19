@@ -26,7 +26,8 @@ bw_loglevel=""
 
 mvn_quiet="-q"
 
-mvn_binary="/usr/share/maven/bin/mvn";
+#mvn_binary="/usr/share/maven/bin/mvn";
+mvn_binary="mvn3";
 
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
@@ -54,17 +55,19 @@ testsuite=
 maven=
 
 # update from git
-#updateProjects="bw-access"
-#updateProjects="$updateProjects  bw-caldav"
-#updateProjects="$updateProjects  bw-carddav"
-#updateProjects="$updateProjects  bw-calendar-client"
-#updateProjects="$updateProjects  bw-calendar-engine"
-#updateProjects="$updateProjects  bw-self-registration"
-#updateProjects="$updateProjects  bw-synch"
-#updateProjects="$updateProjects  bw-tzsvr"
-#updateProjects="$updateProjects  bw-util"
-#updateProjects="$updateProjects  bw-webdav"
-#updateProjects="$updateProjects  bw-ws"
+updateProjects="bw-access"
+updateProjects="$updateProjects  bw-caldav"
+updateProjects="$updateProjects  bw-calendar-client"
+updateProjects="$updateProjects  bw-calendar-engine"
+updateProjects="$updateProjects  bw-carddav"
+updateProjects="$updateProjects  bw-classic"
+updateProjects="$updateProjects  bw-event-registration"
+updateProjects="$updateProjects  bw-self-registration"
+updateProjects="$updateProjects  bw-synch"
+updateProjects="$updateProjects  bw-tzsvr"
+updateProjects="$updateProjects  bw-util"
+updateProjects="$updateProjects  bw-webdav"
+updateProjects="$updateProjects  bw-ws"
 
 # git projects
 bw_access=
@@ -72,6 +75,7 @@ bw_caldav=
 bw_calengine=
 bw_carddav=
 bw_classic=
+bw_eventreg=
 bw_selfreg=
 bw_synch=
 bw_tzsvr=
@@ -227,21 +231,6 @@ errorUsage() {
 # Update the projects
 # ----------------------------------------------------------------------------
 actionUpdateall() {
-  for project in $updateSvnProjects
-  do
-    if [ ! -d "$project" ] ; then
-      echo "*********************************************************************"
-      echo "SVN Project $project is missing. Check it out from the repository"
-      echo "*********************************************************************"
-      exit 1
-    else
-      echo "*********************************************************************"
-      echo "Updating svn project $project"
-      echo "*********************************************************************"
-      svn update $project
-    fi
-  done
-
   for project in $updateProjects
   do
     if [ ! -d "cd $GIT_HOME/$project" ] ; then
@@ -383,9 +372,9 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$eventreg" != "" ] ; then
+	if [ "$bw_eventreg" != "" ] ; then
 	  cd $GIT_HOME/eventreg
-      eventreg=
+      bw_eventreg=
 	  return
 	fi
 
@@ -1023,7 +1012,7 @@ do
       shift
       ;;
     -eventreg)
-      eventreg="yes"
+      bw_eventreg="yes"
 
       bw_ws="yes"
       bw_util="yes"
