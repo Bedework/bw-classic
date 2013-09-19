@@ -7,7 +7,7 @@
 
 # Make this a par
 #REPO_HOME=/home/douglm/bw-git
-GIT_HOME=`dirname "$PRG"`/..
+GIT_HOME=`dirname "$PRG"`
 GIT_HOME=`cd "$GIT_HOME" && pwd`
 
 echo "+++++++++++++GIT_HOME=$GIT_HOME"
@@ -66,7 +66,7 @@ updateProjects="$updateProjects  bw-classic"
 updateProjects="$updateProjects  bw-event-registration"
 updateProjects="$updateProjects  bw-self-registration"
 updateProjects="$updateProjects  bw-synch"
-updateProjects="$updateProjects  bw-tzsvr"
+updateProjects="$updateProjects  bw-timezone-server"
 updateProjects="$updateProjects  bw-util"
 updateProjects="$updateProjects  bw-webdav"
 updateProjects="$updateProjects  bw-ws"
@@ -235,7 +235,7 @@ errorUsage() {
 actionUpdateall() {
   for project in $updateProjects
   do
-    if [ ! -d "cd $GIT_HOME/$project" ] ; then
+    if [ ! -d "$GIT_HOME/$project" ] ; then
       echo "*********************************************************************"
       echo "Project $project is missing. Check it out from the repository"
       echo "*********************************************************************"
