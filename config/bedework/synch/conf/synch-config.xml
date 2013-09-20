@@ -4,7 +4,7 @@
                 type="org.bedework.synch.conf.SynchConfig">
   <callbackURI>http://localhost:8080/synch/</callbackURI>
   <hibernateProperties>
-    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect</hibernateProperty>
+    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
     <hibernateProperty>hibernate.connection.datasource=java:/SynchDS</hibernateProperty>
     <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
     <hibernateProperty>hibernate.show_sql=false</hibernateProperty>
