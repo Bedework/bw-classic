@@ -98,6 +98,16 @@
   </target>
 
   <!-- =================================================================
+       "deployActivemq" target
+       ================================================================= -->
+
+  <target name="deployActivemq" depends="init"
+          description="Copy the activemq config into the appserver">
+    <ant antfile="${bedework.qs.build}" inheritrefs="true"
+         target="deployActivemq" />
+  </target>
+
+  <!-- =================================================================
        "build" and "clean" targets for the project
        ================================================================= -->
 
