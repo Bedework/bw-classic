@@ -104,6 +104,9 @@ SET JAVA_OPTS=%JAVA_OPTS% -Xms%heap% -Xmx%heap%
 :: Don't do this SET JAVA_OPTS=%JAVA_OPTS% -XX:NewSize=%newsize% -XX:MaxNewSize=%newsize%
 SET JAVA_OPTS=%JAVA_OPTS% -XX:PermSize=%permsize% -XX:MaxPermSize=%permsize%
 
+:: Put all the temp stuff inside the jboss temp
+SET JAVA_OPTS=%JAVA_OPTS% -Djava.io.tmpdir=%JBOSS_SERVER_DIR%\tmp"
+
 SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat -c %JBOSS_CONFIG% %JBOSS_BIND% %JBOSS_PORTS% %LOG_THRESHOLD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI% %BW_DATA_DIR_DEF% %BW_CONF_DIR_DEF%
 
 ECHO.

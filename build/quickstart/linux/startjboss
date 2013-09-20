@@ -160,6 +160,9 @@ JAVA_OPTS="$JAVA_OPTS -Des.path.home=$ES_HOME"
 
 JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 
+# Put all the temp stuff inside the jboss temp
+JAVA_OPTS="$JAVA_OPTS -Djava.io.tmpdir=$JBOSS_SERVER_DIR/tmp"
+
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
 RUN_CMD="$BASE_DIR/$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
