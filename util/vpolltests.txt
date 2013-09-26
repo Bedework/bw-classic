@@ -1,0 +1,375 @@
+# DESCRIPTION: mkcalendar: create a collection
+
+
+curl -X MKCALENDAR http://localhost:8080/ucaldav/polls/ -u douglm:bedework -H "Content-Type: text/xml" -d '
+<?xml version="1.0" encoding="utf-8" ?>
+<C:mkcalendar xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+<D:set>
+<D:prop>
+<D:displayname>Polls</D:displayname>
+<C:calendar-description xml:lang="en">A CalDAV calendar with timezone.</C:calendar-description>
+<C:calendar-timezone><![CDATA[BEGIN:VCALENDAR
+PRODID:-//Example Corp.//CalDAV Client//EN
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:US-Eastern
+LAST-MODIFIED:19870101T000000Z
+BEGIN:STANDARD
+DTSTART:19671029T020000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:Eastern Standard Time (US & Canada)
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19870405T020000
+RRULE:FREQ=YEARLY;BYDAY=1SU;BYMONTH=4
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:Eastern Daylight Time (US & Canada)
+END:DAYLIGHT
+END:VTIMEZONE
+END:VCALENDAR
+]]></C:calendar-timezone>
+<C:supported-calendar-component-set>
+<C:comp name="VPOLL">
+</C:comp>
+</C:supported-calendar-component-set>
+</D:prop>
+</D:set>
+</C:mkcalendar>
+'
+
+curl -X MKCALENDAR http://localhost:8080/ucaldav/polls/ -u douglm:bedework -H "Content-Type: text/xml" -d '
+
+# ------------------------------------------------------
+#  DESCRIPTION: Save a vpoll
+
+
+curl -X PUT http://localhost:8080/ucaldav/user/douglm/polls/0123456789xxaaab.ics -u douglm:bedework -H "Content-Type: application/calendar+json" -H "Prefer: return=representation" -d '
+[ "vcalendar",
+  [
+    [ "prodid", { }, "text", "//Bedework.org//BedeWork V3.9//EN" ],
+    [ "version", { }, "text", "2.0" ]
+  ],
+  [
+    [ "vpoll",
+      [
+        [ "summary", { }, "text", "Try a vpoll" ],
+        [ "description", { }, "text", "Try a vpoll and more text" ],
+        [ "uid", { }, "text", "0123456789xxaaab@bedework.org" ],
+        [ "organizer", { }, "cal-address", "douglm@mysite.edu" ],
+        [ "voter", { }, "cal-address", "douglm@mysite.edu" ],
+        [ "voter", { }, "cal-address", "schwag@mysite.edu" ]
+      ],
+      [
+        [ "vevent",
+          [
+            [ "duration", { }, "duration", "PT1H" ],
+            [ "dtstart", {"tzid" : "America/New_York"}, "date", "2013-09-28T11:00:00" ],
+            [ "summary", { }, "text", "VPOLL option 1" ],
+            [ "uid", { }, "text", "123456bbbbbaaaa@bedework.org" ],
+            [ "poll-item-id", { }, "integer", 1 ],
+            [ "organizer", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "bfranklin@mysite.edu" ]
+          ],
+          [ ]
+        ],
+        [ "vevent",
+          [
+            [ "duration", { }, "duration", "PT1H" ],
+            [ "dtstart", {"tzid" : "America/New_York"}, "date", "2013-09-29T11:00:00" ],
+            [ "summary", { }, "text", "VPOLL option 2" ],
+            [ "uid", { }, "text", "123456bbbbbaaaa@bedework.org" ],
+            [ "poll-item-id", { }, "integer", 2 ],
+            [ "organizer", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "bfranklin@mysite.edu" ]
+          ],
+          [ ]
+        ]
+      ]
+    ]
+  ]
+]
+'
+
+# -------------------------------------------------
+# get the vpoll
+
+curl -X GET http://localhost:8080/ucaldav/user/douglm/polls/0123456789xxaaab.ics -u douglm:bedework -H "Accept: application/calendar+json"
+
+Response looks like
+
+[ "vcalendar", [ [ "prodid", { }, "text", "//Bedework.org//BedeWork V3.9//EN" ], [ "version", { }, "text", "2.0" ] ], [ [ "vpoll", [ [ "created", { }, "date-time", "2013-09-25T09:25:43Z" ], [ "description", { }, "text", "Try a vpoll and more text" ], [ "dtstamp", { }, "date-time", "2013-09-25T09:25:59Z" ], [ "last-modified", { }, "date-time", "2013-09-25T09:25:43Z" ], [ "organizer", { }, "cal-address", "mailto:douglm@mysite.edu" ], [ "summary", { }, "text", "Try a vpoll" ], [ "uid", { }, "text", "0123456789xxaaab@bedework.org" ], [ "voter", {
+  "response" : "0"
+}, "cal-address", "mailto:douglm@mysite.edu" ], [ "voter", {
+  "schedule-status" : "1.2",
+  "response" : "0"
+}, "cal-address", "mailto:schwag@mysite.edu" ] ], [ [ "vevent", [ [ "duration", { }, "duration", "PT1H" ], [ "dtstart", {
+  "tzid" : "America/New_York"
+}, "date", "2013-09-28T11:00:00" ], [ "summary", { }, "text", "VPOLL option 1" ], [ "uid", { }, "text", "123456bbbbbaaaa@bedework.org" ], [ "poll-item-id", { }, "text", 1 ], [ "organizer", { }, "cal-address", "douglm@mysite.edu" ], [ "attendee", { }, "cal-address", "douglm@mysite.edu" ], [ "attendee", { }, "cal-address", "bfranklin@mysite.edu" ] ], [ ] ], [ "vevent", [ [ "duration", { }, "duration", "PT1H" ], [ "dtstart", {
+  "tzid" : "America/New_York"
+}, "date", "2013-09-29T11:00:00" ], [ "summary", { }, "text", "VPOLL option 2" ], [ "uid", { }, "text", "123456bbbbbaaaa@bedework.org" ], [ "poll-item-id", { }, "text", 2 ], [ "organizer", { }, "cal-address", "douglm@mysite.edu" ], [ "attendee", { }, "cal-address", "douglm@mysite.edu" ], [ "attendee", { }, "cal-address", "bfranklin@mysite.edu" ] ], [ ] ] ] ] ] ]
+
+
+[
+    "vcalendar",
+    [
+        [
+            "prodid",
+            {},
+            "text",
+            "//Bedework.org//BedeWork V3.9//EN"
+        ],
+        [
+            "version",
+            {},
+            "text",
+            "2.0"
+        ]
+    ],
+    [
+        [
+            "vpoll",
+            [
+                [
+                    "created",
+                    {},
+                    "date-time",
+                    "2013-09-25T09:25:43Z"
+                ],
+                [
+                    "description",
+                    {},
+                    "text",
+                    "Try a vpoll and more text"
+                ],
+                [
+                    "dtstamp",
+                    {},
+                    "date-time",
+                    "2013-09-25T09:25:59Z"
+                ],
+                [
+                    "last-modified",
+                    {},
+                    "date-time",
+                    "2013-09-25T09:25:43Z"
+                ],
+                [
+                    "organizer",
+                    {},
+                    "cal-address",
+                    "mailto:douglm@mysite.edu"
+                ],
+                [
+                    "summary",
+                    {},
+                    "text",
+                    "Try a vpoll"
+                ],
+                [
+                    "uid",
+                    {},
+                    "text",
+                    "0123456789xxaaab@bedework.org"
+                ],
+                [
+                    "voter",
+                    {
+                        "response": "0"
+                    },
+                    "cal-address",
+                    "mailto:douglm@mysite.edu"
+                ],
+                [
+                    "voter",
+                    {
+                        "schedule-status": "1.2",
+                        "response": "0"
+                    },
+                    "cal-address",
+                    "mailto:schwag@mysite.edu"
+                ]
+            ],
+            [
+                [
+                    "vevent",
+                    [
+                        [
+                            "duration",
+                            {},
+                            "duration",
+                            "PT1H"
+                        ],
+                        [
+                            "dtstart",
+                            {
+                                "tzid": "America/New_York"
+                            },
+                            "date",
+                            "2013-09-28T11:00:00"
+                        ],
+                        [
+                            "summary",
+                            {},
+                            "text",
+                            "VPOLL option 1"
+                        ],
+                        [
+                            "uid",
+                            {},
+                            "text",
+                            "123456bbbbbaaaa@bedework.org"
+                        ],
+                        [
+                            "poll-item-id",
+                            {},
+                            "text",
+                            1
+                        ],
+                        [
+                            "organizer",
+                            {},
+                            "cal-address",
+                            "douglm@mysite.edu"
+                        ],
+                        [
+                            "attendee",
+                            {},
+                            "cal-address",
+                            "douglm@mysite.edu"
+                        ],
+                        [
+                            "attendee",
+                            {},
+                            "cal-address",
+                            "bfranklin@mysite.edu"
+                        ]
+                    ],
+                    []
+                ],
+                [
+                    "vevent",
+                    [
+                        [
+                            "duration",
+                            {},
+                            "duration",
+                            "PT1H"
+                        ],
+                        [
+                            "dtstart",
+                            {
+                                "tzid": "America/New_York"
+                            },
+                            "date",
+                            "2013-09-29T11:00:00"
+                        ],
+                        [
+                            "summary",
+                            {},
+                            "text",
+                            "VPOLL option 2"
+                        ],
+                        [
+                            "uid",
+                            {},
+                            "text",
+                            "123456bbbbbaaaa@bedework.org"
+                        ],
+                        [
+                            "poll-item-id",
+                            {},
+                            "text",
+                            2
+                        ],
+                        [
+                            "organizer",
+                            {},
+                            "cal-address",
+                            "douglm@mysite.edu"
+                        ],
+                        [
+                            "attendee",
+                            {},
+                            "cal-address",
+                            "douglm@mysite.edu"
+                        ],
+                        [
+                            "attendee",
+                            {},
+                            "cal-address",
+                            "bfranklin@mysite.edu"
+                        ]
+                    ],
+                    []
+                ]
+            ]
+        ]
+    ]
+]
+
+# -------------------------------------------------
+#schwag responds
+
+
+curl -X PUT http://localhost:8080/ucaldav/user/schwag/polls/0123456789xxaaab@bedework.org.ics -u schwag:bedework -H "Content-Type: application/calendar+json" -H "Prefer: return=representation" -d '
+[ "vcalendar",
+  [
+    [ "prodid", { }, "text", "//Bedework.org//BedeWork V3.9//EN" ],
+    [ "version", { }, "text", "2.0" ]
+  ],
+  [
+    [ "vpoll",
+      [
+        [ "summary", { }, "text", "Try a vpoll" ],
+        [ "description", { }, "text", "Try a vpoll and more text" ],
+        [ "uid", { }, "text", "0123456789xxaaab@bedework.org" ],
+        [ "organizer", { }, "cal-address", "douglm@mysite.edu" ],
+        [ "voter", { }, "cal-address", "douglm@mysite.edu" ],
+        [ "voter", { }, "cal-address", "schwag@mysite.edu" ],
+        [ "poll-item-id", { "response" : "50" }, "integer", 1 ],
+        [ "poll-item-id", { "response" : "100" }, "integer", 2 ]
+      ],
+      [
+        [ "vevent",
+          [
+            [ "duration", { }, "duration", "PT1H" ],
+            [ "dtstart", {"tzid" : "America/New_York"}, "date", "2013-09-28T11:00:00" ],
+            [ "summary", { }, "text", "VPOLL option 1" ],
+            [ "uid", { }, "text", "123456bbbbbaaaa@bedework.org" ],
+            [ "poll-item-id", { }, "integer", 1 ],
+            [ "voter", { "response" : "50" }, "cal-address", "schwag@mysite.edu" ],
+            [ "organizer", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "bfranklin@mysite.edu" ]
+          ],
+          [ ]
+        ],
+        [ "vevent",
+          [
+            [ "duration", { }, "duration", "PT1H" ],
+            [ "dtstart", {"tzid" : "America/New_York"}, "date", "2013-09-29T11:00:00" ],
+            [ "summary", { }, "text", "VPOLL option 2" ],
+            [ "uid", { }, "text", "123456bbbbbaaaa@bedework.org" ],
+            [ "poll-item-id", { }, "integer", 2 ],
+            [ "voter", { "response" : "100" }, "cal-address", "schwag@mysite.edu" ],
+            [ "organizer", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "douglm@mysite.edu" ],
+            [ "attendee", { }, "cal-address", "bfranklin@mysite.edu" ]
+          ],
+          [ ]
+        ]
+      ]
+    ]
+  ]
+]
+'
+
+
+# -------------------------------------------------
+
+

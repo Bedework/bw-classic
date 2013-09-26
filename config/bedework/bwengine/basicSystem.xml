@@ -3,6 +3,7 @@
 <basic-properties xmlns="http://bedework.org/ns/"
                    type="org.bedework.calsvc.jmx.BasicSystemPropertiesImpl">
   <bwadmingroupPrincipalRoot>/principals/groups/bwadmin/</bwadmingroupPrincipalRoot>
+  <defaultAttachmentsName>Attachments</defaultAttachmentsName>
   <defaultNotificationsName>Notifications</defaultNotificationsName>
   <defaultReferencesName>References</defaultReferencesName>
   <globalResourcesPath>/Resources/</globalResourcesPath>
@@ -16,6 +17,7 @@
   <ticketPrincipalRoot>/principals/tickets/</ticketPrincipalRoot>
   <userCalendarRoot>user</userCalendarRoot>
   <userDefaultCalendar>calendar</userDefaultCalendar>
+  <userDefaultPollsCalendar>polls</userDefaultPollsCalendar>
   <userInbox>Inbox</userInbox>
   <userOutbox>Outbox</userOutbox>
   <userPrincipalRoot>/principals/users/</userPrincipalRoot>
