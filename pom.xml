@@ -134,6 +134,11 @@
       <version>2.4</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.8.4</version>
+    </dependency>
       <!-- scope runtime? Need these to get into the repository -->
       <dependency>
         <groupId>com.sun.mail</groupId>

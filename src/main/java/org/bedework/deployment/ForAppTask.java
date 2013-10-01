@@ -19,6 +19,7 @@
 package org.bedework.deployment;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.taskdefs.Sequential;
 
@@ -137,14 +138,14 @@ public class ForAppTask extends Sequential {
 
       PropertyHelper props = PropertyHelper.getPropertyHelper(getProject());
 
-      String bedeworkHome = (String)props.getProperty(null, bedeworkHomeProperty);
+      String bedeworkHome = (String)props.getProperty((Project)null, bedeworkHomeProperty);
 
       if (bedeworkHome == null) {
         throw new BuildException("Must supply property " + bedeworkHomeProperty);
       }
 
       String appProjectProperty = appPrefix + name + ".project";
-      String project = (String)props.getProperty(null, appProjectProperty);
+      String project = (String)props.getProperty((Project)null, appProjectProperty);
 
       if (project == null) {
         throw new BuildException("Property " + appProjectProperty +
@@ -154,7 +155,7 @@ public class ForAppTask extends Sequential {
       /* Build full project property from project name and get value */
 
       String projectProperty = projectPrefix + project;
-      String projectPath = (String)props.getProperty(null, projectProperty);
+      String projectPath = (String)props.getProperty((Project)null, projectProperty);
 
       if (projectPath == null) {
         throw new BuildException("Property " + projectProperty +
@@ -162,7 +163,7 @@ public class ForAppTask extends Sequential {
       }
 
       String appSouProperty = appPrefix + name + ".sou.dir";
-      String appSou = (String)props.getProperty(null, appSouProperty);
+      String appSou = (String)props.getProperty((Project)null, appSouProperty);
 
       if (appSou == null) {
         throw new BuildException("Property " + appSouProperty +

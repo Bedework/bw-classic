@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<synch xmlns="http://bedework.org/ns/"
+        type="org.bedework.util.servlet.io.PooledBuffersPropertiesImpl">
+  <smallBufferSize>250</smallBufferSize>
+  <mediumBufferSize>4096</mediumBufferSize>
+  <largeBufferSize>1000000</largeBufferSize>
+  <smallBufferPoolSize>20</smallBufferPoolSize>
+  <mediumBufferPoolSize>20</mediumBufferPoolSize>
+  <largeBufferPoolSize>60</largeBufferPoolSize>
+</synch>

@@ -421,10 +421,6 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="geronimo-kernel" version="2.2.1"/>
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
               name="imgscalr-lib" version="4.2"/>
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"

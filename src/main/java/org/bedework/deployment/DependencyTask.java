@@ -417,7 +417,7 @@ public class DependencyTask extends Task implements TaskContainer {
   }
 
   private String getProperty(final String n) {
-    return (String)PropertyHelper.getPropertyHelper(getProject()).getProperty(null, n);
+    return (String)PropertyHelper.getPropertyHelper(getProject()).getProperty((Project)null, n);
   }
 
   private String replaced(final String s) {

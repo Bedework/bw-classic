@@ -19,6 +19,7 @@
 package org.bedework.deployment;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.TaskContainer;
@@ -102,7 +103,7 @@ public class DependenciesTask extends Task implements TaskContainer {
   }
 
   protected String getProperty(final String n) {
-    return (String)PropertyHelper.getPropertyHelper(getProject()).getProperty(null, n);
+    return (String)PropertyHelper.getPropertyHelper(getProject()).getProperty((Project)null, n);
   }
 
   protected String replaced(final String s) {

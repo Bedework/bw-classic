@@ -375,7 +375,9 @@ setDirectory() {
 	fi
 
 	if [ "$bw_eventreg" != "" ] ; then
-	  cd $GIT_HOME/eventreg
+      echo "Build eventreg"
+	  cd $GIT_HOME/bw-event-registration
+      maven=yes
       bw_eventreg=
 	  return
 	fi

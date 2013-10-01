@@ -50,7 +50,7 @@ import java.util.TreeSet;
  * <li>check            Optional true/false to check resources for missing properties</li>
  * </ul>
  *
- * @author douglm @ bedework.edu
+ * @author douglm @ rpi.edu
  */
 public class MakeLangXsl extends Task {
   protected File dir;

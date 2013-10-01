@@ -18,8 +18,14 @@ org.bedework.bwengine.confuri=bwengine
 #         carddav conf dir
 org.bedework.carddav.confuri=carddavConfig
 
+#         eventreg conf dir
+org.bedework.eventreg.confuri=eventreg
+
 #         hosts conf dir
 org.bedework.hosts.confuri=hosts
+
+#         io conf dir
+org.bedework.io.confuri=io
 
 #         selfreg conf dir
 org.bedework.selfreg.confuri=selfreg
