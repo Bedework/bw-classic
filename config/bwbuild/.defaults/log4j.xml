@@ -456,13 +456,17 @@
       <priority value="INFO"/>
    </category>
 
-   <category name="org.bedework.calsvc.CalSvc$SvcSimpleFilterParser">
-      <priority value="INFO"/>
-   </category>
+  <category name="org.bedework.calsvc.CalSvc$SvcSimpleFilterParser">
+    <priority value="INFO"/>
+  </category>
 
-   <category name="org.bedework.calsvc.client.FilterBuilder">
-      <priority value="INFO"/>
-   </category>
+  <category name="org.bedework.calsvc.client.FilterBuilder">
+    <priority value="INFO"/>
+  </category>
+
+  <category name="org.bedework.calfacade.filter.FilterBuilder">
+    <priority value="INFO"/>
+  </category>
 
    <category name="org.hibernate.tool.hbm2ddl.SchemaExport">
       <priority value="INFO"/>
