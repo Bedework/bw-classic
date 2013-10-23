@@ -245,6 +245,11 @@
    <!-- Limit categories -->
    <!-- ================ -->
 
+  <!-- elasticsearch DEBUG is verbose -->
+  <category name="org.elasticsearch">
+    <priority value="INFO"/>
+  </category>
+
    <!-- Limit the org.apache category to INFO as its DEBUG is verbose -->
    <category name="org.apache">
       <priority value="INFO"/>
@@ -465,6 +470,10 @@
   </category>
 
   <category name="org.bedework.calfacade.filter.FilterBuilder">
+    <priority value="INFO"/>
+  </category>
+
+  <category name="org.bedework.appcommon.client.ClientState$ClsFilterBuilder">
     <priority value="INFO"/>
   </category>
 
