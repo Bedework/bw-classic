@@ -9,23 +9,23 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "itemType" : {
-                    "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
-                },
                 "name" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "path" : {
+                "colpath" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
+                },
+                "href" : {
+                    "type" : "string",
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "creator" : {
                     "type" : "string",
@@ -75,57 +75,57 @@
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "eventType" : {
+                "entity_type" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "start_utc" : {
+                "dtstart_utc" : {
                     "type" : "date",
                         "format": "basic_date_time_no_millis",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "start_local" : {
+                "dtstart_local" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "start_tzid" : {
+                "dtstart_tzid" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": true,
                         "index" : "not_analyzed"
                 },
-                "start_floating" : {
+                "dtstart_floating" : {
                     "type" : "boolean",
                         "store" : "yes",
                         "include_in_all": true,
                         "index" : "not_analyzed"
                 },
-                "end_utc" : {
+                "dtend_utc" : {
                     "type" : "date",
                         "format": "basic_date_time_no_millis",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "end_local" : {
+                "dtend_local" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "end_tzid" : {
+                "dtend_tzid" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": true,
                         "index" : "not_analyzed"
                 },
-                "end_floating" : {
+                "dtend_floating" : {
                     "type" : "boolean",
                         "store" : "yes",
                         "include_in_all": true,
@@ -156,7 +156,7 @@
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "recurrenceid" : {
+                "recurrence-id" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
@@ -248,23 +248,23 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "itemType" : {
-                    "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
-                },
                 "name" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "path" : {
+                "colpath" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "href" : {
+                    "type" : "string",
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "creator" : {
                     "type" : "string",
@@ -338,23 +338,23 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "itemType" : {
-                    "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
-                },
                 "name" : {
                     "type" : "string",
                         "store" : "yes",
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "path" : {
+                "colpath" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "href" : {
+                    "type" : "string",
+                    "store" : "yes",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "creator" : {
                     "type" : "string",
