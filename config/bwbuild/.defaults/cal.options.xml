@@ -34,10 +34,6 @@
              Used when initializing the tz server database -->
         <initialRefreshInterval>@tzdataRefreshInterval@</initialRefreshInterval>
 
-        <!-- Public/private key locations -->
-        <privKeys>@KEYFILE-DIR@/privkeys</privKeys>
-        <pubKeys>@KEYFILE-DIR@/pubkeys</pubKeys>
-
         <!-- ===============================================================
                          Calendar system modules
              =============================================================== -->

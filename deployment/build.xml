@@ -51,7 +51,7 @@
 
         Add an antcall for each component and a corresponding target
 
-     Authors: Mike Douglass   douglm bedework.edu
+     Authors: Mike Douglass   douglm rpi.edu
      =================================================================== -->
 
 <project name="deploy.bedework" default="init">
