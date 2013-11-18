@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<bwselfreg xmlns="http://bedework.org/ns/"
+<selfreg xmlns="http://bedework.org/ns/"
            type="SelfregConfigProperties">
   <ldapUrl>ldap://localhost:10389</ldapUrl>
   <baseDn>dc=bedework, dc=org</baseDn>
@@ -17,4 +17,4 @@
   <mailFrom>bedework@bedework.org</mailFrom>
   <mailSubject>Bedework self registration</mailSubject>
   <mailDisabled>false</mailDisabled>
-</bwselfreg>
+</selfreg>
