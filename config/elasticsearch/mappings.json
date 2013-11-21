@@ -45,13 +45,13 @@
                     "index" : "not_analyzed"
                 },
 
-                "category_uid" : {
+                "categoryUid" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
 
-                "category_path" : {
+                "categoryPath" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -67,7 +67,7 @@
                     "include_in_all": true
                 },
 
-                "entity_type" : {
+                "entityType" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -145,7 +145,7 @@
                     "index" : "not_analyzed"
                 },
 
-                "last_modified" : {
+                "lastModified" : {
                     "type" : "date",
                     "format": "basic_date_time_no_millis",
                     "include_in_all": false,
@@ -744,7 +744,7 @@
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
-                "last_modified" : {
+                "lastModified" : {
                     "type" : "date",
                         "format": "basic_date_time_no_millis",
                         "store" : "yes",
@@ -767,13 +767,13 @@
                     "include_in_all": true,
                     "index" : "not_analyzed"
                 },
-                "category_uid" : {
+                "categoryUid" : {
                     "type" : "string",
                     "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "category_path" : {
+                "categoryPath" : {
                     "type" : "string",
                     "store" : "yes",
                     "include_in_all": false,
@@ -843,12 +843,6 @@
                         "store" : "yes",
                         "include_in_all": true,
                         "index" : "not_analyzed"
-                },
-                "category_path" : {
-                    "type" : "string",
-                    "store" : "yes",
-                    "include_in_all": false,
-                    "index" : "not_analyzed"
                 }
             }
         }
