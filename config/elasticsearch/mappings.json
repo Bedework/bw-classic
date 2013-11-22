@@ -58,13 +58,31 @@
                 },
 
                 "summary" : {
-                    "type" : "string",
-                    "include_in_all": true
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
                 },
 
                 "description" : {
-                    "type" : "string",
-                    "include_in_all": true
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
                 },
 
                 "entityType" : {
@@ -688,6 +706,67 @@
                     },
                     "include_in_all": false,
                     "index" : "not_analyzed"
+                },
+
+                "comment" : {
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
+                },
+
+                "contact" : {
+                    "type" : "object",
+                    "properties" : {
+                        "name" : {
+                            "type" : "object",
+                            "properties" : {
+                                "language" : {
+                                    "type" : "string",
+                                    "include_in_all": false
+                                },
+                                "value" : {
+                                    "type" : "string",
+                                    "include_in_all": true
+                                }
+                            },
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+                        "uid" : {
+                            "type" : "string",
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+                        "altrep" : {
+                            "type" : "string",
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        }
+                    },
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "resources" : {
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
                 }
             }
         },
@@ -833,10 +912,19 @@
                         "include_in_all": false,
                         "index" : "not_analyzed"
                 },
+
                 "description" : {
-                    "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": true
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
                 },
                 "category" : {
                     "type" : "string",
