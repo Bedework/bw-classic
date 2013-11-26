@@ -39,10 +39,18 @@
                     "index" : "not_analyzed"
                 },
 
-                "category" : {
-                    "type" : "string",
-                    "include_in_all": true,
-                    "index" : "not_analyzed"
+                "categories" : {
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
                 },
 
                 "categoryUid" : {
@@ -840,18 +848,28 @@
                         "store" : "yes",
                         "include_in_all": true
                 },
-                "category" : {
-                    "type" : "string",
-                    "store" : "yes",
-                    "include_in_all": true,
-                    "index" : "not_analyzed"
+
+                "categories" : {
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
                 },
+
                 "categoryUid" : {
                     "type" : "string",
                     "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
+
                 "categoryPath" : {
                     "type" : "string",
                     "store" : "yes",
@@ -926,7 +944,7 @@
                         }
                     }
                 },
-                "category" : {
+                "categories" : {
                     "type" : "object",
                     "properties" : {
                         "language" : {
