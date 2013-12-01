@@ -17,8 +17,8 @@
 
                 "colpath" : {
                     "type" : "string",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
 
                 "acl" : {
@@ -733,7 +733,7 @@
                 "contact" : {
                     "type" : "object",
                     "properties" : {
-                        "name" : {
+                        "cn" : {
                             "type" : "object",
                             "properties" : {
                                 "language" : {
@@ -784,69 +784,58 @@
             "properties" : {
                 "key" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
                 "name" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "colpath" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
                 "href" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
                 "creator" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "owner" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "acl" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "no"
+                    "include_in_all": false,
+                    "index" : "no"
                 },
                 "created" : {
                     "type" : "date",
-                        "format": "basic_date_time_no_millis",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "format": "basic_date_time_no_millis",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "lastModified" : {
                     "type" : "date",
-                        "format": "basic_date_time_no_millis",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "format": "basic_date_time_no_millis",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "summary" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": true
+                    "include_in_all": true
                 },
                 "description" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": true
+                    "include_in_all": true
                 },
 
                 "categories" : {
@@ -865,14 +854,12 @@
 
                 "categoryUid" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
 
                 "categoryPath" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 }
@@ -882,53 +869,40 @@
         "category" : {
             "_source" : { "enabled" : true },
             "properties" : {
-                "key" : {
+                "name" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "name" : {
-                    "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
-                },
                 "colpath" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
                 "href" : {
                     "type" : "string",
-                    "store" : "yes",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
                 "creator" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "owner" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
                 "acl" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "no"
+                    "include_in_all": false,
+                    "index" : "no"
                 },
                 "uid" : {
                     "type" : "string",
-                        "store" : "yes",
-                        "include_in_all": false,
-                        "index" : "not_analyzed"
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 },
 
                 "description" : {
@@ -944,6 +918,7 @@
                         }
                     }
                 },
+
                 "categories" : {
                     "type" : "object",
                     "properties" : {
@@ -957,6 +932,153 @@
                             "index" : "not_analyzed"
                         }
                     }
+                }
+            }
+        },
+
+        "contact" : {
+            "_source" : { "enabled" : true },
+            "properties" : {
+                "name" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "colpath" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "href" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "creator" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "owner" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "acl" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "no"
+                },
+                "uid" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "cn" : {
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
+                },
+                "phone" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "email" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "url" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                }
+            }
+        },
+
+        "location" : {
+            "_source" : { "enabled" : true },
+            "properties" : {
+                "name" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "colpath" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "href" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "creator" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "owner" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+                "acl" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "no"
+                },
+                "uid" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "address" : {
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true
+                        }
+                    }
+                },
+
+                "subaddress" : {
+                    "type" : "object",
+                    "properties" : {
+                        "language" : {
+                            "type" : "string",
+                            "include_in_all": false
+                        },
+                        "value" : {
+                            "type" : "string",
+                            "include_in_all": true,
+                            "index" : "not_analyzed"
+                        }
+                    }
+                },
+
+                "url" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
                 }
             }
         }

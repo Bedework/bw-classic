@@ -4,8 +4,8 @@
 
 Network Working Group                                        M. Douglass
 Internet-Draft                                                       RPI
-Intended status: Standards Track                      September 26, 2013
-Expires: March 30, 2014
+Intended status: Standards Track                       November 27, 2013
+Expires: May 31, 2014
 
 
                   Support for Icalendar Relationships
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 30, 2014.
+   This Internet-Draft will expire on May 31, 2014.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Douglass                 Expires March 30, 2014                 [Page 1]
+Douglass                  Expires May 31, 2014                  [Page 1]
 
-Internet-Draft           Icalendar Relationships          September 2013
+Internet-Draft           Icalendar Relationships           November 2013
 
 
 Table of Contents
@@ -73,7 +73,7 @@ Table of Contents
      5.1.  Rel . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
      5.2.  Gap . . . . . . . . . . . . . . . . . . . . . . . . . . .   8
      5.3.  Title . . . . . . . . . . . . . . . . . . . . . . . . . .   8
-   6.  New Parameter Values  . . . . . . . . . . . . . . . . . . . .   8
+   6.  New Parameter Values  . . . . . . . . . . . . . . . . . . . .   9
    7.  New Properties  . . . . . . . . . . . . . . . . . . . . . . .   9
      7.1.  Link  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
      7.2.  Related-id  . . . . . . . . . . . . . . . . . . . . . . .  10
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Douglass                 Expires March 30, 2014                 [Page 2]
+Douglass                  Expires May 31, 2014                  [Page 2]
 
-Internet-Draft           Icalendar Relationships          September 2013
+Internet-Draft           Icalendar Relationships           November 2013
 
 
    The currently existing iCalendar [RFC5545] RELATED-TO property has no
@@ -165,9 +165,9 @@ Internet-Draft           Icalendar Relationships          September 2013
 
 
 
-Douglass                 Expires March 30, 2014                 [Page 3]
+Douglass                  Expires May 31, 2014                  [Page 3]
 
-Internet-Draft           Icalendar Relationships          September 2013
+Internet-Draft           Icalendar Relationships           November 2013
 
 
    various events and tasks which make up a project.  The LINK property
@@ -221,9 +221,9 @@ Internet-Draft           Icalendar Relationships          September 2013
 
 
 
-Douglass                 Expires March 30, 2014                 [Page 4]
+Douglass                  Expires May 31, 2014                  [Page 4]
 
-Internet-Draft           Icalendar Relationships          September 2013
+Internet-Draft           Icalendar Relationships           November 2013
 
 
 4.  Redefined Relation Type Value
@@ -253,7 +253,6 @@ Internet-Draft           Icalendar Relationships          September 2013
                           / x-name)     ; A non-standard, experimental
                                         ; relationship type
 
-
    Description:  This parameter can be specified on a property that
       references another related calendar component.  The parameter may
       specify the hierarchical relationship type of the calendar
@@ -273,17 +272,15 @@ Internet-Draft           Icalendar Relationships          September 2013
       which contains and controls the relationship and Task-B the target
       of the relationship.
 
-
-
-
-
-Douglass                 Expires March 30, 2014                 [Page 5]
-
-Internet-Draft           Icalendar Relationships          September 2013
-
-
    RELTYPE=PARENT:  Identifies the referenced calendar component is a
       superior of calendar component
+
+
+
+Douglass                  Expires May 31, 2014                  [Page 5]
+
+Internet-Draft           Icalendar Relationships           November 2013
+
 
    RELTYPE=CHILD:  Indicates that the referenced calendar component is a
       subordinate of the calendar component.
@@ -332,13 +329,15 @@ Internet-Draft           Icalendar Relationships          September 2013
       (Task-B) end when the game starts (Task-A).
 
 
-
-Douglass                 Expires March 30, 2014                 [Page 6]
-
-Internet-Draft           Icalendar Relationships          September 2013
-
-
                                         ============
+
+
+
+Douglass                  Expires May 31, 2014                  [Page 6]
+
+Internet-Draft           Icalendar Relationships           November 2013
+
+
                                      +--|  Task-A  |
                                      |  ============
                                      |
@@ -381,21 +380,19 @@ Internet-Draft           Icalendar Relationships          September 2013
                   / x-name        ; Experimental reference type
                   / iana-token)   ; Other IANA registered type
 
-
    Description:  This parameter MUST be specified on all LINK
       properties, and defines the type of reference.  This allows
       programs consuming this data to automatically scan for references
       they support.  In addition to the values defined here any value
-
-
-
-Douglass                 Expires March 30, 2014                 [Page 7]
-
-Internet-Draft           Icalendar Relationships          September 2013
-
-
       defined in [RFC5988] may be used.  There is no default relation
       type.
+
+
+
+Douglass                  Expires May 31, 2014                  [Page 7]
+
+Internet-Draft           Icalendar Relationships           November 2013
+
 
    REL=SOURCE:  identifies the source of the event information.
 
@@ -414,10 +411,20 @@ Internet-Draft           Icalendar Relationships          September 2013
 
    gapparam      = "GAP" "=" dur-value
 
-
    Description:  This parameter MAY be specified on the RELATED-TO
       property, and defines the duration of time between the predecessor
-      and successor in an interval.
+      and successor in an interval.  When positive it defines the lag
+      time between a task and its logical successor.  When negative it
+      defines the lead time.
+
+      An example of lag time might be if task A is "paint the room" and
+      task B is "hang the drapes" then task A may be related to task B
+      with RELTYPE=FINISHTOSTART with a gap long enough for the paint to
+      dry.
+
+      An example of lead time might be to relate a 1 week task A to the
+      end of task B with RELTYPE=STARTTOFINISH and a negative gap of 1
+      week so they finish at the same time.
 
 5.3.  Title
 
@@ -431,9 +438,17 @@ Internet-Draft           Icalendar Relationships          September 2013
 
    titleparam     = "TITLE" "=" text
 
-
    Description:  This parameter MAY be specified on all LINK properties,
       and provides a human readable label, perhaps for icons or links..
+
+
+
+
+
+Douglass                  Expires May 31, 2014                  [Page 8]
+
+Internet-Draft           Icalendar Relationships           November 2013
+
 
 6.  New Parameter Values
 
@@ -442,13 +457,6 @@ Internet-Draft           Icalendar Relationships          September 2013
 
    UID  VALUE=UID indicates that the associated value is the UID for a
       component.
-
-
-
-Douglass                 Expires March 30, 2014                 [Page 8]
-
-Internet-Draft           Icalendar Relationships          September 2013
-
 
    REFERENCE  VALUE=REFERENCE indicates that the associated value is an
       xpointer referencing an associated XML artifact.
@@ -493,17 +501,9 @@ Internet-Draft           Icalendar Relationships          September 2013
 
 
 
-
-
-
-
-
-
-
-
-Douglass                 Expires March 30, 2014                 [Page 9]
+Douglass                  Expires May 31, 2014                  [Page 9]
 
-Internet-Draft           Icalendar Relationships          September 2013
+Internet-Draft           Icalendar Relationships           November 2013
 
 
      link            = "LINK" linkparam ":" ( ":" uri ) /
@@ -535,7 +535,6 @@ Internet-Draft           Icalendar Relationships          September 2013
                      )
 
 
-
    Example:
 
    The following is an example of this property.  It points to a server
@@ -543,7 +542,6 @@ Internet-Draft           Icalendar Relationships          September 2013
 
                  LINK;REL=SOURCE;TITLE=The Egg:
                    http://example.com/events
-
 
 7.2.  Related-id
 
@@ -553,17 +551,16 @@ Internet-Draft           Icalendar Relationships          September 2013
 
    Value type:  TEXT
 
-
-
-
-
-Douglass                 Expires March 30, 2014                [Page 10]
-
-Internet-Draft           Icalendar Relationships          September 2013
-
-
    Property Parameters:  Non-standard parameters can be specified on
       this property.
+
+
+
+
+Douglass                  Expires May 31, 2014                 [Page 10]
+
+Internet-Draft           Icalendar Relationships           November 2013
+
 
    Conformance:  This property MAY be specified multiple times in any
       iCalendar component.
@@ -601,7 +598,6 @@ Internet-Draft           Icalendar Relationships          September 2013
                      )
 
 
-
    Example:
 
    The following is an example of this property.  It defines an id in
@@ -613,9 +609,13 @@ Internet-Draft           Icalendar Relationships          September 2013
 
 
 
-Douglass                 Expires March 30, 2014                [Page 11]
+
+
+
+
+Douglass                  Expires May 31, 2014                 [Page 11]
 
-Internet-Draft           Icalendar Relationships          September 2013
+Internet-Draft           Icalendar Relationships           November 2013
 
 
 8.  Redefined RELATED-TO Property
@@ -669,9 +669,9 @@ Internet-Draft           Icalendar Relationships          September 2013
 
 
 
-Douglass                 Expires March 30, 2014                [Page 12]
+Douglass                  Expires May 31, 2014                 [Page 12]
 
-Internet-Draft           Icalendar Relationships          September 2013
+Internet-Draft           Icalendar Relationships           November 2013
 
 
       PARENT calendar component is cancelled or deleted, then there is
@@ -711,24 +711,9 @@ Internet-Draft           Icalendar Relationships          September 2013
                  ;
                  )
 
-
    Example:
 
    The following are examples of this property.
-
-
-
-
-
-
-
-
-
-
-Douglass                 Expires March 30, 2014                [Page 13]
-
-Internet-Draft           Icalendar Relationships          September 2013
-
 
           RELATED-TO:jsmith.part7.19960817T083000.xyzMail@example.com
 
@@ -737,6 +722,12 @@ Internet-Draft           Icalendar Relationships          September 2013
           RELATED-TO;VALUE=URI;RELTYPE=STARTTOFINISH:
            http://example.com/caldav/user/jb/cal/
            19960401-080045-4000F192713.ics
+
+
+
+Douglass                  Expires May 31, 2014                 [Page 13]
+
+Internet-Draft           Icalendar Relationships           November 2013
 
 
 9.  Security Considerations
@@ -777,15 +768,6 @@ Internet-Draft           Icalendar Relationships          September 2013
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
 
    [W3C.REC-xml-20060816]
-
-
-
-
-Douglass                 Expires March 30, 2014                [Page 14]
-
-Internet-Draft           Icalendar Relationships          September 2013
-
-
               Sperberg-McQueen, C., Paoli, J., Maler, E., Yergeau, F.,
               and T. Bray, "Extensible Markup Language (XML) 1.0 (Fourth
               Edition)", World Wide Web Consortium FirstEdition REC-
@@ -793,12 +775,27 @@ Internet-Draft           Icalendar Relationships          September 2013
               <http://www.w3.org/TR/2006/REC-xml-20060816>.
 
    [W3C.WD-xptr-xpointer-20021219]
+
+
+
+
+
+
+Douglass                  Expires May 31, 2014                 [Page 14]
+
+Internet-Draft           Icalendar Relationships           November 2013
+
+
               DeRose, S., Daniel, R., and E. Maler, "XPointer xpointer()
               Scheme", World Wide Web Consortium WD WD-xptr-
               xpointer-20021219, December 2002,
               <http://www.w3.org/TR/2002/WD-xptr-xpointer-20021219>.
 
 Appendix A.  Change log
+
+   V02: 2013-11-22 MD
+
+   o  Added more description to GAP
 
    V01: 2013-09-26 MD
 
@@ -837,4 +834,7 @@ Author's Address
 
 
 
-Douglass                 Expires March 30, 2014                [Page 15]
+
+
+
+Douglass                  Expires May 31, 2014                 [Page 15]

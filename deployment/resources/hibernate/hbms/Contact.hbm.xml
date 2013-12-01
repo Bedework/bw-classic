@@ -36,7 +36,7 @@
               not-null="true"
               index="bwidx_contact_uid" />
 
-    <many-to-one name="name"
+    <many-to-one name="cn"
                  class="org.bedework.calfacade.BwString"
                  column="bw_connameid"
                  unique="true"
