@@ -48,27 +48,33 @@
                 "categories" : {
                     "type" : "object",
                     "properties" : {
-                        "language" : {
+                        "uid" : {
                             "type" : "string",
-                            "include_in_all": false
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
                         },
-                        "value" : {
+
+                        "href" : {
                             "type" : "string",
-                            "include_in_all": true
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+
+                        "value" : {
+                            "type" : "object",
+                            "properties" : {
+                                "language" : {
+                                    "type" : "string",
+                                    "include_in_all": false
+                                },
+
+                                "value" : {
+                                    "type" : "string",
+                                    "include_in_all": true
+                                }
+                            }
                         }
                     }
-                },
-
-                "categoryUid" : {
-                    "type" : "string",
-                    "include_in_all": false,
-                    "index" : "not_analyzed"
-                },
-
-                "categoryPath" : {
-                    "type" : "string",
-                    "include_in_all": false,
-                    "index" : "not_analyzed"
                 },
 
                 "summary" : {
@@ -853,30 +859,37 @@
                     "include_in_all": true
                 },
 
+
                 "categories" : {
                     "type" : "object",
                     "properties" : {
-                        "language" : {
+                        "uid" : {
                             "type" : "string",
-                            "include_in_all": false
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
                         },
-                        "value" : {
+
+                        "href" : {
                             "type" : "string",
-                            "include_in_all": true
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+
+                        "value" : {
+                            "type" : "object",
+                            "properties" : {
+                                "language" : {
+                                    "type" : "string",
+                                    "include_in_all": false
+                                },
+
+                                "value" : {
+                                    "type" : "string",
+                                    "include_in_all": true
+                                }
+                            }
                         }
                     }
-                },
-
-                "categoryUid" : {
-                    "type" : "string",
-                    "include_in_all": false,
-                    "index" : "not_analyzed"
-                },
-
-                "categoryPath" : {
-                    "type" : "string",
-                    "include_in_all": false,
-                    "index" : "not_analyzed"
                 }
             }
         },
