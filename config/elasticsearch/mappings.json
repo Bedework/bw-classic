@@ -471,8 +471,7 @@
                     "type" : "object",
                     "properties" : {
                         "utc" : {
-                            "type" : "date",
-                            "format": "basic_date_time_no_millis",
+                            "type" : "string",
                             "include_in_all": false,
                             "index" : "not_analyzed"
                         },
@@ -503,8 +502,7 @@
                     "type" : "object",
                     "properties" : {
                         "utc" : {
-                            "type" : "date",
-                            "format": "basic_date_time_no_millis",
+                            "type" : "string",
                             "include_in_all": false,
                             "index" : "not_analyzed"
                         },
@@ -546,6 +544,68 @@
 
                 "duration" : {
                     "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "indexStart" : {
+                    "type" : "object",
+                    "properties" : {
+                        "utc" : {
+                            "type" : "string",
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+
+                        "local" : {
+                            "type" : "string",
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+
+                        "tzid" : {
+                            "type" : "string",
+                            "include_in_all": true,
+                            "index" : "not_analyzed"
+                        },
+
+                        "floating" : {
+                            "type" : "boolean",
+                            "include_in_all": true,
+                            "index" : "not_analyzed"
+                        }
+                    },
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "indexEnd" : {
+                    "type" : "object",
+                    "properties" : {
+                        "utc" : {
+                            "type" : "string",
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+
+                        "local" : {
+                            "type" : "string",
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                        },
+
+                        "tzid" : {
+                            "type" : "string",
+                            "include_in_all": true,
+                            "index" : "not_analyzed"
+                        },
+
+                        "floating" : {
+                            "type" : "boolean",
+                            "include_in_all": true,
+                            "index" : "not_analyzed"
+                        }
+                    },
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
