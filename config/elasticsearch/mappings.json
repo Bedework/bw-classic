@@ -3,19 +3,19 @@
         "event" : {
             "_source" : { "enabled" : true },
             "properties" : {
-                "creator" : {
+                "creatorHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
 
-                "owner" : {
+                "ownerHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
 
-                "colpath" : {
+                "colPath" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -864,7 +864,7 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "colpath" : {
+                "colPath" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -874,13 +874,13 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "creator" : {
+                "creatorHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
 
-                "owner" : {
+                "ownerHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -962,7 +962,7 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "colpath" : {
+                "colPath" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -972,12 +972,12 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "creator" : {
+                "creatorHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "owner" : {
+                "ownerHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -1039,7 +1039,7 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "colpath" : {
+                "colPath" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -1049,12 +1049,12 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "creator" : {
+                "creatorHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "owner" : {
+                "ownerHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -1118,7 +1118,7 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "colpath" : {
+                "colPath" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -1128,13 +1128,13 @@
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
-                "creator" : {
+                "creatorHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
                 },
 
-                "owner" : {
+                "ownerHref" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
