@@ -56,11 +56,11 @@
       <queue name="bedeworkSyseventsIn"
              physicalName="bedework.sysevents" />
              -->
-             
+
       <!-- The listener handles change notifications -->
       <queue name="changes"
              physicalName="bedework.sysevents.changes" />
-             
+
       <!-- The listener just logs the system events -->
       <queue name="logger"
              physicalName="bedework.sysevents.logger" />
@@ -83,8 +83,8 @@
              physicalName="bedework.scheduleOut" />
 
       <!-- <topic physicalName="SOME.TOPIC" /> -->
-      
-      <!--  ================= queues for camel stuff ====================== 
+
+      <!--  ================= queues for camel stuff ======================
             We need queues to take output from the bedenote notification
             processor. We might not need all of these as some might
             be handled as an internal camel process.
@@ -115,7 +115,8 @@
             <forwardTo>
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
-              <queue physicalName="bedework.crawler" />
+              <filteredDestination selector="indexable = 'true'"
+                                   queue="bedework.crawler" />
               <filteredDestination selector="changeEvent = 'true'"
                                    queue="bedework.sysevents.changes" />
               <filteredDestination selector="inbox = 'true' or scheduleEvent = 'true'"
@@ -169,10 +170,10 @@
     <managementContext>
       <managementContext>
           <MBeanServer>
-              <bean class="org.jboss.mx.util.MBeanServerLocator" 
+              <bean class="org.jboss.mx.util.MBeanServerLocator"
                     factory-method="locateJBoss" xmlns=""/>
           </MBeanServer>
-      </managementContext> 
+      </managementContext>
     </managementContext>
 
     <!-- The store and forward broker networks ActiveMQ will listen to -->
@@ -187,7 +188,7 @@
       -->
     </networkConnectors>
 
-    <!-- High throughput but scalability problems - perhaps OK with <=500 connections 
+    <!-- High throughput but scalability problems - perhaps OK with <=500 connections
     <persistenceAdapter>
       <amqPersistenceAdapter syncOnWrite="false"
         directory="${jboss.server.data.dir}/activemq-data" maxFileLength="20 mb" />
@@ -230,7 +231,7 @@
 
     <!-- The transport connectors ActiveMQ will listen to -->
     <transportConnectors>
-      <transportConnector name="bedework" 
+      <transportConnector name="bedework"
                           uri="${org.bedework.activemq.uri}" />
       <!--
       <transportConnector name="bedework" uri="tcp://localhost:61616" />

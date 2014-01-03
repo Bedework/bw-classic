@@ -8,7 +8,7 @@
   <defaultUserQuota>100000000</defaultUserQuota>
   <defaultUserViewName>All</defaultUserViewName>
   <defaultWebCalPeriod>31</defaultWebCalPeriod>
-  <directoryBrowsingDisallowed>true</directoryBrowsingDisallowed>
+  <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
   <maxFBPeriod>96</maxFBPeriod>
   <maxInstances>1000</maxInstances>
   <maxPublicDescriptionLength>500</maxPublicDescriptionLength>
