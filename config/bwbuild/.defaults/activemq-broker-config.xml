@@ -115,7 +115,7 @@
             <forwardTo>
               <queue physicalName="bedework.sysevents.logger" />
               <queue physicalName="bedework.sysevents.monitor" />
-              <filteredDestination selector="indexable = 'true'"
+              <filteredDestination selector="indexable = 'true' and indexed = 'false'"
                                    queue="bedework.crawler" />
               <filteredDestination selector="changeEvent = 'true'"
                                    queue="bedework.sysevents.changes" />

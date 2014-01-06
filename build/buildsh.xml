@@ -11,7 +11,7 @@
        app.run.jar.file       application jar file
        app.run.main.class     main class for application.
 
-     Authors: Mike Douglass   douglm bedework.edu
+     Authors: Mike Douglass   douglm rpi.edu
      =================================================================== -->
 
 <project name="bw.buildsh" default="build">

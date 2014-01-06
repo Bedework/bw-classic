@@ -44,6 +44,7 @@ heap="600M"
 newsize="200M"
 permsize="256M"
 usees=""
+testmode=""
 
 portoffset=0
 
@@ -88,6 +89,10 @@ do
     -usees)
       shift
       usees="-Dorg.bedework.core.use.es=true"
+      ;;
+    -testmode)
+      shift
+      testmode="-Dorg.bedework.testmode=true"
       ;;
     -debug)
       shift
@@ -170,7 +175,7 @@ JAVA_OPTS="$JAVA_OPTS -Djava.io.tmpdir=$JBOSS_SERVER_DIR/tmp"
 
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
-RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $usees $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
+RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $usees $testmode $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
 
 echo $RUN_CMD
 
