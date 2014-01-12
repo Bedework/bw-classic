@@ -45,6 +45,24 @@
                     "index" : "not_analyzed"
                 },
 
+                "master" : {
+                    "type" : "boolean",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "instance" : {
+                    "type" : "boolean",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "override" : {
+                    "type" : "boolean",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
                 "categories" : {
                     "type" : "object",
                     "properties" : {
@@ -259,6 +277,12 @@
                 },
 
                 "originator" : {
+                    "type" : "string",
+                    "include_in_all": false,
+                    "index" : "not_analyzed"
+                },
+
+                "recipient" : {
                     "type" : "string",
                     "include_in_all": false,
                     "index" : "not_analyzed"
@@ -529,7 +553,7 @@
                     "index" : "not_analyzed"
                 },
 
-                "startPresent" : {
+                "noStart" : {
                     "type" : "boolean",
                         "store" : "yes",
                         "include_in_all": true,
