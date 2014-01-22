@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,16 +18,7 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
-  
+
   <!--+++++++++++++++ Calendar Suite Preferences ++++++++++++++++++++-->
   <xsl:template name="calSuitePrefs">
     <h2><xsl:copy-of select="$bwStr-CSPf-EditCalSuitePrefs"/></h2>
@@ -72,7 +63,7 @@
                 <xsl:copy-of select="$bwStr-CSPf-DefaultViewModeList"/>
               </option>
               <!-- GRID is not yet available - needs to be restored in public client -->
-              <!-- 
+              <!--
               <option value="grid">
                 <xsl:if test="/bedework/prefs/defaultViewMode = 'grid'">
                   <xsl:attribute name="selected">selected</xsl:attribute>
@@ -81,7 +72,7 @@
               </option>
               -->
             </select>
-            
+
           </td>
         </tr>
         <tr>
@@ -301,6 +292,6 @@
       <input type="submit" name="modPrefs" value="{$bwStr-CSPf-Update}"/>
       <input type="submit" name="cancelled" value="{$bwStr-CSPf-Cancel}"/>
     </form>
-  </xsl:template>  
-  
+  </xsl:template>
+
 </xsl:stylesheet>

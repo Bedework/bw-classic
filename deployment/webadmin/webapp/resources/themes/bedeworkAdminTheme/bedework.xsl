@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,15 +18,8 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
+  <xsl:output method="xml" indent="yes" media-type="text/html"
+              standalone="yes" omit-xml-declaration="yes" />
 
   <!-- DEFINE INCLUDES -->
   <!-- Theme preferences -->
@@ -35,6 +28,7 @@
   <!-- Site subsections -->
   <xsl:include href="head.xsl" />
   <xsl:include href="header.xsl" />
+  <xsl:include href="tabs.xsl" />
   <xsl:include href="messagesErrors.xsl" />
   <xsl:include href="mainMenu.xsl" />
   <xsl:include href="eventsManage.xsl" />
@@ -69,6 +63,7 @@
 
   <!--==== MAIN TEMPLATE  ====-->
   <xsl:template match="/">
+<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html></xsl:text><!-- HTML5 -->
     <html lang="en">
       <xsl:call-template name="head"/>
       <body>
@@ -79,6 +74,7 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="header"/>
+            <xsl:call-template name="tabs"/>
             <div id="content">
               <xsl:choose>
                 <xsl:when test="/bedework/page='tabPendingEvents'">
@@ -181,7 +177,7 @@
                   <xsl:call-template name="listResources">
                     <xsl:with-param name="global" select="'true'" />
                   </xsl:call-template>
-                </xsl:when>                
+                </xsl:when>
                 <xsl:when test="/bedework/page='modSyspars'">
                   <xsl:call-template name="modSyspars"/>
                 </xsl:when>
@@ -269,5 +265,5 @@
       </body>
     </html>
   </xsl:template>
- 
+
 </xsl:stylesheet>

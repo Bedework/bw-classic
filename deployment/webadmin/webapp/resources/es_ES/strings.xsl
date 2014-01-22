@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -103,6 +103,7 @@
   <xsl:variable name="bwStr-EvLs-SelectEvent">Seleccione el evento que desearía actualizar:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-PageTitle">Añadir nuevo evento</xsl:variable>
   <xsl:variable name="bwStr-EvLs-StartDate">Start Date:</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-Today">Hoy</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Days">Days:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Show">Mostrar:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Active">Activo</xsl:variable>
@@ -110,6 +111,8 @@
   <xsl:variable name="bwStr-EvLs-FilterBy">Filtrar por:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-SelectCategory">seleccionar una categoría</xsl:variable>
   <xsl:variable name="bwStr-EvLs-ClearFilter">limpiar filtro</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-Previous">Anterior</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-Next">Siguiente</xsl:variable>
 
   <!--  xsl:template name="eventListCommon" -->
   <xsl:variable name="bwStr-EvLC-Title">Título</xsl:variable>
@@ -156,8 +159,17 @@
   <xsl:variable name="bwStr-AEEF-StoreAsUTC">almacenar en UTC</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Start">Comienzo:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Date">Fecha</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EndDate">end date</xsl:variable><!-- trans needed -->
+  <xsl:variable name="bwStr-AEEF-StartDateHour">start date hour</xsl:variable><!-- trans needed -->
+  <xsl:variable name="bwStr-AEEF-StartDateMinute">start date minute</xsl:variable><!-- trans needed -->
+  <xsl:variable name="bwStr-AEEF-StartDateAmPm">start date am/pm</xsl:variable><!-- trans needed -->
+  <xsl:variable name="bwStr-AEEF-StartDateTimezone">start date timezone</xsl:variable><!-- trans needed -->
   <xsl:variable name="bwStr-AEEF-Due">Debido a:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-End">Fin:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EndDateHour">end date hour</xsl:variable><!-- trans needed -->
+  <xsl:variable name="bwStr-AEEF-EndDateMinute">end date minute</xsl:variable><!-- trans needed -->
+  <xsl:variable name="bwStr-AEEF-EndDateAmPm">end date am/pm</xsl:variable><!-- trans needed -->
+  <xsl:variable name="bwStr-AEEF-EndDateTimezone">end date timezone</xsl:variable><!-- trans needed -->
   <xsl:variable name="bwStr-AEEF-Duration">Duración</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Days">días</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Hours">horas</xsl:variable>
@@ -339,7 +351,7 @@
   <xsl:variable name="bwStr-Cloc-SelectTime">seleccionar hora</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Switch">intercambiar</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">cerrar</xsl:variable>
-  
+
   <!-- xsl:template name="newclock" -->
   <xsl:variable name="bwStr-Cloc-Hour">Hora</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Minute">Minuto</xsl:variable>
@@ -378,6 +390,7 @@
   <xsl:variable name="bwStr-Cont-Email">Email</xsl:variable>
   <xsl:variable name="bwStr-Cont-URL">URL</xsl:variable>
   <xsl:variable name="bwStr-Cont-AddNewContact">Añadir nuevo contacto</xsl:variable>
+  <xsl:variable name="bwStr-Cont-ListOfContacts">contactos</xsl:variable>
 
   <!--  xsl:template name="modContact" -->
   <xsl:variable name="bwStr-MdCo-ContactInfo">Información del contacto</xsl:variable>
@@ -642,7 +655,7 @@
   <xsl:variable name="bwStr-Cals-Trash">papelera</xsl:variable>
 
   <!--  xsl:template match="currentCalendar" mode="deleteSubConfirm" -->
-  
+
   <!-- xsl:template name="listResources" -->
   <xsl:variable name="bwStr-Resource-ManageResources">Manage Resources</xsl:variable>
   <xsl:variable name="bwStr-Resource-ManageResources-Global">Manage Global Resources</xsl:variable>
@@ -677,7 +690,7 @@
   <xsl:variable name="bwStr-ModRes-UploadLabel">Upload Content:</xsl:variable>
   <xsl:variable name="bwStr-ModRes-RemoveResource">Remove Resource</xsl:variable>
   <xsl:variable name="bwStr-ModRes-BackToList">Back to Resource List</xsl:variable>
-  
+
   <!-- xsl:template name="modResource: featured events strings" -->
   <xsl:variable name="bwStr-ModRes-FeaturedEventsAdmin">Featured Events Admin</xsl:variable>
   <xsl:variable name="bwStr-ModRes-UpdateFeaturedEvents">Update Featured Events</xsl:variable>
@@ -970,6 +983,8 @@
   <xsl:variable name="bwStr-MoAG-GroupOwner">Propietario del grupo:</xsl:variable>
   <xsl:variable name="bwStr-MoAG-GroupOwnerFieldInfo">User responsible for the group, e.g. "admin"</xsl:variable>
   <xsl:variable name="bwStr-MoAG-EventsOwner">Propietario de eventos:</xsl:variable>
+  <xsl:variable name="bwStr-MoAG-Optional">(opcional)</xsl:variable>
+  <xsl:variable name="bwStr-MoAG-EventsOwnerFieldInfo">El dueño del sistema para todos los eventos creados por este grupo.<br/>Este valor será creado por el sistema si no suministrado.</xsl:variable>
   <xsl:variable name="bwStr-MoAG-Delete">Borrar</xsl:variable>
   <xsl:variable name="bwStr-MoAG-AddAdminGroup">Añadir grupo de administración</xsl:variable>
   <xsl:variable name="bwStr-MoAG-Cancel">Cancelar</xsl:variable>

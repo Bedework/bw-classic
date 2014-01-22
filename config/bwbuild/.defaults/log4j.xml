@@ -477,7 +477,7 @@
     <priority value="INFO"/>
   </category>
 
-   <category name="org.hibernate.tool.hbm2ddl.SchemaExport">
+  <category name="org.hibernate.tool.hbm2ddl.SchemaExport">
       <priority value="INFO"/>
    </category>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,18 +18,9 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
 
   <!--+++++++++++++++ Views ++++++++++++++++++++-->
-  <!-- templates: 
+  <!-- templates:
          - viewList
          - modView
          - deleteViewConfirm
@@ -111,31 +102,11 @@
           <h3><xsl:copy-of select="$bwStr-ModV-AvailableSubscriptions"/></h3>
 
           <table class="subscriptionsListSubs">
-            <xsl:for-each select="/bedework/calendars/calendar//calendar[isSubscription = 'true' or calType = '0']">
-              <xsl:sort select="substring-after(path, $userPath)" order="ascending" case-order="upper-first"/>
-              <xsl:if test="not(/bedework/currentView//path = path)">
-                <tr>
-                  <td>
-                    <xsl:if test="calType = '0' and isSubscription = 'false'">
-                      <!-- display a folder icon for local folders... -->
-                      <img src="{$resourcesRoot}/images/catIcon.gif"
-                          width="13" height="13" border="0"
-                          alt="folder"/>
-                      <xsl:text> </xsl:text>
-                    </xsl:if>
-                    <xsl:value-of select="substring-after(path, $userPath)"/>
-                  </td>
-                  <td class="arrows">
-                    <xsl:variable name="subAddName" select="encodedPath"/>
-                    <a href="{$view-update}&amp;name={$viewName}&amp;add={$subAddName}">
-                      <img src="{$resourcesRoot}/images/arrowRight.gif"
-                          width="13" height="13" border="0"
-                          alt="add subscription"/>
-                    </a>
-                  </td>
-                </tr>
-              </xsl:if>
-            </xsl:for-each>
+            <!--<xsl:for-each select="/bedework/calendars/calendar//calendar[isSubscription = 'true' or calType = '0']">
+              <xsl:sort select="substring-after(path, $userPath)" order="ascending" case-order="upper-first"/>-->
+            <xsl:apply-templates select="/bedework/calendars/calendar/calendar/" mode="availableForViews">
+              <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
+            </xsl:apply-templates>
             <!-- extra row to keep the code valid if above rows are empty -->
             <tr><td>&#160;</td></tr>
           </table>
@@ -150,8 +121,8 @@
                   <xsl:variable name="subRemoveName" select="."/>
                   <a href="{$view-update}&amp;name={$viewName}&amp;remove={$subRemoveName}">
                     <img src="{$resourcesRoot}/images/arrowLeft.gif"
-                        width="13" height="13" border="0"
-                        alt="add subscription"/>
+                         width="13" height="13"
+                         alt="add subscription"/>
                   </a>
                 </td>
                 <td>
@@ -178,6 +149,32 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="calendar" mode="availableForViews">
+    <xsl:variable name="viewName" select="/bedework/currentView/name"/>
+    <xsl:if test="not(/bedework/currentView//path = path)">
+      <tr>
+        <td>
+          <xsl:if test="actualCalType = '0' and isSubscription = 'false'">
+            <!-- display a folder icon for local folders... -->
+            <img src="{$resourcesRoot}/images/catIcon.gif"
+                 width="13" height="13"
+                 alt="folder"/>
+            <xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:value-of select="summary"/>
+        </td>
+        <td class="arrows">
+          <xsl:variable name="subAddName" select="encodedPath"/>
+          <a href="{$view-update}&amp;name={$viewName}&amp;add={$subAddName}">
+            <img src="{$resourcesRoot}/images/arrowRight.gif"
+                 width="13" height="13"
+                 alt="add subscription"/>
+          </a>
+        </td>
+      </tr>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template name="deleteViewConfirm">
     <h2><xsl:copy-of select="$bwStr-DeVC-RemoveView"/></h2>
 
@@ -200,5 +197,5 @@
     </form>
 
   </xsl:template>
-  
+
 </xsl:stylesheet>

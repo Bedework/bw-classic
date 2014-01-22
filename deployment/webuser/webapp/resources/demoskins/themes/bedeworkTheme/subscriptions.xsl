@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,13 +20,13 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
-  <!-- ***************************************************** 
-       ALL TEMPLATES BELOW ARE DEPRECATED AS OF BEDEWORK 3.9 
-       Subscriptions are maintained in calendars.xsl using   
+
+  <!-- *****************************************************
+       ALL TEMPLATES BELOW ARE DEPRECATED AS OF BEDEWORK 3.9
+       Subscriptions are maintained in subscriptions.xsl using
        new sharing methods.
        ***************************************************** -->
-  
+
   <!--+++++++++++++++ Subscriptions ++++++++++++++++++++-->
   <xsl:template name="subsMenu">
     <!-- This top-level menu adds subscriptions to the root of the user's calendar tree.
@@ -164,5 +164,5 @@
     </div>
   </xsl:template>
 
-  
+
 </xsl:stylesheet>

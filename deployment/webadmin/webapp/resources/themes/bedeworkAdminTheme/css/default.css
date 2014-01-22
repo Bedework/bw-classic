@@ -6,15 +6,15 @@
    Version 2.0 (the "License"); you may not use this file
    except in compliance with the License. You may obtain a
    copy of the License at:
-  
+
    http://www.apache.org/licenses/LICENSE-2.0
-  
+
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on
    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
    KIND, either express or implied. See the License for the
    specific language governing permissions and limitations
-   under the License.  
+   under the License.
 */
 
 body {
@@ -26,10 +26,13 @@ body {
   font-size: 16px;
   min-width: 680px;
 }
+#bedework {
+  min-width: 800px;
+}
 #header {
   color: #eee;
   background-color : #333;
-  margin: 0em;
+  margin: 0;
   padding: 0.5em 1em 0.5em 1em;
 }
 #header a {
@@ -65,44 +68,38 @@ body {
   margin: 0;
   padding: 2px 0;
 }
-#statusBarTable {
+#statusBar {
   margin: 0;
   color: #eee;
-  /*background-color: #edc;*/
   background-color: #5c7486;
   font-size: 0.8em;
-  width: 100%;
   border-bottom: 1px solid #999;
+  padding: 0.2em 1em;
+  white-space: nowrap;
 }
-#statusBarTable td.rightCell {
+#statusBar #userInfo {
+  float: right;
   text-align: right;
-  padding: 0.2em 1em 0.2em 0em;
-  white-space: nowrap;
 }
-#statusBarTable td.leftCell {
-  text-align: left;
-  padding: 0.2em 0em 0.2em 1em;
-  white-space: nowrap;
-}
-#statusBarTable span.status {
+#statusBar span.status {
   font-weight: bold;
 }
-#statusBarTable a:link,
-#statusBarTable a:active,
-#statusBarTable a:visited,
-#statusBarTable a:hover {
+#statusBar a:link,
+#statusBar a:active,
+#statusBar a:visited,
+#statusBar a:hover {
   margin-right: 1em;
   text-decoration : none;
   color: #eee;
   background-color: transparent;
 }
-#statusBarTable a:hover {
+#statusBar a:hover {
   text-decoration: underline;
 }
-#statusBarTable #bwLogoutButton {
+#statusBar #bwLogoutButton {
   margin: 0 0 0 4px;
 }
-#statusBarTable #groupDisplay {
+#statusBar #groupDisplay {
   padding-right: 1.5em;
 }
 #bwAdminMenu {
@@ -163,13 +160,13 @@ body {
   padding: 0 1em 1em 1em;
 }
 #content h2 {
-  margin: 0em;
-  padding: 1em 0.2em 0em 0.2em;
+  margin: 0;
+  padding: 1em 0.2em 0 0.2em;
   font-size: 1.3em;
 }
 #content h3 {
-  margin: 0em;
-  padding: 1em 0.2em 0em 0.2em;
+  margin: 0;
+  padding: 1em 0.2em 0 0.2em;
   font-size: 1.1em;
 }
 #content h4 {
@@ -178,8 +175,8 @@ body {
   font-size: 1em;
 }
 #content .menuTitle {
-  margin: 0em;
-  padding: 1em 0.5em 0em 0.2em;
+  margin: 0;
+  padding: 1em 0.5em 0 0.2em;
 }
 #content ol li {
   padding-bottom: 1em;
@@ -188,67 +185,34 @@ th {
   text-align: left;
   font-size: 0.9em;
 }
-/* mainMenuTable is deprecated */
-#mainMenuTable {
-  margin-top: 0em;
-  margin-bottom: 1em;
-  /*width: 100%;*/
-}
-#mainMenuTable th {
-  padding: 0.2em 0.5em 0.2em 0.5em;
-  color: black;
-  background-color: #ccc;
-  text-align: left;
-}
-#mainMenuTable td {
-  padding: 0em;
-  color: black;
-  background-color: #eee;
-  text-align: center;
-}
-#mainMenuTable a:link,
-#mainMenuTable a:active,
-#mainMenuTable a:visited {
-  display: block;
-  padding: 0.2em 1em 0.2em 1em;
-  text-decoration: none;
-  color: #483D8B;
-  background-color: transparent;
-}
-#mainMenuTable a:hover {
-  display: block;
-  padding: 0.2em 1em 0.2em 1em;
-  text-decoration: none;
-  color: #483D8B;
-  background-color: #ffe;
-}
-#mainMenuTable form {
-  display: inline;
-}
 /* mainMenu = manage events tab icons and links */
 #mainMenu {
+  width: 550px;
   margin: 2em auto 4em auto;
 }
-#mainMenu td {
+#mainMenu.mainMenuFull {
+  width: 750px;
+}
+#mainMenu ul {
+  clear: both;
+}
+#mainMenu li {
   text-align: center;
   vertical-align: middle;
   padding: 1em 0.5em;
+  list-style: none;
+  float: left;
 }
 #mainMenu img {
   text-align: center;
+  border: 0;
 }
-#mainMenu a:link,
-#mainMenu a:active,
-#mainMenu a:visited,
-#mainMenu a:hover {
+#mainMenu a {
   display: block;
   padding: 0.2em 1em 0.2em 1em;
   text-decoration: none;
   color: #483D8B;
   background-color: transparent;
-}
-#mainMenuEventSearch {
-
 }
 input:focus,
 textarea:focus,
@@ -260,9 +224,23 @@ select:focus option {
   background-color: white;
   color: inherit;
 }
+#mainMenuEventSearch {
+  clear: left;
+  padding-top: 1em;
+}
 #searchForm {
   font-size: 0.8em;
   margin: 0 0 0 3px;
+}
+#searchForm label.bwSearchTitle {
+  display: block;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#searchForm legend {
+  float: left;
+  margin: 2px 0 0 0;
+  padding: 0;
 }
 #searchForm input {
   font-size: 0.7em;
@@ -270,7 +248,7 @@ select:focus option {
 #searchPageForm {
   display: inline;
   margin: 0px 0px 1px 0px;
-  padding: 0em;
+  padding: 0;
   white-space: nowrap;
   float: right;
 }
@@ -369,6 +347,7 @@ ul.adminMenu li {
   font-size: 0.9em;
 }
 #commonListTable {
+  width: 100%;
   margin-bottom: 2em;
   border-spacing: 0;
   border-top: 1px solid #ddd;
@@ -491,6 +470,11 @@ table.eventFormTable td.allField {
 	float: right;
 	margin: 0.5em 2em 1em 0;
 }
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
 label {
 	cursor: pointer;
 }
@@ -511,7 +495,7 @@ label.interiorLabel {
 #eventImageUseExisting {
 	margin-bottom: 0;
 }
-table.eventFormTable div.fieldInfo {
+table.eventFormTable .fieldInfo {
   width: 400px;
   margin-bottom: 0.5em;
 }
@@ -550,7 +534,7 @@ table.eventFormTable select.timezones {
   background-color: #ffe;
   border: 1px solid #eee;
 }
-table.eventFormTable div.durationBox {
+table.eventFormTable .durationBox {
   border: 1px solid #ccb;
   display: inline;
   margin: 4px;
@@ -972,7 +956,7 @@ table.common th.thin {
   width: 80px;
 }
 #bedework table.common th.icon {
-  margin: 0em;
+  margin: 0;
   vertical-align: middle;
   padding: 0.5em 1em 0.2em 0;
   font-size: 0.7em;
@@ -996,7 +980,7 @@ table.common th.thin {
   padding: 0 0 0 20px;
 }
 #deleteListTable {
-  margin: 1em 0em 2em 1em;
+  margin: 1em 0 2em 1em;
 }
 #deleteListTable th {
   text-align: left;
@@ -1230,12 +1214,23 @@ img.folderForAliasTree {
 #bwPublicCalDisplay {
   margin: 1em 0 -1em 1em;
 }
+#bwEventListAddEventButton {
+  position: absolute;
+  left: 14em;
+  top: 125px;
+}
 #bwEventListControls {
-  margin-bottom: 0.5em;
+  margin: 1em 0 0 0;
 }
 #bwEventListControls form {
   display: inline;
   padding-right: 2em;
+}
+#bwListWidgetToday {
+  margin-left: 1em;
+}
+.bwEventListNav {
+  float: right;
 }
 #daysSetterBox {
 	margin-left: 1em;
@@ -1296,11 +1291,11 @@ img.folderForAliasTree {
   border-bottom: none;
 }
 #superUserMenu h4 {
-  margin: 0; 
+  margin: 0;
   padding: 0;
 }
 #superUserMenu ul {
-  margin-top: 0.5em; 
+  margin-top: 0.5em;
 }
 #logoutButton  {
   display: inline;
@@ -1361,7 +1356,7 @@ a:hover {
   color: #999;
   background-color: inherit;
 }
-div#footer a:hover {
+#footer a:hover {
  color: #444;
  background-color: transparent;
 }

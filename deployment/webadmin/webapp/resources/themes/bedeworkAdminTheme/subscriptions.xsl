@@ -18,15 +18,6 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
 
   <!--+++++++++++++++ Subscriptions (aliases) ++++++++++++++++++++-->
   <!-- templates:
@@ -39,8 +30,8 @@
 
     Note: subscriptions are calendar aliases: calendar collections that
     point at another calendar with or without a filter applied.
-   -->
-  <!--
+
+
     Calendar and subscription templates depend heavily on calendar types:
 
     calTypes: 0 - Folder
@@ -99,7 +90,7 @@
       </li>
       <li>
         <xsl:copy-of select="$bwStr-Subs-SelectThe"/>
-        <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
+        <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true"/>
         <xsl:copy-of select="$bwStr-Subs-IconToAdd"/>
       </li>
     </ul>
@@ -128,12 +119,12 @@
          <xsl:choose>
           <xsl:when test="open = 'true'">
             <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=false">
-              <img src="{$resourcesRoot}/images/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+              <img src="{$resourcesRoot}/images/minus.gif" width="9" height="9" alt="close" class="bwPlusMinusIcon"/>
             </a>
           </xsl:when>
           <xsl:otherwise>
             <a href="{$subscriptions-openCloseMod}&amp;calPath={$calPath}&amp;open=true">
-              <img src="{$resourcesRoot}/images/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+              <img src="{$resourcesRoot}/images/plus.gif" width="9" height="9" alt="open" class="bwPlusMinusIcon"/>
             </a>
           </xsl:otherwise>
         </xsl:choose>
@@ -148,7 +139,7 @@
           <xsl:if test="lastRefreshStatus &gt;= 300">
             <xsl:attribute name="title">
               <xsl:call-template name="httpStatusCodes">
-                <xsl:with-param name="code"><xsl:value-of  select="lastRefreshStatus"/></xsl:with-param>
+                <xsl:with-param name="code"><xsl:value-of select="lastRefreshStatus"/></xsl:with-param>
               </xsl:call-template>
             </xsl:attribute>
           </xsl:if>
@@ -159,7 +150,7 @@
       <xsl:if test="calType = '0' and isSubscription='false'">
         <xsl:text> </xsl:text>
         <a href="{$subscriptions-initAdd}&amp;calPath={$calPath}" title="{$bwStr-Cals-AddSubscription}">
-          <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="{$bwStr-Cals-AddSubscription}" border="0"/>
+          <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="{$bwStr-Cals-AddSubscription}"/>
         </a>
       </xsl:if>
       <xsl:if test="calendar">
@@ -267,7 +258,7 @@
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       <xsl:attribute name="id">c<xsl:value-of select="generate-id(uid)"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                      <xsl:if test="uid = /bedework/defaultCategories//category/uid">
+                      <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                         <xsl:attribute name="disabled">disabled</xsl:attribute>
                       </xsl:if>
                       <label for="c{generate-id(uid)}"><xsl:value-of select="value"/></label>
@@ -287,7 +278,7 @@
 
             <!-- type is defaulted to "subscription".  It is changed to "folder"
                  if subTypeSwitch is set to folder. -->
-            <input type="hidden"  name="type" value="subscription" id="bwType"/>
+            <input type="hidden" name="type" value="subscription" id="bwType"/>
             <input type="hidden" name="aliasUri" value=""/>
 
             <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->

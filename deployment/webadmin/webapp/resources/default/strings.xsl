@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -104,6 +104,7 @@
   <xsl:variable name="bwStr-EvLs-SelectEvent">Select the event that you would like to update:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-PageTitle">Add new event</xsl:variable>
   <xsl:variable name="bwStr-EvLs-StartDate">Start Date:</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-Today">Today</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Days">Days:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Show">Show:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-Active">Active</xsl:variable>
@@ -111,6 +112,8 @@
   <xsl:variable name="bwStr-EvLs-FilterBy">Filter by:</xsl:variable>
   <xsl:variable name="bwStr-EvLs-SelectCategory">select a category</xsl:variable>
   <xsl:variable name="bwStr-EvLs-ClearFilter">clear filter</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-Previous">Previous</xsl:variable>
+  <xsl:variable name="bwStr-EvLs-Next">Next</xsl:variable>
 
   <!--  xsl:template name="eventListCommon" -->
   <xsl:variable name="bwStr-EvLC-Title">Title</xsl:variable>
@@ -156,9 +159,18 @@
   <xsl:variable name="bwStr-AEEF-Floating">floating</xsl:variable>
   <xsl:variable name="bwStr-AEEF-StoreAsUTC">store at UTC</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Start">Start:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-StartDateHour">start date hour</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-StartDateMinute">start date minute</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-StartDateAmPm">start date am/pm</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-StartDateTimezone">start date timezone</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Date">Date</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Due">Due:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-End">End:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EndDate">end date</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EndDateHour">end date hour</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EndDateMinute">end date minute</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EndDateAmPm">end date am/pm</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EndDateTimezone">end date timezone</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Duration">Duration</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Days">days</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Hours">hours</xsl:variable>
@@ -275,7 +287,7 @@
   <xsl:variable name="bwStr-AEEF-LocationURL">Location URL:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-OptionalLocaleInfo">(optional: for information about the location)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Contact">Contact:</xsl:variable>
-  <xsl:variable name="bwStr-AEEF-Creator">Creator</xsl:variable> 
+  <xsl:variable name="bwStr-AEEF-Creator">Creator</xsl:variable>
   <xsl:variable name="bwStr-AEEF-TopicalArea">Topical area:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ContactName">Contact (name):</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ContactPhone">Contact Phone Number:</xsl:variable>
@@ -340,7 +352,7 @@
   <xsl:variable name="bwStr-Cloc-SelectTime">select time</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Switch">switch</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">close</xsl:variable>
-  
+
   <!-- xsl:template name="newclock" -->
   <xsl:variable name="bwStr-Cloc-Hour">Hour</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Minute">Minute</xsl:variable>
@@ -379,6 +391,7 @@
   <xsl:variable name="bwStr-Cont-Email">Email</xsl:variable>
   <xsl:variable name="bwStr-Cont-URL">URL</xsl:variable>
   <xsl:variable name="bwStr-Cont-AddNewContact">Add new contact</xsl:variable>
+  <xsl:variable name="bwStr-Cont-ListOfContacts">List of contacts</xsl:variable>
 
   <!--  xsl:template name="modContact" -->
   <xsl:variable name="bwStr-MdCo-ContactInfo">Contact Information</xsl:variable>
@@ -678,7 +691,7 @@
   <xsl:variable name="bwStr-ModRes-UploadLabel">Upload Content:</xsl:variable>
   <xsl:variable name="bwStr-ModRes-RemoveResource">Remove Resource</xsl:variable>
   <xsl:variable name="bwStr-ModRes-BackToList">Back to Resource List</xsl:variable>
-  
+
   <!-- xsl:template name="modResource: featured events strings" -->
   <xsl:variable name="bwStr-ModRes-FeaturedEventsAdmin">Featured Events Admin</xsl:variable>
   <xsl:variable name="bwStr-ModRes-UpdateFeaturedEvents">Update Featured Events</xsl:variable>
@@ -942,7 +955,7 @@
   <xsl:variable name="bwStr-MoPr-Month">month</xsl:variable>
   <xsl:variable name="bwStr-MoPr-Year">year</xsl:variable>
   <xsl:variable name="bwStr-MoPr-PageSize">Page Size:</xsl:variable>
-    
+
   <xsl:variable name="bwStr-MoPr-Update">Update</xsl:variable>
   <xsl:variable name="bwStr-MoPr-Cancel">Cancel</xsl:variable>
 
@@ -976,6 +989,8 @@
   <xsl:variable name="bwStr-MoAG-GroupOwner">Group owner:</xsl:variable>
   <xsl:variable name="bwStr-MoAG-GroupOwnerFieldInfo">User responsible for the group, e.g. "admin"</xsl:variable>
   <xsl:variable name="bwStr-MoAG-EventsOwner">Events owner:</xsl:variable>
+  <xsl:variable name="bwStr-MoAG-Optional">(optional)</xsl:variable>
+  <xsl:variable name="bwStr-MoAG-EventsOwnerFieldInfo">The system owner for all events created by this group.<br/>This value will be created by the system if not supplied.</xsl:variable>
   <xsl:variable name="bwStr-MoAG-Delete">Delete</xsl:variable>
   <xsl:variable name="bwStr-MoAG-AddAdminGroup">Add Admin Group</xsl:variable>
   <xsl:variable name="bwStr-MoAG-Cancel">Cancel</xsl:variable>

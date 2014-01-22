@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -25,7 +25,7 @@
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
     standalone="yes" omit-xml-declaration="yes" />
-    
+
   <!-- DEFINE INCLUDES -->
   <!-- Theme preferences -->
   <xsl:include href="themeSettings.xsl" />
@@ -61,10 +61,10 @@
   <xsl:include href="searchResults.xsl" />
   <xsl:include href="showPage.xsl" />
   <xsl:include href="footer.xsl" />
-  
+
   <!-- THEME GLOBAL VARIABLES -->
-  
-  <!-- Are we on a page with a running transaction? 
+
+  <!-- Are we on a page with a running transaction?
        Used to determine behavior for some ajax requests. -->
   <xsl:variable name="transaction">
     <xsl:choose>
@@ -82,7 +82,7 @@
       <xsl:otherwise>true</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  
+
   <!-- BEGIN MAIN TEMPLATE -->
   <xsl:template match="/">
     <html lang="en">
@@ -170,7 +170,7 @@
                   <xsl:when test="/bedework/page='subscriptions' or
                                   /bedework/page='modSubscription'">
                     <xsl:apply-templates select="/bedework/subscriptions"/>
-                  </xsl:when> 
+                  </xsl:when>
                   <xsl:when test="/bedework/page='addAlias'">
                     <xsl:call-template name="addAlias"/>
                   </xsl:when>

@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -21,16 +21,17 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
 
-  <!-- All text exposed by the stylesheets is set here. -->
-  <!-- To change the language of a web client, translate the strings file. -->
+  <!-- Most text exposed by the stylesheets is set here. -->
 
   <xsl:variable name="bwStr-Root-PageTitle">Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-Error">Error:</xsl:variable>
   <xsl:variable name="bwStr-Error-NoPage">No page to display</xsl:variable>
   <xsl:variable name="bwStr-Error-PageNotDefined">Page "<xsl:value-of select="/bedework/appvar[key='page']/value"/>" is not defined.</xsl:variable>
   <xsl:variable name="bwStr-Error-IframeUnsupported">Your browser does not support iframes.</xsl:variable>
+  <xsl:variable name="bwStr-Error-NoScript">Your browser does not support JavaScript!</xsl:variable>
 
   <!-- xsl:template name="headBar" -->
+  <xsl:variable name="bwStr-HdBr-SiteTitle">Public Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PageTitle">Bedework Events Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PublicCalendar">Public Calendar</xsl:variable>
   <xsl:variable name="bwStr-HdBr-PublicEventsCalendar">Public Events Calendar</xsl:variable>
@@ -50,6 +51,7 @@
   <!-- ongoing events -->
   <xsl:variable name="bwStr-Ongoing-Title">Ongoing</xsl:variable>
   <xsl:variable name="bwStr-Ongoing-NoEvents">There are no ongoing events in this time period or view</xsl:variable>
+  <xsl:variable name="bwStr-Ongoing-Ends">Ends</xsl:variable>
 
   <!-- deadlines -->
   <xsl:variable name="bwStr-Deadline-Title">Deadlines</xsl:variable>
@@ -65,9 +67,19 @@
   <xsl:variable name="bwStr-Tabs-Month">MONTH</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Year">YEAR</xsl:variable>
   <xsl:variable name="bwStr-Tabs-List">LIST</xsl:variable>
-  <xsl:variable name="bwStr-Tabs-Search">Search</xsl:variable>
-  <xsl:variable name="bwStr-Tabs-AdvSearch">Advanced Search</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Search">search</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-AdvSearch">advanced</xsl:variable>
   <xsl:variable name="bwStr-Tabs-JumpToDate">Jump To Date</xsl:variable>
+
+  <!--  xsl:template name="datePicker" -->
+  <xsl:variable name="bwStr-DatePicker-Today">today</xsl:variable>
+  <xsl:variable name="bwStr-DatePicker-Upcoming">upcoming</xsl:variable>
+  <xsl:variable name="bwStr-DatePicker-Range">range</xsl:variable>
+  <xsl:variable name="bwStr-DatePicker-Day">day</xsl:variable>
+  <xsl:variable name="bwStr-DatePicker-Week">week</xsl:variable>
+  <xsl:variable name="bwStr-DatePicker-Month">month</xsl:variable>
+  <xsl:variable name="bwStr-DatePicker-StartDate">Start date:</xsl:variable>
+  <xsl:variable name="bwStr-DatePicker-Menu">menu</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
@@ -81,6 +93,7 @@
   <xsl:variable name="bwStr-SrcB-DefaultView">default view</xsl:variable>
   <xsl:variable name="bwStr-SrcB-AllCalendars">all calendars</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Search">Search:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-SearchForEvents">Search for events:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Go">go</xsl:variable>
   <xsl:variable name="bwStr-Util-List">LIST</xsl:variable>
   <xsl:variable name="bwStr-Util-Cal">CAL</xsl:variable>
@@ -98,12 +111,13 @@
   <!--  xsl:template name="leftColumn", "viewList", and "sideBar" -->
   <xsl:variable name="bwStr-LCol-JsMessage">To view the interactive calendar, please enable Javascript on your browser.</xsl:variable>
   <xsl:variable name="bwStr-LCol-CalendarViews">Calendar Views</xsl:variable>
-  <xsl:variable name="bwStr-LCol-Calendars">Calendars</xsl:variable>
+  <xsl:variable name="bwStr-LCol-Calendars">CALENDARS</xsl:variable>
   <xsl:variable name="bwStr-LCol-All">All</xsl:variable>
   <xsl:variable name="bwStr-LCol-FilterOnCalendars">FILTER ON CALENDARS:</xsl:variable>
   <xsl:variable name="bwStr-LCol-ViewAllCalendars">View All Calendars</xsl:variable>
   <xsl:variable name="bwStr-LCol-FeedsAndWidgets">Feeds and Widgets</xsl:variable>
 
+  <xsl:variable name="bwStr-LCol-Options">OPTIONS:</xsl:variable>
   <xsl:variable name="bwStr-LCol-CalInfo">EVENTS CALENDAR INFO:</xsl:variable>
   <xsl:variable name="bwStr-LCol-ManageEvents">Manage Events</xsl:variable>
   <xsl:variable name="bwStr-LCol-Submit">Submit an Event</xsl:variable>
@@ -184,6 +198,7 @@
   <!--  xsl:template name="listView" -->
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplay">No events found.  Please try a different view or time period.</xsl:variable>
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplayWithOngoing">No non-ongoing events found.  Please try a different view or time period or look in the Ongoing events list.</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-NoEventsFromSelection">Your selection returns no results.</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-LsVw-AllDay">All Day</xsl:variable>
   <xsl:variable name="bwStr-LsVw-At">at</xsl:variable>
@@ -202,10 +217,17 @@
   <xsl:variable name="bwStr-LsVw-Cost">Cost:</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Description">Description:</xsl:variable>
   <xsl:variable name="bwStr-LsVw-Link">Link:</xsl:variable>
+  <xsl:variable name="bwStr-LsVw-ListWithinTimeRange">List of events within a time range</xsl:variable>
 
   <!--  xsl:template match="events" mode="eventList" -->
+  <xsl:variable name="bwStr-LsEv-Event">event returned</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-Events">events returned</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Next7Days">Next 7 Days</xsl:variable>
   <xsl:variable name="bwStr-LsEv-NoEventsToDisplay">No events to display.</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-Calendars">Calendars:</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-ClearFilters">(clear filters)</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-Search">Search:</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-ClearSearch">(clear search)</xsl:variable>
   <xsl:variable name="bwStr-LsEv-DownloadEvent">Download ical</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Categories">Categories:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Contact">Contact:</xsl:variable>
@@ -213,6 +235,7 @@
   <xsl:variable name="bwStr-LsEv-Tentative">TENTATIVE:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-EventList">Event List</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Upcoming">Upcoming Events</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-Starting">Starting</xsl:variable>
 
   <!--  xsl:template name="buildListEventsDaysOptions" -->
 
@@ -353,7 +376,8 @@
   <xsl:variable name="bwStr-Foot-JavascriptTodaysEvents">javascript: today's events</xsl:variable>
   <xsl:variable name="bwStr-Foot-ForMobileBrowsers">Bedework iPhone/Mobile</xsl:variable>
   <xsl:variable name="bwStr-Foot-VideoFeed">video feed</xsl:variable>
-  <xsl:variable name="bwStr-Foot-ResetToCalendarDefault">Bedework Default</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ResetToCalendarDefault">Bedework Default (3.10 Theme)</xsl:variable>
+  <xsl:variable name="bwStr-Foot-BwTheme3p9">Bedework 3.9 Theme</xsl:variable>
   <xsl:variable name="bwStr-Foot-Credits">This theme is based on work by Duke and Yale Universities with thanks also to the University of Chicago</xsl:variable>
 
 </xsl:stylesheet>

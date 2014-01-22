@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,22 +18,13 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
-  
+
   <!--++++ ACCESS CONTROL TEMPLATES ++++-->
-  <!-- templates: 
+  <!-- templates:
          - schedulingAccessForm
-         - currentAccess  
-   --> 
-   
+         - currentAccess
+   -->
+
   <!-- schedulingAccessForm template may be deprecated -->
   <xsl:template name="schedulingAccessForm">
     <xsl:param name="what"/>
@@ -132,10 +123,10 @@
           <td>
             <xsl:choose>
               <xsl:when test="$whoType = 'user' or ($who = 'owner' and $whoType != 'other')">
-                <img src="{$resourcesRoot}/images/userIcon.gif" width="13" height="13" border="0" alt="user"/>
+                <img src="{$resourcesRoot}/images/userIcon.gif" width="13" height="13" alt="user"/>
               </xsl:when>
               <xsl:otherwise>
-                <img src="{$resourcesRoot}/images/groupIcon.gif" width="13" height="13" border="0" alt="group"/>
+                <img src="{$resourcesRoot}/images/groupIcon.gif" width="13" height="13" alt="group"/>
               </xsl:otherwise>
             </xsl:choose>
             <xsl:text> </xsl:text>
@@ -184,7 +175,7 @@
           <td>
             <xsl:if test="not(inherited)">
               <a href="{$action}&amp;how=default&amp;what={$what}&amp;who={$shortWho}&amp;whoType={$whoType}&amp;calPath={$calPathEncoded}&amp;calSuiteName={$calSuiteName}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="reset to default">
-                <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="reset to default"/>
+                <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" alt="reset to default"/>
               </a>
             </xsl:if>
           </td>
@@ -192,5 +183,5 @@
       </xsl:for-each>
     </table>
   </xsl:template>
-  
+
 </xsl:stylesheet>

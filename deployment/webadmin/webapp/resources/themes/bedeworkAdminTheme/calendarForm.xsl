@@ -18,15 +18,6 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
 
   <!--+++++++++++++++ Calendar Lists ++++++++++++++++++++-->
   <!-- templates:
@@ -118,7 +109,7 @@
                     <input type="checkbox" name="catUid">
                       <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
                       <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                      <xsl:if test="uid = /bedework/defaultCategories//category/uid">
+                      <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                         <xsl:attribute name="disabled">disabled</xsl:attribute>
                       </xsl:if>
                       <xsl:value-of select="value"/>
@@ -384,7 +375,7 @@
                   <input type="checkbox" name="catUid" checked="checked">
                     <xsl:attribute name="value"><xsl:value-of select="$catUid"/></xsl:attribute>
                     <xsl:attribute name="id"><xsl:value-of select="$catUid"/></xsl:attribute>
-                    <xsl:if test="uid = /bedework/defaultCategories//category/uid">
+                    <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
                       <xsl:attribute name="disabled">disabled</xsl:attribute>
                     </xsl:if>
                     <label for="{$catUid}"><xsl:value-of select="value"/></label>

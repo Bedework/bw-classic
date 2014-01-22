@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <selfreg xmlns="http://bedework.org/ns/"
-           type="SelfregConfigProperties">
+         type="SelfregConfigProperties">
   <ldapUrl>ldap://localhost:10389</ldapUrl>
   <baseDn>dc=bedework, dc=org</baseDn>
   <accountsOu>accounts</accountsOu>

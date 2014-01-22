@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,26 +18,17 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
-  
+
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
-  <!-- templates: 
+  <!-- templates:
          - calendarCommon
          - calendarList
-         - deleteCalendarConfirm  
-         - selectCalForEvent 
+         - deleteCalendarConfirm
+         - selectCalForEvent
          - selectCalForEventCalTree
          - calendarMove
-   -->  
-  
+   -->
+
   <xsl:template match="calendars" mode="calendarCommon">
     <table id="calendarTable">
       <tr>
@@ -85,14 +76,14 @@
       </tr>
     </table>
   </xsl:template>
-  
+
     <xsl:template name="calendarList">
     <h3><xsl:copy-of select="$bwStr-CaLi-ManageCalendarsAndFolders"/></h3>
     <ul>
 
       <li><xsl:copy-of select="$bwStr-CaLi-SelectItemFromPublicTree"/></li>
       <li><xsl:copy-of select="$bwStr-CaLi-SelectThe"/>
-      <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
+      <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true"/>
       <xsl:copy-of select="$bwStr-CaLi-IconToAdd"/>
         <ul>
           <li><xsl:copy-of select="$bwStr-CaLi-FoldersMayContain"/></li>
@@ -241,7 +232,7 @@
 
   <xsl:template match="calendar" mode="selectCalForEventCalTree">
     <xsl:variable name="calPath" select="path"/><!-- not the encodedPath when put in a form - otherwise it gets double encoded -->
-      <xsl:variable name="calDisplay" select="path"/>
+    <xsl:variable name="calDisplay" select="path"/>
     <xsl:variable name="itemClass">
       <xsl:choose>
         <xsl:when test="calType = '0'"><xsl:copy-of select="$bwStr-Cals-Folder"/></xsl:when>
@@ -255,12 +246,12 @@
         <xsl:choose>
           <xsl:when test="open = 'true'">
             <a href="{$calendar-openCloseSelect}&amp;calPath={$calPath}&amp;open=false">
-              <img src="{$resourcesRoot}/images/minus.gif" width="9" height="9" alt="close" border="0" class="bwPlusMinusIcon"/>
+              <img src="{$resourcesRoot}/images/minus.gif" width="9" height="9" alt="close" class="bwPlusMinusIcon"/>
             </a>
           </xsl:when>
           <xsl:otherwise>
             <a href="{$calendar-openCloseSelect}&amp;calPath={$calPath}&amp;open=true">
-              <img src="{$resourcesRoot}/images/plus.gif" width="9" height="9" alt="open" border="0" class="bwPlusMinusIcon"/>
+              <img src="{$resourcesRoot}/images/plus.gif" width="9" height="9" alt="open" class="bwPlusMinusIcon"/>
             </a>
           </xsl:otherwise>
         </xsl:choose>
@@ -333,5 +324,5 @@
       </tr>
     </table>
   </xsl:template>
-  
+
 </xsl:stylesheet>

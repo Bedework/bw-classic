@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -24,7 +24,7 @@
 
   <!--======== list events ==========-->
   <!-- This formats a list of events from /bedework/eventscalendar, the default
-       day, week, and month views.  Look to eventListDiscrete.xsl for the listing
+       day, week, and month views.  Look to eventList.xsl for the listing
        produced by the listEvents.do action -->
 
 
@@ -40,10 +40,10 @@
               <xsl:copy-of select="$bwStr-LsVw-DispEventsForCal"/>
 	          <xsl:text> </xsl:text>
 	          <span class="displayFilterName">
-	            <xsl:variable name="subscriptionName">				          
+	            <xsl:variable name="subscriptionName">
 		          <xsl:call-template name="substring-afterLastInstanceOf">
 	                <xsl:with-param name="string" select="/bedework/selectionState/collection/virtualpath"/>
-		            <xsl:with-param name="char">/</xsl:with-param>	
+		            <xsl:with-param name="char">/</xsl:with-param>
 		          </xsl:call-template>
 		        </xsl:variable>
 		        <xsl:value-of select="/bedework/myCalendars/calendars//calendar[name=$subscriptionName]/summary/text()" />
@@ -305,7 +305,7 @@
 
           </xsl:otherwise>
         </xsl:choose>
-        
+
         <xsl:if test="xproperties/X-BEDEWORK-ALIAS">
           <li>
             <xsl:copy-of select="$bwStr-LsVw-TopicalArea"/><xsl:text> </xsl:text>

@@ -173,10 +173,10 @@
       nextYear++;
     }
 
-    //prevImgHTML  = '<img src="' + this.imagesPath + '/prev.gif" alt="<<" border="0" />';
+    //prevImgHTML  = '<img src="' + this.imagesPath + '/prev.gif" alt="<<" />';
     prevImgHTML  = '&lt;&lt;';
     prevLinkHTML = '<a href="javascript: ' + this.objName + '.show(' + previousMonth + ', ' + previousYear + ')">' + prevImgHTML + '</a>';
-    //nextImgHTML  = '<img src="' + this.imagesPath + '/next.gif" alt="<<" border="0" />';
+    //nextImgHTML  = '<img src="' + this.imagesPath + '/next.gif" alt="<<" />';
     nextImgHTML  = '&gt;&gt;';
     nextLinkHTML = '<a href="javascript: ' + this.objName + '.show(' + nextMonth + ', ' + nextYear + ')">' + nextImgHTML + '</a>';
 
@@ -235,7 +235,7 @@
 */
   function dynCalendar_writeHTML()
   {
-    document.write('<a href="javascript: ' + this.objName + '.show()"><img src="' + this.imagesPath + 'calIcon.gif" border="0" width="16" height="15" /></a>');
+    document.write('<a href="javascript: ' + this.objName + '.show()"><img src="' + this.imagesPath + 'calIcon.gif" width="16" height="15" /></a>');
     document.write('<div class="dynCalendar" id="' + this.layerID + '" onmouseover="' + this.objName + '._mouseover(true)" onmouseout="' + this.objName + '._mouseover(false)"></div>');
   }
 
@@ -485,7 +485,7 @@
 
     dynCalendar_oldOnclick(arguments[0] ? arguments[0] : null);
   }
-  
+
   /**
 * Bedework specific callbacks
 */

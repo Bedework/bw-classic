@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -17,11 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<xsl:stylesheet
-  version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml">
-
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <!--  Access Control strings for display using bedeworkAccess.xsl  -->
   <!--  Quickstart default is English -->
   <xsl:variable name="bwStr-Access-Add">Add:</xsl:variable>
@@ -62,5 +58,5 @@
   <xsl:variable name="bwStr-Access-None">None</xsl:variable>
   <xsl:variable name="bwStr-Access-BasicAll">All</xsl:variable>
   <xsl:variable name="bwStr-Access-BasicRead">Read only</xsl:variable>
-  
+
 </xsl:stylesheet>

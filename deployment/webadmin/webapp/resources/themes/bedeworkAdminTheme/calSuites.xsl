@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,22 +18,13 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
-  
+
   <!--+++++++++++++++ Calendar Suites (calsuite) ++++++++++++++++++++-->
-  <!-- templates: 
+  <!-- templates:
          - tabCalsuite
          - calSuiteList
    -->
-   
+
   <xsl:template name="tabCalsuite">
     <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser='true'">
       <h2>
@@ -72,8 +63,8 @@
         </li>
       </ul>
     </xsl:if>
-  </xsl:template>  
-  
+  </xsl:template>
+
   <xsl:template match="calSuites" mode="calSuiteList">
     <h2><xsl:copy-of select="$bwStr-CalS-ManageCalendarSuites"/></h2>
 
@@ -109,10 +100,10 @@
         </tr>
       </xsl:for-each>
     </table>
-    
+
     <br/>
     <span><i>Note: a (*) next to the context name indicates the default context (if any).</i></span>
 
   </xsl:template>
-  
+
 </xsl:stylesheet>

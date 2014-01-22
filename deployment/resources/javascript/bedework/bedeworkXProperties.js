@@ -97,7 +97,10 @@ function BwXProperties() {
      xproperties.push(xprop);
   }
 
-  this.update = function(name, params, value, isUnique) {
+  // update an xproperty
+  // isUnique - only one xproperty of the given name should exist
+  // isUniqueByValue - only one xproperty with name and value pair should exist 
+  this.update = function(name, params, value, isUnique, isUniqueByValue) {
     // strip out any double quotes in the parameter values:
     if (params.length) {
       for (var i = 0; i < params.length; i++) {
@@ -115,7 +118,14 @@ function BwXProperties() {
 
     // add or update the xproperty:
     var xprop = new BwXProperty(name, params, value);
-    if (isUnique) {
+    if (isUniqueByValue) {
+      // If it doesn't exist add it.  If it already exists do nothing.
+      index = this.getIndexByValue(name,value);
+      if (index < 0) {
+        xproperties.push(xprop);
+      }
+    } else if (isUnique) {
+      // If it doesn't exist add it.  Otherwise, update it.
       index = this.getIndex(name);
       if (index < 0) {
         xproperties.push(xprop);
@@ -163,6 +173,13 @@ function BwXProperties() {
     return -1;
   }
 
+  this.display = function(formObj) { // for debugging
+    var textOutput = '';
+    for (var i = 0; i < xproperties.length; i++) {
+      textOutput += xproperties[i].format() + "\n";
+    }
+    return textOutput;
+  } 
 
   this.generate = function(formObj) {
     for (var i = 0; i < xproperties.length; i++) {

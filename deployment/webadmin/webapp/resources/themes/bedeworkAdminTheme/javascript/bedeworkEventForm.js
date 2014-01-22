@@ -6,15 +6,15 @@
    Version 2.0 (the "License"); you may not use this file
    except in compliance with the License. You may obtain a
    copy of the License at:
-  
+
    http://www.apache.org/licenses/LICENSE-2.0
-  
+
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on
    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
    KIND, either express or implied. See the License for the
    specific language governing permissions and limitations
-   under the License.  
+   under the License.
 */
 
 // Bedework event form functions
@@ -320,8 +320,9 @@ function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactN
 // ========================================================================
 
 function setEventFields(formObj,portalFriendly,submitter) {
+  cleanEventFields(formObj);
   if (!validateEventForm(formObj)) {
-    return false; 
+    return false;
   }
   if (!portalFriendly) {
     setDates(formObj);
@@ -331,6 +332,23 @@ function setEventFields(formObj,portalFriendly,submitter) {
   } // else we are editing an instance of a recurrence
   setBedeworkXProperties(formObj,submitter);
   return true;
+}
+
+/* pre-clean summary and description to remove
+ * input characters that trouble the XSLT; this is a convenience
+ * function that can be extended */
+function cleanEventFields(formObj) {
+  // clean the description:
+  var descriptionText = trim(formObj["description"].value);
+  descriptionText = descriptionText.replace("\v",""); // remove vertical tab
+  descriptionText =  descriptionText.replace(RegExp(String.fromCharCode(31),"g"),""); // remove universal separator
+  formObj["description"].value = descriptionText;
+
+  // clean the summary
+  var summaryText = trim(formObj["summary"].value);
+  summaryText = summaryText.replace("\v",""); // remove vertical tab
+  summaryText = summaryText.replace(RegExp(String.fromCharCode(31),"g"),""); // remove universal separator
+  formObj["summary"].value = summaryText;
 }
 
 /* do some basic client-side validation where needed */
@@ -372,9 +390,9 @@ function setBedeworkXProperties(formObj,submitter) {
   // Set up specific Bedework X-Properties on event form submission
   // Depends on bedeworkXProperties.js
   // Set application local x-properties here.
- 
+
   // X-BEDEWORK-IMAGE and its parameters:
-  if (formObj["xBwImageHolder"] && 
+  if (formObj["xBwImageHolder"] &&
       formObj["xBwImageHolder"].value != '') {
     bwXProps.update(bwXPropertyImage,
                   [[bwXParamDescription,''],
@@ -382,15 +400,15 @@ function setBedeworkXProperties(formObj,submitter) {
                    [bwXParamHeight,'']],
                    formObj["xBwImageHolder"].value,true);
   }
-  
+
   // X-BEDEWORK-THUMB-IMAGE:
-  if (formObj["xBwImageThumbHolder"] && 
+  if (formObj["xBwImageThumbHolder"] &&
       formObj["xBwImageThumbHolder"].value != '') {
     bwXProps.update(bwXPropertyThumbImage,[],formObj["xBwImageThumbHolder"].value,true);
   }
 
   // UPLOADING AN IMAGE
-  // If the imageUpload field is not empty or the "overwrite" flag is checked, 
+  // If the imageUpload field is not empty or the "overwrite" flag is checked,
   // don't send the image field x-properties. This enables uploads to override
   // existing images. Comment this out to disable.
   if (formObj["eventImageUpload"] != undefined) {
@@ -398,22 +416,22 @@ function setBedeworkXProperties(formObj,submitter) {
       removeEventImage(formObj["xBwImageHolder"],formObj["xBwImageThumbHolder"]);
     }
   }
-  
+
   // Event registration x-properties:
   if (formObj["bwIsRegisterableEvent"] != undefined) {
     if (formObj["bwIsRegisterableEvent"].checked) {
       bwXProps.update(bwXPropertyMaxTickets,[],formObj["xBwMaxTicketsHolder"].value,true);
       bwXProps.update(bwXPropertyMaxTicketsPerUser,[],formObj["xBwMaxTicketsPerUserHolder"].value,true);
-      
+
       var bwRegDateString = ""
       bwRegDateString = formObj["xBwRegistrationOpensDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationOpens.hour"].value) + padTimeUnit(formObj["xBwRegistrationOpens.minute"].value) + "00";
       bwXProps.update(bwXPropertyRegistrationStart,[["TZID",formObj["xBwRegistrationOpensTzid"].value]],bwRegDateString,true);
-  
+
       bwRegDateString = formObj["xBwRegistrationClosesDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationCloses.hour"].value) + padTimeUnit(formObj["xBwRegistrationCloses.minute"].value) + "00";
       bwXProps.update(bwXPropertyRegistrationEnd,[["TZID",formObj["xBwRegistrationClosesTzid"].value]],bwRegDateString,true);
     }
   }
-  
+
   // X-BEDEWORK-SUBMITTEDBY
   bwXProps.update(bwXPropertySubmittedBy,[],submitter,true);
 
@@ -456,11 +474,31 @@ function removeEventImage(imgField,thumbField) {
   $("#eventFormImage").hide();
   $("#eventImageRemoveButton").hide();
 }
-function toggleBedeworkXProperty(xprop,displayName,value,checked) {
+function toggleBedeworkTopicalArea(displayName,vpath,checked,submitted,path,aliasPath) {
+  toggleBedeworkXProperty('X-BEDEWORK-ALIAS',displayName,vpath,checked,true);
+  if (submitted && !checked) {
+    // This is a submitted event; remove the submitted alias if unchecked (don't toggle these).
+    // Send both the path and aliasPath for removal - it will be one or the other (but not both).
+    // The correct value depends on where the alias sits in the topical area tree.
+    bwXProps.removeByValue('X-BEDEWORK-SUBMIT-ALIAS',path);
+    bwXProps.removeByValue('X-BEDEWORK-SUBMIT-ALIAS',aliasPath);
+  }
+  if (bwJsDebug) {
+    console.log(bwXProps.display());
+  }
+}
+function toggleBedeworkXProperty(xprop,displayName,value,checked,isUniqueByValue) {
   if (!checked) {
+    if (bwJsDebug) {
+      console.log("Removing " + xprop + ":" + value);
+    }
     bwXProps.removeByValue(xprop, value);
   } else {
-    bwXProps.update(bwXPropertyAlias,[[bwXParamDisplayName,displayName]],value,false);
+    var uniqueByValue = false;
+    if (isUniqueByValue) {
+      uniqueByValue = true;
+    }
+    bwXProps.update(xprop,[[bwXParamDisplayName,displayName]],value,false,uniqueByValue);
   }
 }
 function claimPendingEvent(group,user) {
@@ -597,7 +635,7 @@ function swapRrules(obj) {
       }
     } else {
       // they decided against it. Uncheck the box.
-      obj.checked = false; 
+      obj.checked = false;
     }
   } else {
     changeClass('rrulesTable','invisible');
@@ -781,13 +819,13 @@ function setRecurrence(formObj) {
     }
   }
 
-  if (debug) {
-    alert("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\nwkst: " + formObj.wkst.value);
+  if (bwJsDebug) {
+    console.log("frequency: " + freq + "\ninterval: " + formObj.interval.value + "\ncount: " + formObj.count.value + "\nuntil: " + formObj.until.value + "\nbyday: " + formObj.byday.value + "\nbymonthday: " + formObj.bymonthday.value + "\nbymonth: " + formObj.bymonth.value + "\nbyyearday: " + formObj.byyearday.value + "\nwkst: " + formObj.wkst.value);
     var formFields = '';
     for (i = 0; i < formObj.length; i++) {
       formFields += formObj[i].name + ": " + formObj[i].value + "\n";
     }
-    alert(formFields);
+    console.log(formFields);
   }
   return true;
 }

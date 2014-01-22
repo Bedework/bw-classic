@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,24 +18,14 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
-  
-  <!--+++++++++++++++ Contacts ++++++++++++++++++++-->
-  <!-- templates: 
+
+  <!--+++++++++++++++ Contacts ++++++++++++++++++++--><!-- templates:
          - contactList
          - modContact (add/edit contact form)
-         - deleteContactConfirm  
+         - deleteContactConfirm
          - contactReferenced (displayed when trying to delete a contact in use)
    -->
-  
+
   <xsl:template name="contactList">
     <h2><xsl:copy-of select="$bwStr-Cont-ManageContacts"/></h2>
     <p>
@@ -43,7 +33,7 @@
       <input type="button" name="return" value="{$bwStr-Cont-AddNewContact}" onclick="javascript:location.replace('{$contact-initAdd}')"/>
     </p>
 
-    <table id="commonListTable">
+    <table id="commonListTable" title="{$bwStr-Cont-ListOfContacts}">
       <tr>
         <th><xsl:copy-of select="$bwStr-Cont-Name"/></th>
         <th><xsl:copy-of select="$bwStr-Cont-Phone"/></th>
@@ -55,22 +45,26 @@
         <tr>
           <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
-            <xsl:copy-of select="name" />
+            <xsl:copy-of select="name/node()"/>
           </td>
           <td>
-            <xsl:value-of select="phone" />
+            <xsl:value-of select="phone"/>
           </td>
           <td>
-            <xsl:variable name="email" select="email"/>
-            <a href="mailto:{$email}">
-              <xsl:value-of select="email"/>
-            </a>
+            <xsl:if test="email">
+              <xsl:variable name="email" select="email"/>
+              <a href="mailto:{$email}">
+                <xsl:value-of select="email"/>
+              </a>
+            </xsl:if>
           </td>
           <td>
-            <xsl:variable name="link" select="link" />
-            <a href="{$link}" target="linktest">
-              <xsl:value-of select="link" />
-            </a>
+            <xsl:if test="link">
+              <xsl:variable name="link" select="link"/>
+              <a href="{$link}" target="linktest">
+                <xsl:value-of select="link"/>
+              </a>
+            </xsl:if>
           </td>
         </tr>
       </xsl:for-each>
@@ -158,25 +152,25 @@
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-Name"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/name" />
+          <xsl:value-of select="/bedework/contact/name"/>
         </td>
       </tr>
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-Phone"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/phone" />
+          <xsl:value-of select="/bedework/contact/phone"/>
         </td>
       </tr>
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-Email"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/email" />
+          <xsl:value-of select="/bedework/contact/email"/>
         </td>
       </tr>
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-URL"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/link" />
+          <xsl:value-of select="/bedework/contact/link"/>
         </td>
       </tr>
     </table>
@@ -189,25 +183,25 @@
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-Name"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/name" />
+          <xsl:value-of select="/bedework/contact/name"/>
         </td>
       </tr>
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-Phone"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/phone" />
+          <xsl:value-of select="/bedework/contact/phone"/>
         </td>
       </tr>
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-Email"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/email" />
+          <xsl:value-of select="/bedework/contact/email"/>
         </td>
       </tr>
       <tr>
         <th><xsl:copy-of select="$bwStr-DCoC-URL"/></th>
         <td>
-          <xsl:value-of select="/bedework/contact/link" />
+          <xsl:value-of select="/bedework/contact/link"/>
         </td>
       </tr>
     </table>
@@ -253,5 +247,5 @@
     </xsl:if>
 
   </xsl:template>
-  
+
 </xsl:stylesheet>

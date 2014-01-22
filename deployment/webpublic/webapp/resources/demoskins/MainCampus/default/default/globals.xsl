@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -23,7 +23,7 @@
 
   <!-- DEFINE GLOBAL INCLUDES -->
   <xsl:include href="/bedework-common/default/default/util.xsl" />
-  
+
   <!-- include the common language string libraries -->
   <xsl:include href="/bedework-common/default/default/errors.xsl" />
   <xsl:include href="/bedework-common/default/default/messages.xsl" />
@@ -45,6 +45,9 @@
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup" />
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection" />
   <xsl:variable name="setSelectionList" select="/bedework/urlPrefixes/main/setSelectionList" />
+  <xsl:variable name="setMainEventList" select="/bedework/urlPrefixes/main/setMainEventList" />
+  <xsl:variable name="nextMainEventList" select="/bedework/urlPrefixes/main/nextMainEventList" />
+  <xsl:variable name="setOngoingList" select="/bedework/urlPrefixes/main/setOngoingList" />
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars" />
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod" />
   <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents" />
@@ -52,6 +55,7 @@
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef" />
   <xsl:variable name="addEventSub" select="/bedework/urlPrefixes/event/addEventSub" />
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export" />
+  <xsl:variable name="async" select="/bedework/urlPrefixes/misc/async" />
   <xsl:variable name="search" select="/bedework/urlPrefixes/search/search" />
   <xsl:variable name="search-next" select="/bedework/urlPrefixes/search/next" />
   <xsl:variable name="calendar-fetchForExport" select="/bedework/urlPrefixes/calendar/fetchForExport" />

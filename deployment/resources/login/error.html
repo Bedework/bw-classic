@@ -1,18 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html xml:lang="en" lang="en">
   <head>
     <title>@DISPLAY-NAME@ Login</title>
-    <script language="JavaScript" type="text/javascript">
-      <!--
-      // places the cursor in the first available form element when the page is loaded
-      // (if a form exists on the page)
-      function focusFirstElement() {
-        if (window.document.forms[0]) {
-          window.document.forms[0].elements[0].focus();
-        }
-      }
-      // -->
-    </script>
     <style type="text/css">
     <!--
       body {
@@ -22,21 +11,14 @@
         background-color: white;
         color: black;
       }
-      #title {
+      h1 {
         white-space: nowrap;
         font-size: 1.1em;
       }
       #loginBox {
         text-align: left;
-        margin-left: 0em;
+        margin-left: 0;
         white-space: nowrap;
-      }
-      #loginBox td {
-        padding-right: 0.5em;
-      }
-      form {
-        margin: 1em 0;
-        padding: 0;
       }
       a:link,
       a:active,
@@ -54,13 +36,13 @@
     </style>
   </head>
 
-  <body bgcolor="white" onLoad="javascript:focusFirstElement()">
+  <body>
     <div id="logo">
       <img src="/bedework-common/images/bedeworkLogo.gif" alt="Bedework Logo"/>
     </div>
-    <h3 id="title">Login error</h3>
+    <h1>Login error</h1>
     <div id="loginBox">
       <p>Please try <a href="setup.do">again</a>.</p>
-    </div
+    </div>
   </body>
 </html>

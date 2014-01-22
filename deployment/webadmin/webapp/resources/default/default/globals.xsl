@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -16,11 +16,8 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<xsl:stylesheet
-  version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml">
-  
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
   <!-- GENERATE KEYS -->
   <!-- Pick out unique categories from a collection of events
        for filtering in the manage event list. -->
@@ -30,7 +27,7 @@
   <!-- DEFINE GLOBAL INCLUDES -->
   <xsl:include href="/bedework-common/default/default/util.xsl"/>
   <xsl:include href="/bedework-common/default/default/bedeworkAccess.xsl"/>
-  
+
   <!-- include the common language string libraries -->
   <xsl:include href="/bedework-common/default/default/errors.xsl" />
   <xsl:include href="/bedework-common/default/default/messages.xsl" />
@@ -43,7 +40,7 @@
 
   <!-- Root context of uploaded event images -->
   <xsl:variable name="bwEventImagePrefix">/pubcaldav</xsl:variable>
-  
+
   <!-- URL of the XSL template directory -->
   <!-- The approot is an appropriate place to put
        included stylesheets and xml fragments. These are generally
@@ -52,14 +49,14 @@
        reference it explicitly.  It is not used in this stylesheet, however,
        and can be safely removed if you so choose. -->
   <xsl:variable name="appRoot" select="/bedework/approot"/>
-  
+
   <!-- Registration module application context -->
   <xsl:variable name="bwRegistrationRoot">/eventreg</xsl:variable>
 
   <!-- Root folder of the submissions calendars used by the submissions client -->
   <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
   <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
-  
+
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
@@ -79,6 +76,7 @@
   <xsl:variable name="event-showEvent" select="/bedework/urlPrefixes/event/showEvent"/>
   <xsl:variable name="event-showModForm" select="/bedework/urlPrefixes/event/showModForm"/>
   <xsl:variable name="event-showUpdateList" select="/bedework/urlPrefixes/event/showUpdateList"/>
+  <xsl:variable name="event-nextUpdateList" select="/bedework/urlPrefixes/event/nextUpdateList"/>
   <xsl:variable name="event-showDeleteConfirm" select="/bedework/urlPrefixes/event/showDeleteConfirm"/>
   <xsl:variable name="event-initAddEvent" select="/bedework/urlPrefixes/event/initAddEvent"/>
   <xsl:variable name="event-initUpdateEvent" select="/bedework/urlPrefixes/event/initUpdateEvent"/>
@@ -221,7 +219,7 @@
        to use jQuery widgets and fancier UI features, set to false - these are
        not guaranteed to work in portals.  -->
   <xsl:variable name="portalFriendly">false</xsl:variable>
-  
+
   <!-- get the current date set by the user, if exists, else use now -->
   <xsl:variable name="curListDate">
     <xsl:choose>

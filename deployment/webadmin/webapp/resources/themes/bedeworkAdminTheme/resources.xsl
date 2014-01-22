@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,24 +18,15 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
 
   <!--+++++++++++++++ Resources ++++++++++++++++++++-->
-  <!-- templates: 
+  <!-- templates:
          - listResources
   -->
 
   <!-- List all resources -->
   <xsl:template name="listResources">
-    <xsl:param name="global" select="'false'" />
+    <xsl:param name="global" select="'false'"/>
     <xsl:variable name="add-link">
       <xsl:choose>
         <xsl:when test="$global = 'true'">
@@ -46,7 +37,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <h2>
       <xsl:choose>
         <xsl:when test="$global = 'true'">
@@ -72,17 +63,17 @@
     <div class="addResourceForm" style="border: 1px solid grey; padding: 10px; display: table;">
 	    <form name="addResource" action="{$add-link}" method="post">
         <label for="resName">
-          <xsl:value-of select="$bwStr-Resource-NameLabel" />
+          <xsl:value-of select="$bwStr-Resource-NameLabel"/>
         </label>
 	      <input type="text" name="name" id="resName" size="60"/>
 	      <br/>
-	      
+
         <label for="resCt">
-          <xsl:value-of select="$bwStr-Resource-ContentTypeLabel" />
+          <xsl:value-of select="$bwStr-Resource-ContentTypeLabel"/>
         </label>
 	      <select name="ct" id="resCt">
 	      	<option value="text/plain" selected="true">
-	      	  <xsl:value-of select="$bwStr-Resource-Text" />
+	      	  <xsl:value-of select="$bwStr-Resource-Text"/>
           </option>
 	      	<option value="application/xml">XML</option>
 	      	<option value="text/css">CSS</option>
@@ -91,33 +82,33 @@
 	      	<option value="image/gif">GIF (Image)</option>
 	      </select>
 	      <br/>
-	      
+
         <label for="resType">
-          <xsl:value-of select="$bwStr-Resource-ResourceTypeLabel" />
+          <xsl:value-of select="$bwStr-Resource-ResourceTypeLabel"/>
         </label>
-	      <input type="text" name="type" id="resType" size="40" />
+	      <input type="text" name="type" id="resType" size="40"/>
 	      <br/>
-	      
+
 	      <xsl:choose>
 	       <xsl:when test="$global = 'true'">
-          <input type="hidden" name="class" value="global" />
+          <input type="hidden" name="class" value="global"/>
 	       </xsl:when>
 	       <xsl:when test="/bedework/userInfo/superUser = 'true'">
 		       <label for="resClass">
-		         <xsl:value-of select="$bwStr-Resource-ClassLabel" />
+		         <xsl:value-of select="$bwStr-Resource-ClassLabel"/>
 		       </label>
 	         <select name="class" id="resClass">
 	           <option value="calsuite" selected="true">
-	             <xsl:value-of select="$bwStr-Resource-CalendarSuite" />
+	             <xsl:value-of select="$bwStr-Resource-CalendarSuite"/>
 	           </option>
 	           <option value="admin">
-               <xsl:value-of select="$bwStr-Resource-Admin" />
+               <xsl:value-of select="$bwStr-Resource-Admin"/>
              </option>
 	         </select>
            <br/>
 	       </xsl:when>
 	       <xsl:otherwise>
-          <input type="hidden" name="class" value="calsuite" />
+          <input type="hidden" name="class" value="calsuite"/>
 	       </xsl:otherwise>
 	      </xsl:choose>
 	      <input type="submit" value="{$bwStr-Resource-AddNewResource}" name="addresource"/>
@@ -142,7 +133,7 @@
         <xsl:variable name="resContentType" select="content-type"/>
         <xsl:variable name="resType" select="type"/>
         <xsl:variable name="resClass" select="class"/>
-        <xsl:variable name="downloadLink" select="concat('/pubcaldav', path)" />
+        <xsl:variable name="downloadLink" select="concat('/pubcaldav', path)"/>
         <xsl:variable name="edit-link">
 		      <xsl:choose>
 		        <xsl:when test="$global = 'true'">
@@ -161,14 +152,14 @@
             </a>
           </td>
           <td>
-          	<xsl:value-of select="$resContentType" />
+          	<xsl:value-of select="$resContentType"/>
           </td>
           <td>
-          	<xsl:value-of select="$resType" />
+          	<xsl:value-of select="$resType"/>
           </td>
 	        <xsl:if test="$global = 'false' and /bedework/userInfo/superUser = 'true'">
 	          <td>
-	            <xsl:value-of select="$resClass" />
+	            <xsl:value-of select="$resClass"/>
 	          </td>
 	        </xsl:if>
           <td>
@@ -181,12 +172,11 @@
     </table>
   </xsl:template>
 
-
   <!-- Add or Edit a resource -->
   <xsl:template name="modResource">
-    <xsl:variable name="isCreating" select="/bedework/creating" />
-    <xsl:variable name="resource" select="/bedework/currentResource" />
-    <xsl:variable name="global" select="$resource/class = 'global'" />
+    <xsl:variable name="isCreating" select="/bedework/creating"/>
+    <xsl:variable name="resource" select="/bedework/currentResource"/>
+    <xsl:variable name="global" select="$resource/class = 'global'"/>
     <xsl:variable name="isText">
       <xsl:choose>
         <xsl:when test="$resource/content-type = 'text/plain'">true</xsl:when>
@@ -195,139 +185,138 @@
         <xsl:otherwise>false</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="downloadLink" select="concat('/pubcaldav', $resource/path)" />
+    <xsl:variable name="downloadLink" select="concat('/pubcaldav', $resource/path)"/>
 
     <xsl:choose>
       <xsl:when test="$resource/type = 'FeaturedEvents'">
-        <!-- specialized resource handling for Featured Events images -->
-        <!-- note: we will never be creating when we edit this form -->
+        <!-- specialized resource handling for Featured Events images --><!-- note: we will never be creating when we edit this form -->
         <h2><xsl:value-of select="$bwStr-ModRes-FeaturedEventsAdmin"/></h2>
         <div id="modFeaturedEventsForm">
           <xsl:variable name="update-link">
             <xsl:choose>
               <xsl:when test="$global = 'true'">
-                <xsl:copy-of select="$global-resources-update" />
+                <xsl:copy-of select="$global-resources-update"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:copy-of select="$calsuite-resources-update" />
+                <xsl:copy-of select="$calsuite-resources-update"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-                  
+
           <script type="text/javascript">
             <xsl:text>
               $(document).ready(function() {
             </xsl:text>
             <xsl:text>$.ajax({url: "</xsl:text>
-            <xsl:value-of select="$downloadLink" />
-            <xsl:text>", 
+            <xsl:value-of select="$downloadLink"/>
+            <xsl:text>",
                error: function() { $("#resourceContent").val("-- Failed to retrieve resource content! --"); },
                dataFilter: function(data, type) { return data; },
-               success: function(data) { $("#resourceContent").val(data); }, 
+               success: function(data) { $("#resourceContent").val(data); },
                cache: false,
                dataType: "text"});
               });
             </xsl:text>
           </script>
-          
+
           <xsl:apply-templates select="document($downloadLink)/featuredEvents"/>
-          
+
           <form name="modResource" action="{$update-link}" method="post" enctype="multipart/form-data" onsubmit="return writeFeaturedEventsXml();">
             <input type="hidden" name="name" value="{$resource/name}"/>
             <input type="hidden" name="ct" value="{$resource/content-type}"/>
             <input type="hidden" name="type" value="{$resource/type}"/>
-            <input type="hidden" name="class" value="{$resource/class}" />
-            
+            <input type="hidden" name="class" value="{$resource/class}"/>
+
             <!-- trade the following two fields to see the featured events content
                  rendered in a textarea -->
             <input type="hidden" name="content" id="resourceContent"/>
             <!-- textarea name="content" rows="20" cols="120" id="resourceContent" style="display:block;"></textarea-->
-          
+
             <input type="submit" name="update" value="{$bwStr-ModRes-UpdateFeaturedEvents}"/>
-            <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveFeaturedEvents}" />
+            <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveFeaturedEvents}"/>
             <span> - OR - </span>
-            <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}" />
+            <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}"/>
           </form>
-          
+
         </div>
       </xsl:when>
       <xsl:otherwise>
         <!-- normal resource handling  -->
-		    <xsl:choose>
+        <xsl:choose>
 		      <xsl:when test="$isCreating = 'true'">
 		        <h2>
-		          <xsl:value-of select="concat($bwStr-ModRes-AddResource, ' - ', $resource/name)" />
+		          <xsl:value-of select="concat($bwStr-ModRes-AddResource, ' - ', $resource/name)"/>
 		        </h2>
 		      </xsl:when>
 		      <xsl:otherwise>
 		        <h2>
-		          <xsl:value-of select="concat($bwStr-ModRes-EditResource, ' - ', $resource/name)" />
+		          <xsl:value-of select="concat($bwStr-ModRes-EditResource, ' - ', $resource/name)"/>
 		        </h2>
 		      </xsl:otherwise>
 		    </xsl:choose>
 		    <br/>
-		    
+
 		    <xsl:if test="$isCreating = 'false' and $isText = 'false'">
 		      <a href="{$downloadLink}">
-		        <xsl:value-of select="$bwStr-ModRes-ClickToDownload" />
+		        <xsl:value-of select="$bwStr-ModRes-ClickToDownload"/>
 		      </a>
 		      <br/>
 		      <br/>
 		    </xsl:if>
-    
+
 		    <div class="modResourceForm">
 		      <xsl:variable name="update-link">
 		        <xsl:choose>
 		          <xsl:when test="$global = 'true'">
-		            <xsl:copy-of select="$global-resources-update" />
+		            <xsl:copy-of select="$global-resources-update"/>
 		          </xsl:when>
 		          <xsl:otherwise>
-		            <xsl:copy-of select="$calsuite-resources-update" />
+		            <xsl:copy-of select="$calsuite-resources-update"/>
 		          </xsl:otherwise>
 		        </xsl:choose>
 		      </xsl:variable>
 		      <form name="modResource" action="{$update-link}" method="post" enctype="multipart/form-data">
 		        <span class="resFormLabel">
-		          <xsl:value-of select="$bwStr-ModRes-NameLabel" />
+		          <xsl:value-of select="$bwStr-ModRes-NameLabel"/>
 		        </span>
 		        <input type="hidden" name="name" value="{$resource/name}"/>
 		        <span class="resFormField">
-		          <xsl:value-of select="$resource/name" />
+		          <xsl:value-of select="$resource/name"/>
 		        </span>
 		        <br/>
-		        
+
 		        <span class="resFormLabel">
-		          <xsl:value-of select="$bwStr-ModRes-ContentTypeLabel" />
+		          <xsl:value-of select="$bwStr-ModRes-ContentTypeLabel"/>
 		        </span>
 		        <input type="hidden" name="ct" value="{$resource/content-type}"/>
 		        <span class="resFormField">
-		          <xsl:value-of select="$resource/content-type" />
+		          <xsl:value-of select="$resource/content-type"/>
 		        </span>
 		        <br/>
-		        
+
 		        <span class="resFormLabel">
-		          <xsl:value-of select="$bwStr-ModRes-ResourceTypeLabel" />
+		          <xsl:value-of select="$bwStr-ModRes-ResourceTypeLabel"/>
 		        </span>
 		        <input type="hidden" name="type" value="{$resource/type}"/>
 		        <span class="resFormField">
-		          <xsl:value-of select="$resource/type" />
+		          <xsl:value-of select="$resource/type"/>
 		        </span>
 		        <br/>
-		
+
 		        <xsl:if test="/bedework/userInfo/superUser = 'true' and global != 'true'">
 			        <span class="resFormLabel">
-			          <xsl:value-of select="$bwStr-ModRes-ClassLabel" />
+			          <xsl:value-of select="$bwStr-ModRes-ClassLabel"/>
 			        </span>
 			        <span class="resFormField">
-			          <xsl:value-of select="$resource/class" />
+			          <xsl:value-of select="$resource/class"/>
 			        </span>
 			        <br/>
 		        </xsl:if>
-		        <input type="hidden" name="class" value="{$resource/class}" />
-		        
+		        <input type="hidden" name="class" value="{$resource/class}"/>
+
 		        <xsl:if test="$isText = 'true'">
 			        <span class="resFormLabel">
-			          <xsl:value-of select="$bwStr-ModRes-ResourceContentLabel" />
+			          <xsl:value-of select="$bwStr-ModRes-ResourceContentLabel"/>
 			        </span>
 		          <br/>
 		          <textarea name="content" rows="20" cols="120" id="resourceContent" style="display:block;"></textarea>
@@ -337,11 +326,11 @@
 		                $(document).ready(function() {
 		              </xsl:text>
 		              <xsl:text>$.ajax({url: "</xsl:text>
-		              <xsl:value-of select="$downloadLink" />
-		              <xsl:text>", 
+		              <xsl:value-of select="$downloadLink"/>
+		              <xsl:text>",
 		                  error: function() { $("#resourceContent").val("-- Failed to retrieve resource content! --"); },
 		                  dataFilter: function(data, type) { return data; },
-		                  success: function(data) { $("#resourceContent").val(data); }, 
+		                  success: function(data) { $("#resourceContent").val(data); },
 		                  cache: false,
 		                  dataType: "text"});</xsl:text>
 		              <xsl:text>
@@ -352,29 +341,29 @@
 		        </xsl:if>
 		        <xsl:if test="$isText = 'false'">
 			        <label for="resFile" class="resFormLabel">
-			          <xsl:value-of select="$bwStr-ModRes-UploadLabel" />
+			          <xsl:value-of select="$bwStr-ModRes-UploadLabel"/>
 			        </label>
-		          <input type="file" name="uploadFile" id="resFile" size="60" />
+		          <input type="file" name="uploadFile" id="resFile" size="60"/>
 		          <br/>
 		        </xsl:if>
-		        
+
 		        <br/>
 		        <input type="submit" name="update">
 		          <xsl:attribute name="value">
 						    <xsl:choose>
 						      <xsl:when test="$isCreating = 'true'">
-		  		          <xsl:value-of select="$bwStr-ModRes-AddResource" />
+		  		          <xsl:value-of select="$bwStr-ModRes-AddResource"/>
 						      </xsl:when>
 						      <xsl:otherwise>
-		                <xsl:value-of select="$bwStr-ModRes-UpdateResource" />
+		                <xsl:value-of select="$bwStr-ModRes-UpdateResource"/>
 						      </xsl:otherwise>
 						    </xsl:choose>
 		          </xsl:attribute>
 		        </input>
 		        <xsl:if test="$isCreating != 'true'">
-		          <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveResource}" />
+		          <input type="submit" name="remove" value="{$bwStr-ModRes-RemoveResource}"/>
 		          <span> - OR - </span>
-		          <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}" />
+		          <input type="submit" name="cancel" value="{$bwStr-ModRes-BackToList}"/>
 		        </xsl:if>
 		      </form>
 		    </div>
@@ -382,17 +371,16 @@
     </xsl:choose>
   </xsl:template>
 
-
   <!-- Confirmation of resource deletion -->
   <xsl:template name="deleteResourceConfirm">
-    <xsl:variable name="global" select="/bedework/currentResource/class = 'global'" />
+    <xsl:variable name="global" select="/bedework/currentResource/class = 'global'"/>
     <xsl:variable name="remove-link">
       <xsl:choose>
         <xsl:when test="$global = 'true'">
-          <xsl:copy-of select="$global-resources-remove" />
+          <xsl:copy-of select="$global-resources-remove"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:copy-of select="$calsuite-resources-remove" />
+          <xsl:copy-of select="$calsuite-resources-remove"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -412,17 +400,17 @@
     <p><xsl:copy-of select="$bwStr-DelRes-Continue"/></p>
 
     <form name="removeResource" action="{$remove-link}" method="post">
-      <input type="hidden" name="name" value="{/bedework/currentResource/name}" />
-      <input type="hidden" name="class" value="{/bedework/currentResource/class}" />
+      <input type="hidden" name="name" value="{/bedework/currentResource/name}"/>
+      <input type="hidden" name="class" value="{/bedework/currentResource/class}"/>
       <input type="submit" name="delete" value="{$bwStr-DelRes-YesRemoveView}"/>
       <input type="submit" name="cancelled" value="{$bwStr-DelRes-Cancel}"/>
     </form>
   </xsl:template>
-  
+
   <xsl:template match="featuredEvents">
     <div id="featuredEventsForm">
-    
-	    <fieldset> 
+
+	    <fieldset>
 	      <div class="formData">
 	        <div class="controlBox">
 	          <xsl:value-of select="$bwStr-ModRes-FeaturedEvents"/><br/>
@@ -430,7 +418,7 @@
 	            <xsl:if test="featuresOn = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
 	          <label for="enabledOn"><xsl:value-of select="$bwStr-ModRes-FeEnabled"/></label><br/>
-	          
+
 	          <input type="radio" name="enabled" id="enabledOff" value="false">
 	            <xsl:if test="featuresOn = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
@@ -442,13 +430,13 @@
 	            <xsl:if test="singleMode = 'false'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
 	          <label for="singleModeOff"><xsl:value-of select="$bwStr-ModRes-FeTriptychMode"/></label><br/>
-	
+
 	          <input type="radio" name="singleMode" id="singleModeOn" value="true">
 	            <xsl:if test="singleMode = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	          </input>
 	          <label for="singleModeOn"><xsl:value-of select="$bwStr-ModRes-FeSingleMode"/></label>
 	        </div>
-	        
+
 	        <h3>
             <xsl:if test="featuresOn = 'true' and singleMode = 'false'">
               <xsl:attribute name="class">active</xsl:attribute>
@@ -485,8 +473,8 @@
 		            </input>
 		          </div>
 		        </div>
-	        </xsl:for-each> 
-	               
+	        </xsl:for-each>
+
 	        <h3>
             <xsl:if test="featuresOn = 'true' and singleMode = 'true'">
               <xsl:attribute name="class">active</xsl:attribute>
@@ -521,7 +509,7 @@
 	            </input>
 	          </div>
 	        </div>
-	
+
 	        <h3>
 	          <xsl:if test="featuresOn = 'false'">
 		          <xsl:attribute name="class">active</xsl:attribute>
@@ -550,9 +538,9 @@
 		          </div>
 		        </div>
 	        </xsl:for-each>
-	
+
 	      </div>
 	    </fieldset>
 	  </div>
-  </xsl:template>  
+  </xsl:template>
 </xsl:stylesheet>

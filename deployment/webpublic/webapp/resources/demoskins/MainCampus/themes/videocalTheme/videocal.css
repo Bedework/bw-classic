@@ -27,7 +27,7 @@ body {
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: #eee;
-  background : #116 url("calBackground1.jpg") no-repeat;
+  background : #116 url("calBackground1.jpg") top center no-repeat;
 }
 h1 {
   font-size: 38px; /* 38 was optimal */

@@ -503,15 +503,17 @@
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Type"/></th>
           <td>
-            <!-- "calendarCollection" value is true for calendars, false for folders. 
-                 It is changed when a typeSwitch is clicked. Our default is for calendars. -->
-            <input type="hidden" value="true" name="calendarCollection" id="bwCalendarCollection"/>
-            <input type="radio" value="calendar" name="typeSwitch" id="bwCalTypeCal" checked="checked" onclick="setField('bwCalendarCollection',true);"/>
+            <!-- we will set the value of "calendarCollection on submit.
+                 Value is false only for folders, so we default it to true here.  -->
+            <input type="hidden" value="true" name="calendarCollection"/>
+            <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
+            <input type="hidden" value="calendar" name="type" id="bwCalType"/>
+            <input type="radio" value="calendar" name="typeSwitch" id="bwCalTypeCal" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/>
             <xsl:text> </xsl:text>
             <label for="bwCalTypeCal">
               <xsl:copy-of select="$bwStr-CuCa-Calendar"/>
             </label>
-            <input type="radio" value="folder" name="typeSwitch" id="bwCalTypeFolder" onclick="setField('bwCalendarCollection',false);"/>
+            <input type="radio" value="folder" name="typeSwitch" id="bwCalTypeFolder" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/>
             <xsl:text> </xsl:text>
             <label for="bwCalTypeFolder">
               <xsl:copy-of select="$bwStr-CuCa-Folder"/>

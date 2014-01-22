@@ -6,15 +6,15 @@
    Version 2.0 (the "License"); you may not use this file
    except in compliance with the License. You may obtain a
    copy of the License at:
-  
+
    http://www.apache.org/licenses/LICENSE-2.0
-  
+
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on
    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
    KIND, either express or implied. See the License for the
    specific language governing permissions and limitations
-   under the License.  
+   under the License.
 */
 
 /* NOTE: this file is different between Bedework web applications and is
@@ -26,7 +26,13 @@
 var timezoneUrl = "/tzsvr/?names";
 var carddavUrl = "/ucarddav/find";
 
-var debug = false; // very basic debugging for now
+/* javascript debugging switch for Bedework Admin Client.  When true,
+ debugging statements will be placed in console.log. If no console is
+ available, force debugging off so we don't do any debug processing at all. */
+var bwJsDebug = true;
+if (!window.console) {
+  bwJsDebug = false;
+}
 
 /* COMMON and GENERAL FUNCTIONS */
 
@@ -180,14 +186,14 @@ function setCalendarAlias(formObj) {
     alert("The subscription form is not available.");
     return false;
   }
-  
+
   // check first to make sure we have a valid calendar system name:
   if (validateCalName(formObj['calendar.name'])) {
-    
+
     // set the aliasUri to an empty string.  Only set it if user
     // has requested a subscription.
     formObj.aliasUri.value == "";
-  
+
     if (formObj.type.value == "folder") {
       formObj.calendarCollection.value = "false";
     } else if (formObj.type.value == "subscription") {
@@ -251,32 +257,32 @@ function checkPrefCategories(formObj){
   }
 }
 // Stop user from entering invalid characters in calendar names
-// In 3.6 this will only test for & ' " and /
-// In future releases, we will go further and only allow 
+// As of 3.6 this will only test for & ' " and /
+// In future releases, we will go further and only allow
 // alphanumerics and dashes and underscores.
 function validateCalName(nameObj) {
-  if(nameObj.value.indexOf("'") == -1 && 
+  if(nameObj.value.indexOf("'") == -1 &&
      nameObj.value.indexOf('"') == -1 &&
-     nameObj.value.indexOf("&") == -1 && 
+     nameObj.value.indexOf("&") == -1 &&
      nameObj.value.indexOf("/") == -1) {
     return true;
   } else { // we have bad characters
     var badChars = "";
     if(nameObj.value.indexOf("'") != -1) {
-      badChars += " ' "; 
+      badChars += " ' ";
     }
     if(nameObj.value.indexOf('"') != -1) {
-      badChars += ' \" '; 
+      badChars += ' \" ';
     }
     if(nameObj.value.indexOf("&") != -1) {
-      badChars += " & "; 
+      badChars += " & ";
     }
     if(nameObj.value.indexOf("/") != -1) {
-      badChars += " / "; 
+      badChars += " / ";
     }
     alert("System Names may not include the following characters: " + badChars);
     nameObj.focus();
-    return false; 
+    return false;
   }
 }
 // set category filters on calendar collections
@@ -301,12 +307,16 @@ function setCatFilters(formObj) {
 // set the calendar summary to the calendar name in the form if summary is empty
 function setCalSummary(val,summaryField) {
   if (summaryField.value == '') {
-    summaryField.value = val;  
+    summaryField.value = val;
   }
 }
-// setup the event list dates 
-function setListDate(formObj) {
-  $("#curListDateHolder").val("curListDate(" + formObj.start.value + ")");
-  $("#curListDaysHolder").val("curListDays(" + formObj.days.value + ")");
+// set the event list date
+function setListDate(formObj,dateString) {
+  $("#curListDateHolder").val("curListDate(" + dateString + ")");
   formObj.submit();
+}
+function setListDateToday(dateString) {
+  // note that the today button is a submit, so no need to submit it via JS
+  $("#bwListWidgetStartDate").val(dateString);
+  $("#curListDateHolder").val("curListDate(" + dateString + ")");
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,18 +18,9 @@
     under the License.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output
-     method="html"
-     indent="no"
-     media-type="text/html"
-     doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
-     doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-     standalone="yes"
-     omit-xml-declaration="yes"/>
-  <xsl:strip-space elements="*"/>
-  
+
   <!--++++ SEARCH ++++-->
-  <!-- templates: 
+  <!-- templates:
          - searchResult
          - searchResultPageNav
    -->
@@ -43,28 +34,28 @@
           </input>
           <input type="submit" name="submit" value="{$bwStr-Srch-Go}"/>
           <xsl:copy-of select="$bwStr-Srch-Limit"/>
-          
+
           <input type="radio" name="searchLimits" id="searchFromToday" value="fromToday">
             <xsl:if test="/bedework/searchResults/searchLimits = 'fromToday'">
               <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input>
           <label for="searchFromToday"><xsl:copy-of select="$bwStr-Srch-TodayForward"/></label>
-          
+
           <input type="radio" name="searchLimits" id="searchBeforeToday" value="beforeToday">
             <xsl:if test="/bedework/searchResults/searchLimits = 'beforeToday'">
               <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input>
           <label for="searchBeforeToday"><xsl:copy-of select="$bwStr-Srch-PastDates"/></label>
-          
+
           <input type="radio" name="searchLimits" id="searchNoLimits" value="none">
             <xsl:if test="/bedework/searchResults/searchLimits = 'none'">
               <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input>
           <label for="searchNoLimits"><xsl:copy-of select="$bwStr-Srch-AllDates"/></label>
-          
+
         </form>
       </div>
       <xsl:copy-of select="$bwStr-Srch-SearchResult"/>
@@ -204,5 +195,5 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  
+
 </xsl:stylesheet>
