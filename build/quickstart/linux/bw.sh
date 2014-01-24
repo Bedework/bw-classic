@@ -1099,7 +1099,10 @@ if [ "x" = "x$antHome" ]; then
 fi
 
 if [ "x" = "x$jbossHome" ]; then
-    jbossHome=`dirname "$antHome"`/jboss-5.1.0.GA
+    jbossHome=$GIT_HOME/jboss-5.1.0.GA
+    jbossHome=`cd "$jbossHome" && pwd`
+    echo "GIT_HOME=$GIT_HOME"
+    echo "jbossHome=$jbossHome"
 fi
 
 if [ "x" = "x$dsHome" ]; then

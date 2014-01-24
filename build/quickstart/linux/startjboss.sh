@@ -4,7 +4,7 @@
 # This currently needs to be executed out of the quickstart directory
 # (via a source)
 
-BASE_DIR=`pwd`/..
+BASE_DIR=`pwd`
 
 PRG="$0"
 

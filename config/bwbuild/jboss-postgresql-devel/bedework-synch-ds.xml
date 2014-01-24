@@ -12,7 +12,7 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
     <connection-url>jdbc:postgresql://localhost:5432/bwsynch3p7</connection-url>
     <driver-class>org.postgresql.Driver</driver-class>
     <user-name>bedework</user-name>
-    <password></password>
+    <password>bw</password>
         <!-- sql to call when connection is created.  Can be anything, select 1 is valid for PostgreSQL
         <new-connection-sql>select 1</new-connection-sql>
         -->
