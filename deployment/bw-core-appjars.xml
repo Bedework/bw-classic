@@ -411,7 +411,7 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="activemq-core" version="5.3.0" />
+              name="activemq-core" version="${org.bedework.activemq.version}" />
 
       <!--
       <getJar lib="${org.bedework.temp.extrajars.dir}"
@@ -433,7 +433,7 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="solr-solrj" version="4.3.0"/>
+              name="elasticsearch" version="${org.bedework.elasticsearch.version}"/>
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
@@ -448,50 +448,44 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-core" version="4.4.0"/>
-
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="lucene-misc" version="4.4.0"/>
+              name="lucene-core" version="${org.bedework.lucene.version}"/>
 
       <!-- ========================= Lucene jars for embedded =========== -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-analyzers-common" version="4.4.0"/>
+              name="lucene-analyzers-common" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-codecs" version="4.4.0"/>
+              name="lucene-codecs" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-grouping" version="4.4.0"/>
+              name="lucene-highlighter" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-highlighter" version="4.4.0"/>
+              name="lucene-join" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-join" version="4.4.0"/>
+              name="lucene-memory" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-memory" version="4.4.0"/>
+              name="lucene-queries" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-queries" version="4.4.0"/>
+              name="lucene-queryparser" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-queryparser" version="4.4.0"/>
+              name="lucene-sandbox" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-sandbox" version="4.4.0"/>
+              name="lucene-spatial" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="lucene-spatial" version="4.4.0"/>
-      <getJar lib="${org.bedework.temp.extrajars.dir}"
-              libcache="${org.bedework.libcache.dir}"
-              name="lucene-suggest" version="4.4.0"/>
+              name="lucene-suggest" version="${org.bedework.lucene.version}"/>
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="spatial4j" version="0.3"/>
+
       <!-- ========================== Web jars ============================= -->
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
