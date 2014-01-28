@@ -173,9 +173,27 @@ JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 # Put all the temp stuff inside the jboss temp
 JAVA_OPTS="$JAVA_OPTS -Djava.io.tmpdir=$JBOSS_SERVER_DIR/tmp"
 
+HAWT_OPTS="-Dhawtio.authenticationEnabled=true"
+
 export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 
-RUN_CMD="./$JBOSS_VERSION/bin/run.sh -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS $usees $testmode $LOG_THRESHOLD $LOG_LEVELS $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
+RUN_CMD="./$JBOSS_VERSION/bin/run.sh"
+RUN_CMD="$RUN_CMD -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS"
+RUN_CMD="$RUN_CMD $HAWT_OPTS"
+RUN_CMD="$RUN_CMD $usees"
+RUN_CMD="$RUN_CMD $testmode"
+RUN_CMD="$RUN_CMD $LOG_THRESHOLD $LOG_LEVELS"
+RUN_CMD="$RUN_CMD $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI"
+RUN_CMD="$RUN_CMD $BW_CONF_DIR_DEF $BW_DATA_DIR_DEF"
+
+# Specifying jboss.platform.mbeanserver makes jboss use the standard
+# platform mbean server.
+RUN_CMD="$RUN_CMD -Djboss.platform.mbeanserver"
+
+# Set up JMX for bedework
+#RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.defaultdomain=jboss"
+RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.isJboss5=true"
+RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.classloader=org.jboss.mx.classloader"
 
 echo $RUN_CMD
 

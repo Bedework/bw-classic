@@ -409,11 +409,12 @@
 
       <!-- ========================== Misc jars ============================ -->
 
+      <!--
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="activemq-core" version="${org.bedework.activemq.version}" />
+              name="activemq-core"
+              version="${org.bedework.activemq.version}" />
 
-      <!--
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="jakarta-oro" version="2.0.8"/>
@@ -437,7 +438,7 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="elasticsearch" version="0.90.3"/>
+              name="google-collections" version="1.0"/>
 
       <!-- Might be able to get rid of this if we use system xalan -->
       <getJar lib="${org.bedework.temp.extrajars.dir}"
