@@ -3,9 +3,9 @@
 <eventreg-properties xmlns="http://bedework.org/ns/"
                  type="org.bedework.eventreg.service.EventregPropertiesImpl">
   <export>false</export>
-  <schemaOutFile>@APPSERVER-DATA-DIR@/bedework/eventreg/schema.txt</schemaOutFile>
-  <dataIn>@APPSERVER-DATA-DIR@/bedework/eventreg/initdata.xml</dataIn>
-  <dataOut>@APPSERVER-DATA-DIR@/bedework/eventreg/</dataOut>
+  <schemaOutFile>@APPSERVER-DATA-DIR@/eventreg/schema.txt</schemaOutFile>
+  <dataIn>@APPSERVER-DATA-DIR@/eventreg/initdata.xml</dataIn>
+  <dataOut>@APPSERVER-DATA-DIR@/eventreg/</dataOut>
   <dataOutPrefix>eventreg</dataOutPrefix>
   <hibernateProperties>
     <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>

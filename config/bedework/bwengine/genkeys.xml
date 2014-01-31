@@ -2,6 +2,6 @@
 
 <genkeys xmlns="http://bedework.org/ns/"
                   type="org.bedework.dumprestore.DumpRestorePropertiesImpl">
-  <privKeyFileName>@APPSERVER-DATA-DIR@/bedework/privkeys</privKeyFileName>
-  <publicKeyFileName>@APPSERVER-DATA-DIR@/bedework/pubkeys</publicKeyFileName>
+  <privKeyFileName>@APPSERVER-DATA-DIR@/privkeys</privKeyFileName>
+  <publicKeyFileName>@APPSERVER-DATA-DIR@/pubkeys</publicKeyFileName>
 </genkeys>
