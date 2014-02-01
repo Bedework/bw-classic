@@ -12,6 +12,7 @@ SET PRG=%0
 SET heap=600M
 SET newsize=200M
 SET permsize=256M
+SET usees=-Dorg.bedework.core.use.es=true
 
 SET activemquri=vm://localhost
 
@@ -97,7 +98,7 @@ SET BW_CONF_DIR_DEF=-Dorg.bedework.config.pfile=%BW_CONF_DIR%\config.defs
 
 :: Elastic search home
 
-SET ES_HOME=%BW_DATA_DIR%\elasticsearch"
+SET ES_HOME=%BW_DATA_DIR%\elasticsearch
 SET JAVA_OPTS=%JAVA_OPTS% -Des.path.home=%ES_HOME%
 
 SET JAVA_OPTS=%JAVA_OPTS% -Xms%heap% -Xmx%heap%
@@ -105,9 +106,15 @@ SET JAVA_OPTS=%JAVA_OPTS% -Xms%heap% -Xmx%heap%
 SET JAVA_OPTS=%JAVA_OPTS% -XX:PermSize=%permsize% -XX:MaxPermSize=%permsize%
 
 :: Put all the temp stuff inside the jboss temp
-SET JAVA_OPTS=%JAVA_OPTS% -Djava.io.tmpdir=%JBOSS_SERVER_DIR%\tmp"
+SET JAVA_OPTS=%JAVA_OPTS% -Djava.io.tmpdir=%JBOSS_SERVER_DIR%\tmp
 
-SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat -c %JBOSS_CONFIG% %JBOSS_BIND% %JBOSS_PORTS% %LOG_THRESHOLD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI% %BW_DATA_DIR_DEF% %BW_CONF_DIR_DEF%
+SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat
+SET RUN_CMD=%RUN_CMD% -c %JBOSS_CONFIG%
+SET RUN_CMD=%RUN_CMD% %JBOSS_BIND% %JBOSS_PORTS%
+SET RUN_CMD=%RUN_CMD% %usees%
+SET RUN_CMD=%RUN_CMD% %LOG_THRESHOLD%
+SET RUN_CMD=%RUN_CMD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI%
+SET RUN_CMD=%RUN_CMD% %BW_DATA_DIR_DEF% %BW_CONF_DIR_DEF%
 
 ECHO.
 ECHO Starting Bedework JBoss:

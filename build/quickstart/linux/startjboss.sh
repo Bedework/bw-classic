@@ -43,7 +43,7 @@ usage() {
 heap="600M"
 newsize="200M"
 permsize="256M"
-usees=""
+usees="-Dorg.bedework.core.use.es=true"
 testmode=""
 
 portoffset=0
@@ -85,10 +85,6 @@ do
       shift
       JBOSS_VERSION="$1"
       shift
-      ;;
-    -usees)
-      shift
-      usees="-Dorg.bedework.core.use.es=true"
       ;;
     -testmode)
       shift
