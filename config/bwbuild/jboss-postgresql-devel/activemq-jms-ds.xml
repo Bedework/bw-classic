@@ -3,7 +3,7 @@
 <!DOCTYPE connection-factories
     PUBLIC "-//JBoss//DTD JBOSS JCA Config 1.5//EN"
     "http://www.jboss.org/j2ee/dtd/jboss-ds_1_5.dtd">
-    
+
 <!-- Bedework:
   For the quickstart this file is copied out of the configuration
   directory into the activemq configuration directory.
@@ -18,13 +18,13 @@
       <jndi-name>jms/BedeworkConnectionFactory</jndi-name>
       <xa-transaction/>
       <track-connection-by-tx/>
-      <rar-name>activemq-rar-5.3.0.rar</rar-name>
+      <rar-name>activemq-rar-5.9.0.rar</rar-name>
       <connection-definition>javax.jms.QueueConnectionFactory</connection-definition>
 
       <ServerUrl>failover:(${org.bedework.activemq.uri})?timeout=3000</ServerUrl>
-      <!-- 
+      <!--
       <ServerUrl>failover:(tcp://localhost:61616)?timeout=3000</ServerUrl>
-      -->      
+      -->
       <!--
       <UserName>sa</UserName>
       <Password></Password>
@@ -39,7 +39,7 @@
       <jndi-name>activemq/QueueConnectionFactory</jndi-name>
       <xa-transaction/>
       <track-connection-by-tx/>
-      <rar-name>activemq-rar-5.3.0.rar</rar-name>
+      <rar-name>activemq-rar-5.9.0.rar</rar-name>
       <connection-definition>javax.jms.QueueConnectionFactory</connection-definition>
 
       <ServerUrl>failover:(${org.bedework.activemq.uri})?timeout=3000</ServerUrl>
@@ -57,7 +57,7 @@
       <jndi-name>activemq/TopicConnectionFactory</jndi-name>
       <xa-transaction/>
       <track-connection-by-tx/>
-      <rar-name>activemq-rar-5.3.0.rar</rar-name>
+      <rar-name>activemq-rar-5.9.0.rar</rar-name>
       <connection-definition>javax.jms.TopicConnectionFactory</connection-definition>
 
       <ServerUrl>failover:(${org.bedework.activemq.uri})?timeout=3000</ServerUrl>
@@ -72,10 +72,10 @@
    </tx-connection-factory>
 
    <!-- Bedework system events queue -->
-   <mbean code="org.jboss.resource.deployment.AdminObject" 
+   <mbean code="org.jboss.resource.deployment.AdminObject"
           name="activemq.queue:name=sysevents">
       <attribute name="JNDIName">activemq/queue/sysevents</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>
       <attribute name="Properties">PhysicalName=bedework.sysevents</attribute>
    </mbean>
@@ -83,7 +83,7 @@
    <!-- Bedework system events log queue -->
    <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.queue:name=syseventslog">
       <attribute name="JNDIName">activemq/queue/syseventslog</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>
       <attribute name="Properties">PhysicalName=bedework.sysevents.logger</attribute>
    </mbean>
@@ -91,7 +91,7 @@
    <!-- Bedework system monitor queue -->
    <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.queue:name=monitor">
       <attribute name="JNDIName">activemq/queue/monitor</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>
       <attribute name="Properties">PhysicalName=bedework.sysevents.monitor</attribute>
    </mbean>
@@ -99,7 +99,7 @@
    <!-- Bedework index crawler notifications queue -->
    <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.queue:name=crawler">
       <attribute name="JNDIName">activemq/queue/crawler</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>
       <attribute name="Properties">PhysicalName=bedework.crawler</attribute>
    </mbean>
@@ -107,33 +107,33 @@
    <!-- Bedework inbox processing queue -->
    <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.queue:name=schedulerIn">
       <attribute name="JNDIName">activemq/queue/schedulerIn</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>
       <attribute name="Properties">PhysicalName=bedework.scheduleIn</attribute>
    </mbean>
 
    <!-- Bedework change processing queue -->
-   <mbean code="org.jboss.resource.deployment.AdminObject" 
+   <mbean code="org.jboss.resource.deployment.AdminObject"
           name="activemq.queue:name=changes">
       <attribute name="JNDIName">activemq/queue/changes</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>
       <attribute name="Properties">PhysicalName=bedework.sysevents.changes</attribute>
    </mbean>
 
    <!-- Bedework outbox processing queue -->
-   <mbean code="org.jboss.resource.deployment.AdminObject" 
+   <mbean code="org.jboss.resource.deployment.AdminObject"
           name="activemq.queue:name=schedulerOut">
       <attribute name="JNDIName">activemq/queue/schedulerOut</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Queue</attribute>
       <attribute name="Properties">PhysicalName=bedework.scheduleOut</attribute>
    </mbean>
-   
+
 <!-- A topic example
    <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.topic:name=inboundTopic">
       <attribute name="JNDIName">activemq/topic/inbound</attribute>
-      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.3.0.rar'</depends>
+      <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
       <attribute name="Type">javax.jms.Topic</attribute>
       <attribute name="Properties">PhysicalName=topic.inbound</attribute>
    </mbean>

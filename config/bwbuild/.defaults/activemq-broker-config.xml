@@ -168,12 +168,9 @@
 
     <!-- This allows the activemq domain to appear in the jboss jmx-console -->
     <managementContext>
-      <managementContext>
-          <MBeanServer>
-              <bean class="org.jboss.mx.util.MBeanServerLocator"
-                    factory-method="locateJBoss" xmlns=""/>
-          </MBeanServer>
-      </managementContext>
+      <!-- use appserver provided context instead of creating one,
+           for jboss use: -Djboss.platform.mbeanserver -->
+      <managementContext createConnector="false"/>
     </managementContext>
 
     <!-- The store and forward broker networks ActiveMQ will listen to -->
