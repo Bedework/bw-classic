@@ -43,8 +43,8 @@ usage() {
 heap="600M"
 newsize="200M"
 permsize="256M"
-usees="-Dorg.bedework.core.use.es=true"
 testmode=""
+profiler=""
 
 portoffset=0
 
@@ -85,6 +85,10 @@ do
       shift
       JBOSS_VERSION="$1"
       shift
+      ;;
+    -profile)
+      shift
+      profiler="-agentlib:yjpagent"
       ;;
     -testmode)
       shift
@@ -168,6 +172,7 @@ JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
 
 # Put all the temp stuff inside the jboss temp
 JAVA_OPTS="$JAVA_OPTS -Djava.io.tmpdir=$JBOSS_SERVER_DIR/tmp"
+JAVA_OPTS="$JAVA_OPTS $profiler"
 
 HAWT_OPTS="-Dhawtio.authenticationEnabled=true"
 
@@ -176,7 +181,6 @@ export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
 RUN_CMD="./$JBOSS_VERSION/bin/run.sh"
 RUN_CMD="$RUN_CMD -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS"
 RUN_CMD="$RUN_CMD $HAWT_OPTS"
-RUN_CMD="$RUN_CMD $usees"
 RUN_CMD="$RUN_CMD $testmode"
 RUN_CMD="$RUN_CMD $LOG_THRESHOLD $LOG_LEVELS"
 RUN_CMD="$RUN_CMD $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI"

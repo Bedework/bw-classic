@@ -12,7 +12,8 @@ SET PRG=%0
 SET heap=600M
 SET newsize=200M
 SET permsize=256M
-SET usees=-Dorg.bedework.core.use.es=true
+SET testmode=
+SET profiler=
 
 SET activemquri=vm://localhost
 
@@ -42,6 +43,16 @@ GOTO branch
   SHIFT
   SET portoffset=%1
   SHIFT
+  GOTO branch
+
+:profile
+  SHIFT
+  SET profiler=-agentlib:yjpagent
+  GOTO branch
+
+ :testmode
+  SHIFT
+  SET testmode=-Dorg.bedework.testmode=true
   GOTO branch
 
 :activemquri
@@ -107,6 +118,7 @@ SET JAVA_OPTS=%JAVA_OPTS% -XX:PermSize=%permsize% -XX:MaxPermSize=%permsize%
 
 :: Put all the temp stuff inside the jboss temp
 SET JAVA_OPTS=%JAVA_OPTS% -Djava.io.tmpdir=%JBOSS_SERVER_DIR%\tmp
+SET JAVA_OPTS=%JAVA_OPTS% %profiler%
 
 SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat
 SET RUN_CMD=%RUN_CMD% -c %JBOSS_CONFIG%
@@ -135,6 +147,8 @@ IF "%1" == "-heap" GOTO heap
 IF "%1" == "-newsize" GOTO newsize
 IF "%1" == "-permsize" GOTO permsize
 IF "%1" == "-portoffset" GOTO portoffset
+IF "%1" == "-profile" GOTO profile
+IF "%1" == "-testmode" GOTO testmode
 IF "%1" == "-activemquri" GOTO activemquri
 GOTO doneWithArgs
 
