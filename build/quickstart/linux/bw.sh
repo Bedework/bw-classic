@@ -36,7 +36,7 @@ mvn_binary="mvn3";
 updateSvnProjects="bedenote"
 updateSvnProjects="$updateSvnProjects  bedework"
 updateSvnProjects="$updateSvnProjects  bwdeployutil"
-updateSvnProjects="$updateSvnProjects  cachedfeeder"
+#updateSvnProjects="$updateSvnProjects  cachedfeeder"
 # updateProjects="$updateProjects  genkeys"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
@@ -64,6 +64,7 @@ updateProjects="$updateProjects  bw-calendar-engine"
 updateProjects="$updateProjects  bw-carddav"
 updateProjects="$updateProjects  bw-classic"
 updateProjects="$updateProjects  bw-event-registration"
+updateProjects="$updateProjects  bw-notifier"
 updateProjects="$updateProjects  bw-self-registration"
 updateProjects="$updateProjects  bw-synch"
 updateProjects="$updateProjects  bw-timezone-server"
@@ -78,6 +79,7 @@ bw_calengine=
 bw_carddav=
 bw_classic=
 bw_eventreg=
+bw_notifier=
 bw_selfreg=
 bw_synch=
 bw_tzsvr=
@@ -476,6 +478,14 @@ setDirectory() {
 	  return
 	fi
 
+	if [ "$bw_notifier" != "" ] ; then
+      echo "Build notifier"
+      cd $GIT_HOME/bw-notifier
+      maven=yes
+      bw_notifier=
+	  return
+	fi
+
 	if [ "$bw_selfreg" != "" ] ; then
       echo "Build selfreg"
       cd $GIT_HOME/bw-self-registration
@@ -844,8 +854,8 @@ do
       pkgdefault=
       shift
       ;;
-  deployConf)
-    deployConf="yes"
+    deployConf)
+      deployConf="yes"
       pkgdefault=
       shift
       ;;
@@ -854,7 +864,7 @@ do
       pkgdefault=
       shift
       ;;
-  deployEs)
+    deployEs)
 	  deployEs="yes"
       pkgdefault=
       shift
@@ -920,6 +930,15 @@ do
       bw_webdav="yes"
 
       bw_access="yes"
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
+    -notifier)
+      bw_notifier="yes"
+
+      bw_access="yes"
+      bw_ws="yes"
       bw_util="yes"
       pkgdefault=
       shift

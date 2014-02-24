@@ -27,6 +27,9 @@ org.bedework.hosts.confuri=hosts
 #         io conf dir
 org.bedework.io.confuri=io
 
+#         notify conf dir
+org.bedework.notify.confuri=notify
+
 #         selfreg conf dir
 org.bedework.selfreg.confuri=selfreg
 
