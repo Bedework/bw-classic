@@ -7,7 +7,7 @@
   <defaultAttachmentsName>Attachments</defaultAttachmentsName>
   <defaultNotificationsName>Notifications</defaultNotificationsName>
   <defaultReferencesName>References</defaultReferencesName>
-  <globalResourcesPath>/Resources/</globalResourcesPath>
+  <globalResourcesPath>/public/Resources/</globalResourcesPath>
   <groupPrincipalRoot>/principals/groups/</groupPrincipalRoot>
   <hostPrincipalRoot>/principals/hosts/</hostPrincipalRoot>
   <indexRoot>lucene/indexroot</indexRoot>
