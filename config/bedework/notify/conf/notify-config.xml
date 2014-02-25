@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<note-confinfo xmlns="http://bedework.org/ns/"
+                type="org.bedework.notifier.conf.NotifyConfig">
+  <callbackURI>http://localhost:8080/notify/</callbackURI>
+  <missingTargetRetries>10</missingTargetRetries>
+  <name>note-config</name>
+  <privKeys>/home/douglm/bedeworkqs/quickstart/bedework/../jboss-5.1.0.GA/server/default/data/bedework/privkeys</privKeys>
+  <pubKeys>/home/douglm/bedeworkqs/quickstart/bedework/../jboss-5.1.0.GA/server/default/data/bedework/pubkeys</pubKeys>
+  <notelingPoolSize>20</notelingPoolSize>
+  <notelingPoolTimeout>5000</notelingPoolTimeout>
+  <timezonesURI>http://localhost:8080/tzsvr</timezonesURI>
+</note-confinfo>
