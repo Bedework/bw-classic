@@ -18,8 +18,14 @@ SET profiler=
 SET activemquri=vm://localhost
 
 SET portoffset=0
+SET LOG_THRESHOLD=-Djboss.server.log.threshold=INFO
 
 GOTO branch
+
+:debug
+  SHIFT
+  SET LOG_THRESHOLD=-Djboss.server.log.threshold=DEBUG
+  GOTO branch
 
 :heap
   SHIFT
@@ -122,11 +128,20 @@ SET JAVA_OPTS=%JAVA_OPTS% %profiler%
 
 SET RUN_CMD=.\%JBOSS_VERSION%\bin\run.bat
 SET RUN_CMD=%RUN_CMD% -c %JBOSS_CONFIG%
+
 SET RUN_CMD=%RUN_CMD% %JBOSS_BIND% %JBOSS_PORTS%
-SET RUN_CMD=%RUN_CMD% %usees%
 SET RUN_CMD=%RUN_CMD% %LOG_THRESHOLD%
 SET RUN_CMD=%RUN_CMD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI%
 SET RUN_CMD=%RUN_CMD% %BW_DATA_DIR_DEF% %BW_CONF_DIR_DEF%
+
+:: Specifying jboss.platform.mbeanserver makes jboss use the standard
+:: platform mbean server.
+SET RUN_CMD=%RUN_CMD% -Djboss.platform.mbeanserver
+
+:: Set up JMX for bedework
+:: RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.defaultdomain=jboss"
+SET RUN_CMD=%RUN_CMD% -Dorg.bedework.jmx.isJboss5=true
+SET RUN_CMD=%RUN_CMD% -Dorg.bedework.jmx.classloader=org.jboss.mx.classloader
 
 ECHO.
 ECHO Starting Bedework JBoss:
@@ -143,6 +158,7 @@ GOTO:EOF
 :: (otherwise, we could just "GOTO %1")
 :branch
 IF "%1" == "-usage" GOTO usage
+IF "%1" == "-debug" GOTO debug
 IF "%1" == "-heap" GOTO heap
 IF "%1" == "-newsize" GOTO newsize
 IF "%1" == "-permsize" GOTO permsize
