@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- See http://www.jboss.org/community/wiki/Multiple1PC for information about local-tx-datasource -->
+<!-- $Id: mysql-ds.xml 88948 2009-05-15 14:09:08Z jesper.pedersen $ -->
+<!--  Datasource config for MySQL using 3.0.9 available from:
+http://www.mysql.com/downloads/api-jdbc-stable.html
+-->
+
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>EventregDS</jndi-name>
+    <connection-url>jdbc:mysql://127.0.0.1:3306/bweventreg3p7</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <user-name>[[[yourDbUserNameHere]]]</user-name>
+    <password>[[[yourDbPasswordHere]]]</password>
+    <min-pool-size>5</min-pool-size>
+    <max-pool-size>100</max-pool-size>
+    <blocking-timeout-millis>5000</blocking-timeout-millis>
+    <idle-timeout-minutes>15</idle-timeout-minutes>
+    <metadata>
+      <type-mapping>mySQL</type-mapping>
+    </metadata>
+  </local-tx-datasource>
+</datasources>
+
