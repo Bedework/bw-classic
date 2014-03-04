@@ -483,6 +483,7 @@ setDirectory() {
       cd $GIT_HOME/bw-notifier
       maven=yes
       bw_notifier=
+      deploy="$GIT_HOME/bw-notifier/bw-note-ear/target/bw-notify*ear"
 	  return
 	fi
 
