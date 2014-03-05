@@ -5,9 +5,9 @@
 Network Working Group                                       E. York, Ed.
 Internet-Draft                                             C. Daboo, Ed.
 Intended status: Standards Track                              Apple Inc.
-Expires: February 28, 2014                              M. Douglass, Ed.
+Expires: September 5, 2014                              M. Douglass, Ed.
                                                                      RPI
-                                                         August 27, 2013
+                                                           March 4, 2014
 
 
           VPOLL: Consensus Scheduling Component for iCalendar
@@ -34,11 +34,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 28, 2014.
+   This Internet-Draft will expire on September 5, 2014.
 
 Copyright Notice
 
-   Copyright (c) 2013 IETF Trust and the persons identified as the
+   Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-York, et al.            Expires February 28, 2014               [Page 1]
+York, et al.            Expires September 5, 2014               [Page 1]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
 Table of Contents
@@ -71,7 +71,7 @@ Table of Contents
    4.  iCalendar Extensions  . . . . . . . . . . . . . . . . . . . .  10
      4.1.  Updated Property Parameters . . . . . . . . . . . . . . .  10
        4.1.1.  Updated Relation Type Value . . . . . . . . . . . . .  10
-       4.1.2.  Updated Status Value  . . . . . . . . . . . . . . . .  10
+       4.1.2.  Updated Status Value  . . . . . . . . . . . . . . . .  11
      4.2.  New Property Parameters . . . . . . . . . . . . . . . . .  11
        4.2.1.  Public-Comment  . . . . . . . . . . . . . . . . . . .  11
        4.2.2.  Response  . . . . . . . . . . . . . . . . . . . . . .  11
@@ -80,19 +80,19 @@ Table of Contents
        4.3.1.  Accept-Response . . . . . . . . . . . . . . . . . . .  12
        4.3.2.  Poll-Item-Id  . . . . . . . . . . . . . . . . . . . .  13
        4.3.3.  Poll-Mode . . . . . . . . . . . . . . . . . . . . . .  14
-       4.3.4.  Poll-properties . . . . . . . . . . . . . . . . . . .  14
+       4.3.4.  Poll-properties . . . . . . . . . . . . . . . . . . .  15
        4.3.5.  Poll-Winner . . . . . . . . . . . . . . . . . . . . .  15
        4.3.6.  Voter . . . . . . . . . . . . . . . . . . . . . . . .  16
      4.4.  VPOLL Component . . . . . . . . . . . . . . . . . . . . .  17
    5.  Poll Modes  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      5.1.  POLL-MODE:BASIC . . . . . . . . . . . . . . . . . . . . .  20
-       5.1.1.  Property restrictions . . . . . . . . . . . . . . . .  21
+       5.1.1.  Property restrictions . . . . . . . . . . . . . . . .  20
        5.1.2.  Outcome reporting . . . . . . . . . . . . . . . . . .  21
    6.  iTip Extensions . . . . . . . . . . . . . . . . . . . . . . .  21
      6.1.  Methods . . . . . . . . . . . . . . . . . . . . . . . . .  21
-     6.2.  Interoperability Models . . . . . . . . . . . . . . . . .  22
-       6.2.1.  Delegation  . . . . . . . . . . . . . . . . . . . . .  22
-       6.2.2.  Acting on Behalf of Other Calendar Users  . . . . . .  22
+     6.2.  Interoperability Models . . . . . . . . . . . . . . . . .  23
+       6.2.1.  Delegation  . . . . . . . . . . . . . . . . . . . . .  23
+       6.2.2.  Acting on Behalf of Other Calendar Users  . . . . . .  23
        6.2.3.  Component Revisions . . . . . . . . . . . . . . . . .  23
        6.2.4.  Message Sequencing  . . . . . . . . . . . . . . . . .  23
      6.3.  Application Protocol Elements . . . . . . . . . . . . . .  23
@@ -104,44 +104,44 @@ Table of Contents
            6.3.1.2.3.  Confirmation of a Poll  . . . . . . . . . . .  30
            6.3.1.2.4.  Closing a Poll  . . . . . . . . . . . . . . .  30
            6.3.1.2.5.  Delegating a POll to Another CU . . . . . . .  30
-           6.3.1.2.6.  Changing the Organizer  . . . . . . . . . . .  30
+           6.3.1.2.6.  Changing the Organizer  . . . . . . . . . . .  31
            6.3.1.2.7.  Sending on Behalf of the Organizer  . . . . .  31
 
 
 
-York, et al.            Expires February 28, 2014               [Page 2]
+York, et al.            Expires September 5, 2014               [Page 2]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
            6.3.1.2.8.  Forwarding to an Uninvited CU . . . . . . . .  31
-           6.3.1.2.9.  Updating Voter Status . . . . . . . . . . . .  31
+           6.3.1.2.9.  Updating Voter Status . . . . . . . . . . . .  32
          6.3.1.3.  REPLY . . . . . . . . . . . . . . . . . . . . . .  32
          6.3.1.4.  CANCEL  . . . . . . . . . . . . . . . . . . . . .  34
          6.3.1.5.  REFRESH . . . . . . . . . . . . . . . . . . . . .  36
          6.3.1.6.  POLLSTATUS  . . . . . . . . . . . . . . . . . . .  38
-   7.  CalDAV Extensions . . . . . . . . . . . . . . . . . . . . . .  40
+   7.  CalDAV Extensions . . . . . . . . . . . . . . . . . . . . . .  39
      7.1.  Calendar Collection Properties  . . . . . . . . . . . . .  40
        7.1.1.  CALDAV:supported-vpoll-component-sets . . . . . . . .  40
        7.1.2.  CALDAV:vpoll-max-items  . . . . . . . . . . . . . . .  41
        7.1.3.  CALDAV:vpoll-max-active . . . . . . . . . . . . . . .  42
        7.1.4.  CALDAV:vpoll-max-voters . . . . . . . . . . . . . . .  43
-       7.1.5.  CalDAV:even-more-properties . . . . . . . . . . . . .  44
+       7.1.5.  CalDAV:even-more-properties . . . . . . . . . . . . .  43
      7.2.  Additional Preconditions for PUT, COPY, and MOVE  . . . .  44
      7.3.  CalDAV:calendar-query Report  . . . . . . . . . . . . . .  44
-       7.3.1.  Example: Partial Retrieval of VPOLL . . . . . . . . .  45
+       7.3.1.  Example: Partial Retrieval of VPOLL . . . . . . . . .  44
      7.4.  CalDAV time ranges  . . . . . . . . . . . . . . . . . . .  47
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  48
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  48
-     9.1.  Parameter Registrations . . . . . . . . . . . . . . . . .  48
-     9.2.  Property Registrations  . . . . . . . . . . . . . . . . .  48
+     9.1.  Parameter Registrations . . . . . . . . . . . . . . . . .  49
+     9.2.  Property Registrations  . . . . . . . . . . . . . . . . .  49
      9.3.  POLL-MODE Registration Template . . . . . . . . . . . . .  49
      9.4.  POLL-MODE Registrations . . . . . . . . . . . . . . . . .  49
-   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  49
-   11. Normative References  . . . . . . . . . . . . . . . . . . . .  49
-   Appendix A.  Open issues  . . . . . . . . . . . . . . . . . . . .  50
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  50
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .  50
+   Appendix A.  Open issues  . . . . . . . . . . . . . . . . . . . .  51
    Appendix B.  Change log . . . . . . . . . . . . . . . . . . . . .  52
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  52
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  53
 
 1.  Introduction
 
@@ -165,9 +165,9 @@ Internet-Draft                    VPOLL                      August 2013
 
 
 
-York, et al.            Expires February 28, 2014               [Page 3]
+York, et al.            Expires September 5, 2014               [Page 3]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
    Online services have appeared as a result and these allow
@@ -221,9 +221,9 @@ Internet-Draft                    VPOLL                      August 2013
 
 
 
-York, et al.            Expires February 28, 2014               [Page 4]
+York, et al.            Expires September 5, 2014               [Page 4]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
    VPOLL object is used to inform voters of the state of a simple vote
@@ -277,37 +277,36 @@ Internet-Draft                    VPOLL                      August 2013
 
 
 
-York, et al.            Expires February 28, 2014               [Page 5]
+York, et al.            Expires September 5, 2014               [Page 5]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
    Putting that together we can construct an example VPOLL with 3 voters
    and 3 alternative meetings:
 
-       BEGIN:VCALENDAR
-       VERSION:2.0
-       PRODID:-//Example//Example
-       METHOD:REQUEST
-       BEGIN:VPOLL
-       POLL-MODE:BASIC
-       POLL-PROPERTIES:DTSTART,LOCATION
-       ORGANIZER:mailto:mike@example.com
-       UID:sched01-1234567890
-       DTSTAMP:20120101T000000Z
-       SUMMARY:What to do this week
-       DTEND:20120101T000000Z
-       VOTER:mailto:cyrus@exmaple.com
-       VOTER:mailto:eric@example.com
-       BEGIN:VEVENT.......(with a poll-item-id=1)
-       END:VEVENT
-       BEGIN:VEVENT.......(with a poll-item-id=2)
-       END:VEVENT
-       BEGIN:VEVENT.......(with a poll-item-id=3)
-       END:VEVENT
-       END:VPOLL
-       END:VCALENDAR
-
+          BEGIN:VCALENDAR
+          VERSION:2.0
+          PRODID:-//Example//Example
+          METHOD:REQUEST
+          BEGIN:VPOLL
+          POLL-MODE:BASIC
+          POLL-PROPERTIES:DTSTART,LOCATION
+          ORGANIZER:mailto:mike@example.com
+          UID:sched01-1234567890
+          DTSTAMP:20120101T000000Z
+          SUMMARY:What to do this week
+          DTEND:20120101T000000Z
+          VOTER:mailto:cyrus@exmaple.com
+          VOTER:mailto:eric@example.com
+          BEGIN:VEVENT.......(with a poll-item-id=1)
+          END:VEVENT
+          BEGIN:VEVENT.......(with a poll-item-id=2)
+          END:VEVENT
+          BEGIN:VEVENT.......(with a poll-item-id=3)
+          END:VEVENT
+          END:VPOLL
+          END:VCALENDAR
 
    As can be seen in the example above, there is an iTip METHOD property
    with the value REQUEST.  The VPOLL object will be distributed to all
@@ -333,9 +332,10 @@ Internet-Draft                    VPOLL                      August 2013
 
 
 
-York, et al.            Expires February 28, 2014               [Page 6]
+
+York, et al.            Expires September 5, 2014               [Page 6]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
       not the preferred outcome".  These properties will be added to the
@@ -373,30 +373,42 @@ Internet-Draft                    VPOLL                      August 2013
    Putting this together we can construct an example REPLY VPOLL from
    Cyrus:
 
-       BEGIN:VCALENDAR
-       VERSION:2.0
-       PRODID:-//Example//Example
-       METHOD: REPLY
-       BEGIN:VPOLL
-       ORGANIZER:mailto:douglm@example.com
-       VOTER:mailto:cyrus@example.com
-       UID:sched01-1234567890
-       DTSTAMP:20120101T010000Z
-       SUMMARY:What to do this week
-       POLL-ITEM-ID;RESPONSE=50;PUBLIC-COMMENT=Work on iTIP:1
-       POLL-ITEM-ID;RESPONSE=100;COMMENT=Work on WebDAV:2
-       POLL-ITEM-ID;RESPONSE=0:3
 
 
 
-York, et al.            Expires February 28, 2014               [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014               [Page 7]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-       END:VPOLL
-       END:VCALENDAR
-
+          BEGIN:VCALENDAR
+          VERSION:2.0
+          PRODID:-//Example//Example
+          METHOD: REPLY
+          BEGIN:VPOLL
+          ORGANIZER:mailto:douglm@example.com
+          VOTER:mailto:cyrus@example.com
+          UID:sched01-1234567890
+          DTSTAMP:20120101T010000Z
+          SUMMARY:What to do this week
+          POLL-ITEM-ID;RESPONSE=50;PUBLIC-COMMENT=Work on iTIP:1
+          POLL-ITEM-ID;RESPONSE=100;COMMENT=Work on WebDAV:2
+          POLL-ITEM-ID;RESPONSE=0:3
+          END:VPOLL
+          END:VCALENDAR
 
 3.4.  VPOLL updates
 
@@ -413,46 +425,62 @@ Internet-Draft                    VPOLL                      August 2013
 
    An example:
 
-       BEGIN:VCALENDAR
-       VERSION:2.0
-       PRODID:-//Example//Example
-       METHOD: POLLSTATUS
-       BEGIN:VPOLL
-       ORGANIZER:mailto:douglm@example.com
-       VOTER:mailto:cyrus@example.com
-       VOTER:mailto:eric@example.com
-       UID:sched01-1234567890
-       DTSTAMP:20120101T020000Z
-       SEQUENCE:0
-       SUMMARY:What to do this week
-       BEGIN:VEVENT
-       POLL-ITEM-ID: 1
-       VOTER;RESPONSE=50;COMMENT=Work on iTIP:
-        mailto:cyrus@exmaple.com
-       VOTER;RESPONSE=100:mailto:eric@example.com
-       END:VEVENT
-       BEGIN:VEVENT
-       POLL-ITEM-ID: 2
-       VOTER;RESPONSE=100;COMMENT=Work on WebDAV:
-        mailto:cyrus@exmaple.com
-       VOTER;RESPONSE=100:mailto:eric@example.com
-       END:VEVENT
-       BEGIN:VEVENT
-       POLL-ITEM-ID: 3
-       VOTER;RESPONSE=0:mailto:cyrus@example.com
-       VOTER;RESPONSE=0:mailto:eric@example.com
-       END:VEVENT
 
 
 
-York, et al.            Expires February 28, 2014               [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014               [Page 8]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-       END:VPOLL
-       END:VCALENDAR
-
+          BEGIN:VCALENDAR
+          VERSION:2.0
+          PRODID:-//Example//Example
+          METHOD: POLLSTATUS
+          BEGIN:VPOLL
+          ORGANIZER:mailto:douglm@example.com
+          VOTER:mailto:cyrus@example.com
+          VOTER:mailto:eric@example.com
+          UID:sched01-1234567890
+          DTSTAMP:20120101T020000Z
+          SEQUENCE:0
+          SUMMARY:What to do this week
+          BEGIN:VEVENT
+          POLL-ITEM-ID: 1
+          VOTER;RESPONSE=50;COMMENT=Work on iTIP:
+           mailto:cyrus@exmaple.com
+          VOTER;RESPONSE=100:mailto:eric@example.com
+          END:VEVENT
+          BEGIN:VEVENT
+          POLL-ITEM-ID: 2
+          VOTER;RESPONSE=100;COMMENT=Work on WebDAV:
+           mailto:cyrus@exmaple.com
+          VOTER;RESPONSE=100:mailto:eric@example.com
+          END:VEVENT
+          BEGIN:VEVENT
+          POLL-ITEM-ID: 3
+          VOTER;RESPONSE=0:mailto:cyrus@example.com
+          VOTER;RESPONSE=0:mailto:eric@example.com
+          END:VEVENT
+          END:VPOLL
+          END:VCALENDAR
 
 3.5.  VPOLL Completion
 
@@ -470,41 +498,35 @@ Internet-Draft                    VPOLL                      August 2013
 
    The VPOLL confirmation example:
 
-       BEGIN:VCALENDAR
-       VERSION:2.0
-       PRODID:-//Example//Example
-       METHOD: REQUEST
-       BEGIN:VPOLL
-       ORGANIZER:mailto:douglm@example.com
-       UID:sched01-1234567890
-       DTSTAMP:20120101T030000Z
-       COMPLETED:20120101T030000Z
-       SEQUENCE:0
-       SUMMARY:What to do this week
-       STATUS:CONFIRMED
-       POLL-WINNER:3
-       BEGIN:VEVENT.......(with a poll-item-id=1)
-       END:VEVENT
-       BEGIN:VEVENT.......(with a poll-item-id=2)
-       END:VEVENT
-       BEGIN:VEVENT.......(with a poll-item-id=3)
-       END:VEVENT
-       END:VPOLL
-       END:VCALENDAR
 
 
 
-
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014               [Page 9]
+York, et al.            Expires September 5, 2014               [Page 9]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
+
+          BEGIN:VCALENDAR
+          VERSION:2.0
+          PRODID:-//Example//Example
+          METHOD: REQUEST
+          BEGIN:VPOLL
+          ORGANIZER:mailto:douglm@example.com
+          UID:sched01-1234567890
+          DTSTAMP:20120101T030000Z
+          COMPLETED:20120101T030000Z
+          SEQUENCE:0
+          SUMMARY:What to do this week
+          STATUS:CONFIRMED
+          POLL-WINNER:3
+          BEGIN:VEVENT.......(with a poll-item-id=1)
+          END:VEVENT
+          BEGIN:VEVENT.......(with a poll-item-id=2)
+          END:VEVENT
+          BEGIN:VEVENT.......(with a poll-item-id=3)
+          END:VEVENT
+          END:VPOLL
+          END:VCALENDAR
 
 4.  iCalendar Extensions
 
@@ -521,14 +543,24 @@ Internet-Draft                    VPOLL                      August 2013
 
    This property parameter is redefined by the following notation:
 
-            reltypeparam       /= "RELTYPE" "=" "POLL"
-                  ; Property value is a VPOLL uid
-
+               reltypeparam       /= "RELTYPE" "=" "POLL"
+                     ; Property value is a VPOLL uid
 
    Description:  This parameter can be specified on a property that
       references another related calendar component.  The new parameter
       value indicates gthat the associated proeprty references a VPOLL
       component which contains the current component.
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 10]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
 4.1.2.  Updated Status Value
 
@@ -539,28 +571,14 @@ Internet-Draft                    VPOLL                      August 2013
 
    This property parameter is redefined by the following notation:
 
-            statvalue /= statvalue-poll
-                    ; Status values for "VPOLL".
-            statvalue-poll = "IN-PROCESS"
-                           / "COMPLETED"  ; Poll has closed,
-                                          ; nothing has been chosen yet
-                           / "CONFIRMED"  ; Poll has closed and
-                                          ;winning items confirmed
-                           / "CANCELLED"
-
-
-
-
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 10]
-
-Internet-Draft                    VPOLL                      August 2013
-
+             statvalue /= statvalue-poll
+                     ; Status values for "VPOLL".
+             statvalue-poll = "IN-PROCESS"
+                            / "COMPLETED"  ; Poll has closed,
+                                           ; nothing has been chosen yet
+                            / "CONFIRMED"  ; Poll has closed and
+                                           ;winning items confirmed
+                            / "CANCELLED"
 
 4.2.  New Property Parameters
 
@@ -575,8 +593,7 @@ Internet-Draft                    VPOLL                      August 2013
 
    This parameter is defined by the following notation:
 
-   public-comment-param = "PUBLIC-COMMENT=" DQUOTE text DQUOTE
-
+      public-comment-param = "PUBLIC-COMMENT=" DQUOTE text DQUOTE
 
    Description:  This parameter can be specified on the POLL-ITEM-ID
       property to allow a voter to add some commentary visible to all
@@ -590,11 +607,21 @@ Internet-Draft                    VPOLL                      August 2013
 
    Format Definition:
 
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 11]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    This parameter is defined by the following notation:
 
-    responseparam = "RESPONSE=" integer
-          ; integer value 0..100
-
+       responseparam = "RESPONSE=" integer
+             ; integer value 0..100
 
    Description:  This parameter can be specified on the POLL-ITEM-ID
       property to provide the value of the voters response.  This
@@ -611,13 +638,6 @@ Internet-Draft                    VPOLL                      August 2013
 
       *  90-100 A "YES" vote.
 
-
-
-York, et al.            Expires February 28, 2014              [Page 11]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
       Clients MUST preserve the responseparam value when there is no
       change from the user even if they have a UI with fixed states
       (e.g. yes/no/maybe).
@@ -633,8 +653,7 @@ Internet-Draft                    VPOLL                      August 2013
 
    This parameter is defined by the following notation:
 
-    stayinformedparam = "STAY-INFORMED" "=" boolean
-
+       stayinformedparam = "STAY-INFORMED" "=" boolean
 
    Description:  This parameter MAY be specified on VOTER and, if the
       value is TRUE, indicates the voter wishes to be added to the final
@@ -645,6 +664,15 @@ Internet-Draft                    VPOLL                      August 2013
 4.3.1.  Accept-Response
 
    Property name:  ACCEPT-RESPONSE
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 12]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
    Purpose:  This property is used in VPOLL to indicate the types of
       component that may be supplied in a response.
@@ -665,15 +693,6 @@ Internet-Draft                    VPOLL                      August 2013
 
    Format Definition:
 
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 12]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
    This property is defined by the following notation:
 
      acceptresponse = "ACCEPT-RESPONSE" "="
@@ -681,7 +700,6 @@ Internet-Draft                    VPOLL                      August 2013
                           iana-token ("," iana-token) CRLF
 
      acceptresponseparams = *(";" other-param)
-
 
 4.3.2.  Poll-Item-Id
 
@@ -704,6 +722,14 @@ Internet-Draft                    VPOLL                      August 2013
 
       POLL-ITEM-ID SHOULD be a unique small integer for each component
       or set of components.  If it remains the same between REQUESTs
+
+
+
+York, et al.            Expires September 5, 2014              [Page 13]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
       then the previous response for that component MAY be re-used.  To
       force a re-vote on a component due to a significant change, the
       POLL-ITEM-ID MUST change.
@@ -717,19 +743,6 @@ Internet-Draft                    VPOLL                      August 2013
 
    This property is defined by the following notation:
 
-
-
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 13]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
              pollitemid = "POLL-ITEM-ID" pollitemdparams ":"
                         integer CRLF
 
@@ -739,7 +752,6 @@ Internet-Draft                    VPOLL                      August 2013
                          (";" public-comment-param) /
                          (";" other-param)
                   )
-
 
 
 4.3.3.  Poll-Mode
@@ -766,6 +778,14 @@ Internet-Draft                    VPOLL                      August 2013
 
    Format Definition:
 
+
+
+
+York, et al.            Expires September 5, 2014              [Page 14]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    This property is defined by the following notation:
 
              pollmode = "POLL-MODE" pollmodeparams ":"
@@ -774,17 +794,9 @@ Internet-Draft                    VPOLL                      August 2013
              pollmodeparams = *(";" other-param)
 
 
-
 4.3.4.  Poll-properties
 
    Property name:  POLL-PROPERTIES
-
-
-
-York, et al.            Expires February 28, 2014              [Page 14]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
    Purpose:  This property is used in VPOLL to define which icalendar
       properties are being voted on.
@@ -809,7 +821,6 @@ Internet-Draft                    VPOLL                      August 2013
              pollpropparams = *(";" other-param)
 
 
-
 4.3.5.  Poll-Winner
 
    Property name:  POLL-WINNER
@@ -824,6 +835,13 @@ Internet-Draft                    VPOLL                      August 2013
 
    Conformance:  This property MAY be specified in a VPOLL component.
 
+
+
+York, et al.            Expires September 5, 2014              [Page 15]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    Description:  For poll confirmation each child component MUST have a
       POLL-ITEM-ID property.  For basic mode the VPOLL component SHOULD
       have a POLL_WINNER property which MUST correspond to one of the
@@ -834,14 +852,6 @@ Internet-Draft                    VPOLL                      August 2013
 
    This property is defined by the following notation:
 
-
-
-
-York, et al.            Expires February 28, 2014              [Page 15]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
              pollwinner = "POLL-WINNER" pollwinnerparams ":"
                        integer CRLF
 
@@ -849,7 +859,6 @@ Internet-Draft                    VPOLL                      August 2013
 
              ; Used with a STATUS:CONFIRMED VPOLL to indicate which
              ; components have been confirmed
-
 
 
 4.3.6.  Voter
@@ -879,24 +888,17 @@ Internet-Draft                    VPOLL                      August 2013
 
    Format Definition:
 
-   This property is defined by the following notation:
 
 
 
 
 
-
-
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 16]
+York, et al.            Expires September 5, 2014              [Page 16]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
+
+   This property is defined by the following notation:
 
        voter = "VOTER" voterparams ":" cal-address CRLF
 
@@ -931,7 +933,6 @@ Internet-Draft                    VPOLL                      August 2013
                  )
 
 
-
    Note 1  RSVP=TRUE MAY be used by the organizer to force the voter to
       reset their state and re-vote.
 
@@ -944,15 +945,17 @@ Internet-Draft                    VPOLL                      August 2013
 
    Component name:  VPOLL
 
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 17]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    Purpose:  This component provides a mechanism by which voters can
       vote on provided choices.
-
-
-
-York, et al.            Expires February 28, 2014              [Page 17]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
    Format Definition:
 
@@ -1002,12 +1005,9 @@ Internet-Draft                    VPOLL                      August 2013
 
 
 
-
-
-
-York, et al.            Expires February 28, 2014              [Page 18]
+York, et al.            Expires September 5, 2014              [Page 18]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
    This property is defined by the following notation:
@@ -1061,9 +1061,9 @@ Internet-Draft                    VPOLL                      August 2013
 
 
 
-York, et al.            Expires February 28, 2014              [Page 19]
+York, et al.            Expires September 5, 2014              [Page 19]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
    Description:  This component provides a mechanism by which voters can
@@ -1109,22 +1109,18 @@ Internet-Draft                    VPOLL                      August 2013
    represented as a number of possible event objects one of which will
    be selected.
 
-
-
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 20]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
 5.1.1.  Property restrictions
 
    This poll mode has the following property requirements:
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 20]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
    POLL-ITEM-ID:  Each contained sub-component that is being voted upon
       MUST contain a POLL-ITEM_ID property which is unique within the
@@ -1156,51 +1152,68 @@ Internet-Draft                    VPOLL                      August 2013
    There are some extensions to the behavior of iTip methods for a VPOLL
    object and two new methods are defined.
 
-   +------------------+------------------------------------------------+
-   | Method           | Description                                    |
-   +------------------+------------------------------------------------+
-   | PUBLISH          | No changes (yet)                               |
-   |                  |                                                |
-   | REQUEST          | Each child component MUST have a POLL-ITEM-ID  |
-   |                  | property.  Each set of components with the     |
-   |                  | same POLL-ITEM-ID value represents one overall |
-   |                  | set of items to be voted on.                   |
-   |                  |                                                |
-   | REPLY            | There MUST be a single VPOLL component which   |
-   |                  | MUST have: either one or more POLL-ITEM-ID     |
-   |                  | properties with a RESPONSE param matching that |
-   |                  | from a REQUEST or a VFREEBUSY or VAVAILABILITY |
 
 
 
-York, et al.            Expires February 28, 2014              [Page 21]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 21]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   |                  | child component showing overall busy/available |
-   |                  | time. The VPOLL MUST have one VOTER only.      |
-   |                  |                                                |
-   | ADD              | Not supported for VPOLL.                       |
-   |                  |                                                |
-   | CANCEL           | There MUST be a single VPOLL component with    |
-   |                  | UID matching that of the poll being cancelled. |
-   |                  |                                                |
-   | REFRESH          | The organizer returns a METHOD:REQUEST with    |
-   |                  | the current full state, or a METHOD:CANCEL or  |
-   |                  | an error if no matching poll is found.         |
-   |                  |                                                |
-   | COUNTER          | Not supported for VPOLL.                       |
-   |                  |                                                |
-   | DECLINECOUNTER   | Not supported for VPOLL.                       |
-   |                  |                                                |
-   | POLLSTATUS       | Used to send the current state of the poll to  |
-   |                  | all voters. The VPOLL can contain a reduced    |
-   |                  | set of properties but MUST contain DTSTAMP,    |
-   |                  | SEQUENCE (if not 0), UID, ORGANIZER and VOTER. |
-   |                  |                                                |
-   +------------------+------------------------------------------------+
-
+   +----------------+--------------------------------------------------+
+   | Method         | Description                                      |
+   +----------------+--------------------------------------------------+
+   | PUBLISH        | No changes (yet)                                 |
+   |                |                                                  |
+   | REQUEST        | Each child component MUST have a POLL-ITEM-ID    |
+   |                | property.  Each set of components with the same  |
+   |                | POLL-ITEM-ID value represents one overall set of |
+   |                | items to be voted on.                            |
+   |                |                                                  |
+   | REPLY          | There MUST be a single VPOLL component which     |
+   |                | MUST have: either one or more POLL-ITEM-ID       |
+   |                | properties with a RESPONSE param matching that   |
+   |                | from a REQUEST or a VFREEBUSY or VAVAILABILITY   |
+   |                | child component showing overall busy/available   |
+   |                | time. The VPOLL MUST have one VOTER only.        |
+   |                |                                                  |
+   | ADD            | Not supported for VPOLL.                         |
+   |                |                                                  |
+   | CANCEL         | There MUST be a single VPOLL component with UID  |
+   |                | matching that of the poll being cancelled.       |
+   |                |                                                  |
+   | REFRESH        | The organizer returns a METHOD:REQUEST with the  |
+   |                | current full state, or a METHOD:CANCEL or an     |
+   |                | error if no matching poll is found.              |
+   |                |                                                  |
+   | COUNTER        | Not supported for VPOLL.                         |
+   |                |                                                  |
+   | DECLINECOUNTER | Not supported for VPOLL.                         |
+   |                |                                                  |
+   | POLLSTATUS     | Used to send the current state of the poll to    |
+   |                | all voters. The VPOLL can contain a reduced set  |
+   |                | of properties but MUST contain DTSTAMP, SEQUENCE |
+   |                | (if not 0), UID, ORGANIZER and VOTER.            |
+   |                |                                                  |
+   +----------------+--------------------------------------------------+
 
    The following table shows the above methods broken down by who can
    send them with VPOLL components.
@@ -1212,6 +1225,13 @@ Internet-Draft                    VPOLL                      August 2013
      |             |                                                 |
      | Voter       | REPLY, REFRESH, REQUEST (only when delegating)  |
      +-------------+-------------------------------------------------+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 22]
+
+Internet-Draft                    VPOLL                       March 2014
 
 
 6.2.  Interoperability Models
@@ -1226,13 +1246,6 @@ Internet-Draft                    VPOLL                      August 2013
 6.2.2.  Acting on Behalf of Other Calendar Users
 
    TBD
-
-
-
-York, et al.            Expires February 28, 2014              [Page 22]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
 6.2.3.  Component Revisions
 
@@ -1259,59 +1272,55 @@ Internet-Draft                    VPOLL                      August 2013
    property is required or optional, and the number of times it may
    appear in the iCalendar object.
 
-   +--------------------+----------------------------------------------+
-   | Presence Value     | Description                                  |
-   +--------------------+----------------------------------------------+
-   | 1                  | One instance MUST be present.                |
-   | 1+                 | At least one instance MUST be present.       |
-   | 0                  | Instances of this property MUST NOT be       |
-   |                    | present.                                     |
-   | 0+                 | Multiple instances MAY be present.           |
-   | 0 or 1             | Up to 1 instance of this property MAY be     |
-   |                    | present.                                     |
-   +--------------------+----------------------------------------------+
+   +-----------------+-------------------------------------------------+
+   | Presence Value  | Description                                     |
+   +-----------------+-------------------------------------------------+
+   | 1               | One instance MUST be present.                   |
+   | 1+              | At least one instance MUST be present.          |
+   | 0               | Instances of this property MUST NOT be present. |
+   | 0+              | Multiple instances MAY be present.              |
+   | 0 or 1          | Up to 1 instance of this property MAY be        |
+   |                 | present.                                        |
+   +-----------------+-------------------------------------------------+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 23]
+
+Internet-Draft                    VPOLL                       March 2014
 
 
    The following summarizes the methods that are defined for the "VPOLL"
    calendar component.
 
-   +--------------+----------------------------------------------------+
-   | Method       | Description                                        |
-   +--------------+----------------------------------------------------+
-   | PUBLISH      | Post notification of an poll. Used primarily as a  |
-   |              | method of advertising the existence of a poll.     |
-   |              |                                                    |
-   | REQUEST      | To make a request for a poll. This is an explicit  |
-
-
-
-York, et al.            Expires February 28, 2014              [Page 23]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
-   |              | invitation to one or more voters. Poll requests    |
-   |              | are also used to update, change or confirm an      |
-   |              | existing poll. Clients that cannot handle REQUEST  |
-   |              | MAY degrade the poll to view it as a PUBLISH.      |
-   |              |                                                    |
-   | REPLY        | Reply to a poll request. Voters may set their      |
-   |              | RESPONSE parameter to supply the current vote in   |
-   |              | the range 0 to 100.                                |
-   |              |                                                    |
-   | CANCEL       | Cancel a poll.                                     |
-   |              |                                                    |
-   | REFRESH      | A request is sent to an Organizer by a Voter       |
-   |              | asking for the latest version of a poll to be      |
-   |              | resent to the requester.                           |
-   |              |                                                    |
-   | POLLSTATUS   | Used to send the current state of the poll to all  |
-   |              | voters. The VPOLL can contain a reduced set of     |
-   |              | properties but MUST contain DTSTAMP, SEQUENCE (if  |
-   |              | not 0), UID, ORGANIZER and VOTER.                  |
-   |              |                                                    |
-   +--------------+----------------------------------------------------+
-
+   +------------+------------------------------------------------------+
+   | Method     | Description                                          |
+   +------------+------------------------------------------------------+
+   | PUBLISH    | Post notification of an poll. Used primarily as a    |
+   |            | method of advertising the existence of a poll.       |
+   |            |                                                      |
+   | REQUEST    | To make a request for a poll. This is an explicit    |
+   |            | invitation to one or more voters. Poll requests are  |
+   |            | also used to update, change or confirm an existing   |
+   |            | poll. Clients that cannot handle REQUEST MAY degrade |
+   |            | the poll to view it as a PUBLISH.                    |
+   |            |                                                      |
+   | REPLY      | Reply to a poll request. Voters may set their        |
+   |            | RESPONSE parameter to supply the current vote in the |
+   |            | range 0 to 100.                                      |
+   |            |                                                      |
+   | CANCEL     | Cancel a poll.                                       |
+   |            |                                                      |
+   | REFRESH    | A request is sent to an Organizer by a Voter asking  |
+   |            | for the latest version of a poll to be resent to the |
+   |            | requester.                                           |
+   |            |                                                      |
+   | POLLSTATUS | Used to send the current state of the poll to all    |
+   |            | voters. The VPOLL can contain a reduced set of       |
+   |            | properties but MUST contain DTSTAMP, SEQUENCE (if    |
+   |            | not 0), UID, ORGANIZER and VOTER.                    |
+   |            |                                                      |
+   +------------+------------------------------------------------------+
 
 6.3.1.1.  PUBLISH
 
@@ -1327,108 +1336,108 @@ Internet-Draft                    VPOLL                      August 2013
    This method type is an iCalendar object that conforms to the
    following property constraints:
 
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 24]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
              +----------------------------------------------+
              | Constraints for a METHOD:PUBLISH of a VPOLL  |
              +----------------------------------------------+
              +----------------------------------------------+
 
+   +--------------------+----------+-----------------------------------+
+   | Component/Property | Presence | Comment                           |
+   +--------------------+----------+-----------------------------------+
+   | METHOD             | 1        | MUST equal PUBLISH.               |
+   |                    |          |                                   |
+   | VPOLL              | 1+       |                                   |
+   | DTSTAMP            | 1        |                                   |
+   | DTSTART            | 1        |                                   |
+   | ORGANIZER          | 1        |                                   |
+   | SUMMARY            | 1        | Can be null.                      |
+   | UID                | 1        |                                   |
+   | SEQUENCE           | 0 or 1   | MUST be present if value is       |
+   |                    |          | greater than 0; MAY be present if |
+   |                    |          | 0.                                |
+   | ACCEPT-RESPONSE    | 0 or 1   |                                   |
+   | ATTACH             | 0+       |                                   |
+   | CATEGORIES         | 0+       |                                   |
+   | CLASS              | 0 or 1   |                                   |
+   | COMMENT            | 0+       |                                   |
+   | COMPLETED          | 0 or 1   |                                   |
+   | CONTACT            | 0 or 1   |                                   |
+   | CREATED            | 0 or 1   |                                   |
+   | DESCRIPTION        | 0 or 1   | Can be null.                      |
+   | DTEND              | 0 or 1   | If present, DURATION MUST NOT be  |
+   |                    |          | present.                          |
+   | DURATION           | 0 or 1   | If present, DTEND MUST NOT be     |
+   |                    |          | present.                          |
+   | LAST-MODIFIED      | 0 or 1   |                                   |
+   | POLL-ITEM-ID       | 0        |                                   |
+   | POLL-MODE          | 0 or 1   |                                   |
+   | POLL-PROPERTIES    | 0 or 1   |                                   |
+   | PRIORITY           | 0 or 1   |                                   |
+   | RELATED-TO         | 0+       |                                   |
+   | RESOURCES          | 0+       |                                   |
+   | STATUS             | 0 or 1   | MAY be one of                     |
+   |                    |          | COMPLETED/CONFIRMED/CANCELLED.    |
+   | URL                | 0 or 1   |                                   |
+   | IANA-PROPERTY      | 0+       |                                   |
+   | X-PROPERTY         | 0+       |                                   |
+   | VOTER              | 0        |                                   |
+   | REQUEST-STATUS     | 0        |                                   |
+   |                    |          |                                   |
+   | VALARM             | 0+       |                                   |
 
-   +--------------------+-----------+----------------------------------+
-   | Component/Property | Presence  | Comment                          |
-   +--------------------+-----------+----------------------------------+
-   | METHOD             | 1         | MUST equal PUBLISH.              |
-   |                    |           |                                  |
 
 
-
-York, et al.            Expires February 28, 2014              [Page 24]
+York, et al.            Expires September 5, 2014              [Page 25]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   | VPOLL              | 1+        |                                  |
-   | DTSTAMP            | 1         |                                  |
-   | DTSTART            | 1         |                                  |
-   | ORGANIZER          | 1         |                                  |
-   | SUMMARY            | 1         | Can be null.                     |
-   | UID                | 1         |                                  |
-   | SEQUENCE           | 0 or 1    | MUST be present if value is      |
-   |                    |           | greater than 0; MAY be present   |
-   |                    |           | if 0.                            |
-   | ACCEPT-RESPONSE    | 0 or 1    |                                  |
-   | ATTACH             | 0+        |                                  |
-   | CATEGORIES         | 0+        |                                  |
-   | CLASS              | 0 or 1    |                                  |
-   | COMMENT            | 0+        |                                  |
-   | COMPLETED          | 0 or 1    |                                  |
-   | CONTACT            | 0 or 1    |                                  |
-   | CREATED            | 0 or 1    |                                  |
-   | DESCRIPTION        | 0 or 1    | Can be null.                     |
-   | DTEND              | 0 or 1    | If present, DURATION MUST NOT be |
-   |                    |           | present.                         |
-   | DURATION           | 0 or 1    | If present, DTEND MUST NOT be    |
-   |                    |           | present.                         |
-   | LAST-MODIFIED      | 0 or 1    |                                  |
-   | POLL-ITEM-ID       | 0         |                                  |
-   | POLL-MODE          | 0 or 1    |                                  |
-   | POLL-PROPERTIES    | 0 or 1    |                                  |
-   | PRIORITY           | 0 or 1    |                                  |
-   | RELATED-TO         | 0+        |                                  |
-   | RESOURCES          | 0+        |                                  |
-   | STATUS             | 0 or 1    | MAY be one of                    |
-   |                    |           | COMPLETED/CONFIRMED/CANCELLED.   |
-   | URL                | 0 or 1    |                                  |
-   | IANA-PROPERTY      | 0+        |                                  |
-   | X-PROPERTY         | 0+        |                                  |
-   | VOTER              | 0         |                                  |
-   | REQUEST-STATUS     | 0         |                                  |
-   |                    |           |                                  |
-   | VALARM             | 0+        |                                  |
-   |                    |           |                                  |
-   | VEVENT             | 0+        | Depending upon the poll mode in  |
-   |                    |           | effect there MAY be candidate    |
-   |                    |           | components included in the poll  |
-   |                    |           | component. If voting has already |
-   |                    |           | taken place, these components    |
-   |                    |           | MUST include the VOTER property  |
-   |                    |           | to indicate each voters current  |
-   |                    |           | response.                        |
-   |                    |           |                                  |
-
-
-
-York, et al.            Expires February 28, 2014              [Page 25]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
-   | VFREEBUSY          | 0         |                                  |
-   |                    |           |                                  |
-   | VJOURNAL           | 0+        | Depending upon the poll mode in  |
-   |                    |           | effect there MAY be candidate    |
-   |                    |           | components included in the poll  |
-   |                    |           | component. If voting has already |
-   |                    |           | taken place, these components    |
-   |                    |           | MUST include the VOTER property  |
-   |                    |           | to indicate each voters current  |
-   |                    |           | response.                        |
-   |                    |           |                                  |
-   | VTODO              | 0+        | Depending upon the poll mode in  |
-   |                    |           | effect there MAY be candidate    |
-   |                    |           | components included in the poll  |
-   |                    |           | component. If voting has already |
-   |                    |           | taken place, these components    |
-   |                    |           | MUST include the VOTER property  |
-   |                    |           | to indicate each voters current  |
-   |                    |           | response.                        |
-   |                    |           |                                  |
-   | VTIMEZONE          | 0+        | MUST be present if any date/time |
-   |                    |           | refers to a timezone.            |
-   |                    |           |                                  |
-   | IANA-COMPONENT     | 0+        |                                  |
-   | X-COMPONENT        | 0+        |                                  |
-   +--------------------+-----------+----------------------------------+
-
+   |                    |          |                                   |
+   | VEVENT             | 0+       | Depending upon the poll mode in   |
+   |                    |          | effect there MAY be candidate     |
+   |                    |          | components included in the poll   |
+   |                    |          | component. If voting has already  |
+   |                    |          | taken place, these components     |
+   |                    |          | MUST include the VOTER property   |
+   |                    |          | to indicate each voters current   |
+   |                    |          | response.                         |
+   |                    |          |                                   |
+   | VFREEBUSY          | 0        |                                   |
+   |                    |          |                                   |
+   | VJOURNAL           | 0+       | Depending upon the poll mode in   |
+   |                    |          | effect there MAY be candidate     |
+   |                    |          | components included in the poll   |
+   |                    |          | component. If voting has already  |
+   |                    |          | taken place, these components     |
+   |                    |          | MUST include the VOTER property   |
+   |                    |          | to indicate each voters current   |
+   |                    |          | response.                         |
+   |                    |          |                                   |
+   | VTODO              | 0+       | Depending upon the poll mode in   |
+   |                    |          | effect there MAY be candidate     |
+   |                    |          | components included in the poll   |
+   |                    |          | component. If voting has already  |
+   |                    |          | taken place, these components     |
+   |                    |          | MUST include the VOTER property   |
+   |                    |          | to indicate each voters current   |
+   |                    |          | response.                         |
+   |                    |          |                                   |
+   | VTIMEZONE          | 0+       | MUST be present if any date/time  |
+   |                    |          | refers to a timezone.             |
+   |                    |          |                                   |
+   | IANA-COMPONENT     | 0+       |                                   |
+   | X-COMPONENT        | 0+       |                                   |
+   +--------------------+----------+-----------------------------------+
 
 6.3.1.2.  REQUEST
 
@@ -1441,6 +1450,14 @@ Internet-Draft                    VPOLL                      August 2013
 
    o  Complete or confirm the poll.
 
+
+
+
+York, et al.            Expires September 5, 2014              [Page 26]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    o  Response to a "REFRESH" request.
 
    o  Update the details of an existing vpoll.
@@ -1448,15 +1465,6 @@ Internet-Draft                    VPOLL                      August 2013
    o  Update the status of "Voters".
 
    o  Forward a "VPOLL" to another uninvited CU.
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 26]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
    o  For an existing "VPOLL" calendar component, delegate the role of
       "Voter" to another CU.
@@ -1486,106 +1494,104 @@ Internet-Draft                    VPOLL                      August 2013
              +----------------------------------------------+
              +----------------------------------------------+
 
-
-   +--------------------+-----------+----------------------------------+
-   | Component/Property | Presence  | Comment                          |
-   +--------------------+-----------+----------------------------------+
-   | METHOD             | 1         | MUST be REQUEST.                 |
-   |                    |           |                                  |
-   | VPOLL              | 1         |                                  |
-   | VOTER              | 1+        |                                  |
-   | DTSTAMP            | 1         |                                  |
-   | DTSTART            | 1         |                                  |
-   | ORGANIZER          | 1         |                                  |
-   | SEQUENCE           | 0 or 1    | MUST be present if value is      |
-   |                    |           | greater than 0; MAY be present   |
-   |                    |           | if 0.                            |
-   | SUMMARY            | 1         | Can be null.                     |
-   | UID                | 1         |                                  |
-   | ACCEPT-RESPONSE    | 0 or 1    |                                  |
-   | ATTACH             | 0+        |                                  |
-   | CATEGORIES         | 0+        |                                  |
-   | CLASS              | 0 or 1    |                                  |
+   +--------------------+----------+-----------------------------------+
+   | Component/Property | Presence | Comment                           |
+   +--------------------+----------+-----------------------------------+
+   | METHOD             | 1        | MUST be REQUEST.                  |
+   |                    |          |                                   |
+   | VPOLL              | 1        |                                   |
+   | VOTER              | 1+       |                                   |
+   | DTSTAMP            | 1        |                                   |
+   | DTSTART            | 1        |                                   |
+   | ORGANIZER          | 1        |                                   |
+   | SEQUENCE           | 0 or 1   | MUST be present if value is       |
+   |                    |          | greater than 0; MAY be present if |
 
 
 
-York, et al.            Expires February 28, 2014              [Page 27]
+York, et al.            Expires September 5, 2014              [Page 27]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   | COMMENT            | 0+        |                                  |
-   | COMPLETED          | 0 or 1    |                                  |
-   | CONTACT            | 0+        |                                  |
-   | CREATED            | 0 or 1    |                                  |
-   | DESCRIPTION        | 0 or 1    | Can be null.                     |
-   | DTEND              | 0 or 1    | If present, DURATION MUST NOT be |
-   |                    |           | present.                         |
-   | DURATION           | 0 or 1    | If present, DTEND MUST NOT be    |
-   |                    |           | present.                         |
-   | GEO                | 0 or 1    |                                  |
-   | LAST-MODIFIED      | 0 or 1    |                                  |
-   | LOCATION           | 0 or 1    |                                  |
-   | POLL-ITEM-ID       | 0         |                                  |
-   | POLL-MODE          | 0 or 1    |                                  |
-   | POLL-PROPERTIES    | 0 or 1    |                                  |
-   | PRIORITY           | 0 or 1    |                                  |
-   | RELATED-TO         | 0+        |                                  |
-   | REQUEST-STATUS     | 0         |                                  |
-   | RESOURCES          | 0+        |                                  |
-   | STATUS             | 0 or 1    | MAY be one of                    |
-   |                    |           | COMPLETED/CONFIRMED/CANCELLED.   |
-   | TRANSP             | 0 or 1    |                                  |
-   | URL                | 0 or 1    |                                  |
-   | IANA-PROPERTY      | 0+        |                                  |
-   | X-PROPERTY         | 0+        |                                  |
-   |                    |           |                                  |
-   | VALARM             | 0+        |                                  |
-   |                    |           |                                  |
-   | VTIMEZONE          | 0+        | MUST be present if any date/time |
-   |                    |           | refers to a timezone.            |
-   |                    |           |                                  |
-   | IANA-COMPONENT     | 0+        |                                  |
-   | X-COMPONENT        | 0+        |                                  |
-   |                    |           |                                  |
-   | VEVENT             | 0+        | Depending upon the poll mode in  |
-   |                    |           | effect there MAY be candidate    |
-   |                    |           | components included in the poll  |
-   |                    |           | component. If voting has already |
-   |                    |           | taken place, these components    |
-   |                    |           | MUST include the VOTER property  |
-   |                    |           | to indicate each voters current  |
-   |                    |           | response.                        |
-   |                    |           |                                  |
-   | VFREEBUSY          | 0         |                                  |
-   |                    |           |                                  |
-   | VJOURNAL           | 0+        | Depending upon the poll mode in  |
-   |                    |           | effect there MAY be candidate    |
-   |                    |           | components included in the poll  |
+   |                    |          | 0.                                |
+   | SUMMARY            | 1        | Can be null.                      |
+   | UID                | 1        |                                   |
+   | ACCEPT-RESPONSE    | 0 or 1   |                                   |
+   | ATTACH             | 0+       |                                   |
+   | CATEGORIES         | 0+       |                                   |
+   | CLASS              | 0 or 1   |                                   |
+   | COMMENT            | 0+       |                                   |
+   | COMPLETED          | 0 or 1   |                                   |
+   | CONTACT            | 0+       |                                   |
+   | CREATED            | 0 or 1   |                                   |
+   | DESCRIPTION        | 0 or 1   | Can be null.                      |
+   | DTEND              | 0 or 1   | If present, DURATION MUST NOT be  |
+   |                    |          | present.                          |
+   | DURATION           | 0 or 1   | If present, DTEND MUST NOT be     |
+   |                    |          | present.                          |
+   | GEO                | 0 or 1   |                                   |
+   | LAST-MODIFIED      | 0 or 1   |                                   |
+   | LOCATION           | 0 or 1   |                                   |
+   | POLL-ITEM-ID       | 0        |                                   |
+   | POLL-MODE          | 0 or 1   |                                   |
+   | POLL-PROPERTIES    | 0 or 1   |                                   |
+   | PRIORITY           | 0 or 1   |                                   |
+   | RELATED-TO         | 0+       |                                   |
+   | REQUEST-STATUS     | 0        |                                   |
+   | RESOURCES          | 0+       |                                   |
+   | STATUS             | 0 or 1   | MAY be one of                     |
+   |                    |          | COMPLETED/CONFIRMED/CANCELLED.    |
+   | TRANSP             | 0 or 1   |                                   |
+   | URL                | 0 or 1   |                                   |
+   | IANA-PROPERTY      | 0+       |                                   |
+   | X-PROPERTY         | 0+       |                                   |
+   |                    |          |                                   |
+   | VALARM             | 0+       |                                   |
+   |                    |          |                                   |
+   | VTIMEZONE          | 0+       | MUST be present if any date/time  |
+   |                    |          | refers to a timezone.             |
+   |                    |          |                                   |
+   | IANA-COMPONENT     | 0+       |                                   |
+   | X-COMPONENT        | 0+       |                                   |
+   |                    |          |                                   |
+   | VEVENT             | 0+       | Depending upon the poll mode in   |
+   |                    |          | effect there MAY be candidate     |
+   |                    |          | components included in the poll   |
+   |                    |          | component. If voting has already  |
+   |                    |          | taken place, these components     |
+   |                    |          | MUST include the VOTER property   |
+   |                    |          | to indicate each voters current   |
 
 
 
-York, et al.            Expires February 28, 2014              [Page 28]
+York, et al.            Expires September 5, 2014              [Page 28]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   |                    |           | component. If voting has already |
-   |                    |           | taken place, these components    |
-   |                    |           | MUST include the VOTER property  |
-   |                    |           | to indicate each voters current  |
-   |                    |           | response.                        |
-   |                    |           |                                  |
-   | VTODO              | 0+        | Depending upon the poll mode in  |
-   |                    |           | effect there MAY be candidate    |
-   |                    |           | components included in the poll  |
-   |                    |           | component. If voting has already |
-   |                    |           | taken place, these components    |
-   |                    |           | MUST include the VOTER property  |
-   |                    |           | to indicate each voters current  |
-   |                    |           | response.                        |
-   +--------------------+-----------+----------------------------------+
-
+   |                    |          | response.                         |
+   |                    |          |                                   |
+   | VFREEBUSY          | 0        |                                   |
+   |                    |          |                                   |
+   | VJOURNAL           | 0+       | Depending upon the poll mode in   |
+   |                    |          | effect there MAY be candidate     |
+   |                    |          | components included in the poll   |
+   |                    |          | component. If voting has already  |
+   |                    |          | taken place, these components     |
+   |                    |          | MUST include the VOTER property   |
+   |                    |          | to indicate each voters current   |
+   |                    |          | response.                         |
+   |                    |          |                                   |
+   | VTODO              | 0+       | Depending upon the poll mode in   |
+   |                    |          | effect there MAY be candidate     |
+   |                    |          | components included in the poll   |
+   |                    |          | component. If voting has already  |
+   |                    |          | taken place, these components     |
+   |                    |          | MUST include the VOTER property   |
+   |                    |          | to indicate each voters current   |
+   |                    |          | response.                         |
+   +--------------------+----------+-----------------------------------+
 
 6.3.1.2.1.  Rescheduling a poll
 
@@ -1613,18 +1619,17 @@ Internet-Draft                    VPOLL                      August 2013
    The update "REQUEST" method is the appropriate response to a
    "REFRESH" method sent from an "Voter" to the "Organizer" of a poll.
 
+
+
+York, et al.            Expires September 5, 2014              [Page 29]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    The "Organizer" of a poll may also send unsolicited "REQUEST"
    methods.  The unsolicited "REQUEST" methods may be used to update the
    details of the poll without rescheduling it, to update the "RESPONSE"
    parameter of "Voters", or to reconfirm the poll.
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 29]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
 6.3.1.2.3.  Confirmation of a Poll
 
@@ -1670,18 +1675,17 @@ Internet-Draft                    VPOLL                      August 2013
    "Delegator" setting their "role" attribute to "NON-PARTICIPANT" in
    the "REPLY" to the "Organizer".
 
+
+
+York, et al.            Expires September 5, 2014              [Page 30]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
 6.3.1.2.6.  Changing the Organizer
 
    The situation may arise where the "Organizer" of a "VPOLL" is no
    longer able to perform the "Organizer" role and abdicates without
-
-
-
-York, et al.            Expires February 28, 2014              [Page 30]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
    passing on the "Organizer" role to someone else.  When this occurs,
    the "Voters" of the "VPOLL" may use out-of-band mechanisms to
    communicate the situation and agree upon a new "Organizer".  The new
@@ -1725,18 +1729,19 @@ Internet-Draft                    VPOLL                      August 2013
    considers appropriate.  The "Organizer" SHOULD send the new CU a
    "REQUEST" message to inform them that they have been added.
 
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 31]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    When forwarding a "REQUEST" to another CU, the forwarding "Voter"
    MUST NOT make changes to the original message.
 
 6.3.1.2.9.  Updating Voter Status
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 31]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
    The "Organizer" of an poll may also request updated status from one
    or more "Voters".  The "Organizer" sends a "REQUEST" method to the
@@ -1780,6 +1785,15 @@ Internet-Draft                    VPOLL                      August 2013
    "Voters" may have another CU respond on their behalf.  This is done
    using the "SENT-BY" parameter.
 
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 32]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    The optional properties listed in the table below (those listed as
    "0+" or "0 or 1") MUST NOT be changed from those of the original
    request.
@@ -1787,94 +1801,82 @@ Internet-Draft                    VPOLL                      August 2013
    This method type is an iCalendar object that conforms to the
    following property constraints:
 
-
-
-York, et al.            Expires February 28, 2014              [Page 32]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
               +--------------------------------------------+
               | Constraints for a METHOD:REPLY of a VPOLL  |
               +--------------------------------------------+
               +--------------------------------------------+
 
-
-   +------------------------+------------+-----------------------------+
-   | Component/Property     | Presence   | Comment                     |
-   +------------------------+------------+-----------------------------+
-   | METHOD                 | 1          | MUST be REPLY.              |
-   |                        |            |                             |
-   | VPOLL                  | 1+         | All components MUST have    |
-   |                        |            | the same UID.               |
-   | VOTER                  | 1          | MUST be the address of the  |
-   |                        |            | Voter replying.             |
-   | DTSTAMP                | 1          |                             |
-   | ORGANIZER              | 1          |                             |
-   | UID                    | 1          | MUST be the UID of the      |
-   |                        |            | original REQUEST.           |
-   | SEQUENCE               | 0 or 1     | If non-zero, MUST be the    |
-   |                        |            | sequence number of the      |
-   |                        |            | original REQUEST. MAY be    |
-   |                        |            | present if 0.               |
-   | ACCEPT-RESPONSE        | 0 or 1     |                             |
-   | ATTACH                 | 0+         |                             |
-   | CATEGORIES             | 0+         |                             |
-   | CLASS                  | 0 or 1     |                             |
-   | COMMENT                | 0+         |                             |
-   | COMPLETED              | 0 or 1     |                             |
-   | CONTACT                | 0+         |                             |
-   | CREATED                | 0 or 1     |                             |
-   | DESCRIPTION            | 0 or 1     |                             |
-   | DTEND                  | 0 or 1     | If present, DURATION MUST   |
-   |                        |            | NOT be present.             |
-   | DTSTART                | 0 or 1     |                             |
-   | DURATION               | 0 or 1     | If present, DTEND MUST NOT  |
-   |                        |            | be present.                 |
-   | GEO                    | 0 or 1     |                             |
-   | LAST-MODIFIED          | 0 or 1     |                             |
-   | LOCATION               | 0 or 1     |                             |
-   | POLL-ITEM-ID           | 1+         | One per item being voted    |
-   |                        |            | on.                         |
-   | POLL-MODE              | 0          |                             |
-   | POLL-PROPERTIES        | 0          |                             |
-   | PRIORITY               | 0 or 1     |                             |
-   | RELATED-TO             | 0+         |                             |
-   | RESOURCES              | 0+         |                             |
-   | REQUEST-STATUS         | 0+         |                             |
+   +--------------------+----------+-----------------------------------+
+   | Component/Property | Presence | Comment                           |
+   +--------------------+----------+-----------------------------------+
+   | METHOD             | 1        | MUST be REPLY.                    |
+   |                    |          |                                   |
+   | VPOLL              | 1+       | All components MUST have the same |
+   |                    |          | UID.                              |
+   | VOTER              | 1        | MUST be the address of the Voter  |
+   |                    |          | replying.                         |
+   | DTSTAMP            | 1        |                                   |
+   | ORGANIZER          | 1        |                                   |
+   | UID                | 1        | MUST be the UID of the original   |
+   |                    |          | REQUEST.                          |
+   | SEQUENCE           | 0 or 1   | If non-zero, MUST be the sequence |
+   |                    |          | number of the original REQUEST.   |
+   |                    |          | MAY be present if 0.              |
+   | ACCEPT-RESPONSE    | 0 or 1   |                                   |
+   | ATTACH             | 0+       |                                   |
+   | CATEGORIES         | 0+       |                                   |
+   | CLASS              | 0 or 1   |                                   |
+   | COMMENT            | 0+       |                                   |
+   | COMPLETED          | 0 or 1   |                                   |
+   | CONTACT            | 0+       |                                   |
+   | CREATED            | 0 or 1   |                                   |
+   | DESCRIPTION        | 0 or 1   |                                   |
+   | DTEND              | 0 or 1   | If present, DURATION MUST NOT be  |
+   |                    |          | present.                          |
+   | DTSTART            | 0 or 1   |                                   |
+   | DURATION           | 0 or 1   | If present, DTEND MUST NOT be     |
+   |                    |          | present.                          |
+   | GEO                | 0 or 1   |                                   |
+   | LAST-MODIFIED      | 0 or 1   |                                   |
+   | LOCATION           | 0 or 1   |                                   |
+   | POLL-ITEM-ID       | 1+       | One per item being voted on.      |
+   | POLL-MODE          | 0        |                                   |
+   | POLL-PROPERTIES    | 0        |                                   |
 
 
 
-York, et al.            Expires February 28, 2014              [Page 33]
+York, et al.            Expires September 5, 2014              [Page 33]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   | STATUS                 | 0 or 1     |                             |
-   | SUMMARY                | 0 or 1     |                             |
-   | TRANSP                 | 0 or 1     |                             |
-   | URL                    | 0 or 1     |                             |
-   | IANA-PROPERTY          | 0+         |                             |
-   | X-PROPERTY             | 0+         |                             |
-   |                        |            |                             |
-   | VALARM                 | 0          |                             |
-   |                        |            |                             |
-   | VTIMEZONE              | 0 or 1     | MUST be present if any      |
-   |                        |            | date/time refers to a       |
-   |                        |            | timezone.                   |
-   |                        |            |                             |
-   | IANA-COMPONENT         | 0+         |                             |
-   | X-COMPONENT            | 0+         |                             |
-   |                        |            |                             |
-   | VEVENT                 | 0          |                             |
-   |                        |            |                             |
-   | VFREEBUSY              | 0          |                             |
-   |                        |            |                             |
-   | VJOURNAL               | 0          |                             |
-   |                        |            |                             |
-   | VTODO                  | 0          |                             |
-   +------------------------+------------+-----------------------------+
-
+   | PRIORITY           | 0 or 1   |                                   |
+   | RELATED-TO         | 0+       |                                   |
+   | RESOURCES          | 0+       |                                   |
+   | REQUEST-STATUS     | 0+       |                                   |
+   | STATUS             | 0 or 1   |                                   |
+   | SUMMARY            | 0 or 1   |                                   |
+   | TRANSP             | 0 or 1   |                                   |
+   | URL                | 0 or 1   |                                   |
+   | IANA-PROPERTY      | 0+       |                                   |
+   | X-PROPERTY         | 0+       |                                   |
+   |                    |          |                                   |
+   | VALARM             | 0        |                                   |
+   |                    |          |                                   |
+   | VTIMEZONE          | 0 or 1   | MUST be present if any date/time  |
+   |                    |          | refers to a timezone.             |
+   |                    |          |                                   |
+   | IANA-COMPONENT     | 0+       |                                   |
+   | X-COMPONENT        | 0+       |                                   |
+   |                    |          |                                   |
+   | VEVENT             | 0        |                                   |
+   |                    |          |                                   |
+   | VFREEBUSY          | 0        |                                   |
+   |                    |          |                                   |
+   | VJOURNAL           | 0        |                                   |
+   |                    |          |                                   |
+   | VTODO              | 0        |                                   |
+   +--------------------+----------+-----------------------------------+
 
 6.3.1.4.  CANCEL
 
@@ -1896,97 +1898,92 @@ Internet-Draft                    VPOLL                      August 2013
    This method type is an iCalendar object that conforms to the
    following property constraints:
 
+
+
+
+York, et al.            Expires September 5, 2014              [Page 34]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
               +---------------------------------------------+
               | Constraints for a METHOD:CANCEL of a VPOLL  |
-
-
-
-York, et al.            Expires February 28, 2014              [Page 34]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
               +---------------------------------------------+
               +---------------------------------------------+
 
-
-   +----------------------+------------+-------------------------------+
-   | Component/Property   | Presence   | Comment                       |
-   +----------------------+------------+-------------------------------+
-   | METHOD               | 1          | MUST be CANCEL.               |
-   |                      |            |                               |
-   | VPOLL                | 1+         | All must have the same UID.   |
-   | VOTER                | 0+         | MUST include some or all      |
-   |                      |            | Voters being removed from the |
-   |                      |            | poll.  MUST include some or   |
-   |                      |            | all Voters if the entire poll |
-   |                      |            | is cancelled.                 |
-   | UID                  | 1          | MUST be the UID of the        |
-   |                      |            | original REQUEST.             |
-   | DTSTAMP              | 1          |                               |
-   | ORGANIZER            | 1          |                               |
-   | SEQUENCE             | 1          |                               |
-   | ATTACH               | 0+         | ACCEPT-RESPONSE               |
-   | 0 or 1               |            |                               |
-   | COMMENT              | 0+         |                               |
-   | COMPLETED            | 0 or 1     |                               |
-   | CATEGORIES           | 0+         |                               |
-   | CLASS                | 0 or 1     |                               |
-   | CONTACT              | 0+         |                               |
-   | CREATED              | 0 or 1     |                               |
-   | DESCRIPTION          | 0 or 1     |                               |
-   | DTEND                | 0 or 1     | If present, DURATION MUST NOT |
-   |                      |            | be present.                   |
-   | DTSTART              | 0 or 1     |                               |
-   | DURATION             | 0 or 1     | If present, DTEND MUST NOT be |
-   |                      |            | present.                      |
-   | GEO                  | 0 or 1     |                               |
-   | LAST-MODIFIED        | 0 or 1     |                               |
-   | LOCATION             | 0 or 1     |                               |
-   | POLL-ITEM-ID         | 0          |                               |
-   | POLL-MODE            | 0          |                               |
-   | POLL-PROPERTIES      | 0          |                               |
-   | PRIORITY             | 0 or 1     |                               |
-   | RELATED-TO           | 0+         |                               |
-   | RESOURCES            | 0+         |                               |
-   | STATUS               | 0 or 1     | MUST be set to CANCELLED to   |
-   |                      |            | cancel the entire event. If   |
-   |                      |            | uninviting specific           |
-   |                      |            | Attendees, then MUST NOT be   |
-   |                      |            | included.                     |
+   +--------------------+----------+-----------------------------------+
+   | Component/Property | Presence | Comment                           |
+   +--------------------+----------+-----------------------------------+
+   | METHOD             | 1        | MUST be CANCEL.                   |
+   |                    |          |                                   |
+   | VPOLL              | 1+       | All must have the same UID.       |
+   | VOTER              | 0+       | MUST include some or all Voters   |
+   |                    |          | being removed from the poll.      |
+   |                    |          | MUST include some or all Voters   |
+   |                    |          | if the entire poll is cancelled.  |
+   | UID                | 1        | MUST be the UID of the original   |
+   |                    |          | REQUEST.                          |
+   | DTSTAMP            | 1        |                                   |
+   | ORGANIZER          | 1        |                                   |
+   | SEQUENCE           | 1        |                                   |
+   | ATTACH             | 0+       | ACCEPT-RESPONSE                   |
+   | 0 or 1             |          |                                   |
+   | COMMENT            | 0+       |                                   |
+   | COMPLETED          | 0 or 1   |                                   |
+   | CATEGORIES         | 0+       |                                   |
+   | CLASS              | 0 or 1   |                                   |
+   | CONTACT            | 0+       |                                   |
+   | CREATED            | 0 or 1   |                                   |
+   | DESCRIPTION        | 0 or 1   |                                   |
+   | DTEND              | 0 or 1   | If present, DURATION MUST NOT be  |
+   |                    |          | present.                          |
+   | DTSTART            | 0 or 1   |                                   |
+   | DURATION           | 0 or 1   | If present, DTEND MUST NOT be     |
+   |                    |          | present.                          |
+   | GEO                | 0 or 1   |                                   |
+   | LAST-MODIFIED      | 0 or 1   |                                   |
+   | LOCATION           | 0 or 1   |                                   |
+   | POLL-ITEM-ID       | 0        |                                   |
+   | POLL-MODE          | 0        |                                   |
+   | POLL-PROPERTIES    | 0        |                                   |
+   | PRIORITY           | 0 or 1   |                                   |
+   | RELATED-TO         | 0+       |                                   |
+   | RESOURCES          | 0+       |                                   |
+   | STATUS             | 0 or 1   | MUST be set to CANCELLED to       |
+   |                    |          | cancel the entire event. If       |
+   |                    |          | uninviting specific Attendees,    |
+   |                    |          | then MUST NOT be included.        |
+   | SUMMARY            | 0 or 1   |                                   |
 
 
 
-York, et al.            Expires February 28, 2014              [Page 35]
+York, et al.            Expires September 5, 2014              [Page 35]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   | SUMMARY              | 0 or 1     |                               |
-   | TRANSP               | 0 or 1     |                               |
-   | URL                  | 0 or 1     |                               |
-   | IANA-PROPERTY        | 0+         |                               |
-   | X-PROPERTY           | 0+         |                               |
-   | REQUEST-STATUS       | 0          |                               |
-   |                      |            |                               |
-   | VALARM               | 0          |                               |
-   |                      |            |                               |
-   | VTIMEZONE            | 0+         | MUST be present if any        |
-   |                      |            | date/time refers to a         |
-   |                      |            | timezone.                     |
-   |                      |            |                               |
-   | IANA-COMPONENT       | 0+         |                               |
-   | X-COMPONENT          | 0+         |                               |
-   |                      |            |                               |
-   | VTODO                | 0          |                               |
-   |                      |            |                               |
-   | VJOURNAL             | 0          |                               |
-   |                      |            |                               |
-   | VEVENT               | 0          |                               |
-   |                      |            |                               |
-   | VFREEBUSY            | 0          |                               |
-   +----------------------+------------+-------------------------------+
-
+   | TRANSP             | 0 or 1   |                                   |
+   | URL                | 0 or 1   |                                   |
+   | IANA-PROPERTY      | 0+       |                                   |
+   | X-PROPERTY         | 0+       |                                   |
+   | REQUEST-STATUS     | 0        |                                   |
+   |                    |          |                                   |
+   | VALARM             | 0        |                                   |
+   |                    |          |                                   |
+   | VTIMEZONE          | 0+       | MUST be present if any date/time  |
+   |                    |          | refers to a timezone.             |
+   |                    |          |                                   |
+   | IANA-COMPONENT     | 0+       |                                   |
+   | X-COMPONENT        | 0+       |                                   |
+   |                    |          |                                   |
+   | VTODO              | 0        |                                   |
+   |                    |          |                                   |
+   | VJOURNAL           | 0        |                                   |
+   |                    |          |                                   |
+   | VEVENT             | 0        |                                   |
+   |                    |          |                                   |
+   | VFREEBUSY          | 0        |                                   |
+   +--------------------+----------+-----------------------------------+
 
 6.3.1.5.  REFRESH
 
@@ -2004,80 +2001,77 @@ Internet-Draft                    VPOLL                      August 2013
              +----------------------------------------------+
              +----------------------------------------------+
 
+   +--------------------+----------+-----------------------------------+
+   | Component/Property | Presence | Comment                           |
+   +--------------------+----------+-----------------------------------+
+   | METHOD             | 1        | MUST be REFRESH.                  |
+   |                    |          |                                   |
+   | VPOLL              | 1        |                                   |
+   | VOTER              | 1        | MUST be the address of requester. |
+   | DTSTAMP            | 1        |                                   |
+   | ORGANIZER          | 1        |                                   |
 
-   +--------------------------+-------------+--------------------------+
-   | Component/Property       | Presence    | Comment                  |
-   +--------------------------+-------------+--------------------------+
-   | METHOD                   | 1           | MUST be REFRESH.         |
-   |                          |             |                          |
 
 
-
-York, et al.            Expires February 28, 2014              [Page 36]
+York, et al.            Expires September 5, 2014              [Page 36]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   | VPOLL                    | 1           |                          |
-   | VOTER                    | 1           | MUST be the address of   |
-   |                          |             | requester.               |
-   | DTSTAMP                  | 1           |                          |
-   | ORGANIZER                | 1           |                          |
-   | UID                      | 1           | MUST be the UID          |
-   |                          |             | associated with original |
-   |                          |             | REQUEST.                 |
-   | COMMENT                  | 0+          |                          |
-   | COMPLETED                | 0           |                          |
-   | IANA-PROPERTY            | 0+          |                          |
-   | X-PROPERTY               | 0+          |                          |
-   | ACCEPT-RESPONSE          | 0           |                          |
-   | ATTACH                   | 0           |                          |
-   | CATEGORIES               | 0           |                          |
-   | CLASS                    | 0           |                          |
-   | CONTACT                  | 0           |                          |
-   | CREATED                  | 0           |                          |
-   | DESCRIPTION              | 0           |                          |
-   | DTEND                    | 0           |                          |
-   | DTSTART                  | 0           |                          |
-   | DURATION                 | 0           |                          |
-   | GEO                      | 0           |                          |
-   | LAST-MODIFIED            | 0           |                          |
-   | LOCATION                 | 0           |                          |
-   | POLL-ITEM-ID             | 0           |                          |
-   | POLL-MODE                | 0           |                          |
-   | POLL-PROPERTIES          | 0           |                          |
-   | PRIORITY                 | 0           |                          |
-   | RELATED-TO               | 0           |                          |
-   | REQUEST-STATUS           | 0           |                          |
-   | RESOURCES                | 0           |                          |
-   | SEQUENCE                 | 0           |                          |
-   | STATUS                   | 0           |                          |
-   | SUMMARY                  | 0           |                          |
-   | URL                      | 0           |                          |
-   |                          |             |                          |
-   | VALARM                   | 0           |                          |
-   |                          |             |                          |
-   | VTIMEZONE                | 0+          |                          |
-   |                          |             |                          |
-   | IANA-COMPONENT           | 0+          |                          |
-   | X-COMPONENT              | 0+          |                          |
-   |                          |             |                          |
-   | VTODO                    | 0           |                          |
-   |                          |             |                          |
-   | VJOURNAL                 | 0           |                          |
-   |                          |             |                          |
+   | UID                | 1        | MUST be the UID associated with   |
+   |                    |          | original REQUEST.                 |
+   | COMMENT            | 0+       |                                   |
+   | COMPLETED          | 0        |                                   |
+   | IANA-PROPERTY      | 0+       |                                   |
+   | X-PROPERTY         | 0+       |                                   |
+   | ACCEPT-RESPONSE    | 0        |                                   |
+   | ATTACH             | 0        |                                   |
+   | CATEGORIES         | 0        |                                   |
+   | CLASS              | 0        |                                   |
+   | CONTACT            | 0        |                                   |
+   | CREATED            | 0        |                                   |
+   | DESCRIPTION        | 0        |                                   |
+   | DTEND              | 0        |                                   |
+   | DTSTART            | 0        |                                   |
+   | DURATION           | 0        |                                   |
+   | GEO                | 0        |                                   |
+   | LAST-MODIFIED      | 0        |                                   |
+   | LOCATION           | 0        |                                   |
+   | POLL-ITEM-ID       | 0        |                                   |
+   | POLL-MODE          | 0        |                                   |
+   | POLL-PROPERTIES    | 0        |                                   |
+   | PRIORITY           | 0        |                                   |
+   | RELATED-TO         | 0        |                                   |
+   | REQUEST-STATUS     | 0        |                                   |
+   | RESOURCES          | 0        |                                   |
+   | SEQUENCE           | 0        |                                   |
+   | STATUS             | 0        |                                   |
+   | SUMMARY            | 0        |                                   |
+   | URL                | 0        |                                   |
+   |                    |          |                                   |
+   | VALARM             | 0        |                                   |
+   |                    |          |                                   |
+   | VTIMEZONE          | 0+       |                                   |
+   |                    |          |                                   |
+   | IANA-COMPONENT     | 0+       |                                   |
+   | X-COMPONENT        | 0+       |                                   |
+   |                    |          |                                   |
+   | VTODO              | 0        |                                   |
+   |                    |          |                                   |
+   | VJOURNAL           | 0        |                                   |
+   |                    |          |                                   |
+   | VEVENT             | 0        |                                   |
+   |                    |          |                                   |
+   | VFREEBUSY          | 0        |                                   |
+   +--------------------+----------+-----------------------------------+
 
 
 
-York, et al.            Expires February 28, 2014              [Page 37]
+
+
+York, et al.            Expires September 5, 2014              [Page 37]
 
-Internet-Draft                    VPOLL                      August 2013
-
-
-   | VEVENT                   | 0           |                          |
-   |                          |             |                          |
-   | VFREEBUSY                | 0           |                          |
-   +--------------------------+-------------+--------------------------+
+Internet-Draft                    VPOLL                       March 2014
 
 
 6.3.1.6.  POLLSTATUS
@@ -2098,99 +2092,99 @@ Internet-Draft                    VPOLL                      August 2013
             +-------------------------------------------------+
             +-------------------------------------------------+
 
+   +--------------------+----------+-----------------------------------+
+   | Component/Property | Presence | Comment                           |
+   +--------------------+----------+-----------------------------------+
+   | METHOD             | 1        | MUST equal POLLSTATUS.            |
+   |                    |          |                                   |
+   | VPOLL              | 1+       |                                   |
+   | COMPLETED          | 0 or 1   | Only present for a completed poll |
+   | DTSTAMP            | 1        |                                   |
+   | DTSTART            | 0 or 1   |                                   |
+   | ORGANIZER          | 1        |                                   |
+   | SUMMARY            | 1        | Can be null.                      |
+   | VOTER              | 1+       |                                   |
+   | UID                | 1        |                                   |
+   | SEQUENCE           | 0 or 1   | MUST be present if value is       |
+   |                    |          | greater than 0; MAY be present if |
+   |                    |          | 0.                                |
+   | ACCEPT-RESPONSE    | 0        |                                   |
+   | ATTACH             | 0        |                                   |
+   | CATEGORIES         | 0        |                                   |
+   | CLASS              | 0        |                                   |
+   | COMMENT            | 0+       |                                   |
+   | CONTACT            | 0        |                                   |
+   | CREATED            | 0 or 1   |                                   |
+   | DESCRIPTION        | 0 or 1   | Can be null.                      |
+   | DTEND              | 0 or 1   | If present, DURATION MUST NOT be  |
+   |                    |          | present.                          |
+   | DURATION           | 0 or 1   | If present, DTEND MUST NOT be     |
+   |                    |          | present.                          |
+   | LAST-MODIFIED      | 0 or 1   |                                   |
+   | POLL-ITEM-ID       | 0        |                                   |
 
-   +--------------------+-----------+----------------------------------+
-   | Component/Property | Presence  | Comment                          |
-   +--------------------+-----------+----------------------------------+
-   | METHOD             | 1         | MUST equal POLLSTATUS.           |
-   |                    |           |                                  |
-   | VPOLL              | 1+        |                                  |
-   | COMPLETED          | 0 or 1    | Only present for a completed     |
-   |                    |           | poll                             |
-   | DTSTAMP            | 1         |                                  |
-   | DTSTART            | 0 or 1    |                                  |
-   | ORGANIZER          | 1         |                                  |
-   | SUMMARY            | 1         | Can be null.                     |
-   | VOTER              | 1+        |                                  |
-   | UID                | 1         |                                  |
-   | SEQUENCE           | 0 or 1    | MUST be present if value is      |
-   |                    |           | greater than 0; MAY be present   |
-   |                    |           | if 0.                            |
-   | ACCEPT-RESPONSE    | 0         |                                  |
-   | ATTACH             | 0         |                                  |
-   | CATEGORIES         | 0         |                                  |
-   | CLASS              | 0         |                                  |
-   | COMMENT            | 0+        |                                  |
-   | CONTACT            | 0         |                                  |
 
 
-
-York, et al.            Expires February 28, 2014              [Page 38]
+York, et al.            Expires September 5, 2014              [Page 38]
 
-Internet-Draft                    VPOLL                      August 2013
+Internet-Draft                    VPOLL                       March 2014
 
 
-   | CREATED            | 0 or 1    |                                  |
-   | DESCRIPTION        | 0 or 1    | Can be null.                     |
-   | DTEND              | 0 or 1    | If present, DURATION MUST NOT be |
-   |                    |           | present.                         |
-   | DURATION           | 0 or 1    | If present, DTEND MUST NOT be    |
-   |                    |           | present.                         |
-   | LAST-MODIFIED      | 0 or 1    |                                  |
-   | POLL-ITEM-ID       | 0         |                                  |
-   | POLL-MODE          | 0 or 1    |                                  |
-   | POLL-PROPERTIES    | 0         |                                  |
-   | PRIORITY           | 0 or 1    |                                  |
-   | RELATED-TO         | 0+        |                                  |
-   | RESOURCES          | 0+        |                                  |
-   | STATUS             | 0 or 1    | MAY be one of                    |
-   |                    |           | TENTATIVE/CONFIRMED/CANCELLED.   |
-   | URL                | 0 or 1    |                                  |
-   | IANA-PROPERTY      | 0+        |                                  |
-   | X-PROPERTY         | 0+        |                                  |
-   | REQUEST-STATUS     | 0         |                                  |
-   |                    |           |                                  |
-   | VALARM             | 0+        |                                  |
-   |                    |           |                                  |
-   | VEVENT             | 0+        | All candidate components MUST be |
-   |                    |           | present but in a reduced form    |
-   |                    |           | sufficient to provide the voting |
-   |                    |           | status.                          |
-   |                    |           |                                  |
-   | VFREEBUSY          | 0         |                                  |
-   |                    |           |                                  |
-   | VJOURNAL           | 0+        | All candidate components MUST be |
-   |                    |           | present but in a reduced form    |
-   |                    |           | sufficient to provide the voting |
-   |                    |           | status.                          |
-   |                    |           |                                  |
-   | VTODO              | 0+        | All candidate components MUST be |
-   |                    |           | present but in a reduced form    |
-   |                    |           | sufficient to provide the voting |
-   |                    |           | status.                          |
-   |                    |           |                                  |
-   | VTIMEZONE          | 0+        | MUST be present if any date/time |
-   |                    |           | refers to a timezone.            |
-   |                    |           |                                  |
-   | IANA-COMPONENT     | 0+        |                                  |
-   | X-COMPONENT        | 0+        |                                  |
-   +--------------------+-----------+----------------------------------+
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 39]
-
-Internet-Draft                    VPOLL                      August 2013
-
+   | POLL-MODE          | 0 or 1   |                                   |
+   | POLL-PROPERTIES    | 0        |                                   |
+   | PRIORITY           | 0 or 1   |                                   |
+   | RELATED-TO         | 0+       |                                   |
+   | RESOURCES          | 0+       |                                   |
+   | STATUS             | 0 or 1   | MAY be one of                     |
+   |                    |          | TENTATIVE/CONFIRMED/CANCELLED.    |
+   | URL                | 0 or 1   |                                   |
+   | IANA-PROPERTY      | 0+       |                                   |
+   | X-PROPERTY         | 0+       |                                   |
+   | REQUEST-STATUS     | 0        |                                   |
+   |                    |          |                                   |
+   | VALARM             | 0+       |                                   |
+   |                    |          |                                   |
+   | VEVENT             | 0+       | All candidate components MUST be  |
+   |                    |          | present but in a reduced form     |
+   |                    |          | sufficient to provide the voting  |
+   |                    |          | status.                           |
+   |                    |          |                                   |
+   | VFREEBUSY          | 0        |                                   |
+   |                    |          |                                   |
+   | VJOURNAL           | 0+       | All candidate components MUST be  |
+   |                    |          | present but in a reduced form     |
+   |                    |          | sufficient to provide the voting  |
+   |                    |          | status.                           |
+   |                    |          |                                   |
+   | VTODO              | 0+       | All candidate components MUST be  |
+   |                    |          | present but in a reduced form     |
+   |                    |          | sufficient to provide the voting  |
+   |                    |          | status.                           |
+   |                    |          |                                   |
+   | VTIMEZONE          | 0+       | MUST be present if any date/time  |
+   |                    |          | refers to a timezone.             |
+   |                    |          |                                   |
+   | IANA-COMPONENT     | 0+       |                                   |
+   | X-COMPONENT        | 0+       |                                   |
+   +--------------------+----------+-----------------------------------+
 
 7.  CalDAV Extensions
 
    This specification extends [RFC4791] in that it defines a new
    component and new iCalendar properties to be supported and requires
    extra definitions related to time-ranges and reports.
+
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 39]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
 7.1.  Calendar Collection Properties
 
@@ -2236,13 +2230,16 @@ Internet-Draft                    VPOLL                      August 2013
             <!ELEMENT supported-vpoll-component-set (comp+)>
 
 
-
-York, et al.            Expires February 28, 2014              [Page 40]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
    Example:
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 40]
+
+Internet-Draft                    VPOLL                       March 2014
 
 
             <C:supported-vpoll-component-sets
@@ -2272,7 +2269,6 @@ Internet-Draft                    VPOLL                      August 2013
               </C:supported-vpoll-component-set>
             </C:supported-vpoll-component-sets>
 
-
 7.1.2.  CALDAV:vpoll-max-items
 
    Name:  vpoll-max-items
@@ -2290,18 +2286,18 @@ Internet-Draft                    VPOLL                      August 2013
 
    Description:  The CALDAV:vpoll-max-items is used to specify a numeric
       value that indicates the maximum number of iCalendar components in
-
-
-
-York, et al.            Expires February 28, 2014              [Page 41]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
       any one instance of a VPOLL calendar object resource stored in a
       calendar collection.  Any attempt to store a calendar object
       resource with more components per instance than this value MUST
       result in an error, with the CALDAV: vpoll-max-items precondition
+
+
+
+York, et al.            Expires September 5, 2014              [Page 41]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
       Section 7.2 being violated.  In the absence of this property, the
       client can assume that the server can handle any number of items
       in a VPOLL calendar component.
@@ -2312,13 +2308,11 @@ Internet-Draft                    VPOLL                      August 2013
             PCDATA value: a numeric value (integer greater than zero)
 
 
-
    Example:
 
             <C:vpoll-max-items
                  xmlns:C="urn:ietf:params:xml:ns:caldav"
             >25</C:vpoll-max-items>
-
 
 
 7.1.3.  CALDAV:vpoll-max-active
@@ -2346,25 +2340,23 @@ Internet-Draft                    VPOLL                      August 2013
 
    Definition:
 
-
-
-
-York, et al.            Expires February 28, 2014              [Page 42]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
             <!ELEMENT vpoll-max-active (#PCDATA)>
             PCDATA value: a numeric value (integer greater than zero)
 
 
-
    Example:
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 42]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
             <C:vpoll-max-active
                  xmlns:C="urn:ietf:params:xml:ns:caldav"
             >25</C:vpoll-max-active>
-
 
 
 7.1.4.  CALDAV:vpoll-max-voters
@@ -2398,27 +2390,25 @@ Internet-Draft                    VPOLL                      August 2013
             PCDATA value: a numeric value (integer greater than zero)
 
 
-
    Example:
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 43]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
             <C:vpoll-max-voters
                  xmlns:C="urn:ietf:params:xml:ns:caldav"
             >25</C:vpoll-max-voters>
 
 
-
 7.1.5.  CalDAV:even-more-properties
 
    1.  vpoll-supported-mode poll options - e.g "vpoll-basic"
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 43]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
 7.2.  Additional Preconditions for PUT, COPY, and MOVE
 
@@ -2458,14 +2448,6 @@ Internet-Draft                    VPOLL                      August 2013
 
    This allows the retrieval of VPOLLs and their included components.
    The query specification allows queries to be directed at the
-
-
-
-York, et al.            Expires February 28, 2014              [Page 44]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
    contained sub-components.  For VPOLL queries this feature is
    disallowed.  Time-range queries can only target the vpoll component
    itself.
@@ -2476,6 +2458,14 @@ Internet-Draft                    VPOLL                      August 2013
    components and properties of the VPOLL components that overlap the
    time range from December 4, 2012, at 00:00:00 A.M. UTC to December 5,
    2012, at 00:00:00 A.M. UTC.  In addition, the DAV:getetag property is
+
+
+
+York, et al.            Expires September 5, 2014              [Page 44]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
    also requested and returned as part of the response.  Note that due
    to the CALDAV: calendar-data element restrictions, the DTSTAMP
    property in VPOLL components has not been returned, and the only
@@ -2514,14 +2504,6 @@ Internet-Draft                    VPOLL                      August 2013
                             end="20121205T000000Z"/>
             </C:comp-filter>
           </C:comp-filter>
-
-
-
-York, et al.            Expires February 28, 2014              [Page 45]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
         </C:filter>
       </C:calendar-query>
 
@@ -2531,6 +2513,14 @@ Internet-Draft                    VPOLL                      August 2013
       Date: Sat, 11 Nov 2012 09:32:12 GMT
       Content-Type: application/xml; charset="utf-8"
       Content-Length: xxxx
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 45]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
       <?xml version="1.0" encoding="utf-8" ?>
       <D:multistatus xmlns:D="DAV:"
@@ -2570,20 +2560,22 @@ Internet-Draft                    VPOLL                      August 2013
       END:VPOLL
       END:VCALENDAR
       </C:calendar-data>
-
-
-
-York, et al.            Expires February 28, 2014              [Page 46]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
             </D:prop>
             <D:status>HTTP/1.1 200 OK</D:status>
           </D:propstat>
         </D:response>
       </D:multistatus>
 
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 46]
+
+Internet-Draft                    VPOLL                       March 2014
 
 
 7.4.  CalDAV time ranges
@@ -2600,6 +2592,47 @@ Internet-Draft                    VPOLL                      August 2013
    VPOLL component.  Note that, as specified above, the DTEND value MUST
    be a DATE-TIME value equal to or after the DTSTART value if
    specified.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 47]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
    +-------------------------------------------------------------------+
    | VPOLL has the DTSTART property?                                   |
@@ -2626,14 +2659,6 @@ Internet-Draft                    VPOLL                      August 2013
    +---+---+---+---+---+-----------------------------------------------+
    | N | N | Y | * | * | (start  <  DTEND)    AND (end >= DTEND)       |
    +---+---+---+---+---+-----------------------------------------------+
-
-
-
-York, et al.            Expires February 28, 2014              [Page 47]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
    | N | N | N | Y | Y | ((start <= CREATED)  OR  (start <= COMPLETED))|
    |   |   |   |   |   | AND                                           |
    |   |   |   |   |   | ((end   >= CREATED)  OR  (end   >= COMPLETED))|
@@ -2645,7 +2670,6 @@ Internet-Draft                    VPOLL                      August 2013
    | N | N | N | N | N | TRUE                                          |
    +---+---+---+---+---+-----------------------------------------------+
 
-
 8.  Security Considerations
 
    Applications using these property need to be aware of the risks
@@ -2653,6 +2677,18 @@ Internet-Draft                    VPOLL                      August 2013
    discussion of the security considerations relating to URIs.
 
 9.  IANA Considerations
+
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 48]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
 9.1.  Parameter Registrations
 
@@ -2667,7 +2703,6 @@ Internet-Draft                    VPOLL                      August 2013
          | STAY-INFORMED      | Current | RFCXXXX, Section 4.2.3 |
          +--------------------+---------+------------------------+
 
-
 9.2.  Property Registrations
 
    This document defines the following new iCalendar properties to be
@@ -2681,14 +2716,6 @@ Internet-Draft                    VPOLL                      August 2013
           | POLL-MODE       | Current | RFCXXXX, Section 4.3.3 |
           | VOTER           | Current | RFCXXXX, Section 4.3.6 |
           +-----------------+---------+------------------------+
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 48]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
 9.3.  POLL-MODE Registration Template
 
@@ -2705,14 +2732,28 @@ Internet-Draft                    VPOLL                      August 2013
 
    This document defines the following registered poll modes.
 
-   +-----------+---------------------------------------+---------------+
-   | Poll mode | Purpose                               | Reference     |
-   | name      |                                       |               |
-   +-----------+---------------------------------------+---------------+
-   | BASIC     | To provide simple voting for a single | Current       |
-   |           | outcome from a number of candidates.  |               |
-   +-----------+---------------------------------------+---------------+
 
+
+
+
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 49]
+
+Internet-Draft                    VPOLL                       March 2014
+
+
+   +----------+--------------------------------------------+-----------+
+   | Poll     | Purpose                                    | Reference |
+   | mode     |                                            |           |
+   | name     |                                            |           |
+   +----------+--------------------------------------------+-----------+
+   | BASIC    | To provide simple voting for a single      | Current   |
+   |          | outcome from a number of candidates.       |           |
+   +----------+--------------------------------------------+-----------+
 
 10.  Acknowledgements
 
@@ -2729,7 +2770,8 @@ Internet-Draft                    VPOLL                      August 2013
 
    [I-D.daboo-icalendar-extensions]
               Daboo, C., "New Properties for iCalendar", draft-daboo-
-              icalendar-extensions-06 (work in progress), January 2013.
+              icalendar-extensions-07 (work in progress), September
+              2013.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
@@ -2737,14 +2779,6 @@ Internet-Draft                    VPOLL                      August 2013
    [RFC2434]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
               IANA Considerations Section in RFCs", BCP 26, RFC 2434,
               October 1998.
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 49]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
    [RFC2518]  Goland, Y., Whitehead, E., Faizi, A., Carter, S., and D.
               Jensen, "HTTP Extensions for Distributed Authoring --
@@ -2759,6 +2793,14 @@ Internet-Draft                    VPOLL                      August 2013
 
    [RFC4589]  Schulzrinne, H. and H. Tschofenig, "Location Types
               Registry", RFC 4589, July 2006.
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 50]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
    [RFC4791]  Daboo, C., Desruisseaux, B., and L. Dusseault,
               "Calendaring Extensions to WebDAV (CalDAV)", RFC 4791,
@@ -2779,9 +2821,9 @@ Internet-Draft                    VPOLL                      August 2013
               CalDAV", RFC 6638, June 2012.
 
    [W3C.REC-xml-20060816]
-              Sperberg-McQueen, C., Paoli, J., Maler, E., Yergeau, F.,
-              and T. Bray, "Extensible Markup Language (XML) 1.0 (Fourth
-              Edition)", World Wide Web Consortium FirstEdition REC-
+              Bray, T., Paoli, J., Sperberg-McQueen, M., Maler, E., and
+              F. Yergeau, "Extensible Markup Language (XML) 1.0 (Fourth
+              Edition)", World Wide Web Consortium Recommendation REC-
               xml-20060816, August 2006,
               <http://www.w3.org/TR/2006/REC-xml-20060816>.
 
@@ -2791,16 +2833,6 @@ Appendix A.  Open issues
       support.
       A. VPOLL is about to end and you haven't voted on it yet.
       Instead reuse VALARMS to notify the user?
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 50]
-
-Internet-Draft                    VPOLL                      August 2013
-
 
    Future: Restarting a confirmed/completed VPOLL  What to do with
       changes to STATUS:CONFIRMED?  Allow them or not?  What do to that
@@ -2816,6 +2848,15 @@ Internet-Draft                    VPOLL                      August 2013
       Requires retention of VPOLL
       retention period
       Removed status
+
+
+
+
+
+York, et al.            Expires September 5, 2014              [Page 51]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
    ORGANIZER/ATTENDEE validity  Can a user create a poll with scheduled
       events where that user's isn't the organizer of the poll?  So is
@@ -2843,37 +2884,35 @@ Internet-Draft                    VPOLL                      August 2013
 
    Need to add example of freebusy in response
 
-                BEGIN:VCALENDAR
-                VERSION:2.0
-                PRODID:-//BedeworkCaldavTest//BedeworkCaldavTest
-                METHOD: REPLY
-                BEGIN:VPOLL
-                ORGANIZER:mailto:douglm@mysite.edu
-                VOTER:mailto:eric@example.com
-
-
-
-York, et al.            Expires February 28, 2014              [Page 51]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
-                UID:sched01-1234567890
-                DTSTAMP:20120101T010000Z
-                SEQUENCE:0
-                SUMMARY:What to do this week
-                BEGIN:VFREEBUSY
-                .......
-                END:VFREEBUSY
-                END:VPOLL
-                END:VCALENDAR
-
+                   BEGIN:VCALENDAR
+                   VERSION:2.0
+                   PRODID:-//BedeworkCaldavTest//BedeworkCaldavTest
+                   METHOD: REPLY
+                   BEGIN:VPOLL
+                   ORGANIZER:mailto:douglm@mysite.edu
+                   VOTER:mailto:eric@example.com
+                   UID:sched01-1234567890
+                   DTSTAMP:20120101T010000Z
+                   SEQUENCE:0
+                   SUMMARY:What to do this week
+                   BEGIN:VFREEBUSY
+                   .......
+                   END:VFREEBUSY
+                   END:VPOLL
+                   END:VCALENDAR
 
 Appendix B.  Change log
 
    V01: 2013-08-07 MD
 
    o  Removed method CONFIRM
+
+
+
+York, et al.            Expires September 5, 2014              [Page 52]
+
+Internet-Draft                    VPOLL                       March 2014
+
 
    o  Removed pollitemid from VPOLL abnf.  Added text for pollwinner
 
@@ -2904,16 +2943,6 @@ Authors' Addresses
    URI:   http://www.apple.com/
 
 
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 52]
-
-Internet-Draft                    VPOLL                      August 2013
-
-
    Cyrus Daboo (editor)
    Apple Inc.
    1 Infinite Loop
@@ -2936,33 +2965,4 @@ Internet-Draft                    VPOLL                      August 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-York, et al.            Expires February 28, 2014              [Page 53]
+York, et al.            Expires September 5, 2014              [Page 53]
