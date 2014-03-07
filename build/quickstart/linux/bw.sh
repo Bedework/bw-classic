@@ -37,7 +37,6 @@ updateSvnProjects="bedenote"
 updateSvnProjects="$updateSvnProjects  bedework"
 updateSvnProjects="$updateSvnProjects  bwdeployutil"
 #updateSvnProjects="$updateSvnProjects  cachedfeeder"
-# updateProjects="$updateProjects  genkeys"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
@@ -48,9 +47,7 @@ caldavTest=
 catsvr=
 client=
 exchgGateway=
-genkeys=
 geronimoHib=
-monitor=
 naming=
 testsuite=
 
@@ -190,7 +187,6 @@ usage() {
   echo "     -carddav      Target is for the CardDAV build"
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
   echo "     -eventreg     Target is for the event registration service build"
-  echo "     -genkeys      Target is for the genkeys module build"
   echo "     -bw_util      Target is for the Bedework util classes"
   echo "     -selfreg      Target is for the self registration build"
   echo "     -synch        Target is for the synch build"
@@ -200,7 +196,6 @@ usage() {
   echo "     -bwtools      Target is for the Bedework tools build"
   echo "     -caldavTest   Target is for the CalDAV Test build"
   echo "     -deployutil   Target is for the Bedework deployment classes"
-  echo "     -monitor      Target is for the bedework monitor application"
   echo "     -testsuite    Target is for the bedework test suite"
   echo "   Experimental projects: no guarantees"
   echo "     -catsvr       Target is for the Catsvr build"
@@ -420,12 +415,6 @@ setDirectory() {
     return
   fi
 
-	if [ "$genkeys" != "" ] ; then
-	  cd $GIT_HOME/genkeys
-      genkeys=
-	  return
-	fi
-
   if [ "$bw_calengine" != "" ] ; then
       echo "Build calendar engine"
       cd $GIT_HOME/bw-calendar-engine
@@ -457,12 +446,6 @@ setDirectory() {
 	if [ "$bw_classic" != "" ] ; then
 	  cd $GIT_HOME/bw-classic
       bw_classic=
-	  return
-	fi
-
-	if [ "$monitor" != "" ] ; then
-	  cd $GIT_HOME/MonitorApp
-      monitor=
 	  return
 	fi
 
@@ -941,6 +924,7 @@ do
       bw_access="yes"
       bw_ws="yes"
       bw_util="yes"
+      bw_caldav="yes"
       pkgdefault=
       shift
       ;;
@@ -1043,22 +1027,9 @@ do
       pkgdefault=
       shift
       ;;
-    -genkeys)
-      genkeys="yes"
-
-      bwinterfaces="yes"
-      bw_util="yes"
-      pkgdefault=
-      shift
-      ;;
     -geronimohib)
       geronimoHib="yes"
 
-      pkgdefault=
-      shift
-      ;;
-    -monitor)
-      monitor="yes"
       pkgdefault=
       shift
       ;;

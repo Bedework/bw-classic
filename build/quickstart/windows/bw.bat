@@ -86,7 +86,6 @@ SET client=
 SET dumprestore=
 SET eventreg=
 SET indexer=
-SET monitor=
 SET naming=
 SET rpiutil=
 SET selfreg=
@@ -441,12 +440,6 @@ GOTO branch
   SHIFT
   GOTO branch
 
-:monitor
-  SET monitor="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
 :naming
   SET naming="yes"
   SET pkgdefault=
@@ -647,7 +640,6 @@ IF NOT "%$BWJMXCONFIG%empty" == "empty" GOTO DoneJmxConfig
   IF NOT "%indexer%empty" == "empty" GOTO cdIndexer
   IF NOT "%dumprestore%empty" == "empty" GOTO cdDumprestore
   IF NOT "%bedework%empty" == "empty" GOTO cdBedework
-  IF NOT "%monitor%empty" == "empty" GOTO cdMonitor
   IF NOT "%naming%empty" == "empty"  GOTO cdNaming
   IF NOT "%synch%empty" == "empty"  GOTO cdSynch
   IF NOT "%testsuite%empty" == "empty"  GOTO cdTestsuite
@@ -836,11 +828,6 @@ GOTO:EOF
   SET indexer=
   GOTO doant
 
-:cdMonitor
-  cd %QUICKSTART_HOME%\MonitorApp
-  SET monitor=
-  GOTO doant
-
 :cdNaming
   cd %QUICKSTART_HOME%\naming
   SET naming=
@@ -928,7 +915,6 @@ IF "%1" == "-deployutil" GOTO deployutil
 IF "%1" == "-dumprestore" GOTO dumprestore
 IF "%1" == "-eventreg" GOTO eventreg
 IF "%1" == "-indexer" GOTO indexer
-IF "%1" == "-monitor" GOTO monitor
 IF "%1" == "-naming" GOTO naming
 IF "%1" == "-rpiutil" GOTO rpiutil
 IF "%1" == "-selfreg" GOTO selfreg
@@ -1005,7 +991,6 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO      -bwtools      Target is for the Bedework tools build
   ECHO      -caldavTest   Target is for the CalDAV Test build
   ECHO      -deployutil   Target is for the Bedework deployment classes
-  ECHO      -monitor     Target is for the bedework monitor application
   ECHO      -testsuite    Target is for the bedework test suite
   ECHO   Experimental projects: no guarantees
   ECHO      -client      Target is for the bedework client application build
