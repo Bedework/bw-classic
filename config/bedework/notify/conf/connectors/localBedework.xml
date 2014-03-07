@@ -2,7 +2,7 @@
 
 <synch-connector xmlns="http://bedework.org/ns/"
                  type="org.bedework.notifier.cnctrs.bedework.BedeworkConnectorConfig">
-  <notificationDirHref>http://localhost:8080/ucaldav/public/public-user/outboundNotifications</notificationDirHref>
+  <notificationDirHref>http://localhost:8080/ucaldav/user/public-user/OutboundNotifications</notificationDirHref>
   <bwWSDLURI>http://localhost:8080/wsdls/synch/wssvc.wsdl</bwWSDLURI>
   <connectorClassName>org.bedework.notifier.cnctrs.bedework.BedeworkConnector</connectorClassName>
   <id>notify-user</id>
