@@ -2,7 +2,7 @@
 
 <notification-properties xmlns="http://bedework.org/ns/"
                          type="org.bedework.calsvc.jmx.NotificationPropertiesImpl">
-  <notificationDirHref>/public/public-user/outboundNotifications</notificationDirHref>
+  <notificationDirHref>/user/notify-user/Notifications/</notificationDirHref>
   <notifierId>notify-user</notifierId>
   <notifierToken>abcd</notifierToken>
 </notification-properties>
