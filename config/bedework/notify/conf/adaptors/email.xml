@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<notify-adaptor xmlns="http://bedework.org/ns/"
+                 type="org.bedework.notifier.outbound.email.EmailAdaptorConfig">
+  <adaptorClassName>org.bedework.notifier.outbound.email.EmailAdaptor</adaptorClassName>
+  <mbeanClassName>org.bedework.notifier.outbound.email.EmailConf</mbeanClassName>
+  <name>email</name>
+  <type>email</type>
+  <maxInstances>1</maxInstances>
+  <from>calendar.myplace.edu</from>
+  <protocol>smtp</protocol>
+  <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
+  <serverUri>mail.mysite.edu</serverUri>
+</notify-adaptor>

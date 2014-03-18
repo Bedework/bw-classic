@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch-connector xmlns="http://bedework.org/ns/"
+<notify-connector xmlns="http://bedework.org/ns/"
                  type="org.bedework.notifier.cnctrs.bedework.BedeworkConnectorConfig">
   <notificationDirHref>http://localhost:8080/pubcaldav/user/notify-user/Notifications/</notificationDirHref>
   <bwWSDLURI>http://localhost:8080/wsdls/synch/wssvc.wsdl</bwWSDLURI>
@@ -13,4 +13,4 @@
   <retryInterval>10</retryInterval>
   <token>abcd</token>
   <trustLastmod>true</trustLastmod>
-</synch-connector>
+</notify-connector>
