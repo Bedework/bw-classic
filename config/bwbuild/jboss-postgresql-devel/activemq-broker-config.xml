@@ -188,7 +188,7 @@
     <!-- High throughput but scalability problems - perhaps OK with <=500 connections
     <persistenceAdapter>
       <amqPersistenceAdapter syncOnWrite="false"
-        directory="${jboss.server.data.dir}/activemq-data" maxFileLength="20 mb" />
+        directory="${jboss.server.data.dir}/activemq" maxFileLength="20 mb" />
     </persistenceAdapter> -->
 
     <!-- Newer adapter - handles 1000s of connections -->
