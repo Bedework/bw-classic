@@ -48,7 +48,7 @@ profiler=""
 
 portoffset=0
 
-activemquri="vm://localhost"
+activemquri="vm://bedework"
 
 exprfilters=INFO
 

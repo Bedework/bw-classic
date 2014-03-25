@@ -15,7 +15,7 @@ SET permsize=256M
 SET testmode=
 SET profiler=
 
-SET activemquri=vm://localhost
+SET activemquri=vm://bedework
 
 SET portoffset=0
 SET LOG_THRESHOLD=-Djboss.server.log.threshold=INFO
