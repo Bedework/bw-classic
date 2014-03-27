@@ -26,15 +26,21 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.bedework</groupId>
-  <artifactId>bedework</artifactId>
+  <artifactId>bw-deployutil</artifactId>
   <version>4.0</version>
-  <packaging>pom</packaging>
 
   <name>Bedework uber project</name>
   <description>Bedework uber project</description>
   <url>http://bedework.org/</url>
 
   <properties>
+    <!-- Maven Plugin Versions -->
+    <maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+    <maven.source.plugin.version>2.1.2</maven.source.plugin.version>
+
+    <bedework.releases.repo.url>scp://dev.bedework.org/data/repository/maven/maven2</bedework.releases.repo.url>
+    <bedework.snapshots.repo.url>scp://dev.bedework.org/data/repository/maven/maven2</bedework.snapshots.repo.url>
+
     <defaultedVersion>4.0.0-SNAPSHOT</defaultedVersion>
 
     <bedeworkVersion>${defaultedVersion}</bedeworkVersion>
@@ -101,6 +107,19 @@
       <layout>default</layout>
     </repository>
   </repositories>
+
+  <distributionManagement>
+    <repository>
+      <id>bedework-releases-repository</id>
+      <name>Bedework Releases Repository</name>
+      <url>${bedework.releases.repo.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>bedework-snapshots-repository</id>
+      <name>Bedework Snapshots Repository</name>
+      <url>${bedework.snapshots.repo.url}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <dependencies>
     <dependency>
@@ -171,11 +190,43 @@
       </dependency>
   </dependencies>
 
+
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>2.4</version>
+      </extension>
+    </extensions>
     <plugins>
+      <!-- Specify the compiler options and settings -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <showDeprecation>false</showDeprecation>
+          <showWarnings>false</showWarnings>
+        </configuration>
+      </plugin>
+      <!-- Produce source jars during the 'verify' phase -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven.source.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
