@@ -98,6 +98,16 @@
   </target>
 
   <!-- =================================================================
+       "deploylog4j" target
+       ================================================================= -->
+
+  <target name="deploylog4j" depends="init"
+          description="Copy the log4j config into the appserver">
+    <ant antfile="${bedework.qs.build}" inheritrefs="true"
+         target="deploylog4j" />
+  </target>
+
+  <!-- =================================================================
        "deployActivemq" target
        ================================================================= -->
 
