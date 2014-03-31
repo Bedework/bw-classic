@@ -29,25 +29,20 @@ bw_loglevel=""
 mvn_quiet="-q"
 
 #mvn_binary="/usr/share/maven/bin/mvn";
-mvn_binary="mvn3";
+mvn_binary="mvn3"
 
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
 updateSvnProjects="bedenote"
-updateSvnProjects="$updateSvnProjects  bedework"
-updateSvnProjects="$updateSvnProjects  bwdeployutil"
-#updateSvnProjects="$updateSvnProjects  cachedfeeder"
 
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
 bedenote=
-bwdeployutil=
 bwtools=
 caldavTest=
 catsvr=
 client=
 exchgGateway=
-geronimoHib=
 naming=
 testsuite=
 
@@ -92,7 +87,6 @@ deploylog4j=
 deployActivemq=
 deployConf=
 deployData=
-deploySolr=
 deployEs=
 dirstart=
 saveData=
@@ -195,7 +189,6 @@ usage() {
   echo "   Ancillary projects: not required"
   echo "     -bwtools      Target is for the Bedework tools build"
   echo "     -caldavTest   Target is for the CalDAV Test build"
-  echo "     -deployutil   Target is for the Bedework deployment classes"
   echo "     -testsuite    Target is for the bedework test suite"
   echo "   Experimental projects: no guarantees"
   echo "     -catsvr       Target is for the Catsvr build"
@@ -334,12 +327,6 @@ setDirectory() {
   fi
 
 #     projects
-
-	if [ "$bwdeployutil" != "" ] ; then
-	  cd $GIT_HOME/bw-classic
-      bwdeployutil=
-	  return
-	fi
 
     if [ "$bedenote" != "" ] ; then
       cd $GIT_HOME/bedenote
@@ -853,11 +840,6 @@ do
       pkgdefault=
       shift
       ;;
-    deploySolr)
-  	  deploySolr="yes"
-      pkgdefault=
-      shift
-      ;;
   	dirstart)
   	  dirstart="yes"
       pkgdefault=
@@ -954,18 +936,13 @@ do
       pkgdefault=
       shift
       ;;
-# ------------------------SVN Projects
     -bedenote)
       bedenote="yes"
       pkgdefault=
       shift
       ;;
-    -bwann)
-      bwannotations="yes"
-      pkgdefault=
-      shift
-      ;;
     -bwtools)
+      # Needs importing
       bwtools="yes"
 
       bwannotations="yes"
@@ -989,6 +966,7 @@ do
       shift
       ;;
     -caldavTest)
+      # Needs importing
       caldavTest="yes"
 
       bw_access="yes"
@@ -1013,23 +991,11 @@ do
       pkgdefault=
       shift
       ;;
-    -deployutil)
-      bwdeployutil="yes"
-
-      pkgdefault=
-      shift
-      ;;
     -eventreg)
       bw_eventreg="yes"
 
       bw_ws="yes"
       bw_util="yes"
-      pkgdefault=
-      shift
-      ;;
-    -geronimohib)
-      geronimoHib="yes"
-
       pkgdefault=
       shift
       ;;

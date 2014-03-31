@@ -35,66 +35,59 @@ SET ant_logger=
 SET ant_loglevel="-quiet"
 SET bw_loglevel=
 
+SET mvn_quiet="-q"
+
+SET mvn_binary="mvn3"
+
 :: Projects we need to update - these are the svn projects - not internal variables
 :: or user parameters.
-SET "updateProjects=access"
-SET "updateProjects=%updateProjects% bedenote"
-SET "updateProjects=%updateProjects% bedework"
-SET "updateProjects=%updateProjects% bedework-carddav"
-SET "updateProjects=%updateProjects% bwannotations"
-SET "updateProjects=%updateProjects% bwcalcore"
-SET "updateProjects=%updateProjects% bwcaldav"
-SET "updateProjects=%updateProjects% bwcalFacade"
-SET "updateProjects=%updateProjects% bwdeployutil"
-SET "updateProjects=%updateProjects% bwical"
-SET "updateProjects=%updateProjects% bwinterfaces"
-SET "updateProjects=%updateProjects% bwsysevents"
-SET "updateProjects=%updateProjects% bwtzsvr"
-SET "updateProjects=%updateProjects% bwwebapps"
-SET "updateProjects=%updateProjects% bwxml"
-SET "updateProjects=%updateProjects% cachedfeeder"
-SET "updateProjects=%updateProjects% caldav"
-SET "updateProjects=%updateProjects% dumprestore"
-SET "updateProjects=%updateProjects% eventreg"
-SET "updateProjects=%updateProjects% indexer"
-SET "updateProjects=%updateProjects% rpiutil"
-SET "updateProjects=%updateProjects% selfreg"
-SET "updateProjects=%updateProjects% synch"
-SET "updateProjects=%updateProjects% webdav"
+SET "updateSvnProjects=bedenote"
 
 :: Projects we will build - pkgdefault (bedework) is built if nothing specified
 SET pkgdefault=yes
-SET access=
 SET bedenote=
-SET bedework=
-SET bwannotations=
-SET bwcalcore=
-SET bwcaldav=
-SET bwcalfacade=
-SET bwdeployutil=
-SET bwicalendar=
-SET bwinterfaces=
-SET bwsysevents=
 SET bwtools=
-SET bwwebapps=
-SET bwxml=
-SET caldav=
 SET caldavTest=
-SET carddav=
 SET catsvr=
 SET client=
-SET dumprestore=
-SET eventreg=
-SET indexer=
 SET naming=
-SET rpiutil=
-SET selfreg=
-SET synch=
 SET testsuite=
-SET tzsvr=
-SET webdav=
 
 SET action=
+
+SET maven=
+
+# update from git
+SET updateProjects="bw-access"
+SET updateProjects="%updateProjects%  bw-caldav"
+SET updateProjects="%updateProjects%  bw-calendar-client"
+SET updateProjects="%updateProjects%  bw-calendar-engine"
+SET updateProjects="%updateProjects%  bw-carddav"
+SET updateProjects="%updateProjects%  bw-classic"
+SET updateProjects="%updateProjects%  bw-event-registration"
+SET updateProjects="%updateProjects%  bw-notifier"
+SET updateProjects="%updateProjects%  bw-self-registration"
+SET updateProjects="%updateProjects%  bw-synch"
+SET updateProjects="%updateProjects%  bw-timezone-server"
+SET updateProjects="%updateProjects%  bw-util"
+SET updateProjects="%updateProjects%  bw-webdav"
+SET updateProjects="%updateProjects%  bw-ws"
+
+# git projects
+SET bw_access=
+SET bw_caldav=
+SET bw_calengine=
+SET bw_carddav=
+SET bw_classic=
+SET bw_eventreg=
+SET bw_notifier=
+SET bw_selfreg=
+SET bw_synch=
+SET bw_tzsvr=
+SET bw_util=
+SET bw_webclients=
+SET bw_webdav=
+SET bw_ws=
 
 :: Special targets - avoiding dependencies
 
@@ -103,7 +96,6 @@ SET deployActivemq=
 SET deployConf=
 SET deployData=
 SET deployEs=
-SET deploySolr=
 SET dirstart=
 SET saveData=
 
@@ -213,12 +205,6 @@ GOTO branch
   SHIFT
   GOTO branch
 
-:deploySolr
-  SET deploySolr="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
 :dirstart
   SET dirstart="yes"
   SET pkgdefault=
@@ -233,11 +219,99 @@ GOTO branch
 
 :: ----------------------- PROJECTS
 
-:access
-  SET access="yes"
+:bw_access
+  SET bw_access="yes"
 
-  SET bwxml="yes"
-  SET rpiutil="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:bw_caldav
+  SET bw_caldav="yes"
+
+  SET bw_access="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET bw_webdav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:bw_calengine
+  SET bw_calengine="yes"
+
+  SET bw_access="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET bw_webdav="yes"
+  SET bw_caldav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:bw_ws
+  SET bw_ws="yes"
+
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:bw_util
+  SET bw_util="yes"
+
+  SET bw_ws="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:bw_webdav
+  SET bw_webdav="yes"
+
+  SET bw_access="yes"
+  SET bw_util="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:notifier
+  SET bw_notifier="yes"
+
+  SET bw_access="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET bw_caldav="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:synch
+  SET bw_synch="yes"
+
+  SET bw_access="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:tzsvr
+  SET bw_tzsvr="yes"
+
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET pkgdefault=
+  SHIFT
+  GOTO branch
+
+:carddav
+  SET bw_carddav="yes"
+
+  SET bw_access="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET bw_webdav="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -248,126 +322,20 @@ GOTO branch
   SHIFT
   GOTO branch
 
-:bwann
-  SET bwannotations="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:bwcaldav
-  SET bwcaldav="yes"
-
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwcalfacade="yes"
-  SET bwicalendar="yes"
-  SET bwinterfaces="yes"
-  SET bwsysevents="yes"
-  SET bwxml="yes"
-  SET caldav="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:bwcalcore
-  SET bwcalcore="yes"
-
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwcalfacade="yes"
-  SET bwicalendar="yes"
-  SET bwinterfaces="yes"
-  SET bwsysevents="yes"
-  SET bwxml="yes"
-  SET caldav="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:bwcalfacade
-  SET bwcalfacade="yes"
-
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwxml="yes"
-  SET caldav="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:bwicalendar
-  SET bwicalendar="yes"
-
-  SET bwannotations="yes"
-  SET bwcalfacade="yes"
-  SET bwxml="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:bwinterfaces
-  SET bwinterfaces="yes"
-
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwcalfacade="yes"
-  SET bwxml="yes"
-  SET caldav="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:bwsysevents
-  SET bwsysevents="yes"
-
-  SET bwinterfaces="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
 :bwtools
   SET bwtools="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
 
-:bwwebapps
-  SET bwwebapps="yes"
+:bw_webclients
+  SET bw_webclients="yes"
 
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwcalfacade="yes"
-  SET bwicalendar="yes"
-  SET bwinterfaces="yes"
-  SET bwxml="yes"
-  SET caldav="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:bwxml
-  SET bwxml="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:caldav
-  SET caldav="yes"
-
-  SET access="yes"
-  SET bwxml="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
+  SET bw_access="yes"
+  SET bw_ws="yes"
+  SET bw_caldav="yes"
+  SET bw_util="yes"
+  SET bw_webdav="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -376,18 +344,7 @@ GOTO branch
   SET caldavTest="yes"
 
   SET access="yes"
-  SET bwxml="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:carddav
-  SET carddav="yes"
-
-  SET access="yes"
-  SET bwxml="yes"
+  SET bw_ws="yes"
   SET rpiutil="yes"
   SET webdav="yes"
   SET pkgdefault=
@@ -400,42 +357,11 @@ GOTO branch
   SHIFT
   GOTO branch
 
-:dumprestore
-  SET dumprestore="yes"
-
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwcalcore="yes"
-  SET bwcalfacade="yes"
-  SET bwicalendar="yes"
-  SET bwinterfaces="yes"
-  SET bwsysevents="yes"
-  SET indexer="yes"
-  SET rpiutil="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
 :eventreg
-  SET eventreg="yes"
+  SET bw_eventreg="yes"
 
-  SET bwxml="yes"
-  SET rpiutil="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:indexer
-  SET indexer="yes"
-
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwcalcore="yes"
-  SET bwcalfacade="yes"
-  SET bwicalendar="yes"
-  SET bwinterfaces="yes"
-  SET bwsysevents="yes"
-  SET rpiutil="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -446,28 +372,10 @@ GOTO branch
   SHIFT
   GOTO branch
 
-:rpiutil
-  SET rpiutil="yes"
-
-  SET bwxml="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
 :selfreg
-  SET selfreg="yes"
+  SET bw_selfreg="yes"
 
-  SET rpiutil="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:synch
-  SET synch="yes"
-
-  SET access="yes"
-  SET bwxml="yes"
-  SET rpiutil="yes"
+  SET bw_util="yes"
   SET pkgdefault=
   SHIFT
   GOTO branch
@@ -478,27 +386,9 @@ GOTO branch
   SHIFT
   GOTO branch
 
-:tzsvr
-  SET tzsvr="yes"
-
-  SET bwxml="yes"
-  SET rpiutil="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
-:webdav
-  SET webdav="yes"
-
-  SET access="yes"
-  SET rpiutil="yes"
-  SET pkgdefault=
-  SHIFT
-  GOTO branch
-
 :updateall
   for %%p in (%updateProjects%) do (
-  rem   IF EXIST "%%p" GOTO foundProjectToUpdate
+  rem   IF EXIST "%QUICKSTART_HOME%\%%p" GOTO foundProjectToUpdate
   rem    ECHO *******************************************************
   rem    ECHO Error: Project %%p is missing. Check it out from the repository"
   rem    ECHO *******************************************************
@@ -509,7 +399,8 @@ rem :foundProjectToUpdate
     ECHO Updating project %%p
     ECHO *************************************************************
 
-    svn update %%p
+    cd %QUICKSTART_HOME%\%%p
+    git pull
   )
 
   GOTO:EOF
@@ -536,23 +427,15 @@ rem :foundProjectToUpdate
 :doneWithArgs
 
 IF NOT "%pkgdefault%" == "yes" GOTO notdefault
-  SET bedework="yes"
+  SET bw_classic="yes"
 
-  SET access="yes"
-  SET bwannotations="yes"
-  SET bwcalcore="yes"
-  SET bwcaldav="yes"
-  SET bwcalfacade="yes"
-  SET bwicalendar="yes"
-  SET bwinterfaces="yes"
-  SET bwsysevents="yes"
-  SET bwwebapps="yes"
-  SET bwxml="yes"
-  SET caldav="yes"
-  SET dumprestore="yes"
-  SET indexer="yes"
-  SET rpiutil="yes"
-  SET webdav="yes"
+  SET bw_ws="yes"
+  SET bw_util="yes"
+  SET bw_access="yes"
+  SET bw_webdav="yes"
+  SET bw_caldav="yes"
+  SET bw_calengine="yes"
+  SET bw_webclients="yes"
 
 :notdefault
 
@@ -617,35 +500,26 @@ IF NOT "%$BWJMXCONFIG%empty" == "empty" GOTO DoneJmxConfig
   IF NOT "%deploySolr%empty" == "empty" GOTO cdDeploySolr
   IF NOT "%saveData%empty" == "empty" GOTO cdSaveData
 :: Now projects
-  IF NOT "%bwdeployutil%empty" == "empty" GOTO cdBwdeployutil
-  IF NOT "%bwxml%empty" == "empty" GOTO cdBwxml
-  IF NOT "%rpiutil%empty" == "empty" GOTO cdRpiutil
-  IF NOT "%access%empty" == "empty"  GOTO cdAccess
+  IF NOT "%bw_ws%empty" == "empty" GOTO cdBwWs
+  IF NOT "%bw_util%empty" == "empty" GOTO cdBwUtil
+  IF NOT "%bw_access%empty" == "empty"  GOTO cdBwAccess
   IF NOT "%bedenote%empty" == "empty"  GOTO cdBedenote
-  IF NOT "%eventreg%empty" == "empty"  GOTO cdEventreg
-  IF NOT "%webdav%empty" == "empty"  GOTO cdWebdav
-  IF NOT "%caldav%empty" == "empty"  GOTO cdCaldav
+  IF NOT "%bw_eventreg%empty" == "empty"  GOTO cdEventreg
+  IF NOT "%bw_webdav%empty" == "empty"  GOTO cdWebdav
+  IF NOT "%bw_caldav%empty" == "empty"  GOTO cdCaldav
   IF NOT "%caldavTest%empty" == "empty"  GOTO cdCaldavTest
   IF NOT "%carddav%empty" == "empty" GOTO cdCarddav
-  IF NOT "%bwannotations%empty" == "empty" GOTO cdBwannotations
-  IF NOT "%bwcalfacade%empty" == "empty" GOTO cdBwcalFacade
-  IF NOT "%bwinterfaces%empty" == "empty" GOTO cdBwinterfaces
-  IF NOT "%bwsysevents%empty" == "empty" GOTO cdBwsysevents
-  IF NOT "%bwicalendar%empty" == "empty" GOTO cdBwicalendar
+  IF NOT "%bw_calengine%empty" == "empty" GOTO cdBwcalengine
   IF NOT "%bwwebapps%empty" == "empty" GOTO cdBwwebapps
-  IF NOT "%bwcaldav%empty" == "empty" GOTO cdBwcaldav
-  IF NOT "%bwcalcore%empty" == "empty" GOTO cdBwcalcore
   IF NOT "%catsvr%empty" == "empty" GOTO cdCatsvr
-  IF NOT "%client%empty" == "empty"  GOTO cdBwclient
-  IF NOT "%indexer%empty" == "empty" GOTO cdIndexer
-  IF NOT "%dumprestore%empty" == "empty" GOTO cdDumprestore
-  IF NOT "%bedework%empty" == "empty" GOTO cdBedework
+  IF NOT "%bw_webclients%empty" == "empty"  GOTO cdWebclients
   IF NOT "%naming%empty" == "empty"  GOTO cdNaming
-  IF NOT "%synch%empty" == "empty"  GOTO cdSynch
+  IF NOT "%bw_synch%empty" == "empty"  GOTO cdSynch
+  IF NOT "%bw_notifier%empty" == "empty"  GOTO cdNotifier
   IF NOT "%testsuite%empty" == "empty"  GOTO cdTestsuite
   IF NOT "%bwtools%empty" == "empty"  GOTO cdBwtools
-  IF NOT "%tzsvr%empty" == "empty"   GOTO cdTzsvr
-  IF NOT "%selfreg%empty" == "empty" GOTO cdSelfreg
+  IF NOT "%bw_tzsvr%empty" == "empty"   GOTO cdTzsvr
+  IF NOT "%bw_selfreg%empty" == "empty" GOTO cdSelfreg
 
 GOTO:EOF
 
@@ -719,8 +593,8 @@ GOTO:EOF
 
 :: Projects
 :cdAccess
-  cd %QUICKSTART_HOME%\access
-  SET access=
+  cd %QUICKSTART_HOME%\bw-access
+  SET bw_access=
   GOTO doant
 
 :cdBedenote
@@ -733,46 +607,6 @@ GOTO:EOF
   SET bedework=
   GOTO doant
 
-:cdBwannotations
-  cd %QUICKSTART_HOME%\bwannotations
-  SET bwannotations=
-  GOTO doant
-
-:cdBwcalcore
-  cd %QUICKSTART_HOME%\bwcalcore
-  SET bwcalcore=
-  GOTO doant
-
-:cdBwcaldav
-  cd %QUICKSTART_HOME%\bwcaldav
-  SET bwcaldav=
-  GOTO doant
-
-:cdBwcalfacade
-  cd %QUICKSTART_HOME%\bwcalfacade
-  SET bwcalfacade=
-  GOTO doant
-
-:cdBwdeployutil
-  cd %QUICKSTART_HOME%\bwdeployutil
-  SET bwdeployutil=
-  GOTO doant
-
-:cdBwicalendar
-  cd %QUICKSTART_HOME%\bwical
-  SET bwicalendar=
-  GOTO doant
-
-:cdBwinterfaces
-  cd %QUICKSTART_HOME%\bwinterfaces
-  SET bwinterfaces=
-  GOTO doant
-
-:cdBwsysevents
-  cd %QUICKSTART_HOME%\bwsysevents
-  SET bwsysevents=
-  GOTO doant
-
 :cdBwtools
   cd %QUICKSTART_HOME%\bwtools
   SET bwtools=
@@ -783,19 +617,24 @@ GOTO:EOF
   SET bwwebapps=
   GOTO doant
 
-:cdBwxml
-  cd %QUICKSTART_HOME%\bwxml
-  SET bwxml=
+:cdBwWs
+  cd %QUICKSTART_HOME%\bw-ws
+  SET bw_ws=
   GOTO doant
 
 :cdCaldav
-  cd %QUICKSTART_HOME%\caldav
-  SET caldav=
+  cd %QUICKSTART_HOME%\bw-caldav
+  SET bw_caldav=
   GOTO doant
 
 :cdCaldavTest
   cd %QUICKSTART_HOME%\caldavTest
   SET caldavTest=
+  GOTO doant
+
+:cdCalengine
+  cd %QUICKSTART_HOME%\bw-calendar-engine
+  SET bw_calengine=
   GOTO doant
 
 :cdCarddav
@@ -808,24 +647,9 @@ GOTO:EOF
   SET client=
   GOTO doant
 
-:cdDeploytil
-  cd %QUICKSTART_HOME%\deploytil
-  SET deploytil=
-  GOTO doant
-
-:cdDumprestore
-  cd %QUICKSTART_HOME%\dumprestore
-  SET dumprestore=
-  GOTO doant
-
 :cdEventreg
-  cd %QUICKSTART_HOME%\eventreg
-  SET eventreg=
-  GOTO doant
-
-:cdIndexer
-  cd %QUICKSTART_HOME%\indexer
-  SET indexer=
+  cd %QUICKSTART_HOME%\bw-event-registration
+  SET bw_eventreg=
   GOTO doant
 
 :cdNaming
@@ -833,19 +657,26 @@ GOTO:EOF
   SET naming=
   GOTO doant
 
-:cdRpiutil
-  cd %QUICKSTART_HOME%\rpiutil
-  SET rpiutil=
+:cdBwUtil
+  cd %QUICKSTART_HOME%\bw-util
+  SET bw_util=
   GOTO doant
 
 :cdSelfreg
-  cd %QUICKSTART_HOME%\selfreg
-  SET selfreg=
+  cd %QUICKSTART_HOME%\bw-self-registration
+  SET bw_selfreg=
+  GOTO doant
+
+:cdNotifier
+  cd %QUICKSTART_HOME%\bw-notifier
+  SET deploy="%QUICKSTART_HOME%\bw-notifier\bw-note-ear\target\bw-notify*ear"
+  SET bw_notifier=
   GOTO doant
 
 :cdSynch
-  cd %QUICKSTART_HOME%\synch
-  SET synch=
+  cd %QUICKSTART_HOME%\bw-synch
+  SET bw_synch=
+  SET deploy="%QUICKSTART_HOME%\bw-synch\bw-synch-ear\target\bw-synch*ear"
   GOTO doant
 
 :cdTestsuite
@@ -854,13 +685,19 @@ GOTO:EOF
   GOTO doant
 
 :cdTzsvr
-  cd %QUICKSTART_HOME%\bwtzsvr
-  SET tzsvr=
+  cd %QUICKSTART_HOME%\bw-timezone-server
+  SET bw_tzsvr=
+  SET deploy="%QUICKSTART_HOME%\bw-timezone-server\bw-timezone-server-ear\target\bw-timezone-server*ear"
+  GOTO doant
+
+:cdWebclients
+  cd %QUICKSTART_HOME%\bw-calendar-client
+  SET bw_webclients=
   GOTO doant
 
 :cdWebdav
-  cd %QUICKSTART_HOME%\webdav
-  SET webdav=
+  cd %QUICKSTART_HOME%\bw-webdav
+  SET bw_webdav=
   GOTO doant
 
 
@@ -896,32 +733,25 @@ IF "%1" == "-log-verbose" GOTO log-verbose
 IF "%1" == "-ant-debug" GOTO ant-debug
 IF "%1" == "-build-debug" GOTO build-debug
 
-IF "%1" == "-access" GOTO access
-IF "%1" == "-bwann" GOTO bwannotations
-IF "%1" == "-bwcaldav" GOTO bwcaldav
-IF "%1" == "-bwcalcore" GOTO bwcalcore
-IF "%1" == "-bwcalfacade" GOTO bwcalfacade
-IF "%1" == "-bwicalendar" GOTO bwicalendar
-IF "%1" == "-bwinterfaces" GOTO bwinterfaces
-IF "%1" == "-bwsysevents" GOTO bwsysevents
+IF "%1" == "-bw_access" GOTO bw_access
+IF "%1" == "-bw_caldav" GOTO bw_caldav
+IF "%1" == "-bw_calengine" GOTO bw_calengine
 IF "%1" == "-bwtools" GOTO bwtools
-IF "%1" == "-bwwebapps" GOTO bwwebapps
-IF "%1" == "-bwxml" GOTO bwxml
+IF "%1" == "-bw_webclients" GOTO bw_webclients
+IF "%1" == "-bw_ws" GOTO bw_ws
 IF "%1" == "-caldav" GOTO caldav
 IF "%1" == "-caldavTest" GOTO caldavTest
 IF "%1" == "-carddav" GOTO carddav
 IF "%1" == "-client" GOTO client
-IF "%1" == "-deployutil" GOTO deployutil
-IF "%1" == "-dumprestore" GOTO dumprestore
 IF "%1" == "-eventreg" GOTO eventreg
-IF "%1" == "-indexer" GOTO indexer
 IF "%1" == "-naming" GOTO naming
-IF "%1" == "-rpiutil" GOTO rpiutil
+IF "%1" == "-bw_util" GOTO bw_util
 IF "%1" == "-selfreg" GOTO selfreg
 IF "%1" == "-synch" GOTO synch
+IF "%1" == "-notifier" GOTO notifier
 IF "%1" == "-testsuite" GOTO testsuite
 IF "%1" == "-tzsvr" GOTO tzsvr
-IF "%1" == "-webdav" GOTO webdav
+IF "%1" == "-bw_webdav" GOTO bw_webdav
 GOTO doneWithArgs
 
 :usage
@@ -966,31 +796,24 @@ REM   ECHO                  requires -version and -tzdata parameters
   ECHO            the core, ancillary or experimental targets below:
   ECHO.
   ECHO   Core projects: required for a functioning system
-  ECHO      -access      Target is for the access classes
-  ECHO      -bwann        Target is for the annotation classes
-  ECHO      -bwcalcore    Target is for the bedework core api implementation
+  ECHO      -bw_access    Target is for the access classes
+  ECHO      -bw_calengine Target is for the bedework core api implementation
   ECHO      -bwcaldav     Target is for the bedework CalDAV implementation
-  ECHO      -bwcalfacade  Target is for the bedework api interface classes
-  ECHO      -bwicalendar  Target is for the bedework icalendar classes
-  ECHO      -bwinterfaces Target is for the bedework service and api interfaces
-  ECHO      -bwsysevents  Target is for the system JMS event classes
-  ECHO      -bwwebapps    Target is for the bedework web ui classes
-  ECHO      -bwxml        Target is for the Bedework XML schemas build
+  ECHO      -bw_webclients Target is for the bedework web ui classes
+  ECHO      -bw_ws        Target is for the Bedework XML schemas build
   ECHO                       (usually built automatically be dependent projects
   ECHO      -caldav       Target is for the generic CalDAV server
   ECHO      -carddav      Target is for the CardDAV build
   ECHO      -carddav deploy-addrbook    To deploy the Javascript Addressbook client.
-  ECHO      -dumprestore  Target is for the Bedework dump/restore service
   ECHO      -eventreg     Target is for the Bedework event registration service
-  ECHO      -indexer      Target is for the Bedework indexer service
-  ECHO      -rpiutil      Target is for the Bedework util classes
+  ECHO      -bw_util      Target is for the Bedework util classes
   ECHO      -selfreg      Target is for the self registration build
   ECHO      -synch        Target is for the synch build
+  ECHO      -notifier     Target is for the notifier build
   ECHO      -tzsvr       Target is for the timezones server build
   ECHO   Ancillary projects: not required
   ECHO      -bwtools      Target is for the Bedework tools build
   ECHO      -caldavTest   Target is for the CalDAV Test build
-  ECHO      -deployutil   Target is for the Bedework deployment classes
   ECHO      -testsuite    Target is for the bedework test suite
   ECHO   Experimental projects: no guarantees
   ECHO      -client      Target is for the bedework client application build
