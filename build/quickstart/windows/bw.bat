@@ -497,7 +497,6 @@ IF NOT "%$BWJMXCONFIG%empty" == "empty" GOTO DoneJmxConfig
   IF NOT "%deployConf%empty" == "empty" GOTO cdDeployConf
   IF NOT "%deployData%empty" == "empty" GOTO cdDeployData
   IF NOT "%deployEs%empty" == "empty" GOTO cdDeployEs
-  IF NOT "%deploySolr%empty" == "empty" GOTO cdDeploySolr
   IF NOT "%saveData%empty" == "empty" GOTO cdSaveData
 :: Now projects
   IF NOT "%bw_ws%empty" == "empty" GOTO cdBwWs
@@ -577,12 +576,6 @@ GOTO:EOF
   cd %QUICKSTART_HOME%
   SET deployEs=
   SET specialTarget="deployEs"
-  GOTO dospecial
-
-:cdDeploySolr
-  cd %QUICKSTART_HOME%
-  SET deploySolr=
-  SET specialTarget="deploySolr"
   GOTO dospecial
 
 :cdSaveData
@@ -711,7 +704,6 @@ IF "%1" == "deployActivemq" GOTO deployActivemq
 IF "%1" == "deployConf" GOTO deployConf
 IF "%1" == "deployData" GOTO deployData
 IF "%1" == "deployEs" GOTO deployEs
-IF "%1" == "deploySolr" GOTO deploySolr
 IF "%1" == "dirstart" GOTO dirstart
 IF "%1" == "saveData" GOTO saveData
 
