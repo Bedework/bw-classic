@@ -23,6 +23,8 @@
 # See <http://elasticsearch.org/guide/reference/setup/configuration.html>
 # for information on supported formats and syntax for the configuration file.
 
+#
+# Disable auto creation of indexes
 action.auto_create_index: false
 
 ################################### Cluster ###################################
