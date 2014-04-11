@@ -19,6 +19,7 @@
   <userCalendarRoot>user</userCalendarRoot>
   <userDefaultCalendar>calendar</userDefaultCalendar>
   <userDefaultPollsCalendar>polls</userDefaultPollsCalendar>
+  <userDefaultTasksCalendar>tasks</userDefaultTasksCalendar>
   <userInbox>Inbox</userInbox>
   <userOutbox>Outbox</userOutbox>
   <userPrincipalRoot>/principals/users/</userPrincipalRoot>
