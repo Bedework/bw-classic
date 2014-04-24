@@ -394,6 +394,10 @@
               column="bw_poll_itemid"
               type="integer" />
 
+    <property name="pollWinner"
+              column="bw_poll_winner"
+              type="integer" />
+
     <property name="pollMode" type="string"
               column="bw_poll_mode" length="50" />
 
