@@ -1144,6 +1144,7 @@ do
   fi
 
   if [ "$deploy" != "" ] ; then
+    echo "Deploying $deploy to $jbossHome/server/default/bwdeploy/"
     cp $deploy $jbossHome/server/default/bwdeploy/
     deploy=
   fi

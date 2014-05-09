@@ -11,4 +11,5 @@
   <protocol>smtp</protocol>
   <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
   <serverUri>mail.mysite.edu</serverUri>
+  <locale>en_US</locale>
 </notify-adaptor>
