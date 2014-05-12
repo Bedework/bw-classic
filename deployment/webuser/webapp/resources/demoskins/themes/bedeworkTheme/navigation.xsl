@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,7 +20,7 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <xsl:template name="tabs">
     <xsl:variable name="navAction">
       <xsl:choose>
@@ -98,7 +98,7 @@
           </xsl:choose>
         </td>
         <td class="todayButton">
-          <button type="button" onclick="window.location='{$navAction}&amp;viewType=todayView&amp;date={$curdate}'">
+          <button type="button" onclick="window.location='{$navAction}&amp;viewType=todayView&amp;date={$nowdate}'">
             <xsl:value-of select="$bwStr-Navi-Today"/>
           </button>
         </td>
@@ -198,7 +198,7 @@
 
            <!-- show free / busy -->
            <!-- DEPRECATED as of Bedework 3.7: the feature is left in place for backwards compatibility -->
-           <!-- 
+           <!--
            <xsl:choose>
              <xsl:when test="/bedework/periodname!='Year'">
                <xsl:choose>
@@ -331,7 +331,7 @@
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
        </a>
-       <!-- 
+       <!--
        <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/images/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
           <xsl:text> </xsl:text>
@@ -343,7 +343,7 @@
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-AddTask"/>
        </a>
-       <!-- 
+       <!--
        <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="{$bwStr-Actn-ScheduleTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/images/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
           <xsl:text> </xsl:text>
@@ -358,5 +358,5 @@
      </div>
   </xsl:template>
 
-  
+
 </xsl:stylesheet>

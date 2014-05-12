@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -37,7 +37,7 @@
   <!-- DEFINE INCLUDES -->
   <xsl:include href="/bedework-common/default/default/util.xsl"/>
   <xsl:include href="/bedework-common/default/default/bedeworkAccess.xsl"/>
-  
+
   <!-- include the common language string libraries -->
   <xsl:include href="/bedework-common/es_ES/default/errors.xsl"/>
   <xsl:include href="/bedework-common/es_ES/default/messages.xsl"/>
@@ -46,7 +46,7 @@
   <!-- ========================================= -->
   <!--         DEFINE GLOBAL CONSTANTS           -->
   <!-- ========================================= -->
-  
+
   <!-- URL of the XSL template directory -->
   <xsl:variable name="appRoot" select="/bedework/approot"/>
 
@@ -119,7 +119,7 @@
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-initAdd" select="/bedework/urlPrefixes/sharing/initAddSubscription"/>
   <xsl:variable name="subscriptions-subscribe" select="/bedework/urlPrefixes/sharing/subscribe"/>
-  <!-- 
+  <!--
   <xsl:variable name="subscriptions-showSubsMenu" select="/bedework/urlPrefixes/subscriptions/showSubsMenu"/>
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate"/>
@@ -166,6 +166,7 @@
   <xsl:variable name="prevdate" select="/bedework/previousdate"/>
   <xsl:variable name="nextdate" select="/bedework/nextdate"/>
   <xsl:variable name="curdate" select="/bedework/currentdate/date"/>
+  <xsl:variable name="nowdate" select="/bedework/now/date"/>
   <xsl:variable name="skin">default</xsl:variable>
   <xsl:variable name="publicCal">/cal</xsl:variable>
 

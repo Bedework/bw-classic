@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -23,8 +23,8 @@
   xmlns:CSS="http://calendarserver.org/ns/"
   xmlns:C="urn:ietf:params:xml:ns:caldav"
   xmlns="http://www.w3.org/1999/xhtml">
-  
-  
+
+
   <!--+++++++++++++++ Calendars ++++++++++++++++++++-->
 
   <!--
@@ -135,7 +135,8 @@
           </input>
           <xsl:choose>
             <xsl:when test="display = 'true'">
-              <!-- set the value of display to false so that when the form is submitted we toggle-->
+              <!-- set the value of display to false so that when the form is submitted we toggle
+-->
               <input type="hidden" name="display" value="false"/>
               <input type="checkbox" name="bwDisplaySetter" checked="checked"  onclick="this.form.submit()">
                 <xsl:if test="(/bedework/page != 'eventscalendar' and
@@ -144,7 +145,8 @@
               </input>
             </xsl:when>
             <xsl:otherwise>
-              <!-- set the value of display to true so that when the form is submitted we toggle-->
+              <!-- set the value of display to true so that when the form is submitted we toggle
+-->
               <input type="hidden" name="display" value="true"/>
               <input type="checkbox" name="bwDisplaySetter" onclick="this.form.submit()">
                 <xsl:if test="(/bedework/page != 'eventscalendar' and
@@ -210,6 +212,8 @@
           </xsl:if>
         </xsl:when>
         <xsl:when test="calType='6'">
+          <!-- Outbox: do nothing; this should not appear, so skip it. -->
+          <!--
           <a href="{$showOutbox}" title="{$bwStr-Cals-OutgoingSchedulingRequests}">
             <xsl:value-of select="summary"/>
           </a>
@@ -217,6 +221,7 @@
           <xsl:if test="/bedework/outboxState/numActive != '0'">
             <span class="inoutboxActive">(<xsl:value-of select="/bedework/outboxState/numActive"/>)</span>
           </xsl:if>
+          -->
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
@@ -374,9 +379,11 @@
   </xsl:template>
 
   <xsl:template name="selectCalForPublicAlias">
-  <!-- This template is DEPRECATED ... selectCalForPublicAliasCalTree is now used instead.-->
+  <!-- This template is DEPRECATED ... selectCalForPublicAliasCalTree is now used instead.
+-->
   <!-- selectCalForPublicAlias creates a calendar tree pop-up window for
-       selecting a public calendar subscription (alias).-->
+       selecting a public calendar subscription (alias).
+-->
 
     <input type="button" onclick="javascript:changeClass('calSelectWidget','visible')" value="select calendar" class="small"/>
     <div id="calSelectWidget" class="invisible">
@@ -437,6 +444,7 @@
   <xsl:template match="currentCalendar" mode="addCalendar">
     <h3><xsl:copy-of select="$bwStr-CuCa-AddCalOrFolder"/></h3>
     <form name="addCalForm" method="post" action="{$calendar-update}" onsubmit="return setCalendarAlias(this)">
+      <input type="hidden" value="true" name="calendarCollection"/>
       <table class="common">
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Name"/></th>
@@ -492,7 +500,7 @@
           </td>
         </tr>
         <!-- hide filter expression for now -->
-        <!--  
+        <!--
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-FilterExpression"/></th>
           <td>
@@ -500,13 +508,14 @@
           </td>
         </tr>
         -->
+        <!--
         <tr>
           <th><xsl:copy-of select="$bwStr-CuCa-Type"/></th>
           <td>
-            <!-- we will set the value of "calendarCollection on submit.
-                 Value is false only for folders, so we default it to true here.  -->
-            <input type="hidden" value="true" name="calendarCollection"/>
-            <!-- type is defaulted to calendar.  It is changed when a typeSwitch is clicked. -->
+            < ! - - we will set the value of "calendarCollection on submit.
+                 Value is false only for folders, so we default it to true here.  - - >
+            <input type="hidden" value="calendar" name="type" id="bwCalType"/>
+            < ! - - type is defaulted to calendar.  It is changed when a typeSwitch is clicked. - - >
             <input type="hidden" value="calendar" name="type" id="bwCalType"/>
             <input type="radio" value="calendar" name="typeSwitch" id="bwCalTypeCal" checked="checked" onclick="changeClass('subscriptionTypes','invisible');setField('bwCalType',this.value);"/>
             <xsl:text> </xsl:text>
@@ -520,6 +529,7 @@
             </label>
           </td>
         </tr>
+        -->
       </table>
 	    <div class="note sharingNote">
 	      <xsl:copy-of select="$bwStr-CuCa-SharingMayBeAdded"/>
@@ -529,9 +539,9 @@
         <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
       </div>
     </form>
-    
+
   </xsl:template>
-  
+
   <xsl:template name="addSubscription">
     <h3><xsl:value-of select="$bwStr-CuCa-AddSubscription"/></h3>
     <div id="subscriptionTypes">
@@ -543,21 +553,21 @@
          <xsl:text> </xsl:text>
          <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
          <input type="hidden" value="public" name="subType" id="bwSubType"/><br/>
-         
+
          <input type="radio" name="subTypeSwitch" id="subSwitchExternal" value="external" checked="checked" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/>
          <xsl:text> </xsl:text>
          <label for="subSwitchExternal">
            <xsl:copy-of select="$bwStr-CuCa-URL"/>
          </label>
-         
+
          <input type="radio" name="subTypeSwitch" id="subSwitchPublic" value="public" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/>
          <xsl:text> </xsl:text>
          <label for="subSwitchPublic">
            <xsl:copy-of select="$bwStr-CuCa-PublicCalendar"/>
          </label>
-         
+
          <!-- type user is deprecated in this way - will stick with new sharing model as of version 3.9 -->
-         <!-- 
+         <!--
          <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-UserCalendar"/>
          -->
        </p>
@@ -600,7 +610,7 @@
        </div>
 
        <!-- deprecated version 3.9 -->
-       <!-- 
+       <!--
        <div id="subscriptionTypeUser" class="invisible">
          <table class="common">
            <tr>
@@ -821,7 +831,7 @@
           </xsl:if>
         </xsl:if>
       </table>
-      
+
 	    <div id="calAccessBoxHolder" class="modCalAdvanced">
 	      <span id="calAccessBoxToggle">
 	        <img src="{$resourcesRoot}/images/plus.gif"/> Advanced Access Controls
@@ -835,13 +845,13 @@
 	        <xsl:call-template name="entityAccessForm">
 	          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
 	        </xsl:call-template>
-	        
+
 	        <div class="note">
 	          <xsl:copy-of select="$bwStr-CuCa-AccessNote"/>
 	        </div>
 	      </div>
 	    </div>
-      
+
       <table border="0" id="submitTable">
         <tr>
           <td>
@@ -876,8 +886,8 @@
         </tr>
       </table>
     </form>
-    
-    <xsl:if test="default-scheduling-collection"> 
+
+    <xsl:if test="default-scheduling-collection">
       <div id="calSharingBox">
         <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
         <!-- users may not share the default scheduling collection -->
@@ -947,7 +957,7 @@
 		                <xsl:if test="CSS:access/CSS:write">
 		                  <xsl:attribute name="checked">checked</xsl:attribute>
 		                </xsl:if>
-		              </input>		             
+		              </input>
 		            </form>
 		          </td>
 		          <td class="remove">
@@ -957,7 +967,7 @@
 		          </td>
 		        </tr>
 		      </xsl:for-each>
-		      <!-- 
+		      <!--
 		      <xsl:for-each select="CSS:invite/CSS:user[CSS:invite-noresponse]">
             <xsl:sort type="ascending" select="DAV:href"/>
             <xsl:variable name="sharee" select="DAV:href"/>
@@ -988,8 +998,8 @@
 	      </table>
 	    </xsl:if>
     </xsl:if>
-    
-    
+
+
     <!-- Method 1 access setting is now deprecated.
          see the "entityAccessForm" template for more information -->
     <!--  div id="accessBox">
@@ -1275,6 +1285,6 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>
