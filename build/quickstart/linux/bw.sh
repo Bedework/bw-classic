@@ -162,9 +162,6 @@ usage() {
   echo "      deployActivemq    deploys the Activemq config"
   echo "      deployConf        deploys the configuration files"
   echo "      deployEs          deploys the quickstart elasticsearch config"
-  echo "      buildwebcache     builds webcache"
-  echo "      deploywebcache    deploys webcache"
-  echo "      deployurlbuilder  deploys url/widget builder"
   echo ""
   echo "   PROJECT optionally defines the package to build. If omitted the main"
   echo "           bedework calendar system will be built otherwise it is one of"
@@ -260,27 +257,6 @@ setDirectory() {
 	  cd $GIT_HOME
 	  specialTarget=dirstart
       dirstart=
-	  return
-	fi
-
-	if [ "$deploywebcache" != "" ] ; then
-      cd $GIT_HOME/bw-cachedfeeder
-	  specialTarget=deploy-webcache
-      deploywebcache=
-	  return
-	fi
-
-	if [ "$buildwebcache" != "" ] ; then
-      cd $GIT_HOME/bw-cachedfeeder
-	  specialTarget=build-webCache
-      buildwebcache=
-	  return
-	fi
-
-	if [ "$deployurlbuilder" != "" ] ; then
-      cd $GIT_HOME/bw-cachedfeeder
-	  specialTarget=deploy-urlbuilder
-      deployurlbuilder=
 	  return
 	fi
 
@@ -581,7 +557,7 @@ actionZoneinfo() {
     shift
   fi
 
-  wget http://bedework.org/downloads/lib/vzic-1.3.tgz
+  wget http://dev.bedework.org/downloads/lib/vzic-1.3.tgz
   gunzip vzic-1.3.tgz
   tar -xf vzic-1.3.tar
 
@@ -797,21 +773,6 @@ do
 # ------------------------Special targets
     cmdutil)
     cmdutil="yes"
-      pkgdefault=
-      shift
-      ;;
-    deploywebcache)
-	  deploywebcache="yes"
-      pkgdefault=
-      shift
-      ;;
-    buildwebcache)
-	  buildwebcache="yes"
-      pkgdefault=
-      shift
-      ;;
-    deployurlbuilder)
-	  deployurlbuilder="yes"
       pkgdefault=
       shift
       ;;
@@ -1067,7 +1028,7 @@ if [ "x" = "x$dsHome" ]; then
 fi
 
 CLASSPATH=$antHome/lib/ant-launcher.jar
-CLASSPATH=$CLASSPATH:$GIT_HOME/bedework/build/quickstart/antlib
+CLASSPATH=$CLASSPATH:$GIT_HOME/bw-classic/build/quickstart/antlib
 
 if [ "$quickstart" != "" ] ; then
   if [ "$BWCONFIGS" != "" ] ; then
@@ -1104,6 +1065,7 @@ fi
 
 # Make available for ant
 export BWCONFIG="-Dorg.bedework.build.properties=$BEDEWORK_CONFIG/build.properties"
+export QUICKSTART_HOME=$GIT_HOME
 
 echo "BWCONFIGS=$BWCONFIGS"
 echo "BWCONFIG=$BWCONFIG"

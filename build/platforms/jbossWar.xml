@@ -6,7 +6,7 @@
         addLibs: add libraries for this platform
         doPlatform - misc stuff
         deployWar: deploy the war to the server
-        deployEar: deploy the ear to the server 
+        deployEar: deploy the ear to the server
      =================================================================== -->
 
 <project name="bedework.platformWar" default="doPlatform" >
@@ -32,7 +32,7 @@
       </then>
     </if>
   </target>
-  
+
   <target name="setVirtualHost">
     <replace file="${app.dest.webinf}/jboss-web.xml">
       <replacetoken><![CDATA[<!-- Virtual host -->]]></replacetoken>
@@ -45,7 +45,7 @@
       <replacefilter token="@VIRTUAL-HOST@" value="${org.bedework.virtual.host.name}"/>
     </replace>
   </target>
-  
+
   <!-- ================================================================
        Add libraries
        ================================================================ -->
@@ -68,7 +68,7 @@
       </else>
     </if>
   </target>
-  
+
   <!-- ================================================================
        Deploy war
        ================================================================ -->
@@ -90,7 +90,7 @@
       </then>
     </if>
   </target>
-    
+
   <!-- ================================================================
        Deploy ear
        ================================================================ -->
@@ -120,7 +120,7 @@
     <!-- Common library in ear file -->
     <property name="app.dest.lib"
               location="${org.bedework.ear.dir}" />
-    
+
     <!-- Add any extra jars -->
     <copy todir="${org.bedework.temp.ear.extrajars.dir}" >
       <fileset dir="${org.bedework.temp.extrajars.dir}" />
@@ -130,7 +130,7 @@
     <copy todir="${app.dest.lib}" >
       <fileset dir="${org.bedework.temp.ear.extrajars.dir}" />
     </copy>
-  	
+
     <infoMsg message="* =========== Building ear file ${org.bedework.ear.dir} for jboss deployment" />
 
     <jar jarfile="${org.bedework.ear.properties.jar}">
@@ -142,7 +142,7 @@
                         contexts=${org.bedework.global.context.roots}" />
 
   	<mkdir dir="${org.bedework.ear.dir}/META-INF" />
-  	
+
     <applicationXml displayName="Bedework calendar suite"
                     outFile="${org.bedework.ear.dir}/META-INF/application.xml"
                     warDir="${org.bedework.temp.dir}/wars"
@@ -151,18 +151,18 @@
         <include name="*.jar"/>
       </fileset>
     </applicationXml>
-    
+
     <echo file="${org.bedework.ear.dir}/META-INF/jboss-app.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <jboss-app>
-   <loader-repository> 
-     org.bedework:archive=@EAR_NAME@ 
-     <loader-repository-config>java2ParentDelegation=false</loader-repository-config> 
-   </loader-repository> 
+   <loader-repository>
+     org.bedework:archive=@EAR_NAME@
+     <loader-repository-config>java2ParentDelegation=false</loader-repository-config>
+   </loader-repository>
 </jboss-app>
 ]]></echo>
-      
+
     <replace file="${org.bedework.ear.dir}/META-INF/jboss-app.xml"
-             token="@EAR_NAME@" 
+             token="@EAR_NAME@"
              value="${app.ear.file.name}"/>
 
     <if>
@@ -177,7 +177,7 @@
         </copy>
       </then>
     </if>
-    
+
     <if>
       <and>
         <isset property="service.xmdesc.dir" />
@@ -192,7 +192,7 @@
         </copy>
       </then>
     </if>
-          
+
     <manifest file="${org.bedework.ear.dir}/META-INF/MANIFEST.MF" />
 
     <if>
@@ -225,9 +225,21 @@
     <if>
       <isset property="org.bedework.appserver.deploy.dir" />
       <then>
+        <!-- ================================================================
         <delete dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
         <mkdir dir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}" />
         <copy todir="${org.bedework.appserver.deploy.dir}/${app.ear.file.name}">
+          <fileset dir="${org.bedework.ear.dir}"/>
+        </copy>
+             ================================================================ -->
+        <delete includeemptydirs="true">
+          <fileset dir="${org.bedework.appserver.deploy.dir}"
+                   defaultexcludes="false">
+            <include name="${org.bedework.ear.name}*.ear/**" />
+          </fileset>
+        </delete>
+        <mkdir dir="${org.bedework.appserver.deploy.dir}/${org.bedework.ear.name}-${org.bedework.quickstart.version}.ear" />
+        <copy todir="${org.bedework.appserver.deploy.dir}/${org.bedework.ear.name}-${org.bedework.quickstart.version}.ear">
           <fileset dir="${org.bedework.ear.dir}"/>
         </copy>
       </then>

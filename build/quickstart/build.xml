@@ -5,7 +5,7 @@
      It is imported by the quickstart build.xml ensuring all changes to this file
      appear in the repository.
 
-     Authors: Mike Douglass   douglm@bedework.edu
+     Authors: Mike Douglass   douglm rpi.edu
 -->
 
 <project name="quickstart-build-file" default="deploy" basedir=".">
@@ -139,29 +139,6 @@
           description="Copy the solr config into the appserver">
     <ant antfile="${bedework.build.file}" inheritrefs="true"
          target="deployConf" />
-  </target>
-
-  <!-- =================================================================
-       "deploySolr" target
-       ================================================================= -->
-
-  <target name="deploySolr" depends="init"
-          description="Copy the solr config into the appserver">
-    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/schema.xml"
-          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.publiccore}/conf/schema.xml"
-          overwrite="yes" />
-    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/solrconfig.xml"
-          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.publiccore}/conf/solrconfig.xml"
-          overwrite="yes" />
-    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/schema.xml"
-          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.usercore}/conf/schema.xml"
-          overwrite="yes" />
-    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/solrconfig.xml"
-          tofile="${org.bedework.global.solr.dir}/${org.bedework.global.solr.usercore}/conf/solrconfig.xml"
-          overwrite="yes" />
-    <copy file="${env.BEDEWORK_JMX_CONFIG}/../solr/solr.xml"
-          tofile="${org.bedework.global.solr.dir}/solr.xml"
-          overwrite="yes" />
   </target>
 
   <!-- =================================================================

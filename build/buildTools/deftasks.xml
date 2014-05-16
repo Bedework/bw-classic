@@ -533,6 +533,21 @@
         <!-- Load build property definition overrides -->
         <property file="${org.bedework.build.properties}" />
 
+        <!-- Load quickstart version information -->
+          <echo message="Quickstart version properties at ${env.QUICKSTART_HOME}/VERSION.properties" />
+        <property file="${env.QUICKSTART_HOME}/VERSION.properties" />
+        <if>
+          <not>
+            <isset property="org.bedework.quickstart.version"/>
+          </not>
+          <then>
+            <echo message="No version information for quickstart build."/>
+            <property name="org.bedework.quickstart.version" value="undefined"/>
+          </then>
+        </if>
+
+        <echo message="Building quickstart version ${org.bedework.quickstart.version}"/>
+
         <configMsg message="Loading build properties from ${org.bedework.build.properties}" />
         <configMsg message="Use config override properties ${org.bedework.config.override.properties}" />
         <configMsg message="Use config properties ${org.bedework.config.properties}" />
@@ -866,7 +881,7 @@
        and a jar file
           ${build.jar.file}
 
-       Authors: Mike Douglass   douglm bedework.edu
+       Authors: Mike Douglass   douglm rpi.edu
   -->
   <macrodef name="build-jar">
     <attribute name="module-base"/>

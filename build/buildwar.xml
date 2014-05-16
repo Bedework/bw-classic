@@ -41,7 +41,7 @@
 
   <!--<import file="${build.dir}/buildfilters.xml" />-->
   <buildfilters/>
-  
+
   <if>
     <isset property="org.bedework.global.portal.platform" />
     <then>
@@ -72,7 +72,7 @@
   <target name="init.common">
     <!-- Destinations - where we build an unwrapped war -->
     <property name="app.dest.war"
-              location="${org.bedework.temp.wars.home}/${propval.app.war.name}.war" />
+              location="${org.bedework.temp.wars.home}/${propval.app.war.name}-${org.bedework.quickstart.version}.war" />
     <property name="app.dest.docs"
               location="${app.dest.war}/docs" />
     <property name="app.dest.webinf"
@@ -89,7 +89,7 @@
               location="${app.dest.webinf}/web.xml" />
 
     <property name="app.war.file"
-              location="${dist.home}/${propval.app.war.name}.war" />
+              location="${dist.home}/${propval.app.war.name}-${org.bedework.quickstart.version}.war" />
 
     <!-- default web.xml -->
     <property name="propval.app.web.xml"
@@ -156,18 +156,18 @@
 
     <!-- Create the runtime options directory -->
     <mkdir dir="${app.dest.properties}" />
-    
+
     <if>
       <isset property="org.bedework.extra.properties" />
       <then>
         <copy todir="${app.dest.properties}">
           <filelist dir="${org.bedework.extra.properties.dir}"
-                    files="${org.bedework.extra.properties}"/> 
+                    files="${org.bedework.extra.properties}"/>
           <filterset refid="property.filters" />
         </copy>
       </then>
     </if>
-    
+
     <copy tofile="${app.dest.classes}/sysevents.properties"
           file="${org.bedework.config.sysevents.properties}" />
 
@@ -194,7 +194,7 @@
           <fileset dir="${org.bedework.sou.hibernate.properties}/properties" />
           <filterset refid="property.filters" />
         </copy>
-    
+
         <copy todir="${app.dest.classes}">
           <fileset dir="${org.bedework.sou.hibernate.properties}/hbms" />
           <filterset refid="property.filters" />
@@ -229,7 +229,7 @@
 
     <!-- Add the context root to the file. Note that newline is required -->
     <echo file="${org.bedework.global.context.roots}" append="yes">
-${propval.app.war.name}.context=${propval.app.context.root}
+${propval.app.war.name}-${org.bedework.quickstart.version}.context=${propval.app.context.root}
     </echo>
 
     <!-- Add libraries: Platform specific -->
@@ -244,7 +244,7 @@ ${propval.app.war.name}.context=${propval.app.context.root}
     <!-- may be there as a file or a directory -->
     <delete file="${app.war.file}" />
     <delete dir="${app.war.file}" />
-  	
+
     <if>
       <or>
         <not>
@@ -337,7 +337,7 @@ edu.rpi.sss.util.action.logprefix=@APP-NAME@
       <replacefilter token="@DEFAULT-CONTENTTYPE@"
                      value="${propval.app.default.contenttype}" />
     </replace>
-      
+
     <!-- Copy a dummy startup file into the war. -->
     <copy todir="${app.dest.war}">
       <fileset dir="${app.sou.dir}/webapp/" includes="setup.do" />
