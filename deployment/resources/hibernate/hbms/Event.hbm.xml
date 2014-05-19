@@ -409,7 +409,12 @@
 
     <set name="pollItems" lazy="true" table="bw_event_pollitems">
       <key column="eventid" foreign-key="bw_event_pitm_fk" />
-      <element type="string" column="bw_pitem" not-null="true"/>
+      <element type="text" column="bw_pitem" not-null="true"/>
+    </set>
+
+    <set name="pollItemIdsValues" lazy="true" table="bw_event_pollitemids">
+      <key column="eventid" foreign-key="bw_event_pitmids_fk" />
+      <element type="string" column="bw_pitemid" not-null="true"/>
     </set>
 
     <property name="pollCandidate"
