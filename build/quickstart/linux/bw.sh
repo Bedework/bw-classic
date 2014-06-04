@@ -124,9 +124,6 @@ usage() {
   echo "    In a deployed system many of these actions are handled directly by a"
   echo "    deployed application. ACTION may be one of"
   echo "      -updateall  Does an svn update of all projects"
-  echo "      -zoneinfo   builds zoneinfo data for the timezones server"
-  echo "                  requires -version and -tzdata parameters.   "
-  echo "                  NOTE: build depends on glib2 and only works on Linux/Unix"
   echo ""
   echo "   OPTIONS is zero or more from:"
   echo "     -quickstart    to use the configurations within the quickstart"
@@ -476,141 +473,6 @@ setDirectory() {
 	exit 0;
 }
 
-usageZoneinfo() {
-  echo ""
-  echo "$PRG -zoneinfo -fetch"
-  echo "to have data fetched and processed. Alternatively to process a specific set of data"
-  echo "$PRG -zoneinfo -version VERSION -tzdata path-to-data"
-  echo "for example:"
-  echo "$PRG -zoneinfo -version 2010m -tzdata /data/olson/tzdata2010m.tar.gz"
-  echo ""
-  echo "The code and data can be obtained manually from:"
-  echo "  http://www.iana.org/time-zones/repository/tzcode-latest.tar.gz"
-  echo "  http://www.iana.org/time-zones/repository/tzdata-latest.tar.gz"
-  echo ""
-  echo "  ftp://ftp.iana.org/tz/tzcode-latest.tar.gz"
-  echo "  ftp://ftp.iana.org/tz/tzdata-latest.tar.gz"
-  echo "e.g."
-  echo "  wget 'ftp://ftp.iana.org/tz/tzdata-latest.tar.gz'"
-  echo ""
-  echo "For a specific version replace 'latest' with the version, e.g."
-  echo "  ftp://ftp.iana.org/tz/releases/tzcode2012e.tar.gz"
-
-  exit 1
-}
-
-# ----------------------------------------------------------------------------
-# Build zoneinfo - require -version -tzdata
-# The version parameter value should be the version code from the tzdata name
-# ----------------------------------------------------------------------------
-actionZoneinfo() {
-  bwtzsvr="$QUICKSTART_HOME/bwtzsvr"
-  bwresources="$bwtzsvr/resources"
-
-  rm -rf /tmp/bedework
-  mkdir /tmp/bedework
-  mkdir /tmp/bedework/timezones
-  mkdir /tmp/bedework/timezones/data
-
-  cd /tmp/bedework/timezones
-
-  shift
-
-  if [ "$1" = "-fetch" ] ; then
-    shift
-    cd data
-    wget 'http://www.iana.org/time-zones/repository/tzdata-latest.tar.gz'
-    gzip -dc tzdata*.tar.gz | tar -xf -
-
-    filename=$(basename `ls tzdata*`)
-    version=$( echo $filename | cut -c 7-11 )
-
-    tzdata="/tmp/bedework/timezones/data/$filename"
-
-    cd ..
-
-    echo version=$version
-    echo tzdata=$tzdata
-  else
-    if [ "$1" != "-version" ] ; then
-      echo "got $1"
-      echo "Must supply -version parameter for -zoneinfo"
-      usageZoneinfo
-    fi
-
-    shift
-
-    echo "got $1"
-    version=$1
-
-    shift
-
-    if [ "$1" != "-tzdata" ] ; then
-      echo "Must supply -tzdata parameter for -zoneinfo"
-      usageZoneinfo
-    fi
-
-    shift
-
-    tzdata=$1
-
-    shift
-  fi
-
-  wget http://dev.bedework.org/downloads/lib/vzic-1.3.tgz
-  gunzip vzic-1.3.tgz
-  tar -xf vzic-1.3.tar
-
-# copy and unpack the data
-  mkdir olsondata
-  cd olsondata
-  cp $tzdata tzdata.tar.gz
-  gunzip tzdata.tar.gz
-  tar -xf tzdata.tar
-  rm tzdata.tar
-  cd ..
-
-# Replace lines in the makefile. Sure real unix types can do better
-
-  cd vzic-1.3
-
-  sed "s/\(^OLSON_DIR = \)\(..*$\)/\1\/tmp\/bedework\/timezones\/olsondata/" Makefile > Makefile1
-
-  sed "s/\(^PRODUCT_ID = \)\(..*$\)/\1\/bedework.org\/\/NONSGML Bedework\/\/EN/" Makefile1 > Makefile2
-
-  sed "s/\(^TZID_PREFIX = \)\(..*$\)/\1/" Makefile2 > Makefile
-
-  make
-
-# omit the pure for allegedly better outlook compatability -
-# but not altogether correct timezones
-  ./vzic --pure
-
-  cd ..
-
-  mkdir tzdata
-  cp -r vzic-1.3/zoneinfo tzdata
-  cp $bwresources/aliases.txt tzdata
-
-  cd tzdata
-
-  echo "version=$version" > info.txt
-#  date +buildTime=%D-%T-%N >> info.txt
-  date --utc +buildTime=%Y%m%dT%H%M%SZ >> info.txt
-
-  zip -r tzdata *
-
-  cp tzdata.zip $bwtzsvr/dist
-
-  echo ""
-  echo "------------------------------------------------------------------------------"
-  echo "tzdata.zip has been built and is at $bwtzsvr/dist/tzdata.zip"
-  echo "------------------------------------------------------------------------------"
-  echo ""
-
-  exit 0
-}
-
 if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   errorUsage "JAVA_HOME is not defined correctly for bedework."
 fi
@@ -650,10 +512,6 @@ fi
 
 if [ "$1" = "-updateall" ] ; then
   actionUpdateall
-fi
-
-if [ "$1" = "-zoneinfo" ] ; then
-  actionZoneinfo $*
 fi
 
 # ----------------------------------------------------------------------------
