@@ -3,7 +3,7 @@
 <system-properties xmlns="http://bedework.org/ns/"
                    type="org.bedework.calsvc.jmx.SystemPropertiesImpl">
   <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
-  <cacheUrlPrefix>http://localhost:8080/cache/</cacheUrlPrefix>
+  <cacheUrlPrefix>http://localhost:7070</cacheUrlPrefix>
   <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
   <eventregUrl>http://localhost:8080/eventreg/</eventregUrl>
   <mailerClass>org.bedework.mail.DummyMailer</mailerClass>

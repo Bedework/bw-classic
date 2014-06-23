@@ -18,6 +18,6 @@
   <userIndexName>bwuser</userIndexName>
 
   <embeddedIndexer>true</embeddedIndexer>
-  <httpEnabled>true</httpEnabled>
+  <httpEnabled>false</httpEnabled>
   <dataDir>@APPSERVER-DATA-DIR@/elasticsearch/</dataDir>
 </index-properties>

@@ -9,7 +9,7 @@
 <project name="bedework.platformTermination" default="doPlatform" >
   <target name="doPlatform" >
     <buildfilters/>
-    
+
     <!-- If requested copy in the db configuration.
 
     <if>
@@ -21,7 +21,7 @@
       </then>
     </if>
      -->
-    <!-- Copy in the default configuration(s) if they appear to be missing -->
+    <!-- Copy in the default configuration(s) if they appear to be missing
     <if>
       <not>
         <available file="${org.bedework.data.dir}/tzsvr/config.xml" />
@@ -33,5 +33,6 @@
         </copy>
       </then>
     </if>
+     -->
   </target>
 </project>

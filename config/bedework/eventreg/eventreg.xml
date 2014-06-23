@@ -24,4 +24,6 @@
     <hibernateProperty>hibernate.connection.pool_size=1</hibernateProperty>
     <hibernateProperty>hibernate.query.substitutions=true 'T', false 'F', yes 'Y', no 'N'</hibernateProperty>
   </hibernateProperties>
+  <tzsUri>http://localhost:8080/tzsvr</tzsUri>
+  <wsdlUri>http://localhost:8080/wsdls/pubcalws-soap/wssvc.wsdl</wsdlUri>
 </eventreg-properties>
