@@ -361,17 +361,12 @@ setDirectory() {
 	  return
 	fi
 
-	if [ "$carddav" != "" ] ; then
-	  cd $GIT_HOME/bedework-carddav
-      carddav=
-	  return
-	fi
-
   if [ "$bw_carddav" != "" ] ; then
       echo "Build carddav"
       cd $GIT_HOME/bw-carddav
       maven=yes
       bw_carddav=
+      deploy="$GIT_HOME/bw-carddav/bw-carddav-ear/target/bw-carddav*ear"
     return
   fi
 
