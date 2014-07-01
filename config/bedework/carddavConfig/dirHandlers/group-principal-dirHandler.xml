@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<org.bedework.carddav.util.LdapDirHandlerConfig xmlns="http://bedework.org/ns/" type="org.bedework.carddav.util.LdapDirHandlerConfig">
+<bwcarddav-dirhandler xmlns="http://bedework.org/ns/" type="org.bedework.carddav.server.config.LdapDirHandlerConfig">
   <addressBook>true</addressBook>
   <addressbookEntryIdAttr>cn</addressbookEntryIdAttr>
   <addressbookEntryObjectClass>groupOfUniqueNames</addressbookEntryObjectClass>
@@ -18,10 +18,11 @@
   <folderIdAttr>ou</folderIdAttr>
   <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
   <name>group-principal-dirHandler</name>
-  <pathPrefix>/principals/groups</pathPrefix>
+  <pathPrefix>/directory/groups</pathPrefix>
+  <principalPrefix>/principals/groups/</principalPrefix>
   <principalIdAttr>cn</principalIdAttr>
   <providerUrl>ldap://localhost:10389/</providerUrl>
   <queryLimit>1000</queryLimit>
   <securityAuthentication>simple</securityAuthentication>
   <securityProtocol>NONE</securityProtocol>
-</org.bedework.carddav.util.LdapDirHandlerConfig>
+</bwcarddav-dirhandler>

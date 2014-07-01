@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<bwcarddav xmlns="http://bedework.org/ns/" type="org.bedework.carddav.util.CardDAVContextConfig">
-  <addressBookHandlerPrefix>/user</addressBookHandlerPrefix>
+<bwcarddav xmlns="http://bedework.org/ns/" type="org.bedework.carddav.server.config.CardDAVConfig">
+  <dataOut>@APPSERVER-DATA-DIR@/carddav/dumprestore/</dataOut>
   <defaultAddressbook>addressbook</defaultAddressbook>
-  <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
   <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>
   <hostPrincipalRoot>/principals/hosts</hostPrincipalRoot>
-  <name>usercarddav</name>
   <principalRoot>/principals</principalRoot>
   <resourcePrincipalRoot>/principals/resources</resourcePrincipalRoot>
   <sysintfImpl>org.bedework.carddav.bwserver.BwSysIntfImpl</sysintfImpl>
@@ -14,7 +12,4 @@
   <userHomeRoot>/user</userHomeRoot>
   <userPrincipalRoot>/principals/users</userPrincipalRoot>
   <venuePrincipalRoot>/principals/locations</venuePrincipalRoot>
-  <webaddrPublicAddrbook>/principals/users</webaddrPublicAddrbook>
-  <webaddrServicePropertiesList>fn,email,note,org</webaddrServicePropertiesList>
-  <webaddrServiceURI>/find</webaddrServiceURI>
 </bwcarddav>
