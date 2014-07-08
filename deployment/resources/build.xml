@@ -12,7 +12,7 @@
   <property name="propval.app.display.name"
             value="${org.bedework.global.build.common.context.name}" />
   <property name="propval.app.war.name"
-            value="${org.bedework.global.build.common.context.war.name}" />
+            value="${org.bedework.global.build.common.context.war.name}-${org.bedework.quickstart.version}" />
 
   <!--<import file="${build.dir}/buildfilters.xml" />-->
   <buildfilters/>
@@ -26,7 +26,7 @@
     <property name="org.bedework.use.jquery" value="true" />
 
     <property name="common.war.name"
-              value="${org.bedework.global.build.common.context.war.name}" />
+              value="${org.bedework.global.build.common.context.war.name}-${org.bedework.quickstart.version}" />
     <property name="common.dest.war"
               location="${org.bedework.temp.wars.home}/${common.war.name}.war" />
 
