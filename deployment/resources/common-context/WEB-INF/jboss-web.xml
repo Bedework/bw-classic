@@ -3,5 +3,5 @@
 <jboss-web>
   <!-- Virtual host -->
 
-  <security-domain>java:/jaas/@SECURITY-DOMAIN@</security-domain>
+  <security-domain>java:/jaas/${app.security.domain}</security-domain>
 </jboss-web>

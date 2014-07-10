@@ -12,38 +12,12 @@
 <project name="bedework.platformWar" default="doPlatform" >
   <target name="doPlatform" >
     <!-- ===============================================================
-         We create an updated jboss-web.xml file (for jboss) and a ear
+         We create a jboss-web.xml file (for jboss) and a ear
          =============================================================== -->
 
     <copy todir="${app.dest.webinf}"
-          file="${app.sou.dir}/webapp/WEB-INF/jboss-web.xml">
-      <filterset refid="property.filters" />
+          file="${app.sou.dir}/war/WEB-INF/jboss-web.xml">
     </copy>
-
-    <if>
-      <isset property="propval.app.virtual.host" />
-      <then>
-        <foreach list="${propval.app.virtual.host}"
-                 target="setVirtualHost"
-                 param="org.bedework.virtual.host.name"
-                 inheritall="true"
-                 inheritrefs="true"
-                 trim="true" />
-      </then>
-    </if>
-  </target>
-
-  <target name="setVirtualHost">
-    <replace file="${app.dest.webinf}/jboss-web.xml">
-      <replacetoken><![CDATA[<!-- Virtual host -->]]></replacetoken>
-      <replacevalue><![CDATA[<!-- Virtual host -->
-        <virtual-host>@VIRTUAL-HOST@</virtual-host>
-      ]]>
-      </replacevalue>
-    </replace>
-    <replace file="${app.dest.webinf}/jboss-web.xml">
-      <replacefilter token="@VIRTUAL-HOST@" value="${org.bedework.virtual.host.name}"/>
-    </replace>
   </target>
 
   <!-- ================================================================

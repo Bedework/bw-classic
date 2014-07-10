@@ -219,9 +219,6 @@
     <copy tofile="${app.dest.web.xml}"
           file="${app.temp.web.xml}"
           overwrite="yes" >
-      <filterset>
-        <filter token="RPI-DEBUG" value="${app.debug.val}"/>
-      </filterset>
       <filterset refid="property.filters" />
     </copy>
 
@@ -306,7 +303,6 @@ edu.rpi.sss.util.action.noactionerrors=yes
 applicationResources=<li>Cannot load application resources bundle {0}</li>
 
 # set the default content type - html for jsp, xml for xml/xslt.
-#edu.rpi.sss.util.action.contenttype=@DEFAULT-CONTENTTYPE@
 edu.rpi.sss.util.action.contenttype=text/xml
 
 edu.rpi.sss.util.error.exc=<li>Exception: {0}</li>
@@ -316,19 +312,11 @@ edu.rpi.sss.util.error.exc=<li>Exception: {0}</li>
 # This gets around an IE problem with delivery of files.
 edu.rpi.sss.util.action.nocache=yes
 
-org.bedework.security.prefix=@SECURITY-PREFIX@
+edu.rpi.sss.util.action.logprefix=bedework
 
-edu.rpi.sss.util.action.logprefix=@APP-NAME@
-
-# Roles we need to know about - init action uses these
-# (Not using roles in the current system)
-#org.bedework.role.admin=@SECURITY-PREFIX@.admin
-#org.bedework.role.contentadmin=@SECURITY-PREFIX@.contentadmin
-#org.bedework.role.alert=@SECURITY-PREFIX@.alerts
-#org.bedework.role.owner=@SECURITY-PREFIX@.owner
 ]]></echo>
 
-    <!-- Replace the tokens -->
+    <!-- Replace the tokens
     <replace file="${app.dest.classes}/servlet.properties">
       <replacefilter token="@SECURITY-PREFIX@"
                      value="${propval.app.security.prefix}" />
@@ -337,7 +325,7 @@ edu.rpi.sss.util.action.logprefix=@APP-NAME@
       <replacefilter token="@DEFAULT-CONTENTTYPE@"
                      value="${propval.app.default.contenttype}" />
     </replace>
-
+-->
     <!-- Copy a dummy startup file into the war. -->
     <copy todir="${app.dest.war}">
       <fileset dir="${app.sou.dir}/webapp/" includes="setup.do" />

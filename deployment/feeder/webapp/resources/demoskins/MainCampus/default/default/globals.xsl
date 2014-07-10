@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -47,6 +47,7 @@
     string) so that all links constructed in this stylesheet may begin the
     query string with an ampersand. -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup" />
+  <xsl:variable name="eventsFeed" select="/bedework/urlPrefixes/main/eventsFeed" />
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection" />
   <xsl:variable name="setSelectionList" select="/bedework/urlPrefixes/main/setSelectionList" />
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars" />
@@ -71,6 +72,6 @@
   <xsl:variable name="prevdate" select="/bedework/previousdate" />
   <xsl:variable name="nextdate" select="/bedework/nextdate" />
   <xsl:variable name="curdate" select="/bedework/currentdate/date" />
-  
+
 
 </xsl:stylesheet>

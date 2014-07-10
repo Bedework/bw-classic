@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -46,8 +46,7 @@
       <head>
         <title><xsl:copy-of select="$bwStr-Root-PageTitle"/></title>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-        <link rel="stylesheet" href="{$resourcesRoot}/css/blue.css"/>
-        <link rel="stylesheet" type="text/css" media="print" href="/bedework/common/css/print.css" />
+        <link rel="stylesheet" href="{$resourcesRoot}/css/list-html.css"/>
         <!-- load javascript -->
         <xsl:if test="/bedework/page='event'">
           <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
@@ -151,29 +150,23 @@
      <xsl:choose>
        <xsl:when test="status='CANCELLED'">bwStatusCancelled</xsl:when>
        <xsl:when test="status='TENTATIVE'">bwStatusTentative</xsl:when>
+       <xsl:otherwise>bwStatusConfirmed</xsl:otherwise>
      </xsl:choose>
    </xsl:attribute>
 
    <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsEv-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
    <xsl:if test="status='TENTATIVE'"><em><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></em></xsl:if>
-   <a href="{$bwCacheHostUrl}/v1.0/htmlEvent/list-html/{$recurrenceId}/{$guid}.html">
+   <a href="{$publicCal}/event/eventView.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
      <xsl:value-of select="summary"/>
-   </a><xsl:if test="location/address != ''">, <xsl:value-of select="location/address"/></xsl:if>
-   <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
-     <xsl:if test="location/subaddress != ''">
-       , <xsl:value-of select="location/subaddress"/>
-     </xsl:if>
-   </xsl:if>
+   </a>
 
-   <xsl:text> </xsl:text>
-   <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
-     <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
-   </a>
-   <xsl:text> </xsl:text>
-   <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
-   <a href="{$bwCacheHostUrl}/v1.0/download/{$recurrenceId}/{$guid}/{$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
-     <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
-   </a>
+   <xsl:if test="/bedework/appvar[key='dl']/value = 'true'">
+     <xsl:text> </xsl:text>
+     <xsl:variable name="eventIcalName" select="concat($id,'.ics')"/>
+     <a href="{$bwCacheHostUrl}/v1.0/download/{$recurrenceId}/{$guid}/{$eventIcalName}" title="{$bwStr-SgEv-DownloadEvent}">
+       <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" width="12" height="16" border="0" alt="{$bwStr-LsEv-DownloadEvent}"/>
+     </a>
+   </xsl:if>
    <br/>
 
    <xsl:value-of select="substring(start/dayname,1,3)"/>,
@@ -200,7 +193,15 @@
      </xsl:otherwise>
    </xsl:choose>
 
+   <br/>
+   <xsl:if test="location/address != ''"><xsl:value-of select="location/address"/></xsl:if>
    <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+     <xsl:if test="location/subaddress != ''">
+       , <xsl:value-of select="location/subaddress"/>
+     </xsl:if>
+   </xsl:if>
+
+   <xsl:if test="/bedework/appvar[key='details']/value='true'">
      <br/>
      <xsl:value-of select="description"/>
      <xsl:if test="link != ''">
