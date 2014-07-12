@@ -3,7 +3,7 @@
      projectDefs: standard project definitions
      xMsg: x=info,debug etc. For message output
 
-     Authors: Mike Douglass   douglm bedework.edu
+     Authors: Mike Douglass   douglm rpi.edu
 -->
 
 <project name="doDeftasks" basedir="." default=""
@@ -297,10 +297,6 @@
         <filter token="CAL-SUITE"
                 value="${propval.app.cal.suite}"/>
 
-        <filter token="SECURITY-DOMAIN"
-                value="${propval.app.security.domain}"/>
-        <filter token="SECURITY-PREFIX"
-                value="${propval.app.security.prefix}"/>
         <filter token="TRANSPORT-GUARANTEE"
                 value="${propval.app.transport.guarantee}"/>
 

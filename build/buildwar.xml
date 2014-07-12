@@ -316,16 +316,6 @@ edu.rpi.sss.util.action.logprefix=bedework
 
 ]]></echo>
 
-    <!-- Replace the tokens
-    <replace file="${app.dest.classes}/servlet.properties">
-      <replacefilter token="@SECURITY-PREFIX@"
-                     value="${propval.app.security.prefix}" />
-      <replacefilter token="@APP-NAME@"
-                     value="${propval.app.name}" />
-      <replacefilter token="@DEFAULT-CONTENTTYPE@"
-                     value="${propval.app.default.contenttype}" />
-    </replace>
--->
     <!-- Copy a dummy startup file into the war. -->
     <copy todir="${app.dest.war}">
       <fileset dir="${app.sou.dir}/webapp/" includes="setup.do" />
