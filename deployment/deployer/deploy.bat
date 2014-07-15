@@ -17,6 +17,10 @@ ECHO
 
 SET cp=@CP@
 
+FOR /f %%i IN ('dir /b rpiutil\lib\*.jar') DO SET cp=!cp!;./lib/%%i
+
+FOR /f %%i IN ('dir /b rpiutil\dist\*.jar') DO SET cp=!cp!;./lib/%%i
+
 SET RUNCMD="%JAVA_HOME%\bin\java" -cp %cp% edu.rpi.sss.util.deployment.ProcessEars
 
 ECHO.
