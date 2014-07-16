@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="jsonIcalLib/jsonParser.js"></script>
+  <script type="text/javascript" src="jsonIcalLib/jsonTz.js"></script>
+  <script type="text/javascript" src="jsonIcalLib/moment-with-langs.js"></script>
+
+       <script>
+        $(document).ready(function() {
+            $('#process').click(function() {
+                    var data = eval($('#ical').val());
+
+                    //tzs.get("America/New_York");
+
+                    var parser = new JsonParser();
+
+                    var c = parser.parse(data);
+
+                    var ical = c.toIcal();
+
+                    var e = encodeURIComponent(ical);
+
+                    out = "<a href=\"data:application/octet-stream," + e + "\">ical</a>";
+
+                    $('#output').after(out);
+
+                    var vev = c.findComponent("vevent");
+
+                    var dtstart = vev.findProperty("dtstart");
+//                  alert(dtstart.toIcal())
+                    $('#output').after(dtstart.toIcal());
+
+                    var tzid = dtstart.findParameter("tzid");
+
+                    if (tzid != null) {
+                        var dtstartVal = dtstart.value.val[0];
+                        var offset = getOffset(dtstartVal, tzid);
+
+                        if (offset == null) {
+                            alert("Unknown tz: " + tzid);
+                        } else {
+                            $("#tzstuff").append("Offset = " + offset + "</br>");
+
+                            var mo = moment(dtstartVal);
+                            $("#tzstuff").append("mo = " + mo.format() + "</br>");
+
+                            var moUtc = mo.utc();
+                            $("#tzstuff").append("mo-utc = " + moUtc.format() + "</br>");
+
+                            /* Note the oddity with sign of timezone offset and
+                               UTC offset
+                               http://stackoverflow.com/questions/22275025/inverted-zone-in-moment-timezone
+                             */
+                            var moOffset = moUtc.zone(-offset);
+                            $("#tzstuff").append("mo-offset = " + moOffset.format() + "</br>");
+
+                            var westoffset = getOffset(dtstartVal, "America/Los_Angeles");
+
+                            var moWestOffset = moUtc.zone(-westoffset);
+                            $("#tzstuff").append("mo-westoffset = " + moWestOffset.format() + "</br>");
+                        }
+                    }
+
+                    return false;
+                 });
+
+
+        });
+
+       </script>
+</head>
+<body>
+<div id="output">
+
+</div>
+<form id="">
+  <textarea rows="20" cols="80" id="ical">
+  </textarea>
+  <input id="process" type="submit">
+</form>
+
+<pre>
+["vcalendar",
+    [
+      ["version", {}, ["text", "2.0"]],
+      ["calscale", {}, ["text", "gregorian"]],
+      ["prodid", {}, ["text", "-//Example Inc.//Example Calendar//EN"]],
+    ],
+    [
+        ["vevent", [
+            ["uid", {}, ["text", "4088E990AD89CB3DBB484909"]],
+            ["dtstart", {"tzid":"America/New_York"}, ["date-time", "2008-10-06T15:00:00"]],
+            ["dtstamp", {}, ["date-time", "2008-02-05T19:12:24Z"]],
+            ["summary", {}, ["text", "Planning meeting"]],
+          ],
+          [],
+       ],
+    ],
+]
+</pre>
+
+<div id="tzstuff">
+
+</div>
+
+</body>
+</html>
