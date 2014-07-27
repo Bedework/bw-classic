@@ -20,8 +20,9 @@
   <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
   <name>public-locations-dirHandler</name>
   <ownerHref>/principals/users/admin</ownerHref>
-  <pathPrefix>/public/locations</pathPrefix>
+  <pathPrefix>/directory/locations</pathPrefix>
   <principalIdAttr>calcaladruri</principalIdAttr>
+  <principalPrefix>/principals/locations/</principalPrefix>
   <providerUrl>ldap://localhost:10389/</providerUrl>
   <queryLimit>1000</queryLimit>
   <securityAuthentication>simple</securityAuthentication>
