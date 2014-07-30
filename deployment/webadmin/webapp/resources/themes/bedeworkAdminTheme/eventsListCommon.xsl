@@ -42,18 +42,13 @@
         <th><xsl:copy-of select="$bwStr-EvLC-Description"/></th>
       </tr>
 
-      <xsl:choose>
-        <xsl:when test="/bedework/appvar[key='catFilter'] and /bedework/appvar[key='catFilter']/value != 'none'">
-          <xsl:apply-templates select="/bedework/events/event[categories//category/uid = /bedework/appvar[key='catFilter']/value]" mode="eventListCommon">
-            <xsl:with-param name="pending"><xsl:value-of select="$pending"/></xsl:with-param>
-          </xsl:apply-templates>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/events/event" mode="eventListCommon">
-            <xsl:with-param name="pending"><xsl:value-of select="$pending"/></xsl:with-param>
-          </xsl:apply-templates>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:apply-templates select="/bedework/events/event" mode="eventListCommon">
+        <xsl:with-param name="pending"><xsl:value-of select="$pending"/></xsl:with-param>
+      </xsl:apply-templates>
+
+      <xsl:if test="not(/bedework/events/event)">
+        <tr><td colspan="6"><xsl:copy-of select="$bwStr-EvLC-NoEvents"/></td></tr>
+      </xsl:if>
 
     </table>
   </xsl:template>

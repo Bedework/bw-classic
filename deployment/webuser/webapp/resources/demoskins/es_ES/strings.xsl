@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -63,6 +63,7 @@
   <xsl:variable name="bwStr-Tabs-Year">AÑO</xsl:variable>
   <xsl:variable name="bwStr-Tabs-List">LISTA</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Agenda">AGENDA</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Upcoming">PRÓXIMOS</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Semana de</xsl:variable>
@@ -123,9 +124,10 @@
   <xsl:variable name="bwStr-EvLn-DeleteInstance">borrar la ocurrencia (evento repetitivo)</xsl:variable>
   <xsl:variable name="bwStr-EvLn-Delete">Borrar</xsl:variable>
   <xsl:variable name="bwStr-EvLn-AddEventReference">add event reference to a calendar</xsl:variable>
-  
+
 
   <!-- xsl:template match="events" mode="eventList" -->
+  <xsl:variable name="bwStr-LsEv-Upcoming">próximos</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Next7Days">Siguientes 7 Días</xsl:variable>
   <xsl:variable name="bwStr-LsEv-NoEventsToDisplay">No hay eventos para Visualizar</xsl:variable>
   <xsl:variable name="bwStr-LsEv-DownloadEvent">Bajar el evento en formato ical - para Outlook, PDAs, iCal, y otras agendas de sobremesa</xsl:variable>
@@ -453,7 +455,7 @@
   <xsl:variable name="bwStr-Cloc-Switch">cambiar</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">cerrar</xsl:variable>
   <xsl:variable name="bwStr-Cloc-CloseClock">close clock</xsl:variable>
-  
+
   <!-- xsl:template name="newclock" -->
   <xsl:variable name="bwStr-Cloc-Hour">Hora</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Minute">Minuto</xsl:variable>
@@ -511,6 +513,7 @@
   <!-- xsl:template match="event" mode="addEventRef" -->
   <!-- some strings defined above -->
   <xsl:variable name="bwStr-AEEF-AddEventReference">Añadir Referencia al Evento</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-AddEventSubscription">Añadir Suscripción al Evento</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventColon">Evento:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-NoTitle">sin título</xsl:variable>
   <xsl:variable name="bwStr-AEEF-IntoCalendar">A la agenda:</xsl:variable>
@@ -576,13 +579,13 @@
   <xsl:variable name="bwStr-SCfE-SelectACalendar">seleccione una agenda</xsl:variable>
   <xsl:variable name="bwStr-SCfE-NoWritableCals">no hay agendas con permiso de escritura</xsl:variable>
   <xsl:variable name="bwStr-SCfE-Close">close</xsl:variable>
-  
+
   <!--  xsl:template match="calendar" mode="selectCalForEventCalTree" -->
 
   <!--  xsl:template name="selectCalForPublicAlias" -->
   <xsl:variable name="bwStr-SCPA-SelectACalendar">seleccione una agenda</xsl:variable>
   <xsl:variable name="bwStr-SCPA-Close">close</xsl:variable>
-  
+
   <!--  xsl:template match="calendar" mode="selectCalForPublicAliasCalTree" -->
 
   <!--  xsl:template match="currentCalendar" mode="addCalendar" -->
@@ -653,7 +656,7 @@
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Acceso Actual:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Nota:</strong> Advanced access controls can break standard sharing.</p><p>Si autoriza permiso de escritura a otro usuario, y desea ver los eventos que pueda introducir dicho usuario en su agenda, <strong>debe autorizar explícitamente acceso a esa agenda para usted mismo.</strong>  Introduzca su ID de usuario en el campo "Quién" mientras establece "todos" en el campo "Permisos". Este es el control de acceso estándar; el motivo por el que usted no ve los eventos introducidos por otros usuarios sin llevar a cabo esta operación es que el acceso por defecto es permitir: todo al "propietario" - y usted no es el propietario de los eventos introducidos por otros usuarios.</p></xsl:variable>
   <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
-  
+
   <!-- notifications.xsl -->
   <xsl:variable name="bwStr-Notif-SharingInvitation">Sharing Invitation</xsl:variable>
   <xsl:variable name="bwStr-Notif-SharingReply">Sharing Reply</xsl:variable>

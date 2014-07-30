@@ -25,7 +25,7 @@
     <div class="notes">
       <xsl:if test="/bedework/userInfo/superUser = 'true'">
         <p class="note">
-          <xsl:copy-of select="$bwStr-MMnu-LoggedInAs"/>
+          <strong><xsl:copy-of select="$bwStr-MMnu-LoggedInAs"/></strong>
         </p>
       </xsl:if>
     </div>
@@ -75,7 +75,7 @@
       <ul class="mainMenuRow">
         <li>
           <a href="{$event-initUpdateEvent}">
-            <xsl:attribute name="href"><xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="$curListDate"/>&amp;fexpr=(entity_type="event"|entity_type="todo")&amp;sort=dtstart.utc:asc</xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="$curListDate"/>&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))&amp;sort=dtstart.utc:asc&amp;setappvar=catFilter()</xsl:attribute>
             <xsl:if test="not(/bedework/currentCalSuite/name)">
               <xsl:attribute name="onclick">alert("<xsl:copy-of select="$bwStr-MMnu-YouMustBeOperating"/>");return false;</xsl:attribute>
             </xsl:if>
@@ -111,6 +111,8 @@
       </ul>
     </div>
 
+    <!-- Original main menu search form: you can restore this if you wish. -->
+    <!--
     <div id="mainMenuEventSearch">
       <form name="searchForm" method="post" action="{$search}" id="searchForm">
         <label for="bwSearchQuery" class="bwSearchTitle"><xsl:copy-of select="$bwStr-MMnu-EventSearch"/></label>
@@ -135,6 +137,7 @@
         </fieldset>
       </form>
     </div>
+    -->
   </xsl:template>
 
 </xsl:stylesheet>

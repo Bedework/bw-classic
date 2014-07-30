@@ -108,7 +108,7 @@
               <td>
                 <textarea name="categoryDesc.value" id="categoryDesc" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedework/currentCategory/category/description)"/>
-                  <xsl:if test="/bedework/currentCategory/category/description = ''"><xsl:text> </xsl:text></xsl:if>
+                  <xsl:if test="normalize-space(/bedework/currentCategory/category/description) = ''"><xsl:text> </xsl:text></xsl:if>
                 </textarea>
               </td>
             </tr>

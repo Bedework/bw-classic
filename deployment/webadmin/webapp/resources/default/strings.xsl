@@ -45,8 +45,7 @@
   <!--  xsl:template name="messagesAndErrors" -->
 
   <!--  xsl:template name="mainMenu" -->
-  <xsl:variable name="bwStr-MMnu-LoggedInAs"><strong>You are logged in as superuser.</strong><br/>
-    Common event administration is best performed as a typical event administrator.</xsl:variable>
+  <xsl:variable name="bwStr-MMnu-LoggedInAs">You are logged in as superuser.</xsl:variable>
   <xsl:variable name="bwStr-MMnu-YouMustBeOperating">You must be operating in the context of a calendar suite\nto add or manage events.\n\nYour current group is neither associated with a calendar suite\nnor a child of a group associated with a calendar suite.</xsl:variable>
   <xsl:variable name="bwStr-MMnu-AddEvent">Add Event</xsl:variable>
   <xsl:variable name="bwStr-MMnu-AddContact">Add Contact</xsl:variable>
@@ -98,7 +97,6 @@
   <xsl:variable name="bwStr-TaSy-ManageCalDAVFilters">Manage CalDAV filters</xsl:variable>
   <xsl:variable name="bwStr-TaSy-ManageGlobalResources">Manage global resources</xsl:variable>
 
-
   <!--  xsl:template name="eventList" -->
   <xsl:variable name="bwStr-EvLs-ManageEvents">Manage Events</xsl:variable>
   <xsl:variable name="bwStr-EvLs-SelectEvent">Select the event that you would like to update:</xsl:variable>
@@ -124,6 +122,7 @@
   <xsl:variable name="bwStr-EvLC-TopicalAreas">Topical Areas</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Categories">Categories</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Description">Description</xsl:variable>
+  <xsl:variable name="bwStr-EvLC-NoEvents">No events to display</xsl:variable>
 
   <!--  xsl:template match="event" mode="eventListCommon" -->
   <xsl:variable name="bwStr-EvLC-NoTitle">no title</xsl:variable>
@@ -1048,6 +1047,9 @@
   <xsl:variable name="bwStr-Srch-Page">page:</xsl:variable>
   <xsl:variable name="bwStr-Srch-Prev">prev</xsl:variable>
   <xsl:variable name="bwStr-Srch-Next">next</xsl:variable>
+  <xsl:variable name="bwStr-Srch-PrevFull">Previous</xsl:variable>
+  <xsl:variable name="bwStr-Srch-NextFull">Next</xsl:variable>
+  <xsl:variable name="bwStr-Srch-Starting">Starting:</xsl:variable>
   <xsl:variable name="bwStr-Srch-ResultReturnedFor">result(s) returned for</xsl:variable>
   <xsl:variable name="bwStr-Srch-Relevance">relevance</xsl:variable>
   <xsl:variable name="bwStr-Srch-Summary">display name</xsl:variable>
@@ -1056,6 +1058,8 @@
   <xsl:variable name="bwStr-Srch-Calendar">calendar</xsl:variable>
   <xsl:variable name="bwStr-Srch-Location">location</xsl:variable>
   <xsl:variable name="bwStr-Srch-NoTitle">no title</xsl:variable>
+  <xsl:variable name="bwStr-Srch-NoResults">no results</xsl:variable>
+  <xsl:variable name="bwStr-Srch-NoMoreResults">no more results</xsl:variable>
 
   <!--  xsl:template name="searchResultPageNav" -->
 

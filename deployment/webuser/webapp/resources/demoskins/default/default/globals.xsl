@@ -61,6 +61,7 @@
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection"/>
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod"/>
   <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents"/>
+  <xsl:variable name="showPage" select="/bedework/urlPrefixes/misc/showPage"/>
   <!-- events -->
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView"/>
   <xsl:variable name="initEvent" select="/bedework/urlPrefixes/event/initEvent"/>

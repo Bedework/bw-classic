@@ -82,9 +82,9 @@
     <ul>
 
       <li><xsl:copy-of select="$bwStr-CaLi-SelectItemFromPublicTree"/></li>
-      <li><xsl:copy-of select="$bwStr-CaLi-SelectThe"/>
-      <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true"/>
-      <xsl:copy-of select="$bwStr-CaLi-IconToAdd"/>
+      <li><xsl:copy-of select="$bwStr-CaLi-SelectThe"/><xsl:text> </xsl:text>
+        <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true"/>
+        <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CaLi-IconToAdd"/>
         <ul>
           <li><xsl:copy-of select="$bwStr-CaLi-FoldersMayContain"/></li>
           <li><xsl:copy-of select="$bwStr-CaLi-CalendarsMayContain"/></li>

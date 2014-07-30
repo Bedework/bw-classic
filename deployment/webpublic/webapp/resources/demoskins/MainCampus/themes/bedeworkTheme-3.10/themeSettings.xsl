@@ -134,19 +134,7 @@
     <ul class="sideLinks">
       <li>
         <a href="{$fetchPublicCalendars}">
-          <xsl:copy-of select="$bwStr-LCol-ViewAllCalendars"/>
-        </a>
-      </li>
-      <li>
-        <a>
-          <xsl:attribute name="href">
-            <xsl:choose>
-              <xsl:when test="$embedUrlBuilder = 'true'"><xsl:value-of select="$showPage"/>&amp;setappvar=page(urlbuilder)</xsl:when>
-              <xsl:otherwise><xsl:value-of select="$urlbuilder"/></xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-          <xsl:attribute name="title"><xsl:value-of select="$bwStr-LCol-FeedsAndWidgets"/></xsl:attribute>
-          <xsl:copy-of select="$bwStr-LCol-FeedsAndWidgets"/>
+          <xsl:copy-of select="$bwStr-LCol-DownloadCalendars"/>
         </a>
       </li>
       <li>
@@ -165,6 +153,30 @@
 
 
 
+  <!-- DISPLAY ADVANCED DATE RANGE MENU? -->
+  <!-- Links under the date picker "upcoming, day, week, month" can be
+       optionally enabled or disabled.  If turned off, you are advised
+       to set your calendar suite preferences to use the "UPCOMING"  default
+       view mode.  Disabling this menu makes the user interface simpler.
+       Enabling it provides more ways of looking at the event lists. -->
+  <xsl:variable name="useAdvancedDateRangeMenu">true</xsl:variable>
+
+  <!-- DISPLAY A DATE SEPARATOR IN UPCOMING EVENT LIST? -->
+  <!-- If true, a date will be inserted between events in the upcoming
+       list when the start date changes.  Note that events that cross
+       day boundaries will NOT be duplicated.  (For that behavior,
+       turn on the advanced date range menu, and use the week or month
+       view where this is the default behavior.)-->
+  <xsl:variable name="useDateSeparatorsInList">true</xsl:variable>
+
+  <!-- DATE PICKER: USE HTML5 NATIVE? -->
+  <!-- If true, the native HTML5 date picker will be used in browsers that
+       support it (e.g. iPhone, iPad, Chrome).  If false, the jquery date picker
+       will be used across all browsers. The jquery date picker will be used
+       in browsers that do not yet support a native date picker regardless of
+       this setting. -->
+  <xsl:variable name="useHTML5DatePicker">true</xsl:variable>
+
   <!-- IE COMPATIBILITY MODE -->
   <!-- Support latest rendering for IE?  This switch turns on the following
        meta tag in head.xsl:
@@ -173,47 +185,6 @@
        you want to remain valid HTML 5; but understand that earlier versions of
        IE may not work well without this.  -->
   <xsl:variable name="useIE-X-UA-Compatible">false</xsl:variable>
-
-  <!-- DISPLAY ADVANCED DATE RANGE MENU? -->
-  <!-- Links under the date picker "upcoming, day, week, month" can be
-       optionally enabled or disabled.  If turned off, you are advised
-       to set your calendar suite preferences to use the "UPCOMING"  default
-       view mode.  Disabling this menu makes the user interface simpler.
-       Enabling it provides more ways of looking at the event lists. -->
-  <xsl:variable name="useAdvancedDateRangeMenu">false</xsl:variable>
-
-  <!-- DISPLAY A DATE SEPARATOR IN UPCOMING EVENT LIST? -->
-  <!-- If true, a date will be inserted between events in the upcoming
-       list when the start date changes.  Note that events that cross
-       day boundaries will NOT be duplicated.  (For that behavior,
-       turn on the advanced date range menu, and use the week or month
-       view where this is the default behavior.)-->
-  <xsl:variable name="useDateSeparatorsInList">false</xsl:variable>
-
-
-
-  <!-- VIEWS and SUBSCRIPTIONS NAVIGATION TREES -->
-  <!-- In this theme, you can use the calendar suite's views,
-       its underlying calendar subscriptions, or both to construct the left navigation menu.
-       If both are used, you'll see both menus in the left menu bar.
-       Typically, you'll want to use one or the other.
-       In version 3.10, Views are the default choice.  -->
-
-  <!-- Views Navigation Tree -->
-  <!-- "Views" provide an abstraction layer of arbitrary named collections of
-       subscriptions View are maintained in the "Calendar Suite" tab of the
-       admin web client. As of version 3.10, Views are used to build the
-       explorer-style menu trees in the left navigation bar. -->
-  <xsl:variable name="useViewsNav">false</xsl:variable>
-
-  <!-- Subscriptions Calendar Navigation Tree -->
-  <!-- "Subscriptions" provide the full hierarchy of calendars within a calendar suite in
-       an explorer-like tree. Subscriptions are managed in the "Calendar Suite" tab of the
-       admin web client.  -->
-
-  <xsl:variable name="useSubscriptionsNav">true</xsl:variable>
-
-
 
 
   <!-- EVENT ACTION ICONS -->
@@ -273,11 +244,12 @@
   <xsl:variable name="ongoingEventsUseCategory">true</xsl:variable>
 
   <!-- There are three methods of identifying the Ongoing events, category uid,
-       category path, and alias. We'll use alias for now.  -->
+       category path, and alias. All three are used in different ways in this theme,
+       so set them all.  -->
   <!-- The following CatUid represents category "sys/Ongoing" -->
   <xsl:variable name="ongoingEventsCatUid">402881e7-25b99d14-0125-b9a50c22-00000002</xsl:variable>
   <!-- The following CatPath represents category "sys/Ongoing" -->
-  <xsl:variable name="ongoingEventsCatPath">/public/categories/sys/Ongoing</xsl:variable>
+  <xsl:variable name="ongoingEventsCatPath">/public/.bedework/categories/sys/Ongoing</xsl:variable>
   <!-- The following Alias represents category "sys/Ongoing" -->
   <xsl:variable name="ongoingEventsAlias">/user/agrp_calsuite-MainCampus/Ongoing</xsl:variable>
 

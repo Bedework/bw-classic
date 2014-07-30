@@ -39,6 +39,7 @@
   background-color: white;
   border: 1px solid #ccb;
   width: 280px;
+  line-height: 1.5em;
 }
 .bwTimePicker .bwTimePickerCloser {
   position: absolute;

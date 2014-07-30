@@ -45,12 +45,15 @@
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup" />
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection" />
   <xsl:variable name="setSelectionList" select="/bedework/urlPrefixes/main/setSelectionList" />
+  <xsl:variable name="setMainEventList" select="/bedework/urlPrefixes/main/setMainEventList" />
+  <xsl:variable name="nextMainEventList" select="/bedework/urlPrefixes/main/nextMainEventList" />
   <xsl:variable name="setOngoingList" select="/bedework/urlPrefixes/main/setOngoingList" />
   <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars" />
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod" />
   <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents" />
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView" />
   <xsl:variable name="addEventRef" select="/bedework/urlPrefixes/event/addEventRef" />
+  <xsl:variable name="addEventSub" select="/bedework/urlPrefixes/event/addEventSub" />
   <xsl:variable name="export" select="/bedework/urlPrefixes/misc/export" />
   <xsl:variable name="async" select="/bedework/urlPrefixes/misc/async" />
   <xsl:variable name="search" select="/bedework/urlPrefixes/search/search" />

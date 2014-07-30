@@ -340,13 +340,13 @@ function setEventFields(formObj,portalFriendly,submitter) {
 function cleanEventFields(formObj) {
   // clean the description:
   var descriptionText = trim(formObj["description"].value);
-  descriptionText = descriptionText.replace("\v",""); // remove vertical tab
+  descriptionText = descriptionText.replace("\x0B",""); // remove vertical tab
   descriptionText =  descriptionText.replace(RegExp(String.fromCharCode(31),"g"),""); // remove universal separator
   formObj["description"].value = descriptionText;
 
   // clean the summary
   var summaryText = trim(formObj["summary"].value);
-  summaryText = summaryText.replace("\v",""); // remove vertical tab
+  summaryText = summaryText.replace("\x0B",""); // remove vertical tab
   summaryText = summaryText.replace(RegExp(String.fromCharCode(31),"g"),""); // remove universal separator
   formObj["summary"].value = summaryText;
 }

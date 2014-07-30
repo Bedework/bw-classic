@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,11 +20,11 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <xsl:template name="sideBar">
     <!--  We'll leave the following views block here in case we (or someone) wants to make use of views.
           We are not using them at the moment in the personal client, so we'll hide it. -->
-    <!-- 
+    <!--
     <h3>
       <xsl:copy-of select="$bwStr-SdBr-Views"/>
     </h3>
@@ -59,15 +59,25 @@
     </h3>
     <!-- normal calendars -->
     <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3]" mode="myCalendars"/>
+      <xsl:choose>
+        <xsl:when test="$publicOnly = 'true'">
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType = 0]" mode="myCalendars"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3]" mode="myCalendars"/>
+        </xsl:otherwise>
+      </xsl:choose>
+
     </ul>
     <!-- special calendars: inbox, outbox, and trash -->
-    <ul class="calendarTree">
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 5]" mode="mySpecialCalendars"/> <!-- inbox -->
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 6]" mode="mySpecialCalendars"/> <!-- outbox -->
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 2]" mode="mySpecialCalendars"/> <!-- trash -->
-      <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 3]" mode="mySpecialCalendars"/> <!-- deleted -->
-    </ul>
+    <xsl:if test="$publicOnly = 'false'">
+      <ul class="calendarTree">
+        <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 5]" mode="mySpecialCalendars"/> <!-- inbox -->
+        <!--<xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 6]" mode="mySpecialCalendars"/> --> <!-- outbox: do not display -->
+        <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 2]" mode="mySpecialCalendars"/> <!-- trash -->
+        <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar/calendar[calType = 3]" mode="mySpecialCalendars"/> <!-- deleted -->
+      </ul>
+    </xsl:if>
 
     <!--
     <h3>
@@ -90,16 +100,18 @@
 
     <h3><xsl:copy-of select="$bwStr-SdBr-Options"/></h3>
     <ul id="sideBarMenu">
-      <li>
-        <xsl:variable name="userid" select="/bedework/userid"/>
-        <a href="/bwAddrbookClient/?user={$userid}" target="bwAddrBook">
-          <img height="13" border="0" width="13"
+      <xsl:if test="$publicOnly = 'false'">
+        <li>
+          <xsl:variable name="userid" select="/bedework/userid"/>
+          <a href="/bwAddrbookClient/?user={$userid}" target="bwAddrBook">
+            <img height="13" border="0" width="13"
             src="{$resourcesRoot}/images/silk/book.png"
             alt="{$bwStr-SdBr-AddrBook}" />
-          <xsl:text> </xsl:text>
-          <xsl:copy-of select="$bwStr-SdBr-AddrBook"/>
-        </a>
-      </li>
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-SdBr-AddrBook"/>
+          </a>
+        </li>
+      </xsl:if>
       <li class="prefs">
         <a href="{$prefs-fetchForUpdate}">
           <img height="13" border="0" width="13"
@@ -109,15 +121,17 @@
           <xsl:copy-of select="$bwStr-SdBr-Preferences"/>
         </a>
       </li>
-      <li>
-        <a href="{$initUpload}" title="{$bwStr-SdBr-UploadEvent}">
-          <img height="16" border="0" width="12"
+      <xsl:if test="$publicOnly = 'false'">
+        <li>
+          <a href="{$initUpload}" title="{$bwStr-SdBr-UploadEvent}">
+            <img height="16" border="0" width="12"
             src="{$resourcesRoot}/images/std-icalUpload-icon-small.gif"
             alt="upload ical" />
-          <xsl:text> </xsl:text>
-          <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
-        </a>
-      </li>
+            <xsl:text> </xsl:text>
+            <xsl:copy-of select="$bwStr-SdBr-UploadICal"/>
+          </a>
+        </li>
+      </xsl:if>
       <li>
         <a href="{$calendar-listForExport}" title="{$bwStr-SdBr-ExportCalendars}">
           <img height="16" border="0" width="12"
@@ -129,5 +143,5 @@
       </li>
     </ul>
   </xsl:template>
-  
+
 </xsl:stylesheet>

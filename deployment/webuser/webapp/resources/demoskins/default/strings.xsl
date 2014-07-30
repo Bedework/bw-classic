@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -63,6 +63,7 @@
   <xsl:variable name="bwStr-Tabs-Year">YEAR</xsl:variable>
   <xsl:variable name="bwStr-Tabs-List">LIST</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Agenda">AGENDA</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Upcoming">UPCOMING</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
@@ -123,9 +124,10 @@
   <xsl:variable name="bwStr-EvLn-DeleteInstance">delete instance (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-EvLn-Delete">Delete</xsl:variable>
   <xsl:variable name="bwStr-EvLn-AddEventReference">add event reference to a calendar</xsl:variable>
-  
+
 
   <!-- xsl:template match="events" mode="eventList" -->
+  <xsl:variable name="bwStr-LsEv-Upcoming">Upcoming Events</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Next7Days">Next 7 Days</xsl:variable>
   <xsl:variable name="bwStr-LsEv-NoEventsToDisplay">No events to Display</xsl:variable>
   <xsl:variable name="bwStr-LsEv-DownloadEvent">Download event as ical - for Outlook, PDAs, iCal, and other desktop calendars</xsl:variable>
@@ -453,7 +455,7 @@
   <xsl:variable name="bwStr-Cloc-Switch">switch</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">close</xsl:variable>
   <xsl:variable name="bwStr-Cloc-CloseClock">close clock</xsl:variable>
-  
+
   <!-- xsl:template name="newclock" -->
   <xsl:variable name="bwStr-Cloc-Hour">Hour</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Minute">Minute</xsl:variable>
@@ -654,7 +656,7 @@
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Current Access:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Note:</strong> Advanced access controls can break standard sharing.  Use this feature with care.</p><p>If you grant write access to another user, and you wish to see events added by that user in your calendar, <strong>you must explicitly grant yourself access to the same calendar.</strong>  Enter your UserID as a user in the "Who" box with "All" set in the "Rights" box. This is standard access control; the reason you will not see the other user's events without doing this is that the default access is grant:all to "owner" - and you don't own the other user's events.</p></xsl:variable>
   <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
-  
+
   <!-- notifications.xsl -->
   <xsl:variable name="bwStr-Notif-SharingInvitation">Sharing Invitation</xsl:variable>
   <xsl:variable name="bwStr-Notif-SharingReply">Sharing Reply</xsl:variable>
@@ -878,7 +880,7 @@
   <xsl:variable name="bwStr-Inbx-Email">email</xsl:variable>
   <xsl:variable name="bwStr-Inbx-Download">download</xsl:variable>
   <xsl:variable name="bwStr-Inbx-Delete">delete</xsl:variable>
-  
+
   <!--  xsl:template match="outbox" -->
   <xsl:variable name="bwStr-Oubx-Outbox">Outbox</xsl:variable>
   <xsl:variable name="bwStr-Oubx-Sent">sent</xsl:variable>

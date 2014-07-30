@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,7 +20,7 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <xsl:template name="headBar">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="logoTable">
       <tr>
@@ -28,8 +28,8 @@
         <td colspan="2" id="schoolLinksCell">
           <h2><xsl:copy-of select="$bwStr-HdBr-PersonalCalendar"/></h2>
           <a href="{$publicCal}"><xsl:copy-of select="$bwStr-HdBr-PublicCalendar"/></a> |
-          <a href="http://www.yourschoolhere.edu"><xsl:copy-of select="$bwStr-HdBr-SchoolHome"/></a> |
-          <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a> |
+          <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-HdBr-SchoolHome"/></a> |
+          <a href="?refreshXslt=yes"><xsl:copy-of select="$bwStr-HdBr-OtherLink"/></a> |
           <a href="http://www.jasig.org/bedework/documentation">
             <xsl:copy-of select="$bwStr-HdBr-ExampleCalendarHelp"/>
           </a>
@@ -39,18 +39,6 @@
     <table id="curDateRangeTable"  cellspacing="0">
       <tr>
         <td class="sideBarOpenCloseIcon">
-          <xsl:choose>
-            <xsl:when test="/bedework/appvar[key='sidebar']/value='closed'">
-              <a href="?setappvar=sidebar(opened)">
-                <img alt="open sidebar" src="{$resourcesRoot}/images/sideBarArrowOpen.gif" width="21" height="16" border="0" align="left"/>
-              </a>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="?setappvar=sidebar(closed)">
-                <img alt="close sidebar" src="{$resourcesRoot}/images/sideBarArrowClose.gif" width="21" height="16" border="0" align="left"/>
-              </a>
-            </xsl:otherwise>
-          </xsl:choose>
         </td>
         <td class="date">
           <xsl:value-of select="/bedework/firstday/longdate"/>
@@ -68,6 +56,6 @@
       </tr>
     </table>
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>

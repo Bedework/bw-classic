@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -65,7 +65,7 @@
     <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
     <li class="{$itemClass}">
       <xsl:variable name="calPath" select="path"/>
-      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$calPath})" title="view calendar"><xsl:value-of select="summary"/></a>
+      <a href="javascript:displayCal('{$setSelection}','{$virtualPath}','{$calPath}')" title="view calendar"><xsl:value-of select="summary"/></a>
       <xsl:variable name="calPath" select="path"/>
       <span class="exportCalLink">
         <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">

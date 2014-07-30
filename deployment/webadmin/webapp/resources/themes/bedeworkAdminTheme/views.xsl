@@ -27,8 +27,9 @@
   -->
 
   <xsl:template match="views" mode="viewList">
-    <!-- fix this: /user/ should be parameterized not hard-coded here -->
+    <!-- fix this: /user/ and /public/aliases should be parameterized not hard-coded here -->
     <xsl:variable name="userPath">/user/<xsl:value-of select="/bedework/userInfo/user"/>/</xsl:variable>
+    <xsl:variable name="publicAliasPath">/public/aliases/</xsl:variable>
 
     <h2><xsl:copy-of select="$bwStr-View-ManageViews"/></h2>
     <p>
@@ -60,8 +61,18 @@
           </td>
           <td>
             <xsl:for-each select="path">
-              <xsl:sort select="substring-after(.,$userPath)" order="ascending" case-order="upper-first"/>
-              <xsl:value-of select="substring-after(.,$userPath)"/>
+              <xsl:sort order="ascending" case-order="upper-first"/>
+              <xsl:choose>
+                <xsl:when test="contains(.,$userPath)">
+                  <xsl:value-of select="substring-after(.,$userPath)"/>
+                </xsl:when>
+                <xsl:when test="contains(.,$publicAliasPath)">
+                  <xsl:value-of select="substring-after(.,$publicAliasPath)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="."/>
+                </xsl:otherwise>
+              </xsl:choose>
               <xsl:if test="position()!=last()"><br/></xsl:if>
             </xsl:for-each>
           </td>
@@ -72,8 +83,9 @@
 
   <xsl:template name="modView">
     <xsl:variable name="viewName" select="/bedework/currentView/name"/>
-    <!-- fix this: /user/ should be parameterized not hard-coded here -->
+    <!-- fix this: /user/ and /public/aliases should be parameterized not hard-coded here -->
     <xsl:variable name="userPath">/user/<xsl:value-of select="/bedework/userInfo/user"/>/</xsl:variable>
+    <xsl:variable name="publicAliasPath">/public/aliases/</xsl:variable>
 
     <h2><xsl:copy-of select="$bwStr-ModV-UpdateView"/></h2>
 
@@ -100,39 +112,48 @@
       <tr>
         <td class="subs">
           <h3><xsl:copy-of select="$bwStr-ModV-AvailableSubscriptions"/></h3>
-
-          <table class="subscriptionsListSubs">
-            <!--<xsl:for-each select="/bedework/calendars/calendar//calendar[isSubscription = 'true' or calType = '0']">
-              <xsl:sort select="substring-after(path, $userPath)" order="ascending" case-order="upper-first"/>-->
-            <xsl:apply-templates select="/bedework/calendars/calendar/calendar/" mode="availableForViews">
-              <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
-            </xsl:apply-templates>
-            <!-- extra row to keep the code valid if above rows are empty -->
-            <tr><td>&#160;</td></tr>
-          </table>
+          <xsl:if test="/bedework/calendars/calendar/calendar[(calType &lt; 2) and (name != 'calendar') and not(starts-with(name,'.cs'))]">
+            <ul class="subscriptionsListSubs">
+              <!--<xsl:for-each select="/bedework/calendars/calendar//calendar[isSubscription = 'true' or calType = '0']">
+                <xsl:sort select="substring-after(path, $userPath)" order="ascending" case-order="upper-first"/>-->
+              <xsl:apply-templates select="/bedework/calendars/calendar/calendar[(calType &lt; 2) and (name != 'calendar') and not(starts-with(name,'.cs'))]" mode="availableForViews">
+                <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
+              </xsl:apply-templates>
+            </ul>
+          </xsl:if>
         </td>
         <td class="view">
           <h3><xsl:copy-of select="$bwStr-ModV-ActiveSubscriptions"/></h3>
-          <table class="subscriptionsListView">
-            <xsl:for-each select="/bedework/currentView/path">
-              <xsl:sort select="." order="ascending" case-order="upper-first"/>
-              <tr>
-                <td class="arrows">
+          <xsl:if test="/bedework/currentView/path">
+            <ul class="subscriptionsListView">
+              <xsl:for-each select="/bedework/currentView/path">
+                <xsl:sort select="." order="ascending" case-order="upper-first"/>
+                <li>
                   <xsl:variable name="subRemoveName" select="."/>
                   <a href="{$view-update}&amp;name={$viewName}&amp;remove={$subRemoveName}">
-                    <img src="{$resourcesRoot}/images/arrowLeft.gif"
-                         width="13" height="13"
-                         alt="add subscription"/>
+                    <span class="arrow">
+                        <img src="{$resourcesRoot}/images/arrowLeft.gif"
+                             width="13" height="13"
+                             alt="add subscription"/>
+                    </span>
+                    <span class="viewCalSummary">
+                      <xsl:choose>
+                        <xsl:when test="contains(.,$userPath)">
+                          <xsl:value-of select="substring-after(.,$userPath)"/>
+                        </xsl:when>
+                        <xsl:when test="contains(.,$publicAliasPath)">
+                          <xsl:value-of select="substring-after(.,$publicAliasPath)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="."/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </span>
                   </a>
-                </td>
-                <td>
-                  <xsl:value-of select="substring-after(.,$userPath)"/>
-                </td>
-              </tr>
-            </xsl:for-each>
-            <!-- extra row to keep the code valid if above rows are empty -->
-            <tr><td>&#160;</td></tr>
-          </table>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:if>
         </td>
       </tr>
     </table>
@@ -150,29 +171,50 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="availableForViews">
-    <xsl:variable name="viewName" select="/bedework/currentView/name"/>
-    <xsl:if test="not(/bedework/currentView//path = path)">
-      <tr>
-        <td>
-          <xsl:if test="actualCalType = '0' and isSubscription = 'false'">
-            <!-- display a folder icon for local folders... -->
-            <img src="{$resourcesRoot}/images/catIcon.gif"
-                 width="13" height="13"
-                 alt="folder"/>
-            <xsl:text> </xsl:text>
-          </xsl:if>
-          <xsl:value-of select="summary"/>
-        </td>
-        <td class="arrows">
+    <xsl:choose>
+      <xsl:when test="/bedework/currentView//path = path">
+        <li class="activeSub">
+          <span class="viewCalSummary">
+            <xsl:if test="actualCalType = '0' and isSubscription = 'false'">
+              <!-- display a folder icon for local folders... -->
+              <img src="{$resourcesRoot}/images/catIcon.gif"
+                   width="13" height="13"
+                   alt="folder"/>
+              <xsl:text> </xsl:text>
+            </xsl:if>
+            <xsl:value-of select="summary"/>
+          </span>
+        </li>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="viewName" select="/bedework/currentView/name"/>
+        <li>
           <xsl:variable name="subAddName" select="encodedPath"/>
           <a href="{$view-update}&amp;name={$viewName}&amp;add={$subAddName}">
-            <img src="{$resourcesRoot}/images/arrowRight.gif"
-                 width="13" height="13"
-                 alt="add subscription"/>
+            <span class="viewCalSummary">
+              <xsl:if test="actualCalType = '0' and isSubscription = 'false'">
+                <!-- display a folder icon for local folders... -->
+                <img src="{$resourcesRoot}/images/catIcon.gif"
+                     width="13" height="13"
+                     alt="folder"/>
+                <xsl:text> </xsl:text>
+              </xsl:if>
+              <xsl:value-of select="summary"/>
+            </span>
+            <span class="arrow">
+              <img src="{$resourcesRoot}/images/arrowRight.gif" width="13" height="13" alt="add subscription"/>
+            </span>
           </a>
-        </td>
-      </tr>
-    </xsl:if>
+          <xsl:if test="calendar">
+            <ul>
+              <xsl:apply-templates select="calendar" mode="availableForViews">
+                <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
+              </xsl:apply-templates>
+            </ul>
+          </xsl:if>
+        </li>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="deleteViewConfirm">

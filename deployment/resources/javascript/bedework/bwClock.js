@@ -74,45 +74,40 @@
       $("#" + options.attachToId).css("position","relative");
       $("#" + options.attachToId).css("display","inline-block");
       
-      obj.toggle(
-        function(){
-          $("#" + options.attachToId).append(bwTimePickerContent);
-          $(".bwTimePicker .bwTimePickerCloser").click(function(){
-            obj.click();
-          });
-          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerHours li").click(function(){
-            $("#" + options.attachToId + " .bwTimePicker .bwTimePickerHours li").removeClass('bwTimePickerSelected');
-            $(this).addClass('bwTimePickerSelected');
-            var hours = $(this).html();
-            if (hours == '12' && !options.hour24) {
-              hours = 0;
-            }
-            if (hours < 10 && options.withPadding) {
-              hours = "0" + hours; 
-            }
-            for (var i=0; i < options.hourIds.length; i++) {
-              $("#" + options.hourIds[i]).val(hours);
-            }
-          });
-          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").click(function(){
-            $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").removeClass('bwTimePickerSelected');
-            $(this).addClass('bwTimePickerSelected');
-            for (var i=0; i < options.minuteIds.length; i++) {
-              $("#" + options.minuteIds[i]).val($(this).html());
-            }
-          });
-          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").click(function(){
-            $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").removeClass('bwTimePickerSelected');
-            $(this).addClass('bwTimePickerSelected');
-            for (var i=0; i < options.ampmIds.length; i++) {
-              $("#" + options.ampmIds[i]).val($(this).html());
-            }
-          });
-        },
-        function(){
-          $("#" + options.attachToId + " .bwTimePicker").remove();
-        }
-      );
+      obj.click(function() {
+        $("#" + options.attachToId).append(bwTimePickerContent);
+        $(".bwTimePicker .bwTimePickerCloser").click(function(){
+            $("#" + options.attachToId + " .bwTimePicker").remove();
+        });
+        $("#" + options.attachToId + " .bwTimePicker .bwTimePickerHours li").click(function(){
+          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerHours li").removeClass('bwTimePickerSelected');
+          $(this).addClass('bwTimePickerSelected');
+          var hours = $(this).html();
+          if (hours == '12' && !options.hour24) {
+            hours = 0;
+          }
+          if (hours < 10 && options.withPadding) {
+            hours = "0" + hours;
+          }
+          for (var i=0; i < options.hourIds.length; i++) {
+            $("#" + options.hourIds[i]).val(hours);
+          }
+        });
+        $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").click(function(){
+          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerMinutes li").removeClass('bwTimePickerSelected');
+          $(this).addClass('bwTimePickerSelected');
+          for (var i=0; i < options.minuteIds.length; i++) {
+            $("#" + options.minuteIds[i]).val($(this).html());
+          }
+        });
+        $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").click(function(){
+          $("#" + options.attachToId + " .bwTimePicker .bwTimePickerAmPm li").removeClass('bwTimePickerSelected');
+          $(this).addClass('bwTimePickerSelected');
+          for (var i=0; i < options.ampmIds.length; i++) {
+            $("#" + options.ampmIds[i]).val($(this).html());
+          }
+        });
+      });
     });  
   };  
 })(jQuery); 

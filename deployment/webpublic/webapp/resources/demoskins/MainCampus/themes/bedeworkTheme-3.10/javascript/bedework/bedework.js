@@ -25,6 +25,13 @@ if (!window.console) {
   bwJsDebug = false;
 }
 
+// Maintain a global variable determining the state of phone-sized layouts.
+// Menus will have added behaviors in tiny mode.
+var isTiny = false;
+if (window.innerWidth < 768) {
+  isTiny = true;
+}
+
 function changeClass(id, newClass) {
   identity = document.getElementById(id);
   identity.className=newClass;
@@ -68,17 +75,40 @@ function showLink(urlString,title) {
 // add some toggles
 $(document).ready(function(){
   $(".bwMenuTitle").click(function(){
-    $(".bwMenuTree").toggle("fast");
+    $(this).next(".bwMenuTree").toggle(100);
+    $(this).find(".caret").toggleClass("caret-right");
   });
   $("#mobileMenu").click(function(){
-    $("#bwDatePickerRangeLinks").toggle("fast");
-    $("#bwBasicSearch").toggle("fast");
-    $(".bwMenu").toggle("fast");
+    $("#bwDatePickerRangeLinks").toggle(100);
+    $("#bwBasicSearch").toggle(100);
+    $(".bwMenu").toggle(100);
+    $("#ongoing").toggle(100);
   });
-  $(".additionalUnivClicker").click(function(){
-    $("#additionalUnivSub").toggle("fast");
-  });
-  $(".additionalOptionsClicker").click(function(){
-    $("#additionalOptionsSub").toggle("fast");
-  });
+
+  window.onresize = function () {
+    // force show or hide of menus if a browser is scaled
+    // between mobile and desktop sizes.  Required because the
+    // user can toggle the menus, and we need to recover.
+    if (window.innerWidth > 767) {
+      isTiny = false;
+      $("#bwDatePickerRangeLinks").show();
+      $("#bwBasicSearch").show();
+      $(".bwMenu").show();
+      $(".bwMenuTree").show();
+      $(".bwMenuTitle .caret").removeClass("caret-right");
+      $("#ongoing").show();
+      $("#ongoing .bwEventList").show();
+      $("#ongoing .bwEventsTitle .caret").removeClass("caret-right");
+    }
+
+    if (window.innerWidth < 768) {
+      isTiny = true;
+      $("#bwDatePickerRangeLinks").hide(100);
+      $("#bwBasicSearch").hide(100);
+      $(".bwMenu").hide(100);
+      $("#ongoing").hide(100);
+      //$(".bwMenuTitle .caret").addClass("caret-right");
+      //$("#ongoing .bwEventsTitle .caret").addClass("caret-right");
+    }
+  };
 });

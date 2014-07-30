@@ -28,7 +28,7 @@
   <xsl:variable name="bwStr-Head-BedeworkSubmitPubEv">Bedework: Submit a Public Event</xsl:variable>
 
   <!-- xsl:template name="header" -->
-  <xsl:variable name="bwStr-Hedr-BedeworkPubEventSub">Bedework Public Event Submission</xsl:variable>
+  <xsl:variable name="bwStr-Hedr-BedeworkPubEventSub">Submit a Public Event</xsl:variable>
   <xsl:variable name="bwStr-Hedr-LoggedInAs">logged in as</xsl:variable>
   <xsl:variable name="bwStr-Hedr-Logout">logout</xsl:variable>
 
@@ -207,7 +207,6 @@
   <xsl:variable name="bwStr-Foot-BasedOnThe">Based on the</xsl:variable>
   <xsl:variable name="bwStr-Foot-ShowXML">show XML</xsl:variable>
   <xsl:variable name="bwStr-Foot-RefreshXSLT">refresh XSLT</xsl:variable>
-  <xsl:variable name="bwStr-Foot-BedeworkWebsite">Bedework Website</xsl:variable>
   <xsl:variable name="bwStr-Foot-BedeworkCalendarSystem">Bedework Calendar System</xsl:variable>
-
+  <xsl:variable name="bwStr-Foot-ProductionExamples">Production Examples</xsl:variable>
 </xsl:stylesheet>

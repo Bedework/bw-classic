@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,7 +20,7 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <!--==== HEAD SECTION  ====-->
   <xsl:template name="head">
     <title><xsl:copy-of select="$bwStr-Head-PageTitle"/></title>
@@ -38,17 +38,89 @@
       var endTzid = "<xsl:value-of select="/bedework/formElements/form/end/dateTime/tzid"/>";
       var resourcesRoot = "<xsl:value-of select="$resourcesRoot"/>";
       var imagesRoot = resourcesRoot + "/images";
+      var hour24 = <xsl:value-of select="/bedework/hour24"/>;
       </xsl:comment>
     </script>
 
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
-        
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.4.2.min.js">&#160;</script>
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.8.2.custom.min.js">&#160;</script>
-    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/bw-theme-3p7/jquery-ui-1.8.2.custom.css"/>
-    <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/bw-theme-3p7/bedeworkJquery.css"/> 
-    
+    <xsl:choose>
+      <xsl:when test="/bedework/page='showPage' and /bedework/appvar[key='page']/value = 'polls'">
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.11.1.min.js">&#160;</script>
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.11.0.min.js">&#160;</script>
+        <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/jquery-ui-1.11.0/jquery-ui.min.css"/>
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/magnific/jquery.magnific-popup.min.js">&#160;</script>
+        <link href="/bedework-common/javascript/jquery/magnific/magnific-popup.css" rel="stylesheet"/>
+        <link href="{$resourcesRoot}/poll/css/webpoll.css" rel="stylesheet"/>
+        <script src="{$resourcesRoot}/poll/js/json2.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/utils.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/bwutils.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/jcal.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/caldav.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/webpoll.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/poll.js">&#160;</script>
+
+        <!-- include the localized jQuery datepicker defaults -->
+        <xsl:call-template name="jqueryDatepickerDefaults"/>
+        <!-- now setup date and time pickers -->
+        <script type="text/javascript">
+          <xsl:comment>
+          function bwSetupDatePickers() {
+            var dateValString = "<xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="substring(/bedework/now/date,5,2)"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/>";
+
+            // startdate
+            $("#bwEventWidgetStartDate").datepicker();
+            $("#bwEventWidgetStartDate").val(dateValString);
+
+            // starttime
+            $("#bwStartClock").bwTimePicker({
+              hour24: <xsl:value-of select="/bedework/hour24"/>,
+              attachToId: "calWidgetStartTimeHider",
+              hourIds: ["eventStartDateHour","eventStartDateSchedHour"],
+              minuteIds: ["eventStartDateMinute","eventStartDateSchedMinute"],
+              ampmIds: ["eventStartDateAmpm","eventStartDateSchedAmpm"],
+              hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+              minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+              amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+              pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+            });
+
+            // enddate
+            $("#bwEventWidgetEndDate").datepicker();
+            $("#bwEventWidgetEndDate").val(dateValString);
+
+            // endtime
+            $("#bwEndClock").bwTimePicker({
+              hour24: <xsl:value-of select="/bedework/hour24"/>,
+              attachToId: "calWidgetEndTimeHider",
+              hourIds: ["eventEndDateHour"],
+              minuteIds: ["eventEndDateMinute"],
+              ampmIds: ["eventEndDateAmpm"],
+              hourLabel: "<xsl:value-of select="$bwStr-Cloc-Hour"/>",
+              minuteLabel: "<xsl:value-of select="$bwStr-Cloc-Minute"/>",
+              amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
+              pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
+            });
+
+            // recurrence until
+            $("#bwEventWidgetUntilDate").datepicker({
+              altField: "#bwEventUntilDate",
+              altFormat: "yymmdd"
+            });
+            $("#bwEventWidgetUntilDate").val(dateValString);
+
+          }
+          </xsl:comment>
+        </script>
+      </xsl:when>
+      <xsl:otherwise>
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.4.2.min.js">&#160;</script>
+        <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.8.2.custom.min.js">&#160;</script>
+        <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/bw-theme-3p7/jquery-ui-1.8.2.custom.css"/>
+        <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/bw-theme-3p7/bedeworkJquery.css"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
     <!-- load bedework personal client javascript libraries -->
     <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
     <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkSetup.js">&#160;</script>
@@ -71,11 +143,11 @@
         </script>
       </xsl:if>
     </xsl:if>
-    
+
     <xsl:if test="/bedework/page='modCalendar' or
                   /bedework/page='addCalendar'">
       <link rel="stylesheet" href="/bedework-common/javascript/jquery/colorpicker/colorpicker.css"/>
-      <script type="text/javascript" src="/bedework-common/javascript/jquery/colorpicker/colorpicker.js">&#160;</script>        
+      <script type="text/javascript" src="/bedework-common/javascript/jquery/colorpicker/colorpicker.js">&#160;</script>
     </xsl:if>
 
     <xsl:if test="/bedework/page='attendees'">
@@ -97,12 +169,12 @@
           <script type="text/javascript" src="{$resourcesRoot}/javascript/dynCalendarWidget.js">&#160;</script>
           <link rel="stylesheet" href="{$resourcesRoot}/css/dynCalendarWidget.css"/>
         </xsl:when>
-        <xsl:otherwise>      
-        
+        <xsl:otherwise>
+
           <!-- include the localized jQuery datepicker defaults -->
           <xsl:call-template name="jqueryDatepickerDefaults"/>
-        
-          <!-- now setup date and time pickers -->  
+
+          <!-- now setup date and time pickers -->
           <script type="text/javascript">
             <xsl:comment>
             function bwSetupDatePickers() {
@@ -130,7 +202,7 @@
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/end/dateTime/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/end/dateTime/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/end/dateTime/day/select/option[@selected = 'selected']/@value"/>)
               });
               $("#bwEventWidgetEndDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/end/rfc3339DateTime,'T')"/>');
-              
+
               // endtime
               $("#bwEndClock").bwTimePicker({
                 hour24: <xsl:value-of select="/bedework/hour24"/>,
@@ -143,7 +215,7 @@
                 amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
                 pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
               });
-              
+
               // recurrence until
               $("#bwEventWidgetUntilDate").datepicker({
                 <xsl:choose>
@@ -165,7 +237,7 @@
                 dateFormat: "yymmdd"
               });
               $("#bwEventWidgetRdate").val('<xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,1,4)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,6,2)"/><xsl:value-of select="substring(/bedework/formElements/form/start/rfc3339DateTime,9,2)"/>');
-              
+
               // rdates and xdates times
               $("#bwRecExcClock").bwTimePicker({
                 hour24: true,
@@ -178,13 +250,13 @@
                 amLabel: "<xsl:value-of select="$bwStr-Cloc-AM"/>",
                 pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
               });
-              
+
               // meeting startdate widget
               $("#bwEventWidgetStartDateSched").datepicker({
                 defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
               }).attr("readonly", "readonly");
               $("#bwEventWidgetStartDateSched").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
-              
+
               // meeting starttime
               $("#bwSchedClock").bwTimePicker({
                 hour24: <xsl:value-of select="/bedework/hour24"/>,
@@ -203,45 +275,46 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
-    
+
     <xsl:if test="/bedework/page='addEvent' or
-                  /bedework/page='editEvent'">
-      
+                  /bedework/page='editEvent'  or
+                  (/bedework/page='showPage' and /bedework/appvar[key='page']/value = 'polls')">
+
       <!-- import the internationalized strings for the javascript widgets -->
       <xsl:call-template name="bedeworkEventJsStrings"/>
-      
+
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bwClock.js">&#160;</script>
       <link rel="stylesheet" href="/bedework-common/javascript/bedework/bwClock.css"/>
-      
+
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkEventForm.js">&#160;</script>
-      
+
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">&#160;</script>
-      
+
+    </xsl:if>
+
+    <xsl:if test="/bedework/page='addEvent' or
+                /bedework/page='editEvent'">"
+
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkScheduling.js">&#160;</script>
       <link rel="stylesheet" href="{$resourcesRoot}/css/bwScheduling.css"/>
-      <!-- 
-      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/bw-jquery.autocomplete.js">&#160;</script>
-      <script type="text/javascript" src="/bedework-common/javascript/jquery/autocomplete/jquery.bgiframe.min.js">&#160;</script>
-      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkAttendees.js">&#160;</script>
-      <link rel="stylesheet" type="text/css" href="/bedework-common/javascript/jquery/autocomplete/jquery.autocomplete.css" />
-      -->
+
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkAccess.js">&#160;</script>
       <xsl:call-template name="bedeworkAccessStrings"/>
       <link rel="stylesheet" href="/bedework-common/default/default/bedeworkAccess.css"/>
-      
+
       <!-- initialize event acls, if present -->
       <xsl:if test="/bedework/editableAccess/access/acl/ace">
         <script type="text/javascript">
           <xsl:apply-templates select="/bedework/editableAccess/access/acl/ace" mode="initJS"/>
         </script>
       </xsl:if>
-      
+
       <script type="text/javascript">
         <xsl:comment>
         // initialize the free/busy grid - values taken directly from the xml
         // send params: displayId, startRange, startHourRange, endHourRange, attendees, workday, zoom, browserResourcesRoot, fbUrl, organizerUri
         // example: var bwGrid = new bwSchedulingGrid("bwFreeBusyDisplay","May 5, 2010",8,17,[{name:"Venerable Bede",uid:"vbede@mysite.edu",role:"CHAIR",status:"ACCEPTED",type:"person"}],true,100,"<xsl:value-of select="$resourcesRoot"/>","<xsl:value-of select="$requestFreeBusy"/>","");
-        
+
         var bwGridSDate = new Date("<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>/<xsl:value-of select="/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value"/>/<xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>");
         var bwGridAttees = new Array(<xsl:apply-templates select="/bedework/formElements/form/attendees" mode="loadBwGrid"/>);
         var bwGridOrganizer = "<xsl:value-of select="/bedework/formElements/form/organizer/organizerUri"/>";
@@ -255,8 +328,8 @@
         };
         </xsl:comment>
       </script>
-      
-      
+
+
     </xsl:if>
     <xsl:if test="/bedework/page='editEvent'">
       <script type="text/javascript">
@@ -292,12 +365,12 @@
 
     <script type="text/javascript">
       <xsl:comment>
-      
+
       // focuses an element by id
       function focusElement(id) {
         document.getElementById(id).focus();
       }
-      
+
       $(document).ready(function() {
          <xsl:if test="/bedework/page = 'addEvent' or bedework/page = 'editEvent'">
            focusElement('bwEventTitle');
@@ -321,7 +394,7 @@
          <xsl:if test="/bedework/page = 'modLocation'">
            focusElement('bwLocMainAddress');
          </xsl:if>
-         <xsl:if test="/bedework/page = 'modCalendar'">		     
+         <xsl:if test="/bedework/page = 'modCalendar'">
            $("#modCalAdvancedSwitch").click(function(event) {
              event.preventDefault();
              $(".modCalAdvanced").show();
@@ -334,7 +407,7 @@
              $("#modCalBasicSwitch").hide();
              $("#modCalAdvancedSwitch").show();
            });
-              
+
            $("#calAccessBoxToggle").click(function(event) {
              event.preventDefault();
              $("#accessBox").toggle();
@@ -345,11 +418,16 @@
              };
            });
          </xsl:if>
+         <xsl:if test="/bedework/page='showPage' and /bedework/appvar[key='page']/value = 'polls'">
+           focusElement('bwEventTitle');
+           bwSetupDatePickers();
+         </xsl:if>
       });
-        
+
       </xsl:comment>
     </script>
+
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>

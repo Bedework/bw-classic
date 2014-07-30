@@ -50,9 +50,6 @@
               <option value="{$setup}&amp;skinNameSticky=default">
                 <xsl:copy-of select="$bwStr-Foot-ExampleSkins" />
               </option>
-              <option value="{$setup}&amp;skinNameSticky=bwclassic">
-                <xsl:copy-of select="$bwStr-Foot-BwClassic" />
-              </option>
               <option value="{$setup}&amp;skinNameSticky=default">
                 <xsl:copy-of select="$bwStr-Foot-ResetToCalendarDefault" />
               </option>

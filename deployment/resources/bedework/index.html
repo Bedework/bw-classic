@@ -14,25 +14,25 @@
         </h2><img id="bwLogoLeft" border="0" alt="Bedework Calendar System" height="114" width="77" src="resources/bedeworkMonk.gif" />
       </div>
       <div id="subtitle">
-        Bedework Enterprise Calendar System Quickstart v.3.9
+        Bedework Enterprise Calendar System Quickstart v.3.10
       </div>
       <div id="content">
         <h1>
-          Welcome to Bedework 3.9
+          Welcome to Bedework 3.10
         </h1>
         <div id="clientSelect">
           <fieldset id="clientPublic">
             <legend>
-              Public Events Calendar Suites
+              Public Events Calendars
             </legend>
             <div class="webclient">
               <a href="/cal" class="app">
-                <img src="resources/content/mainCampus.jpg" width="172" height="130" alt="Public calendar suite" border="0"/>Main Campus
+                <img src="resources/content/mainCampus.png" width="172" height="130" alt="Public calendar suite" border="0"/>Main Campus
               </a>
             </div>
             <div class="webclient webclient2">
               <a href="/soedept" class="app">
-                <img src="resources/content/departmental.gif" width="153" height="130" alt="Departmental calendar suite" border="0"/>Departmental
+                <img src="resources/content/departmental.png" width="125" height="93" alt="Departmental calendar suite" border="0"/>Departmental
               </a>
             </div>
           </fieldset>
@@ -49,15 +49,35 @@
               <a href="/caladmin" class="title">
                 Admin Client
               </a>
-              Event admins (typical): <em>vbede, mtwain</em>
-              <br/>
-              In multiple groups: <em>ggalilei, bfranklin</em>
-              <br/>
-              Calendar suite owners: <em>ggalilei, bfranklin</em>
-              <br/>
-              Super-user login: <em>admin</em>
+              Event admins (typical): <em>vbede, mtwain</em><br/>
+              In multiple groups: <em>ggalilei, bfranklin</em><br/>
+              Calendar suite owners: <em>ggalilei, bfranklin</em><br/>
+              Super-user login: <em>admin</em><br/><br/>
+              Password: <em>bedework</em>
+            </div>
+          </fieldset>
+          <fieldset id="clientPersonal">
+            <legend>
+              Personal Calendaring
+            </legend>
+            <div class="webclient">
+              <a href="/ucal" class="app">
+                <img src="resources/content/personalEvents.gif" width="200" height="130" alt="Personal calendar" border="0"/>
+              </a>
+            </div>
+            <div class="loginInfo">
+              <a href="/ucal" class="title">
+                User Calendar
+              </a>
+              Login: <em>vbede, mtwain, ggalilei, or bfanklin</em>
               <br/>
               Password: <em>bedework</em>
+              <p class="note">
+                See also:<br/>
+                <a href="https://wiki.jasig.org/pages/viewpage.action?pageId=65274708">
+                  How to configure a CalDAV calendar client against the Bedework server (e.g. Apple's iCal or Mozilla Lightning)
+                </a>
+              </p>
             </div>
           </fieldset>
           <fieldset id="clientSubmission">
@@ -78,53 +98,13 @@
               Password: <em>bedework</em>
             </div>
           </fieldset>
-          <fieldset id="clientFeedBuilder">
-            <legend>
-              Public Events Feed URL and Widget Builder
-            </legend>
-            <div class="webclient">
-              <a href="/urlbuilder" class="app">
-                <img src="resources/content/feedBuilder.gif" width="114" height="131" alt="Public events admin client" border="0"/>
-              </a>
-            </div>
-            <div class="loginInfo">
-              <a href="/urlbuilder" class="title">
-                Feed Builder
-              </a>
-              Note: the feed builder can be optionally embedded in the default public events theme.
-            </div>
-          </fieldset>
-          <fieldset id="clientPersonal">
-            <legend>
-              Personal Calendaring
-            </legend>
-            <div class="webclient">
-              <a href="/ucal" class="app">
-                <img src="resources/content/personalEvents.gif" width="200" height="130" alt="Personal calendar" border="0"/>
-              </a>
-            </div>
-            <div class="loginInfo">
-              <a href="/ucal" class="title">
-                User Calendar
-              </a>
-              Login: <em>vbede, mtwain, ggalilei, or bfanklin</em>
-              <br/>
-              Password: <em>bedework</em>
-              <p>
-                See also:
-                <a href="https://wiki.jasig.org/pages/viewpage.action?pageId=54395714">
-                  How to configure a CalDAV calendar client against the Bedework server (e.g. Apple's iCal or Mozilla Lightning)
-                </a>
-              </p>
-            </div>
-          </fieldset>
           <div id="resources">
             <h4>
               Resources:
             </h4>
             <ul>
               <li>
-                <a href="https://wiki.jasig.org/display/BWK38/Getting+Started">
+                <a href="https://wiki.jasig.org/display/BWK310/Getting+Started">
                   Getting started
                 </a>
               </li>
@@ -134,7 +114,7 @@
                 </a>
               </li>
               <li>
-                <a href="http://localhost:8080/jmx-console/">
+                <a href="/jmx-console/">
                   JBoss JMX-Console
                 </a>
               </li>

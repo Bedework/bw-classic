@@ -20,7 +20,7 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <!--==== LIST VIEW  (for day, week, and month) ====-->
   <xsl:template name="listView">
     <table id="listTable" border="0" cellpadding="0" cellspacing="0">
@@ -34,28 +34,28 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:for-each select="/bedework/eventscalendar/year/month/week/day[event[not(entityType=2)]]">
-          <!-- tasks (entityType=2) are displayed below the normal event listings.  Reminders (tasks without
+            <!-- tasks (entityType=2) are displayed below the normal event listings.  Reminders (tasks without
                start or end dates) can also be represented as:
                entityType=2 and start/noStart='true' and end/type='N'; we skip them within grid and list views -->
             <xsl:if test="/bedework/periodname='Week' or /bedework/periodname='Month' or /bedework/periodname=''">
               <tr>
                 <td colspan="6" class="dateRow">
-                   <xsl:variable name="date" select="date"/>
-                   <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
-                   <div class="listAdd">
-                     <span class="listAddButton">
-                       <xsl:copy-of select="$bwStr-LsVw-Add"/>
-                     </span>
-                     <xsl:call-template name="actionIcons">
-                       <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
-                       <xsl:with-param name="startDate"><xsl:value-of select="$date"/></xsl:with-param>
-                       <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
-                     </xsl:call-template>
-                   </div>
-                   <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}">
-                     <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
-                   </a>
-                 </td>
+                  <xsl:variable name="date" select="date"/>
+                  <xsl:variable name="actionIconsId">bwActionIcons-<xsl:value-of select="value"/></xsl:variable>
+                  <div class="listAdd">
+                    <span class="listAddButton">
+                      <xsl:copy-of select="$bwStr-LsVw-Add"/>
+                    </span>
+                    <xsl:call-template name="actionIcons">
+                      <xsl:with-param name="actionIconsId"><xsl:value-of select="$actionIconsId"/></xsl:with-param>
+                      <xsl:with-param name="startDate"><xsl:value-of select="$date"/></xsl:with-param>
+                      <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
+                    </xsl:call-template>
+                  </div>
+                  <a href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$date}">
+                    <xsl:value-of select="name"/>, <xsl:value-of select="longdate"/>
+                  </a>
+                </td>
               </tr>
             </xsl:if>
             <xsl:for-each select="event[not(entityType=2)]">
@@ -96,19 +96,19 @@
                   <xsl:otherwise>
                     <td class="{$dateRangeStyle} right">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                      <xsl:choose>
-                        <xsl:when test="start/allday = 'true' and
+                        <xsl:choose>
+                          <xsl:when test="start/allday = 'true' and
                                         parent::day/shortdate = start/shortdate">
-                          <xsl:copy-of select="$bwStr-LsVw-Today"/>
-                        </xsl:when>
-                        <xsl:when test="parent::day/shortdate != start/shortdate">
-                          <span class="littleArrow">&#171;</span>&#160;
-                          <xsl:value-of select="start/month"/>/<xsl:value-of select="start/day"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="start/time"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
+                            <xsl:copy-of select="$bwStr-LsVw-Today"/>
+                          </xsl:when>
+                          <xsl:when test="parent::day/shortdate != start/shortdate">
+                            <span class="littleArrow">&#171;</span>&#160;
+                            <xsl:value-of select="start/month"/>/<xsl:value-of select="start/day"/>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="start/time"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
                       </a>
                     </td>
                     <td class="{$dateRangeStyle} center">
@@ -116,19 +116,19 @@
                     </td>
                     <td class="{$dateRangeStyle} left">
                       <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-                      <xsl:choose>
-                        <xsl:when test="end/allday = 'true' and
+                        <xsl:choose>
+                          <xsl:when test="end/allday = 'true' and
                                         parent::day/shortdate = end/shortdate">
-                          <xsl:copy-of select="$bwStr-LsVw-Today"/>
-                        </xsl:when>
-                        <xsl:when test="parent::day/shortdate != end/shortdate">
-                          <xsl:value-of select="end/month"/>/<xsl:value-of select="end/day"/>
+                            <xsl:copy-of select="$bwStr-LsVw-Today"/>
+                          </xsl:when>
+                          <xsl:when test="parent::day/shortdate != end/shortdate">
+                            <xsl:value-of select="end/month"/>/<xsl:value-of select="end/day"/>
                           &#160;<span class="littleArrow">&#187;</span>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="end/time"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="end/time"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
                       </a>
                     </td>
                   </xsl:otherwise>
@@ -205,7 +205,9 @@
         </xsl:otherwise>
       </xsl:choose>
     </table>
-    <xsl:call-template name="tasks"/>
+    <xsl:if test="$publicOnly = 'false'">
+      <xsl:call-template name="tasks"/>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="eventLinks">
@@ -250,5 +252,5 @@
     </xsl:if>
   </xsl:template>
 
-  
+
 </xsl:stylesheet>

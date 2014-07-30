@@ -20,193 +20,197 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <!--==== PREFERENCES ====-->
   <xsl:template match="prefs">
     <h2><xsl:copy-of select="$bwStr-Pref-ManagePrefs"/></h2>
     <ul class="submenu">
       <li class="selected"><xsl:copy-of select="$bwStr-Pref-General"/></li>
-      <li>
-        <a href="{$category-initUpdate}"><xsl:copy-of select="$bwStr-Pref-Categories"/></a>
-      </li>
-      <li>
-        <a href="{$location-initUpdate}"><xsl:copy-of select="$bwStr-Pref-Locations"/></a>
-      </li>
-      <li>
-        <a href="{$prefs-fetchSchedulingForUpdate}"><xsl:copy-of select="$bwStr-Pref-SchedulingMeetings"/></a>
-      </li>
+      <xsl:if test="$publicOnly = 'false'">
+        <li>
+          <a href="{$category-initUpdate}"><xsl:copy-of select="$bwStr-Pref-Categories"/></a>
+        </li>
+        <li>
+          <a href="{$location-initUpdate}"><xsl:copy-of select="$bwStr-Pref-Locations"/></a>
+        </li>
+        <li>
+          <a href="{$prefs-fetchSchedulingForUpdate}"><xsl:copy-of select="$bwStr-Pref-SchedulingMeetings"/></a>
+        </li>
+      </xsl:if>
     </ul>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
-    change it without modifying bedework.js -->
+         change it without modifying bedework.js -->
     <form name="eventForm" method="post" action="{$prefs-update}" onsubmit="setWorkDays(this)">
       <table class="common">
-        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-UserSettings"/></td></tr>
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-Pref-User"/>
-          </td>
-          <td>
-            <xsl:value-of select="user"/>
-            <xsl:variable name="user" select="user"/>
-            <input type="hidden" name="user" value="{$user}"/>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-Pref-EmailAddress"/>
-          </td>
-          <td>
-            <xsl:variable name="email" select="email"/>
-            <input type="text" name="email" value="{$email}" size="40"/>
-          </td>
-        </tr>
-        <tr><td colspan="2">&#160;</td></tr>
-        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-AddingEvents"/></td></tr>
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-Pref-PreferredTimeType"/>
-          </td>
-          <td>
-            <select name="hour24">
-              <option value="false">
-                <xsl:if test="hour24 = 'false'">
-                  <xsl:attribute name="selected">selected</xsl:attribute>
-                </xsl:if>
-                <xsl:copy-of select="$bwStr-Pref-12HourAMPM"/>
-              </option>
-              <option value="true">
-                <xsl:if test="hour24 = 'true'">
-                  <xsl:attribute name="selected">selected</xsl:attribute>
-                </xsl:if>
-                <xsl:copy-of select="$bwStr-Pref-24Hour"/>
-              </option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-Pref-PreferredEndDateTimeType"/>
-          </td>
-          <td>
-            <select name="preferredEndType">
-              <option value="duration">
-                <xsl:if test="preferredEndType = 'duration'">
-                  <xsl:attribute name="selected">selected</xsl:attribute>
-                </xsl:if>
-                <xsl:copy-of select="$bwStr-Pref-Duration"/>
-              </option>
-              <option value="date">
-                <xsl:if test="preferredEndType = 'date'">
-                  <xsl:attribute name="selected">selected</xsl:attribute>
-                </xsl:if>
-                <xsl:copy-of select="$bwStr-Pref-DateTime"/>
-              </option>
-            </select>
-          </td>
-        </tr>
-        <!-- hide if only one calendar to select -->
-        <xsl:if test="count(/bedework/myCalendars/calendars//calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType = '1']) &gt; 1">
+        <xsl:if test="$publicOnly = 'false'">
+          <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-UserSettings"/></td></tr>
           <tr>
             <td class="fieldname">
-              <xsl:copy-of select="$bwStr-Pref-DefaultSchedulingCalendar"/>
+              <xsl:copy-of select="$bwStr-Pref-User"/>
             </td>
             <td>
-              <xsl:variable name="newCalPath" select="defaultCalendar/path"/>
-              <input type="hidden" name="newCalPath" value="{$newCalPath}" id="bwNewCalPathField"/>
-              <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
-              <span id="bwEventCalDisplay">
-                <xsl:choose>
-                  <xsl:when test="contains(defaultCalendar,$userPath)">
-                    <xsl:value-of select="substring-after(defaultCalendar,$userPath)"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="defaultCalendar"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </span>
-              <xsl:call-template name="selectCalForEvent"/>
+              <xsl:value-of select="user"/>
+              <xsl:variable name="user" select="user"/>
+              <input type="hidden" name="user" value="{$user}"/>
             </td>
           </tr>
+          <tr>
+            <td class="fieldname">
+              <xsl:copy-of select="$bwStr-Pref-EmailAddress"/>
+            </td>
+            <td>
+              <xsl:variable name="email" select="email"/>
+              <input type="text" name="email" value="{$email}" size="40"/>
+            </td>
+          </tr>
+          <tr><td colspan="2">&#160;</td></tr>
+          <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-AddingEvents"/></td></tr>
+          <tr>
+            <td class="fieldname">
+              <xsl:copy-of select="$bwStr-Pref-PreferredTimeType"/>
+            </td>
+            <td>
+              <select name="hour24">
+                <option value="false">
+                  <xsl:if test="hour24 = 'false'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:copy-of select="$bwStr-Pref-12HourAMPM"/>
+                </option>
+                <option value="true">
+                  <xsl:if test="hour24 = 'true'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:copy-of select="$bwStr-Pref-24Hour"/>
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldname">
+              <xsl:copy-of select="$bwStr-Pref-PreferredEndDateTimeType"/>
+            </td>
+            <td>
+              <select name="preferredEndType">
+                <option value="duration">
+                  <xsl:if test="preferredEndType = 'duration'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:copy-of select="$bwStr-Pref-Duration"/>
+                </option>
+                <option value="date">
+                  <xsl:if test="preferredEndType = 'date'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:copy-of select="$bwStr-Pref-DateTime"/>
+                </option>
+              </select>
+            </td>
+          </tr>
+          <!-- hide if only one calendar to select -->
+          <xsl:if test="count(/bedework/myCalendars/calendars//calendar[currentAccess/current-user-privilege-set/privilege/write-content and calType = '1']) &gt; 1">
+            <tr>
+              <td class="fieldname">
+                <xsl:copy-of select="$bwStr-Pref-DefaultSchedulingCalendar"/>
+              </td>
+              <td>
+                <xsl:variable name="newCalPath" select="defaultCalendar/path"/>
+                <input type="hidden" name="newCalPath" value="{$newCalPath}" id="bwNewCalPathField"/>
+                <xsl:variable name="userPath">user/<xsl:value-of select="/bedework/userid"/>/</xsl:variable>
+                <span id="bwEventCalDisplay">
+                  <xsl:choose>
+                    <xsl:when test="contains(defaultCalendar,$userPath)">
+                      <xsl:value-of select="substring-after(defaultCalendar,$userPath)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="defaultCalendar"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </span>
+                <xsl:call-template name="selectCalForEvent"/>
+              </td>
+            </tr>
+          </xsl:if>
+          <tr><td colspan="2">&#160;</td></tr>
+          <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-WorkdaySettings"/></td></tr>
+          <tr>
+            <td class="fieldname">
+              <xsl:copy-of select="$bwStr-Pref-Workdays"/>
+            </td>
+            <td>
+              <xsl:variable name="workDays" select="workDays"/>
+              <input type="hidden" name="workDays" value="{$workDays}"/>
+              <input type="checkbox" name="workDayIndex" value="0">
+                <xsl:if test="substring(workDays,1,1) = 'W'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-Pref-Sun"/>
+              </input>
+              <input type="checkbox" name="workDayIndex" value="1">
+                <xsl:if test="substring(workDays,2,1) = 'W'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-Pref-Mon"/>
+              </input>
+              <input type="checkbox" name="workDayIndex" value="2">
+                <xsl:if test="substring(workDays,3,1) = 'W'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-Pref-Tue"/>
+              </input>
+              <input type="checkbox" name="workDayIndex" value="3">
+                <xsl:if test="substring(workDays,4,1) = 'W'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-Pref-Wed"/>
+              </input>
+              <input type="checkbox" name="workDayIndex" value="4">
+                <xsl:if test="substring(workDays,5,1) = 'W'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-Pref-Thu"/>
+              </input>
+              <input type="checkbox" name="workDayIndex" value="5">
+                <xsl:if test="substring(workDays,6,1) = 'W'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-Pref-Fri"/>
+              </input>
+              <input type="checkbox" name="workDayIndex" value="6">
+                <xsl:if test="substring(workDays,7,1) = 'W'">
+                  <xsl:attribute name="checked">checked</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-Pref-Sat"/>
+              </input>
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldname">
+              <xsl:copy-of select="$bwStr-Pref-WorkdayStart"/>
+            </td>
+            <td>
+              <select name="workdayStart">
+                <xsl:call-template name="buildWorkdayOptionsList">
+                  <xsl:with-param name="selectedVal" select="workdayStart"/>
+                </xsl:call-template>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="fieldname">
+              <xsl:copy-of select="$bwStr-Pref-WorkdayEnd"/>
+            </td>
+            <td>
+              <xsl:variable name="workdayEnd" select="workdayEnd"/>
+              <select name="workdayEnd">
+                <xsl:call-template name="buildWorkdayOptionsList">
+                  <xsl:with-param name="selectedVal" select="workdayEnd"/>
+                </xsl:call-template>
+              </select>
+            </td>
+          </tr>
+          <tr><td colspan="2">&#160;</td></tr>
         </xsl:if>
-        <tr><td colspan="2">&#160;</td></tr>
-        <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-WorkdaySettings"/></td></tr>
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-Pref-Workdays"/>
-          </td>
-          <td>
-            <xsl:variable name="workDays" select="workDays"/>
-            <input type="hidden" name="workDays" value="{$workDays}"/>
-            <input type="checkbox" name="workDayIndex" value="0">
-              <xsl:if test="substring(workDays,1,1) = 'W'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$bwStr-Pref-Sun"/>
-            </input>
-            <input type="checkbox" name="workDayIndex" value="1">
-              <xsl:if test="substring(workDays,2,1) = 'W'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$bwStr-Pref-Mon"/>
-            </input>
-            <input type="checkbox" name="workDayIndex" value="2">
-              <xsl:if test="substring(workDays,3,1) = 'W'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$bwStr-Pref-Tue"/>
-            </input>
-            <input type="checkbox" name="workDayIndex" value="3">
-              <xsl:if test="substring(workDays,4,1) = 'W'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$bwStr-Pref-Wed"/>
-            </input>
-            <input type="checkbox" name="workDayIndex" value="4">
-              <xsl:if test="substring(workDays,5,1) = 'W'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$bwStr-Pref-Thu"/>
-            </input>
-            <input type="checkbox" name="workDayIndex" value="5">
-              <xsl:if test="substring(workDays,6,1) = 'W'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$bwStr-Pref-Fri"/>
-            </input>
-            <input type="checkbox" name="workDayIndex" value="6">
-              <xsl:if test="substring(workDays,7,1) = 'W'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$bwStr-Pref-Sat"/>
-            </input>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-Pref-WorkdayStart"/>
-          </td>
-          <td>
-            <select name="workdayStart">
-              <xsl:call-template name="buildWorkdayOptionsList">
-                <xsl:with-param name="selectedVal" select="workdayStart"/>
-              </xsl:call-template>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-Pref-WorkdayEnd"/>
-          </td>
-          <td>
-            <xsl:variable name="workdayEnd" select="workdayEnd"/>
-            <select name="workdayEnd">
-              <xsl:call-template name="buildWorkdayOptionsList">
-                <xsl:with-param name="selectedVal" select="workdayEnd"/>
-              </xsl:call-template>
-            </select>
-          </td>
-        </tr>
-        <tr><td colspan="2">&#160;</td></tr>
         <tr><td colspan="2" class="fill"><xsl:copy-of select="$bwStr-Pref-DisplayOptions"/></td></tr>
         <xsl:if test="/bedework/views/view[position()=2]">
           <!-- only display if there is more than one to select -->
@@ -512,6 +516,6 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>

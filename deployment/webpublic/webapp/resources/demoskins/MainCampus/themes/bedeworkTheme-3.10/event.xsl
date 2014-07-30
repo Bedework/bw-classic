@@ -104,17 +104,6 @@
         </xsl:if>
       </h2>
 
-      <xsl:if test="$eventRegEnabled and xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']">
-        <div id="bwRegistrationBox">
-          <xsl:variable name="eventName"><xsl:value-of select="name"/></xsl:variable>
-          <iframe src="{$eventReg}?href={$calPath}%2F{$eventName}" width="300" height="175">
-	          <p>
-			        <xsl:copy-of select="$bwStr-Error-IframeUnsupported"/>
-			      </p>
-		      </iframe>
-        </div>
-      </xsl:if>
-
       <xsl:if test="xproperties/node()[name()='X-BEDEWORK-IMAGE']">
         <xsl:variable name="imgPrefix">
           <xsl:choose>
@@ -357,41 +346,49 @@
           <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-TopicalArea"/><xsl:text> </xsl:text></span>
           <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
             <xsl:variable name="calUrl" select="values/text"/>
-            <xsl:choose>
-              <xsl:when test="parameters/X-BEDEWORK-PARAM-DISPLAYNAME">
-                <xsl:variable name="displayName" select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/>
-                <a href="{$setSelectionList}&amp;fexpr='(vpath={$calUrl})'&amp;setappvar=curCollection({$displayName})">
-                  <xsl:if test="/bedework/appvar[key='listPage']/value = 'eventscalendar'">
-                    <xsl:attribute name="href"><xsl:value-of select="$setSelection"/>&amp;fexpr='(vpath={$calUrl})'</xsl:attribute>
-                  </xsl:if>
+            <!-- Check for a display name; this is required for backwards compatibility with old events - possibly with imported events;
+                 here we use the alias path value for display (as of 3.7 we use the display name (summary)) -->
+            <xsl:variable name="calDisplayName">
+              <xsl:choose>
+                <xsl:when test="parameters/X-BEDEWORK-PARAM-DISPLAYNAME">
                   <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/>
-                </a>
-              </xsl:when>
-              <xsl:otherwise>
-                <!-- this is required for backwards compatibility with old events (possibly with imported events;
-                     here we use the alias path value for display (as of 3.7 we use the display name (summary)) -->
-		            <a href="{$setSelectionList}&amp;fexpr='(vpath={$calUrl})'">
-                  <xsl:if test="/bedework/appvar[key='listPage']/value = 'eventscalendar'">
-                    <xsl:attribute name="href"><xsl:value-of select="$setSelection"/>&amp;fexpr='(vpath={$calUrl})'</xsl:attribute>
-                  </xsl:if>
-		              <xsl:call-template name="substring-afterLastInstanceOf">
-		                <xsl:with-param name="string" select="values/text"/>
-		                <xsl:with-param name="char">/</xsl:with-param>
-		              </xsl:call-template>
-		            </a>
-		          </xsl:otherwise>
-            </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:call-template name="substring-afterLastInstanceOf">
+                      <xsl:with-param name="string" select="values/text"/>
+                      <xsl:with-param name="char">/</xsl:with-param>
+                    </xsl:call-template>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <!--a href="javascript:bwReplaceFilters('{$calUrl}');"-->
+              <xsl:value-of select="$calDisplayName"/>
+            <!--/a-->
             <xsl:if test="position()!=last()">, </xsl:if>
           </xsl:for-each>
         </div>
       </xsl:if>
 
+      <!-- To enable viewing of categories, uncomment the following block: -->
+      <!--
       <xsl:if test="categories[1]/category">
         <div class="eventCategories">
           <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Categories"/><xsl:text> </xsl:text></span>
           <xsl:for-each select="categories/category">
             <xsl:value-of select="value"/><xsl:if test="position() != last()">, </xsl:if>
           </xsl:for-each>
+        </div>
+      </xsl:if>
+      -->
+
+      <xsl:if test="$eventRegEnabled and xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']">
+        <div id="bwRegistrationBox">
+          <xsl:variable name="eventName"><xsl:value-of select="name"/></xsl:variable>
+          <iframe src="{$eventReg}?href={$calPath}%2F{$eventName}" width="300" height="175">
+	          <p>
+			        <xsl:copy-of select="$bwStr-Error-IframeUnsupported"/>
+			      </p>
+		      </iframe>
         </div>
       </xsl:if>
 

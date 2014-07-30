@@ -55,7 +55,7 @@
           <li class="user">
             <form action="{$prefs-fetchForUpdate}" method="post">
               <xsl:copy-of select="$bwStr-TaUs-EditUsersPrefs"/><br/>
-              <input type="text" name="user" size="15"/>
+              <input type="text" name="user" size="40"/>
               <input type="submit" name="getPrefs" value="{$bwStr-TaUs-Go}"/>
             </form>
           </li>

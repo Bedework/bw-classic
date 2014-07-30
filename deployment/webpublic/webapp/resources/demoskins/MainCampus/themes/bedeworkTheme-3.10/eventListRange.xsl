@@ -28,99 +28,19 @@
 
   <xsl:template name="eventListRange">
 
-    <div id="bwQueryContainer">
-      <xsl:text> </xsl:text><!-- keep this here to avoid self-closing of the tag if empty -->
-      <xsl:if test="/bedework/appvar[key='bwQuery']">
-        <!-- The page has been reloaded, and we have a search query. -->
-        <div id="bwQuery" class="eventFilterInfo">
-          <xsl:copy-of select="$bwStr-LsEv-Search"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/appvar[key='bwQuery']/value"/>
-          <xsl:text> </xsl:text>
-          <a id="bwClearQuery" href="{$setSelection}&amp;setappvar=bwQuery()"><xsl:copy-of select="$bwStr-LsEv-ClearSearch"/></a>
-        </div>
-      </xsl:if>
-    </div>
-
-    <div id="calFilterContainer">
-      <xsl:text> </xsl:text><!-- keep this here to avoid self-closing of the tag if empty -->
-      <xsl:if test="/bedework/appvar[key='bwFilters']">
-        <!-- The page has been reloaded, and we have multiple nav items selected;
-             reconstruct the filter list on the page (this is otherwise handled
-             by javascript): -->
-        <div id="bwFilterList" class="eventFilterInfo">
-          <xsl:copy-of select="$bwStr-LsEv-Calendars"/> <span id="bwFilterList"><xsl:text> </xsl:text></span>
-          <xsl:text> </xsl:text>
-          <a id="bwClearCalFilters" href="{$setSelection}&amp;viewName=All&amp;setappvar=bwFilters()&amp;setappvar=bwFilterLabels()"><xsl:copy-of select="$bwStr-LsEv-ClearFilters"/></a>
-        </div>
-      </xsl:if>
-    </div>
+    <!-- attach onclick events so that the entire event is clickable - this is
+         particularly good for touch screens -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $(".eventRow .eventInfoLauncher").click(function() {
+          $(this).closest("tr").addClass("clickedEvent");
+          location.href = ($(this).find("a").attr("href"));
+        });
+      });
+    </script>
 
     <table class="eventList" desc="{$bwStr-LsVw-ListWithinTimeRange}">
 
-
-
-    <!--
-    <xsl:choose>
-      <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
-        <tr>
-          <td class="eventFilterInfo" colspan="3">
-            <xsl:copy-of select="$bwStr-LsVw-DispEventsForCal"/>
-          <xsl:text> </xsl:text>
-          <span class="displayFilterName">
-            <xsl:variable name="subscriptionName">
-            <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="/bedework/selectionState/collection/virtualpath"/>
-              <xsl:with-param name="char">/</xsl:with-param>
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:value-of select="/bedework/myCalendars/calendars//calendar[name=$subscriptionName]/summary/text()"/>
-          </span>
-          <xsl:text> </xsl:text>
-          <a id="allView" href="{$setSelection}"><xsl:copy-of select="$bwStr-LsVw-ShowAll"/></a>
-        </td>
-        </tr>
-      </xsl:when>
-      <xsl:when test="/bedework/selectionState/view/name != 'All'">
-        <tr id="bwFilterList">
-          <td class="eventFilterInfo" colspan="3">
-            <xsl:choose>
-              <xsl:when test="/bedework/selectionState/view/name = '- -temp- -'">
-                < ! - - output filter list if exists - - >
-                <xsl:copy-of select="$bwStr-LsEv-Calendars"/> <span id="filtersFilterList"><xsl:text> </xsl:text></span>
-              </xsl:when>
-              <xsl:otherwise>
-                < ! - - otherwise, show the selected view - - >
-                <xsl:copy-of select="$bwStr-LsVw-DispEventsForView"/>
-                <xsl:text> </xsl:text>
-                <span class="displayFilterName">
-                  <xsl:value-of select="/bedework/selectionState/view/name"/>
-                </span>
-              </xsl:otherwise>
-            </xsl:choose>
-
-            <xsl:text> </xsl:text>
-            <a id="allView" href="{$setSelection}&amp;viewName=All&amp;setappvar=bwFilters()&amp;setappvar=bwFilterLabels()"><xsl:copy-of select="$bwStr-LsEv-ClearFilters"/></a>
-          </td>
-        </tr>
-      </xsl:when>
-    </xsl:choose>
-    -->
-
-      <!--
-      <tr class="invisible" id="locationsLimits">
-        <td class="eventFilterInfo" colspan="3">
-          Locations: <span id="locationsLimitList"><xsl:text> </xsl:text></span>
-          <xsl:text> </xsl:text>
-          <a id="clearLocationFilters" href="#">(clear locations)</a>
-        </td>
-      </tr>
-      <tr class="invisible" id="agesLimits">
-        <td class="eventFilterInfo" colspan="3">
-          Ages: <span id="agesLimitList"><xsl:text> </xsl:text></span>
-          <xsl:text> </xsl:text>
-          <a id="clearAgeFilters" href="#">(clear ages)</a>
-        </td>
-      </tr>
-      -->
       <tr id="noResultsMsg" class="invisible">
         <td colspan="3"><xsl:copy-of select="$bwStr-LsVw-NoEventsFromSelection"/></td>
       </tr>
@@ -153,6 +73,11 @@
         </xsl:otherwise>
       </xsl:choose>
     </table>
+
+    <!-- Subscribe/Export Form Popup -->
+    <div id="exportSubscribePopup" class="mfp-hide">
+      <xsl:call-template name="exportSubscribe"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="day" mode="dayInList">
@@ -180,7 +105,7 @@
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="guidEsc" select="translate(guid, '.', '_')"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <tr>
+    <tr class="eventRow">
       <xsl:variable name="dateRangeStyle">
         <xsl:choose>
           <xsl:when test="start/shortdate = parent::day/shortdate">
@@ -197,7 +122,7 @@
       </xsl:variable>
 
       <!-- Event Date / Time Column  -->
-      <td class="time {$dateRangeStyle}">
+      <td class="time {$dateRangeStyle} eventInfoLauncher">
        <xsl:choose>
         <xsl:when test="start/allday = 'true' and start/shortdate = end/shortdate">
             <xsl:copy-of select="$bwStr-LsVw-AllDay"/>
@@ -248,68 +173,67 @@
         <xsl:choose>
           <xsl:when test="status='CANCELLED'">description bwStatusCancelled</xsl:when>
           <xsl:when test="status='TENTATIVE'">description bwStatusTentative</xsl:when>
-          <xsl:otherwise><xsl:copy-of select="$bwStr-LsVw-Description"/></xsl:otherwise>
+          <xsl:otherwise>description</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
 
-      <ul>
+      <!-- event icons -->
+      <span class="icons">
+          <xsl:variable name="gStartdate" select="start/utcdate"/>
+          <xsl:variable name="gLocation"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="location/address"/></xsl:call-template></xsl:variable>
+          <xsl:variable name="gEnddate" select="end/utcdate"/>
+          <xsl:variable name="gText"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="summary"/></xsl:call-template></xsl:variable>
+          <xsl:variable name="gDetails" select="$gText"/>
+        <!-- this could be changed to better reflect the details -->
+
+        <xsl:if test="$eventIconDownloadIcs = 'true'">
+            <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
+            <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-Download}">
+              <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" alt="{$bwStr-SgEv-Download}"/>
+            </a>
+          </xsl:if>
+          <xsl:if test="$eventIconAddToMyCal = 'true'">
+            <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
+              <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
+            </a>
+          </xsl:if>
+          <xsl:if test="$eventIconGoogleCal = 'true'">
+            <a href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
+              <img title="{$bwStr-SgEv-AddToGoogleCalendar}" src="{$resourcesRoot}/images/gcal_small.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}"/>
+            </a>
+          </xsl:if>
+          <xsl:if test="$eventIconShareThis = 'true'">
+            <xsl:variable name="shareURL"><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?b=de>&amp;calPath=/public/cals/MainCal&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></xsl:variable>
+            <xsl:variable name="encodedShareURL">
+              <xsl:call-template name="url-encode">
+                <xsl:with-param name="str" select="$shareURL"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="noNewLineDetails">
+              <xsl:call-template name="replace">
+                <xsl:with-param name="string" select="description"/>
+                <xsl:with-param name="pattern" select="'&#xa;'"/>
+                <xsl:with-param name="substitution" select="''"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="shareThisId">shareThis--<xsl:value-of select="$guid"/><xsl:value-of select="recurrenceId"/></xsl:variable>
+            <span id="{$shareThisId}">
+              <script type="text/javascript">
+                stWidget.addEntry({
+                  "service":"sharethis",
+                  "element":document.getElementById('<xsl:value-of select="$shareThisId"/>'),
+                  "title":'<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="$gText"/></xsl:call-template>',
+                  "content":'<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="$noNewLineDetails"/></xsl:call-template>',
+                  "summary":'<xsl:value-of select="$shareThisSummary"/>',
+                  "url":'<xsl:value-of select="$encodedShareURL"/>'
+                });
+              </script>
+            </span>
+          </xsl:if>
+        </span>
+
+      <ul class="eventInfoLauncher">
         <li class="titleEvent">
-
-          <!-- event icons -->
-          <span class="icons">
-            <xsl:variable name="gStartdate" select="start/utcdate"/>
-            <xsl:variable name="gLocation"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="location/address"/></xsl:call-template></xsl:variable>
-            <xsl:variable name="gEnddate" select="end/utcdate"/>
-            <xsl:variable name="gText"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="summary"/></xsl:call-template></xsl:variable>
-            <xsl:variable name="gDetails" select="$gText"/>
-            <!-- this could be changed to better reflect the details -->
-
-            <xsl:if test="$eventIconDownloadIcs = 'true'">
-              <xsl:variable name="eventIcalName" select="concat($guid,'.ics')"/>
-              <a href="{$export}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;nocache=no&amp;contentName={$eventIcalName}" title="{$bwStr-SgEv-Download}">
-                <img src="{$resourcesRoot}/images/std-ical_icon_small.gif" alt="{$bwStr-SgEv-Download}"/>
-              </a>
-            </xsl:if>
-            <xsl:if test="$eventIconAddToMyCal = 'true'">
-              <a href="{$privateCal}/event/addEventRef.do?calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-LsVw-AddEventToMyCalendar}" target="myCalendar">
-                <img class="addref" src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" alt="{$bwStr-LsVw-AddEventToMyCalendar}"/>
-              </a>
-            </xsl:if>
-            <xsl:if test="$eventIconGoogleCal = 'true'">
-              <a href="http://www.google.com/calendar/event?action=TEMPLATE&amp;dates={$gStartdate}/{$gEnddate}&amp;text={$gText}&amp;details={$gDetails}&amp;location={$gLocation}">
-                <img title="{$bwStr-SgEv-AddToGoogleCalendar}" src="{$resourcesRoot}/images/gcal_small.gif" alt="{$bwStr-SgEv-AddToGoogleCalendar}"/>
-              </a>
-            </xsl:if>
-            <xsl:if test="$eventIconShareThis = 'true'">
-              <xsl:variable name="shareURL"><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?b=de>&amp;calPath=/public/cals/MainCal&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></xsl:variable>
-              <xsl:variable name="encodedShareURL">
-                <xsl:call-template name="url-encode">
-                  <xsl:with-param name="str" select="$shareURL"/>
-                </xsl:call-template>
-              </xsl:variable>
-              <xsl:variable name="noNewLineDetails">
-                <xsl:call-template name="replace">
-                  <xsl:with-param name="string" select="description"/>
-                  <xsl:with-param name="pattern" select="'&#xa;'"/>
-                  <xsl:with-param name="substitution" select="''"/>
-                </xsl:call-template>
-              </xsl:variable>
-              <xsl:variable name="shareThisId">shareThis-<xsl:value-of select="generate-id()"/></xsl:variable>
-              <span id="{$shareThisId}">
-                <script type="text/javascript">
-                  stWidget.addEntry({
-                    "service":"sharethis",
-                    "element":document.getElementById('<xsl:value-of select="$shareThisId"/>'),
-                    "title":'<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="$gText"/></xsl:call-template>',
-                    "content":'<xsl:call-template name="escapeApos"><xsl:with-param name="str" select="$noNewLineDetails"/></xsl:call-template>',
-                    "summary":'<xsl:value-of select="$shareThisSummary"/>',
-                    "url":'<xsl:value-of select="$encodedShareURL"/>'
-                  });
-                </script>
-              </span>
-            </xsl:if>
-          </span>
-
           <!-- event title -->
           <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
           <xsl:if test="status='TENTATIVE'"><strong><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></strong></xsl:if>

@@ -59,11 +59,21 @@
             <xsl:variable name="guid" select="guid"/>
             <xsl:variable name="guidEsc" select="translate(guid, '.', '_')"/>
             <xsl:variable name="recurrenceId" select="recurrenceId"/>
-            <xsl:variable name="lastStartDate" select="preceding-sibling::event[1]/start/unformatted"/>
+            <xsl:variable name="lastStartDate" select="substring(preceding-sibling::event[1]/start/unformatted,1,8)"/>
 
-            <!-- print out a date separator if enabled in themeSettings.xsl -->
-            <xsl:if test="($useDateSeparatorsInList = 'true') and (start/unformatted != $lastStartDate)">
-              <li class="bwDateRow"><xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/> :: <xsl:value-of select="$lastStartDate"/></li>
+            <!-- Print out a date separator if enabled in themeSettings.xsl.
+                 Don't print a separator out at the top of list for events on the
+                 current date or for events spanning multiple days that begin
+                 before the current date. To avoid duplicating the date row between
+                 ajax page loads, we must maintain the value of the last date
+                 separator in javascript and pass it back to the server on each
+                 request. -->
+            <xsl:if test="($useDateSeparatorsInList = 'true') and
+                          (substring(start/unformatted,1,8) != $lastStartDate) and
+                          (number(substring(start/unformatted,1,8)) &gt; number(/bedework/currentdate/date)) and
+                          (number(substring(start/unformatted,1,8)) != number(/bedework/appvar[key='lastDateSeparatorInList']/value))">
+              <li class="bwDateRow"><xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/></li>
+              <script type="text/javascript">bwLastDateSeparatorInList = "<xsl:value-of select="substring(start/unformatted,1,8)"/>";</script>
             </xsl:if>
 
             <!-- generate the event -->
@@ -115,7 +125,7 @@
                       <xsl:with-param name="substitution" select="''"/>
                     </xsl:call-template>
                   </xsl:variable>
-                  <xsl:variable name="shareThisId">shareThis-<xsl:value-of select="generate-id()"/><xsl:value-of select="recurrenceId"/></xsl:variable>
+                  <xsl:variable name="shareThisId">shareThis-<xsl:value-of select="$guid"/><xsl:value-of select="recurrenceId"/></xsl:variable>
                   <span id="{$shareThisId}">
                     <script language="javascript" type="text/javascript">
                       stWidget.addEntry({
@@ -145,7 +155,7 @@
                     <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
-                <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" class="eventThumbLink">
                   <img class="eventThumb img-responsive">
                     <xsl:attribute name="width"><xsl:value-of select="$thumbWidth"/></xsl:attribute>
                     <xsl:attribute name="src">
@@ -255,7 +265,6 @@
                   </span>
                 </xsl:if>
               </div>
-              <br class="clear"/>
 
             </li>
           </xsl:for-each>

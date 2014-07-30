@@ -117,6 +117,29 @@
         -->
         <tr>
           <td class="fieldName">
+            <label for="upHour24">
+              <xsl:copy-of select="$bwStr-CSPf-PreferredTimeType"/>
+            </label>
+          </td>
+          <td>
+            <select name="hour24" id="upHour24">
+              <option value="false">
+                <xsl:if test="/bedework/prefs/hour24 = 'false'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-12Hour"/>
+              </option>
+              <option value="true">
+                <xsl:if test="/bedework/prefs/hour24 = 'true'">
+                  <xsl:attribute name="selected">selected</xsl:attribute>
+                </xsl:if>
+                <xsl:copy-of select="$bwStr-CSPf-24Hour"/>
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="fieldName">
             <xsl:copy-of select="$bwStr-MoPr-PageSize"/>
           </td>
           <td>

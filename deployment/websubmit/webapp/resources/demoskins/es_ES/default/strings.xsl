@@ -209,5 +209,6 @@
   <xsl:variable name="bwStr-Foot-RefreshXSLT">refrescar XSLT</xsl:variable>
   <xsl:variable name="bwStr-Foot-BedeworkWebsite">Página web de Bedework</xsl:variable>
   <xsl:variable name="bwStr-Foot-BedeworkCalendarSystem">Sistema de calendario de Bedework</xsl:variable>
+  <xsl:variable name="bwStr-Foot-ProductionExamples">Ejemplos en Producción</xsl:variable>
 
 </xsl:stylesheet>

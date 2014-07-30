@@ -26,24 +26,29 @@
     <xsl:variable name="todayDate"><xsl:value-of select="substring(/bedework/now/date,0,5)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/now/date,5,2)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:variable>
 
     <div id="bwDatePicker">
-      <form name="calForm" method="post" action="{$setSelection}">
-        <xsl:if test="/bedework/page = 'eventList'">
-          <xsl:attribute name="action"><xsl:value-of select="$setSelectionList"/></xsl:attribute>
-          <xsl:attribute name="onsubmit">return changeStartDate(this,bwMainEventList);</xsl:attribute>
-        </xsl:if>
+      <form name="calForm" method="post">
+        <xsl:choose>
+          <xsl:when test="/bedework/page = 'eventscalendar' or /bedework/appvar[key='eventscalendar']/value=''">
+            <xsl:attribute name="action"><xsl:value-of select="$setSelection"/></xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="action"><xsl:value-of select="$setSelectionList"/></xsl:attribute>
+            <xsl:attribute name="onsubmit">return changeStartDate(this,bwMainEventList);</xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
         <ul id="bwDatePickerTodayLink">
           <li>
-            <xsl:if test="($useAdvancedDateRangeMenu = 'true') or ($useAdvancedDateRangeMenu = 'false' and /bedework/page = 'eventList')">
+            <xsl:if test="($useAdvancedDateRangeMenu = 'true')">
               <xsl:attribute name="class">last</xsl:attribute>
             </xsl:if>
             <a href="{$setSelectionList}&amp;start={$todayDate}">
-              <xsl:if test="/bedework/page != 'eventList'">
+              <xsl:if test="/bedework/page = 'eventscalendar' or /bedework/appvar[key='listPage']/value='eventscalendar'">
                 <xsl:attribute name="href"><xsl:value-of select="$setViewPeriod"/>&amp;viewType=todayView</xsl:attribute>
               </xsl:if>
               <xsl:copy-of select="$bwStr-DatePicker-Today"/>
             </a>
           </li>
-          <xsl:if test="$useAdvancedDateRangeMenu = 'false' and /bedework/page != 'eventList'">
+          <xsl:if test="$useAdvancedDateRangeMenu = 'false'">
             <li class="last">
               <a href="{$setSelectionList}&amp;setappvar=listPage(upcoming)" class="bwUpcomingLink">
                 <xsl:copy-of select="$bwStr-DatePicker-Upcoming"/>
@@ -108,17 +113,28 @@
          duration: ""
        });
        $(document).ready(function() {
-         if (Modernizr.inputtypes['date']) {
-           // use HTML5 picker if available
-           $("#bwDatePickerInput").attr("value","<xsl:value-of select="$datePickerDate"/>");
-         } else {
-           // use jQuery datepicker otherwise
+       <xsl:choose>
+         <xsl:when test="$useHTML5DatePicker = 'true'">
+           if (Modernizr.inputtypes['date']) {
+             // use HTML5 picker if available
+             $("#bwDatePickerInput").attr("value","<xsl:value-of select="$datePickerDate"/>");
+           } else {
+             // use jQuery datepicker otherwise
+             $("#bwDatePickerInput").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                setDate: "<xsl:value-of select="$datePickerDate"/>"
+             });
+           }
+         </xsl:when>
+         <xsl:otherwise>
            $("#bwDatePickerInput").datepicker({
               changeMonth: true,
               changeYear: true,
               setDate: "<xsl:value-of select="$datePickerDate"/>"
            });
-         }
+         </xsl:otherwise>
+       </xsl:choose>
        });
       </script>
       <noscript><xsl:copy-of select="$bwStr-Error-NoScript"/></noscript>

@@ -130,6 +130,7 @@ function collectRecurChkBoxVals(valArray,chkBoxes,dayPos) {
   }
   return valArray;
 }
+
 // launch a simple window for displaying information; no header or status bar
 function launchSimpleWindow(URL) {
   simpleWindow = window.open(URL, "simpleWindow", "width=800,height=600,scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no");
@@ -313,10 +314,14 @@ function setCalSummary(val,summaryField) {
 // set the event list date
 function setListDate(formObj,dateString) {
   $("#curListDateHolder").val("curListDate(" + dateString + ")");
+  // get the fexpr from the filter form
+  formObj.fexpr.value =  $("#listEventsCatFilter").val();
   formObj.submit();
 }
-function setListDateToday(dateString) {
+function setListDateToday(dateString,formObj) {
   // note that the today button is a submit, so no need to submit it via JS
   $("#bwListWidgetStartDate").val(dateString);
   $("#curListDateHolder").val("curListDate(" + dateString + ")");
+  // get the fexpr from the filter form
+  formObj.fexpr.value =  $("#listEventsCatFilter").val();
 }

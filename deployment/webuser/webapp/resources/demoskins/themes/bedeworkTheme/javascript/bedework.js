@@ -6,15 +6,15 @@
    Version 2.0 (the "License"); you may not use this file
    except in compliance with the License. You may obtain a
    copy of the License at:
-  
+
    http://www.apache.org/licenses/LICENSE-2.0
-  
+
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on
    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
    KIND, either express or implied. See the License for the
    specific language governing permissions and limitations
-   under the License.  
+   under the License.
 */
 
 /* NOTE: this file is different between Bedework web applications and is
@@ -179,7 +179,7 @@ function updateEventFormCalendar(newCalPath,calDisplay,calendarCollection) {
   newCalPathField = document.getElementById("bwNewCalPathField");
   newCalPathField.value = newCalPath;
   bwCalDisplay = document.getElementById("bwEventCalDisplay");
-  bwCalDisplay.innerHTML = calDisplay;
+  bwCalDisplay.innerHTML = "<strong>" + calDisplay + "</strong>";
   bwCalCollectionField = document.getElementById("bwCalCollectionField");
   if (bwCalCollectionField && calendarCollection != '') {
     bwCalCollectionField.value = calendarCollection;
@@ -210,11 +210,11 @@ function setCalendarAlias(formObj) {
 
   //check first to make sure we have a valid calendar system name:
   if (validateCalName(formObj['calendar.name'])) {
-  
+
     // set the aliasUri to an empty string.  Only set it if user
     // has requested a subscription.
     formObj.aliasUri.value == "";
-  
+
     if (formObj.type.value == "folder") {
       formObj.calendarCollection.value = "false";
     } else if (formObj.type.value == "subscription") {
@@ -239,36 +239,36 @@ function setCalendarAlias(formObj) {
 // set the calendar summary to the calendar name in the form if summary is empty
 function setCalSummary(val,summaryField) {
   if (summaryField.value == '') {
-    summaryField.value = val;  
+    summaryField.value = val;
   }
 }
 //Stop user from entering invalid characters in calendar names
 //In 3.6 this will only test for & ' " and /
-//In future releases, we will go further and only allow 
+//In future releases, we will go further and only allow
 //alphanumerics and dashes and underscores.
 function validateCalName(nameObj) {
-  if(nameObj.value.indexOf("'") == -1 && 
+  if(nameObj.value.indexOf("'") == -1 &&
     nameObj.value.indexOf('"') == -1 &&
-    nameObj.value.indexOf("&") == -1 && 
+    nameObj.value.indexOf("&") == -1 &&
     nameObj.value.indexOf("/") == -1) {
    return true;
   } else { // we have bad characters
    var badChars = "";
    if(nameObj.value.indexOf("'") != -1) {
-     badChars += " ' "; 
+     badChars += " ' ";
    }
    if(nameObj.value.indexOf('"') != -1) {
-     badChars += ' \" '; 
+     badChars += ' \" ';
    }
    if(nameObj.value.indexOf("&") != -1) {
-     badChars += " & "; 
+     badChars += " & ";
    }
    if(nameObj.value.indexOf("/") != -1) {
-     badChars += " / "; 
+     badChars += " / ";
    }
    alert("System Names may not include the following characters: " + badChars);
    nameObj.focus();
-   return false; 
+   return false;
   }
 }
 function exportCalendar(formId,name,calPath) {

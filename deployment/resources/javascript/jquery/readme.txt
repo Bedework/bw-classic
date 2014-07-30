@@ -1,7 +1,10 @@
-most recent jquery is 
+This directory needs a cleanup, and we need to get consistent about our use of
+the jquery library.
 
-jquery-1.4.2.min.js
-jquery-ui-1.8.2.custom.min.js
+most recent jquery is
+
+jquery-1.11.1.min.js
+jquery-ui-1.10.4.custom.min.js
 
 these use
 /css/ui-lightness/jquery-ui-1.8.2.custom.css

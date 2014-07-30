@@ -22,6 +22,14 @@
   <!--==== BANNER and MENU TABS  ====-->
 
   <xsl:template name="tabs">
+    <xsl:call-template name="upperSearchForm">
+      <xsl:with-param name="toggleLimits">
+        <xsl:choose>
+          <xsl:when test="/bedework/page='searchResult'">false</xsl:when>
+          <xsl:otherwise>true</xsl:otherwise>
+        </xsl:choose>
+      </xsl:with-param>
+    </xsl:call-template>
     <ul id="bwAdminMenu">
       <li>
         <xsl:if test="/bedework/tab = 'main'">
@@ -35,7 +43,8 @@
         <xsl:if test="/bedework/tab = 'pending'">
           <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
-        <a href="{$initPendingTab}&amp;calPath={$submissionsRootEncoded}&amp;listAllEvents=true&amp;useDbSearch=true">
+        <a>
+          <xsl:attribute name="href"><xsl:value-of select="$initPendingTab"/>&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")&amp;listAllEvents=true</xsl:attribute>
           <xsl:copy-of select="$bwStr-Head-PendingEvents"/>
         </a>
       </li>

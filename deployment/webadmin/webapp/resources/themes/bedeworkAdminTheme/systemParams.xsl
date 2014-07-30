@@ -20,6 +20,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <!--+++++++++++++++ System Parameters (preferences) ++++++++++++++++++++-->
+
+  <!-- THIS STYLESHEET IS DEPRECATED: You will now find these preferences in the
+       JMX console. -->
+
   <xsl:template name="modSyspars">
     <h2><xsl:copy-of select="$bwStr-MdSP-ManageSysParams"/></h2>
     <p>
@@ -375,8 +379,8 @@
         <tr>
           <th><xsl:copy-of select="$bwStr-MdSP-EvregAdmTkn"/></th>
           <td>
-            <xsl:variable name="evregAdmTkn" select="/bedework/system/eventregAdminToken"/>
-            <input value="{$evregAdmTkn}" name="eventregAdminToken" class="wide"/>
+            <xsl:variable name="evregAdmTkn" select="/bedework/system/eventRegAdminToken"/>
+            <input value="{$evregAdmTkn}" name="eventRegAdminToken" class="wide"/>
             <div class="desc">
               <xsl:copy-of select="$bwStr-MdSP-EvregAdmTknNote"/>
             </div>

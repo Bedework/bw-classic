@@ -52,29 +52,47 @@
             <xsl:choose>
               <xsl:when test="/bedework/page='calendarDescriptions' or
                               /bedework/page='displayCalendar'">
-                <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForDisplay"/>
+                <xsl:choose>
+                  <xsl:when test="$publicOnly = 'false'">
+                    <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForDisplay"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:apply-templates select="calendar[isSubsciption = 'true']" mode="listForDisplay"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:apply-templates select="calendar" mode="listForUpdate"/>
+                <xsl:choose>
+                  <xsl:when test="$publicOnly = 'false'">
+                    <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForUpdate"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:apply-templates select="calendar[number(calType) &lt; 2]" mode="listForUpdate"/> 
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
           </ul>
           <div id="addCalSubButtons">
-	          <xsl:value-of select="$bwStr-CuCa-AddCalTextLabel"/><br/>
-	          <xsl:variable name="calPath" select="/bedework/calendars/calendar/encodedPath"/>
-	          <button type="button" id="addCalButton" onclick="location.href='{$calendar-initAdd}&amp;calPath={$calPath}'">
-	            <xsl:value-of select="$bwStr-CuCa-Calendar"/>
-	          </button>
-	          <button type="button" id="addSubButton" onclick="location.href='{$sharing-initAddSubscription}&amp;calPath={$calPath}'">
-	            <xsl:value-of select="$bwStr-CuCa-Subscription"/>
-	          </button>
-	        </div>
+            <xsl:variable name="calPath" select="/bedework/calendars/calendar/encodedPath"/>
+            <xsl:value-of select="$bwStr-CuCa-AddCalTextLabel"/><br/>
+            <xsl:if test="$publicOnly = 'false'">
+              <button type="button" id="addCalButton" onclick="location.href='{$calendar-initAdd}&amp;calPath={$calPath}'">
+                <xsl:value-of select="$bwStr-CuCa-Calendar"/>
+              </button>
+            </xsl:if>
+            <button type="button" id="addSubButton" onclick="location.href='{$sharing-initAddSubscription}&amp;calPath={$calPath}'">
+              <xsl:value-of select="$bwStr-CuCa-Subscription"/>
+            </button>
+          </div>
         </td>
         <td class="calendarContent">
           <xsl:choose>
             <xsl:when test="/bedework/page='calendarList' or
                             /bedework/page='calendarReferenced'">
-              <xsl:call-template name="calendarList"/>
+              <xsl:if test="$publicOnly = 'false'">
+                <xsl:call-template name="calendarList"/>
+              </xsl:if>
             </xsl:when>
             <xsl:when test="/bedework/page='calendarDescriptions'">
               <xsl:call-template name="calendarDescriptions"/>
@@ -85,9 +103,9 @@
             <xsl:when test="/bedework/page='deleteCalendarConfirm'">
               <xsl:apply-templates select="/bedework/currentCalendar" mode="deleteCalendarConfirm"/>
             </xsl:when>
-             <xsl:when test="/bedework/page='addSubscription'">
-               <xsl:call-template name="addSubscription"/>
-             </xsl:when>
+            <xsl:when test="/bedework/page='addSubscription'">
+              <xsl:call-template name="addSubscription"/>
+            </xsl:when>
             <xsl:when test="/bedework/creating='true'">
               <xsl:apply-templates select="/bedework/currentCalendar" mode="addCalendar"/>
             </xsl:when>
@@ -177,9 +195,18 @@
       </xsl:if>
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar[canAlias = 'true']" mode="myCalendars">
-            <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
-          </xsl:apply-templates>
+          <xsl:choose>
+            <xsl:when  test="$publicOnly = 'false'">
+              <xsl:apply-templates select="calendar[canAlias = 'true']" mode="myCalendars">
+                <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
+              </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="calendar[canAlias = 'true' and actualCalType = '7']" mode="myCalendars">
+                <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
+              </xsl:apply-templates>
+            </xsl:otherwise>
+          </xsl:choose>
         </ul>
       </xsl:if>
     </li>
@@ -212,8 +239,6 @@
           </xsl:if>
         </xsl:when>
         <xsl:when test="calType='6'">
-          <!-- Outbox: do nothing; this should not appear, so skip it. -->
-          <!--
           <a href="{$showOutbox}" title="{$bwStr-Cals-OutgoingSchedulingRequests}">
             <xsl:value-of select="summary"/>
           </a>
@@ -221,7 +246,6 @@
           <xsl:if test="/bedework/outboxState/numActive != '0'">
             <span class="inoutboxActive">(<xsl:value-of select="/bedework/outboxState/numActive"/>)</span>
           </xsl:if>
-          -->
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
@@ -269,17 +293,28 @@
         <xsl:value-of select="summary"/>
       </a>
       <xsl:if test="calType = '0' and isSubscription = 'false'">
-        <xsl:text> </xsl:text>
-        <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="{$bwStr-Cals-AddCalendarOrFolder}">
-          <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="*" border="0"/>
-          <span class="addCalText"><xsl:copy-of select="$bwStr-CuCa-AddCalText"/></span>
-        </a>
+        <!-- <xsl:if test="$publicOnly = 'false'">
+          <xsl:text> </xsl:text>
+          <a href="{$calendar-initAdd}&amp;calPath={$calPath}" title="{$bwStr-Cals-AddCalendarOrFolder}">
+            <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="*" border="0"/>
+            <span class="addCalText"><xsl:copy-of select="$bwStr-CuCa-AddCalText"/></span>
+          </a>
+        </xsl:if> --> 
       </xsl:if>
       <xsl:if test="calendar and isSubscription='false'">
         <ul>
-          <xsl:apply-templates select="calendar" mode="listForUpdate">
-            <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
-          </xsl:apply-templates>
+          <xsl:choose>
+            <xsl:when test="$publicOnly = 'false'">
+              <xsl:apply-templates select="calendar" mode="listForUpdate">
+                <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
+              </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="calendar[isSubscription = 'true']" mode="listForUpdate">
+                <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
+              </xsl:apply-templates>
+            </xsl:otherwise>
+          </xsl:choose>
         </ul>
       </xsl:if>
     </li>
@@ -310,7 +345,7 @@
   </xsl:template>
 
   <xsl:template name="selectCalForEvent">
-  <!-- selectCalForEvent creates a calendar tree in a pop-up window.
+    <!-- selectCalForEvent creates a calendar tree in a pop-up window.
       Used when selecting a calendar while adding or editing an event.
 
       This template will be called when
@@ -379,9 +414,9 @@
   </xsl:template>
 
   <xsl:template name="selectCalForPublicAlias">
-  <!-- This template is DEPRECATED ... selectCalForPublicAliasCalTree is now used instead.
+    <!-- This template is DEPRECATED ... selectCalForPublicAliasCalTree is now used instead.
 -->
-  <!-- selectCalForPublicAlias creates a calendar tree pop-up window for
+    <!-- selectCalForPublicAlias creates a calendar tree pop-up window for
        selecting a public calendar subscription (alias).
 -->
 
@@ -531,9 +566,9 @@
         </tr>
         -->
       </table>
-	    <div class="note sharingNote">
-	      <xsl:copy-of select="$bwStr-CuCa-SharingMayBeAdded"/>
-	    </div>
+      <div class="note sharingNote">
+        <xsl:copy-of select="$bwStr-CuCa-SharingMayBeAdded"/>
+      </div>
       <div class="submitButtons">
         <input type="submit" name="addCalendar" value="{$bwStr-CuCa-Add}"/>
         <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
@@ -545,72 +580,72 @@
   <xsl:template name="addSubscription">
     <h3><xsl:value-of select="$bwStr-CuCa-AddSubscription"/></h3>
     <div id="subscriptionTypes">
-       <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
+      <!-- If we are making a subscription, we will set the hidden value of "aliasUri" based
             on the subscription type. -->
-       <input type="hidden" name="aliasUri" value=""/>
-       <p>
-         <strong><xsl:copy-of select="$bwStr-CuCa-SubscriptionType"/></strong>
-         <xsl:text> </xsl:text>
-         <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
-         <input type="hidden" value="public" name="subType" id="bwSubType"/><br/>
+      <input type="hidden" name="aliasUri" value=""/>
+      <p>
+        <strong><xsl:copy-of select="$bwStr-CuCa-SubscriptionType"/></strong>
+        <xsl:text> </xsl:text>
+        <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
+        <input type="hidden" value="public" name="subType" id="bwSubType"/><br/>
 
-         <input type="radio" name="subTypeSwitch" id="subSwitchExternal" value="external" checked="checked" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/>
-         <xsl:text> </xsl:text>
-         <label for="subSwitchExternal">
-           <xsl:copy-of select="$bwStr-CuCa-URL"/>
-         </label>
+        <input type="radio" name="subTypeSwitch" id="subSwitchExternal" value="external" checked="checked" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/>
+        <xsl:text> </xsl:text>
+        <label for="subSwitchExternal">
+          <xsl:copy-of select="$bwStr-CuCa-URL"/>
+        </label>
 
-         <input type="radio" name="subTypeSwitch" id="subSwitchPublic" value="public" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/>
-         <xsl:text> </xsl:text>
-         <label for="subSwitchPublic">
-           <xsl:copy-of select="$bwStr-CuCa-PublicCalendar"/>
-         </label>
+        <input type="radio" name="subTypeSwitch" id="subSwitchPublic" value="public" onclick="changeClass('subscriptionTypePublic','visible');changeClass('subscriptionTypeExternal','invisible');setField('bwSubType',this.value);"/>
+        <xsl:text> </xsl:text>
+        <label for="subSwitchPublic">
+          <xsl:copy-of select="$bwStr-CuCa-PublicCalendar"/>
+        </label>
 
-         <!-- type user is deprecated in this way - will stick with new sharing model as of version 3.9 -->
-         <!--
+        <!-- type user is deprecated in this way - will stick with new sharing model as of version 3.9 -->
+        <!--
          <input type="radio" name="subTypeSwitch" value="user" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','invisible');changeClass('subscriptionTypeUser','visible');setField('bwSubType',this.value);"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CuCa-UserCalendar"/>
          -->
-       </p>
+      </p>
 
-       <div id="subscriptionTypePublic" class="invisible">
-         <form id="intSubscription" name="intSubscription" action="{$sharing-subscribe}" method="post">
-	         <input type="hidden" value="" name="colHref" id="publicAliasHolder"/>
-	         <div id="bwPublicCalSubscribe" class="invisible">
-	           <table class="common">
-	             <tr>
-	               <th>
+      <div id="subscriptionTypePublic" class="invisible">
+        <form id="intSubscription" name="intSubscription" action="{$sharing-subscribe}" method="post">
+          <input type="hidden" value="" name="colHref" id="publicAliasHolder"/>
+          <div id="bwPublicCalSubscribe" class="invisible">
+            <table class="common">
+              <tr>
+                <th>
 	                 Path:
-	               </th>
-	               <td>
-	                 <div id="bwPublicCalDisplay"></div>
-	                 <!-- button type="button" onclick="showPublicCalAliasTree();"><xsl:copy-of select="$bwStr-CuCa-SelectAPublicCalOrFolder"/></button-->
-	               </td>
-	             </tr>
-	             <tr>
-	               <th>
-	                 <xsl:copy-of select="$bwStr-CuCa-Summary"/>
-	               </th>
-	               <td>
-	                 <input type="text" name="colName" id="intSubDisplayName" value="" size="40"/>
-	               </td>
-	             </tr>
-	             <tr>
-	               <td colspan="2">
-	                 <input type="submit" id="intSubSubmit">
-	                   <xsl:attribute name="value"><xsl:value-of select="$bwStr-CuCa-Add"/></xsl:attribute>
-	                 </input>
-	               </td>
-	             </tr>
-	           </table>
-	         </div>
-         </form>
-         <ul id="publicSubscriptionTree">
-           <xsl:apply-templates select="/bedework/publicCalendars/calendar/calendar[name='aliases']/calendar" mode="selectCalForPublicAliasCalTree"/>
-         </ul>
-       </div>
+                </th>
+                <td>
+                  <div id="bwPublicCalDisplay"></div>
+                  <!-- button type="button" onclick="showPublicCalAliasTree();"><xsl:copy-of select="$bwStr-CuCa-SelectAPublicCalOrFolder"/></button-->
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <xsl:copy-of select="$bwStr-CuCa-Summary"/>
+                </th>
+                <td>
+                  <input type="text" name="colName" id="intSubDisplayName" value="" size="40"/>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input type="submit" id="intSubSubmit">
+                    <xsl:attribute name="value"><xsl:value-of select="$bwStr-CuCa-Add"/></xsl:attribute>
+                  </input>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </form>
+        <ul id="publicSubscriptionTree">
+          <xsl:apply-templates select="/bedework/publicCalendars/calendar/calendar[name='aliases']/calendar" mode="selectCalForPublicAliasCalTree"/>
+        </ul>
+      </div>
 
-       <!-- deprecated version 3.9 -->
-       <!--
+      <!-- deprecated version 3.9 -->
+      <!--
        <div id="subscriptionTypeUser" class="invisible">
          <table class="common">
            <tr>
@@ -636,8 +671,8 @@
        -->
 
 
-       <div id="subscriptionTypeExternal">
-         <form id="extSubscription" name="extSubscription" action="{$sharing-subscribe}" method="post">
+      <div id="subscriptionTypeExternal">
+        <form id="extSubscription" name="extSubscription" action="{$sharing-subscribe}" method="post">
           <table class="common">
             <tr>
               <th><xsl:copy-of select="$bwStr-CuCa-URLToCalendar"/></th>
@@ -681,7 +716,9 @@
     <xsl:variable name="calPathEncoded" select="encodedPath"/>
 
     <form name="modCalForm" id="modCalForm" method="post" action="{$calendar-update}">
-      <a href="#" id="modCalAdvancedSwitch" class="modCalBasic"><xsl:copy-of select="$bwStr-CuCa-AdvancedOptions"/></a>
+      <xsl:if test="$publicOnly = 'false'">
+        <a href="#" id="modCalAdvancedSwitch" class="modCalBasic"><xsl:copy-of select="$bwStr-CuCa-AdvancedOptions"/></a>
+      </xsl:if>
       <a href="#" id="modCalBasicSwitch" class="modCalAdvanced"><xsl:copy-of select="$bwStr-CuCa-BasicOptions"/></a>
       <xsl:choose>
         <xsl:when test="isSubscription='true'">
@@ -747,20 +784,20 @@
           </td>
         </tr>
         <!-- xsl:if test="isSubscription='false'" -->
-          <!-- we can't color subscriptions yet -->
-          <tr>
-            <th><xsl:copy-of select="$bwStr-CuCa-Color"/></th>
-            <td>
-              <input type="text" name="calendar.color" id="bwCalColor" size="7">
-                <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
-                <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
-              </input>
-              <xsl:call-template name="colorPicker">
-                <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
-                <xsl:with-param name="colorValue"><xsl:value-of select="color"/></xsl:with-param>
-              </xsl:call-template>
-            </td>
-          </tr>
+        <!-- we can't color subscriptions yet -->
+        <tr>
+          <th><xsl:copy-of select="$bwStr-CuCa-Color"/></th>
+          <td>
+            <input type="text" name="calendar.color" id="bwCalColor" size="7">
+              <xsl:attribute name="value"><xsl:value-of select="color"/></xsl:attribute>
+              <xsl:attribute name="style">background-color: <xsl:value-of select="color"/>;color: black;</xsl:attribute>
+            </input>
+            <xsl:call-template name="colorPicker">
+              <xsl:with-param name="colorFieldId">bwCalColor</xsl:with-param>
+              <xsl:with-param name="colorValue"><xsl:value-of select="color"/></xsl:with-param>
+            </xsl:call-template>
+          </td>
+        </tr>
         <!-- /xsl:if -->
         <tr class="modCalAdvanced">
           <th><xsl:copy-of select="$bwStr-CuCa-Display"/></th>
@@ -832,25 +869,25 @@
         </xsl:if>
       </table>
 
-	    <div id="calAccessBoxHolder" class="modCalAdvanced">
-	      <span id="calAccessBoxToggle">
-	        <img src="{$resourcesRoot}/images/plus.gif"/> Advanced Access Controls
-	      </span>
-	      <div id="accessBox">
-	        <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/></h3>
-	        <div id="bwCurrentAccessWidget">&#160;</div>
-	        <script type="text/javascript">
+      <div id="calAccessBoxHolder" class="modCalAdvanced">
+        <span id="calAccessBoxToggle">
+          <img src="{$resourcesRoot}/images/plus.gif"/> Advanced Access Controls
+        </span>
+        <div id="accessBox">
+          <h3><xsl:copy-of select="$bwStr-CuCa-CurrentAccess"/></h3>
+          <div id="bwCurrentAccessWidget">&#160;</div>
+          <script type="text/javascript">
 	          bwAcl.display("bwCurrentAccessWidget");
-	        </script>
-	        <xsl:call-template name="entityAccessForm">
-	          <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
-	        </xsl:call-template>
+          </script>
+          <xsl:call-template name="entityAccessForm">
+            <xsl:with-param name="outputId">bwCurrentAccessWidget</xsl:with-param>
+          </xsl:call-template>
 
-	        <div class="note">
-	          <xsl:copy-of select="$bwStr-CuCa-AccessNote"/>
-	        </div>
-	      </div>
-	    </div>
+          <div class="note">
+            <xsl:copy-of select="$bwStr-CuCa-AccessNote"/>
+          </div>
+        </div>
+      </div>
 
       <table border="0" id="submitTable">
         <tr>
@@ -895,79 +932,79 @@
       </div>
     </xsl:if>
     <xsl:if test="can-be-shared">
-	    <div id="calSharingBox">
-	      <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
-	      <form id="calSharingForm" name="calSharingForm" method="post" action="{$sharing-shareCollection}" onsubmit="return validateShareForm(this.shareWithAcct.value);">
-	        <table class="common">
-	          <tr>
-	            <td>
-	              <label for="shareWithAcct"><xsl:copy-of select="$bwStr-CuCa-ShareWith"/></label>
-	            </td>
-	            <td>
-	              <input type="hidden" name="colHref" value="{$calPath}"/>
-	              <input type="text" id="shareWithAcct" name="cua" size="18" placeholder="{$bwStr-CuCa-SharePlaceholder}"/>
-	            </td>
-	            <td>
-	              <button name="submit" id="shareWithButton" type="submit">
-			            <xsl:copy-of select="$bwStr-CuCa-Share"/>
-			          </button>
-	            </td>
-	          </tr>
-	          <tr>
-	            <td>
-	              <label for="shareColName"><xsl:copy-of select="$bwStr-CuCa-SuggestedName"/></label>
-	            </td>
-	            <td>
-	              <xsl:variable name="calSummary" select="summary"/>
-	              <input type="text" id="shareColName" name="colName" size="18" value="{$calSummary}"/><br/>
+      <div id="calSharingBox">
+        <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
+        <form id="calSharingForm" name="calSharingForm" method="post" action="{$sharing-shareCollection}" onsubmit="return validateShareForm(this.shareWithAcct.value);">
+          <table class="common">
+            <tr>
+              <td>
+                <label for="shareWithAcct"><xsl:copy-of select="$bwStr-CuCa-ShareWith"/></label>
+              </td>
+              <td>
+                <input type="hidden" name="colHref" value="{$calPath}"/>
+                <input type="text" id="shareWithAcct" name="cua" size="18" placeholder="{$bwStr-CuCa-SharePlaceholder}"/>
+              </td>
+              <td>
+                <button name="submit" id="shareWithButton" type="submit">
+                  <xsl:copy-of select="$bwStr-CuCa-Share"/>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="shareColName"><xsl:copy-of select="$bwStr-CuCa-SuggestedName"/></label>
+              </td>
+              <td>
+                <xsl:variable name="calSummary" select="summary"/>
+                <input type="text" id="shareColName" name="colName" size="18" value="{$calSummary}"/><br/>
                 <span class="calShareField"><input type="checkbox" name="rw" value="true"/><xsl:copy-of select="$bwStr-CuCa-WriteAccess"/></span>
               </td>
               <td></td>
-	          </tr>
-	        </table>
-	      </form>
-	    </div>
-	    <xsl:if test="CSS:invite/CSS:user">
-	      <table id="shareesTable" class="common">
-	        <tr>
-	          <th><xsl:copy-of select="$bwStr-CuCa-SharedBy"/></th>
-	          <th><xsl:copy-of select="$bwStr-CuCa-Status"/></th>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <xsl:if test="CSS:invite/CSS:user">
+        <table id="shareesTable" class="common">
+          <tr>
+            <th><xsl:copy-of select="$bwStr-CuCa-SharedBy"/></th>
+            <th><xsl:copy-of select="$bwStr-CuCa-Status"/></th>
             <th><xsl:copy-of select="$bwStr-CuCa-WriteAccess"/></th>
-	          <th><xsl:copy-of select="$bwStr-CuCa-Remove"/></th>
-	        </tr>
-	        <xsl:for-each select="CSS:invite/CSS:user">
-	          <xsl:sort order="ascending" select="DAV:href"/>
-	          <xsl:variable name="sharee" select="DAV:href"/>
-		        <tr>
-		          <td class="sharee">
-		            <xsl:value-of select="substring-after($sharee,'mailto:')"/>
-		          </td>
-		          <td class="status">
-		            <xsl:choose>
-		              <xsl:when test="CSS:invite-noresponse"><span class="invite-pending"><xsl:copy-of select="$bwStr-CuCa-Pending"/></span></xsl:when>
-		              <xsl:when test="CSS:invite-declined"><span class="invite-declined"><xsl:copy-of select="$bwStr-CuCa-Declined"/></span></xsl:when>
-		              <xsl:otherwise><span class="invite-accepted"><xsl:copy-of select="$bwStr-CuCa-Accepted"/></span></xsl:otherwise>
+            <th><xsl:copy-of select="$bwStr-CuCa-Remove"/></th>
+          </tr>
+          <xsl:for-each select="CSS:invite/CSS:user">
+            <xsl:sort order="ascending" select="DAV:href"/>
+            <xsl:variable name="sharee" select="DAV:href"/>
+            <tr>
+              <td class="sharee">
+                <xsl:value-of select="substring-after($sharee,'mailto:')"/>
+              </td>
+              <td class="status">
+                <xsl:choose>
+                  <xsl:when test="CSS:invite-noresponse"><span class="invite-pending"><xsl:copy-of select="$bwStr-CuCa-Pending"/></span></xsl:when>
+                  <xsl:when test="CSS:invite-declined"><span class="invite-declined"><xsl:copy-of select="$bwStr-CuCa-Declined"/></span></xsl:when>
+                  <xsl:otherwise><span class="invite-accepted"><xsl:copy-of select="$bwStr-CuCa-Accepted"/></span></xsl:otherwise>
                 </xsl:choose>
-		          </td>
+              </td>
               <td class="access">
-		            <form method="post" action="{$sharing-shareCollection}">
+                <form method="post" action="{$sharing-shareCollection}">
                   <input type="hidden" name="colHref" value="{$calPath}"/>
                   <input type="hidden" name="cua" value="{$sharee}"/>
-		              <input type="checkbox" name="rw" onclick="this.form.submit();">
-		                <xsl:if test="CSS:access/CSS:write">
-		                  <xsl:attribute name="checked">checked</xsl:attribute>
-		                </xsl:if>
-		              </input>
-		            </form>
-		          </td>
-		          <td class="remove">
-		            <a href="{$sharing-shareCollection}&amp;colHref={$calPath}&amp;cua={$sharee}&amp;remove=true">
-		              <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/>
-		            </a>
-		          </td>
-		        </tr>
-		      </xsl:for-each>
-		      <!--
+                  <input type="checkbox" name="rw" onclick="this.form.submit();">
+                    <xsl:if test="CSS:access/CSS:write">
+                      <xsl:attribute name="checked">checked</xsl:attribute>
+                    </xsl:if>
+                  </input>
+                </form>
+              </td>
+              <td class="remove">
+                <a href="{$sharing-shareCollection}&amp;colHref={$calPath}&amp;cua={$sharee}&amp;remove=true">
+                  <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Inbx-Delete}"/>
+                </a>
+              </td>
+            </tr>
+          </xsl:for-each>
+          <!--
 		      <xsl:for-each select="CSS:invite/CSS:user[CSS:invite-noresponse]">
             <xsl:sort type="ascending" select="DAV:href"/>
             <xsl:variable name="sharee" select="DAV:href"/>
@@ -995,8 +1032,8 @@
             </tr>
           </xsl:for-each>
           -->
-	      </table>
-	    </xsl:if>
+        </table>
+      </xsl:if>
     </xsl:if>
 
 
@@ -1047,10 +1084,10 @@
     <h3><xsl:copy-of select="$bwStr-CaLi-ManagingCalendars"/></h3>
     <ul>
       <li><xsl:copy-of select="$bwStr-CaLi-SelectFromCalendar"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/calIcon-sm.gif" width="13" height="13" alt="true" border="0"/>),
-      <xsl:copy-of select="$bwStr-CaLi-Subscription"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/calIconAlias2-sm.gif" width="17" height="13" alt="true" border="0"/>)<xsl:copy-of select="$bwStr-CaLi-OrFolder"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/catIcon.gif" width="13" height="13" alt="true" border="0"/>).</li>
+        <xsl:copy-of select="$bwStr-CaLi-Subscription"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/calIconAlias2-sm.gif" width="17" height="13" alt="true" border="0"/>)<xsl:copy-of select="$bwStr-CaLi-OrFolder"/><xsl:text> </xsl:text>(<img src="{$resourcesRoot}/images/catIcon.gif" width="13" height="13" alt="true" border="0"/>).</li>
       <li><xsl:copy-of select="$bwStr-CaLi-Select"/><xsl:text> </xsl:text>
-      <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
-      <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CaLi-Icon"/>
+        <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="true" border="0"/>
+        <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-CaLi-Icon"/>
         <ul>
           <li><xsl:copy-of select="$bwStr-CaLi-Folders"/></li>
           <li><xsl:copy-of select="$bwStr-CaLi-Calendars"/></li>
@@ -1196,10 +1233,10 @@
       <table class="common" cellspacing="0">
         <tr>
           <th class="commonHeader">
-              <xsl:copy-of select="$bwStr-Cals-EventDateLimits"/>
-              <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> <xsl:copy-of select="$bwStr-Cals-TodayForward"/>
-              <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> <xsl:copy-of select="$bwStr-Cals-AllDates"/>
-              <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> <xsl:copy-of select="$bwStr-Cals-DateRange"/>
+            <xsl:copy-of select="$bwStr-Cals-EventDateLimits"/>
+            <input type="radio" name="dateLimits" value="active" checked="checked" onclick="changeClass('exportDateRange','invisible')"/> <xsl:copy-of select="$bwStr-Cals-TodayForward"/>
+            <input type="radio" name="dateLimits" value="none" onclick="changeClass('exportDateRange','invisible')"/> <xsl:copy-of select="$bwStr-Cals-AllDates"/>
+            <input type="radio" name="dateLimits" value="limited" onclick="changeClass('exportDateRange','visible')"/> <xsl:copy-of select="$bwStr-Cals-DateRange"/>
           </th>
         </tr>
         <tr id="exportDateRange" class="invisible">
@@ -1229,28 +1266,45 @@
             <!-- My Calendars -->
             <ul class="calendarTree">
               <!-- list normal calendars first -->
-              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calType = '1']">
-                <li class="calendar">
-                  <xsl:variable name="calPath" select="path"/>
-                  <xsl:variable name="name" select="name"/>
-                  <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                    <xsl:value-of select="summary"/>
-                  </a>
-                </li>
-              </xsl:for-each>
+              <xsl:choose>
+                <xsl:when test="$publicOnly = 'true'">
+                  <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calType = '1' and isSubscription = 'true']">
+                    <li class="calendar">
+                      <xsl:variable name="calPath" select="path"/>
+                      <xsl:variable name="name" select="name"/>
+                      <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                        <xsl:value-of select="summary"/>
+                      </a>
+                    </li>
+                  </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calType = '1']">
+                    <li class="calendar">
+                      <xsl:variable name="calPath" select="path"/>
+                      <xsl:variable name="name" select="name"/>
+                      <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                        <xsl:value-of select="summary"/>
+                      </a>
+                    </li>
+                  </xsl:for-each>
+                </xsl:otherwise>
+              </xsl:choose>
             </ul>
-            <ul class="calendarTree">
-              <!-- list special calendars next -->
-              <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calType &gt; 1]">
-                <li class="calendar">
-                  <xsl:variable name="calPath" select="path"/>
-                  <xsl:variable name="name" select="name"/>
-                  <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
-                    <xsl:value-of select="summary"/>
-                  </a>
-                </li>
-              </xsl:for-each>
-            </ul>
+            <xsl:if test="$publicOnly = 'false'">
+              <ul class="calendarTree">
+                <!-- list special calendars next -->
+                <xsl:for-each select="/bedework/myCalendars/calendars/calendar//calendar[calType &gt; 1]">
+                  <li class="calendar">
+                    <xsl:variable name="calPath" select="path"/>
+                    <xsl:variable name="name" select="name"/>
+                    <a href="javascript:exportCalendar('exportCalendarForm','{$name}','{$calPath}')">
+                      <xsl:value-of select="summary"/>
+                    </a>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </xsl:if>
           </td>
           <!-- td>
             <ul class="calendarTree">
@@ -1285,6 +1339,5 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
 
 </xsl:stylesheet>

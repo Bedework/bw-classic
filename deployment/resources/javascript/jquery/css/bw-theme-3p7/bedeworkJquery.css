@@ -1,9 +1,8 @@
 .ui-datepicker-trigger {
   position: relative;
-  top: 4px;
+  top: 3px;
   left: 4px;
 }
-
 .ui-autocomplete {
 	font-size: 0.8em;
 	white-space: nowrap;

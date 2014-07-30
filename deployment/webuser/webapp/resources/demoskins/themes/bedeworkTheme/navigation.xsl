@@ -63,8 +63,15 @@
         <li>
           <xsl:if test="/bedework/page='eventList'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-Agenda"/></a>
+          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-Upcoming"/></a>
         </li>
+        <xsl:if test="$useVpoll = 'true'">
+          <li>
+            <xsl:if test="/bedework/page='showPage' and /bedework/appvar[key='page']/value='polls'">
+              <xsl:attribute name="class">selected</xsl:attribute>
+            </xsl:if><a href="{$showPage}&amp;setappvar=page(polls)">POLLS</a>
+          </li>
+        </xsl:if>
       </ul>
     </div>
   </xsl:template>
@@ -104,7 +111,7 @@
         </td>
         <td align="right" class="gotoForm">
           <form name="calForm" method="post" action="{$navAction}">
-             <table border="0" cellpadding="0" cellspacing="0">
+            <table border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <xsl:if test="/bedework/periodname!='Year'">
                   <td>
@@ -167,38 +174,40 @@
 
   <xsl:template name="utilBar">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
-       <tr>
-         <td class="leftCell">
-           <xsl:if test="/bedework/page != 'addEvent' or /bedework/page='editEvent'">
-             <input type="button" value="{$bwStr-Util-Add}" id="bwAddButton"/>
-             <xsl:call-template name="actionIcons">
-               <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
-               <xsl:with-param name="startDate">
-                 <xsl:choose> <!-- why are we doing this choose? -->
-                   <xsl:when test="/bedework/periodname = 'Day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
-                   <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
-                 </xsl:choose>
-               </xsl:with-param>
-               <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
-             </xsl:call-template>
-           </xsl:if>
-         </td>
-         <td class="rightCell">
+      <tr>
+        <td class="leftCell">
+          <xsl:if test="$publicOnly = 'false'">
+            <xsl:if test="/bedework/page != 'addEvent' or /bedework/page='editEvent'">
+              <input type="button" value="{$bwStr-Util-Add}" id="bwAddButton"/>
+              <xsl:call-template name="actionIcons">
+                <xsl:with-param name="actionIconsId">bwActionIcons-0</xsl:with-param>
+                <xsl:with-param name="startDate">
+                  <xsl:choose> <!-- why are we doing this choose? -->
+                    <xsl:when test="/bedework/periodname = 'Day'"><xsl:value-of select="/bedework/firstday/date"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="/bedework/now/date"/></xsl:otherwise>
+                  </xsl:choose>
+                </xsl:with-param>
+                <xsl:with-param name="startTime"><xsl:value-of select="/bedework/now/twodigithour24"/>0000</xsl:with-param>
+              </xsl:call-template>
+            </xsl:if>
+          </xsl:if>
+        </td>
+        <td class="rightCell">
 
-           <!-- search -->
-           <xsl:if test="/bedework/page!='searchResult'">
-             <form name="searchForm" method="post" action="{$search}">
-               <xsl:copy-of select="$bwStr-Util-Search"/>:
-               <input type="text" name="query" size="15">
-                 <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
-               </input>
-               <input type="submit" name="submit" value="{$bwStr-Util-Go}"/>
-             </form>
-           </xsl:if>
+          <!-- search -->
+          <xsl:if test="/bedework/page!='searchResult'">
+            <form name="searchForm" method="post" action="{$search}">
+              <xsl:copy-of select="$bwStr-Util-Search"/>:
+              <input type="text" name="query" size="15">
+                <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
+              </input>
+              <input type="submit" name="submit" value="{$bwStr-Util-Go}"/>
+            </form>
+          </xsl:if>
 
-           <!-- show free / busy -->
-           <!-- DEPRECATED as of Bedework 3.7: the feature is left in place for backwards compatibility -->
-           <!--
+          <!-- show free / busy -->
+          <!-- DEPRECATED as of Bedework 3.7: the feature is left in place for backwards compatibility -->
+          <!--
            <xsl:choose>
              <xsl:when test="/bedework/periodname!='Year'">
                <xsl:choose>
@@ -220,97 +229,97 @@
            </xsl:choose>
            -->
 
-           <!-- toggle list / calendar view -->
-           <xsl:choose>
-             <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
-               <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-List"/></span>
-             </xsl:when>
-             <xsl:when test="/bedework/periodname='Year'">
-               <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Cal"/></span>
-             </xsl:when>
-             <xsl:when test="/bedework/periodname='Month'">
-               <xsl:choose>
-                 <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
-                   <a class="utilButton" href="{$setup}&amp;setappvar=monthViewMode(cal)" title="{$bwStr-Util-ToggleListCalView}">
-                     <xsl:copy-of select="$bwStr-Util-Cal"/>
-                   </a>
-                 </xsl:when>
-                 <xsl:otherwise>
-                   <a class="utilButton" href="{$setup}&amp;setappvar=monthViewMode(list)" title="{$bwStr-Util-ToggleListCalView}">
-                     <xsl:copy-of select="$bwStr-Util-List"/>
-                   </a>
-                 </xsl:otherwise>
-               </xsl:choose>
-             </xsl:when>
-             <xsl:otherwise>
-               <xsl:choose>
-                 <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
-                   <a class="utilButton" href="{$setup}&amp;setappvar=weekViewMode(cal)" title="{$bwStr-Util-ToggleListCalView}">
-                     <xsl:copy-of select="$bwStr-Util-Cal"/>
-                   </a>
-                 </xsl:when>
-                 <xsl:otherwise>
-                   <a class="utilButton" href="{$setup}&amp;setappvar=weekViewMode(list)" title="{$bwStr-Util-ToggleListCalView}">
-                     <xsl:copy-of select="$bwStr-Util-List"/>
-                   </a>
-                 </xsl:otherwise>
-               </xsl:choose>
-             </xsl:otherwise>
-           </xsl:choose>
+          <!-- toggle list / calendar view -->
+          <xsl:choose>
+            <xsl:when test="/bedework/periodname='Day' or /bedework/page='eventList'">
+              <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-List"/></span>
+            </xsl:when>
+            <xsl:when test="/bedework/periodname='Year'">
+              <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Cal"/></span>
+            </xsl:when>
+            <xsl:when test="/bedework/periodname='Month'">
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='monthViewMode']/value='list'">
+                  <a class="utilButton" href="{$setup}&amp;setappvar=monthViewMode(cal)" title="{$bwStr-Util-ToggleListCalView}">
+                    <xsl:copy-of select="$bwStr-Util-Cal"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a class="utilButton" href="{$setup}&amp;setappvar=monthViewMode(list)" title="{$bwStr-Util-ToggleListCalView}">
+                    <xsl:copy-of select="$bwStr-Util-List"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='weekViewMode']/value='list'">
+                  <a class="utilButton" href="{$setup}&amp;setappvar=weekViewMode(cal)" title="{$bwStr-Util-ToggleListCalView}">
+                    <xsl:copy-of select="$bwStr-Util-Cal"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a class="utilButton" href="{$setup}&amp;setappvar=weekViewMode(list)" title="{$bwStr-Util-ToggleListCalView}">
+                    <xsl:copy-of select="$bwStr-Util-List"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
 
-           <!-- summary / detailed mode toggle -->
-           <xsl:choose>
-              <xsl:when test="/bedework/page = 'eventList'">
-                <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
-                    <a class="utilButton" href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="{$bwStr-Util-ToggleSummDetView}">
-                      <xsl:copy-of select="$bwStr-Util-Summary"/>
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a class="utilButton" href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="{$bwStr-Util-ToggleSummDetView}">
-                      <xsl:copy-of select="$bwStr-Util-Details"/>
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
-              <xsl:when test="/bedework/periodname='Year' or
+          <!-- summary / detailed mode toggle -->
+          <xsl:choose>
+            <xsl:when test="/bedework/page = 'eventList'">
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
+                  <a class="utilButton" href="{$listEvents}&amp;setappvar=listEventsSummaryMode(summary)" title="{$bwStr-Util-ToggleSummDetView}">
+                    <xsl:copy-of select="$bwStr-Util-Summary"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a class="utilButton" href="{$listEvents}&amp;setappvar=listEventsSummaryMode(details)" title="{$bwStr-Util-ToggleSummDetView}">
+                    <xsl:copy-of select="$bwStr-Util-Details"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:when test="/bedework/periodname='Year' or
                               (/bedework/periodname='Month' and
                               (/bedework/appvar[key='monthViewMode']/value='cal' or
                                not(/bedework/appvar[key='monthViewMode']))) or
                               (/bedework/periodname='Week' and
                               (/bedework/appvar[key='weekViewMode']/value='cal' or
                                not(/bedework/appvar[key='weekViewMode'])))">
-                <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Summary"/></span>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Details"/></span>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:choose>
-                  <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-                    <a class="utilButton" href="{$setup}&amp;setappvar=summaryMode(summary)" title="{$bwStr-Util-ToggleSummDetView}">
-                      <xsl:copy-of select="$bwStr-Util-Summary"/>
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <a class="utilButton" href="{$setup}&amp;setappvar=summaryMode(details)" title="{$bwStr-Util-ToggleSummDetView}">
-                      <xsl:copy-of select="$bwStr-Util-Details"/>
-                    </a>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:otherwise>
-            </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
+                  <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Summary"/></span>
+                </xsl:when>
+                <xsl:otherwise>
+                  <span class="utilButtonOff"><xsl:copy-of select="$bwStr-Util-Details"/></span>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
+                  <a class="utilButton" href="{$setup}&amp;setappvar=summaryMode(summary)" title="{$bwStr-Util-ToggleSummDetView}">
+                    <xsl:copy-of select="$bwStr-Util-Summary"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a class="utilButton" href="{$setup}&amp;setappvar=summaryMode(details)" title="{$bwStr-Util-ToggleSummDetView}">
+                    <xsl:copy-of select="$bwStr-Util-Details"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
 
-           <!-- refresh button -->
-           <!-- deprecate? -->
-           <!-- <a href="{$setup}"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a> -->
-         </td>
-       </tr>
+          <!-- refresh button -->
+          <!-- deprecate? -->
+          <!-- <a href="{$setup}"><img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/></a> -->
+        </td>
+      </tr>
     </table>
   </xsl:template>
 
@@ -326,24 +335,24 @@
     </xsl:variable>
     <br/>
     <div id="{$actionIconsId}" class="bwActionIcons">
-       <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddEvent}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
-          <img src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
-          <xsl:text> </xsl:text>
-          <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
-       </a>
-       <!--
+      <a href="{$initEvent}&amp;entityType=event&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddEvent}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+        <img src="{$resourcesRoot}/images/add2mycal-icon-small.gif" width="12" height="16" border="0" alt="add event"/>
+        <xsl:text> </xsl:text>
+        <xsl:copy-of select="$bwStr-Actn-AddEvent"/>
+      </a>
+      <!--
        <a href="{$event-initMeeting}&amp;entityType=event&amp;schedule=request&amp;startdate={$dateTime}" title="schedule a meeting" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/images/std-icalMeeting-icon-small.gif" width="12" height="16" border="0" alt="schedule meeting"/>
           <xsl:text> </xsl:text>
           <xsl:copy-of select="$bwStr-Actn-ScheduleMeeting"/>
        </a>
        -->
-       <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
-          <img src="{$resourcesRoot}/images/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
-          <xsl:text> </xsl:text>
-          <xsl:copy-of select="$bwStr-Actn-AddTask"/>
-       </a>
-       <!--
+      <a href="{$initEvent}&amp;entityType=task&amp;startdate={$dateTime}" title="{$bwStr-Actn-AddTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
+        <img src="{$resourcesRoot}/images/std-icalTask-icon-small.gif" width="12" height="16" border="0" alt="add task"/>
+        <xsl:text> </xsl:text>
+        <xsl:copy-of select="$bwStr-Actn-AddTask"/>
+      </a>
+      <!--
        <a href="{$event-initMeeting}&amp;entityType=task&amp;schedule=request&amp;startdate={$dateTime}" title="{$bwStr-Actn-ScheduleTask}" onclick="javascript:changeClass('{$actionIconsId}','invisible')">
           <img src="{$resourcesRoot}/images/std-icalSchTask-icon-small.gif" width="12" height="16" border="0" alt="schedule task"/>
           <xsl:text> </xsl:text>
@@ -355,7 +364,7 @@
           <xsl:copy-of select="$bwStr-Actn-Upload"/>
        </a>
        -->
-     </div>
+    </div>
   </xsl:template>
 
 

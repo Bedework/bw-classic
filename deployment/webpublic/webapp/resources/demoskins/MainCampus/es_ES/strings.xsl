@@ -45,6 +45,7 @@
   <xsl:variable name="bwStr-HdBr-PrintThisView">imprimir esta vista</xsl:variable>
   <xsl:variable name="bwStr-HdBr-RSS">RSS</xsl:variable>
   <xsl:variable name="bwStr-HdBr-RSSFeed">Fuentes de datos y Reproductores</xsl:variable>
+  <xsl:variable name="bwStr-HdBr-ExportSubscribe">Exportar/Suscribirse</xsl:variable>
   <xsl:variable name="bwStr-HdBr-EventInformation">Información del Evento</xsl:variable>
   <xsl:variable name="bwStr-HdBr-BackLink">(volver a los eventos)</xsl:variable>
   <xsl:variable name="bwStr-HdBr-Back">&#8656; atrás</xsl:variable>
@@ -115,6 +116,7 @@
   <xsl:variable name="bwStr-LCol-Calendars">Agendas</xsl:variable>
   <xsl:variable name="bwStr-LCol-All">Todas</xsl:variable>
   <xsl:variable name="bwStr-LCol-FilterOnCalendars">FILTRAR AGENDAS:</xsl:variable>
+  <xsl:variable name="bwStr-LCol-DownloadCalendars">Descargar Calendarios</xsl:variable>
   <xsl:variable name="bwStr-LCol-ViewAllCalendars">Ver Todas las Agendas</xsl:variable>
   <xsl:variable name="bwStr-LCol-FeedsAndWidgets">Feeds and Widgets</xsl:variable>
 
@@ -195,6 +197,7 @@
   <xsl:variable name="bwStr-SgEv-Categories">Etiquetas:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-Comments">Comentarios:</xsl:variable>
   <xsl:variable name="bwStr-SgEv-TopicalArea">Áreas Temáticas:</xsl:variable>
+  <xsl:variable name="bwStr-SgEv-Calendars">Agendas:</xsl:variable>
 
   <!--  xsl:template name="listView" -->
   <xsl:variable name="bwStr-LsVw-NoEventsToDisplay">No se han encontrado eventos. Por favor, inténtelo con una vista o un intervalo de tiempo distintos.</xsl:variable>
@@ -226,9 +229,10 @@
   <xsl:variable name="bwStr-LsEv-Next7Days">Siguientes 7 Días</xsl:variable>
   <xsl:variable name="bwStr-LsEv-NoEventsToDisplay">No eventos para mostrar.</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Calendars">Agendas:</xsl:variable>
-  <xsl:variable name="bwStr-LsEv-ClearFilters">(borrar filtros)s</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-ClearFilters">(borrar toda)</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Search">Buscar:</xsl:variable>
-  <xsl:variable name="bwStr-LsEv-ClearSearch">(borrar buscar)</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-Filter">Filtro:</xsl:variable>
+  <xsl:variable name="bwStr-LsEv-ClearSearch">(borrar)</xsl:variable>
   <xsl:variable name="bwStr-LsEv-DownloadEvent">Bajar en formato ical</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Categories">Categorías:</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Contact">Contacto:</xsl:variable>
@@ -295,7 +299,8 @@
 
   <!--  xsl:template match="calendars" -->
   <xsl:variable name="bwStr-Cals-AllCalendars">Todas las Agendas</xsl:variable>
-  <xsl:variable name="bwStr-Cals-SelectCalendar">Seleccionar una agenda  para ver solo sus eventos.</xsl:variable>
+  <xsl:variable name="bwStr-Cals-DownloadCalendars">Download Calendars</xsl:variable>
+  <xsl:variable name="bwStr-Cals-SelectCalendar">Seleccionar una agenda para descargar sus eventos en formato ical.</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="calTree" -->
   <xsl:variable name="bwStr-Calr-Folder">carpeta</xsl:variable>
@@ -355,6 +360,57 @@
   <xsl:variable name="bwStr-Stat-Disable">desactivar</xsl:variable>
   <xsl:variable name="bwStr-Stat-FetchStats">recopilar estadísticas</xsl:variable>
   <xsl:variable name="bwStr-Stat-DumpStats">volcar estadísticas al log</xsl:variable>
+
+  <!--  xsl:template name="exportSubscribe" -->
+  <xsl:variable name="bwStr-exSu-ExportSubscribe">Export / Subscribe</xsl:variable>
+  <xsl:variable name="bwStr-exSu-CurrentFiltersColon">Current Filters:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-FeedOrWidget">Event feed or embeddable widget?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-Feed">Feed</xsl:variable>
+  <xsl:variable name="bwStr-exSu-Widget">Widget (code to copy and paste onto a website)</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DataFormat">Data format?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-HTMLList">HTML list (copy &amp; paste into Word, etc.)</xsl:variable>
+  <xsl:variable name="bwStr-exSu-EventCount">Event count</xsl:variable>
+  <xsl:variable name="bwStr-exSu-EventCountTotal">Total number of events returned:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-IncludeDownloadLink">Include download link?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-True">True</xsl:variable>
+  <xsl:variable name="bwStr-exSu-False">False</xsl:variable>
+  <xsl:variable name="bwStr-exSu-ShowDetailsOrSummary">Show details or summary?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-Details">Details</xsl:variable>
+  <xsl:variable name="bwStr-exSu-Summary">Summary</xsl:variable>
+  <xsl:variable name="bwStr-exSu-Timeframe">Time frame</xsl:variable>
+  <xsl:variable name="bwStr-exSu-UseDefaultListing">Use the default listing, limit the number of days (from the current date), or provide a start date and an end date.</xsl:variable>
+  <xsl:variable name="bwStr-exSu-Default">Default</xsl:variable>
+  <xsl:variable name="bwStr-exSu-LimitTo">Limit to</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DaysFromToday">days from "today"</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DateRangeColon">Date Range:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-StartDateColon">Start Date:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-EndDateColon">End Date:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DateRangeNote">Note: Event count takes precedence over date range!</xsl:variable>
+  <xsl:variable name="bwStr-exSu-WidgetOptions">Widget Options</xsl:variable>
+  <xsl:variable name="bwStr-exSu-LimitEvents">Limit the number of events listed?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DefaultFalse">(default: false)</xsl:variable>
+  <xsl:variable name="bwStr-exSu-LimitToColon">Limit to:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-Events">events</xsl:variable>
+  <xsl:variable name="bwStr-exSu-ShowTitle">Show a title above event list?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DefaultTrue">(default: true)</xsl:variable>
+  <xsl:variable name="bwStr-exSu-TitleColon">Title:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-UpcomingEvents">Upcoming Events</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DefaultUpcomingEvents">(default: "Upcoming Events")</xsl:variable>
+  <xsl:variable name="bwStr-exSu-HighlightDatesOrTitles">Highlight event dates or event titles?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-ByTitle">By title</xsl:variable>
+  <xsl:variable name="bwStr-exSu-ByDate">By date</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DefaultByTitle">(default 'by title')</xsl:variable>
+  <xsl:variable name="bwStr-exSu-ShowDescription">Show description in listing?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayEndDate">Display end date in listing?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayTime">Display time in listing?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayLocation">Display location in listing?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayDetailsInline">Display event details inline?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayContact">Display contact in event details?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayCost">>Display cost in event details?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayTags">Display tags in event details?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-DisplayTimezone">Display timezone in event details?</xsl:variable>
+  <xsl:variable name="bwStr-exSu-URL">Your URL:</xsl:variable>
+  <xsl:variable name="bwStr-exSu-WidgetCode">Widget Code:</xsl:variable>
 
   <!--  xsl:template name="footer" -->
   <xsl:variable name="bwStr-Foot-DemonstrationCalendar">Agenda de demostración; poner pie de información aqui.</xsl:variable>

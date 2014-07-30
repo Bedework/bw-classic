@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- This is the default data for the calsuite resource of type FeaturedEvents.
-     If you lose that resource, you can copy and paste this file into a new
-     calendar suite resource to get it back within the administrative
+     If you lose that resource, you can copy and paste the fields in this file
+     to a new calendar suite resource to get it back within the administrative
      web client.  The name and resource type should both be set to "FeaturedEvents".
 
      To add this as a web-manageable resource:
@@ -24,24 +24,24 @@
   <features>
     <group>
       <image>
-        <name>/calrsrc.MainCampus/themes/bedeworkTheme/featured/bede.jpg</name>
+        <name>/calrsrc.MainCampus/themes/bedeworkTheme-3.10/featured/bede.jpg</name>
         <link>http://en.wikipedia.org/wiki/De_temporum_ratione</link>
         <toolTip>De temporum ratione</toolTip>
       </image>
       <image>
-        <name>/calrsrc.MainCampus/themes/bedeworkTheme/featured/gettingstarted.jpg</name>
+        <name>/calrsrc.MainCampus/themes/bedeworkTheme-3.10/featured/gettingstarted.jpg</name>
         <link>https://wiki.jasig.org/display/BWK310/Getting+Started</link>
         <toolTip>Bedework Getting Started Guide</toolTip>
       </image>
       <image>
-        <name>/calrsrc.MainCampus/themes/bedeworkTheme/featured/bedework.jpg</name>
+        <name>/calrsrc.MainCampus/themes/bedeworkTheme-3.10/featured/bedework.jpg</name>
         <link>http://www.jasig.org/bedework/documentation</link>
         <toolTip>Bedework Documentation</toolTip>
       </image>
     </group>
     <single>
       <image>
-        <name>/calrsrc.MainCampus/themes/bedeworkTheme/featured/bwSinglePanel.jpg</name>
+        <name>/calrsrc.MainCampus/themes/bedeworkTheme-3.10/featured/bwSinglePanel.jpg</name>
         <link>http://www.jasig.org/bedework</link>
         <toolTip>Bedework Website</toolTip>
       </image>
@@ -50,15 +50,15 @@
   <generics>
     <group>
       <image>
-	<name>/calrsrc.MainCampus/themes/bedeworkTheme/featured/bede.jpg</name>
+	<name>/calrsrc.MainCampus/themes/bedeworkTheme-3.10/featured/bede.jpg</name>
 	<toolTip>De temporum ratione</toolTip>
       </image>
       <image>
-        <name>/calrsrc.MainCampus/themes/bedeworkTheme/featured/gettingstarted.jpg</name>
+        <name>/calrsrc.MainCampus/themes/bedeworkTheme-3.10/featured/gettingstarted.jpg</name>
         <toolTip>Bedework Documentation</toolTip>
       </image>
       <image>
-        <name>/calrsrc.MainCampus/themes/bedeworkTheme/featured/bedework.jpg</name>
+        <name>/calrsrc.MainCampus/themes/bedeworkTheme-3.10/featured/bedework.jpg</name>
         <toolTip>Bedework Website</toolTip>
       </image>
     </group>

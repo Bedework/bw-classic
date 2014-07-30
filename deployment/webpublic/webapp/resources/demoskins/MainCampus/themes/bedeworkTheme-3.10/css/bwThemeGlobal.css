@@ -19,10 +19,13 @@
 
 /* BEDEWORK 3.10 GLOBAL STYLESHEET
    This file is loaded after Bootstrap and jQuery CSS files
-   and before bwThemeResponsive.css (where responsive overrides
+   and before bwThemeResponsive-??.css (where responsive overrides
    can be placed).
 
-   This theme is mobile first.  */
+   This theme is not quite mobile first: this file holds global
+   styles, bwThemeResponsive-00-Tiny.css file is used to hold
+   very mobile specific overrides, and so forth. See the comments
+   in the bwThemeResponsive-??.css files.  */
 
 body {
   margin: 0;
@@ -32,6 +35,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
   line-height: 1.5;
+  overflow: scroll;
 }
 
 /* GENERAL SELECTORS */
@@ -77,6 +81,7 @@ strong {
 }
 label {
   cursor: pointer;
+  display: inline; /* override bootstrap */
 }
 .invisible {
   display: none;
@@ -154,6 +159,9 @@ label {
 #feature img.img-responsive {
   width: 33.3%;
   float: left;
+}
+#feature img.singleFeatureMode {
+  width: 100%;
 }
 
 /* COLUMNS */
@@ -268,6 +276,7 @@ label {
 .bwMenuTitle {
   cursor: pointer;
   margin-top: 1em;
+  text-transform: uppercase;
 }
 .bwMenuTree {
   margin: 0.5em 0 0 1em;
@@ -280,12 +289,13 @@ label {
 }
 .bwMenuTree li {
   list-style: none;
-}
-.bwMenuTree ul li li {
-  margin: 0 0 0 20px;
+  margin-left: 14px;
 }
 .bwMenuTree li.hasChildren {
-  margin: 0 0 0 10px;
+  margin-left: 2px;
+}
+.bwMenuTree li ul {
+  margin-left: 14px;
 }
 .bwMenuTree li.selected {
   font-weight: bold;
@@ -305,11 +315,27 @@ label {
 .bwMenuTree .menuTreeToggle {
   display: block;
   float: left;
+  margin-right: 2px;
   width: 10px;
   height: 10px;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
+}
+.caret {
+  border-left: 4px solid rgba(0, 0, 0, 0);
+  border-right: 4px solid rgba(0, 0, 0, 0);
+  border-top: 4px solid;
+  height: 0;
+  width: 0;
+  display: inline-block;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+.caret-right {
+  border-top: 4px solid rgba(0, 0, 0, 0);
+  border-bottom: 4px solid rgba(0, 0, 0, 0);
+  border-left: 4px solid;
 }
 
 /* VIEWS LISTING */
@@ -367,17 +393,27 @@ a#nextViewPeriod {
   padding: 0 8px 4px 8px;
   margin: 0 1px 0 0;
 }
+#expSubLinksList {
+  margin: -3em 0 0 0;
+  cursor: pointer;
+  float: right;
+}
 ul#calDisplayOptions {
   float: right;
-  margin: 26px 0 0 0;
+  cursor: pointer;
+  margin: 0;
 }
 ul#calDisplayOptions li {
   float: left;
   list-style: none;
-  margin: 0 .7em;
+  margin: 0 0.5em 0 0;
 }
+#calDisplayOptions li:first-child {
+   border-right: 1px solid #bbb;
+   padding-right: 0.5em;
+ }
 ul#calDisplayOptions li a {
-  margin: 0 0 0 -3px;
+  margin: 0;
   text-decoration: none;
 }
 
@@ -396,11 +432,23 @@ ul#calDisplayOptions li a {
   padding: 0.5em;
   background-color: #f5f5f5;
 }
-#listEvents li:nth-child(2n) {
+#listEvents li.even {
+  /* don't use nth-child(2n) here - an option date row can be included
+     in the listing */
   background-color: #fff;
+}
+#listEvents li.bwDateRow {
+  background-color: #E6EDF7;
+  margin: 0;
 }
 #listEvents .eventListContent {
   margin-left: 0;
+  cursor: pointer;
+}
+.clickedEvent {
+  /* briefly displayed when an listed event is clicked or touched.
+     both eventList and eventListRange (day/week/month) */
+  background-color: #E8F0FF !important;
 }
 #listEvents .bwSummary {
   font-weight: bold;
@@ -415,9 +463,10 @@ ul#calDisplayOptions li a {
 #bwStartDateContainer {
   margin: -4px 0 14px 0;
 }
-#calFilterContainer {
+.calFilterContainer {
   margin: 0;
   padding: 0;
+  display: none; /* default */
 }
 #centerColumn .eventFilterInfo {
   background-color: #eee;
@@ -441,7 +490,6 @@ ul#calDisplayOptions li a {
   clear: left;
   margin-top: 2em;
 }
-
 
 /* DAY, WEEK, MONTH EVENTS LIST */
 table.eventList {
@@ -472,6 +520,7 @@ table.eventList tr td.icons {
 }
 .icons {
   float: right;
+  z-index: 20;
 }
 .icons a {
   padding: 2px;
@@ -524,9 +573,172 @@ div.groupDesc {
   padding: .3em 0 .1em 5em;
 }
 
+/* CALENDAR GRID */
+#gridCalendarTable {
+  width: 100%;
+  font-size: 0.9em;
+  margin: 0px;
+  padding: 0px;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+}
+#gridCalendarTable th.dayHeading {
+  width: 14%;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #596F9E;
+  color: #eee;
+  border: 1px solid #aaa;
+}
+#gridCalendarTable td {
+  width: 14%;
+  height: 60px;
+  vertical-align: top;
+  text-align: left;
+  padding: 0em;
+  border: 1px solid #aaa;
+  background-color: white;
+  color: black;
+}
+#gridCalendarTable td.filler {
+  border: none;
+  background-color: #eee;
+  color: black;
+}
+#gridCalendarTable ul {
+  font-size: 0.8em;
+  list-style : none;
+  margin: 0em;
+  padding: 0.3em 0em 0em 0em;
+}
+#gridCalendarTable ul li {
+  margin: 0em;
+  padding: 0em;
+  display: inline;
+}
+#gridCalendarTable a {
+  display: block;
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  text-decoration: none;
+}
+#gridCalendarTable a.eventLinkA:link,
+#gridCalendarTable a.eventLinkA:visited  {
+  background-color: #CCD7F5;
+  color: black;
+}
+#gridCalendarTable a.eventLinkB:link,
+#gridCalendarTable a.eventLinkB:visited {
+  background-color: #EBF0FF;
+  color: black;
+}
+#gridCalendarTable a.eventCancelled:link,
+#gridCalendarTable a.eventCancelled:visited {
+  background-color: #ccc;
+  border-bottom: 1px solid #bbb;
+  color: black;
+}
+#gridCalendarTable a.eventTentative:link,
+#gridCalendarTable a.eventTentative:visited  {
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  background: #eee url("../images/tentativeLines.gif") top;
+  color: black;
+}
+/* example of specialized coloring: */
+#gridCalendarTable a.holiday:link,
+#gridCalendarTable a.holiday:visited  {
+  background-color: #fff;
+  color: black;
+}
+#gridCalendarTable a:hover,
+#gridCalendarTable a:active  {
+  color: black !important;
+  background-color: #ddd !important;
+}
+#gridCalendarTable a.dayLink {
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+}
+#gridCalendarTable a:hover.dayLink {
+  text-decoration: none;
+  color: #eee;
+  background-color: black;
+}
+#gridCalendarTable a:hover {
+  /* required for eventTip to hover correctly;
+     apply only to the hover pseudo class, or
+     the other anchors nearby will cover the eventTip in IE */
+  position: relative;
+}
+#gridCalendarTable a span.eventTip,
+#gridCalendarTable a span.eventTipReverse {
+  display: none;
+}
+#gridCalendarTable a:hover span.eventTip {
+  display: block;
+  position: absolute;
+  width: 20em;
+  top: 1em;
+  left: 12em;
+  background-color: #ffe;
+  color: black;
+  padding: 4px;
+  border: 1px solid #333;
+}
+#gridCalendarTable a:hover span.eventTipReverse {
+  display: block;
+  position: absolute;
+  width: 20em;
+  top: 1em;
+  left: -21em;
+  background-color: #ffe;
+  color: black;
+  padding: 4px;
+  border: 1px solid #333;
+}
+#gridCalendarTable a:hover span.eventTipStatusCancelled {
+  display: block;
+  color: white;
+  background-color: #333;
+  padding: 2px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+#gridCalendarTable a:hover span.eventTipStatusTentative {
+  display: block;
+  color: black;
+  background: #eee url('../../images/tentativeLines.gif') top;
+  padding: 2px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+#gridCalendarTable td.today,
+#yearCalendarTable td.today {
+  background-color: #ffb;
+  color: black;
+}
+
 /* ONGOING EVENTS */
 #ongoing {
   float: right;
+}
+#ongoing.ongoingForGrid {
+  display: none; /* just hide for now */
+}
+#ongoing h3.bwEventsTitle {
+  text-transform: uppercase;
+  font-size: 1.2em;
+  letter-spacing: normal;
+}
+#ongoing .bwEventList {
+  display: block;
+}
+#ongoing .caret {
+  display: none;
 }
 #ongoing ul {
   list-style: none;
@@ -629,6 +841,11 @@ div.yearMonthRow {
   clear: both;
   padding: 1.5em 0;
 }
+#bwRegistrationBox iframe {
+  border: none;
+  margin-top: 1em;
+}
+
 /* FOOTER */
 #footer {
   clear: both;
@@ -654,4 +871,10 @@ div.yearMonthRow {
   width: 16px;
   height: 16px;
   background: url("../images/share-icon-16x16.png") no-repeat transparent;
+}
+
+/* All Calendars */
+.calendarList {
+  float: left;
+  width: 50%;
 }

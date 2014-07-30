@@ -26,4 +26,7 @@
        Don't change this value unless you know what you're doing. -->
   <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/browserResourceRoot"/>/themes/bedeworkAdminTheme</xsl:variable>
 
+  <!-- Size of results returned from a search.  Upper limit is 250. -->
+  <xsl:variable name="searchResultSize">20</xsl:variable>
+
 </xsl:stylesheet>

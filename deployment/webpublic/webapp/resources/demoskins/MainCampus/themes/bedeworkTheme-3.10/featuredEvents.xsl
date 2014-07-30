@@ -36,10 +36,12 @@
         </xsl:if>
         <!-- The featured events triptych can be managed from within the admin client by adding the contents of FeaturedEvent.xml
              as a resource in the calendar suite.  The URL of the resource is referenced as follows:  -->
-        <!-- xsl:apply-templates select="document('/pubcaldav/user/agrp_calsuite-MainCampus/.csResources/FeaturedEvents')/featuredEvents"/-->
+        <xsl:apply-templates select="document('/pubcaldav/user/agrp_calsuite-MainCampus/.csResources/FeaturedEvents')/featuredEvents"/>
 
         <!-- If you prefer to reference the static XML document found in the theme, use the following instead. -->
-        <xsl:apply-templates select="document('../../themes/bedeworkTheme-3.10/featured/FeaturedEvent.xml')/featuredEvents"/>
+        <!--<xsl:apply-templates select="document('../../themes/bedeworkTheme-3.10/featured/FeaturedEvent.xml')/featuredEvents"/>-->
+
+        <xsl:text> </xsl:text><!-- this must remain, in the event that the content is empty -->
       </div>
     </xsl:if>
   </xsl:template>
@@ -72,27 +74,19 @@
     <xsl:variable name="imgPrefix"><xsl:choose><xsl:when test="not(starts-with(name,'http') or starts-with(name,'/'))"><xsl:value-of select="$resourcesRoot"/>/featured/</xsl:when></xsl:choose></xsl:variable>
     <xsl:choose>
       <xsl:when test="link = '' or $isGeneric = 'true'">
-        <img class="img-responsive"><!-- width="241" height="189" - pulled for responsive design -->
+        <img class="img-responsive"><!-- original dimensions width="241" height="189" - not included for responsive design -->
           <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="name"/></xsl:attribute>
           <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
-          <!--
-          <xsl:if test="$singleMode = 'true'">
-            <xsl:attribute name="width">725</xsl:attribute>
-          </xsl:if>
-          -->
+          <xsl:if test="$singleMode = 'true'"><xsl:attribute name="class">img-responsive singleFeatureMode</xsl:attribute></xsl:if>
         </img>
       </xsl:when>
       <xsl:otherwise>
         <a>
           <xsl:attribute name="href"><xsl:value-of select="link"/></xsl:attribute>
-          <img class="img-responsive"><!-- width="241" height="189" - pulled for responsive design -->
+          <img class="img-responsive"><!-- original dimensions width="241" height="189" - not included for responsive design -->
             <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="name"/></xsl:attribute>
             <xsl:attribute name="alt"><xsl:value-of select="toolTip"/></xsl:attribute>
-            <!--
-            <xsl:if test="$singleMode = 'true'">
-	            <xsl:attribute name="width">725</xsl:attribute>
-	          </xsl:if>
-	          -->
+            <xsl:if test="$singleMode = 'true'"><xsl:attribute name="class">img-responsive singleFeatureMode</xsl:attribute></xsl:if>
           </img>
         </a>
       </xsl:otherwise>

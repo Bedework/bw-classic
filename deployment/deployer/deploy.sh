@@ -26,6 +26,6 @@ RUNCMDPREFIX="$JAVA_HOME/bin/java -cp $cp "
 
 RUNCMD="$RUNCMDPREFIX edu.rpi.sss.util.deployment.ProcessEars $*"
 
-echo "$RUNCMD"
+# echo "$RUNCMD"
 
 $RUNCMD

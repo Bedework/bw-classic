@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -46,15 +46,6 @@
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if><a href="{$setViewPeriod}&amp;viewType=yearView&amp;date={$curdate}"><xsl:copy-of select="$bwStr-Tabs-Year"/></a>
         </li>
-        <!-- hide the list view.  It's intended primarily for data feeds and causes some
-             confusion when presented in the web client.  -->
-        <!--
-        <li>
-          <xsl:if test="/bedework/page='eventList'">
-            <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-List"/></a>
-        </li>
-        -->
       </ul>
     </div>
   </xsl:template>
@@ -81,7 +72,8 @@
           </xsl:choose>
         </td>
         <td class="todayButton">
-          <button type="button" onclick="window.location='{$setViewPeriod}&amp;viewType=todayView&amp;date={$curdate}'">
+          <xsl:variable name="nowDate" select="/bedework/now/date"/>
+          <button type="button" onclick="location.href='{$setViewPeriod}&amp;date={$nowDate}'">
             <xsl:value-of select="$bwStr-Navi-Today"/>
           </button>
         </td>
@@ -91,54 +83,43 @@
               <tr>
                 <xsl:if test="/bedework/periodname!='Year'">
                   <td>
-                    <select name="viewStartDate.month">
-                      <xsl:for-each select="/bedework/monthvalues/val">
-                        <xsl:variable name="temp" select="."/>
+                    <select name="viewStartDate.month" onchange="this.form.submit()">
+                      <xsl:for-each select="/bedework/monthlabels/val">
                         <xsl:variable name="pos" select="position()"/>
-                        <xsl:choose>
-                          <xsl:when test="/bedework/monthvalues[start=$temp]">
-                            <option value="{$temp}" selected="selected">
-                              <xsl:value-of select="/bedework/monthlabels/val[position()=$pos]"/>
-                            </option>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <option value="{$temp}">
-                              <xsl:value-of select="/bedework/monthlabels/val[position()=$pos]"/>
-                            </option>
-                          </xsl:otherwise>
-                        </xsl:choose>
+                        <option>
+                          <xsl:if test="substring(/bedework/currentdate/monthname,1,3) = ."><!-- i18n?? -->
+                            <xsl:attribute name="selected">selected</xsl:attribute>
+                          </xsl:if>
+                          <xsl:attribute name="value"><xsl:value-of select="/bedework/monthvalues/val[position()=$pos]"/></xsl:attribute>
+                          <xsl:value-of select="."/>
+                        </option>
                       </xsl:for-each>
                     </select>
                   </td>
                   <xsl:if test="/bedework/periodname!='Month'">
                     <td>
-                      <select name="viewStartDate.day">
+                      <select name="viewStartDate.day" onchange="this.form.submit()">
                         <xsl:for-each select="/bedework/dayvalues/val">
-                          <xsl:variable name="temp" select="."/>
                           <xsl:variable name="pos" select="position()"/>
-                          <xsl:choose>
-                            <xsl:when test="/bedework/dayvalues[start=$temp]">
-                              <option value="{$temp}" selected="selected">
-                                <xsl:value-of select="/bedework/daylabels/val[position()=$pos]"/>
-                              </option>
-                            </xsl:when>
-                            <xsl:otherwise>
-                              <option value="{$temp}">
-                                <xsl:value-of select="/bedework/daylabels/val[position()=$pos]"/>
-                              </option>
-                            </xsl:otherwise>
-                          </xsl:choose>
+                          <option>
+                            <xsl:if test="substring-before(substring-after(/bedework/currentdate/shortdate,'/'),'/') = .">
+                              <xsl:attribute name="selected">selected</xsl:attribute>
+                            </xsl:if>
+                            <xsl:attribute name="value"><xsl:value-of select="."/></xsl:attribute>
+                            <xsl:value-of select="."/>
+                          </option>
                         </xsl:for-each>
                       </select>
                     </td>
                   </xsl:if>
                 </xsl:if>
                 <td>
-                  <xsl:variable name="temp" select="/bedework/yearvalues/start"/>
-                  <input type="text" name="viewStartDate.year" maxlength="4" size="4" value="{$temp}"/>
+                  <input type="text" name="viewStartDate.year" maxlength="4" size="4">
+                    <xsl:attribute name="value"><xsl:value-of select="substring(/bedework/currentdate/date,1,4)"/></xsl:attribute>
+                  </input>
                 </td>
                 <td>
-                  <input name="submit" type="submit" value="{$bwStr-Navi-Go}"/>
+                  <input name="dateSubmit" type="submit" value="{$bwStr-Navi-Go}"/>
                 </td>
               </tr>
             </table>
@@ -155,7 +136,7 @@
        <tr>
          <td class="leftCell">
            <xsl:choose>
-             <xsl:when test="/bedework/selectionState/selectionType = 'collections'">
+             <xsl:when test="/bedework/selectionState/selectionType = 'collections' or /bedework/appvar[key='curCollection']/value != ''">
                <xsl:copy-of select="$bwStr-SrcB-Calendar"/>
                <xsl:text> </xsl:text>
                <strong>
@@ -169,18 +150,24 @@
                <xsl:copy-of select="$bwStr-SrcB-CurrentSearch"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/search"/>
              </xsl:when>
              <xsl:otherwise><!-- view -->
-               <xsl:copy-of select="$bwStr-SrcB-View"/>
+               <xsl:copy-of select="$bwStr-SrcB-View"/><xsl:text> </xsl:text>
                <form name="selectViewForm" method="post" action="{$setSelection}">
-                <select name="viewName" onchange="submit()" >
+                <select name="viewName" onchange="displayView('{$setSelection}',this.value)" >
                   <xsl:if test="/bedework/page = 'eventList'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                  <option>please select...</option>
                   <xsl:for-each select="/bedework/views/view">
-                    <xsl:variable name="name" select="name"/>
                     <xsl:choose>
-                      <xsl:when test="name=/bedework/selectionState/view/name">
-                        <option value="{$name}" selected="selected"><xsl:value-of select="name"/></option>
+                      <xsl:when test="name=/bedework/selectionState/view/name or name=/bedework/appvar[key='curView']/value">
+                        <option selected="selected">
+                          <xsl:attribute name="value"><xsl:value-of select="name"/></xsl:attribute>
+                          <xsl:value-of select="name"/>
+                        </option>
                       </xsl:when>
                       <xsl:otherwise>
-                        <option value="{$name}"><xsl:value-of select="name"/></option>
+                        <option>
+                          <xsl:attribute name="value"><xsl:value-of select="name"/></xsl:attribute>
+                          <xsl:value-of select="name"/>
+                        </option>
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:for-each>
@@ -188,13 +175,19 @@
               </form>
              </xsl:otherwise>
            </xsl:choose>
-           <span class="link"><a href="{$setSelection}"><xsl:copy-of select="$bwStr-SrcB-DefaultView"/></a> | <a href="{$fetchPublicCalendars}"><xsl:copy-of select="$bwStr-SrcB-AllCalendars"/></a></span>
+           <span class="link">
+             <xsl:if test="/bedework/selectionState/selectionType = 'collections' or /bedework/appvar[key='curCollection']/value != ''">
+               <a href="{$setSelection}&amp;setappvar=curCollection()"><xsl:copy-of select="$bwStr-SrcB-Clear"/></a> |
+             </xsl:if>
+             <a href="{$fetchPublicCalendars}"><xsl:copy-of select="$bwStr-SrcB-AllCalendars"/></a>
+           </span>
          </td>
          <td class="rightCell">
             <xsl:if test="/bedework/page!='searchResult'">
               <form name="searchForm" id="searchForm" method="post" action="{$search}">
                 <xsl:copy-of select="$bwStr-SrcB-Search"/>
-                <input type="text" name="query" size="15">
+                <xsl:text> </xsl:text>
+                <input type="text" name="query" size="27">
                   <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
                 </input>
                 <input type="submit" name="submit" value="{$bwStr-SrcB-Go}"/>
@@ -283,14 +276,6 @@
                 </xsl:choose>
               </xsl:otherwise>
             </xsl:choose>
-            <!--
-            <a href="{$setup}">
-              <xsl:if test="/bedework/page='eventList'">
-                <xsl:attribute name="href"><xsl:value-of select="$listEvents"/></xsl:attribute>
-              </xsl:if>
-              <img src="{$resourcesRoot}/images/std-button-refresh.gif" width="70" height="21" border="0" alt="refresh view"/>
-            </a>
-            -->
           </td>
        </tr>
     </table>

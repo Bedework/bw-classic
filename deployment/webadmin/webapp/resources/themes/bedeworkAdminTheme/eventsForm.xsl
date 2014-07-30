@@ -1403,26 +1403,28 @@
             <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE'] or form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
               <xsl:variable name="imgPrefix">
                 <xsl:choose>
-                  <xsl:when test="starts-with(form/xproperties/node()[name()='X-BEDEWORK-IMAGE'],'http')"></xsl:when>
+                  <xsl:when test="starts-with(form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text,'http') or
+                                  starts-with(form/xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text,'https')"></xsl:when>
                   <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <xsl:variable name="imgThumbPrefix">
                 <xsl:choose>
-                  <xsl:when test="starts-with(form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE'],'http')"></xsl:when>
+                  <xsl:when test="starts-with(form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']/values/text,'http') or
+                                  starts-with(form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']/values/text,'https')"></xsl:when>
                   <xsl:otherwise><xsl:value-of select="$bwEventImagePrefix"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <div id="eventFormImage">
                 <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']">
-                  <img>
-                    <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-IMAGE']"/></xsl:attribute>
+                  <img class="fullImage">
+                    <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-IMAGE'])"/></xsl:attribute>
                     <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
                   </img>
                 </xsl:if>
                 <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']">
-                  <img>
-                    <xsl:attribute name="src"><xsl:value-of select="$imgThumbPrefix"/><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE']"/></xsl:attribute>
+                  <img class="thumbImage">
+                    <xsl:attribute name="src"><xsl:value-of select="$imgThumbPrefix"/><xsl:value-of select="normalize-space(form/xproperties/node()[name()='X-BEDEWORK-THUMB-IMAGE'])"/></xsl:attribute>
                     <xsl:attribute name="alt"><xsl:value-of select="form/title/input/@value"/></xsl:attribute>
                   </img>
                 </xsl:if>
@@ -1666,7 +1668,7 @@
         </xsl:if>
 
         <!-- Registration settings --><!-- Display and use only if we've set an event reg admin token in the admin web client's system parameters -->
-        <xsl:if test="eventregAdminToken != ''">
+        <xsl:if test="eventRegAdminToken != ''">
           <tr class="optional">
             <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
             <td class="fieldName"><xsl:copy-of select="$bwStr-AEEF-Registration"/></td>
@@ -1805,8 +1807,8 @@
                 </xsl:if>
                 <xsl:if test="/bedework/creating = 'false'">
                   <p>
-                    <xsl:variable name="registrationsHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/adminAgenda.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
-                    <xsl:variable name="registrationsDownloadHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/download.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventregAdminToken"/></xsl:variable>
+                    <xsl:variable name="registrationsHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/adminAgenda.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventRegAdminToken"/></xsl:variable>
+                    <xsl:variable name="registrationsDownloadHref"><xsl:value-of select="$bwRegistrationRoot"/>/admin/download.do?href=<xsl:value-of select="form/calendar/event/encodedPath"/>/<xsl:value-of select="name"/>&amp;atkn=<xsl:value-of select="eventRegAdminToken"/></xsl:variable>
                     <button onclick="launchSizedWindow('{$registrationsHref}', '1000', '600');return false;"><xsl:copy-of select="$bwStr-AEEF-ViewRegistrations"/></button>
                     <xsl:text> </xsl:text>
                     <!--<button onclick="location.href='{$registrationsDownloadHref}';return false;"><xsl:copy-of select="$bwStr-AEEF-DownloadRegistrations"/></button>-->
@@ -2084,13 +2086,13 @@
     <xsl:param name="eventUrlPrefix"/>
     <xsl:param name="canEdit"/>
 
-    <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="eventTitle"/></xsl:call-template></xsl:variable>
+    <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="$eventTitle"/></xsl:call-template></xsl:variable>
     <div class="submitBox">
       <xsl:choose>
         <!-- xsl:when test="starts-with(form/calendar/event/path,$submissionsRootUnencoded)"-->
         <xsl:when test="/bedework/page = 'modEventPending'">
           <div class="right">
-            <input type="submit" name="delete" value="{$bwStr-SEBu-DeleteEvent}"/>
+            <input type="submit" name="delete" value="{$bwStr-SEBu-DeleteEvent}" class="noFocus"/>
           </div>
           <!-- no need for a publish box in the single calendar model unless we have more than one calendar; -->
           <xsl:choose>
@@ -2123,7 +2125,7 @@
                     </option>
                   </xsl:for-each>
                 </select>
-                <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}">
+                <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}" class="noFocus">
                   <xsl:attribute name="onclick">doPublishEvent(this.form.newCalPath.value,"<xsl:value-of select="$escapedTitle"/>","<xsl:value-of select="$eventUrlPrefix"/>",this.form);changeClass('publishBox','invisible');</xsl:attribute>
                 </input>
                 <xsl:if test="$portalFriendly = 'false'">
@@ -2133,26 +2135,26 @@
                   </span>
                 </xsl:if>
               </div>
-              <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-UpdateEvent}"/>
-              <input type="button" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}" onclick="changeClass('publishBox','visible')"/>
-              <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}"/>
+              <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-UpdateEvent}" class="noFocus"/>
+              <input type="button" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}" onclick="changeClass('publishBox','visible')" class="noFocus"/>
+              <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}" class="noFocus"/>
             </xsl:when>
             <xsl:otherwise>
               <!-- we are using the single calendar model for public events -->
-              <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-UpdateEvent}"/>
-              <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}">
+              <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-UpdateEvent}" class="noFocus"/>
+              <input type="submit" name="publishEvent" value="{$bwStr-SEBu-PublishEvent}" class="noFocus">
                 <xsl:attribute name="onclick">doPublishEvent("<xsl:value-of select="form/calendar/all/select/option/@value"/>","<xsl:value-of select="$escapedTitle"/>","<xsl:value-of select="$eventUrlPrefix"/>",this.form);</xsl:attribute>
               </input>
-              <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}"/>
+              <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}" class="noFocus"/>
             </xsl:otherwise>
           </xsl:choose>
           <span class="claimButtons">
             <xsl:choose>
               <xsl:when test="form/xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT/values/text = /bedework/userInfo/group">
-                <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-ReleaseEvent}" onclick="releasePendingEvent();"/>
+                <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-ReleaseEvent}" onclick="releasePendingEvent();" class="noFocus"/>
               </xsl:when>
               <xsl:otherwise>
-                <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-ClaimEvent}">
+                <input type="submit" name="updateSubmitEvent" value="{$bwStr-SEBu-ClaimEvent}" class="noFocus">
                   <xsl:attribute name="onclick">claimPendingEvent('<xsl:value-of select="/bedework/userInfo/group"/>','<xsl:value-of select="/bedework/userInfo/currentUser"/>');</xsl:attribute>
                 </input>
               </xsl:otherwise>
@@ -2162,23 +2164,22 @@
         <xsl:otherwise>
           <xsl:choose>
             <xsl:when test="/bedework/creating='true'">
-              <input type="submit" name="addEvent" value="{$bwStr-SEBu-AddEvent}"/>
-              <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}"/>
+              <input type="submit" name="addEvent" value="{$bwStr-SEBu-AddEvent}" class="noFocus"/>
+              <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}" class="noFocus"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:if test="$canEdit = 'true'">
                 <div class="right">
-                  <input type="submit" name="delete" value="{$bwStr-SEBu-DeleteEvent}"/>
+                  <input type="submit" name="delete" value="{$bwStr-SEBu-DeleteEvent}" class="noFocus"/>
                 </div>
               </xsl:if>
-              <input type="submit" name="updateEvent" value="{$bwStr-SEBu-UpdateEvent}"/>
+              <input type="submit" name="updateEvent" value="{$bwStr-SEBu-UpdateEvent}" class="noFocus"/>
               <xsl:if test="form/recurringEntity != 'true' and recurrenceId = '' and $canEdit = 'true'">
                 <!-- cannot duplicate recurring events for now -->
-                <input type="submit" name="copy" value="{$bwStr-SEBu-CopyEvent}"/>
+                <input type="submit" name="copy" value="{$bwStr-SEBu-CopyEvent}" class="noFocus"/>
               </xsl:if>
-              <input type="button" name="returnToList"
-                     value="{$bwStr-SEBu-ReturnToList}"
-                     onclick="location.href='{$event-initUpdateEvent}'"/>
+              <xsl:variable name="backToListLink">location.href='<xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="/bedework/currentdate/date"/>&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))&amp;sort=dtstart.utc:asc'</xsl:variable>
+              <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="{$backToListLink}" class="noFocus"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:otherwise>

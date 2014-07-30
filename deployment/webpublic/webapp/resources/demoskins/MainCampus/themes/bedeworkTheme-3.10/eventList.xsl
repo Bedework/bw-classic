@@ -34,33 +34,22 @@
         <!--<xsl:copy-of select="$bwStr-LsEv-Starting"/><xsl:text> </xsl:text>-->
         <span id="bwStartDate"><xsl:value-of select="/bedework/currentdate/longdate"/></span>
       </h2>
+
+      <a href="#exportSubscribePopup" id="expSubLinksList" class="rss" title="{$bwStr-HdBr-ExportSubscribe}">
+        <xsl:copy-of select="$bwStr-HdBr-ExportSubscribe"/><xsl:text> </xsl:text>
+        <img src="{$resourcesRoot}/images/feed-icon-14x14.png" alt="{$bwStr-HdBr-ExportSubscribe}" />
+      </a>
+      <xsl:call-template name="exportSubscribeJavascript">
+        <xsl:with-param name="id">expSubLinksList</xsl:with-param>
+      </xsl:call-template>
+
     </div>
 
     <div id="bwResultSize">
       <xsl:text> </xsl:text>
     </div>
 
-    <div id="bwQueryContainer">
-      <xsl:text> </xsl:text><!-- keep this here to avoid self-closing of the tag if empty -->
-      <xsl:if test="/bedework/appvar[key='bwQuery']">
-        <!-- The page has been reloaded, and we have a search query. -->
-        <div id="bwQuery" class="eventFilterInfo">
-          <xsl:copy-of select="$bwStr-LsEv-Search"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/appvar[key='bwQuery']/value"/>
-          <xsl:text> </xsl:text>
-          <a id="bwClearQuery" href="javascript:bwClearSearch();"><xsl:copy-of select="$bwStr-LsEv-ClearSearch"/></a>
-        </div>
-      </xsl:if>
-    </div>
-
-    <div id="calFilterContainer">
-      <xsl:text> </xsl:text><!-- keep this here to avoid self-closing of the tag if empty -->
-      <xsl:if test="/bedework/appvar[key='bwFilters']">
-        <!-- The page has been reloaded, and we have multiple nav items selected -->
-        <div id="bwFilterList" class="eventFilterInfo">
-          <xsl:text> </xsl:text>
-        </div>
-      </xsl:if>
-    </div>
+    <xsl:call-template name="queryFilterDisplay"/>
 
     <div id="listEvents"><xsl:text> </xsl:text></div>
 
@@ -75,6 +64,11 @@
 
     <div id="loadMoreEventsLink">
       <a href="javascript:bwMainEventList.appendEvents();" class="button">Load more events</a>
+    </div>
+
+    <!-- Subscribe/Export Form Popup -->
+    <div id="exportSubscribePopup" class="mfp-hide">
+      <xsl:call-template name="exportSubscribe"/>
     </div>
 
   </xsl:template>

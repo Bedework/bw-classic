@@ -54,6 +54,6 @@
 
   <!-- DEFAULT THEME NAME -->
   <!-- to change the default theme, change this include -->
-  <xsl:include href="../../themes/bedeworkTheme/bedework.xsl" />
+  <xsl:include href="../../themes/bedeworkTheme-3.10/bedework.xsl" />
 
 </xsl:stylesheet>

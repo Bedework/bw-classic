@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,9 +7,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -63,6 +63,7 @@
   <xsl:variable name="bwStr-Tabs-Year">JAHR</xsl:variable>
   <xsl:variable name="bwStr-Tabs-List">LISTE</xsl:variable>
   <xsl:variable name="bwStr-Tabs-Agenda">AGENDA</xsl:variable>
+  <xsl:variable name="bwStr-Tabs-Upcoming">AKTUELLE</xsl:variable>
 
   <!--  xsl:template name="navigation" -->
   <xsl:variable name="bwStr-Navi-WeekOf">Woche ab</xsl:variable>
@@ -123,9 +124,10 @@
   <xsl:variable name="bwStr-EvLn-DeleteInstance">Eintrag l&#246;schen (wiederkehrende Veranstaltung)</xsl:variable>
   <xsl:variable name="bwStr-EvLn-Delete">L&#246;schen</xsl:variable>
   <xsl:variable name="bwStr-EvLn-AddEventReference">Veranstaltung hinzuf&#252;gen als Verweis auf einen Kalender</xsl:variable>
-  
+
 
   <!-- xsl:template match="events" mode="eventList" -->
+  <xsl:variable name="bwStr-LsEv-Upcoming">Aktuelle Veranstaltungen</xsl:variable>
   <xsl:variable name="bwStr-LsEv-Next7Days">N&#228;chsten 7 Tage</xsl:variable>
   <xsl:variable name="bwStr-LsEv-NoEventsToDisplay">Keine Veranstaltung darstellbar</xsl:variable>
   <xsl:variable name="bwStr-LsEv-DownloadEvent">Veranstaltung herunterladen als ical - z.B. f&#252;r Outlook, PDAs, iCal oder andere Arbeitsplatz-Kalender</xsl:variable>
@@ -453,13 +455,13 @@
   <xsl:variable name="bwStr-Cloc-Switch">umschalten</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Close">schliessen</xsl:variable>
   <xsl:variable name="bwStr-Cloc-CloseClock">Uhr schliessenk</xsl:variable>
-  
+
   <!-- xsl:template name="newclock" -->
   <xsl:variable name="bwStr-Cloc-Hour">Stunde</xsl:variable>
   <xsl:variable name="bwStr-Cloc-Minute">Minute</xsl:variable>
   <xsl:variable name="bwStr-Cloc-AM">am</xsl:variable>
   <xsl:variable name="bwStr-Cloc-PM">pm</xsl:variable>
-  
+
   <!-- xsl:template name="attendees" -->
   <xsl:variable name="bwStr-Atnd-Continue">weiter</xsl:variable>
   <xsl:variable name="bwStr-Atnd-SchedulMeetingOrTask">Ansetzen Sitzung oder Aufgabe</xsl:variable>
@@ -518,7 +520,7 @@
   <xsl:variable name="bwStr-AEEF-DefaultCalendar">Standardkalender</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Cancel">Abbrechen</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Continue">Weiter</xsl:variable>
-  
+
   <!-- xsl:template match="freebusy" mode="freeBusyPage" -->
   <xsl:variable name="bwStr-FrBu-YouMayShareYourFreeBusy">Sie k&#246;nnen ihre Frei/Gebucht Informationen f&#252;r einzelnen Benutzer oder Gruppen freigeben indem sie das Zugriffsrecht "read freebusy" auf einzelne Kalender entsprechend eintragen. Um ihre Frei/Gebucht Informationen generell freizugeben richten sie das Zugriffsrecht "read freebusy" auf ihren Startordner ein.</xsl:variable>
   <xsl:variable name="bwStr-FrBu-FreeBusy">Frei / Gebucht</xsl:variable>
@@ -585,7 +587,7 @@
   <xsl:variable name="bwStr-SCPA-Close">schliessen</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="selectCalForPublicAliasCalTree" -->
-  
+
   <!--  xsl:template match="currentCalendar" mode="addCalendar" -->
   <xsl:variable name="bwStr-CuCa-AddCalOrFolder">Hinzuf&#252;gen Kalender oder Ordner</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AddSubscription">Hinzuf&#252;gen Abonnement</xsl:variable>
@@ -660,7 +662,7 @@
   <xsl:variable name="bwStr-CuCa-CurrentAccess">Aktuelle Zugriffsrechte:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-AccessNote"><p><strong>Anmerkung:</strong> Advanced access controls can break standard sharing.</p><p>Wenn sie f&#252;r einen anderen Benutzer Vollzugriff auf einen Kalender gew&#228;hren und sie wollen die vom anderen Benutzer in ihren Kalender eingetragenen Termine bearbeiten k&#246;nnen,<strong>dann m&#252;ssen sie sich selber ebenfalls Vollzugriff auf ihren eigenen Kalender eintragen.</strong> Tragen sie bitte ihre eigenen Benutzerkennung als Benutzer im Feld "Who" ein und w&#228;hlen sie "All" aus im Feld "Rights". Dies liegt an der Standard Rechteverwaltung. Der genaue Grund wieso sie Eintr&#228;ge von anderen Benutzern in ihrem eigenen (freigegebenen) Kalender sonst nicht sehen k&#246;nnen liegt darin, dass Eintr&#228;ge von zu Veranstaltungen immer mit dem Zugriffsrecht "owner" (Eigner) versehen ist und somit in ihrem Kalender auch die Eintr&#228;ge der anderen Benutzer auch den anderen Benutzern geh&#246;ren.</p></xsl:variable>
   <xsl:variable name="bwStr-CuCa-WriteAccess">grant write access</xsl:variable>
-  
+
   <!-- notifications.xsl -->
   <xsl:variable name="bwStr-Notif-SharingInvitation">Sharing Invitation</xsl:variable>
   <xsl:variable name="bwStr-Notif-SharingReply">Sharing Reply</xsl:variable>
@@ -830,7 +832,7 @@
   <xsl:variable name="bwStr-EmOp-Subject">Betreff:</xsl:variable>
   <xsl:variable name="bwStr-EmOp-Continue">Weiter</xsl:variable>
   <xsl:variable name="bwStr-EmOp-Cancel">Abbrechen</xsl:variable>
-  
+
   <!--  xsl:template name="locationList" -->
   <xsl:variable name="bwStr-LocL-ManagePreferences">Verwaltung Voreinstellungen</xsl:variable>
   <xsl:variable name="bwStr-LocL-General">generell</xsl:variable>
@@ -883,7 +885,7 @@
   <xsl:variable name="bwStr-Inbx-Email">Email</xsl:variable>
   <xsl:variable name="bwStr-Inbx-Download">Herunterladen</xsl:variable>
   <xsl:variable name="bwStr-Inbx-Delete">L&#246;schen</xsl:variable>
-  
+
   <!--  xsl:template match="outbox" -->
   <xsl:variable name="bwStr-Oubx-Outbox">Ausgang</xsl:variable>
   <xsl:variable name="bwStr-Oubx-Sent">Senden</xsl:variable>

@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,7 +20,7 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <!--==== ADD EVENT ====-->
   <xsl:template match="formElements" mode="addEvent">
   <!-- The name "eventForm" is referenced by several javascript functions. Do not
@@ -211,14 +211,14 @@
           </a>
         </li>-->
       </ul>
-      
+
 
     <!-- Basic tab -->
     <!-- ============== -->
     <!-- this tab is visible by default -->
     <div id="bwEventTab-Basic">
       <table cellspacing="0" class="common dottedBorder">
-      
+
         <!--  Calendar  -->
         <xsl:choose>
           <xsl:when test="count(form/calendars/select/option) = 1">
@@ -228,34 +228,34 @@
           </xsl:when>
           <xsl:otherwise>
             <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-AEEF-Calendar"/><xsl:text> </xsl:text>
-          </td>
-          <td class="fieldval">
-              <input type="hidden" name="newCalPath" id="bwNewCalPathField">
-                <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
-              </input>
-              <span id="bwEventCalDisplay">
-                <xsl:choose>
-                  <xsl:when test="/bedework/creating = 'true'"><!-- display nothing --></xsl:when>
-		              <xsl:when test="not(starts-with(form/calendar/path,/bedework/myCalendars/calendars/calendar/path))">
-		                <!-- this event comes from a subscription / shared calendar; look up and display the local name -->
-		                <xsl:variable name="remotePath"><xsl:value-of select="form/calendar/path"/></xsl:variable>
-		                <strong><xsl:value-of select="/bedework/myCalendars/calendars//calendar[substring-after(aliasUri,'bwcal://')=$remotePath]/summary"/></strong>
-		                <br/><em>(<xsl:value-of select="$remotePath"/>)</em>
-		              </xsl:when>
-		              <xsl:otherwise>
-		                <strong><xsl:value-of select="form/calendar/summary"/></strong>
-		              </xsl:otherwise>
-		            </xsl:choose>
-                <xsl:text> </xsl:text>
-              </span>
-              <xsl:call-template name="selectCalForEvent"/>
-            </td>
-          </tr>
+              <td class="fieldname">
+                <xsl:copy-of select="$bwStr-AEEF-Calendar"/><xsl:text> </xsl:text>
+              </td>
+              <td class="fieldval">
+                <input type="hidden" name="newCalPath" id="bwNewCalPathField">
+                  <xsl:attribute name="value"><xsl:value-of select="form/calendar/path"/></xsl:attribute>
+                </input>
+                <span id="bwEventCalDisplay">
+                  <xsl:choose>
+                    <xsl:when test="/bedework/creating = 'true'"><!-- display nothing --></xsl:when>
+                    <xsl:when test="not(starts-with(form/calendar/path,/bedework/myCalendars/calendars/calendar/path))">
+                      <!-- this event comes from a subscription / shared calendar; look up and display the local name -->
+                      <xsl:variable name="remotePath"><xsl:value-of select="form/calendar/path"/></xsl:variable>
+                      <strong><xsl:value-of select="/bedework/myCalendars/calendars//calendar[substring-after(aliasUri,'bwcal://')=$remotePath]/summary"/></strong>
+                      <br/><em>(<xsl:value-of select="$remotePath"/>)</em>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <strong><xsl:value-of select="form/calendar/summary"/></strong>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <xsl:text> </xsl:text>
+                </span>
+                <xsl:call-template name="selectCalForEvent"/>
+              </td>
+            </tr>
           </xsl:otherwise>
         </xsl:choose>
-        
+
         <!--  Summary (title) of event  -->
         <tr>
           <td class="fieldname">
@@ -471,9 +471,6 @@
                   </span>
                 </div>
               </div>
-              <div id="clock" class="invisible">
-                <xsl:call-template name="clock"/>
-              </div>
               <br/>
               <div class="dateFields">
                 <xsl:choose>
@@ -618,7 +615,7 @@
             <input type="text" name="locationAddress.value" value="" />
           </td>
         </tr>
-        
+
         <!--  Percent Complete (only for Tasks)  -->
         <xsl:if test="form/entityType = '2'">
           <tr>
@@ -633,47 +630,6 @@
           </tr>
         </xsl:if>
 
-        <!--  Category  -->
-        <tr>
-          <td class="fieldname">
-            <xsl:copy-of select="$bwStr-AEEF-Categories"/><xsl:text> </xsl:text>
-          </td>
-          <td class="fieldval">
-            <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
-            <xsl:choose>
-              <xsl:when test="not(form/categories/all/category)">
-                <xsl:copy-of select="$bwStr-AEEF-NoCategoriesDefined"/>
-                <span class="note">(<a href="{$category-initAdd}"><xsl:copy-of select="$bwStr-AEEF-AddCategory"/></a>)</span>
-              </xsl:when>
-              <xsl:otherwise>
-                <table cellpadding="0" id="allCategoryCheckboxes">
-                  <tr>
-                    <td>
-                      <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
-                        <input type="checkbox" name="catUid">
-                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                        </input>
-                        <xsl:value-of select="value"/>
-                        <br/>
-                      </xsl:for-each>
-                    </td>
-                    <td>
-                      <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
-                        <input type="checkbox" name="catUid">
-                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                        </input>
-                        <xsl:value-of select="value"/>
-                        <br/>
-                      </xsl:for-each>
-                    </td>
-                  </tr>
-                </table>
-              </xsl:otherwise>
-            </xsl:choose>
-          </td>
-        </tr>
       </table>
     </div>
 
@@ -776,7 +732,7 @@
                 </xsl:if>
               </input>
               <xsl:copy-of select="$bwStr-AEEF-Yes"/><xsl:text> </xsl:text><span class="note"><xsl:copy-of select="$bwStr-AEEF-Opaque"/></span><br/>
-  
+
               <input type="radio" value="TRANSPARENT" name="transparency">
                 <xsl:if test="form/transparency = 'TRANSPARENT'">
                   <xsl:attribute name="checked">checked</xsl:attribute>
@@ -786,6 +742,49 @@
             </td>
           </tr>
         </xsl:if>
+
+        <!--  Category  -->
+        <tr>
+          <td class="fieldname">
+            <xsl:copy-of select="$bwStr-AEEF-Categories"/><xsl:text> </xsl:text>
+          </td>
+          <td class="fieldval">
+            <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
+            <xsl:choose>
+              <xsl:when test="not(form/categories/all/category)">
+                <xsl:copy-of select="$bwStr-AEEF-NoCategoriesDefined"/>
+                <span class="note">(<a href="{$category-initAdd}"><xsl:copy-of select="$bwStr-AEEF-AddCategory"/></a>)</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <table cellpadding="0" id="allCategoryCheckboxes">
+                  <tr>
+                    <td>
+                      <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
+                        <input type="checkbox" name="catUid">
+                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        </input>
+                        <xsl:value-of select="value"/>
+                        <br/>
+                      </xsl:for-each>
+                    </td>
+                    <td>
+                      <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
+                        <input type="checkbox" name="catUid">
+                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
+                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                        </input>
+                        <xsl:value-of select="value"/>
+                        <br/>
+                      </xsl:for-each>
+                    </td>
+                  </tr>
+                </table>
+              </xsl:otherwise>
+            </xsl:choose>
+          </td>
+        </tr>
+
       </table>
     </div>
 
@@ -802,7 +801,7 @@
         </xsl:when>
         <xsl:otherwise>
           <!-- has recurrenceId, so is master -->
-          
+
           <xsl:choose>
             <xsl:when test="form/recurringEntity = 'false'">
 		          <!-- the switch is required to turn recurrence on - maybe we can infer this instead? -->
@@ -821,7 +820,7 @@
 		          <input type="hidden" name="recurring" value="true"/>
 		        </xsl:otherwise>
           </xsl:choose>
-          
+
           <!-- wrapper for all recurrence fields (rrules and rdates): -->
           <div id="recurrenceFields" class="invisible">
             <xsl:if test="form/recurringEntity = 'true'"><xsl:attribute name="class">visible</xsl:attribute></xsl:if>
@@ -1132,7 +1131,8 @@
                     <div id="monthRecurFields">
                       <div id="monthRecurFields1">
                         <xsl:copy-of select="$bwStr-AEEF-On"/>
-                        <select name="bymonthposPos1" size="7" onchange="changeClass('monthRecurFields2','shown')">
+                        <xsl:text> </xsl:text>
+                        <select name="bymonthposPos1" size="1" onchange="changeClass('monthRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
                         <xsl:call-template name="byDayChkBoxList"/>
@@ -1170,7 +1170,8 @@
                     <div id="yearRecurFields">
                       <div id="yearRecurFields1">
                         <xsl:copy-of select="$bwStr-AEEF-On"/>
-                        <select name="byyearposPos1" size="7" onchange="changeClass('yearRecurFields2','shown')">
+                        <xsl:text> </xsl:text>
+                        <select name="byyearposPos1" size="1" onchange="changeClass('yearRecurFields2','shown')">
                           <xsl:call-template name="recurrenceDayPosOptions"/>
                         </select>
                         <xsl:call-template name="byDayChkBoxList"/>
@@ -1379,7 +1380,7 @@
     <!-- Meeting / Scheduling tab -->
     <!-- ======================== -->
     <div id="bwEventTab-Scheduling" class="invisible">
-      <!-- 
+      <!--
       <h4><xsl:copy-of select="$bwStr-Atnd-AddAttendees"/></h4>
       <form name="raForm" id="recipientsAndAttendeesForm" action="{$requestFreeBusy}" method="post">
         <div id="raFields">
@@ -1407,12 +1408,12 @@
         </div>
       </form>
       -->
-      
+
 	    <div id="bwSchedule">
 	      <div id="bwFreeBusyDisplay">
 	        loading...
 	      </div>
-	      
+
 	      <table id="bwScheduleControls">
 	        <tr>
 	          <td>
@@ -1447,7 +1448,7 @@
 	        <tr>
 	          <td class="zoom">
 	            <!--  hid the zoom for now - may not use it. -->
-	            <!--             
+	            <!--
 	            <span class="zoomControl">-</span>
 	            <select name="zoom">
 	              <option>300%</option>
@@ -1510,11 +1511,11 @@
                 <xsl:text> </xsl:text>
                 <xsl:copy-of select="$bwStr-AEEF-Minutes"/>
               </span>
-              
+
 	          </td>
-	        </tr>  
+	        </tr>
 	      </table>
-                        
+
 	    </div>
     </div>
 
@@ -1605,7 +1606,8 @@
     <div class="invisible">
       <xsl:attribute name="id"><xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current"/></xsl:attribute>
       <xsl:copy-of select="$bwStr-BuRF-And"/>
-      <select size="12">
+      <xsl:text> </xsl:text>
+      <select size="1">
         <xsl:attribute name="name">by<xsl:value-of select="$name"/>posPos<xsl:value-of select="$current"/></xsl:attribute>
         <xsl:if test="$current != $total">
           <xsl:attribute name="onchange">changeClass('<xsl:value-of select="$name"/>RecurFields<xsl:value-of select="$current+1"/>','shown')</xsl:attribute>
@@ -1709,5 +1711,5 @@
       </map>
     </div>
   </xsl:template>
-  
+
 </xsl:stylesheet>

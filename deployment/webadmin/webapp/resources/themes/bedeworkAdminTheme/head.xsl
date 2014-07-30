@@ -42,12 +42,32 @@
         <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
         <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
         <!-- Global Javascript (every page): -->
+        <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">/* Bedework Utilities */</script>
+        <!-- include the localized jQuery datepicker defaults -->
+        <xsl:call-template name="jqueryDatepickerDefaults"/>
         <script type="text/javascript">
           <xsl:comment>
             $(document).ready(function(){
               // focus first visible,enabled form element:
               $(':input[type=text]:visible:enabled:first:not(.noFocus)').focus();
             });
+
+            // hold the most recent search query and start date
+            function setBwQuery(formObj,dateString,submit) {
+              if (trim(formObj.query.value) != "") {
+                var date = dateString;
+                if (date == "today" || date == undefined || date == "") {
+                  date = "<xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="substring(/bedework/now/date,5,2)"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/>";
+                  formObj.start.value = date;
+                }
+                formObj.setappvar.value = "bwQuery(" + date + "|" + formObj.query.value + ")";
+                if (submit == true) {
+                  formObj.submit();
+                }
+                return true;
+              }
+              return false;
+            }
           </xsl:comment>
         </script>
         <!-- conditional javascript and css -->
@@ -73,7 +93,7 @@
                 function bwSetupDatePickers() {
                   // startdate
                   $("#bwEventWidgetStartDate").datepicker({
-                    <xsl:if test="/bedework/formElements/eventregAdminToken != '' and (/bedework/creating = 'true' or (translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text))">altField: "#xBwRegistrationClosesDate",</xsl:if><!--
+                    <xsl:if test="/bedework/formElements/eventRegAdminToken != '' and (/bedework/creating = 'true' or (translate(/bedework/formElements/form/start/rfc3339DateTime,'-:','') = /bedework/formElements/form/xproperties/X-BEDEWORK-REGISTRATION-END/values/text))">altField: "#xBwRegistrationClosesDate",</xsl:if><!--
                  -->defaultDate: new Date(<xsl:value-of select="/bedework/formElements/form/start/yearText/input/@value"/>, <xsl:value-of select="number(/bedework/formElements/form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="/bedework/formElements/form/start/day/select/option[@selected = 'selected']/@value"/>)
                   }).attr("readonly", "readonly");
                   $("#bwEventWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
@@ -145,7 +165,7 @@
                     pmLabel: "<xsl:value-of select="$bwStr-Cloc-PM"/>"
                   });
 
-                  <xsl:if test="/bedework/formElements/eventregAdminToken != ''">
+                  <xsl:if test="/bedework/formElements/eventRegAdminToken != ''">
                     // registration open dates
                     $("#xBwRegistrationOpensDate").datepicker().attr("readonly", "readonly");
                     $("#xBwRegistrationOpensDate").val('<xsl:value-of select="substring-before(/bedework/formElements/form/start/rfc3339DateTime,'T')"/>');
@@ -185,7 +205,6 @@
               </script>
             </xsl:otherwise>
           </xsl:choose>
-          <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">/* Bedework Utilities */</script>
           <script type="text/javascript" src="{$resourcesRoot}/javascript/bedeworkEventForm.js">/* Bedework Event Form Functions */</script>
           <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkXProperties.js">/* Bedework X-Property Handling */</script>
           <script type="text/javascript">
@@ -249,9 +268,6 @@
           </script>
         </xsl:if>
         <xsl:if test="/bedework/page='eventList'">
-          <!-- include the localized jQuery datepicker defaults -->
-          <xsl:call-template name="jqueryDatepickerDefaults"/>
-
           <!-- now setup date and time pickers -->
           <script type="text/javascript">
             <xsl:comment>
@@ -267,6 +283,29 @@
                 </xsl:when>
                 <xsl:otherwise>
                   $("#bwListWidgetStartDate").val('<xsl:value-of select="$curListDate"/>');
+                </xsl:otherwise>
+              </xsl:choose>
+
+            });
+            </xsl:comment>
+          </script>
+        </xsl:if>
+        <xsl:if test="/bedework/page='searchResult'">
+          <!-- now setup date and time pickers -->
+          <script type="text/javascript">
+            <xsl:comment>
+            $(document).ready(function(){
+              // startdate for search
+              $("#bwSearchWidgetStartDate").datepicker({
+                showOn: "button",
+                defaultDate: new Date(<xsl:value-of select="substring(/bedework/now/date,1,4)"/>, <xsl:value-of select="number(substring(/bedework/now/date,5,2)) - 1"/>, <xsl:value-of select="substring(/bedework/now/date,7,2)"/>)
+              });
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='bwQuery']">
+                  $("#bwSearchWidgetStartDate").val('<xsl:value-of select="substring-before(/bedework/appvar[key='bwQuery']/value,'|')"/>');
+                </xsl:when>
+                <xsl:otherwise>
+                  $("#bwSearchWidgetStartDate").val('<xsl:value-of select="$curListDate"/>');
                 </xsl:otherwise>
               </xsl:choose>
 

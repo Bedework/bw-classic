@@ -61,25 +61,25 @@
   <!-- Page subsections -->
   <xsl:include href="head.xsl" />
   <xsl:include href="header.xsl" />
-  <!-- xsl:include href="tabs.xsl" /-->
   <xsl:include href="datePicker.xsl" />
   <xsl:include href="search.xsl" />
   <xsl:include href="leftColumn.xsl" />
   <xsl:include href="views.xsl" />
-  <xsl:include href="subscriptions.xsl" />
   <xsl:include href="featuredEvents.xsl"/>
   <xsl:include href="eventListRangeNav.xsl" />
   <xsl:include href="eventListRange.xsl" />
   <xsl:include href="eventList.xsl" />
+  <xsl:include href="eventGrids.xsl" />
+  <xsl:include href="queryFilterDisplay.xsl" />
   <xsl:include href="event.xsl" />
   <xsl:include href="year.xsl" />
+  <xsl:include href="exportSubscribe.xsl" />
   <xsl:include href="calendarsAll.xsl" />
   <xsl:include href="searchResult.xsl"/>
   <xsl:include href="ongoing.xsl" />
   <xsl:include href="deadlines.xsl" />
   <xsl:include href="systemStats.xsl"/>
   <xsl:include href="showPage.xsl"/>
-  <xsl:include href="footer.xsl" />
 
   <!-- MAIN TEMPLATE -->
   <xsl:template match="/">
@@ -98,19 +98,20 @@
               <xsl:apply-templates select="/bedework/error" />
             </div>
           </xsl:if>
+          <noscript><xsl:copy-of select="$bwStr-Error-NoScript"/></noscript>
 
           <section id="content">
             <div class="row">
 
               <!-- LEFT COLUMN: date picker, search, subscriptions, views, and other navigation -->
-              <div id="leftColumn" class="col-lg-3">
+              <div id="leftColumn" class="col-lg-3 col-md-3 col-sm-3">
                 <xsl:call-template name="datePicker" />
                 <xsl:call-template name="search" />
                 <xsl:call-template name="leftColumn" />
               </div>
 
               <!-- RIGHT FULL COLUMN: features, event lists and navigation, ongoing events -->
-              <div id="rightFullColumn" class="col-lg-9">
+              <div id="rightFullColumn" class="col-lg-9 col-md-9 col-sm-9">
 
 	              <!-- FEATURED EVENTS, if enabled -->
 	              <xsl:if test="$featuredEventsEnabled = 'true'">
@@ -119,10 +120,14 @@
 
                 <!-- ONGOING EVENTS if enabled -->
                 <xsl:if test="$ongoingEvents = 'true'">
-                  <div class="col-lg-3" id="ongoing">
-                    <xsl:if test="$ongoingEvents = 'true'">
-                      <xsl:call-template name="ongoingEventList" />
-                    </xsl:if>
+                  <div id="ongoing">
+                    <xsl:attribute name="class">
+                      <xsl:choose>
+                        <xsl:when test="/bedework/page='eventscalendar' and /bedework/periodname='Month'">ongoingForGrid</xsl:when>
+                        <xsl:otherwise>col-lg-3 col-md-3 col-sm-3</xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:attribute>
+                    <xsl:call-template name="ongoingEventList" />
                   </div>
                 </xsl:if>
 
@@ -130,8 +135,8 @@
                 <div id="centerColumn">
                   <xsl:attribute name="class">
                     <xsl:choose>
-                      <xsl:when test="$ongoingEvents = 'true'">col-lg-9</xsl:when>
-                      <xsl:otherwise>col-lg-12</xsl:otherwise>
+                      <xsl:when test="$ongoingEvents = 'true' and not(/bedework/page='eventscalendar' and /bedework/periodname='Month')">col-lg-9 col-md-9 col-sm-9</xsl:when>
+                      <xsl:otherwise>col-lg-12 col-md-12 col-sm-12</xsl:otherwise>
                     </xsl:choose>
                   </xsl:attribute>
 
@@ -154,6 +159,9 @@
                       <xsl:choose>
                         <xsl:when test="/bedework/periodname = 'Year'">
                           <xsl:call-template name="yearView" />
+                        </xsl:when>
+                        <xsl:when test="/bedework/periodname='Month'">
+                          <xsl:call-template name="monthGrid"/>
                         </xsl:when>
                         <xsl:otherwise>
                           <xsl:call-template name="eventListRange"/>
@@ -224,7 +232,7 @@
 
           <!-- FOOTER -->
           <footer id="footer" class="row">
-            <xsl:call-template name="footer" />
+            <xsl:call-template name="footerText"/>  <!-- in themeSettings.xsl -->
           </footer>
 
         </div><!-- /container -->

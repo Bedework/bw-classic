@@ -22,150 +22,148 @@
   <!--++++ SEARCH ++++-->
   <!-- templates:
          - searchResult
+         - upperSearchForm
          - searchResultPageNav
    -->
   <xsl:template name="searchResult">
-    <h2 class="bwStatusConfirmed">
-      <div id="searchFilter">
-        <form name="searchForm" method="post" action="{$search}">
-          <xsl:copy-of select="$bwStr-Srch-Search"/>Search:
-          <input type="text" name="query" size="15">
-            <xsl:attribute name="value"><xsl:value-of select="/bedework/searchResults/query"/></xsl:attribute>
-          </input>
-          <input type="submit" name="submit" value="{$bwStr-Srch-Go}"/>
-          <xsl:copy-of select="$bwStr-Srch-Limit"/>
+    <xsl:variable name="today"><xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="substring(/bedework/now/date,5,2)"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:variable>
 
-          <input type="radio" name="searchLimits" id="searchFromToday" value="fromToday">
-            <xsl:if test="/bedework/searchResults/searchLimits = 'fromToday'">
-              <xsl:attribute name="checked">checked</xsl:attribute>
-            </xsl:if>
-          </input>
-          <label for="searchFromToday"><xsl:copy-of select="$bwStr-Srch-TodayForward"/></label>
+    <h2 class="bwStatusConfirmed"><xsl:copy-of select="$bwStr-Srch-SearchResult"/></h2>
+    <div id="searchResultSize">
+      <strong><xsl:value-of select="/bedework/searchResults/resultSize"/></strong>
+      <xsl:text> </xsl:text>
+      <xsl:copy-of select="$bwStr-Srch-ResultReturnedFor"/><xsl:text> </xsl:text>
+      "<strong><em><xsl:value-of select="substring-after(/bedework/appvar[key='bwQuery']/value,'|')"/></em></strong>"
+    </div>
 
-          <input type="radio" name="searchLimits" id="searchBeforeToday" value="beforeToday">
-            <xsl:if test="/bedework/searchResults/searchLimits = 'beforeToday'">
-              <xsl:attribute name="checked">checked</xsl:attribute>
-            </xsl:if>
-          </input>
-          <label for="searchBeforeToday"><xsl:copy-of select="$bwStr-Srch-PastDates"/></label>
+    <div class="bwEventListNav">
+      <button class="searchPrevious" onclick="location.href='{$search-next}&amp;prev=prev'"><span class="searchArrow searchArrowLeft">◄</span> <xsl:copy-of select="$bwStr-Srch-PrevFull"/></button>
+      <button class="searchNext" onclick="location.href='{$search-next}&amp;next=next'"><xsl:copy-of select="$bwStr-Srch-NextFull"/> <span class="searchArrow searchArrowRight">►</span></button>
+    </div>
 
-          <input type="radio" name="searchLimits" id="searchNoLimits" value="none">
-            <xsl:if test="/bedework/searchResults/searchLimits = 'none'">
-              <xsl:attribute name="checked">checked</xsl:attribute>
-            </xsl:if>
-          </input>
-          <label for="searchNoLimits"><xsl:copy-of select="$bwStr-Srch-AllDates"/></label>
+    <form name="bwSearchEventListControls" id="bwSearchEventListControls" method="post" action="{$search}" onsubmit="return setBwQuery(this,this.start.value);">
+      <label for="bwSearchWidgetStartDate"><xsl:copy-of select="$bwStr-EvLs-StartDate"/></label>
+      <input id="bwSearchWidgetStartDate" type="text" class="noFocus" name="start" size="10" onchange="setBwQuery(this.form,this.value,true);"/>
+      <input id="bwSearchWidgetToday" type="button" value="{$bwStr-EvLs-Today}" onclick="setBwQuery(this.form,'today',true);"/>
 
-        </form>
-      </div>
-      <xsl:copy-of select="$bwStr-Srch-SearchResult"/>
-    </h2>
-    <table id="searchTable" cellpadding="0" cellspacing="0">
-      <tr>
-        <th colspan="5">
-          <xsl:if test="/bedework/searchResults/numPages &gt; 1">
-            <xsl:variable name="curPage" select="/bedework/searchResults/curPage"/>
-            <div id="searchPageForm">
-              <xsl:copy-of select="$bwStr-Srch-Page"/>
-              <xsl:if test="/bedework/searchResults/curPage != 1">
-                <xsl:variable name="prevPage" select="number($curPage) - 1"/>
-                &lt;<a href="{$search-next}&amp;pageNum={$prevPage}"><xsl:copy-of select="$bwStr-Srch-Prev"/></a>
-              </xsl:if>
-              <xsl:text> </xsl:text>
+      <xsl:copy-of select="$bwStr-Srch-Search"/>
+      <xsl:text> </xsl:text>
+      <input type="text" name="query" size="27">
+        <xsl:attribute name="value"><xsl:value-of select="substring-after(/bedework/appvar[key='bwQuery']/value,'|')"/></xsl:attribute>
+      </input>
+      <input type="submit" value="{$bwStr-Srch-Go}"/>
+      <input type="hidden" name="setappvar" id="curQueryHolder" value="bwQuery()"/>
+      <input type="hidden" name="sort" value="dtstart.utc:asc"/>
+      <input type="hidden" name="count" value="{$searchResultSize}"/>
+    </form>
 
-              <xsl:call-template name="searchResultPageNav">
-                <xsl:with-param name="page">
-                  <xsl:choose>
-                    <xsl:when test="number($curPage) - 10 &lt; 1">1</xsl:when>
-                    <xsl:otherwise><xsl:value-of select="number($curPage) - 6"/></xsl:otherwise>
-                  </xsl:choose>
-                </xsl:with-param>
-              </xsl:call-template>
-
-              <xsl:text> </xsl:text>
-              <xsl:choose>
-                <xsl:when test="$curPage != /bedework/searchResults/numPages">
-                  <xsl:variable name="nextPage" select="number($curPage) + 1"/>
-                  <a href="{$search-next}&amp;pageNum={$nextPage}"><xsl:copy-of select="$bwStr-Srch-Next"/></a>&gt;
-                </xsl:when>
-                <xsl:otherwise>
-                  <span class="hidden"><xsl:copy-of select="$bwStr-Srch-Next"/>&gt;</span><!-- occupy the space to keep the navigation from moving around -->
-                </xsl:otherwise>
-              </xsl:choose>
-            </div>
-          </xsl:if>
-          <strong><xsl:value-of select="/bedework/searchResults/resultSize"/></strong>
-          <xsl:text> </xsl:text>
-          <xsl:copy-of select="$bwStr-Srch-ResultReturnedFor"/><xsl:text> </xsl:text>
-          <strong><em><xsl:value-of select="/bedework/searchResults/query"/></em></strong>
-        </th>
-      </tr>
-      <xsl:if test="/bedework/searchResults/searchResult">
-        <tr class="fieldNames">
-          <td>
-            <xsl:copy-of select="$bwStr-Srch-Relevance"/>
-          </td>
-          <td>
-            <xsl:copy-of select="$bwStr-Srch-Title"/>
-          </td>
-          <td>
-            <xsl:copy-of select="$bwStr-Srch-DateAndTime"/>
-          </td>
-          <!-- <td>
-            topical areas
-          </td>-->
-          <td>
-            <xsl:copy-of select="$bwStr-Srch-Location"/>
-          </td>
-        </tr>
-      </xsl:if>
-      <xsl:for-each select="/bedework/searchResults/searchResult">
-        <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
-        <xsl:variable name="guid" select="event/guid"/>
-        <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
-        <tr>
-          <td class="relevance">
-            <xsl:value-of select="ceiling(number(score)*100)"/>%
-            <img src="{$resourcesRoot}/images/spacer.gif" height="4" class="searchRelevance">
-              <xsl:attribute name="width"><xsl:value-of select="ceiling((number(score)*100) div 1.5)"/></xsl:attribute>
-            </img>
-          </td>
-          <td>
-            <a href="{$event-fetchForDisplay}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-              <xsl:value-of select="event/summary"/>
-              <xsl:if test="event/summary = ''"><em><xsl:copy-of select="$bwStr-Srch-NoTitle"/></em></xsl:if>
-            </a>
-          </td>
-          <td>
-            <xsl:value-of select="event/start/longdate"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="event/start/time"/>
-            <xsl:choose>
-              <xsl:when test="event/start/longdate != event/end/longdate">
-                - <xsl:value-of select="event/end/longdate"/>
+    <table id="searchTable">
+      <xsl:choose>
+        <xsl:when test="/bedework/searchResults/searchResult">
+          <tr class="fieldNames">
+            <th>
+              <xsl:copy-of select="$bwStr-Srch-Title"/>
+            </th>
+            <th>
+              <xsl:copy-of select="$bwStr-Srch-DateAndTime"/>
+            </th>
+            <!-- <td>  XXX would like to restore these
+              topical areas
+            </td>-->
+            <th>
+              <xsl:copy-of select="$bwStr-Srch-Location"/>
+            </th>
+          </tr>
+          <xsl:for-each select="/bedework/searchResults/searchResult">
+            <xsl:variable name="calPath" select="event/calendar/encodedPath"/>
+            <xsl:variable name="guid" select="event/guid"/>
+            <xsl:variable name="recurrenceId" select="event/recurrenceId"/>
+            <tr>
+              <td>
+                <a href="{$event-fetchForDisplay}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                  <xsl:value-of select="event/summary"/>
+                  <xsl:if test="event/summary = ''"><em><xsl:copy-of select="$bwStr-Srch-NoTitle"/></em></xsl:if>
+                </a>
+              </td>
+              <td>
+                <xsl:value-of select="event/start/longdate"/>
                 <xsl:text> </xsl:text>
-                <xsl:value-of select="event/end/time"/>
-              </xsl:when>
-              <xsl:when test="event/start/time != event/end/time">
-                - <xsl:value-of select="event/end/time"/>
-              </xsl:when>
-            </xsl:choose>
-          </td>
-          <!--
-          <td>
-            <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
-              <xsl:call-template name="substring-afterLastInstanceOf">
-                <xsl:with-param name="string" select="values/text"/>
-                <xsl:with-param name="char">/</xsl:with-param>
-              </xsl:call-template><br/>
-            </xsl:for-each>
-          </td>-->
-          <td>
-            <xsl:value-of select="event/location/address"/>
-          </td>
-        </tr>
-      </xsl:for-each>
+                <xsl:value-of select="event/start/time"/>
+                <xsl:choose>
+                  <xsl:when test="event/start/longdate != event/end/longdate">
+                    - <xsl:value-of select="event/end/longdate"/>
+                    <xsl:text> </xsl:text>
+                    <xsl:value-of select="event/end/time"/>
+                  </xsl:when>
+                  <xsl:when test="event/start/time != event/end/time">
+                    - <xsl:value-of select="event/end/time"/>
+                  </xsl:when>
+                </xsl:choose>
+              </td>
+              <!--
+              <td>
+                <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS">
+                  <xsl:call-template name="substring-afterLastInstanceOf">
+                    <xsl:with-param name="string" select="values/text"/>
+                    <xsl:with-param name="char">/</xsl:with-param>
+                  </xsl:call-template><br/>
+                </xsl:for-each>
+              </td>-->
+              <td>
+                <xsl:value-of select="event/location/address"/>
+              </td>
+            </tr>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise>
+          <tr>
+            <td>
+              <xsl:choose>
+                <xsl:when test="/bedework/searchResults/resultSize = '0'"><xsl:copy-of select="$bwStr-Srch-NoResults"/></xsl:when>
+                <xsl:otherwise><xsl:copy-of select="$bwStr-Srch-NoMoreResults"/></xsl:otherwise>
+              </xsl:choose>
+            </td>
+          </tr>
+        </xsl:otherwise>
+      </xsl:choose>
     </table>
+    <div class="bwEventListNav">
+      <button class="searchPrevious" onclick="location.href='{$search-next}&amp;prev=prev'"><span class="searchArrow searchArrowLeft">&#9668;</span> <xsl:copy-of select="$bwStr-Srch-PrevFull"/></button>
+      <button class="searchNext" onclick="location.href='{$search-next}&amp;next=next'"><xsl:copy-of select="$bwStr-Srch-NextFull"/> <span class="searchArrow searchArrowRight">&#9658;</span></button>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="upperSearchForm">
+    <xsl:param name="toggleLimits">false</xsl:param>
+    <div id="searchFilter">
+      <form name="searchForm" method="post" action="{$search}" onsubmit="return setBwQuery(this);">
+        <div class="searchQueryBlock">
+          <xsl:copy-of select="$bwStr-Srch-Search"/>
+          <xsl:text> </xsl:text>
+          <input type="text" name="query" size="27">
+            <xsl:attribute name="value"><xsl:value-of select="substring-after(/bedework/appvar[key='bwQuery']/value,'|')"/></xsl:attribute>
+            <xsl:attribute name="class">noFocus</xsl:attribute>
+          </input>
+          <input type="hidden" name="count" value="{$searchResultSize}"/>
+          <input type="hidden" name="start" value="today"/>
+          <input type="hidden" name="sort" value="dtstart.utc:asc"/>
+          <input type="hidden" name="setappvar" value="bwQuery()"/>
+          <input type="submit" name="submit" value="{$bwStr-Srch-Go}" class="noFocus"/>
+        </div>
+
+        <!--
+        <div class="searchLimitBlock">
+          <xsl:if test="$toggleLimits = 'true'">
+            <xsl:attribute name="class">searchLimitBlock searchLimitBlockToggle</xsl:attribute>
+          </xsl:if>
+          <label for="bwSearchWidgetStartDate"><xsl:copy-of select="$bwStr-Srch-Starting"/></label>
+          <input id="bwSearchWidgetStartDate" type="text" class="noFocus" name="start" size="10" onchange="setSearchDate(this.form,this.value);"/>
+          <input id="bwSearchWidgetToday" type="button" value="{$bwStr-EvLs-Today}" onclick="setSearchDate(this.form,'{$searchToday}');"/>
+        </div>
+        -->
+
+      </form>
+    </div>
   </xsl:template>
 
   <xsl:template name="searchResultPageNav">

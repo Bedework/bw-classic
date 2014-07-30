@@ -21,12 +21,9 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:template name="leftColumn">
-    <xsl:if test="$useViewsNav = 'true'">
-      <xsl:call-template name="viewList" />
-    </xsl:if>
-    <xsl:if test="$useSubscriptionsNav = 'true'">
-      <xsl:call-template name="subscriptionsTree" />
-    </xsl:if>
+    <!--a href="javascript:bwClearAllFilters();">clear all filters</a-->
+
+    <xsl:call-template name="viewList" />
 
     <div class="sideBarContainer">
       <xsl:call-template name="leftColumnText"/><!-- from themeSettings.xsl -->

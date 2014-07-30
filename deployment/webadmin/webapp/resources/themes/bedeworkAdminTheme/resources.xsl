@@ -163,7 +163,7 @@
 	          </td>
 	        </xsl:if>
           <td>
-            <a href="{$downloadLink}">
+            <a href="{$downloadLink}" target="bwResource">
               <xsl:copy-of select="$bwStr-Resource-ResourceURL"/>
             </a>
           </td>
@@ -319,7 +319,7 @@
 			          <xsl:value-of select="$bwStr-ModRes-ResourceContentLabel"/>
 			        </span>
 		          <br/>
-		          <textarea name="content" rows="20" cols="120" id="resourceContent" style="display:block;"></textarea>
+		          <textarea name="content" rows="20" cols="120" id="resourceContent" style="display:block;"><xsl:text> </xsl:text></textarea>
 		          <xsl:if test="$isCreating = 'false'">
 		            <script type="text/javascript">
 		              <xsl:text>

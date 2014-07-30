@@ -20,7 +20,7 @@
 
 // Bedework Event List
 
-/* An event list
+/* An event list - for use in the Bedework Public Client
  * outputContainerId    String - id of output container
  * dataType             String - the kind of widget we are requesting,
  *                               either "html" or "json".
@@ -35,12 +35,16 @@
  *
  * options              Object - json list of options for display
  *                               (can be empty for html dataType)
- * filterPrefix         String - pass in any fexpr filters when first creating
- *                               the object, esp. if they already exist
+ *
  * startDate            String - the initial start date for the list - passed
  *                               in from Bedework global state to more easily
  *                               move between list and day/week/month views
- *
+ * filterPrefix         String - pass in any fexpr filters when first creating
+ *                               the object, esp. the ongoing events expression
+ * filterPaths          Array  - 2D array of existing filter paths from which we
+ *                               build a filter expression on first load - for
+ *                               maintaining state if they already exist
+ * query                String - pass in an existing query string if it exists
  * fetchUri             URI    - the URI for the primary ajax request
  * fetchNextUri         URI    - the URI to fetch the next page of event via ajax
  *
@@ -54,8 +58,9 @@
  *                               the top of the html list; we get the fully
  *                               internationalized start date from the Bedework
  *                               back-end.
+ * htmlCountContainerId String - id of container to display number of events returned
  */
-function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,fetchUri,fetchNextUri,htmlDateContainerId,htmlCountContainerId) {
+function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,filterPaths,query,fetchUri,fetchNextUri,htmlDateContainerId,htmlCountContainerId) {
   this.outputContainerId = outputContainerID;
   this.dataType = dataType;
   this.options = options;
@@ -67,25 +72,88 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
   this.skinName = "widget-html";
   this.events = "";
   this.fexprPrefix = filterPrefix;
+  this.filterPaths = filterPaths;
+  this.query = query;
   this.fexprSuffix = "(entity_type=\"event\"|entity_type=\"todo\")";
   this.fexpr = "";
-  this.query = "";
 
   if (this.dataType == "json") {
     this.skinName = "widget-json-eventList";
   }
 
-  if (this.fexprPrefix != undefined && this.fexprPrefix.length) {
-    this.fexpr += this.fexprPrefix + " and ";
-  }
-  this.fexpr += this.fexprSuffix;
+  /* Build the filter expression
+   * filters:    an array of arrays - one array of paths for each filter set
+   * operation:  string - "AND" or "OR" for combining the filter sets
+   */
+  this.getFilterExpression = function(filters,operation) {
 
+    var fexpr = "";
+    var filtersExist = false;
+    var innerFilters = "";
+
+    // if we've been passed filters, build the inner filter expression
+    if (filters.length) { // we've got a 2D array
+
+      /* Is our 2D array a set of empty arrays? */
+      for (i=0; i < filters.length; i++) {
+        if(filters[i].length) {
+          filtersExist = true;
+          break;
+        }
+      }
+
+      if (filtersExist) {
+        var op = "";
+        innerFilters += "(";
+        $.each(filters, function (i, value) {
+          if (filters[i].length) { // does the array have anything in it?
+            innerFilters += op + "(";
+
+            op = " and "; // default operation between filter sets
+            if (operation == "or") {
+              op = " or ";
+            }
+
+            orOp = "";
+            $.each(filters[i], function (j, value) {
+              innerFilters += orOp + "(vpath=\"" + value + "\")";
+              orOp = " or ";
+            });
+            innerFilters += ")";
+
+          }
+        });
+        innerFilters += ")";
+      }
+    }
+
+    // Build the full filter expression:
+    // include the default filter prefix only if no query or filters exist
+    if (this.fexprPrefix != "" && this.query == "" && !filtersExist) {
+      fexpr += this.fexprPrefix + " and ";
+    }
+    if (filtersExist) {
+      fexpr += innerFilters + " and ";
+    }
+    fexpr += this.fexprSuffix;
+
+    return fexpr;
+  }
+
+  this.fexpr = this.getFilterExpression(this.filterPaths);
+
+  // build the request data
   this.requestData = {
     skinNameSticky: this.skinName,
     start: this.startDate,
     sort: "dtstart.utc:asc",
     fexpr: this.fexpr
   };
+
+  // add the query if it exists
+  if (this.query != "") {
+    this.requestData["query"] = this.query;
+  }
 
   this.display = function() {
     var me = this;
@@ -111,11 +179,12 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
     this.events = eventsObj;
   }
 
-  this.appendEvents = function() {
+  this.appendEvents = function(dateSeparator) {
     // this is done synchronously to avoid race conditions
     var me = this;
     var appendReqData = this.requestData;
     appendReqData.next = "next";
+    appendReqData.setappvar = "lastDateSeparatorInList(" + dateSeparator + ")";
     $.ajax({
       url: this.fetchNextUri,
       data: appendReqData,
@@ -132,20 +201,12 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
     this.requestData[key] = val;
   }
 
-  this.getFilterExpression = function(filters) {
-    var fexpr = this.fexprSuffix;
-    // if we've been passed filters, build the full filter expression
-    if (filters.length) {
-      fexpr = "(";
-      $.each(filters, function (i, value) {
-        fexpr += "(vpath=\"" + value + "\")";
-        if (i < filters.length - 1) {
-          fexpr += " or ";
-        }
-      });
-      fexpr += ") and " + bwMainEventList.fexprSuffix;
-    }
-    return fexpr;
+  this.setFexprPrefix = function(val) {
+    this.fexprPrefix = val;
+  }
+
+  this.getFexprPrefix = function() {
+    return this.fexprPrefix;
   }
 
   this.setFexprSuffix = function(val) {
@@ -204,10 +265,11 @@ function insertBwHtmlEvents(outputContainerID,dateContainerId,countContainerId,b
     $("#" + countContainerId).html(resultSize + " " + eventStr);
     $("#" + countContainerId).show();
   }
+  // add a click handler for events in the list so that the entire event element
+  // is clickable - this is particularly good for touch screens
+  $(outputContainer).on("click", ".eventListContent", bwListedEventClickHandler);
 }
 
-/* Insert Bedework calendar events list from a json feed.
-   Does not include social media icon rendering. */
 function insertBwEvents(outputContainerID,bwObject,options,action) {
   var outputContainer = document.getElementById(outputContainerID);
   var output = "";
@@ -219,6 +281,7 @@ function insertBwEvents(outputContainerID,bwObject,options,action) {
     title: 'Upcoming Events',
     showTitle: true,
     showCount: true,
+    showCaret: false, // when true, a caret will appear to the left of the title, and the title will become a toggleable link
     displayDescription: false,
     calendarServer: '',
     calSuiteContext: '/cal',
@@ -254,10 +317,14 @@ function insertBwEvents(outputContainerID,bwObject,options,action) {
 
   // merge in user-defined options
   if (typeof options == "object") {
-    bwListOptions = $.extend(defaults, options);
-  } else {
-    bwListOptions = defaults;
+    for(var key in options) {
+      if(options.hasOwnProperty(key))
+        defaults[key] = options[key];
+    }
   }
+
+  bwListOptions = defaults;
+
 
   // Check first to see if whe have events:
   if ((bwObject == undefined) ||
@@ -289,6 +356,9 @@ function insertBwEvents(outputContainerID,bwObject,options,action) {
     // no events are present.
     if (bwListOptions.showTitle) {
       output += "<h3 class=\"bwEventsTitle\">";
+      if (bwListOptions.showCaret) {
+        output += "<span class=\"caret caret-right\"> </span>";
+      }
       output += bwListOptions.title;
       if (bwListOptions.showCount) {
         output += " <span class=\"bwEventsCount\">(" + bwObject.bwEventList.resultSize + ")</span>";
@@ -377,6 +447,11 @@ function insertBwEvents(outputContainerID,bwObject,options,action) {
   } else {
     outputContainer.innerHTML = output;
   }
+
+  if (bwListOptions.showCaret) {
+    /* Add the click handler to filters that are generated on first page load.  */
+    $("#ongoing").on("click", ".bwEventsTitle", bwOngoingClickHandler);
+  }
 }
 
 function formatBwThumbnail(event,bwListOptions) {
@@ -418,7 +493,7 @@ function formatBwThumbnail(event,bwListOptions) {
   // did we end up with an image?
   if (imgSrc != "") {
     bwEventLink = getBwEventLink(event,bwListOptions);
-    output += "<a href=\"" + bwEventLink + "\">";
+    output += "<a href=\"" + bwEventLink + "\" class=\"eventThumbLink\">";
     output += "<img class=\"eventThumb img-responsive\" width=\"" + bwListOptions.thumbWidth + "\" src=\"" + imgSrc + "\" alt=\" + event.summary + \"/>";
     output += "</a>";
   }
@@ -530,109 +605,4 @@ function getBwEventLink(event,bwListOptions) {
   eventQueryString += "&amp;recurrenceId=" + event.recurrenceId;
 
   return urlPrefix + eventQueryString;
-}
-
-function showBwEvent(outputContainerID,eventId,bwListOptions) {
-  // Style further with CSS
-
-  var outputContainer = document.getElementById(outputContainerID);
-  var output = "";
-  // provide a shorthand reference to the event:
-  var event = bwObject.bwEventList.events[eventId];
-
-  // create the event
-  output += "<h3 class=\"bwEventsTitle\">" + event.summary + "</h3>";
-
-  output += "<div class=\"bwEventLogistics\">";
-
-  // output date/time
-  output += "<div class=\"bwEventDateTime\">";
-  output += event.start.longdate;
-  if ((event.start.allday == 'false') && bwListOptions.displayTimeInList) {
-    output += " " + event.start.time;
-    if ((event.start.timezone != event.end.timezone) &&
-        bwListOptions.displayTimezoneInDetails) {
-      output += " " + event.start.timezone;
-    }
-  }
-  if (event.start.shortdate != event.end.shortdate) {
-    output += " - ";
-    output += event.end.longdate;
-    if (event.start.allday == 'false') {
-      output += " " + event.end.time;
-      if (bwListOptions.displayTimezoneInDetails) {
-        output += " " + event.end.timezone;
-      }
-    }
-  } else if ((event.start.allday == 'false') &&
-      (event.start.time != event.end.time)) {
-    // same date, different times
-    output += " - " + event.end.time;
-    if (bwListOptions.displayTimezoneInDetails) {
-      output += " " + event.end.timezone;
-    }
-  }
-  output += "</div>";
-
-  // output location
-  output += "<div class=\"bwEventLoc\">";
-  if (event.location.link != "") {
-    output += "<a href=\""+ event.location.link + "\">" + event.location.address + "</a>";
-  } else {
-    output += event.location.address;
-  }
-  output += "</div>";
-
-  // output description
-  output += "<div class=\"bwEventDesc\">";
-  output += event.description.replace(/\n/g,'<br />');
-  output += "</div>";
-
-  // output contact
-  if (bwListOptions.displayContactInDetails) {
-    output += "<div class=\"bwEventContact\">";
-    if (event.contact.link != "") {
-      output += "Contact: <a href=\"" + event.contact.link + "\">" + event.contact.name + "</a>";
-    } else {
-      output += "Contact: " + event.contact.name;
-    }
-    output += "</div>";
-  }
-
-  // output cost
-  if (event.cost != "" && bwListOptions.displayCostInDetails) {
-    output += "<div class=\"bwEventCost\">";
-    output += "Cost: " + event.cost;
-    output += "</div>";
-  }
-
-  // output tags (categories)
-  if (event.categories != "" && bwListOptions.displayTagsInDetails) {
-    output += "<div class=\"bwEventCats\">";
-    output += "Tags: " + event.categories;
-    output += "</div>";
-  }
-
-  // output link
-  if (event.link != "") {
-    output += "<div class=\"bwEventLink\">";
-    output += "See: <a href=\"" + event.link + "\">" + event.link + "</a>";
-    output += "</div>";
-  }
-  output += "</div>";
-
-  // create a link back to the main view
-  output += "<p class=\"bwEventsListLink\"><a href=\"javascript:insertBwEvents('" + outputContainerID + "')\">Return</a>";
-
-  // Send the output to the container:
-  outputContainer.innerHTML = output;
-}
-
-/* EVENT HANDLING */
-/* List related browser event handling */
-function bwScroll() {
-  // append events if we scroll to the last pixel on the page
-  if ($(window).scrollTop() > ($(document).height() - $(window).height() - 1)) {
-    bwMainEventList.appendEvents();
-  }
 }

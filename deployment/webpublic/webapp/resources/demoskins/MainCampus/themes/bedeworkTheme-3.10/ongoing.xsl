@@ -27,6 +27,7 @@
       var bwOngoingOptions = {
         title: "<xsl:copy-of select="$bwStr-Ongoing-Title"/>",
         showTitle: true,
+        showCaret: true,
         displayDescription: false,
         displayEventDetailsInline: false,
         suppressStartDateInList: true,
@@ -48,7 +49,7 @@
       var ongoingFilter = '(vpath="<xsl:value-of select="$ongoingEventsAlias"/>")';
 
       <!-- Create the ongoing event list object -->
-      var bwOngoingEventList = new BwEventList("bwOngoing","json",bwOngoingOptions,"<xsl:value-of select="/bedework/currentdate/date"/>",ongoingFilter,"<xsl:value-of select="$setOngoingList"/>");
+      var bwOngoingEventList = new BwEventList("bwOngoing","json",bwOngoingOptions,"<xsl:value-of select="/bedework/currentdate/date"/>",ongoingFilter,"","","<xsl:value-of select="$setOngoingList"/>");
 
       $(document).ready(function () {
         bwOngoingEventList.display();

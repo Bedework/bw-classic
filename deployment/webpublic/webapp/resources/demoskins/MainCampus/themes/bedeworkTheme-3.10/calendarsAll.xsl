@@ -26,7 +26,7 @@
     <xsl:variable name="topLevelCalCount" select="count(calendar/calendar[calType != 5 and calType != 6 and name != 'calendar'])"/>
 
     <div class="secondaryColHeader">
-      <h3><xsl:copy-of select="$bwStr-Cals-AllCalendars"/></h3>
+      <h3><xsl:copy-of select="$bwStr-Cals-DownloadCalendars"/></h3>
     </div>
     <p class="info">
       <xsl:copy-of select="$bwStr-Cals-SelectCalendar"/>
@@ -35,12 +35,12 @@
     <!-- adjust the following calculations to get a balanced layout between the cells -->
     <div class="calendarList">
       <ul class="calendarTree">
-        <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar') and (position() &lt;= ceiling($topLevelCalCount div 2)+2)]" mode="calTree"/>
+        <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar' and not(starts-with(name,'.'))) and (position() &lt;= ceiling($topLevelCalCount div 2)+2)]" mode="calTree"/>
       </ul>
     </div>
     <div class="calendarList">
       <ul class="calendarTree">
-        <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar') and (position() &gt; ceiling($topLevelCalCount div 2)+2)]" mode="calTree"/>
+        <xsl:apply-templates select="calendar/calendar[(calType != 5 and calType != 6 and name != 'calendar' and not(starts-with(name,'.'))) and (position() &gt; ceiling($topLevelCalCount div 2)+2)]" mode="calTree"/>
       </ul>
     </div>
   </xsl:template>
@@ -56,17 +56,16 @@
       </xsl:attribute>
       <xsl:variable name="calPath" select="path"/>
       <xsl:variable name="displayName" select="summary"/>
-      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;setappvar=curCollection({$displayName})&amp;setappvar=curPath({$calPath})" title="view calendar">
+
+      <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
         <xsl:value-of select="summary"/>
-      </a>
-      <span class="exportCalLink">
-        <a href="{$calendar-fetchForExport}&amp;calPath={$calPath}&amp;virtualPath={$virtualPath}" title="export calendar as iCal">
+        <span class="exportCalLink">
           <img src="{$resourcesRoot}/images/calIconExport-sm.gif" width="13" height="13" alt="export calendar"/>
-        </a>
-      </span>
-      <xsl:if test="calendar">
+        </span>
+      </a>
+      <xsl:if test="calendar[not(starts-with(name,'.'))]">
         <ul>
-          <xsl:apply-templates select="calendar" mode="calTree"/>
+          <xsl:apply-templates select="calendar[not(starts-with(name,'.'))]" mode="calTree"/>
         </ul>
       </xsl:if>
     </li>

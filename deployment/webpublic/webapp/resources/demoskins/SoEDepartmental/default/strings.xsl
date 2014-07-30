@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -78,6 +78,7 @@
   <!--  xsl:template name="searchBar" -->
   <xsl:variable name="bwStr-SrcB-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-SrcB-View">View:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-Select">select...</xsl:variable>
   <xsl:variable name="bwStr-SrcB-DefaultView">default view</xsl:variable>
   <xsl:variable name="bwStr-SrcB-AllCalendars">all calendars</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Search">Search:</xsl:variable>
@@ -94,6 +95,7 @@
   <xsl:variable name="bwStr-SrcB-Details">Details</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Calendar">Calendar:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-CurrentSearch">Current search:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-Clear">clear</xsl:variable>
 
   <!--  xsl:template name="leftColumn", "viewList", and "sideBar" -->
   <xsl:variable name="bwStr-LCol-JsMessage">To view the interactive calendar, please enable Javascript on your browser.</xsl:variable>

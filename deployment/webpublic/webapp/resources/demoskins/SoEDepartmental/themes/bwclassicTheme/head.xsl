@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -47,12 +47,12 @@
       <link rel="stylesheet" href="/bedework-common/default/default/subColors.css"/>
       <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
       <!-- load javascript -->
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
       <xsl:if test="/bedework/page='event' or /bedework/page='displayCalendarForExport'">
         <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">&#160;</script>
         <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">&#160;</script>
         <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
         <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/bedeworkJquery.css"/>
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js">&#160;</script>
         <xsl:if test="/bedework/page='displayCalendarForExport'">
           <script type="text/javascript">
             <xsl:comment>

@@ -54,6 +54,7 @@
   <!--  xsl:template name="searchBar" -->
   <xsl:variable name="bwStr-SrcB-Add">Añadir...</xsl:variable>
   <xsl:variable name="bwStr-SrcB-View">Vista:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-Select">seleccionar...</xsl:variable>
   <xsl:variable name="bwStr-SrcB-DefaultView">vista por defecto</xsl:variable>
   <xsl:variable name="bwStr-SrcB-AllCalendars">todas las agendas</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Search">Buscar:</xsl:variable>
@@ -70,6 +71,7 @@
   <xsl:variable name="bwStr-SrcB-Details">Detalles</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Calendar">Agenda:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-CurrentSearch">Búsqueda actual:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-Clear">quitar</xsl:variable>
 
   <!--  xsl:template name="leftColumn", "viewList", and "sideBar" -->
   <xsl:variable name="bwStr-LCol-JsMessage">Para ver la agenda interactiva, por favor active Javascript en su navegador.</xsl:variable>

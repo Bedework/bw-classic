@@ -24,33 +24,6 @@
        This is the navigation at the top of the event listings -->
   <xsl:template name="eventListRangeNav">
     <div id="eventListRangeNav">
-      <ul id="calDisplayOptions">
-        <li>
-          <xsl:choose>
-            <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
-              <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="toggle summary/detailed view">
-                <xsl:copy-of select="$bwStr-SrcB-Summary"/>
-              </a>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="{$setup}&amp;setappvar=summaryMode(details)" title="toggle summary/detailed view">
-                <xsl:copy-of select="$bwStr-SrcB-Details"/>
-              </a>
-            </xsl:otherwise>
-          </xsl:choose>
-        </li>
-        <li>
-	        <a id="rssRequest" class="rss" href="/feeder/showMain.rdo?skinName=list-rss" title="{$bwStr-HdBr-RSSFeed}">
-	          <xsl:attribute name="href">
-	            <xsl:choose>
-	              <xsl:when test="$embedUrlBuilder = 'true'"><xsl:value-of select="$showPage"/>&amp;setappvar=page(urlbuilder)</xsl:when>
-	              <xsl:otherwise><xsl:value-of select="$urlbuilder"/></xsl:otherwise>
-	            </xsl:choose>
-	          </xsl:attribute>
-	          <img src="{$resourcesRoot}/images/feed-icon-14x14.png" alt="RSS Feed Icon" />
-	        </a>
-        </li>
-      </ul>
       <div id="bwNavLinks">
 		    <a id="prevViewPeriod" href="{$setViewPeriod}&amp;date={$prevdate}" class="btn btn-default">
 		      &#171; <!-- left double arrow -->
@@ -77,8 +50,49 @@
 	          </xsl:otherwise>
 	        </xsl:choose>
 	      </h3>
+        <xsl:if test="/bedework/periodname!='Month'">
+          <ul id="calDisplayOptions">
+            <li>
+              <xsl:choose>
+                <xsl:when test="/bedework/appvar[key='summaryMode']/value='details'">
+                  <a href="{$setup}&amp;setappvar=summaryMode(summary)" title="toggle summary/detailed view">
+                    <xsl:copy-of select="$bwStr-SrcB-Summary"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$setup}&amp;setappvar=summaryMode(details)" title="toggle summary/detailed view">
+                    <xsl:copy-of select="$bwStr-SrcB-Details"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </li>
+            <li>
+              <a id="expSubLinksGrid" class="rss" href="#exportSubscribePopup" title="{$bwStr-HdBr-ExportSubscribe}">
+                <xsl:copy-of select="$bwStr-HdBr-ExportSubscribe"/><xsl:text> </xsl:text>
+                <img src="{$resourcesRoot}/images/feed-icon-14x14.png" alt="{$bwStr-HdBr-ExportSubscribe}" />
+              </a>
+            </li>
+          </ul>
+          <xsl:call-template name="exportSubscribeJavascript">
+            <xsl:with-param name="id">expSubLinksGrid</xsl:with-param>
+          </xsl:call-template>
+          <!--
+          <script type="text/javascript">
+            $(document).ready(function(){
+              $('#expSubLinksGrid').magnificPopup({
+                type:'inline',
+                fixedBgPos: true,
+                midClick: true
+              });
+            });
+          </script>
+          -->
+        </xsl:if>
 		  </div>
 	  </div>
+
+    <xsl:call-template name="queryFilterDisplay"/>
+
   </xsl:template>
 
 </xsl:stylesheet>

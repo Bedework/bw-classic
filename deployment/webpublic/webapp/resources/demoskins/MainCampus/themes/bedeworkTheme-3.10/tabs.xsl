@@ -21,6 +21,7 @@
 
   <!--==== TAB BAR  ====-->
   <!-- these templates are separated out for convenience and to simplify the default template -->
+  <!-- DEPRECATED in the 3.10 theme.  If you wish to use this, xsl:include it in bedework.xsl. -->
 
   <xsl:template name="tabs">
     <nav id="tabs">

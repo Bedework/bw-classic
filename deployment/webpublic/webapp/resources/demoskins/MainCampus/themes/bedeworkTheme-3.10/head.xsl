@@ -45,13 +45,10 @@
       <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/javascript/jquery/jquery-ui-1.10.3.custom.min.css" />
       <!-- load Bedework css ... you may wish to combine (and minify) these files for a production service. -->
       <link rel="stylesheet" type="text/css" media="all" href="{$resourcesRoot}/css/bwThemeGlobal.css" />
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-00-AllMobile.css" /><!-- @media (max-width: 768px) -->
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-01-MobilePortrait.css" /><!-- @media (max-width: 480px) -->
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-02-MobileLandscape.css" /><!-- @media (min-width: 480px) and (max-width: 600px) -->
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-03-TabletPortrait.css" /><!-- @media (min-width: 600px) and (max-width: 768px) -->
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-04-Small.css" /><!-- @media (min-width: 768px) and (max-width: 992px) -->
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-05-Medium.css" /><!-- @media (min-width: 992px) -->
-      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-06-Large.css" /><!-- @media (min-width: 1200px) -->
+      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-00-Tiny.css" /><!-- @media (max-width: 767px) -->
+      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-01-Small.css" /><!-- @media (min-width: 768px) and (max-width: 991px) -->
+      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-02-Medium.css" /><!-- @media (min-width: 992px) -->
+      <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwThemeResponsive-03-Large.css" /><!-- @media (min-width: 1200px) -->
       <link rel="stylesheet" type="text/css" media="print" href="{$resourcesRoot}/css/print.css" />
 
       <!--  If special CSS support is needed for IE6, IE7, or IE8, uncomment the following block and
@@ -77,18 +74,27 @@
       <!-- load library javascript -->
       <script type="text/javascript" src="{$resourcesRoot}/javascript/modernizr-2.6.2-input.min.js">/* include modernizr */</script>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/jquery/jquery-1.10.2.min.js">/* include jquery */</script>
-      <script type="text/javascript" src="{$resourcesRoot}/javascript/bootstrap3/js/bootstrap.min.js">/* include bootstrap */</script>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/jquery/jquery-ui-1.10.3.custom.min.js">/* include jquery UI */</script>
+      <!--script type="text/javascript" src="{$resourcesRoot}/javascript/bootstrap3/js/bootstrap.min.js">/* include bootstrap */</script-->
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bootstrap3/respond.min.js">/* include respond for IE6-8 responsive support */</script>
-      <xsl:if test="/bedework/page='searchResult'">
-        <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">/* category search */</script>
-      </xsl:if>
+
       <!-- load Bedework javascript -->
       <xsl:call-template name="themeJavascriptVariables"/><!-- these are defined in themeSettings.xsl  -->
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework/bedework.js">/* bedework */</script>
       <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework/navigation.js">/* bedework navigation (menus, links) */</script>
-      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework/eventList.js">/* bedework list events widget */</script>
+      <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework/eventList.js">/* bedework list events object */</script>
       <script type="text/javascript" src="/bedework-common/javascript/bedework/bedeworkUtil.js">/* bedework utilities */</script>
+
+      <!-- load conditional javascript -->
+      <xsl:if test="/bedework/page='eventList' or /bedework/page='eventscalendar'">
+        <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/javascript/magnific/magnific-popup.css" />
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/magnific/jquery.magnific-popup.min.js">/* for export/subscribe lightbox */</script>
+        <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwExportSubscribe.css" />
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework/exportSubscribe.js">/* bedework export/subscribe form */</script>
+      </xsl:if>
+      <xsl:if test="/bedework/page='searchResult'">
+        <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">/* category search */</script> <!-- probably should be deprecated-->
+      </xsl:if>
 
       <!-- Set up list and navigation options for the main events list - must be global.
            The list of URLs is for use by JavaScript functions.  These are
@@ -96,12 +102,17 @@
       <script type="text/javascript">
         var bwPage = "<xsl:value-of select="/bedework/page"/>";
         var bwListPage = "<xsl:value-of select="/bedework/appvar[key='listPage']/value"/>";
+        var bwLastDateSeparatorInList = "<xsl:value-of select="/bedework/appvar[key='lastDateSeparatorInList']/value"/>";
+        var bwClearFilterStr = '<xsl:value-of select="$bwStr-LsEv-ClearFilters"/>';
+        var bwResourcesRoot = "<xsl:value-of select="$resourcesRoot"/>";
 
         var bwUrls = new Object;
         bwUrls = {
           "setSelection" : "<xsl:value-of select="$setSelection"/>",
           "setSelectionList" : "<xsl:value-of select="$setSelectionList"/>",
-          "async" : "<xsl:value-of select="$async"/>"
+          "async" : "<xsl:value-of select="$async"/>",
+          "feedPrefix" : "<xsl:value-of select="/bedework/cachePrefix"/>/feeder/main/eventsFeed.do?f=y",
+          "feedResources" : "/calfeedrsrc.MainCampus/default/default/theme"
         }
 
         // calendar explorers
@@ -113,14 +124,12 @@
 
         // set up the filtering objects
         var bwQuery = "";
-        var bwFilters = new Array();
-        var bwFilterLabels = new Array();
 
         // search query
         <xsl:if test="/bedework/appvar[key='bwQuery']">
-          var bwQuery = "<xsl:value-of select="/bedework/appvar[key='bwQuery']/value"/>";
+          bwQuery = "<xsl:value-of select="/bedework/appvar[key='bwQuery']/value"/>";
         </xsl:if>
-        var bwQueryName = "<xsl:value-of select="$bwStr-LsEv-Search"/>";
+        var bwQueryName = "<xsl:value-of select="$bwStr-LsEv-Filter"/>";
         <xsl:choose>
           <xsl:when test="/bedework/page = 'eventscalendar'">
             var bwClearQueryMarkup = '<a id="bwClearQuery" href="{$setSelection}&amp;viewName=All&amp;setappvar=bwFilters()&amp;setappvar=bwFilterLabels()"><xsl:value-of select="$bwStr-LsEv-ClearSearch"/></a>';
@@ -130,37 +139,23 @@
           </xsl:otherwise>
         </xsl:choose>
 
+
         // filters from menus
+        var bwFilters = new Array(); <!-- 2D array -->
+        var bwFilterPaths = new Array(); <!-- 2D array -->
+
+        <xsl:for-each select="/bedework/views/view">
+          bwFilters[<xsl:value-of select="position()-1"/>] = new Array();
+        </xsl:for-each>
         <xsl:if test="/bedework/appvar[key='bwFilters']">
           var bwFiltersRaw = "<xsl:value-of select="/bedework/appvar[key='bwFilters']/value"/>";
-          bwFilters = bwFiltersRaw.split(",");
+          bwFilters = restoreFilters(bwFiltersRaw);
         </xsl:if>
-        <xsl:if test="/bedework/appvar[key='bwFilterLabels']">
-          var bwFilterLabelsRaw = "<xsl:value-of select="/bedework/appvar[key='bwFilterLabels']/value"/>";
-          bwFilterLabels = bwFilterLabelsRaw.split(",");
-        </xsl:if>
-        var bwCalFilterName = "<xsl:value-of select="$bwStr-LsEv-Calendars"/>";
-        <xsl:choose>
-          <xsl:when test="/bedework/page = 'eventscalendar'">
-            var bwCalClearFilterMarkup = '<a id="bwClearCalFilters" href="{$setSelection}&amp;viewName=All&amp;setappvar=bwFilters()&amp;setappvar=bwFilterLabels()"><xsl:value-of select="$bwStr-LsEv-ClearFilters"/></a>';
-          </xsl:when>
-          <xsl:otherwise>
-            var bwCalClearFilterMarkup = '<a id="bwClearCalFilters" href="javascript:bwClearCalFilters();"><xsl:value-of select="$bwStr-LsEv-ClearFilters"/></a>';
-          </xsl:otherwise>
-        </xsl:choose>
 
-        <!--
-        var locations = new Array();
-        var locationsLabels = new Array();
-        <xsl:if test="/bedework/appvar[key='locations']">
-          var locationsRaw = "<xsl:value-of select="/bedework/appvar[key='locations']/value"/>";
-          locations = locationsRaw.split(",");
+        var bwFilterPrefix = "";
+        <xsl:if test="$ongoingEventsEnabled = 'true'">
+          bwFilterPrefix = '(categories.href!="<xsl:value-of select="$ongoingEventsCatPath"/>")';
         </xsl:if>
-        <xsl:if test="/bedework/appvar[key='locationsLabels']">
-          var locationsLabelsRaw = "<xsl:value-of select="/bedework/appvar[key='locationsLabels']/value"/>";
-          locationsLabels = locationsLabelsRaw.split(",");
-        </xsl:if>
-        -->
 
         <!-- The main list options - only used if the dataType is set to "json" -->
         var bwMainEventsListOptions = {
@@ -192,23 +187,24 @@
           noEventsText: "<xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplay"/>"
         };
 
-        <!-- Retrieve any existing filters -->
-        var existingFilters = getCalFilters(bwFilters);
-<!--
-        <xsl:if test="$ongoingEventsEnabled = 'true'">
-          if (existingFilters != "") {
-            existingFilters += " and ";
-          }
-          existingFilters += '(categories.href!="<xsl:value-of select="$ongoingEventsCatPath"/>")';
-        </xsl:if>
--->
-        <!-- Create the main event list object -->
-        var bwMainEventList = new BwEventList("listEvents","html",bwMainEventsListOptions,"<xsl:value-of select="/bedework/currentdate/date"/>",existingFilters,"<xsl:value-of select="$setMainEventList"/>","<xsl:value-of select="$nextMainEventList"/>","bwStartDate","bwResultSize");
+        var bwMainEventList;
+
+        <!-- Put it all together after the page renders. -->
+        $(document).ready(function(){
+          <!-- Retrieve any existing filter paths (pulled from the DOM) -->
+          bwFilterPaths = buildFilterPaths();
+
+          <!-- Create the main event list object -->
+          bwMainEventList = new BwEventList("listEvents","html",bwMainEventsListOptions,"<xsl:value-of select="/bedework/currentdate/date"/>",bwFilterPrefix,bwFilterPaths,bwQuery,"<xsl:value-of select="$setMainEventList"/>","<xsl:value-of select="$nextMainEventList"/>","bwStartDate","bwResultSize");
+
+          <!-- show filters / highlight selected nav -->
+          displayAllFilters(bwFilters);
+        });
       </script>
 
       <xsl:if test="$eventIconShareThis = 'true'">
         <!-- ShareThis code.  Gets publisher code from variable set in themeSettings.xsl -->
-        <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js">&#160;</script>
+        <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"><xsl:text> </xsl:text></script>
         <script type="text/javascript">
            stLight.options({
             publisher:'<xsl:value-of select="$shareThisCode"/>',

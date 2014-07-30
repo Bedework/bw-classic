@@ -15,17 +15,17 @@ ECHO
 ECHO
 :noJavaWarn
 
-SET cp=@CP@
+SET cp=
 
-FOR /f %%i IN ('dir /b rpiutil\lib\*.jar') DO SET cp=!cp!;./lib/%%i
+FOR /f %%i IN ('dir /b rpiutil\lib\*.jar') DO SET cp=%cp%;.\rpiutil\lib\%%i
 
-FOR /f %%i IN ('dir /b rpiutil\dist\*.jar') DO SET cp=!cp!;./lib/%%i
+FOR /f %%i IN ('dir /b rpiutil\dist\*.jar') DO SET cp=%cp%;.\rpiutil\dist\%%i
 
 SET RUNCMD="%JAVA_HOME%\bin\java" -cp %cp% edu.rpi.sss.util.deployment.ProcessEars
 
 ECHO.
 
-  ECHO   %RUNCMD% %2 %3 %4 %5 %6 %7 %8 %9
-  %RUNCMD% %2 %3 %4 %5 %6 %7 %8 %9
-ECHO.
+:: ECHO   %RUNCMD% %2 %3 %4 %5 %6 %7 %8 %9
+%RUNCMD% %2 %3 %4 %5 %6 %7 %8 %9
+
 ECHO.

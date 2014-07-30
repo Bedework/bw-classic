@@ -45,8 +45,7 @@
   <!--  xsl:template name="messagesAndErrors" -->
 
   <!--  xsl:template name="mainMenu" -->
-  <xsl:variable name="bwStr-MMnu-LoggedInAs"><strong>Está conectado como superusuario.</strong><br/>
-    Es mejor realizar la administración de eventos comunes como administrador de eventos.</xsl:variable>
+  <xsl:variable name="bwStr-MMnu-LoggedInAs">Está conectado como superusuario.</xsl:variable>
   <xsl:variable name="bwStr-MMnu-YouMustBeOperating">Debe estar operando en el contexto de un calendar suite\n para añadir o gestionar eventos.\n\nSu grupo actual no está asociado con un calendar suite\no un hijo de un grupo asociado con un calendar suite.</xsl:variable>
   <xsl:variable name="bwStr-MMnu-AddEvent">Añadir evento</xsl:variable>
   <xsl:variable name="bwStr-MMnu-AddContact">Añadir contacto</xsl:variable>
@@ -123,6 +122,7 @@
   <xsl:variable name="bwStr-EvLC-TopicalAreas">Áreas topicas </xsl:variable>
   <xsl:variable name="bwStr-EvLC-Categories">Categorías</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Description">Descripción</xsl:variable>
+  <xsl:variable name="bwStr-EvLC-NoEvents">No hay eventos para mostrar</xsl:variable>
 
   <!--  xsl:template match="event" mode="eventListCommon" -->
   <xsl:variable name="bwStr-EvLC-NoTitle">sin título</xsl:variable>
@@ -1042,6 +1042,9 @@
   <xsl:variable name="bwStr-Srch-Page">página:</xsl:variable>
   <xsl:variable name="bwStr-Srch-Prev">ant</xsl:variable>
   <xsl:variable name="bwStr-Srch-Next">sig</xsl:variable>
+  <xsl:variable name="bwStr-Srch-PrevFull">Anterior</xsl:variable>
+  <xsl:variable name="bwStr-Srch-NextFull">Siguiente </xsl:variable>
+  <xsl:variable name="bwStr-Srch-Starting">Comenzando:</xsl:variable>
   <xsl:variable name="bwStr-Srch-ResultReturnedFor">resultado(s) devueltos para</xsl:variable>
   <xsl:variable name="bwStr-Srch-Relevance">relevancia</xsl:variable>
   <xsl:variable name="bwStr-Srch-Summary">resumen</xsl:variable>
@@ -1050,6 +1053,8 @@
   <xsl:variable name="bwStr-Srch-Calendar">calendario</xsl:variable>
   <xsl:variable name="bwStr-Srch-Location">localización</xsl:variable>
   <xsl:variable name="bwStr-Srch-NoTitle">sin título</xsl:variable>
+  <xsl:variable name="bwStr-Srch-NoResults">no resultados</xsl:variable>
+  <xsl:variable name="bwStr-Srch-NoMoreResults">No hay más resultados</xsl:variable>
 
   <!--  xsl:template name="searchResultPageNav" -->
 
