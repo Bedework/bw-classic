@@ -259,7 +259,7 @@ CalDAVSession.prototype.init = function(whenDone) {
 }
 
 //gWellKnown = "/.well-known/caldav";
-gWellKnown = "/ucaldav";
+gWellKnown = "/ucal/caldav";
 //gWellKnown = "/";
 
 // Discover current principal from /.well-known/caldav, then load the principal data
@@ -677,11 +677,14 @@ CalendarResource.prototype.removeResource = function(whenDone) {
 	});
 }
 
-// A generic container for an iCalendar component
+/** A generic container for an iCalendar component
+ *
+ * @param caldata jcal or data for jcal
+ */
 CalendarComponent = function(caldata, parent) {
 	this.data = (caldata instanceof jcal ? caldata : new jcal(caldata));
 	this.parent = parent;
-}
+};
 
 // Maintain a registry of component types so the right class can be created when parsing
 CalendarComponent.createComponentType = {}
@@ -782,6 +785,17 @@ CalendarComponent.prototype.dtend = function(value) {
 			this.changed(true);
 		}
 	}
+}
+
+CalendarComponent.prototype.description = function(value) {
+  if (value === undefined) {
+    return this.data.getPropertyValue("description");
+  } else {
+    if (this.description() != value) {
+      this.data.updateProperty("description", value);
+      this.changed(true);
+    }
+  }
 }
 
 CalendarComponent.prototype.pollitemid = function(value) {
@@ -907,32 +921,106 @@ CalendarComponent.prototype.pollwinner = function(value) {
 CalendarComponent.prototype.ispollwinner = function() {
 	var pollid = this.pollitemid();
 	return pollid === undefined ? false : pollid == this.parent.pollwinner();
-}
+};
 
-// Get an array of child VEVENTs in the VPOLL
-CalendarPoll.prototype.events = function() {
+// Get an array of choices in the VPOLL
+CalendarPoll.prototype.choices = function() {
 	var this_vpoll = this;
-	return $.map(this.data.components("vevent"), function(event, index) {
-		return new CalendarEvent(event, this_vpoll);
-	});
-}
+	return $.map(this.data.getComponents(), function(compData, index) {
+    var comp = new jcal(compData);
 
-// Add a new VEVENT to the VPOLL
-CalendarPoll.prototype.addChoice = function(dtstart, dtend) {
-	this.changed(true);
-	var vevent = this.data.newComponent("vevent", true);
-	vevent.newProperty("dtstart", jcaldate.jsDateTojCal(dtstart), {}, "date-time");
-	vevent.newProperty("dtend", jcaldate.jsDateTojCal(dtend), {}, "date-time");
-	vevent.newProperty("summary", this.summary());
-	vevent.newProperty("poll-item-id", (this.data.nextPollItemId()).toString());
-	vevent.newProperty(
+    var pi = comp.getPropertyValue("poll-item-id");
+    if (pi === null) {
+      return null;
+    }
+
+    if (comp.name() === "vevent") {
+      return new CalendarEvent(comp, this_vpoll);
+    }
+
+    return new CalendarTask(comp, this_vpoll);
+	});
+};
+
+// Get the designated choice
+CalendarPoll.prototype.getChoice = function(itemId) {
+  var comps = this.data.getComponents();
+  for (var i = 0; i < comps.length; i++) {
+    var comp = new jcal(comps[i]);
+
+    var pi = comp.getPropertyValue("poll-item-id");
+    if (pi === null) {
+      continue;
+    }
+
+    if (parseInt(pi) === itemId) {
+      if (comp.name() === "vevent") {
+        return new CalendarEvent(comp, this);
+      }
+
+      return new CalendarTask(comp, this);
+    }
+  }
+
+  return null;
+};
+
+/** Make a new choice for the VPOLL
+ *
+ * @param type
+ * @param dtstart
+ * @param dtend
+ * @returns {*}
+ */
+CalendarPoll.prototype.makeChoice = function(type, dtstart, dtend) {
+	//this.changed(true);
+	var comp = makeJcal(type, true);
+
+  var dtPars = {"tzid": defaultTzid};
+
+	comp.newProperty("dtstart", jcaldate.jsDateTojCal(dtstart),
+      dtPars, "date-time");
+
+  if (comp.isevent()) {
+    comp.newProperty("dtend", jcaldate.jsDateTojCal(dtend),
+        dtPars, "date-time");
+  } else {
+    comp.newProperty("due", jcaldate.jsDateTojCal(dtend),
+        dtPars, "date-time");
+  }
+
+	comp.newProperty("summary", this.summary());
+	comp.newProperty("poll-item-id", (this.data.nextPollItemId()).toString());
+	comp.newProperty(
 		"voter",
 		this.organizer(),
 		{"response" : "80"},
 		"cal-address"
 	);
-	return new CalendarEvent(vevent, this);
-}
+
+  comp.copyProperty("organizer", this.data);
+  this.syncAttendees(comp);
+
+  if (comp.isevent()) {
+    return new CalendarEvent(comp, this);
+  }
+
+  return new CalendarTask(comp, this);
+};
+
+/** Save a choice in the VPOLL
+ *
+ * @param comp - the choice
+ */
+CalendarPoll.prototype.saveChoice = function(comp) {
+  // May already be there
+  if (this.getChoice(comp.pollitemid()) != null) {
+    return;
+  }
+
+  this.data.addComponent(comp.data);
+  this.changed(true);
+};
 
 // Get an array of voters in the VPOLL
 CalendarPoll.prototype.voters = function() {
@@ -940,9 +1028,12 @@ CalendarPoll.prototype.voters = function() {
 	return $.map(this.data.properties("voter"), function(voter) {
 		return new CalendarUser(voter, this_vpoll);
 	});
-}
+};
 
-// Add a voter to the VPOLL
+/** Add a voter to the VPOLL
+ *
+ * @returns {CalendarUser}
+ */
 CalendarPoll.prototype.addVoter = function() {
 	this.changed(true);
 	return new CalendarUser(this.data.newProperty("voter", "", {}, "cal-address"), this);
@@ -961,6 +1052,53 @@ CalendarPoll.prototype.acceptInvite = function() {
 	}
 }
 
+/** Make component attendees match poll voters
+ *
+ * @param comp jcal object
+ */
+CalendarPoll.prototype.syncAttendees = function(comp) {
+  if (comp == undefined) {
+    // Do all choices
+    var this_vpoll = this;
+
+    // Flag this with an x-prop
+    this.data.updateProperty("x-bw-syncattendees", "on");
+
+    $.each(this.data.getComponents(), function(index, compData) {
+      var comp = new jcal(compData);
+
+      var pi = comp.getPropertyValue("poll-item-id");
+      if (pi === null) {
+        return;
+      }
+
+      this_vpoll.syncAttendees(comp);
+    })
+    return;
+  }
+
+  comp.removeProperties("attendee");
+  $.each(this.data.properties("voter"), function(index, voter) {
+    var attendee = comp.newProperty(
+        "attendee",
+        voter[3],
+        {},
+        "cal-address"
+    );
+    $.each(voter[1], function(key, value) {
+      if (key == "cn") {
+        attendee[1][key] = value
+      }
+    });
+    if (gSession.currentPrincipal.matchingAddress(voter[3])) {
+      attendee[1]["partstat"] = "ACCEPTED";
+    } else {
+      attendee[1]["partstat"] = "NEEDS-ACTION";
+      attendee[1]["rsvp"] = "TRUE";
+    }
+  });
+};
+
 // An actual VEVENT object we can manipulate
 CalendarEvent = function(caldata, parent) {
 	CalendarComponent.call(this, caldata, parent);
@@ -970,8 +1108,16 @@ CalendarEvent.prototype = new CalendarComponent();
 CalendarEvent.prototype.constructor = CalendarEvent;
 CalendarComponent.registerComponentType("vevent", CalendarEvent);
 
-// Create this event as the poll winner
-CalendarEvent.prototype.pickAsWinner = function() {
+CalendarTask = function(caldata, parent) {
+  CalendarComponent.call(this, caldata, parent);
+}
+
+CalendarTask.prototype = new CalendarComponent();
+CalendarTask.prototype.constructor = CalendarTask;
+CalendarComponent.registerComponentType("vtodo", CalendarTask);
+
+// Create this component as the poll winner
+CalendarComponent.prototype.pickAsWinner = function() {
 
 	// Adjust VPOLL to mark winner and set status
 	var vpoll = this.parent;
@@ -981,14 +1127,26 @@ CalendarEvent.prototype.pickAsWinner = function() {
 
 	// Create the new event resource with voters mapped to attendees
 	var calendar = new CalendarObject(jcal.newCalendar());
-	var vevent = calendar.data.newComponent("vevent", true);
-	vevent.updateProperty("uid", this.uid());
-	vevent.copyProperty("summary", this.data);
-	vevent.copyProperty("dtstart", this.data);
-	vevent.copyProperty("dtend", this.data);
-	vevent.copyProperty("organizer", vpoll.data);
+	var comp = calendar.data.newComponent(this.data.name(), true);
+	comp.updateProperty("uid", this.uid());
+	comp.copyProperty("summary", this.data);
+	comp.copyProperty("dtstart", this.data);
+
+  var dur = this.data.getPropertyValue("duration");
+
+  if (dur != null) {
+    comp.copyProperty("duration", this.data);
+  } else {
+    if (this.data.isevent()) {
+      comp.copyProperty("dtend", this.data);
+    } else {
+      comp.copyProperty("due", this.data);
+    }
+  }
+
+	comp.copyProperty("organizer", vpoll.data);
 	$.each(vpoll.data.properties("voter"), function(index, voter) {
-		var attendee = vevent.newProperty(
+		var attendee = comp.newProperty(
 			"attendee",
 			voter[3],
 			{},

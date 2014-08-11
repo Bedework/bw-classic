@@ -24,8 +24,8 @@
 BwLocations = function() {
   this.url = "/ucal/location/all.gdo";
   this.data = "";
-  this.locationNames = new Array;
-}
+  this.locationNames = [];
+};
 
 BwLocations.prototype.getDisplayNames = function(flush) {
 
@@ -51,4 +51,20 @@ BwLocations.prototype.getDisplayNames = function(flush) {
   }
 
   return my.locationNames;
+};
+
+// Debug utility
+function print_r(obj) {
+  var str = '';
+  if (typeof obj === 'object') {
+    for (var prop in obj) {
+      if (typeof obj[prop] === 'object') {
+        str += '<div>[' + prop + '] => ' + typeof(obj) + '</div>';
+        str += '<div style="margin-left:2em;">' + print_r(obj[prop]) + '</div>';
+      } else {
+        str += '<div>[' + prop + '] => ' + obj[prop] + '</div>';
+      }
+    }
+  }
+  return str;
 }

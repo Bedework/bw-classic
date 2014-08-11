@@ -20,6 +20,7 @@
 var gSession = null;
 var gViewController = null;
 var currentEntity = null;
+var locations = new BwLocations;
 
 // Page load
 $(function() {
@@ -166,7 +167,7 @@ ViewController.prototype.init = function() {
     //alert(currentEntity.data.getPropertyValue("summary"));
 
     // 2. update the vpoll with current entity
-    //view.activePoll.
+    view.activePoll.saveChoice(currentEntity);
 
     // 3. rewrite ui choice list
     view.activePoll.rewritePanel();

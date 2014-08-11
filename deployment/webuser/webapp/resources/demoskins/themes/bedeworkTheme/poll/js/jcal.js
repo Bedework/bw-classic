@@ -16,7 +16,7 @@
 ##
 */
 
-gProdID = "-//calendarserver.org//jcal v1//EN";
+gProdID = "-//bedework.org//jcal v1//EN";
 
 jcalparser = {
 	PARSER_ALLOW : 0, 	// Pass the "suspect" data through to the object model
@@ -94,6 +94,14 @@ jcal.prototype.name = function() {
 	return this.caldata[0];
 }
 
+jcal.prototype.isevent = function() {
+  return this.name() === "vevent";
+};
+
+jcal.prototype.istask = function() {
+  return this.name() === "vtodo";
+};
+
 // Return the primary (master) component
 // TODO: currently ignores recurrence - i.e. assumes one top-level component only
 jcal.prototype.mainComponent = function() {
@@ -103,16 +111,19 @@ jcal.prototype.mainComponent = function() {
 	return (results.length == 1) ? new jcal(results[0]) : null;
 }
 
-jcal.prototype.newComponent = function(name, defaultProperties) {
-	var jcomp = new jcal([name.toLowerCase(), [], []]);
-	this.caldata[2].push(jcomp.caldata);
-	if (defaultProperties) {
-		// Add UID and DTSTAMP
-		jcomp.newProperty("uid", generateUUID());
-		jcomp.newProperty("dtstamp", new jcaldate().toString(), {}, "date-time");
-	}
-	return jcomp;
+function makeJcal(name, defaultProperties) {
+  var jcomp = new jcal([name.toLowerCase(), [], []]);
+  if (defaultProperties) {
+    // Add UID and DTSTAMP
+    jcomp.newProperty("uid", generateUUID());
+    jcomp.newProperty("dtstamp", new jcaldate().toString(), {}, "date-time");
+  }
+  return jcomp;
 }
+
+jcal.prototype.newComponent = function(name, defaultProperties) {
+  return this.addComponent(makeJcal(name, defaultProperties));
+};
 
 jcal.prototype.addComponent = function(component) {
 	this.caldata[2].push(component.caldata);
@@ -139,9 +150,14 @@ jcal.prototype.components = function(name) {
 	});
 }
 
+// Get all components
+jcal.prototype.getComponents = function() {
+  return this.caldata[2];
+};
+
 // Get the next pollItemId
 jcal.prototype.nextPollItemId = function() {
-    pid = 0;
+    var pid = 0;
     $.each(this.caldata[2], function(index, component) {
         var itemid = new jcal(component).getPropertyValue("poll-item-id");
         if (itemid != null) {
@@ -263,7 +279,7 @@ jcaldate = function() {
 }
 
 jcaldate.jsDateTojCal = function(date) {
-	return date.toISOString().substr(0, 19) + "Z";
+	return date.toISOString().substr(0, 19);
 }
 
 jcaldate.jsDateToiCal = function(date) {
@@ -277,48 +293,59 @@ jcaldate.jCalTojsDate = function(value) {
 }
 
 jcaldate.prototype.toString = function() {
-	return this.date.toISOString().substr(0, 19) + "Z";
+	return this.date.toISOString().substr(0, 19);
 }
 
 /** Break up the date and time value to make it usable for form population'
  *
  * @param hour24 true for 24 hour
- * @param dtTime optional valid date or date time
+ * @param dtProp optional valid date or date time property
+ *               [name, params, value]
  * @constructor
  */
-JcalDtTime = function(hour24, dtTime) {
+JcalDtTime = function(hour24, dtProp) {
+  this.dtProp = dtProp;
   this.hour24 = hour24;
-  this.dtTime = dtTime;
+
+  if (dtProp !== undefined) {
+    // Why do I have to assign then use?
+    var params = dtProp[1];
+    this.tzid = params.tzid;
+
+    this.type = dtProp[2];
+    this.dtTime = dtProp[3];
+  }
+
   this.timePart = null;
   this.UTC = false;
   this.allDay = false;
   this.am = false;
   this.hoursInt = 0;
 
-  if (dtTime === undefined) {
+  if (this.dtTime === undefined) {
     return;
   }
 
-  if (dtTime.length > 10) {
-    this.timePart = dtTime.substring(11, 19);
-    this.datePart = dtTime.substring(0,10);
+  if (this.dtTime.length > 10) {
+    this.timePart = this.dtTime.substring(11, 19);
+    this.datePart = this.dtTime.substring(0,10);
   } else {
-    this.datePart = dtTime;
+    this.datePart = this.dtTime;
     this.allDay = true;
   }
 
   if (this.timePart != null) {
     // Set the time fields.
-    if (dtTime.charAt(19) == 'Z') {
+    if ((this.dtTime.length > 19) && (this.dtTime.charAt(19) == 'Z')) {
       this.UTC = true;
-      this.hours = this.timePart.substring(0, 2);
-      this.minutes = this.timePart.substring(3,5);
-      this.hoursInt = parseInt(this.hours);
-      this.am = this.hoursInt < 12;
-      //console.log("Date: " + this.datePart + "\nTime: " + this.timePart + "\nHours: " + this.hours + "\nMinutes: " + this.minutes + "\nAM: " + this.am);
     }
+
+    this.hours = this.timePart.substring(0, 2);
+    this.minutes = this.timePart.substring(3,5);
+    this.hoursInt = parseInt(this.hours);
+    this.am = this.hoursInt < 12;
   }
-}
+};
 
 /**
  * Return a correctly formatted date/time based on the field values
@@ -333,8 +360,45 @@ JcalDtTime.prototype.getDtval = function() {
     this.hours = this.hours + 12;
   }
 
-  return res + "T" + digits2(this.hours) + ":" + digits2(this.minutes) + ":00";
-}
+  res += "T" + digits2(this.hours) + ":" + digits2(this.minutes) + ":00";
+
+  if (this.UTC) {
+    res += "Z";
+  }
+
+  return res;
+};
+
+/**
+ *
+ * @param name of property
+ * @param comp a jcal object
+ */
+JcalDtTime.prototype.updateProperty = function(name, comp) {
+  var val = this.getDtval();
+  var params;
+
+  if (this.tzid === undefined) {
+    params = {};
+  } else {
+    params = {"tzid": this.tzid};
+  }
+
+  if (this.allDay) {
+    this.type = "date";
+  } else {
+    this.type = "date-time";
+  }
+
+  comp.updateProperty(name, val, params, this.type);
+};
+
+/**
+ * Return the tzid or undefined
+ */
+JcalDtTime.prototype.getTzid = function() {
+  return this.tzid;
+};
 
 function digits2(val) {
   var i = parseInt(val);
@@ -345,33 +409,32 @@ function digits2(val) {
   return "0" + i;
 }
 
-
 // Duration utility functions
 jcalduration = function(duration) {
 
 	if (duration === undefined) {
-		this.mForward = true
+		this.mForward = true;
 
-		this.mWeeks = 0
-		this.mDays = 0
+		this.mWeeks = 0;
+		this.mDays = 0;
 
-		this.mHours = 0
-		this.mMinutes = 0
-		this.mSeconds = 0
+		this.mHours = 0;
+		this.mMinutes = 0;
+		this.mSeconds = 0;
 	} else {
 		this.setDuration(duration);
 	}
-}
+};
 
 jcalduration.parseText = function(data) {
 	var duration = new jcalduration();
 	duration.parse(data);
 	return duration;
-}
+};
 
 jcalduration.prototype.getTotalSeconds = function() {
 	return (this.mForward ? 1 : -1) * (this.mSeconds + (this.mMinutes + (this.mHours + (this.mDays + (this.mWeeks * 7)) * 24) * 60) * 60);
-}
+};
 
 jcalduration.prototype.setDuration = function(seconds) {
 	this.mForward = seconds >= 0;

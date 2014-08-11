@@ -48,7 +48,7 @@ Poll.prototype.saveResource = function(whenDone) {
       }
     });
   }
-}
+};
 
 // Fill the UI with details of the poll
 Poll.prototype.setPanel = function() {
@@ -57,7 +57,15 @@ Poll.prototype.setPanel = function() {
   this.editing_poll = this.editing_object.mainComponent();
 
   this.rewritePanel();
-}
+};
+
+/** Save the given choice in the current vpoll
+ *
+ * @param comp - jcal object
+ */
+Poll.prototype.saveChoice = function(comp) {
+  this.editing_poll.saveChoice(comp);
+};
 
 // Fill the UI with details of the poll
 Poll.prototype.rewritePanel = function() {
@@ -69,8 +77,9 @@ Poll.prototype.rewritePanel = function() {
   $("#editpoll-organizer").text(this.editing_poll.organizerDisplayName());
   $("#editpoll-status").text(this.editing_poll.status());
   $("#editpoll-choicelist").empty();
-  $.each(this.editing_poll.events(), function(index, choice) {
+  $.each(this.editing_poll.choices(), function(index, choice) {
     this_poll.addChoicePanel(choice);
+    //$("#debug").append(print_r(choice) + '<div style="margin: 4em 0;">new choice</div>');
   });
   $("#editpoll-voterlist").empty();
   $.each(this.editing_poll.voters(), function(index, voter) {
@@ -86,54 +95,65 @@ Poll.prototype.getPanel = function() {
   if (this.owned) {
     this.editing_poll.summary($("#editpoll-title-edit").val());
 
-    var events = this.editing_poll.events();
-    $("#editpoll-choicelist").children().each(function(index) {
-      this_poll.updateEventFromPanel($(this), events[index]);
-    });
+    //var events = this.editing_poll.choices();
+    //$("#editpoll-choicelist").children().each(function(index) {
+    //  this_poll.updateEventFromPanel($(this), events[index]);
+    //});
 
     var voters = this.editing_poll.voters();
     $("#editpoll-voterlist").children().each(function(index) {
       this_poll.updateVoterFromPanel($(this), voters[index]);
     });
+
+    if ($("#syncPollAttendees").is(":checked")) {
+      this.editing_poll.syncAttendees();
+    }
   }
-}
+};
 
 //Add a new event item in the UI
 Poll.prototype.addChoicePanel = function(choice) {
 
-  /*var ctr = $("#editpoll-choicelist").children().length + 1;
-   var idstart = "event-dtstart-" + ctr;
-   var idend = "event-dtend-" + ctr;
-
-   // Add new list item
-
-   var evt = '<div class="event">';
-   evt += '<div class="edit-datetime">';
-   evt += '<label for="' + idstart + '">Start: </label>';
-   evt += '<input type="text" id="' + idstart + '" class="event-dtstart"/>';
-   evt += '</div>';
-   evt += '<div class="edit-datetime">';
-   evt += '<label for="' + idend + '">End:   </label>';
-   evt += '<input type="text" id="' + idend + '" class="event-dtend" />';
-   evt += '</div>';
-   evt += '<button class="input-edit">Edit</button>';
-   evt += '<button class="input-remove">Remove</button>';
-   evt += '</div>';
-   evt = $(evt).appendTo("#editpoll-choicelist");
-
-   //evt.find(".event-dtstart").datetimepicker();
-   //evt.find(".event-dtend").datetimepicker();
-   evt.find(".input-remove").button({
-   icons : {
-   primary : "ui-icon-close"
-   }
-   });*/
-
-  var chc = '<div class="bwChoiceDisplay">' + choice.data.getPropertyValue("summary") + "</div>";
+  var chc = '<div class="bwChoiceDisplay">';
+  chc += '<div class="bwChoiceButtons">';
+  chc += '<div class="bwChoiceType">event</div>'; // XXX replace with actual type (e.g. event, task, location)
+  chc += '<button id="choice-edit-' + choice.data.getPropertyValue("uid") + '" class="choice-edit">Edit</button>';
+  chc += '<button id="choice-delete-' + choice.data.getPropertyValue("uid") + '" class="choice-delete">Delete</button>';
+  chc += '</div>';
+  chc += '<div class="bwChoiceSummary">' + choice.data.getPropertyValue("summary") + '</div>';
+  chc += '<div class="bwChoiceContent">';
+  chc += '<div class="bwChoiceDates">';
+  chc += choice.data.getPropertyValue("dtstart").slice(0,10) + ' ';
+  chc += choice.data.getPropertyValue("dtstart").slice(11,16) + ' - ';
+  if (choice.data.getPropertyValue("dtend").slice(0,10) != choice.data.getPropertyValue("dtstart").slice(0,10)) {
+    chc += choice.data.getPropertyValue("dtend").slice(0,10) + ' ';
+  }
+  chc += choice.data.getPropertyValue("dtend").slice(11,16);
+  chc += '</div>';
+  if (choice.data.getPropertyValue("description") != null && choice.data.getPropertyValue("description") != "") {
+    chc += '<div class="bwChoiceDesc">' + choice.data.getPropertyValue("description") + '</div>';
+  }
+  chc += '</div></div>';
   chc = $(chc).appendTo("#editpoll-choicelist");
+  $("#editpoll-choicelist .choice-edit").button({
+    icons : {
+      primary : "ui-icon-pencil",
+      text: false
+    }
+  }).click(function() {
+    view.clickChoiceEdit();
+  });
+  $("#editpoll-choicelist .choice-delete").button({
+    icons : {
+      primary : "ui-icon-trash",
+      text: false
+    }
+  }).click(function() {
+    view.clickChoiceDelete();
+  });
 
   return chc;
-}
+};
 
 // Update the UI for this event
 // XXX Deprecated?
@@ -160,8 +180,10 @@ Poll.prototype.addChoice = function() {
   dtend.setDate(dtend.getDate() + ctr);
   dtend.setHours(13, 0, 0, 0);
 
+  var choiceType = $("input:radio[name=choiceType]:checked").val();
+
   // Add new list item
-  currentEntity = this.editing_poll.addChoice(dtstart, dtend);
+  currentEntity = this.editing_poll.makeChoice(choiceType, dtstart, dtend);
 
   $.magnificPopup.open({
     items: {
@@ -183,12 +205,11 @@ Poll.prototype.addChoice = function() {
 Poll.prototype.populateChoiceForm = function(choice) {
   $("#choice-widget #bwEventTitle").val(choice.data.getPropertyValue("summary"));
 
-  var dtStart = choice.data.getPropertyValue("dtstart");
+  var dtStart = choice.data.getProperty("dtstart");
   var dtSt = new JcalDtTime(hour24, dtStart);
   var hour = 0;
   var hour24Opts = "";
-  var locs = new BwLocations;
-  var locNames = locs.getDisplayNames();
+  var locNames = locations.getDisplayNames();
 
   $("#choice-widget #bwEventWidgetStartDate").val(dtSt.datePart);
 
@@ -221,6 +242,9 @@ Poll.prototype.populateChoiceForm = function(choice) {
     $("#choice-widget #eventStartDateHour").val(hour);
     $("#choice-widget #eventStartDateMinute").val(dtSt.minutes);
 
+    if (dtSt.tzid !== undefined) {
+      // Set the tzid from dtSt.tzid
+    }
   }
 
   var dur = choice.data.getPropertyValue("duration");
@@ -250,7 +274,7 @@ Poll.prototype.populateChoiceForm = function(choice) {
     if (choice.data.name === "vtodo") {
       pname = "due";
     }
-    var dtEnd = choice.data.getPropertyValue(pname);
+    var dtEnd = choice.data.getProperty(pname);
     var dtE = new JcalDtTime(hour24, dtEnd);
 
     $("#choice-widget #bwEventWidgetEndDate").val(dtE.datePart);
@@ -274,6 +298,10 @@ Poll.prototype.populateChoiceForm = function(choice) {
       }
       $("#choice-widget #eventEndDateHour").val(hour);
       $("#choice-widget #eventEndDateMinute").val(dtE.minutes);
+
+      if (dtE.tzid !== undefined) {
+        // Set the tzid from dtE.tzid
+      }
     }
   }
 
@@ -294,6 +322,7 @@ Poll.prototype.populateChoiceForm = function(choice) {
  */
 Poll.prototype.populateChoice = function(choice) {
   choice.data.updateProperty("summary", $("#choice-widget #bwEventTitle").val());
+  choice.data.updateProperty("description", $("#choice-widget #description").val());
 
   var dtSt = new JcalDtTime(hour24);
 
@@ -308,9 +337,11 @@ Poll.prototype.populateChoice = function(choice) {
     if (!hour24) {
       dtSt.am = $("#eventStartDateAmpm").attr("selectedIndex") == 0;
     }
+
+    // Set the tzid from the form if one is selected
   }
 
-  choice.data.updateProperty("dtstart", dtSt.getDtval());
+  dtSt.updateProperty("dtstart", choice.data);
 
   if ($("input[name=eventEndType]").val() == "D") {
     // Duration type
@@ -332,26 +363,29 @@ Poll.prototype.populateChoice = function(choice) {
     // Dtend type
     var dtE = new JcalDtTime(hour24);
 
-    dtE.datePart = $("#choice-widget #bwEventWidgetStartDate").val();
+    dtE.datePart = $("#choice-widget #bwEventWidgetEndDate").val();
     dtE.allDay = dtSt.allDay;
 
     if (!dtSt.allDay) {
       dtE.UTC = dtSt.UTC;
-      dtE.hours = $("#choice-widget #eventStartDateHour").val();
-      dtE.minutes = $("#choice-widget #eventStartDateMinute").val();
+      dtE.hours = $("#choice-widget #eventEndDateHour").val();
+      dtE.minutes = $("#choice-widget #eventEndDateMinute").val();
 
       if (!hour24) {
-        dtE.am = $("#eventStartDateAmpm").attr("selectedIndex") == 0;
+        dtE.am = $("#eventEndDateAmpm").attr("selectedIndex") == 0;
       }
+
+      // Set the tzid from the form if one is selected
     }
+
     var pname = "dtend";
     if (choice.data.name === "vtodo") {
       pname = "due";
     }
 
-    choice.data.updateProperty(pname, dtE.getDtval());
+    dtE.updateProperty(pname, choice.data);
   }
-}
+};
 
 // 1. iterate over the form elements, update the current entity
 /*
@@ -499,6 +533,8 @@ Poll.prototype.updateVoterFromPanel = function(panel, voter) {
 // Add voter button clicked
 Poll.prototype.addVoter = function() {
   // Add new list item
+  poll_syncAttendees = $("#syncPollAttendees").is(":checked");
+
   var voter = this.editing_poll.addVoter();
   return this.setVoterPanel(this.addVoterPanel(), voter);
 }
@@ -511,37 +547,48 @@ Poll.prototype.buildResults = function() {
   // Sync with any changes from other panels
   this.getPanel();
 
-  var event_details = this.editing_poll.events();
+  var event_details = this.editing_poll.choices();
   var voter_details = this.editing_poll.voters();
 
   var thead = $("#editpoll-resulttable").children("thead").first();
-  var th_date = thead.children("tr").eq(0).empty();
+  var th_summary = thead.children("tr").eq(0).empty();
   var th_start = thead.children("tr").eq(1).empty();
   var th_end = thead.children("tr").eq(2).empty();
+  var th_recur = thead.children("tr").eq(3).empty();
+  var th_desc = thead.children("tr").eq(4).empty();
   var tf = $("#editpoll-resulttable").children("tfoot").first();
   var tf_overall = tf.children("tr").first().empty();
   var tf_commit = tf.children("tr").last().empty();
   tf_commit.toggle(this.owned || !this_poll.editing_poll.editable());
   var tbody = $("#editpoll-resulttable").children("tbody").first().empty();
-  $('<td>Date:</td>').appendTo(th_date);
+  $('<td>Summary:</td>').appendTo(th_summary);
   $('<td>Start:</td>').appendTo(th_start);
   $('<td>End:</td>').appendTo(th_end);
+  $('<td>Recurs:</td>').appendTo(th_recur);
+  $('<td>Description:</td>').appendTo(th_desc);
   $('<td>Overall:</td>').appendTo(tf_overall);
   $('<td />').appendTo(tf_commit);
   $.each(event_details, function(index, event) {
-    var td_date = $('<td />').appendTo(th_date).text(event.dtstart().toDateString()).addClass("center-td");
-    var td_start = $('<td />').appendTo(th_start).text(event.dtstart().toLocaleTimeString());
-    var td_end = $('<td />').appendTo(th_end).text(event.dtend().toLocaleTimeString());
+    //$("#debug").append(print_r(event));
+    var td_summary = $('<td />').appendTo(th_summary).text(event.summary()).addClass("summary-td");;
+    var td_start = $('<td />').appendTo(th_start).html(event.dtstart().toDateString() + '<br/>' + event.dtstart().toLocaleTimeString()).addClass("start-td");
+    var endDate = "";
+    if (event.dtstart().toDateString() != event.dtend().toDateString()) {
+      endDate = event.dtend().toDateString() + '<br/>';
+    }
+    var td_end = $('<td />').appendTo(th_end).html(endDate + event.dtend().toLocaleTimeString());
+    var td_recur = $('<td />').appendTo(th_recur).text('2nd Tuesday, Monthly'/*XXX event.recurrence()*/).addClass("recur-td");
+    var td_desc = $('<td />').appendTo(th_desc).text(event.description()).addClass("desc-td");
     $('<td />').appendTo(tf_overall).addClass("center-td");
     $('<td />').appendTo(tf_commit).addClass("center-td");
     if (event.ispollwinner()) {
-      td_date.addClass("poll-winner-td");
+      td_summary.addClass("poll-winner-td");
       td_start.addClass("poll-winner-td");
       td_end.addClass("poll-winner-td");
     }
-    td_date.hover(
+    td_summary.hover(
         function() {
-          this_poll.hoverDialogOpen(td_date, thead, event);
+          this_poll.hoverDialogOpen(td_summary, thead, event);
         },
         this_poll.hoverDialogClose
     );
@@ -552,56 +599,65 @@ Poll.prototype.buildResults = function() {
     $("<td/>").appendTo(tr).text(voter.nameOrAddress());
     $.each(event_details, function(index, event) {
       var response = event.voter_responses()[voter.cuaddr()];
+      var pollItemId = event.pollitemid();
       var td = $("<td />").appendTo(tr).addClass("center-td");
       if (event.ispollwinner()) {
         td.addClass("poll-winner-td");
       }
       if (active && this_poll.editing_poll.editable()) {
-        var radios = $('<div id="response-' + index + '" />').appendTo(td).addClass("response-btns");
-        $('<input type="radio" id="respond_no-' + index + '" name="response-' + index + '"/>').appendTo(radios);
-        $('<label for="respond_no-' + index + '"/>').appendTo(radios);
-        $('<input type="radio" id="respond_maybe-' + index + '" name="response-' + index + '"/>').appendTo(radios);
-        $('<label for="respond_maybe-' + index + '"/>').appendTo(radios);
-        $('<input type="radio" id="respond_ok-' + index + '" name="response-' + index + '"/>').appendTo(radios);
-        $('<label for="respond_ok-' + index + '"/>').appendTo(radios);
-        $('<input type="radio" id="respond_best-' + index + '" name="response-' + index + '"/>').appendTo(radios);
-        $('<label for="respond_best-' + index + '"/>').appendTo(radios);
+        var radios = $('<div id="response-' + pollItemId + '" />').appendTo(td).addClass("response-btns");
+        $('<input type="radio" id="respond_no-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
+        $('<label for="respond_no-' + pollItemId + '"/>').appendTo(radios);
+        $('<input type="radio" id="respond_maybe-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
+        $('<label for="respond_maybe-' + pollItemId + '"/>').appendTo(radios);
+        $('<input type="radio" id="respond_ok-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
+        $('<label for="respond_ok-' + pollItemId + '"/>').appendTo(radios);
+        $('<input type="radio" id="respond_best-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
+        $('<label for="respond_best-' + pollItemId + '"/>').appendTo(radios);
         radios.buttonset();
         if (response !== undefined) {
           if (response < 40) {
-            $('#respond_no-' + index).click();
+            $('#respond_no-' + pollItemId).click();
           } else if (response < 80) {
-            $('#respond_maybe-' + index).click();
+            $('#respond_maybe-' + pollItemId).click();
           } else if (response < 90) {
-            $('#respond_ok-' + index).click();
+            $('#respond_ok-' + pollItemId).click();
           } else {
-            $('#respond_best-' + index).click();
+            $('#respond_best-' + pollItemId).click();
           }
         }
-        $('#respond_no-' + index).button({
+        $('#respond_no-' + pollItemId).button({
           icons : {
             primary : "ui-icon-close"
           },
+          label: "No",
           text: false
         }).click(this_poll.clickResponse);
-        $('#respond_maybe-' + index).button({
+        $('#respond_no-' + pollItemId).next("label").addClass("noButton");
+        $('#respond_maybe-' + pollItemId).button({
           icons : {
             primary : "ui-icon-help"
           },
+          label: "Maybe",
           text: false
         }).click(this_poll.clickResponse);
-        $('#respond_ok-' + index).button({
+        $('#respond_maybe-' + pollItemId).next("label").addClass("maybeButton");
+        $('#respond_ok-' + pollItemId).button({
           icons : {
             primary : "ui-icon-check"
           },
+          label: "Ok",
           text: false
         }).click(this_poll.clickResponse);
-        $('#respond_best-' + index).button({
+        $('#respond_ok-' + pollItemId).next("label").addClass("okButton");
+        $('#respond_best-' + pollItemId).button({
           icons : {
             primary : "ui-icon-circle-check"
           },
+          label: "Best",
           text: false
         }).click(this_poll.clickResponse);
+        $('#respond_best-' + pollItemId).next("label").addClass("bestButton");
       } else {
         td.text(this_poll.textForResponse(response)[0]);
       }
@@ -613,7 +669,7 @@ Poll.prototype.buildResults = function() {
 
   $.each(event_details, function(index, event) {
     if (this_poll.editing_poll.editable()) {
-      $('<button id="winner-' + index + '">Pick Winner</button>').appendTo(tf_commit.children()[index + 1]).button({
+      $('<button id="winner-' + event.pollitemid() + '">Pick Winner</button>').appendTo(tf_commit.children()[index + 1]).button({
         icons : {
           primary : "ui-icon-star"
         }
@@ -663,7 +719,7 @@ Poll.prototype.clickResponse = function() {
     response = 100;
   }
 
-  var event = gViewController.activePoll.editing_poll.events()[index];
+  var event = gViewController.activePoll.editing_poll.getChoice(index);
   event.changeVoterResponse(response);
   gViewController.activePoll.updateOverallResults();
 }
@@ -671,8 +727,8 @@ Poll.prototype.clickResponse = function() {
 // A winner was chosen, make poll changes and create new event and save everything
 Poll.prototype.clickWinner = function() {
   var splits = $(this).attr("id").split("-");
-  var event = gViewController.activePoll.editing_poll.events()[parseInt(splits[1])];
-  var new_resource = event.pickAsWinner();
+  var comp = gViewController.activePoll.editing_poll.getChoice(parseInt(splits[1]));
+  var new_resource = comp.pickAsWinner();
   new_resource.saveResource(function() {
     gViewController.activePoll.saveResource(function() {
       gViewController.activatePoll(gViewController.activePoll);
@@ -681,8 +737,8 @@ Poll.prototype.clickWinner = function() {
 }
 
 // Open the event time-range hover dialog
-Poll.prototype.hoverDialogOpenClassic = function(td_date, thead, event) {
-  var dialog_div = $('<div id="hover-cal" />').appendTo(td_date).dialog({
+Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
+  var dialog_div = $('<div id="hover-cal" />').appendTo(td_summary).dialog({
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: thead },
     show: "fade",
@@ -720,8 +776,8 @@ Poll.prototype.hoverDialogOpenClassic = function(td_date, thead, event) {
 }
 
 // Open the event time-range hover dialog
-Poll.prototype.hoverDialogOpenFancy = function(td_date, thead, event) {
-  var dialog_div = $('<div id="hover-cal" />').appendTo(td_date).dialog({
+Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
+  var dialog_div = $('<div id="hover-cal" />').appendTo(td_summary).dialog({
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: thead },
     show: "fade",
@@ -767,7 +823,8 @@ Poll.prototype.hoverDialogOpenFancy = function(td_date, thead, event) {
   );
 }
 
-Poll.prototype.hoverDialogOpen = Poll.prototype.hoverDialogOpenFancy;
+// Turn this off for the moment:
+//Poll.prototype.hoverDialogOpen = Poll.prototype.hoverDialogOpenFancy;
 
 // Close the event time-range hover dialog
 Poll.prototype.hoverDialogClose = function() {
@@ -776,7 +833,7 @@ Poll.prototype.hoverDialogClose = function() {
 
 Poll.prototype.updateOverallResults = function() {
   var this_poll = this;
-  var event_details = this.editing_poll.events();
+  var event_details = this.editing_poll.choices();
   var voter_details = this.editing_poll.voters();
   var tds = $("#editpoll-resulttable").children("tfoot").first().children("tr").first().children("td");
 
@@ -801,7 +858,7 @@ Poll.prototype.updateOverallResults = function() {
 
 Poll.prototype.autoFill = function() {
 
-  var event_details = this.editing_poll.events();
+  var event_details = this.editing_poll.choices();
   $.each(event_details, function(index, event) {
     // Freebusy
     gSession.currentPrincipal.isBusy(
