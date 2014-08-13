@@ -100,14 +100,23 @@ Poll.prototype.getPanel = function() {
     //  this_poll.updateEventFromPanel($(this), events[index]);
     //});
 
-    var voters = this.editing_poll.voters();
-    $("#editpoll-voterlist").children().each(function(index) {
-      this_poll.updateVoterFromPanel($(this), voters[index]);
-    });
+  }
+};
 
-    if ($("#syncPollAttendees").is(":checked")) {
-      this.editing_poll.syncAttendees();
-    }
+// Get voter details from the UI
+Poll.prototype.updateVoters = function() {
+  if (!this.owned) {
+    return;
+  }
+
+  var this_poll = this;
+  var voters = this.editing_poll.voters();
+  $("#editpoll-voterlist").children().each(function(index) {
+    this_poll.updateVoterFromPanel($(this), voters[index]);
+  });
+
+  if ($("#syncPollAttendees").is(":checked")) {
+    this.editing_poll.syncAttendees();
   }
 };
 
@@ -160,14 +169,12 @@ Poll.prototype.addChoicePanel = function(choice) {
 Poll.prototype.setChoicePanel = function(panel, event) {
 
   return panel;
-}
+};
 
 // Get details of the event from the UI
 Poll.prototype.updateEventFromPanel = function(panel, event) {
   event.summary($("#editpoll-title-edit").val());
-  //event.dtstart(panel.find(".event-dtstart").datetimepicker("getDate"));
-  //event.dtend(panel.find(".event-dtend").datetimepicker("getDate"));
-}
+};
 
 // Add choice button clicked
 Poll.prototype.addChoice = function() {
@@ -206,7 +213,7 @@ Poll.prototype.populateChoiceForm = function(choice) {
   $("#choice-widget #bwEventTitle").val(choice.data.getPropertyValue("summary"));
 
   var dtStart = choice.data.getProperty("dtstart");
-  var dtSt = new JcalDtTime(hour24, dtStart);
+  var dtSt = JcalDtTime.fromProperty(hour24, dtStart);
   var hour = 0;
   var hour24Opts = "";
   var locNames = locations.getDisplayNames();
@@ -216,7 +223,6 @@ Poll.prototype.populateChoiceForm = function(choice) {
   if(dtSt.allDay) {
     $("#allDayFlag").click();
   } else {
-    hour = dtSt.hours;
     $("#storeUTCFlag").attr('checked', dtSt.UTC);
     if (hour24) { // hour24 is a global variable passed in from the XML in the XSLT
       $("#choice-widget #eventStartDateAmpm").hide();
@@ -227,19 +233,12 @@ Poll.prototype.populateChoiceForm = function(choice) {
       $("#choice-widget #eventStartDateHour").empty();
       $("#choice-widget #eventStartDateHour").html(hour24Opts);
     } else {
-      hour = parseInt(dtSt.hours);
-      if (hour > 12) {
-        hour -= 12;
-      }
-      if (hour == 0) {
-        hour = 12;
-      }
       if(!dtSt.am) {
         $("#choice-widget #eventStartDateAmpm").prop("selectedIndex", 1);
       }
     }
 
-    $("#choice-widget #eventStartDateHour").val(hour);
+    $("#choice-widget #eventStartDateHour").val(dtSt.hours);
     $("#choice-widget #eventStartDateMinute").val(dtSt.minutes);
 
     if (dtSt.tzid !== undefined) {
@@ -253,7 +252,7 @@ Poll.prototype.populateChoiceForm = function(choice) {
     // Flag it as end type duration
     $("input[name=eventEndType][value=D]").click();
 
-    var jdur = new jcalduration();
+    var jdur = new Jcalduration();
 
     jdur.parse(dur);
 
@@ -271,32 +270,25 @@ Poll.prototype.populateChoiceForm = function(choice) {
   } else {
     $("input[name=eventEndType][value=E]").click();
     var pname = "dtend";
-    if (choice.data.name === "vtodo") {
+    if (choice.isTask()) {
       pname = "due";
     }
     var dtEnd = choice.data.getProperty(pname);
-    var dtE = new JcalDtTime(hour24, dtEnd);
+    var dtE = JcalDtTime.fromProperty(hour24, dtEnd);
 
     $("#choice-widget #bwEventWidgetEndDate").val(dtE.datePart);
 
     if (!dtSt.allDay) {
-      hour = parseInt(dtE.hours);
       if (hour24) { // hour24 is a global variable passed in from the XML in the XSLT
         $("#choice-widget #eventEndDateAmpm").hide();
         $("#choice-widget #eventEndDateHour").empty();
         $("#choice-widget #eventEndDateHour").html(hour24Opts);
       } else {
-        if (hour > 12) {
-          hour -= 12;
-        }
-        if (hour == 0) {
-          hour = 12;
-        }
         if(!dtE.am) {
           $("#choice-widget #eventEndDateAmpm").prop("selectedIndex", 1);
         }
       }
-      $("#choice-widget #eventEndDateHour").val(hour);
+      $("#choice-widget #eventEndDateHour").val(dtE.hours);
       $("#choice-widget #eventEndDateMinute").val(dtE.minutes);
 
       if (dtE.tzid !== undefined) {
@@ -324,28 +316,34 @@ Poll.prototype.populateChoice = function(choice) {
   choice.data.updateProperty("summary", $("#choice-widget #bwEventTitle").val());
   choice.data.updateProperty("description", $("#choice-widget #description").val());
 
-  var dtSt = new JcalDtTime(hour24);
+  var dtSt;
 
-  dtSt.datePart = $("#choice-widget #bwEventWidgetStartDate").val();
-  dtSt.allDay = $("#allDayFlag").is(":checked");
+  var datePart = $("#choice-widget #bwEventWidgetStartDate").val();
+  var allDay = $("#allDayFlag").is(":checked");
 
-  if (!dtSt.allDay) {
-    dtSt.UTC = $("#storeUTCFlag").val();
-    dtSt.hours = $("#choice-widget #eventStartDateHour").val();
-    dtSt.minutes = $("#choice-widget #eventStartDateMinute").val();
+  if (allDay) {
+    dtSt = new JcalDtTime(hour24, datePart, allDay);
+  } else {
+    var UTC = $("#storeUTCFlag").val();
+    var hours = $("#choice-widget #eventStartDateHour").val();
+    var minutes = $("#choice-widget #eventStartDateMinute").val();
 
+    var am = false;
     if (!hour24) {
-      dtSt.am = $("#eventStartDateAmpm").attr("selectedIndex") == 0;
+      am = $("#eventStartDateAmpm").attr("selectedIndex") == 0;
     }
 
     // Set the tzid from the form if one is selected
+    var tzid = defaultTzid;
+
+    dtSt = new JcalDtTime(hour24, datePart, false, hours, minutes, UTC, am, tzid);
   }
 
   dtSt.updateProperty("dtstart", choice.data);
 
   if ($("input[name=eventEndType]").val() == "D") {
     // Duration type
-    var jdur = new jcalduration();
+    var jdur = new Jcalduration();
 
     if ($("#choice-widget #durationTypeWeeks").val()) {
       jdur.mWeeks = $("#choice-widget #durationWeeks").val();
@@ -361,21 +359,26 @@ Poll.prototype.populateChoice = function(choice) {
     choice.data.updateProperty("duration", jdur.generate());
   } else {
     // Dtend type
-    var dtE = new JcalDtTime(hour24);
+    var dtE;
 
-    dtE.datePart = $("#choice-widget #bwEventWidgetEndDate").val();
-    dtE.allDay = dtSt.allDay;
+    datePart = $("#choice-widget #bwEventWidgetEndDate").val();
 
-    if (!dtSt.allDay) {
-      dtE.UTC = dtSt.UTC;
-      dtE.hours = $("#choice-widget #eventEndDateHour").val();
-      dtE.minutes = $("#choice-widget #eventEndDateMinute").val();
+    if (allDay) {
+      dtE = new JcalDtTime(hour24, datePart, allDay);
+    } else {
+      var UTC = dtSt.UTC;
+      var hours = $("#choice-widget #eventEndDateHour").val();
+      var minutes = $("#choice-widget #eventEndDateMinute").val();
 
+      var am = false;
       if (!hour24) {
-        dtE.am = $("#eventEndDateAmpm").attr("selectedIndex") == 0;
+        am = $("#eventEndDateAmpm").attr("selectedIndex") == 0;
       }
 
       // Set the tzid from the form if one is selected
+      var tzid = defaultTzid;
+
+      dtE = new JcalDtTime(hour24, datePart, false, hours, minutes, UTC, am, tzid);
     }
 
     var pname = "dtend";
@@ -571,12 +574,12 @@ Poll.prototype.buildResults = function() {
   $.each(event_details, function(index, event) {
     //$("#debug").append(print_r(event));
     var td_summary = $('<td />').appendTo(th_summary).text(event.summary()).addClass("summary-td");;
-    var td_start = $('<td />').appendTo(th_start).html(event.dtstart().toDateString() + '<br/>' + event.dtstart().toLocaleTimeString()).addClass("start-td");
+    var td_start = $('<td />').appendTo(th_start).html(event.start().getLocalizedDate() + '<br/>' + event.start().getPrintableTime()).addClass("start-td");
     var endDate = "";
-    if (event.dtstart().toDateString() != event.dtend().toDateString()) {
-      endDate = event.dtend().toDateString() + '<br/>';
+    if (event.start().dateEquals(event.end())) {
+      endDate = event.end().getLocalizedDate() + '<br/>';
     }
-    var td_end = $('<td />').appendTo(th_end).html(endDate + event.dtend().toLocaleTimeString());
+    var td_end = $('<td />').appendTo(th_end).html(endDate + event.end().getPrintableTime());
     var td_recur = $('<td />').appendTo(th_recur).text('2nd Tuesday, Monthly'/*XXX event.recurrence()*/).addClass("recur-td");
     var td_desc = $('<td />').appendTo(th_desc).text(event.description()).addClass("desc-td");
     $('<td />').appendTo(tf_overall).addClass("center-td");
@@ -742,11 +745,11 @@ Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: thead },
     show: "fade",
-    title: "Your Events for " + event.dtstart().toDateString(),
+    title: "Your Events for " + event.start().getLocalizedDate(),
     width: 400
   });
-  var start = new Date(event.dtstart().getTime() - 6 * 60 * 60 * 1000);
-  var end = new Date(event.dtend().getTime() + 6 * 60 * 60 * 1000);
+  var start = new Date(event.start().getTime() - 6 * 60 * 60 * 1000);
+  var end = new Date(event.end().getTime() + 6 * 60 * 60 * 1000);
   gSession.currentPrincipal.eventsForTimeRange(
       start,
       end,
@@ -757,18 +760,18 @@ Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
         });
         results.push(event);
         results.sort(function(a, b) {
-          return a.dtstart().getTime() - b.dtstart().getTime();
+          return a.start().getTime() - b.start().getTime();
         });
         var relative_offset = 10;
         var last_end = null;
         $.each(results, function(index, result) {
-          text = result.dtstart().toLocaleTimeString() + " - ";
-          text += result.dtend().toLocaleTimeString() + " : ";
+          text = result.start().getPrintableTime() + " - ";
+          text += result.end().getPrintableTime() + " : ";
           text += result.summary();
-          if (last_end !== null && last_end.getTime() != result.dtstart().getTime()) {
+          if (last_end !== null && last_end.getTime() != result.start().getTime()) {
             relative_offset += 10;
           }
-          last_end = result.dtend();
+          last_end = result.end();
           $('<div class="hover-event ui-corner-all" style="top:' + relative_offset + 'px"/>').appendTo(dialog_div).addClass(result.pollitemid() !== null ? "ui-state-active" : "ui-state-default").text(text);
         });
       }
@@ -781,14 +784,14 @@ Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: thead },
     show: "fade",
-    title: "Your Events for " + event.dtstart().toDateString(),
+    title: "Your Events for " + event.start().getPrintableTime(),
     width: 400
   });
 
-  var start = new Date(event.dtstart().getTime() - 6 * 60 * 60 * 1000);
+  var start = new Date(event.start().getTime() - 6 * 60 * 60 * 1000);
   start.setMinutes(0, 0, 0);
   var startHour = start.getHours();
-  var end = new Date(event.dtend().getTime() + 6 * 60 * 60 * 1000);
+  var end = new Date(event.end().getTime() + 6 * 60 * 60 * 1000);
   end.setMinutes(0, 0, 0);
   var endHour = end.getHours();
 
@@ -806,22 +809,22 @@ Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
         });
         results.push(event);
         results.sort(function(a, b) {
-          return a.dtstart().getTime() - b.dtstart().getTime();
+          return a.start().getTime() - b.start().getTime();
         });
         var last_dtend = null;
         $.each(results, function(index, result) {
-          var top_offset = (result.dtstart().getHours() - startHour) * 30;
-          var height = ((result.dtend().getTime() - result.dtstart().getTime()) * 30) / (60 * 60 * 1000) - 6;
+          var top_offset = (result.start().getHours() - startHour) * 30;
+          var height = ((result.end().getTime() - result.start().getTime()) * 30) / (60 * 60 * 1000) - 6;
           var styles = "top:" + top_offset + "px;height:" + height + "px";
-          if (last_dtend !== null && last_dtend > result.dtstart()) {
+          if (last_dtend !== null && last_dtend.getTime() > result.start().getTime()) {
             styles += ";left:206px;width:125px";
           }
-          last_dtend = result.dtend();
+          last_dtend = result.end();
           $('<div class="hover-event ui-corner-all" style="' + styles + '" />').appendTo(grid).addClass(result.pollitemid() !== null ? "ui-state-active" : "ui-state-default").text(result.summary());
         });
       }
   );
-}
+};
 
 // Turn this off for the moment:
 //Poll.prototype.hoverDialogOpen = Poll.prototype.hoverDialogOpenFancy;

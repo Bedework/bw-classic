@@ -94,11 +94,11 @@ jcal.prototype.name = function() {
 	return this.caldata[0];
 }
 
-jcal.prototype.isevent = function() {
+jcal.prototype.isEvent = function() {
   return this.name() === "vevent";
 };
 
-jcal.prototype.istask = function() {
+jcal.prototype.isTask = function() {
   return this.name() === "vtodo";
 };
 
@@ -116,7 +116,7 @@ function makeJcal(name, defaultProperties) {
   if (defaultProperties) {
     // Add UID and DTSTAMP
     jcomp.newProperty("uid", generateUUID());
-    jcomp.newProperty("dtstamp", new jcaldate().toString(), {}, "date-time");
+    jcomp.newProperty("dtstamp", jcalTimestamp(), {}, "date-time");
   }
   return jcomp;
 }
@@ -273,78 +273,169 @@ jcal.prototype.removePropertiesMatching = function(test) {
 }
 
 // Date/time utility functions
-jcaldate = function() {
+Jcaldate = function() {
 	this.date = new Date();
 	this.tzid = "utc";
-}
+};
 
-jcaldate.jsDateTojCal = function(date) {
+Jcaldate.jsDateTojCal = function(date) {
 	return date.toISOString().substr(0, 19);
-}
+};
 
-jcaldate.jsDateToiCal = function(date) {
-	return jcaldate.jsDateTojCal(date).replace(/\-/g, "").replace(/\:/g, "");
-}
-
-jcaldate.jCalTojsDate = function(value) {
+Jcaldate.jCalTojsDate = function(value) {
 	var result = new Date(value);
 	result.setMilliseconds(0);
 	return result;
-}
+};
 
-jcaldate.prototype.toString = function() {
+Jcaldate.prototype.toString = function() {
 	return this.date.toISOString().substr(0, 19);
-}
+};
+
+/**
+ *
+ * @param hour24
+ * @param datePart
+ * @param allDay
+ * @param hours value appropriate for hour24 and am flags
+ * @param minutes
+ * @param UTC
+ * @param am
+ * @param tzid
+ * @constructor
+ */
+JcalDtTime = function(hour24, datePart, allDay, hours, minutes, UTC, am, tzid) {
+  this.hour24 = hour24;
+  this.datePart = datePart;
+  this.allDay = allDay;
+
+  if (!allDay) {
+    this.minutes = minutes;
+
+    this.UTC = UTC;
+    this.tzid = tzid;
+    this.am = am;
+
+    this.hours = parseInt(hours);
+
+    this.timePart = digits2(hours) + ":" + digits2(minutes) + ":00";
+  } else {
+    this.hours = 0;
+    this.minutes = 0;
+    this.UTC = false;
+    this.tzid = null;
+    this.am = false;
+  }
+
+  this.moment = null;
+};
 
 /** Break up the date and time value to make it usable for form population'
  *
  * @param hour24 true for 24 hour
- * @param dtProp optional valid date or date time property
+ * @param dtProp valid date or date time property
  *               [name, params, value]
- * @constructor
  */
-JcalDtTime = function(hour24, dtProp) {
-  this.dtProp = dtProp;
-  this.hour24 = hour24;
+JcalDtTime.fromProperty = function(hour24, dtProp) {
+  var datePart = null;
+  var timePart = null;
+  var hours = null;
+  var minutes = null;
+  var UTC = false;
+  var allDay = false;
+  var tzid = null;
+  var am = false;
 
-  if (dtProp !== undefined) {
-    // Why do I have to assign then use?
-    var params = dtProp[1];
-    this.tzid = params.tzid;
+  // Why do I have to assign then use? Does not work otherwise
+  var params = dtProp[1];
+  var tzid = params.tzid;
 
-    this.type = dtProp[2];
-    this.dtTime = dtProp[3];
-  }
+//    this.type = dtProp[2];
+  var dtTime = dtProp[3];
 
-  this.timePart = null;
-  this.UTC = false;
-  this.allDay = false;
-  this.am = false;
-  this.hoursInt = 0;
-
-  if (this.dtTime === undefined) {
-    return;
-  }
-
-  if (this.dtTime.length > 10) {
-    this.timePart = this.dtTime.substring(11, 19);
-    this.datePart = this.dtTime.substring(0,10);
+  if (dtTime.length > 10) {
+    timePart = dtTime.substring(11, 19);
+    datePart = dtTime.substring(0,10);
   } else {
-    this.datePart = this.dtTime;
-    this.allDay = true;
+    datePart = dtTime;
+    allDay = true;
   }
 
-  if (this.timePart != null) {
-    // Set the time fields.
-    if ((this.dtTime.length > 19) && (this.dtTime.charAt(19) == 'Z')) {
-      this.UTC = true;
+  if (allDay) {
+    return new JcalDtTime(hour24, datePart, true);
+  }
+
+  // Set the time fields.
+  if ((dtTime.length > 19) && (dtTime.charAt(19) == 'Z')) {
+    UTC = true;
+  }
+
+  hours = timePart.substring(0, 2);
+  minutes = timePart.substring(3,5);
+
+  if (!hour24) {
+    var hoursInt = parseInt(hours);
+
+    am = hoursInt < 12;
+    if (hoursInt > 12) {
+      hoursInt -= 12;
+    } else if (hoursInt == 0) {
+      hoursInt = 12;
     }
 
-    this.hours = this.timePart.substring(0, 2);
-    this.minutes = this.timePart.substring(3,5);
-    this.hoursInt = parseInt(this.hours);
-    this.am = this.hoursInt < 12;
+    hours = hoursInt;
   }
+
+  return new JcalDtTime(hour24, datePart, false, hours, minutes, UTC, am, tzid);
+};
+
+/**
+ *
+ * @param val - number of seconds
+ * @returns moment
+ */
+JcalDtTime.prototype.addSeconds = function(val) {
+  return this.getMoment().add('seconds', val);
+};
+
+/**
+ *
+ * @param val - number of days
+ * @returns moment
+ */
+JcalDtTime.prototype.addDays = function(val) {
+  return this.getMoment().add('days', val);
+};
+
+JcalDtTime.prototype.getDate = function() {
+  return this.getMoment().toDate();
+};
+
+JcalDtTime.prototype.getHours = function() {
+  return this.getMoment().toDate().getHours();
+};
+
+JcalDtTime.prototype.getTime = function() {
+  return this.getMoment().toDate().getTime();
+};
+
+JcalDtTime.prototype.getPrintableTime = function() {
+  if (this.hour24) {
+    return this.getMoment().format("HH:mm")
+  }
+  return this.getMoment().format("h:mm:ss a");
+};
+
+JcalDtTime.prototype.getLocalizedDate = function() {
+  return this.getMoment().format("LL");
+};
+
+JcalDtTime.prototype.getLocalizedShortDate = function() {
+  return this.getMoment().format("ll");
+};
+
+JcalDtTime.prototype.dateEquals = function(other) {
+  return this.getLocalizedShortDate() === other.getLocalizedShortDate();
 };
 
 /**
@@ -378,7 +469,7 @@ JcalDtTime.prototype.updateProperty = function(name, comp) {
   var val = this.getDtval();
   var params;
 
-  if (this.tzid === undefined) {
+  if (this.tzid === null) {
     params = {};
   } else {
     params = {"tzid": this.tzid};
@@ -394,10 +485,64 @@ JcalDtTime.prototype.updateProperty = function(name, comp) {
 };
 
 /**
- * Return the tzid or undefined
+ * Return or set the tzid
+ *
+ * @return the tzid or null
  */
-JcalDtTime.prototype.getTzid = function() {
-  return this.tzid;
+JcalDtTime.prototype.tzid = function(val) {
+  if (val === undefined) {
+    return this.tzid;
+  }
+
+  if (val !== this.tzid) {
+    this.moment = null; // Force recalculation
+
+    this.tzid = val;
+  }
+};
+
+JcalDtTime.prototype.getMoment = function() {
+  if (this.moment === null) {
+    this.moment = moment(this.getDtval());
+
+    if (this.UTC || (this.tzid === null)) {
+      return this.moment;
+    }
+
+    var offset = tzs.getOffset(this.getDtval(), this.tzid);
+
+    /* Note the oddity with sign of timezone offset and
+     UTC offset
+     http://stackoverflow.com/questions/22275025/inverted-zone-in-moment-timezone
+     */
+    this.moment.utc().zone(-offset);
+  }
+
+  return this.moment;
+};
+
+JcalDtTime.prototype.clone = function() {
+  var that = new JcalDtTime(this.hour24);
+
+  that.datePart = this.datePart;
+  that.timePart = this.timePart;
+  that.hours = this.hours;
+  that.minutes = this.minutes;
+  that.UTC = this.UTC;
+  that.allDay = this.allDay;
+  that.tzid = this.tzid;
+  that.am = this.am;
+
+  return that;
+}
+
+/** 'static' date conversion
+ *
+ * @param date
+ * @returns {string}
+ */
+JcalDtTime.jsDateToiCal = function(date) {
+  return date.toISOString().substr(0, 19).replace(/\-/g, "").replace(/\:/g, "");
 };
 
 function digits2(val) {
@@ -409,8 +554,12 @@ function digits2(val) {
   return "0" + i;
 }
 
+function jcalTimestamp() {
+  return new Date().toISOString().substr(0, 19);
+}
+
 // Duration utility functions
-jcalduration = function(duration) {
+Jcalduration = function(duration) {
 
 	if (duration === undefined) {
 		this.mForward = true;
@@ -426,17 +575,17 @@ jcalduration = function(duration) {
 	}
 };
 
-jcalduration.parseText = function(data) {
-	var duration = new jcalduration();
+Jcalduration.parseText = function(data) {
+	var duration = new Jcalduration();
 	duration.parse(data);
 	return duration;
 };
 
-jcalduration.prototype.getTotalSeconds = function() {
+Jcalduration.prototype.getTotalSeconds = function() {
 	return (this.mForward ? 1 : -1) * (this.mSeconds + (this.mMinutes + (this.mHours + (this.mDays + (this.mWeeks * 7)) * 24) * 60) * 60);
 };
 
-jcalduration.prototype.setDuration = function(seconds) {
+Jcalduration.prototype.setDuration = function(seconds) {
 	this.mForward = seconds >= 0;
 
 	var remainder = seconds;
@@ -471,7 +620,7 @@ jcalduration.prototype.setDuration = function(seconds) {
 	}
 }
 
-jcalduration.prototype.parse = function(data) {
+Jcalduration.prototype.parse = function(data) {
 	// parse format ([+]/-) "P" (dur-date / dur-time / dur-week)
 	try {
 		var offset = 0;
@@ -594,7 +743,7 @@ jcalduration.prototype.parse = function(data) {
 	}
 }
 
-jcalduration.prototype.generate = function(self, os) {
+Jcalduration.prototype.generate = function(self, os) {
 	var result = "";
 
 	if (!this.mForward && (this.mWeeks || this.mDays || this.mHours || this.mMinutes || this.mSeconds)) {

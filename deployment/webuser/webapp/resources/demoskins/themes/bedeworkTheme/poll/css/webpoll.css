@@ -89,6 +89,23 @@
 #bwPolls .voter:nth-child(even) {
   background-color: #e5e5e5;
 }
+#editpoll-choicelist .bwChoiceSummary {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+#editpoll-choicelist .bwChoiceType {
+  font-weight: normal;
+  font-style: italic;
+  margin-right: 2em;
+  display: inline;
+}
+#editpoll-choicelist .bwChoiceContent {
+  font-size: 0.9em;
+}
+#editpoll-choicelist .bwChoiceButtons {
+  float: right;
+  font-size: 0.9em;
+}
 #bwPolls #sidebar-owned, #editpoll-tabs {
 	margin-bottom: 4px;
 }
@@ -147,6 +164,9 @@
 	right: 4px;
 	bottom: 4px;
 }
+#editpoll-tabs {
+  overflow: scroll;
+}
 #bwPolls .active-voter {
 	font-weight:bold;
 }
@@ -185,23 +205,38 @@
 	top: 50%;
 	margin-top: -8px;
 }
+#bwPolls .summary-td {
+  background-color: #eee;
+}
+#bwPolls .start-td {
+  white-space: nowrap;
+}
 #bwPolls .center-td {
 	text-align:center;
+}
+#bwPolls .desc-td {
+  text-align:left;
+  width: 135px;
 }
 #bwPolls .poll-winner-td {
 	background-color:#D9D9D9;
 }
-#bwPolls .best-td {
-	background-color:#CCCCFF;
+/* use background, not background-color, to override button background images:  */
+#bwPolls .best-td,
+#bwPolls .response-btns label.ui-state-active.bestButton {
+	background:#CCCCFF;
 }
-#bwPolls .ok-td {
-	background-color:#CCE6CC;
+#bwPolls .ok-td,
+#bwPolls .response-btns label.ui-state-active.okButton {
+	background:#CCE6CC;
 }
-#bwPolls .maybe-td {
-	background-color:#FFFFCC;
+#bwPolls .maybe-td,
+#bwPolls .response-btns label.ui-state-active.maybeButton {
+	background:#FFFFCC;
 }
-#bwPolls .no-td {
-	background-color:#FFCCCC;
+#bwPolls .no-td,
+#bwPolls .response-btns label.ui-state-active.noButton {
+	background: #FFCCCC;
 }
 #bwPolls .no-response-td {
 	background-color:white;

@@ -22,6 +22,11 @@ var gViewController = null;
 var currentEntity = null;
 var locations = new BwLocations;
 
+var choicesTab = 0;
+var votersTab = 1;
+var resultsTab = 2;
+var active_tab = -1;
+
 // Page load
 $(function() {
 
@@ -37,6 +42,14 @@ $(function() {
       var p = ps[i].split(/=/);
       params[p[0]] = p[1];
     }
+  }
+
+  if (currentLocale.length > 0) {
+    var loc = currentLocale.toLowerCase();
+
+    loc.replace("_", "-");
+
+    moment.locale(loc);
   }
 
   // Setup CalDAV session
@@ -224,7 +237,7 @@ ViewController.prototype.clickRefresh = function() {
   }
 
   var currentUID = this.activePoll ? this.activePoll.editing_poll.uid() : null;
-  var active_tab = $("#editpoll-tabs").tabs("option", "active");
+  active_tab = $("#editpoll-tabs").tabs("option", "active");
   if (this.activePoll) {
     this.clickPollCancel();
   }
@@ -237,7 +250,7 @@ ViewController.prototype.clickRefresh = function() {
     if (currentUID) {
       this_view.selectPollByUID(currentUID);
       $("#editpoll-tabs").tabs("option", "active", active_tab);
-      if (active_tab == 2) {
+      if (active_tab === resultsTab) {
         this.activePoll.buildResults();
       }
     }
@@ -263,7 +276,7 @@ ViewController.prototype.clickSelectPoll = function(event, ui, owner) {
   }
 
   this.selectPoll(ui.item.index(), owner);
-}
+};
 
 // Select a poll from the list based on its UID
 ViewController.prototype.selectPollByUID = function(uid) {
@@ -272,22 +285,21 @@ ViewController.prototype.selectPollByUID = function(uid) {
     this.selectPoll(result, true);
     return;
   }
+
   result = this.voterPolls.indexOfPollUID(uid);
   if (result !== null) {
     this.selectPoll(result, false);
-    return;
   }
-}
+};
 
 //A poll was selected
 ViewController.prototype.selectPoll = function(index, owner) {
-
   // Make sure edit panel is visible
   this.activatePoll(owner ? this.ownedPolls.polls[index] : this.voterPolls.polls[index]);
   if (owner) {
     $("#editpoll-title-edit").focus();
   }
-}
+};
 
 // Activate specified poll
 ViewController.prototype.activatePoll = function(poll) {
@@ -301,6 +313,11 @@ ViewController.prototype.activatePoll = function(poll) {
 ViewController.prototype.clickPollSave = function() {
 
   // TODO: Actually save it to the server
+
+  if (active_tab === votersTab) {
+    // Ensure voters up to date
+    this.activePoll.updateVoters();
+  }
 
   this.activePoll.getPanel();
   if (this.isNewPoll) {
@@ -356,28 +373,30 @@ ViewController.prototype.editSetVisible = function(visible) {
 
     if (this.isNewPoll) {
       $("#editpoll-delete").hide();
-      $("#editpoll-tabs").tabs("disable", 2);
+      $("#editpoll-tabs").tabs("disable", resultsTab);
     } else {
       $("#editpoll-delete").show();
-      $("#editpoll-tabs").tabs("enable", 2);
+      $("#editpoll-tabs").tabs("enable", resultsTab);
     }
     if (this.activePoll.owned && this.activePoll.resource.object.mainComponent().editable()) {
       $("#editpoll-title-panel").hide();
       $("#editpoll-organizer-panel").hide();
       $("#editpoll-status-panel").hide();
       $("#editpoll-title-edit-panel").show();
-      $("#editpoll-tabs").tabs("enable", 0);
-      $("#editpoll-tabs").tabs("enable", 1);
-      $("#editpoll-tabs").tabs("option", "active", 0);
+      $("#editpoll-tabs").tabs("enable", choicesTab);
+      $("#editpoll-tabs").tabs("enable", votersTab);
+      $("#editpoll-tabs").tabs("option", "active", choicesTab);
+      active_tab = choicesTab;
       $("#response-key").hide();
     } else {
       $("#editpoll-title-edit-panel").hide();
       $("#editpoll-title-panel").show();
       $("#editpoll-organizer-panel").show();
       $("#editpoll-status-panel").show();
-      $("#editpoll-tabs").tabs("option", "active", 2);
-      $("#editpoll-tabs").tabs("disable", 0);
-      $("#editpoll-tabs").tabs("disable", 1);
+      $("#editpoll-tabs").tabs("option", "active", resultsTab);
+      active_tab = resultsTab;
+      $("#editpoll-tabs").tabs("disable", choicesTab);
+      $("#editpoll-tabs").tabs("disable", votersTab);
       $("#response-key").toggle(this.activePoll.resource.object.mainComponent().editable());
       this.activePoll.buildResults();
     }
@@ -406,11 +425,28 @@ ViewController.prototype.refreshed = function() {
 
 // Rebuild results panel each time it is selected
 ViewController.prototype.showResults = function(event, ui) {
-  if (ui.newPanel.selector == "#editpoll-results") {
+  var newTab;
+
+  if (ui.newPanel.selector === "#editpoll-results") {
+    newTab = resultsTab;
+  } else if (ui.newPanel.selector === "#editpoll-events") {
+    newTab = choicesTab;
+  } else if (ui.newPanel.selector === "#editpoll-voters") {
+    newTab = votersTab;
+  }
+
+  if (newTab === resultsTab) {
     this.activePoll.buildResults();
   }
-  $("#editpoll-autofill").toggle(ui.newPanel.selector == "#editpoll-results");
-  $("#response-key").toggle(ui.newPanel.selector == "#editpoll-results");
+  $("#editpoll-autofill").toggle(newTab === resultsTab);
+  $("#response-key").toggle(newTab === resultsTab);
+
+  if (active_tab === votersTab) {
+    // Moving away from voters - update the state
+    this.activePoll.updateVoters();
+  }
+
+  active_tab = newTab;
 }
 
 // Maintains the list of editable polls and manipulates the DOM as polls are

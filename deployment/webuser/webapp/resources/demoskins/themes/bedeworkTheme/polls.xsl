@@ -69,9 +69,9 @@
                 <div id="editpoll-choice">
                   <button id="editpoll-addchoice">Add Choice</button>
                   <div id="editpoll-choiceType">
-                    <input type="radio" name="choiceType" id="choiceTypeEvent" checked="checked"/>
+                    <input type="radio" name="choiceType" id="choiceTypeEvent" value="vevent" checked="checked"/>
                     <label for="choiceTypeEvent">event</label>
-                    <input type="radio" name="choiceType" id="choiceTypeTask"/>
+                    <input type="radio" name="choiceType" id="choiceTypeTask" value="vtodo" />
                     <label for="choiceTypeTask">task</label>
                   </div>
                 </div>
@@ -91,6 +91,8 @@
                 <div id="editpoll-resultsbox">
                   <table id="editpoll-resulttable">
                     <thead>
+                      <tr><td><xsl:text> </xsl:text></td></tr>
+                      <tr><td><xsl:text> </xsl:text></td></tr>
                       <tr><td><xsl:text> </xsl:text></td></tr>
                       <tr><td><xsl:text> </xsl:text></td></tr>
                       <tr><td><xsl:text> </xsl:text></td></tr>
@@ -127,6 +129,7 @@
       </div>
     </div>
     <div id="pollsFooter">&#160;</div>
+    <div id="debug">&#160;</div>
 
   </xsl:template>
 

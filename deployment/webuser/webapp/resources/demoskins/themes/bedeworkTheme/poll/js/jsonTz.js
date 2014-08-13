@@ -1,131 +1,135 @@
-var tzTbl = {}
+var tzTbl = {};
 
 var tzsExpanded = [];
 
 var tzsdebug = true;
 
+/** Maintain a table of expanded timezone information
+ *
+ * @constructor
+ */
 TzHandler = function() {
-    this.fetchingStatus = "FETCHING";
-    this.errorStatus = "ERROR";
-    this.okStatus = "OK";
-}
+  this.url = "/tzsvr";
+  this.fetchingStatus = "FETCHING";
+  this.errorStatus = "ERROR";
+  this.okStatus = "OK";
+};
 
 TzHandler.prototype.get = function(tzid) {
-    var exp = tzsExpanded[tzid];
+  var exp = tzsExpanded[tzid];
+  var thisTzHandler = this;
 
-    if (exp != null) {
-        return exp;
-    }
-
-    exp = new TzExpanded(tzid);
-    tzsExpanded[tzid] = exp;
-
-    alert("about to fetch tz " + tzid);
-
-    var tzreq = $.get("/tzsvr", { "action": "expand", "tzid": tzid },
-        function(data) {
-            parseExpanded(data, tzid);
-        })
-        .error(function() {
-            //alert("error");
-            exp.status = errorStatus;
-        });
-
+  if (exp != null) {
     return exp;
-}
+  }
+
+  exp = new TzExpanded(tzid);
+  tzsExpanded[tzid] = exp;
+
+  //alert("about to fetch tz " + tzid);
+
+  var tzreq = $.get(this.url, { "action": "expand", "tzid": tzid },
+      function(data) {
+        thisTzHandler.parseExpanded(data, tzid);
+      })
+      .error(function() {
+        //alert("error");
+        exp.status = errorStatus;
+      });
+
+  return exp;
+};
 
 TzHandler.prototype.waitFetch = function(tzid) {
-    var exp = tzs.get(tzid);
+  var exp = tzs.get(tzid);
 
-    while (exp.status == tzs.fetchingStatus) {
-        alert("Waiting for fetch - status=" + exp.status);
-    }
+  while (exp.status == tzs.fetchingStatus) {
+    alert("Waiting for fetch - status=" + exp.status);
+  }
 
-    return exp;
-}
+  return exp;
+};
 
 var tzs = new TzHandler();
 
-function parseExpanded(data, tzid) {
+TzHandler.prototype.parseExpanded = function(data, tzid) {
 //	var json = $.parseJSON(data);
 
-    //  alert("data=" + data);
-    //alert("json=" + json);
+  //  alert("data=" + data);
+  //alert("json=" + json);
 
-    var exp = tzsExpanded[tzid];
+  var exp = tzsExpanded[tzid];
 
-    $.each(data.observances, function(index, single) {
-        exp.addObservance(
-            single["name"],
-            single["onset"],
-            single["utc-offset-from"],
-            single["utc-offset-to"]);
-    });
+  $.each(data.observances, function(index, single) {
+    exp.addObservance(
+        single["name"],
+        single["onset"],
+        single["utc-offset-from"],
+        single["utc-offset-to"]);
+  });
 
-    exp.status = tzs.okStatus;
-    //tzsExpanded[tzid] = exp;
+  exp.status = tzs.okStatus;
+  //tzsExpanded[tzid] = exp;
 }
 
 function TzObservance(name, onset, from, to) {
-    this.name = name;
-    this.onset = onset;
-    this.from = from;
-    this.to = to;
+  this.name = name;
+  this.onset = onset;
+  this.from = from;
+  this.to = to;
 
-    this.toString = function() {
-        var out = name + ", " + onset + ", " + from + ", " + to + "<br />";
+  this.toString = function() {
+    return name + ", " + onset + ", " + from + ", " + to + "<br />";
+  };
 
-        return out;
+  this.compare = function(thatone) {
+    if (this.onset == thatone.onset) {
+      return 0;
     }
 
-    this.compare = function(thatone) {
-        if (this.onset == thatone.onset) {
-            return 0;
-        }
-
-        if (this.onset > thatone.onset) {
-            return 1;
-        }
-
-        return -1;
+    if (this.onset > thatone.onset) {
+      return 1;
     }
+
+    return -1;
+  }
 }
 
 function tzObservanceCompare(thisone, thatone) {
-    return thisone.compare(thatone);
+  return thisone.compare(thatone);
 }
 
 TzExpanded = function(tzid) {
-    this.observances = [];
-    this.status = tzs.fetchingStatus;
-    this.tzid = tzid;
-    this.sortedObservances = null;
-}
+  this.observances = [];
+  this.status = tzs.fetchingStatus;
+  this.tzid = tzid;
+  this.sortedObservances = null;
+};
 
 TzExpanded.prototype.addObservance = function(name, onset, from, to) {
-    this.observances.push(new TzObservance(name, onset, from, to));
-}
+  this.observances.push(new TzObservance(name, onset, from, to));
+};
 
 TzExpanded.prototype.findObservance = function(dt) {
-    if (this.sortedObservances == null) {
-        this.sortedObservances = this.observances.sort(tzObservanceCompare);
-    }
+  if (this.sortedObservances == null) {
+    this.sortedObservances = this.observances.sort(tzObservanceCompare);
+  }
 
-    for (i in this.sortedObservances) {
-        if (dt > this.sortedObservances[i].onset) {
-            return this.sortedObservances[i];
-        }
+  for (i in this.sortedObservances) {
+    if (dt > this.sortedObservances[i].onset) {
+      return this.sortedObservances[i];
     }
+  }
 
-    return null;
-}
+  return null;
+};
 
 TzExpanded.prototype.toString = function() {
-    var out = this.tzid + "<br />";
+  var out = this.tzid + "<br />";
 
-    for (i in this.observances) {
-        out = out + this.observances[i].toString();
-    }
+  for (i in this.observances) {
+    out = out + this.observances[i].toString();
+  }
 
-    return out;
-}
+  return out;
+};

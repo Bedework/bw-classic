@@ -39,6 +39,7 @@
       var resourcesRoot = "<xsl:value-of select="$resourcesRoot"/>";
       var imagesRoot = resourcesRoot + "/images";
       var hour24 = <xsl:value-of select="/bedework/hour24"/>;
+      var currentLocale = "<xsl:value-of select="/bedework/currentLocale"/>";
       </xsl:comment>
     </script>
 
@@ -53,12 +54,14 @@
         <link href="/bedework-common/javascript/jquery/magnific/magnific-popup.css" rel="stylesheet"/>
         <link href="{$resourcesRoot}/poll/css/webpoll.css" rel="stylesheet"/>
         <script src="{$resourcesRoot}/poll/js/json2.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/jsonTz.js">&#160;</script>
         <script src="{$resourcesRoot}/poll/js/utils.js">&#160;</script>
         <script src="{$resourcesRoot}/poll/js/bwutils.js">&#160;</script>
         <script src="{$resourcesRoot}/poll/js/jcal.js">&#160;</script>
         <script src="{$resourcesRoot}/poll/js/caldav.js">&#160;</script>
         <script src="{$resourcesRoot}/poll/js/webpoll.js">&#160;</script>
         <script src="{$resourcesRoot}/poll/js/poll.js">&#160;</script>
+        <script src="{$resourcesRoot}/poll/js/moment-with-locales.2.8.1.js">&#160;</script>
 
         <!-- include the localized jQuery datepicker defaults -->
         <xsl:call-template name="jqueryDatepickerDefaults"/>
