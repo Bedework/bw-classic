@@ -217,6 +217,7 @@
 #bwPolls .desc-td {
   text-align:left;
   width: 135px;
+  font-style: italic;
 }
 #bwPolls .poll-winner-td {
 	background-color:#D9D9D9;

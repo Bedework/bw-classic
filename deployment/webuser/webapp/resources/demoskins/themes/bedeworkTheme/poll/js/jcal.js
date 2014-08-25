@@ -69,30 +69,30 @@ jcalparser.BACKSLASH_IN_URI_VALUE = jcalparser.PARSER_FIX;
  */
 jcal = function(caldata) {
 	this.caldata = caldata;
-}
+};
 
 jcal.newCalendar = function() {
 	var calendar = new jcal(["vcalendar", [], []]);
 	calendar.newProperty("version", "2.0");
 	calendar.newProperty("prodid", gProdID);
 	return calendar;
-}
+};
 
 jcal.fromString = function(data) {
 	return new jcal($.parseJSON(data));
-}
+};
 
 jcal.prototype.toString = function() {
 	return JSON.stringify(this.caldata);
-}
+};
 
 jcal.prototype.duplicate = function() {
 	return new jcal($.parseJSON(this.toString()));
-}
+};
 
 jcal.prototype.name = function() {
 	return this.caldata[0];
-}
+};
 
 jcal.prototype.isEvent = function() {
   return this.name() === "vevent";
@@ -109,7 +109,7 @@ jcal.prototype.mainComponent = function() {
 		return (component[0] != "vtimezone");
 	});
 	return (results.length == 1) ? new jcal(results[0]) : null;
-}
+};
 
 function makeJcal(name, defaultProperties) {
   var jcomp = new jcal([name.toLowerCase(), [], []]);
@@ -128,7 +128,7 @@ jcal.prototype.newComponent = function(name, defaultProperties) {
 jcal.prototype.addComponent = function(component) {
 	this.caldata[2].push(component.caldata);
 	return component;
-}
+};
 
 // Get one component
 jcal.prototype.getComponent = function(name) {
@@ -137,7 +137,7 @@ jcal.prototype.getComponent = function(name) {
 		return (component[0] == name);
 	});
 	return (results.length == 1) ? new jcal(results[0]) : null;
-}
+};
 
 // Get all matching components
 jcal.prototype.components = function(name) {
@@ -148,7 +148,7 @@ jcal.prototype.components = function(name) {
 	return $.map(results, function(component, index) {
 		return new jcal(component);
 	});
-}
+};
 
 // Get all components
 jcal.prototype.getComponents = function() {
@@ -167,7 +167,7 @@ jcal.prototype.nextPollItemId = function() {
         }
     });
     return pid + 1;
-}
+};
 
 // Remove all matching components
 jcal.prototype.removeComponents = function(name) {
@@ -175,7 +175,7 @@ jcal.prototype.removeComponents = function(name) {
 	this.caldata[2] = $.grep(this.caldata[2], function(comp, index) {
 		return comp[0] != name;
 	});
-}
+};
 
 jcal.prototype.newProperty = function(name, value, params, value_type) {
 	var prop = [name.toLowerCase(), params === undefined ? {} : params, value_type == undefined ? "text" : value_type];
@@ -188,13 +188,13 @@ jcal.prototype.newProperty = function(name, value, params, value_type) {
 	}
 	this.caldata[1].push(prop);
 	return prop;
-}
+};
 
 jcal.prototype.copyProperty = function(name, component) {
 	var propdata = component.getProperty(name);
 	this.caldata[1].push([propdata[0], propdata[1], propdata[2], propdata[3]]);
 	return propdata;
-}
+};
 
 jcal.prototype.hasProperty = function(name) {
 	var result = false;
@@ -206,7 +206,7 @@ jcal.prototype.hasProperty = function(name) {
 		}
 	});
 	return result;
-}
+};
 
 jcal.prototype.getProperty = function(name) {
 	var result = null;
@@ -218,7 +218,7 @@ jcal.prototype.getProperty = function(name) {
 		}
 	});
 	return result;
-}
+};
 
 jcal.prototype.getPropertyValue = function(name) {
 	var result = null;
@@ -230,7 +230,7 @@ jcal.prototype.getPropertyValue = function(name) {
 		}
 	});
 	return result;
-}
+};
 
 jcal.prototype.updateProperty = function(name, value, params, value_type) {
 	if (params === undefined) {
@@ -249,20 +249,20 @@ jcal.prototype.updateProperty = function(name, value, params, value_type) {
 	} else if (props.length == 0) {
 		return this.newProperty(name, value, params, value_type);
 	}
-}
+};
 
 jcal.prototype.properties = function(name) {
 	return $.grep(this.caldata[1], function(propdata, index) {
 		return propdata[0] == name;
 	});
-}
+};
 
 jcal.prototype.removeProperties = function(name) {
 	name = name.toLowerCase();
 	this.caldata[1] = $.grep(this.caldata[1], function(propdata, index) {
 		return propdata[0] != name;
 	});
-}
+};
 
 // Remove properties for which test() returns true
 jcal.prototype.removePropertiesMatching = function(test) {
@@ -270,71 +270,58 @@ jcal.prototype.removePropertiesMatching = function(test) {
 	this.caldata[1] = $.grep(this.caldata[1], function(propdata, index) {
 		return !test(propdata);
 	});
-}
-
-// Date/time utility functions
-Jcaldate = function() {
-	this.date = new Date();
-	this.tzid = "utc";
-};
-
-Jcaldate.jsDateTojCal = function(date) {
-	return date.toISOString().substr(0, 19);
-};
-
-Jcaldate.jCalTojsDate = function(value) {
-	var result = new Date(value);
-	result.setMilliseconds(0);
-	return result;
-};
-
-Jcaldate.prototype.toString = function() {
-	return this.date.toISOString().substr(0, 19);
 };
 
 /**
- *
  * @param hour24
- * @param datePart
+ * @param name "start" or "end"
+ * @param datePart string or moment
  * @param allDay
- * @param hours value appropriate for hour24 and am flags
- * @param minutes
  * @param UTC
- * @param am
- * @param tzid
+ * @param tzidPar
+ * @param hours value appropriate for hour24 and am flags - for string datePart
+ * @param minutes - for string datePart
+ * @param am - for string datePart
  * @constructor
  */
-JcalDtTime = function(hour24, datePart, allDay, hours, minutes, UTC, am, tzid) {
+JcalDtTime = function(hour24, name, datePart, allDay, UTC, tzidPar, hours, minutes, am) {
   this.hour24 = hour24;
-  this.datePart = datePart;
+  this.name = name;
   this.allDay = allDay;
-
-  if (!allDay) {
-    this.minutes = minutes;
-
-    this.UTC = UTC;
-    this.tzid = tzid;
-    this.am = am;
-
-    this.hours = parseInt(hours);
-
-    this.timePart = digits2(hours) + ":" + digits2(minutes) + ":00";
-  } else {
-    this.hours = 0;
-    this.minutes = 0;
-    this.UTC = false;
-    this.tzid = null;
-    this.am = false;
+  this.UTC = false;
+  this.theTzid = null;
+  this.fieldType = "date";
+  if (name === "end") {
+    this.fieldType = preferredEndType;
   }
 
-  this.moment = null;
+  if (datePart === undefined) {
+    return;
+  }
+
+  if (typeof datePart === "string") {
+    this.moment = moment(datePart);
+
+    if (!allDay) {
+      this.moment.minutes(minutes);
+      this.moment.hours(JcalDtTime.hour24(am, hours));
+    }
+  } else {
+    // Presume a moment
+    this.moment = datePart.clone();
+  }
+
+  if (!allDay) {
+    this.UTC = UTC;
+    this.tzid(tzidPar);
+  }
 };
 
-/** Break up the date and time value to make it usable for form population'
+/** Break up the date and time value to make it usable for form population
  *
  * @param hour24 true for 24 hour
  * @param dtProp valid date or date time property
- *               [name, params, value]
+ *               [name, params, type, value]
  */
 JcalDtTime.fromProperty = function(hour24, dtProp) {
   var datePart = null;
@@ -343,8 +330,15 @@ JcalDtTime.fromProperty = function(hour24, dtProp) {
   var minutes = null;
   var UTC = false;
   var allDay = false;
-  var tzid = null;
   var am = false;
+
+  var name;
+
+  if (dtProp[0] === "dtstart") {
+    name = "start";
+  } else {
+    name = "end";
+  }
 
   // Why do I have to assign then use? Does not work otherwise
   var params = dtProp[1];
@@ -362,7 +356,7 @@ JcalDtTime.fromProperty = function(hour24, dtProp) {
   }
 
   if (allDay) {
-    return new JcalDtTime(hour24, datePart, true);
+    return new JcalDtTime(hour24, name, datePart, true);
   }
 
   // Set the time fields.
@@ -386,7 +380,103 @@ JcalDtTime.fromProperty = function(hour24, dtProp) {
     hours = hoursInt;
   }
 
-  return new JcalDtTime(hour24, datePart, false, hours, minutes, UTC, am, tzid);
+  return new JcalDtTime(hour24, name, datePart, false, UTC, tzid, hours, minutes, am);
+};
+
+/** Convert the hour value to a 24 hour val
+ *
+ * @param am true/false
+ * @param hours int 1->12
+ */
+JcalDtTime.hour24 = function(am, hours) {
+  if (am && (hours === 12)) {
+    return 0;
+  }
+
+  if (hours > 12) {
+    hours -= 12;
+  }
+
+  return hours;
+};
+
+JcalDtTime.now = function(hour24, name) {
+  var mt = moment();
+
+  mt.minutes(0);
+  mt.seconds(0);
+
+  return new JcalDtTime(hour24, name, mt, false, false, defaultTzid);
+};
+
+/** Update to reflect the values - switch to date mode.
+ *
+ * @param datePart string or moment
+ * @param allDay
+ * @param UTC
+ * @param tzidPar
+ * @param hours value appropriate for hour24 and am flags - for string datePart
+ * @param minutes - for string datePart
+ * @param am - for string datePart
+ */
+JcalDtTime.prototype.update = function(datePart, allDay, UTC, tzidPar, hours, minutes, am) {
+  this.moment = moment(datePart, "YYYYMMDD");
+
+  this.allDay = allDay;
+  this.UTC = UTC;
+
+  if (this.allDay) {
+    return;
+  }
+
+  this.moment.minutes(minutes);
+  this.moment.hours(JcalDtTime.hour24(am, hours));
+
+  if (!this.UTC) {
+    this.tzid(tzidPar);
+  }
+};
+
+/** Update to reflect the values - switch to duration mode.
+ *
+ * @param duration a moment.duration object
+ * @param start duration is from this
+ */
+JcalDtTime.prototype.updateFromDuration = function(duration, start) {
+  this.allDay = start.allDay;
+  this.UTC = start.UTC;
+
+  this.moment = start.moment.clone();
+  var offset = duration.asSeconds();
+  this.addSeconds(offset);
+
+  if (!this.UTC) {
+    this.tzid(start.tzid);
+  }
+};
+
+JcalDtTime.prototype.tzid = function(val) {
+  if (val === undefined) {
+    return this.theTzid;
+  }
+
+  this.theTzid = val;
+
+  if (this.theTzid === null) {
+    this.theTzid = defaultTzid;
+  }
+
+  if (this.theTzid === null) {
+    // Can't set
+  }
+
+  var offset = tzs.getOffset(digits4(this.moment.year()), this.theTzid);
+
+  /* Note the oddity with sign of timezone offset and
+     UTC offset
+     http://stackoverflow.com/questions/22275025/inverted-zone-in-moment-timezone
+     */
+  this.moment.utc().zone(-offset).local();
 };
 
 /**
@@ -395,7 +485,16 @@ JcalDtTime.fromProperty = function(hour24, dtProp) {
  * @returns moment
  */
 JcalDtTime.prototype.addSeconds = function(val) {
-  return this.getMoment().add('seconds', val);
+  return this.moment.add('seconds', val);
+};
+
+/**
+ *
+ * @param val - number of hours
+ * @returns moment
+ */
+JcalDtTime.prototype.addHours = function(val) {
+  return this.moment.add('hours', val);
 };
 
 /**
@@ -404,34 +503,96 @@ JcalDtTime.prototype.addSeconds = function(val) {
  * @returns moment
  */
 JcalDtTime.prototype.addDays = function(val) {
-  return this.getMoment().add('days', val);
+  return this.moment.add('days', val);
 };
 
 JcalDtTime.prototype.getDate = function() {
-  return this.getMoment().toDate();
+  return this.moment.toDate();
 };
 
-JcalDtTime.prototype.getHours = function() {
-  return this.getMoment().toDate().getHours();
+/**
+ *
+ * @param val
+ * @returns {*} int from 0-23
+ */
+JcalDtTime.prototype.hours = function(val) {
+  return this.moment.hours(val);
 };
 
-JcalDtTime.prototype.getTime = function() {
-  return this.getMoment().toDate().getTime();
+/** Return a value suitable for date widgets. If hours24 return 0-23
+ * otherwise adjusts for an am/pm style.
+ *
+ * Caller must call am() to determine the am/pm status
+ *
+ * @param val
+ * @returns {*} 1-12 or 0-23
+ */
+JcalDtTime.prototype.hoursAmPm24 = function(val) {
+  if (val === undefined) {
+    var h = this.hours();
+
+    if (this.hour24) {
+      return h;
+    }
+
+    if (h > 12) {
+      return h - 12;
+    }
+
+    if (h === 0) {
+      return 12;
+    }
+  }
+  return this.moment.hours(val);
+};
+
+JcalDtTime.prototype.minutes = function(val) {
+  return this.moment.minutes(val);
+};
+
+JcalDtTime.prototype.seconds = function(val) {
+  return this.moment.seconds(val);
+};
+
+JcalDtTime.prototype.milliseconds = function(val) {
+  return this.moment.milliseconds(val);
+};
+
+JcalDtTime.prototype.am = function() {
+  return this.moment.hours() < 12;
 };
 
 JcalDtTime.prototype.getPrintableTime = function() {
   if (this.hour24) {
-    return this.getMoment().format("HH:mm")
+    return this.moment.format("HH:mm")
   }
-  return this.getMoment().format("h:mm:ss a");
+  return this.moment.format("h:mm:ss a");
 };
 
 JcalDtTime.prototype.getLocalizedDate = function() {
-  return this.getMoment().format("LL");
+  return this.moment.format("LL");
 };
 
 JcalDtTime.prototype.getLocalizedShortDate = function() {
-  return this.getMoment().format("ll");
+  return this.moment.format("ll");
+};
+
+/**
+ *
+ * @returns {String} yyyyMMdd[ThhmmssZ]
+ */
+JcalDtTime.prototype.getIcalUTC = function() {
+  if (this.allDay) {
+    return this.moment.format("YYYYMMDD");
+  }
+
+  var res = this.moment.utc().format("YYYYMMDD[T]HHmmss[Z]");
+  this.moment.local(); // Switch back to local mode
+  return res;
+};
+
+JcalDtTime.prototype.equals = function(other) {
+  return this.milliseconds() === other.milliseconds();
 };
 
 JcalDtTime.prototype.dateEquals = function(other) {
@@ -439,19 +600,23 @@ JcalDtTime.prototype.dateEquals = function(other) {
 };
 
 /**
+ * Return a correctly formatted date based on the field values
+ */
+JcalDtTime.prototype.getDatePart = function() {
+  return this.moment.format("YYYY-MM-DD");
+}
+
+/**
  * Return a correctly formatted date/time based on the field values
  */
 JcalDtTime.prototype.getDtval = function() {
+  var datePart = this.getDatePart();
   if (this.allDay) {
-    return this.datePart;
+    return datePart;
   }
 
-  var res = this.datePart;
-  if (!this.hour24 && !this.am) {
-    this.hours = this.hours + 12;
-  }
-
-  res += "T" + digits2(this.hours) + ":" + digits2(this.minutes) + ":00";
+  var res = datePart +
+            "T" + digits2(this.hours()) + ":" + digits2(this.minutes()) + ":00";
 
   if (this.UTC) {
     res += "Z";
@@ -462,79 +627,67 @@ JcalDtTime.prototype.getDtval = function() {
 
 /**
  *
- * @param name of property
  * @param comp a jcal object
+ * @param start a JcalDtTime object so we can calculate duration.
  */
-JcalDtTime.prototype.updateProperty = function(name, comp) {
-  var val = this.getDtval();
+JcalDtTime.prototype.updateProperty = function(comp, start) {
   var params;
+  var type;
 
-  if (this.tzid === null) {
+  if (this.fieldType === "duration") {
+    var dur = moment.duration(this.moment.diff(start.moment, "seconds"), "seconds").toISOString();
+
+    comp.updateProperty("duration", dur, {}, "duration");
+    // May have switched from end to duration
+    comp.removeProperties(this.pname(comp));
+
+    return;
+  }
+
+  var val = this.getDtval();
+
+  if (this.theTzid === null) {
     params = {};
   } else {
-    params = {"tzid": this.tzid};
+    params = {"tzid": this.theTzid};
   }
 
   if (this.allDay) {
-    this.type = "date";
+    type = "date";
   } else {
-    this.type = "date-time";
+    type = "date-time";
   }
 
-  comp.updateProperty(name, val, params, this.type);
-};
-
-/**
- * Return or set the tzid
- *
- * @return the tzid or null
- */
-JcalDtTime.prototype.tzid = function(val) {
-  if (val === undefined) {
-    return this.tzid;
-  }
-
-  if (val !== this.tzid) {
-    this.moment = null; // Force recalculation
-
-    this.tzid = val;
+  comp.updateProperty(this.pname(comp), val, params, type);
+  if (this.name === "end") {
+    comp.removeProperties("duration");
   }
 };
 
-JcalDtTime.prototype.getMoment = function() {
-  if (this.moment === null) {
-    this.moment = moment(this.getDtval());
-
-    if (this.UTC || (this.tzid === null)) {
-      return this.moment;
-    }
-
-    var offset = tzs.getOffset(this.getDtval(), this.tzid);
-
-    /* Note the oddity with sign of timezone offset and
-     UTC offset
-     http://stackoverflow.com/questions/22275025/inverted-zone-in-moment-timezone
-     */
-    this.moment.utc().zone(-offset);
+JcalDtTime.prototype.pname = function(comp) {
+  if (this.name === "start") {
+    return "dtstart";
+  }
+  if (comp.isEvent()) {
+    return "dtend";
   }
 
-  return this.moment;
+  return pname = "due";
+};
+
+JcalDtTime.prototype.duplicateAs = function(name) {
+  var that = new JcalDtTime(this.hour24, name);
+  that.UTC = this.UTC;
+  that.allDay = this.allDay;
+  that.theTzid = this.theTzid;
+  that.moment = this.moment.clone();
+
+  return that;
 };
 
 JcalDtTime.prototype.clone = function() {
-  var that = new JcalDtTime(this.hour24);
-
-  that.datePart = this.datePart;
-  that.timePart = this.timePart;
-  that.hours = this.hours;
-  that.minutes = this.minutes;
-  that.UTC = this.UTC;
-  that.allDay = this.allDay;
-  that.tzid = this.tzid;
-  that.am = this.am;
-
-  return that;
-}
+  return this.duplicateAs(this.name);
+};
 
 /** 'static' date conversion
  *
@@ -552,6 +705,10 @@ function digits2(val) {
   }
 
   return "0" + i;
+}
+
+function digits4(val) {
+  return ("000" + val).substr(-4);
 }
 
 function jcalTimestamp() {

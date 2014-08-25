@@ -116,7 +116,7 @@ function TimeRangeExpandedSummaryQueryReport(url, start, end, events) {
 			'<C:calendar-query' + buildXMLNS(nsmap) + '>' +
 				'<D:prop>' +
 				'<C:calendar-data content-type="application/calendar+json">' +
-					'<C:expand start="' + JcalDtTime.jsDateToiCal(start) + '" end="' + JcalDtTime.jsDateToiCal(end) + '"/>' +
+					'<C:expand start="' + start.getIcalUTC() + '" end="' + end.getIcalUTC() + '"/>' +
 					'<C:comp name="VCALENDAR">' +
 						'<C:allprop/>' +
 						'<C:comp name="' + compName + '">' +
@@ -128,7 +128,7 @@ function TimeRangeExpandedSummaryQueryReport(url, start, end, events) {
 				'<C:filter>' +
 					'<C:comp-filter name="VCALENDAR">' +
 						'<C:comp-filter name="' + compName + '">' +
-							'<C:time-range start="' + JcalDtTime.jsDateToiCal(start) + '" end="' + JcalDtTime.jsDateToiCal(end) + '"/>' +
+							'<C:time-range start="' + start.getIcalUTC() + '" end="' + end.getIcalUTC() + '"/>' +
 						'</C:comp-filter>' +
 					'</C:comp-filter>' +
 				'</C:filter>' +
@@ -514,13 +514,13 @@ CalDAVPrincipal.prototype.isBusy = function(user, start, end, whenDone) {
 	);
 	fb.newProperty(
 		"dtstart",
-		Jcaldate.jsDateTojCal(start),
+		start.getIcalUTC(),
 		{},
 		"date-time"
 	);
 	fb.newProperty(
 		"dtend",
-		Jcaldate.jsDateTojCal(end),
+		end.getIcalUTC(),
 		{},
 		"date-time"
 	);
@@ -796,8 +796,10 @@ CalendarComponent.prototype.summary = function(value) {
  */
 CalendarComponent.prototype.start = function() {
   if (this.startObj === undefined) {
-    this.startObj = new JcalDtTime(hour24, this.data.getProperty("dtstart"));
+    this.startObj = JcalDtTime.fromProperty(hour24, this.data.getProperty("dtstart"));
   }
+
+  this.startObj.fieldType = "date";
 
   return this.startObj;
 };
@@ -817,11 +819,12 @@ CalendarComponent.prototype.end = function() {
   }
   var dtend = this.data.getPropertyValue(pname);
   if (dtend !== null) {
-    this.endObj = new JcalDtTime(hour24, this.data.getProperty("dtend"));
+    this.endObj = JcalDtTime.fromProperty(hour24, this.data.getProperty("dtend"));
+
     return this.endObj;
   }
 
-  this.endObj = this.start().clone();
+  this.endObj = this.start().duplicateAs("end");
 
   var duration = this.data.getPropertyValue("duration");
   if (duration === null) {
@@ -832,40 +835,13 @@ CalendarComponent.prototype.end = function() {
     if (this.endObj.allDay) {
       this.endObj.addDays(1);
     }
+    this.endObj.fieldType = preferredEndType;
   } else {
     var offset = Jcalduration.parseText(duration).getTotalSeconds();
     this.endObj.addSeconds(offset);
+    this.endObj.fieldType = "duration";
   }
   return this.endObj;
-};
-
-CalendarComponent.prototype.dtstart = function() {
-  return Jcaldate.jCalTojsDate(this.data.getPropertyValue("dtstart"));
-};
-
-CalendarComponent.prototype.dtend = function() {
-  var pname = "dtend";
-  if (this.isTask()) {
-    pname = "due";
-  }
-  var dtend = this.data.getPropertyValue(pname);
-  if (dtend === null) {
-    var offset = 0;
-    var duration = this.data.getPropertyValue("duration");
-    if (duration === null) {
-      /* No dtend or duration -
-         this is wrong - it's appropriate for DATE but for DATETIME
-         it should be the same as the start,
-       */
-      dtend = new Date(this.dtstart().getTime());
-      dtend.setHours(0, 0, 0, 0);
-      dtend.setDate(dtend.getDate() + 1);
-    } else {
-      offset = Jcalduration.parseText(duration).getTotalSeconds() * 1000;
-      dtend = new Date(this.dtstart().getTime() + offset);
-    }
-  }
-  return Jcaldate.jCalTojsDate(dtend);
 };
 
 CalendarComponent.prototype.description = function(value) {
@@ -1049,26 +1025,18 @@ CalendarPoll.prototype.getChoice = function(itemId) {
 /** Make a new choice for the VPOLL
  *
  * @param type
- * @param dtstart
- * @param dtend
+ * @param start
+ * @param end
  * @returns {*}
  */
-CalendarPoll.prototype.makeChoice = function(type, dtstart, dtend) {
+CalendarPoll.prototype.makeChoice = function(type, start, end) {
 	//this.changed(true);
 	var comp = makeJcal(type, true);
 
   var dtPars = {"tzid": defaultTzid};
 
-	comp.newProperty("dtstart", Jcaldate.jsDateTojCal(dtstart),
-      dtPars, "date-time");
-
-  if (comp.isEvent()) {
-    comp.newProperty("dtend", Jcaldate.jsDateTojCal(dtend),
-        dtPars, "date-time");
-  } else {
-    comp.newProperty("due", Jcaldate.jsDateTojCal(dtend),
-        dtPars, "date-time");
-  }
+  start.updateProperty(comp);
+  end.updateProperty(comp, start);
 
 	comp.newProperty("summary", this.summary());
 	comp.newProperty("poll-item-id", (this.data.nextPollItemId()).toString());
@@ -1082,11 +1050,18 @@ CalendarPoll.prototype.makeChoice = function(type, dtstart, dtend) {
   comp.copyProperty("organizer", this.data);
   this.syncAttendees(comp);
 
+  var choice;
+
   if (comp.isEvent()) {
-    return new CalendarEvent(comp, this);
+    choice = new CalendarEvent(comp, this);
+  } else {
+    choice = new CalendarTask(comp, this);
   }
 
-  return new CalendarTask(comp, this);
+  choice.startObj = start;
+  choice.endObj = end;
+
+  return choice;
 };
 
 /** Save a choice in the VPOLL
@@ -1248,7 +1223,39 @@ CalendarComponent.prototype.pickAsWinner = function() {
 	calendar.changed(true);
 
 	return new CalendarResource(gSession.currentPrincipal.event_calendars[0], null, null, calendar);
-}
+};
+
+// Get an array of attendees
+CalendarComponent.prototype.attendees = function() {
+  var thisComp = this;
+  return $.map(this.data.properties("attendee"), function(attendee) {
+    return new CalendarUser(attendee, thisComp);
+  });
+};
+
+// Get an array of recurrence info
+CalendarComponent.prototype.rrules = function() {
+  var thisComp = this;
+  return $.map(this.data.properties("rrule"), function(rrule) {
+    return rrule;
+  });
+};
+
+// Get an array of rdates
+CalendarComponent.prototype.rdates = function() {
+  var thisComp = this;
+  return $.map(this.data.properties("rdate"), function(val) {
+    return val;
+  });
+};
+
+// Get an array of rdates
+CalendarComponent.prototype.exdates = function() {
+  var thisComp = this;
+  return $.map(this.data.properties("exdate"), function(val) {
+    return val;
+  });
+};
 
 // An iCalendar calendar user (ORGANIZER/ATTENDEE/VOTER) property
 CalendarUser = function(caldata, parent) {

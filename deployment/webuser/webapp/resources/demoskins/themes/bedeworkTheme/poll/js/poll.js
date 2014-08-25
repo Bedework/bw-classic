@@ -132,12 +132,12 @@ Poll.prototype.addChoicePanel = function(choice) {
   chc += '<div class="bwChoiceSummary">' + choice.data.getPropertyValue("summary") + '</div>';
   chc += '<div class="bwChoiceContent">';
   chc += '<div class="bwChoiceDates">';
-  chc += choice.data.getPropertyValue("dtstart").slice(0,10) + ' ';
-  chc += choice.data.getPropertyValue("dtstart").slice(11,16) + ' - ';
-  if (choice.data.getPropertyValue("dtend").slice(0,10) != choice.data.getPropertyValue("dtstart").slice(0,10)) {
-    chc += choice.data.getPropertyValue("dtend").slice(0,10) + ' ';
+  chc += choice.start().getLocalizedDate() + ' ';
+  chc += choice.start().getPrintableTime() + ' - ';
+  if (!choice.start().dateEquals(choice.end())) {
+    chc += choice.end().getLocalizedDate() + ' ';
   }
-  chc += choice.data.getPropertyValue("dtend").slice(11,16);
+  chc += choice.end().getPrintableTime();
   chc += '</div>';
   if (choice.data.getPropertyValue("description") != null && choice.data.getPropertyValue("description") != "") {
     chc += '<div class="bwChoiceDesc">' + choice.data.getPropertyValue("description") + '</div>';
@@ -178,19 +178,37 @@ Poll.prototype.updateEventFromPanel = function(panel, event) {
 
 // Add choice button clicked
 Poll.prototype.addChoice = function() {
-
-  var ctr = $("#editpoll-choicelist").children().length;
-  var dtstart = new Date();
-  dtstart.setDate(dtstart.getDate() + ctr);
-  dtstart.setHours(12, 0, 0, 0);
-  var dtend = new Date();
-  dtend.setDate(dtend.getDate() + ctr);
-  dtend.setHours(13, 0, 0, 0);
-
   var choiceType = $("input:radio[name=choiceType]:checked").val();
 
-  // Add new list item
-  currentEntity = this.editing_poll.makeChoice(choiceType, dtstart, dtend);
+  var choices = this.editing_poll.choices();
+
+  if (choices.length === 0) {
+    // Manufacture a new one
+
+    var start = JcalDtTime.now(hour24, "start");
+    start.addHours(1);
+
+    var end = JcalDtTime.now(hour24, "end");
+    end.addHours(2);
+
+    // Add new list item
+    currentEntity = this.editing_poll.makeChoice(choiceType, start, end);
+  } else {
+    // Clone one from the last one created.
+    var prevEntity = choices[choices.length - 1];
+    currentEntity = prevEntity.duplicate();
+
+    start = currentEntity.start();
+    start.addDays(1);
+    start.updateProperty(currentEntity.data);
+
+    end = currentEntity.end();
+    if (end.fieldType !== "duration") {
+      end.addDays(1);
+    }
+    end.updateProperty(currentEntity.data, start);
+  }
+
 
   $.magnificPopup.open({
     items: {
@@ -206,19 +224,19 @@ Poll.prototype.addChoice = function() {
   }, 0);
 
   return true; // this.setEventPanel(this.addChoicePanel(), currentEntity);
-}
+};
 
 //Add a new choice item in the UI
 Poll.prototype.populateChoiceForm = function(choice) {
   $("#choice-widget #bwEventTitle").val(choice.data.getPropertyValue("summary"));
 
-  var dtStart = choice.data.getProperty("dtstart");
-  var dtSt = JcalDtTime.fromProperty(hour24, dtStart);
+  var dtSt = choice.start();
   var hour = 0;
   var hour24Opts = "";
   var locNames = locations.getDisplayNames();
+  var thisPoll = this;
 
-  $("#choice-widget #bwEventWidgetStartDate").val(dtSt.datePart);
+  $("#choice-widget #bwEventWidgetStartDate").val(dtSt.getDatePart());
 
   if(dtSt.allDay) {
     $("#allDayFlag").click();
@@ -233,13 +251,13 @@ Poll.prototype.populateChoiceForm = function(choice) {
       $("#choice-widget #eventStartDateHour").empty();
       $("#choice-widget #eventStartDateHour").html(hour24Opts);
     } else {
-      if(!dtSt.am) {
+      if(!dtSt.am()) {
         $("#choice-widget #eventStartDateAmpm").prop("selectedIndex", 1);
       }
     }
 
-    $("#choice-widget #eventStartDateHour").val(dtSt.hours);
-    $("#choice-widget #eventStartDateMinute").val(dtSt.minutes);
+    $("#choice-widget #eventStartDateHour").val(dtSt.hoursAmPm24());
+    $("#choice-widget #eventStartDateMinute").val(dtSt.minutes());
 
     if (dtSt.tzid !== undefined) {
       // Set the tzid from dtSt.tzid
@@ -269,14 +287,10 @@ Poll.prototype.populateChoiceForm = function(choice) {
     }
   } else {
     $("input[name=eventEndType][value=E]").click();
-    var pname = "dtend";
-    if (choice.isTask()) {
-      pname = "due";
-    }
-    var dtEnd = choice.data.getProperty(pname);
-    var dtE = JcalDtTime.fromProperty(hour24, dtEnd);
 
-    $("#choice-widget #bwEventWidgetEndDate").val(dtE.datePart);
+    var dtE = choice.end();
+
+    $("#choice-widget #bwEventWidgetEndDate").val(dtE.getDtval());
 
     if (!dtSt.allDay) {
       if (hour24) { // hour24 is a global variable passed in from the XML in the XSLT
@@ -288,8 +302,8 @@ Poll.prototype.populateChoiceForm = function(choice) {
           $("#choice-widget #eventEndDateAmpm").prop("selectedIndex", 1);
         }
       }
-      $("#choice-widget #eventEndDateHour").val(dtE.hours);
-      $("#choice-widget #eventEndDateMinute").val(dtE.minutes);
+      $("#choice-widget #eventEndDateHour").val(dtE.hoursAmPm24());
+      $("#choice-widget #eventEndDateMinute").val(dtE.minutes());
 
       if (dtE.tzid !== undefined) {
         // Set the tzid from dtE.tzid
@@ -299,13 +313,192 @@ Poll.prototype.populateChoiceForm = function(choice) {
 
   // setup the location data
   var locationOptions = "";
-  for (i=0;i<locNames.length;i++) {
+  for (i = 0; i < locNames.length; i++) {
     locationOptions = '<option value="' + i + '">' + locNames[i] + '</options>';
   }
 
   $("#eventFormLocationList select").append(locationOptions);
 
-}
+  if (this.addFormRecurrenceInfo(choice)) {
+    $("#isRecurring").click();
+  } else {
+    $("#isNotRecurring").click();
+  }
+
+  $("#editpoll-attendeelist").empty();
+  $.each(choice.attendees(), function(index, attendee) {
+    thisPoll.setAttendeePanel(thisPoll.addAttendeePanel(true), attendee);
+  });
+};
+
+/** Add a new attendee item in the UI
+ *
+ * @param readOnly true if this is for display only
+ * @returns {string}
+ */
+Poll.prototype.addAttendeePanel = function(readOnly) {
+  var itemType = "attendee";
+
+  var ctr = $("#bwChoiceAttendeeList").children().length + 1;
+  var iditem = itemType + "-address-" + ctr;
+  var iditemTypePrefix = itemType + "-" + ctr;
+  var radioName = itemType + "Type" + ctr;
+
+  // Add new list item
+  var vtr = '<div class="' + itemType + '">';
+  vtr += '<div class="edit-' + itemType + '">';
+  vtr += '<label for="' + iditem + '">Attendee: </label>';
+  vtr += '<input type="text" id="' + iditem + '" class="' + itemType + '-address"/>';
+  vtr += '<span id="edit-' + itemType + 'type">';
+  vtr += '<input type="radio" id="' + iditemTypePrefix +
+      '-typeUser" name="' + radioName + '" value="INDIVIDUAL" checked/>';
+  vtr += '<label for="' + iditemTypePrefix + '-typeUser">user</label>';
+  vtr += '<input type="radio" id="' + iditemTypePrefix +
+      '-typeGroup" name="' + radioName + '" value="GROUP"/>';
+  vtr += '<label for="' + iditemTypePrefix + '-typeGroup">group</label>';
+  vtr += '<input type="radio" id="' + iditemTypePrefix +
+      '-typeLocation" name="' + radioName + '" value="ROOM"/>';
+  vtr += '<label for="' + iditemTypePrefix + '-typeLocation">location</label>';
+  vtr += '</span>';
+  vtr += '</div>';
+  vtr += '<button class="input-remove">Remove</button>';
+  vtr += '</div>';
+  vtr = $(vtr).appendTo("#editpoll-" + itemType + "list");
+
+  vtr.find("." + itemType + "-address").autocomplete({
+    minLength : 3,
+    extraParams: {
+      vtype : function() {
+        return  $("input:radio[name=" + radioName + "]:checked").val();
+      }
+    },
+    source : function(request, response) {
+      var vtype = this.options.extraParams.vtype();
+      gSession.calendarUserSearch(request.term, vtype, function(results) {
+        response(results);
+      });
+    }
+  }).focus(function() {
+    $(this).select();
+  });
+
+  vtr.find(".input-remove").button({
+    icons : {
+      primary : "ui-icon-close"
+    }
+  });
+
+  return vtr;
+};
+
+/** Add any recurrence info to the form.
+ *
+ * @param choice
+ */
+Poll.prototype.addFormRecurrenceInfo = function(choice) {
+  // First set to the default state
+  $("freqNONE").click();
+  $("recurCount").click();
+  $("#recurCountVal").val(1);
+  $("#recurInterval").val(1);
+  $('#recurAdvanced').checked = false;
+
+  if (choice.data.getProperty("recurrence-id") !== null) {
+    // An instance
+    return false;
+  }
+
+  var rrules = choice.rrules(); // Array - we only handle 1
+  var rdates = choice.rdates();
+
+  if ((rrules.length === 0) && (rdates.length === 0)) {
+    // not recurring
+    return false;
+  }
+
+  var rrule = rrules[0][3];  // value part
+
+  /* Set the frequency */
+  var freq = rrule["freq"];
+  if (freq === undefined) {
+    // Invalid - freq is required.
+    return false;
+  }
+
+  $("freq" + freq).click();
+
+  // until or count or neither
+  var until = rrule["until"];
+  var count = rrule["count"];
+
+  if (until !== undefined) {
+    $("#bwEventWidgetUntilDate").val(until);
+    $("recurUntil").click();
+  } else if (count !== undefined) {
+    $("recurCount").click();
+    $("#recurCountVal").val(count);
+  } else {
+    $("recurForever").click();
+  }
+
+  var interval = rrule["interval"];
+
+  var advanced = false;
+
+  if (interval !== undefined) {
+    if (interval != 1) {
+      advanced = true;
+    }
+
+    $("#recurInterval").val(interval);
+  }
+
+  var bymonth = rrule["bymonth"];
+  if (bymonth !== undefined) {
+    asArray(bymonth).forEach(function setByMonth(val) { $("#byMonthItem" + val).click();});
+    advanced = true;
+  }
+
+  var byday = rrule["byday"];
+  if (byday !== undefined) {
+    advanced = true;
+    byday = asArray(byday);
+    for (var i = 0; i < byday.length; i++) {
+      // [+/-[n]]day-name
+      // SU MO TU etc
+      var bydayval = byday[i];
+      var dayname;
+      var pos = 1;
+      if (bydayval.length > 2) {
+        dayname = bydayval.substr(-2);
+        pos = parseInt(bydayval.substr(0, -2));
+      } else {
+        dayname = bydayval;
+      }
+
+      $('[name=byDayPos' + i + ']').val(pos);
+      $('#byDayRecurFields' + (i + 1) + ' [value=' + bydayval + ']').checked = true;
+    }
+  }
+
+  var wkst = rrule["wkst"];
+  if (wkst !== undefined) {
+    advanced = true;
+  }
+
+  if (advanced) {
+    $('#recurAdvanced').checked = true;
+  }
+
+  return true;
+};
+
+// Update UI for this attendee
+Poll.prototype.setAttendeePanel = function(panel, attendee) {
+  panel.find(".attendee-address").val(attendee.addressDescription());
+  return panel;
+};
+
 
 /** The reverse of populateChoiceForm - takes values from the form and
  * puts them into the given choice
@@ -316,78 +509,136 @@ Poll.prototype.populateChoice = function(choice) {
   choice.data.updateProperty("summary", $("#choice-widget #bwEventTitle").val());
   choice.data.updateProperty("description", $("#choice-widget #description").val());
 
-  var dtSt;
-
   var datePart = $("#choice-widget #bwEventWidgetStartDate").val();
   var allDay = $("#allDayFlag").is(":checked");
+  var UTC = $("#storeUTCFlag").val();
+  var hours = $("#choice-widget #eventStartDateHour").val();
+  var minutes = $("#choice-widget #eventStartDateMinute").val();
 
-  if (allDay) {
-    dtSt = new JcalDtTime(hour24, datePart, allDay);
+  var am = false;
+  if (!hour24) {
+    am = $("#eventStartDateAmpm").attr("selectedIndex") == 0;
+  }
+
+  // Set the tzid from the form if one is selected
+  var tzid = defaultTzid;
+
+  choice.start().update(datePart, allDay, UTC, tzid, hours, minutes, am);
+  choice.start().updateProperty(choice.data);
+
+  var endType = $("input:radio[name=eventEndType]:checked").val();
+  if (endType === "D") {
+    // Duration type
+
+    var dur = {};
+
+    var durType = $("input:radio[name=eventDurationType]:checked").val();
+
+    if (durType === "weeks") {
+      dur.weeks = parseInt($("#choice-widget #durationWeeks").val());
+    } else {
+      dur.days = parseInt($("#choice-widget #durationDays").val());
+
+      if (!choice.start().allDay) {
+        dur.hours = parseInt($("#choice-widget #durationHours").val());
+        dur.minutes = parseInt($("#choice-widget #durationMinutes").val());
+      }
+    }
+
+    choice.end().updateFromDuration(moment.duration(dur), choice.start());
   } else {
-    var UTC = $("#storeUTCFlag").val();
-    var hours = $("#choice-widget #eventStartDateHour").val();
-    var minutes = $("#choice-widget #eventStartDateMinute").val();
+    // Dtend type
 
-    var am = false;
+    datePart = $("#choice-widget #bwEventWidgetEndDate").val();
+    UTC = choice.start().UTC;
+    hours = $("#choice-widget #eventEndDateHour").val();
+    minutes = $("#choice-widget #eventEndDateMinute").val();
+
+    am = false;
     if (!hour24) {
-      am = $("#eventStartDateAmpm").attr("selectedIndex") == 0;
+      am = $("#eventEndDateAmpm").attr("selectedIndex") == 0;
     }
 
     // Set the tzid from the form if one is selected
-    var tzid = defaultTzid;
+    tzid = defaultTzid;
 
-    dtSt = new JcalDtTime(hour24, datePart, false, hours, minutes, UTC, am, tzid);
+    choice.end().update(datePart, allDay, UTC, tzid, hours, minutes, am);
   }
 
-  dtSt.updateProperty("dtstart", choice.data);
+  choice.end().updateProperty(choice.data, choice.start());
 
-  if ($("input[name=eventEndType]").val() == "D") {
-    // Duration type
-    var jdur = new Jcalduration();
+  var rrule = this.populateRRule();
 
-    if ($("#choice-widget #durationTypeWeeks").val()) {
-      jdur.mWeeks = $("#choice-widget #durationWeeks").val();
-    } else {
-      jdur.mDays = $("#choice-widget #durationDays").val();
-
-      if (!dtSt.allDay) {
-        jdur.mHours = $("#choice-widget #durationHours").val();
-        jdur.mMinutes = $("#choice-widget #durationMinutes").val();
-      }
-    }
-
-    choice.data.updateProperty("duration", jdur.generate());
-  } else {
-    // Dtend type
-    var dtE;
-
-    datePart = $("#choice-widget #bwEventWidgetEndDate").val();
-
-    if (allDay) {
-      dtE = new JcalDtTime(hour24, datePart, allDay);
-    } else {
-      var UTC = dtSt.UTC;
-      var hours = $("#choice-widget #eventEndDateHour").val();
-      var minutes = $("#choice-widget #eventEndDateMinute").val();
-
-      var am = false;
-      if (!hour24) {
-        am = $("#eventEndDateAmpm").attr("selectedIndex") == 0;
-      }
-
-      // Set the tzid from the form if one is selected
-      var tzid = defaultTzid;
-
-      dtE = new JcalDtTime(hour24, datePart, false, hours, minutes, UTC, am, tzid);
-    }
-
-    var pname = "dtend";
-    if (choice.data.name === "vtodo") {
-      pname = "due";
-    }
-
-    dtE.updateProperty(pname, choice.data);
+  if (rrule !== null) {
+    choice.data.updateProperty("rrule", rrule, {}, "recur");
   }
+};
+
+Poll.prototype.populateRRule = function() {
+  if (!$("#isRecurring").is(":checked")) {
+    return null;
+  }
+
+  /* Set the frequency */
+  var f1 = $('input:radio[name="recurFreq"]');
+
+  var freq = $('input:radio[name="recurFreq"]:checked').val();
+
+  if (freq === "NONE") {
+    return null;
+  }
+
+  var rrule = {};
+
+  rrule['freq'] = freq;
+
+  // until or count or neither
+  if ($("recurUntil").is(":checked")) {
+    rrule['until'] = $("#bwEventWidgetUntilDate").val();
+  } else if ($("recurCount").is(":checked")) {
+    rrule['count'] = $("#recurCountVal").val();
+  }
+
+  if (!$("#recurAdvanced").is(":checked")) {
+    return rrule;
+  }
+
+  var interval = parseInt($("#recurInterval").val());
+
+  if (interval !== 1) {
+    rrule['interval'] = interval;
+  }
+
+  if (!$("#byMonthEnabled").is(":checked")) {
+    var byMonthVals = $("[name=byMonthItem] :checked");
+
+    alert("at by month");
+  }
+
+  var byDayI = 1;
+
+  while (true) {
+    var byDayPosField = $('#byDayPos' + byDayI);
+
+    if (byDayPosField.length === 0) {
+      break;
+    }
+
+    var byDayPos = byDayPosField.val();
+
+    if (byDayPos == 0) {
+      break;
+    }
+
+
+    byDayI++;
+  }
+
+  var wkst = rrule["wkst"];
+  if (wkst !== undefined) {
+  }
+
+  return rrule;
 };
 
 // 1. iterate over the form elements, update the current entity
@@ -520,13 +771,13 @@ Poll.prototype.addVoterPanel = function() {
   });
 
   return vtr;
-}
+};
 
 // Update UI for this voter
 Poll.prototype.setVoterPanel = function(panel, voter) {
   panel.find(".voter-address").val(voter.addressDescription());
   return panel;
-}
+};
 
 // Get details of the voter from the UI
 Poll.prototype.updateVoterFromPanel = function(panel, voter) {
@@ -748,8 +999,8 @@ Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
     title: "Your Events for " + event.start().getLocalizedDate(),
     width: 400
   });
-  var start = new Date(event.start().getTime() - 6 * 60 * 60 * 1000);
-  var end = new Date(event.end().getTime() + 6 * 60 * 60 * 1000);
+  var start = event.start().clone().addHours(-6);
+  var end = event.end().clone().addHours(6);
   gSession.currentPrincipal.eventsForTimeRange(
       start,
       end,
@@ -760,7 +1011,7 @@ Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
         });
         results.push(event);
         results.sort(function(a, b) {
-          return a.start().getTime() - b.start().getTime();
+          return a.start().milliseconds() - b.start().milliseconds();
         });
         var relative_offset = 10;
         var last_end = null;
@@ -768,7 +1019,7 @@ Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
           text = result.start().getPrintableTime() + " - ";
           text += result.end().getPrintableTime() + " : ";
           text += result.summary();
-          if (last_end !== null && last_end.getTime() != result.start().getTime()) {
+          if (last_end !== null && !last_end.equals(result.start())) {
             relative_offset += 10;
           }
           last_end = result.end();
@@ -788,12 +1039,11 @@ Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
     width: 400
   });
 
-  var start = new Date(event.start().getTime() - 6 * 60 * 60 * 1000);
-  start.setMinutes(0, 0, 0);
-  var startHour = start.getHours();
-  var end = new Date(event.end().getTime() + 6 * 60 * 60 * 1000);
-  end.setMinutes(0, 0, 0);
-  var endHour = end.getHours();
+  /* get 12 hour span */
+  var start = event.start().clone().addHours(-6);
+  var startHour = start.hours();
+  var end = event.end().clone().addHours(6);
+  var endHour = end.hours();
 
   var grid = $('<table id="hover-grid" />').appendTo(dialog_div);
   for(var i = startHour; i < endHour; i++) {
@@ -809,14 +1059,14 @@ Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
         });
         results.push(event);
         results.sort(function(a, b) {
-          return a.start().getTime() - b.start().getTime();
+          return a.start().milliseconds() - b.start().milliseconds();
         });
         var last_dtend = null;
         $.each(results, function(index, result) {
-          var top_offset = (result.start().getHours() - startHour) * 30;
-          var height = ((result.end().getTime() - result.start().getTime()) * 30) / (60 * 60 * 1000) - 6;
+          var top_offset = (result.start().hours() - startHour) * 30;
+          var height = ((result.end().seconds() - result.start().seconds()) * 30) / (60 * 60) - 6;
           var styles = "top:" + top_offset + "px;height:" + height + "px";
-          if (last_dtend !== null && last_dtend.getTime() > result.start().getTime()) {
+          if (last_dtend !== null && last_dtend.millisecs() > result.start().millisecs()) {
             styles += ";left:206px;width:125px";
           }
           last_dtend = result.end();
@@ -832,7 +1082,7 @@ Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
 // Close the event time-range hover dialog
 Poll.prototype.hoverDialogClose = function() {
   $("#hover-cal").dialog("close").remove();
-}
+};
 
 Poll.prototype.updateOverallResults = function() {
   var this_poll = this;
@@ -857,21 +1107,24 @@ Poll.prototype.updateOverallResults = function() {
     $(tds[index + 1]).removeClass(possible_classes.join(" "));
     $(tds[index + 1]).addClass(event.ispollwinner() ? "poll-winner-td" : response_details[1]);
   });
-}
+};
 
+/** Fill in the responses based on users freebusy at the time of the choice
+ *
+ */
 Poll.prototype.autoFill = function() {
 
-  var event_details = this.editing_poll.choices();
-  $.each(event_details, function(index, event) {
+  var choice_details = this.editing_poll.choices();
+  $.each(choice_details, function(index, choice) {
     // Freebusy
     gSession.currentPrincipal.isBusy(
         gSession.currentPrincipal.defaultAddress(),
-        event.dtstart(),
-        event.dtend(),
+        choice.start(),
+        choice.end(),
         function(result) {
           $((result ? "#respond_no-" : "#respond_ok-") + index).click();
         }
     );
   });
-}
+};
 

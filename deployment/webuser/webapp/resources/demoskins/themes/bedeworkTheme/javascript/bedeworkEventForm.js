@@ -6,15 +6,15 @@
    Version 2.0 (the "License"); you may not use this file
    except in compliance with the License. You may obtain a
    copy of the License at:
-  
+
    http://www.apache.org/licenses/LICENSE-2.0
-  
+
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on
    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
    KIND, either express or implied. See the License for the
    specific language governing permissions and limitations
-   under the License.  
+   under the License.
 */
 
 // Bedework event form functions
@@ -402,7 +402,7 @@ function swapRrules(obj) {
       }
     } else {
       // they decided against it. Uncheck the box.
-      obj.checked = false; 
+      obj.checked = false;
     }
   } else {
     changeClass('rrulesTable','invisible');
@@ -412,8 +412,58 @@ function swapRrules(obj) {
     }
   }
 }
+
+function showFreqRrules(freq, intervalLabel) {
+  // reveal and hide rrules fields for vpoll style event form
+  changeClass('recurrenceUntilRules','visible');
+  $('p span#recurIntervalLabel').append(intervalLabel);
+  changeClass('freqInterval','invisible');
+  changeClass('recurByDayRules','invisible');
+  changeClass('recurWkStRules','invisible');
+  changeClass('byMonthRules','invisible');
+
+  if (freq == 'NONE') {
+    changeClass('noneRecurrenceRules','visible');
+    changeClass('recurrenceUntilRules','invisible');
+  } else {
+    changeClass('freqInterval','visible');
+    changeClass('noneRecurrenceRules','invisible');
+  }
+  if (freq == 'HOURLY') {
+    changeClass('hourlyRecurrenceRules','visible');
+  } else {
+    changeClass('hourlyRecurrenceRules','invisible');
+  }
+  if (freq == 'DAILY') {
+    changeClass('dailyRecurrenceRules','visible');
+    changeClass('byMonthRules','visible');
+  } else {
+    changeClass('dailyRecurrenceRules','invisible');
+  }
+  if (freq == 'WEEKLY') {
+    changeClass('weeklyRecurrenceRules','visible');
+    changeClass('recurWkStRules','visible');
+  } else {
+    changeClass('weeklyRecurrenceRules','invisible');
+  }
+  if (freq == 'MONTHLY') {
+    changeClass('monthlyRecurrenceRules','visible');
+    changeClass('recurByDayRules','visible');
+  } else {
+    changeClass('monthlyRecurrenceRules','invisible');
+  }
+  if (freq == 'YEARLY') {
+    changeClass('yearlyRecurrenceRules','visible');
+    changeClass('recurByDayRules','visible');
+    changeClass('recurWkStRules','visible');
+    changeClass('byMonthRules','visible');
+  } else {
+    changeClass('yearlyRecurrenceRules','invisible');
+  }
+}
+
 function showRrules(freq) {
-  // reveal and hide rrules fields
+  // reveal and hide rrules fields for old style event form
   changeClass('recurrenceUntilRules','visible');
 
   if (freq == 'NONE') {

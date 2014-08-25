@@ -53,6 +53,16 @@ BwLocations.prototype.getDisplayNames = function(flush) {
   return my.locationNames;
 };
 
+function asArray(val) {
+  if (val instanceof Array) {
+    return val;
+  }
+
+  var temp = [];
+  temp.push(val);
+  return val;
+}
+
 // Debug utility
 function print_r(obj) {
   var str = '';

@@ -15,40 +15,100 @@ TzHandler = function() {
   this.okStatus = "OK";
 };
 
-TzHandler.prototype.get = function(tzid) {
+TzHandler.prototype.get = function(tzid, year) {
   var exp = tzsExpanded[tzid];
-  var thisTzHandler = this;
 
   if (exp != null) {
-    return exp;
+    if ((year == null) || exp.coversYear(year)) {
+      return exp;
+    }
   }
 
+  var thisTzHandler = this;
   exp = new TzExpanded(tzid);
   tzsExpanded[tzid] = exp;
 
   //alert("about to fetch tz " + tzid);
 
-  var tzreq = $.get(this.url, { "action": "expand", "tzid": tzid },
-      function(data) {
-        thisTzHandler.parseExpanded(data, tzid);
-      })
-      .error(function() {
-        //alert("error");
-        exp.status = errorStatus;
-      });
+    var tzreq = $.ajax({
+      url: this.url,
+      data: { "action": "expand", "tzid": tzid, "start": year },
+      async: false
+    })
+    .done(function(data) {
+      thisTzHandler.parseExpanded(data, tzid);
+    })
+    .error(function() {
+      alert("tz error");
+      exp.status = this.errorStatus;
+    });
 
   return exp;
 };
 
-TzHandler.prototype.waitFetch = function(tzid) {
-  var exp = tzs.get(tzid);
+TzHandler.prototype.waitFetch = function(tzid, year) {
+  // create a spinner
+  // TODO need to move this to a general place for general use - will do for now
+  var spinnerDiv = '<div id="coSpinner"></div>';
+  $("body").append(spinnerDiv);
+  var coSpinnerOpts = {
+    lines: 13, // The number of lines to draw
+    length: 20, // The length of each line
+    width: 8, // The line thickness
+    radius: 20, // The radius of the inner circle
+    corners: 0.4, // Corner roundness (0..1)
+    rotate: 0, // The rotation offset
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    color: '#9FC6E2', // #rgb or #rrggbb or array of colors
+    speed: 1.2, // Rounds per second
+    trail: 60, // Afterglow percentage
+    shadow: false, // Whether to render a shadow
+    hwaccel: false, // Whether to use hardware acceleration
+    className: 'spinner', // The CSS class to assign to the spinner
+    zIndex: 100 // The z-index (defaults to 2000000000)
+  };
+  var coSpinnerTarget = document.getElementById('coSpinner');
+  var coSpinner = new Spinner(coSpinnerOpts).spin(coSpinnerTarget);
+
+  // do the call
+  var exp = tzs.get(tzid, year);
 
   while (exp.status == tzs.fetchingStatus) {
-    alert("Waiting for fetch - status=" + exp.status);
+    //alert("Waiting for fetch - status=" + exp.status);
   }
 
+  // kill spinner, and return
+  coSpinner.stop();
   return exp;
 };
+
+/** Given a date and a tzid return the offset for that date
+ *
+ * @param date - json format date
+ * @param tzid - name of timezone
+ * @return null if unknown timezone otherwise offset in minutes
+ */
+TzHandler.prototype.getOffset = function(date, tzid) {
+  if (tzid == null) {
+    return null;
+  }
+
+  var exptz = this.waitFetch(tzid, date.substring(0, 4));
+  var offset = null;
+
+  if ((exptz == null) || (exptz.status != this.okStatus)) {
+    return null;
+  }
+
+  var obs = exptz.findObservance(date);
+
+  if (obs == null) {
+    return null;
+  }
+
+  return obs.to / 60;
+}
+
 
 var tzs = new TzHandler();
 
@@ -109,6 +169,20 @@ TzExpanded = function(tzid) {
 TzExpanded.prototype.addObservance = function(name, onset, from, to) {
   this.observances.push(new TzObservance(name, onset, from, to));
 };
+
+TzExpanded.prototype.coversYear = function(year) {
+    if (this.sortedObservances == null) {
+        this.sortedObservances = this.observances.sort(tzObservanceCompare);
+    }
+
+		if (year < this.sortedObservances[0].onset.substring(0, 4)) {
+        return false;
+    }
+
+    var lastYear = $(this.sortedObservances).get(-1);
+    return year <= lastYear;
+};
+
 
 TzExpanded.prototype.findObservance = function(dt) {
   if (this.sortedObservances == null) {
