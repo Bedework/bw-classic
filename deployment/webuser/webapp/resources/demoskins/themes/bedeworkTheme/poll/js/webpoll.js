@@ -429,7 +429,7 @@ ViewController.prototype.showResults = function(event, ui) {
 
   if (ui.newPanel.selector === "#editpoll-results") {
     newTab = resultsTab;
-  } else if (ui.newPanel.selector === "#editpoll-events") {
+  } else if (ui.newPanel.selector === "#editpoll-choices") {
     newTab = choicesTab;
   } else if (ui.newPanel.selector === "#editpoll-voters") {
     newTab = votersTab;

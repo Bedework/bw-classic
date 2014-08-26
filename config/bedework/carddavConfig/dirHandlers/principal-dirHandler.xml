@@ -12,11 +12,12 @@
   <className>org.bedework.carddav.server.dirHandlers.ldap.LdapPrincipalDirHandler</className>
   <confBeanClass>org.bedework.carddav.server.jmx.LdapDirHandlerConf</confBeanClass>
   <confClass>org.bedework.carddav.util.LdapDirHandlerConfig</confClass>
-  <directory>false</directory>
+  <directory>true</directory>
   <folderIdAttr>ou</folderIdAttr>
   <folderObjectClass>organizationalUnit</folderObjectClass>
   <initialContextFactory>com.sun.jndi.ldap.LdapCtxFactory</initialContextFactory>
   <name>principal-dirHandler</name>
+  <ownerHref>/principals/users/admin</ownerHref>
   <pathPrefix>/directory</pathPrefix>
   <providerUrl>ldap://localhost:10389/</providerUrl>
   <queryLimit>1000</queryLimit>

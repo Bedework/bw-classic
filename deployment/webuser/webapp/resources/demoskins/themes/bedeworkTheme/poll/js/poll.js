@@ -81,11 +81,11 @@ Poll.prototype.rewritePanel = function() {
     this_poll.addChoicePanel(choice);
     //$("#debug").append(print_r(choice) + '<div style="margin: 4em 0;">new choice</div>');
   });
-  $("#editpoll-voterlist").empty();
+  $("#bwComp-voterlist").empty();
   $.each(this.editing_poll.voters(), function(index, voter) {
-    this_poll.setVoterPanel(this_poll.addVoterPanel(), voter);
+    this_poll.setVoterPanel(this_poll.addParticipantPanel(false, "voter", "Voter"), voter);
   });
-}
+};
 
 // Get poll details from the UI
 Poll.prototype.getPanel = function() {
@@ -111,7 +111,7 @@ Poll.prototype.updateVoters = function() {
 
   var this_poll = this;
   var voters = this.editing_poll.voters();
-  $("#editpoll-voterlist").children().each(function(index) {
+  $("#bwComp-voterlist").children().each(function(index) {
     this_poll.updateVoterFromPanel($(this), voters[index]);
   });
 
@@ -325,70 +325,10 @@ Poll.prototype.populateChoiceForm = function(choice) {
     $("#isNotRecurring").click();
   }
 
-  $("#editpoll-attendeelist").empty();
+  $("#bwComp-attendeelist").empty();
   $.each(choice.attendees(), function(index, attendee) {
-    thisPoll.setAttendeePanel(thisPoll.addAttendeePanel(true), attendee);
+    thisPoll.setAttendeePanel(thisPoll.addParticipantPanel(true, "attendee", "Attendee"), attendee);
   });
-};
-
-/** Add a new attendee item in the UI
- *
- * @param readOnly true if this is for display only
- * @returns {string}
- */
-Poll.prototype.addAttendeePanel = function(readOnly) {
-  var itemType = "attendee";
-
-  var ctr = $("#bwChoiceAttendeeList").children().length + 1;
-  var iditem = itemType + "-address-" + ctr;
-  var iditemTypePrefix = itemType + "-" + ctr;
-  var radioName = itemType + "Type" + ctr;
-
-  // Add new list item
-  var vtr = '<div class="' + itemType + '">';
-  vtr += '<div class="edit-' + itemType + '">';
-  vtr += '<label for="' + iditem + '">Attendee: </label>';
-  vtr += '<input type="text" id="' + iditem + '" class="' + itemType + '-address"/>';
-  vtr += '<span id="edit-' + itemType + 'type">';
-  vtr += '<input type="radio" id="' + iditemTypePrefix +
-      '-typeUser" name="' + radioName + '" value="INDIVIDUAL" checked/>';
-  vtr += '<label for="' + iditemTypePrefix + '-typeUser">user</label>';
-  vtr += '<input type="radio" id="' + iditemTypePrefix +
-      '-typeGroup" name="' + radioName + '" value="GROUP"/>';
-  vtr += '<label for="' + iditemTypePrefix + '-typeGroup">group</label>';
-  vtr += '<input type="radio" id="' + iditemTypePrefix +
-      '-typeLocation" name="' + radioName + '" value="ROOM"/>';
-  vtr += '<label for="' + iditemTypePrefix + '-typeLocation">location</label>';
-  vtr += '</span>';
-  vtr += '</div>';
-  vtr += '<button class="input-remove">Remove</button>';
-  vtr += '</div>';
-  vtr = $(vtr).appendTo("#editpoll-" + itemType + "list");
-
-  vtr.find("." + itemType + "-address").autocomplete({
-    minLength : 3,
-    extraParams: {
-      vtype : function() {
-        return  $("input:radio[name=" + radioName + "]:checked").val();
-      }
-    },
-    source : function(request, response) {
-      var vtype = this.options.extraParams.vtype();
-      gSession.calendarUserSearch(request.term, vtype, function(results) {
-        response(results);
-      });
-    }
-  }).focus(function() {
-    $(this).select();
-  });
-
-  vtr.find(".input-remove").button({
-    icons : {
-      primary : "ui-icon-close"
-    }
-  });
-
-  return vtr;
 };
 
 /** Add any recurrence info to the form.
@@ -718,45 +658,56 @@ Poll.prototype.populateRRule = function() {
  many more recurring issues - later...
  */
 
-//Add a new voter item in the UI
-Poll.prototype.addVoterPanel = function() {
-
-  var ctr = $("#editpoll-voterlist").children().length + 1;
-  var idvoter = "voter-address-" + ctr;
-  var idvoterTypePrefix = "voter-" + ctr;
-  var radioName = "voterType" + ctr;
+/** Add a new voter or attendee item in the UI
+ *
+ * @param readOnly true if this is for display only
+ * @returns {string}
+ */
+Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
+  var ctr = $("#bwComp-" + itemType + "list").children().length + 1;
+  var iditem = itemType + "-address-" + ctr;
+  var iditemTypePrefix = itemType + "-" + ctr;
+  var radioName = itemType + "Type" + ctr;
 
   // Add new list item
-  var vtr = '<div class="voter">';
-  vtr += '<div class="edit-voter">';
-  vtr += '<label for="' + idvoter + '">Voter: </label>';
-  vtr += '<input type="text" id="' + idvoter + '" class="voter-address"/>';
-  vtr += '<span id="edit-votertype">';
-  vtr += '<input type="radio" id="' + idvoterTypePrefix +
+  var idiv = '<div class="' + itemType + '">';
+  idiv += '<div class="edit-' + itemType + '">';
+  idiv += '<label for="' + iditem + '">' + itemLabel + ': </label>';
+  idiv += '<input type="text" id="' + iditem + '" class="' + itemType + '-address"/>';
+  idiv += '<span id="edit-' + itemType + 'type">';
+  idiv += '<input type="radio" id="' + iditemTypePrefix +
       '-typeUser" name="' + radioName + '" value="INDIVIDUAL" checked/>';
-  vtr += '<label for="' + idvoterTypePrefix + '-typeUser">user</label>';
-  vtr += '<input type="radio" id="' + idvoterTypePrefix +
+  idiv += '<label for="' + iditemTypePrefix + '-typeUser">user</label>';
+  idiv += '<input type="radio" id="' + iditemTypePrefix +
       '-typeGroup" name="' + radioName + '" value="GROUP"/>';
-  vtr += '<label for="' + idvoterTypePrefix + '-typeGroup">group</label>';
-  vtr += '<input type="radio" id="' + idvoterTypePrefix +
+  idiv += '<label for="' + iditemTypePrefix + '-typeGroup">group</label>';
+  idiv += '<input type="radio" id="' + iditemTypePrefix +
       '-typeLocation" name="' + radioName + '" value="ROOM"/>';
-  vtr += '<label for="' + idvoterTypePrefix + '-typeLocation">location</label>';
-  vtr += '</span>';
-  vtr += '</div>';
-  vtr += '<button class="input-remove">Remove</button>';
-  vtr += '</div>';
-  vtr = $(vtr).appendTo("#editpoll-voterlist");
+  idiv += '<label for="' + iditemTypePrefix + '-typeLocation">location</label>';
+  /* Not yet
+  idiv += '<input type="radio" id="' + iditemTypePrefix +
+      '-typeAny" name="' + radioName + '" value="ANY"/>';
+  idiv += '<label for="' + iditemTypePrefix + '-typeAny">Any</label>';
+  */
+  idiv += '</span>';
+  idiv += '</div>';
+  idiv += '<button class="input-remove">Remove</button>';
+  idiv += '</div>';
+  idiv = $(idiv).appendTo("#bwComp-" + itemType + "list");
 
-  vtr.find(".voter-address").autocomplete({
+  idiv.find("." + itemType + "-address").autocomplete({
     minLength : 3,
     extraParams: {
-      vtype : function() {
+      cutype : function() {
         return  $("input:radio[name=" + radioName + "]:checked").val();
       }
     },
     source : function(request, response) {
-      var vtype = this.options.extraParams.vtype();
-      gSession.calendarUserSearch(request.term, vtype, function(results) {
+      var cutype = this.options.extraParams.cutype();
+      if (cutype === "ANY") {
+        cutype = null;
+      }
+      gSession.calendarUserSearch(request.term, cutype, function(results) {
         response(results);
       });
     }
@@ -764,13 +715,13 @@ Poll.prototype.addVoterPanel = function() {
     $(this).select();
   });
 
-  vtr.find(".input-remove").button({
+  idiv.find(".input-remove").button({
     icons : {
       primary : "ui-icon-close"
     }
   });
 
-  return vtr;
+  return idiv;
 };
 
 // Update UI for this voter
@@ -782,7 +733,7 @@ Poll.prototype.setVoterPanel = function(panel, voter) {
 // Get details of the voter from the UI
 Poll.prototype.updateVoterFromPanel = function(panel, voter) {
   voter.addressDescription(panel.find(".voter-address").val());
-}
+};
 
 // Add voter button clicked
 Poll.prototype.addVoter = function() {
@@ -790,8 +741,8 @@ Poll.prototype.addVoter = function() {
   poll_syncAttendees = $("#syncPollAttendees").is(":checked");
 
   var voter = this.editing_poll.addVoter();
-  return this.setVoterPanel(this.addVoterPanel(), voter);
-}
+  return this.setVoterPanel(this.addParticipantPanel(false, "voter", "Voter"), voter);
+};
 
 // Build the results UI based on the poll details
 Poll.prototype.buildResults = function() {
@@ -937,7 +888,7 @@ Poll.prototype.buildResults = function() {
   });
 
   this.updateOverallResults();
-}
+};
 
 Poll.prototype.textForResponse = function(response) {
   var result = [];
@@ -958,7 +909,7 @@ Poll.prototype.textForResponse = function(response) {
     result.push("best-td");
   }
   return result;
-}
+};
 
 Poll.prototype.clickResponse = function() {
   var splits = $(this).attr("id").split("-");

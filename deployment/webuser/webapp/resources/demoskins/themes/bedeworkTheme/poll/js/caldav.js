@@ -154,6 +154,38 @@ function UserSearchReport(url, cutype, text) {
   addNamespace("CD", nsmap);
 	addNamespace("CS", nsmap);
 
+  var reqData =
+      '<?xml version="1.0" encoding="utf-8" ?>' +
+//			+ '<CS:calendarserver-principal-search context="user"' + buildXMLNS(nsmap) + '>' + '<CS:search-token>' + xmlEncode(text) + '</CS:search-token>'
+//			+ '<CS:limit><CS:nresults>20</CS:nresults></CS:limit>' + '<D:prop>' + '<D:displayname />' + '<C:calendar-user-address-set />' + '</D:prop>'
+//			+ '</CS:calendarserver-principal-search>',
+      '<D:principal-property-search' + buildXMLNS(nsmap) + '>';
+
+  if (cutype != null) {
+    reqData +=
+        '<D:property-search>' +
+        '<D:prop>' +
+        '<C:calendar-user-type />' +
+        '</D:prop>' +
+        '<D:match>' + xmlEncode(cutype) + '</D:match>' +
+        '</D:property-search>';
+  }
+
+  reqData +=
+      '<D:property-search>' +
+      '<D:prop>' +
+      '<D:displayname />' +
+      '</D:prop>' +
+      '<D:match>' + xmlEncode(text) + '</D:match>' +
+      '</D:property-search>' +
+      '<D:prop>' +
+      '<D:displayname />' +
+      '<C:calendar-user-address-set />' +
+      '<CD:address-data content-type="application/vcard+json" />' +
+      '</D:prop>' +
+//				'<D:apply-to-principal-collection-set />' +
+      '</D:principal-property-search>';
+
 	return Ajax({
 		url : url,
 		type : "REPORT",
@@ -161,30 +193,7 @@ function UserSearchReport(url, cutype, text) {
 		headers : {
 			"Depth" : "0"
 		},
-		data : '<?xml version="1.0" encoding="utf-8" ?>' +
-//			+ '<CS:calendarserver-principal-search context="user"' + buildXMLNS(nsmap) + '>' + '<CS:search-token>' + xmlEncode(text) + '</CS:search-token>'
-//			+ '<CS:limit><CS:nresults>20</CS:nresults></CS:limit>' + '<D:prop>' + '<D:displayname />' + '<C:calendar-user-address-set />' + '</D:prop>'
-//			+ '</CS:calendarserver-principal-search>',
-			'<D:principal-property-search' + buildXMLNS(nsmap) + '>' +
-				'<D:property-search>' +
-					'<D:prop>' +
-						'<C:calendar-user-type />' +
-					'</D:prop>' +
-					'<D:match>' + xmlEncode(cutype) + '</D:match>' +
-				'</D:property-search>' +
-				'<D:property-search>' +
-					'<D:prop>' +
-						'<D:displayname />' +
-					'</D:prop>' +
-					'<D:match>' + xmlEncode(text) + '</D:match>' +
-				'</D:property-search>' +
-				'<D:prop>' +
-					'<D:displayname />' +
-					'<C:calendar-user-address-set />' +
-          '<CD:address-data content-type="application/vcard+json" />' +
-				'</D:prop>' +
-//				'<D:apply-to-principal-collection-set />' +
-			'</D:principal-property-search>'
+		data : reqData
 	});
 }
 

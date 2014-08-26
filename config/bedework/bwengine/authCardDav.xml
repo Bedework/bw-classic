@@ -6,4 +6,5 @@
   <contextPath>/ucarddav</contextPath>
   <host>localhost</host>
   <port>8080</port>
+  <cutypeMapping>individual:/directory/users/,group:/directory/groups/,room:/directory/locations,*:/directory/</cutypeMapping>
 </carddav-info>

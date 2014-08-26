@@ -60,11 +60,11 @@
           <div id="editpoll-details">
             <div id="editpoll-tabs">
               <ul>
-                <li id="editpoll-events-tab"><a href="#editpoll-events">Choices</a></li>
+                <li id="editpoll-choices-tab"><a href="#editpoll-choices">Choices</a></li>
                 <li id="editpoll-voters-tab"><a href="#editpoll-voters">Voters</a></li>
                 <li><a href="#editpoll-results">Results</a></li>
               </ul>
-              <div id="editpoll-events">
+              <div id="editpoll-choices">
                 <div id="editpoll-choicelist"><xsl:text> </xsl:text></div>
                 <div id="editpoll-choice">
                   <button id="editpoll-addchoice">Add Choice</button>
@@ -80,7 +80,7 @@
                 </div>
               </div>
               <div id="editpoll-voters">
-                <div id="editpoll-voterlist"><xsl:text> </xsl:text></div>
+                <div id="bwComp-voterlist"><xsl:text> </xsl:text></div>
                 <div id="editpoll-syncAttendees">
                   <input type="checkbox" name="syncPollAttendees" id="syncPollAttendees" checked="checked"/>
                   <label for="syncPollAttendees">synchronize voters with attendees</label>
@@ -828,7 +828,8 @@
 
             <div id="bwSchedule">
               <div id="bwChoiceAttendees">
-                <div id="editpoll-attendeelist">
+                <div id="bwComp-attendeelist">
+                   <xsl:text> </xsl:text>
                 </div>
               </div>
               <div id="bwFreeBusyDisplay">

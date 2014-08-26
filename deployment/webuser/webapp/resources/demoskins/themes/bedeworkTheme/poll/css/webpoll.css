@@ -132,9 +132,13 @@
 	position: relative;
 	left: 50px;
 }
-#editpoll-voterlist {
+#bwComp-voterlist {
   margin: 0;
   padding: 0;
+}
+#bwComp-attendeelist {
+    margin: 0;
+    padding: 0;
 }
 #bwPolls .voter {
 	position: relative;
