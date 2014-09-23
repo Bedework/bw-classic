@@ -56,7 +56,7 @@ Poll.prototype.setPanel = function() {
   this.editing_object = this.resource.object.duplicate();
   this.editing_poll = this.editing_object.mainComponent();
 
-  this.rewritePanel();
+  this.writeVpollValues();
 };
 
 /** Save the given choice in the current vpoll
@@ -68,7 +68,7 @@ Poll.prototype.saveChoice = function(comp) {
 };
 
 // Fill the UI with details of the poll
-Poll.prototype.rewritePanel = function() {
+Poll.prototype.writeVpollValues = function() {
   var this_poll = this;
 
   // Setup the details panel with this poll
@@ -88,7 +88,7 @@ Poll.prototype.rewritePanel = function() {
 };
 
 // Get poll details from the UI
-Poll.prototype.getPanel = function() {
+Poll.prototype.getVpollValues = function() {
   var this_poll = this;
 
   // Get values from the details panel
@@ -111,8 +111,16 @@ Poll.prototype.updateVoters = function() {
 
   var this_poll = this;
   var voters = this.editing_poll.voters();
+  var hasGroup = false;
+
   $("#bwComp-voterlist").children().each(function(index) {
-    this_poll.updateVoterFromPanel($(this), voters[index]);
+    var voter = voters[index];
+    var radioName = "voterType" + (index + 1);
+    var cutype = $("input:radio[name=" + radioName + "]:checked").val();
+
+    this_poll.updateVoterFromPanel($(this), voter, cutype);
+
+
   });
 
   if ($("#syncPollAttendees").is(":checked")) {
@@ -130,6 +138,13 @@ Poll.prototype.addChoicePanel = function(choice) {
   chc += '<button id="choice-delete-' + choice.data.getPropertyValue("uid") + '" class="choice-delete">Delete</button>';
   chc += '</div>';
   chc += '<div class="bwChoiceSummary">' + choice.data.getPropertyValue("summary") + '</div>';
+
+  var rinfo = getRecurrenceInfo(choice);
+
+  if (rinfo !== null) {
+    chc += '<div class="bwChoiceRecur">' + rinfo + '</div>';
+  }
+
   chc += '<div class="bwChoiceContent">';
   chc += '<div class="bwChoiceDates">';
   chc += choice.start().getLocalizedDate() + ' ';
@@ -179,6 +194,7 @@ Poll.prototype.updateEventFromPanel = function(panel, event) {
 // Add choice button clicked
 Poll.prototype.addChoice = function() {
   var choiceType = $("input:radio[name=choiceType]:checked").val();
+  this.getVpollValues();
 
   var choices = this.editing_poll.choices();
 
@@ -207,8 +223,8 @@ Poll.prototype.addChoice = function() {
       end.addDays(1);
     }
     end.updateProperty(currentEntity.data, start);
+    currentEntity.data.updateProperty("poll-item-id", this.editing_poll.nextPollItemId().toString());
   }
-
 
   $.magnificPopup.open({
     items: {
@@ -250,6 +266,7 @@ Poll.prototype.populateChoiceForm = function(choice) {
       }
       $("#choice-widget #eventStartDateHour").empty();
       $("#choice-widget #eventStartDateHour").html(hour24Opts);
+      $('#eventStartDateHour option[value="' + dtSt.hours() + '"]').prop('selected',true);
     } else {
       if(!dtSt.am()) {
         $("#choice-widget #eventStartDateAmpm").prop("selectedIndex", 1);
@@ -257,7 +274,8 @@ Poll.prototype.populateChoiceForm = function(choice) {
     }
 
     $("#choice-widget #eventStartDateHour").val(dtSt.hoursAmPm24());
-    $("#choice-widget #eventStartDateMinute").val(dtSt.minutes());
+//    $("#choice-widget #eventStartDateMinute").val(dtSt.minutes());
+    $('#eventStartDateMinute option[value="' + dtSt.minutes() + '"]').prop('selected',true);
 
     if (dtSt.tzid !== undefined) {
       // Set the tzid from dtSt.tzid
@@ -319,10 +337,15 @@ Poll.prototype.populateChoiceForm = function(choice) {
 
   $("#eventFormLocationList select").append(locationOptions);
 
-  if (this.addFormRecurrenceInfo(choice)) {
-    $("#isRecurring").click();
-  } else {
+  var rinfo = getRecurrenceInfo(choice);
+
+  if (rinfo === null) {
+    // Not recurring
     $("#isNotRecurring").click();
+  } else {
+    $("#recurrenceInfo").text(rinfo);
+    this.addFormRecurrenceInfo(choice);
+    $("#isRecurring").click();
   }
 
   $("#bwComp-attendeelist").empty();
@@ -337,8 +360,8 @@ Poll.prototype.populateChoiceForm = function(choice) {
  */
 Poll.prototype.addFormRecurrenceInfo = function(choice) {
   // First set to the default state
-  $("freqNONE").click();
-  $("recurCount").click();
+  $("#freqNONE").click();
+  $("#recurCount").click();
   $("#recurCountVal").val(1);
   $("#recurInterval").val(1);
   $('#recurAdvanced').checked = false;
@@ -356,7 +379,14 @@ Poll.prototype.addFormRecurrenceInfo = function(choice) {
     return false;
   }
 
-  var rrule = rrules[0][3];  // value part
+  var rrule;
+
+  if (rrules[0] instanceof Array) {
+    // Multiple rrules - not supported - do the first
+    rrule = rrules[0][3];  // value part
+  } else {
+    rrule = rrules[3];  // value part
+  }
 
   /* Set the frequency */
   var freq = rrule["freq"];
@@ -365,7 +395,8 @@ Poll.prototype.addFormRecurrenceInfo = function(choice) {
     return false;
   }
 
-  $("freq" + freq).click();
+  $("#isRecurring").click();
+  $("#freq" + freq).click();
 
   // until or count or neither
   var until = rrule["until"];
@@ -373,12 +404,12 @@ Poll.prototype.addFormRecurrenceInfo = function(choice) {
 
   if (until !== undefined) {
     $("#bwEventWidgetUntilDate").val(until);
-    $("recurUntil").click();
+    $("#recurUntil").click();
   } else if (count !== undefined) {
-    $("recurCount").click();
+    $("#recurCount").click();
     $("#recurCountVal").val(count);
   } else {
-    $("recurForever").click();
+    $("#recurForever").click();
   }
 
   var interval = rrule["interval"];
@@ -424,6 +455,31 @@ Poll.prototype.addFormRecurrenceInfo = function(choice) {
   var wkst = rrule["wkst"];
   if (wkst !== undefined) {
     advanced = true;
+    $('#recurWkst option[value="' + wkst + '"]').prop('selected',true);
+  }
+
+  var bymonth = rrule["bymonth"];
+  if (bymonth !== undefined) {
+    advanced = true;
+    bymonth = asArray(bymonth);
+    for (var i = 0; i < bymonth.length; i++) {
+      // 1-12
+      var bymonthval = bymonth[i];
+
+      $('#byMonthItem' + bymonthval).checked = true;
+    }
+  }
+
+  var bymonthday = rrule["bymonthday"];
+  if (bymonthday !== undefined) {
+    advanced = true;
+    bymonthday = asArray(bymonthday);
+    for (var i = 0; i < bymonthday.length; i++) {
+      // +/-1-31
+      var bymonthdayval = bymonthday[i];
+
+      $('#byMonthItem' + bymonthval).checked = true;
+    }
   }
 
   if (advanced) {
@@ -451,7 +507,7 @@ Poll.prototype.populateChoice = function(choice) {
 
   var datePart = $("#choice-widget #bwEventWidgetStartDate").val();
   var allDay = $("#allDayFlag").is(":checked");
-  var UTC = $("#storeUTCFlag").val();
+  var UTC = $("#storeUTCFlag").is(":checked");
   var hours = $("#choice-widget #eventStartDateHour").val();
   var minutes = $("#choice-widget #eventStartDateMinute").val();
 
@@ -533,10 +589,10 @@ Poll.prototype.populateRRule = function() {
   rrule['freq'] = freq;
 
   // until or count or neither
-  if ($("recurUntil").is(":checked")) {
+  if ($("#recurUntil").is(":checked")) {
     rrule['until'] = $("#bwEventWidgetUntilDate").val();
-  } else if ($("recurCount").is(":checked")) {
-    rrule['count'] = $("#recurCountVal").val();
+  } else if ($("#recurCount").is(":checked")) {
+    rrule['count'] = parseInt($("#recurCountVal").val());
   }
 
   if (!$("#recurAdvanced").is(":checked")) {
@@ -661,6 +717,8 @@ Poll.prototype.populateRRule = function() {
 /** Add a new voter or attendee item in the UI
  *
  * @param readOnly true if this is for display only
+ * @param itemType "attendee" or "voter"
+ * @param itemLabel currently "Attendee" or "Voter"
  * @returns {string}
  */
 Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
@@ -695,7 +753,17 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
   idiv += '</div>';
   idiv = $(idiv).appendTo("#bwComp-" + itemType + "list");
 
-  idiv.find("." + itemType + "-address").autocomplete({
+  var this_poll = this;
+
+  var addrField = idiv.find("." + itemType + "-address");
+  addrField.hover(
+      function() {
+        this_poll.hoverCuaddrDialogOpen(addrField);
+      },
+      this_poll.hoverCuaddrDialogClose
+  );
+
+  addrField.autocomplete({
     minLength : 3,
     extraParams: {
       cutype : function() {
@@ -731,8 +799,9 @@ Poll.prototype.setVoterPanel = function(panel, voter) {
 };
 
 // Get details of the voter from the UI
-Poll.prototype.updateVoterFromPanel = function(panel, voter) {
+Poll.prototype.updateVoterFromPanel = function(panel, voter, cutype) {
   voter.addressDescription(panel.find(".voter-address").val());
+  voter.cutype(cutype)
 };
 
 // Add voter button clicked
@@ -750,7 +819,7 @@ Poll.prototype.buildResults = function() {
   var this_poll = this;
 
   // Sync with any changes from other panels
-  this.getPanel();
+  this.getVpollValues();
 
   var event_details = this.editing_poll.choices();
   var voter_details = this.editing_poll.voters();
@@ -759,7 +828,7 @@ Poll.prototype.buildResults = function() {
   var th_summary = thead.children("tr").eq(0).empty();
   var th_start = thead.children("tr").eq(1).empty();
   var th_end = thead.children("tr").eq(2).empty();
-  var th_recur = thead.children("tr").eq(3).empty();
+  var th_recur = thead.children("tr").eq(3).empty().addClass("invisible");
   var th_desc = thead.children("tr").eq(4).empty();
   var tf = $("#editpoll-resulttable").children("tfoot").first();
   var tf_overall = tf.children("tr").first().empty();
@@ -771,18 +840,27 @@ Poll.prototype.buildResults = function() {
   $('<td>End:</td>').appendTo(th_end);
   $('<td>Recurs:</td>').appendTo(th_recur);
   $('<td>Description:</td>').appendTo(th_desc);
-  $('<td>Overall:</td>').appendTo(tf_overall);
+  $('<td>Overall (all voters):</td>').appendTo(tf_overall);
   $('<td />').appendTo(tf_commit);
   $.each(event_details, function(index, event) {
     //$("#debug").append(print_r(event));
     var td_summary = $('<td />').appendTo(th_summary).text(event.summary()).addClass("summary-td");;
-    var td_start = $('<td />').appendTo(th_start).html(event.start().getLocalizedDate() + '<br/>' + event.start().getPrintableTime()).addClass("start-td");
+    var td_start = $('<td />').appendTo(th_start).html(event.start().getLocalizedDate() + ' - ' + event.start().getPrintableTime()).addClass("start-td");
     var endDate = "";
-    if (event.start().dateEquals(event.end())) {
-      endDate = event.end().getLocalizedDate() + '<br/>';
+    if (!event.start().dateEquals(event.end())) {
+      endDate = event.end().getLocalizedDate() + ' - ';
     }
     var td_end = $('<td />').appendTo(th_end).html(endDate + event.end().getPrintableTime());
-    var td_recur = $('<td />').appendTo(th_recur).text('2nd Tuesday, Monthly'/*XXX event.recurrence()*/).addClass("recur-td");
+
+    var rinfo = getRecurrenceInfo(event);
+
+    if (rinfo !== null) {
+      th_recur.removeClass("invisible");
+      var td_recur = $('<td />').appendTo(th_recur).text(rinfo).addClass("recur-td");
+    } else {
+      var td_recur = $('<td />').appendTo(th_recur).text(i18nStrings["bwStr-AEEF-No"]).addClass("recur-td");
+    }
+
     var td_desc = $('<td />').appendTo(th_desc).text(event.description()).addClass("desc-td");
     $('<td />').appendTo(tf_overall).addClass("center-td");
     $('<td />').appendTo(tf_commit).addClass("center-td");
@@ -793,9 +871,9 @@ Poll.prototype.buildResults = function() {
     }
     td_summary.hover(
         function() {
-          this_poll.hoverDialogOpen(td_summary, thead, event);
+          this_poll.hoverCalDialogOpen(td_summary, thead, event);
         },
-        this_poll.hoverDialogClose
+        this_poll.hoverCalDialogClose
     );
   });
   $.each(voter_details, function(index, voter) {
@@ -927,7 +1005,7 @@ Poll.prototype.clickResponse = function() {
   var event = gViewController.activePoll.editing_poll.getChoice(index);
   event.changeVoterResponse(response);
   gViewController.activePoll.updateOverallResults();
-}
+};
 
 // A winner was chosen, make poll changes and create new event and save everything
 Poll.prototype.clickWinner = function() {
@@ -939,10 +1017,10 @@ Poll.prototype.clickWinner = function() {
       gViewController.activatePoll(gViewController.activePoll);
     });
   })
-}
+};
 
 // Open the event time-range hover dialog
-Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
+Poll.prototype.hoverCalDialogOpenClassic = function(td_summary, thead, event) {
   var dialog_div = $('<div id="hover-cal" />').appendTo(td_summary).dialog({
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: thead },
@@ -981,7 +1059,7 @@ Poll.prototype.hoverDialogOpenClassic = function(td_summary, thead, event) {
 }
 
 // Open the event time-range hover dialog
-Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
+Poll.prototype.hoverCalDialogOpenFancy = function(td_summary, thead, event) {
   var dialog_div = $('<div id="hover-cal" />').appendTo(td_summary).dialog({
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: thead },
@@ -991,16 +1069,21 @@ Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
   });
 
   /* get 12 hour span */
-  var start = event.start().clone().addHours(-6);
-  var startHour = start.hours();
-  var end = event.end().clone().addHours(6);
-  var endHour = end.hours();
+  var start = event.start().clone();
+  start.subtractHours(6);
+
+  var end = event.end().clone();
+  end.addHours(6);
+
+  var gridStart = start.clone();
 
   var grid = $('<table id="hover-grid" />').appendTo(dialog_div);
-  for(var i = startHour; i < endHour; i++) {
-    var text = i > 12 ? i - 12 +":00 pm" : i + ":00 am";
+  for(var i = 0; i <= 12; i++) {
+    var text = gridStart.getPrintableTime();
+    gridStart.addHours(1);
     $('<tr><td class="hover-grid-td-time">' + text + '</td><td class="hover-grid-td-slot" /></tr>').appendTo(grid);
   }
+
   gSession.currentPrincipal.eventsForTimeRange(
       start,
       end,
@@ -1008,31 +1091,79 @@ Poll.prototype.hoverDialogOpenFancy = function(td_summary, thead, event) {
         results = $.map(results, function(result) {
           return result.mainComponent();
         });
+
+        /* Add the current event to the result */
         results.push(event);
         results.sort(function(a, b) {
-          return a.start().milliseconds() - b.start().milliseconds();
+          return a.start().diff(b.start(), 'milliseconds');
         });
-        var last_dtend = null;
+        var lastDtend = null;
         $.each(results, function(index, result) {
-          var top_offset = (result.start().hours() - startHour) * 30;
-          var height = ((result.end().seconds() - result.start().seconds()) * 30) / (60 * 60) - 6;
-          var styles = "top:" + top_offset + "px;height:" + height + "px";
-          if (last_dtend !== null && last_dtend.millisecs() > result.start().millisecs()) {
+          result.start().tzid(start.tzid());
+          result.end().tzid(start.tzid());
+
+          var hoursOffset = result.start().diff(start, 'hours');
+          var topOffset = hoursOffset * 30;
+
+          var seconds = result.end().diff(result.start(), 'seconds');
+          var height = (seconds * 30) / (60 * 60) - 6;
+          var styles = "top:" + topOffset + "px;height:" + height + "px";
+          if ((lastDtend !== null) && (lastDtend.diff(result.start(), 'millisecsonds') > 0)) {
             styles += ";left:206px;width:125px";
           }
-          last_dtend = result.end();
+          lastDtend = result.end();
           $('<div class="hover-event ui-corner-all" style="' + styles + '" />').appendTo(grid).addClass(result.pollitemid() !== null ? "ui-state-active" : "ui-state-default").text(result.summary());
         });
       }
   );
 };
 
-// Turn this off for the moment:
-//Poll.prototype.hoverDialogOpen = Poll.prototype.hoverDialogOpenFancy;
+Poll.prototype.hoverCalDialogOpen = Poll.prototype.hoverCalDialogOpenFancy;
 
 // Close the event time-range hover dialog
-Poll.prototype.hoverDialogClose = function() {
+Poll.prototype.hoverCalDialogClose = function() {
   $("#hover-cal").dialog("close").remove();
+};
+
+// Open the participant address hover dialog
+Poll.prototype.hoverCuaddrDialogOpen = function(td_addr) {
+  var splits = splitAddressDescription(td_addr.val());
+
+  var card = cuaddrVcards[splits[1]];
+
+  if (card === undefined) {
+    return;
+  }
+
+  if (card === null) {
+    return;
+  }
+
+  var kind = card.data.getPropertyValue("kind");
+  if (kind !== "group") {
+    return;
+  }
+
+  var dialog_div = $('<div id="hover-cuaddr" />').appendTo(td_addr).dialog({
+    dialogClass: "no-close",
+    position: { my: "left top", at: "right+20 top", of: td_addr },
+    show: "fade",
+    title: "Card for " + td_addr.val(),
+    width: 400
+  });
+
+  var grid = $('<table id="hover-grid" />').appendTo(dialog_div);
+  var members = card.data.properties("member");
+  for (var i = 0; i < members.length; i++) {
+    var member = members[i];
+    $('<tr><td class="hover-grid-td-time">' + member[3] + '</td><td class="hover-grid-td-slot" /></tr>').appendTo(grid);
+  }
+};
+
+
+// Close the participant address hover dialog
+Poll.prototype.hoverCuaddrDialogClose = function() {
+  $("#hover-cuaddr").dialog("close").remove();
 };
 
 Poll.prototype.updateOverallResults = function() {

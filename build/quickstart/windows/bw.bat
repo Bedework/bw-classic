@@ -26,7 +26,6 @@ SET BWJMXCONFIG=
 SET bwc=default
 SET BWCONFIG=
 SET offline=
-SET quickstart=
 
 SET ant_listener=
 SET ant_xmllogfile=
@@ -105,23 +104,10 @@ SET specialTarget=
 IF "%1noargs" == "noargs" GOTO usage
 GOTO branch
 
-:quickstart
-  ECHO     Preparing quickstart build ...
-  SET quickstart="yes"
-  SHIFT
-  GOTO branch
-
 :bwjmxconf
   :: Define location of jmx configs
   SHIFT
   SET BWJMXCONFIG=%1
-  SHIFT
-  GOTO branch
-
-:bwchome
-  :: Define location of configs
-  SHIFT
-  SET BWCONFIGS=%1
   SHIFT
   GOTO branch
 
@@ -439,20 +425,9 @@ IF NOT "%pkgdefault%" == "yes" GOTO notdefault
 
 :notdefault
 
-IF NOT "%quickstart%empty" == "empty" GOTO checkBwConfig
-IF NOT "%BWCONFIGS%empty" == "empty" GOTO DoneQB
-SET BWCONFIGS=%HOMEPATH%\bwbuild
-GOTO doneQB
+SET BWCONFIGS=%QUICKSTART_HOME%\bedework\config\bwbuild
 
-:checkBwConfig
-
-  SET BWCONFIGS=%QUICKSTART_HOME%\bedework\config\bwbuild
-
-:doneQB
-
-IF NOT "%$BWJMXCONFIG%empty" == "empty" GOTO DoneJmxConfig
-  SET BWJMXCONFIG=%QUICKSTART_HOME%\bedework\config\bedework
-:DoneJmxConfig
+SET BWJMXCONFIG=%QUICKSTART_HOME%\bedework\config\bedework
 
   SET BEDEWORK_CONFIGS_HOME=%BWCONFIGS%
   SET BEDEWORK_CONFIG=%BWCONFIGS%\%bwc%

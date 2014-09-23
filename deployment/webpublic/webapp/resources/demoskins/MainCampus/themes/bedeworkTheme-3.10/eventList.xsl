@@ -66,6 +66,10 @@
       <a href="javascript:bwMainEventList.appendEvents();" class="button">Load more events</a>
     </div>
 
+    <div id="noEventsToDisplayText" class="invisible">
+      <xsl:text> </xsl:text>
+    </div>
+
     <!-- Subscribe/Export Form Popup -->
     <div id="exportSubscribePopup" class="mfp-hide">
       <xsl:call-template name="exportSubscribe"/>

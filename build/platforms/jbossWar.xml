@@ -16,7 +16,7 @@
          =============================================================== -->
 
     <copy todir="${app.dest.webinf}"
-          file="${app.sou.dir}/war/WEB-INF/jboss-web.xml">
+          file="${app.sou.dir}/webapp/WEB-INF/jboss-web.xml">
     </copy>
   </target>
 
@@ -206,6 +206,8 @@
           <fileset dir="${org.bedework.ear.dir}"/>
         </copy>
              ================================================================ -->
+        <mkdir dir="${org.bedework.appserver.deploy.dir}" />
+
         <delete includeemptydirs="true">
           <fileset dir="${org.bedework.appserver.deploy.dir}"
                    defaultexcludes="false">

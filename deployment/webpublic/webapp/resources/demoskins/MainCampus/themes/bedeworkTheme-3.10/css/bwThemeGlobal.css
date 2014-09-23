@@ -488,7 +488,13 @@ ul#calDisplayOptions li a {
 }
 #loadMoreEventsLink {
   clear: left;
-  margin-top: 2em;
+  margin: 2em 0;
+}
+#noEventsToDisplayText {
+  clear: left;
+  margin: 2em 0;
+  padding: 0.5em;
+  background-color: #f5f5f5;
 }
 
 /* DAY, WEEK, MONTH EVENTS LIST */

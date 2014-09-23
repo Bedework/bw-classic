@@ -78,3 +78,203 @@ function print_r(obj) {
   }
   return str;
 }
+
+/**
+ * @param comp
+ * @returns {String} describing the recurrence - null for not recurring
+ */
+function getRecurrenceInfo(comp) {
+  if (comp.data.getProperty("recurrence-id") !== null) {
+    // An instance
+    return null;
+  }
+
+  var rrules = comp.rrules(); // Array - we only handle 1
+  var rdates = comp.rdates();
+
+  if ((rrules.length === 0) && (rdates.length === 0)) {
+    // not recurring
+    return null;
+  }
+
+  var rrule;
+
+  if (rrules[0] instanceof Array) {
+    // Multiple rrules - not supported - do the first
+    rrule = rrules[0][3];  // value part
+  } else {
+    rrule = rrules[3];  // value part
+  }
+
+  /* Set the frequency */
+  var freq = rrule["freq"];
+  if (freq === undefined) {
+    // Invalid - freq is required.
+    return null;
+  }
+
+  var rinfo = i18nStrings["bwStr-AEEF-EVERY"];
+
+  var interval = rrule["interval"];
+
+  if (interval !== undefined) {
+    if (interval != 1) {
+      rinfo += interval;
+    }
+  }
+
+  rinfo += " ";
+
+  if (freq === "HOURLY") {
+    rinfo += i18nStrings["bwStr-AEEF-Hour"];
+  } else if (freq === "DAILY") {
+    rinfo += i18nStrings["bwStr-AEEF-Day"];
+  } else if (freq === "WEEKLY") {
+    rinfo += i18nStrings["bwStr-AEEF-Week"];
+  } else if (freq === "MONTHLY") {
+    rinfo += i18nStrings["bwStr-AEEF-Month"];
+  } else if (freq === "YEARLY") {
+    rinfo += i18nStrings["bwStr-AEEF-Year"];
+  }
+
+  var byday = rrule["byday"];
+
+  if (byday !== undefined) {
+    byday = asArray(byday);
+    var delim = " ";
+    for (var i = 0; i < byday.length; i++) {
+      rinfo += delim;
+      delim = " " + i18nStrings["bwStr-AEEF-And"] + " ";
+      // [+/-[n]]day-name
+      // SU MO TU etc
+      var bydayval = byday[i];
+      var dayname;
+      var pos = 1;
+      if (bydayval.length > 2) {
+        dayname = bydayval.substr(-2);
+        pos = parseInt(bydayval.substr(0, -2));
+      } else {
+        dayname = bydayval;
+      }
+
+      if (pos === 1) {
+        rinfo += i18nStrings["bwStr-AEEF-TheFirst"];
+      } else if (pos === 2) {
+        rinfo += i18nStrings["bwStr-AEEF-TheSecond"];
+      } else if (pos === 3) {
+        rinfo += i18nStrings["bwStr-AEEF-TheThird"];
+      } else if (pos === 4) {
+        rinfo += i18nStrings["bwStr-AEEF-TheFourth"];
+      } else if (pos === 5) {
+        rinfo += i18nStrings["bwStr-AEEF-TheFifth"];
+      } else if (pos === -1) {
+        rinfo += i18nStrings["bwStr-AEEF-TheLast"];
+      }
+
+      // TODO - wrong for years
+
+      // TODO - add /bedework/shortdaynames/ to i18nStrings
+
+      var dayNums = {
+        "SU": 0,
+        "MO": 1,
+        "TU": 2,
+        "WE": 3,
+        "TH": 4,
+        "FR": 5,
+        "SA": 6
+      }
+      rinfo += moment().locale().weekdays[daynums[dayname]];
+    }
+  }
+
+  // TODO - add /bedework/monthlabels/ to i18nStrings
+
+  var monthLabels = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"];
+
+  var bymonth = rrule["bymonth"];
+  if (bymonth !== undefined) {
+    rinfo += " " + i18nStrings["bwStr-AEEF-In"] + " " +
+       monthLabels[parseInt(bymonth)];
+  }
+
+  var bymonthday = rrule["bymonthday"];
+  if (bymonthday !== undefined) {
+    rinfo += " " + i18nStrings["bwStr-AEEF-OnThe"] + " " +
+        moment().ordinal[parseInt(bymonthday)] + " " +
+        i18nStrings["bwStr-AEEF-DayOfTheMonth"];
+  }
+
+  var bymonthday = rrule["bymonthday"];
+  if (bymonthday !== undefined) {
+    rinfo += " " + i18nStrings["bwStr-AEEF-OnThe"] + " " +
+        moment().ordinal[parseInt(bymonthday)] + " " +
+        i18nStrings["bwStr-AEEF-DayOfTheMonth"];
+  }
+
+  var byyearday = rrule["byyearday"];
+  if (byyearday !== undefined) {
+    // TODO - something with negative byyearday values
+    byyearday = parseInt(byyearday);
+
+    var neg;
+
+    if (byyearday < 0) {
+      neg = true;
+      byyearday = -byyearday;
+    } else {
+      neg = false;
+    }
+    rinfo += " " + i18nStrings["bwStr-AEEF-OnThe"] + " " +
+        moment().ordinal[byyearday] + " " +
+        i18nStrings["bwStr-AEEF-DayOfTheYear"];
+
+    if (neg) {
+      rinfo += " " + i18nStrings["bwStr-AEEF-FromTheEnd"];
+    }
+  }
+
+  var byweekno = rrule["byweekno"];
+  if (byweekno !== undefined) {
+    // TODO - something with negative byweekno values
+    byweekno = parseInt(byweekno);
+
+    if (byweekno < 0) {
+      neg = true;
+      byweekno = -byweekno;
+    } else {
+      neg = false;
+    }
+    rinfo += " " + i18nStrings["bwStr-AEEF-OnThe"] + " " +
+        moment().ordinal[byweekno] + " " +
+        i18nStrings["bwStr-AEEF-WeekOfTheYear"];
+
+    if (neg) {
+      rinfo += " " + i18nStrings["bwStr-AEEF-FromTheEnd"];
+    }
+  }
+
+  var wkst = rrule["wkst"];
+  if (wkst !== undefined) {
+  }
+
+  // until or count or neither
+  var until = rrule["until"];
+  var count = rrule["count"];
+
+  rinfo += i18nStrings["bwStr-AEEF-Repeating"] + " ";
+
+  if (until !== undefined) {
+    rinfo += i18nStrings["bwStr-AEEF-Until"] + until;
+    // TODO - use moment to parse and display
+  } else if (count !== undefined) {
+    rinfo += count + " " + i18nStrings["bwStr-AEEF-Time"];
+  } else {
+    rinfo += i18nStrings["bwStr-AEEF-Forever"];
+  }
+
+  return rinfo;
+}

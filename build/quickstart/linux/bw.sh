@@ -16,6 +16,8 @@ echo "+++++++++++++GIT_HOME=$GIT_HOME"
 #ant_xmllogfile="-DXmlLogger.file=log.xml"
 #ant_logger="-logger org.apache.tools.ant.XmlLogger"
 
+deployableDir="$GIT_HOME/bw-classic/dist/deployable"
+
 antHome=
 jbossHome=
 dsHome=
@@ -126,11 +128,6 @@ usage() {
   echo "      -updateall  Does an svn update of all projects"
   echo ""
   echo "   OPTIONS is zero or more from:"
-  echo "     -quickstart    to use the configurations within the quickstart"
-  echo "     -bwchome path  to specify the location of the bwbuild directory"
-  echo "                    The default is to look in the user home for"
-  echo "                      the bwbuild directory."
-  echo ""
   echo "      -antHome      location of ant"
   echo "      -jbossHome    location of jboss to deploy into"
   echo "      -dsHome       location of apache directory server"
@@ -144,7 +141,7 @@ usage() {
   echo "   LOG_LEVEL sets the level of logging and can be"
   echo "      -log-silent   Nearly silent"
   echo "      -log-quiet    The default"
-  echo "      -log-inform   A little more noisy"
+  echo "      -log-in${earName} little more noisy"
   echo "      -log-verbose  Noisier"
   echo "      -log-configs  Some info about configurations"
   echo "      -ant-debug    Vast amounts of ant output"
@@ -176,6 +173,7 @@ usage() {
   echo "     -carddav deploy-addrbook    To deploy the Javascript Addressbook client."
   echo "     -eventreg     Target is for the event registration service build"
   echo "     -bw_util      Target is for the Bedework util classes"
+  echo "     -notifier     Target is for the notification system build"
   echo "     -selfreg      Target is for the self registration build"
   echo "     -synch        Target is for the synch build"
   echo "     -tzsvr        Target is for the timezones server build"
@@ -213,6 +211,24 @@ errorUsage() {
   exit 1
 }
 
+# $1 - target directory
+# $2 - ear name without version or ".ear"
+copyDeployable() {
+  basedir=$1
+#  echo "copyDeployable par 1 = $1"
+#  echo "copyDeployable par 2 = $2"
+
+  for dir in "$basedir"/$2*; do
+    if test -d "$dir"; then
+#      echo "copyDeployable dir = $dir"
+
+      mkdir -p $deployableDir
+      rm -r $deployableDir/$2*.ear
+      cp -r $dir $deployableDir/$(basename $dir).ear
+    fi
+  done
+}
+
 # ----------------------------------------------------------------------------
 # Update the projects
 # ----------------------------------------------------------------------------
@@ -240,7 +256,8 @@ actionUpdateall() {
 # The order below reflects the dependencies
 setDirectory() {
     specialTarget=
-    deploy=
+    postDeploy=
+#    deploy=
 
 #     Special targets
   if [ "$cmdutil" != "" ] ; then
@@ -366,7 +383,11 @@ setDirectory() {
       cd $GIT_HOME/bw-carddav
       maven=yes
       bw_carddav=
-      deploy="$GIT_HOME/bw-carddav/bw-carddav-ear/target/bw-carddav*ear"
+      deploy="$GIT_HOME/bw-carddav/bw-carddav-ear/target/"
+      earName=bw-carddav
+
+      copyDeployable "$deploy" "$earName"
+
     return
   fi
 
@@ -401,6 +422,7 @@ setDirectory() {
 	if [ "$bw_classic" != "" ] ; then
 	  cd $GIT_HOME/bw-classic
       bw_classic=
+      earName="bwcal"
 	  return
 	fi
 
@@ -421,15 +443,24 @@ setDirectory() {
       cd $GIT_HOME/bw-notifier
       maven=yes
       bw_notifier=
-      deploy="$GIT_HOME/bw-notifier/bw-note-ear/target/bw-notify*ear"
+      deploy="$GIT_HOME/bw-notifier/bw-note-ear/target/"
+      earName=bw-notifier
+
+      copyDeployable "$deploy" "$earName"
+
 	  return
 	fi
 
 	if [ "$bw_selfreg" != "" ] ; then
       echo "Build selfreg"
-      cd $GIT_HOME/bw-self-registration
+      earName=bw-self-registration
+      cd $GIT_HOME/${earName}
       maven=yes
       bw_selfreg=
+      deploy="$GIT_HOME/$earName/$earName-ear/target/"
+
+      copyDeployable "$deploy" "$earName"
+
 	  return
 	fi
 
@@ -438,7 +469,11 @@ setDirectory() {
       cd $GIT_HOME/bw-synch
       maven=yes
       bw_synch=
-      deploy="$GIT_HOME/bw-synch/bw-synch-ear/target/bw-synch*ear"
+      deploy="$GIT_HOME/bw-synch/bw-synch-ear/target/"
+      earName=bw-synch
+
+      copyDeployable "$deploy" "$earName"
+
       return
     fi
 
@@ -453,13 +488,24 @@ setDirectory() {
       cd $GIT_HOME/bw-timezone-server
       maven=yes
       bw_tzsvr=
-      deploy="$GIT_HOME/bw-timezone-server/bw-timezone-server-ear/target/bw-timezone-server*ear"
+      deploy="$GIT_HOME/bw-timezone-server/bw-timezone-server-ear/target/"
+      earName=bw-timezone-server
+
+      copyDeployable "$deploy" "$earName"
+
 	  return
 	fi
 
 	if [ "$bwtools" != "" ] ; then
 	  cd $GIT_HOME/bwtools
       bwtools=
+	  return
+	fi
+
+	if [ "$earName" != "" ] ; then
+	  cd $QUICKSTART_HOME
+      postDeploy="$earName"
+      earName=
 	  return
 	fi
 
@@ -489,7 +535,7 @@ BWJMXCONFIG=
 bwc=default
 BWCONFIG=
 offline=
-quickstart=
+deployConfig=
 
 action=
 
@@ -539,11 +585,6 @@ do
   # Process the next arg
   case $1       # Look at $1
   in
-    -bwchome)         # Define location of configs
-      shift
-      BWCONFIGS="$1"
-      shift
-      ;;
     -antHome)
       shift
       antHome="$1"
@@ -559,18 +600,14 @@ do
       dsHome="$1"
       shift
       ;;
-    -quickstart)
-      quickstart="yes"
-      shift
-      ;;
     -usage | -help | -? | ?)
       usage
       exit
       shift
       ;;
-    -bwc)
+    -dc)
       shift
-      bwc="$1"
+      deployConfig="$1"
       shift
       ;;
     -bwjmxconf)
@@ -883,19 +920,8 @@ fi
 CLASSPATH=$antHome/lib/ant-launcher.jar
 CLASSPATH=$CLASSPATH:$GIT_HOME/bw-classic/build/quickstart/antlib
 
-if [ "$quickstart" != "" ] ; then
-  if [ "$BWCONFIGS" != "" ] ; then
-    errorUsage "Cannot specify both -quickstart and -bwchome"
-  fi
-
-  BWCONFIGS=$GIT_HOME/bw-classic/config/bwbuild
-elif [ "$BWCONFIGS" = "" ] ; then
-  BWCONFIGS=$HOME/bwbuild
-fi
-
-if [ "$BWJMXCONFIG" = "" ] ; then
-  BWJMXCONFIG=$GIT_HOME/bw-classic/config/bedework
-fi
+BWCONFIGS=$GIT_HOME/bw-classic/config/bwbuild
+BWJMXCONFIG=$GIT_HOME/bw-classic/config/bedework
 
 export BEDEWORK_CONFIGS_HOME=$BWCONFIGS
 export BEDEWORK_CONFIG=$BWCONFIGS/$bwc
@@ -945,23 +971,39 @@ fi
 
 echo "mvncmd = $mvncmd"
 
+if [ "$deployConfig" = "" ] ; then
+  deployConfig=./bw-classic/config/deploy.properties
+fi
+
+postDeploycmd="./bw-classic/deployment/deployer/deploy.sh --delete"
+postDeploycmd="$postDeploycmd --props $deployConfig"
+
 while true
 do
   maven=
   setDirectory
 
+
+#  echo "######### postDeploy = $postDeploy"
+
   if [ "$specialTarget" != "" ] ; then
     $javacmd $specialTarget
   elif [ "$maven" != "" ] ; then
     $mvncmd
+  elif [ "$postDeploy" != "" ] ; then
+    # Don't do this if bw-classic/dist does not exist. Probably a clean
+    if [ -d "./bw-classic/dist/" ] ; then
+      echo "$postDeploycmd --ear $postDeploy"
+      $postDeploycmd --ear $postDeploy
+    fi
   else
     $javacmd $*
   fi
 
-  if [ "$deploy" != "" ] ; then
-    echo "Deploying $deploy to $jbossHome/server/default/bwdeploy/"
-    cp $deploy $jbossHome/server/default/bwdeploy/
-    deploy=
-  fi
+#  if [ "$deploy" != "" ] ; then
+#    echo "Deploying $deploy to $jbossHome/server/default/bwdeploy/"
+#    cp $deploy $jbossHome/server/default/bwdeploy/
+#    deploy=
+#  fi
 done
 

@@ -22,18 +22,28 @@
 
   <!-- Date Selection Form -->
   <xsl:template name="datePicker">
-    <xsl:variable name="datePickerDate"><xsl:value-of select="substring(/bedework/currentdate/date,0,5)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/currentdate/date,5,2)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/currentdate/date,7,2)"/></xsl:variable>
+    <xsl:variable name="datePickerDate">
+      <xsl:choose>
+        <xsl:when test="/bedework/appvar[key='navDate']/value != ''">
+          <xsl:choose>
+            <xsl:when test="contains(/bedework/appvar[key='navDate']/value,'-')"><xsl:value-of select="/bedework/appvar[key='navDate']/value"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="substring(/bedework/appvar[key='navDate']/value,0,5)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/appvar[key='navDate']/value,5,2)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/appvar[key='navDate']/value,7,2)"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise><xsl:value-of select="substring(/bedework/currentdate/date,0,5)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/currentdate/date,5,2)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/currentdate/date,7,2)"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="todayDate"><xsl:value-of select="substring(/bedework/now/date,0,5)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/now/date,5,2)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:variable>
 
     <div id="bwDatePicker">
       <form name="calForm" method="post">
+        <xsl:attribute name="onsubmit">return changeStartDate(this,bwMainEventList);</xsl:attribute><!-- only matters when a user hits enter key -->
         <xsl:choose>
-          <xsl:when test="/bedework/page = 'eventscalendar' or /bedework/appvar[key='eventscalendar']/value=''">
+          <xsl:when test="/bedework/page = 'eventscalendar' or /bedework/appvar[key='listPage']/value='eventscalendar'">
             <xsl:attribute name="action"><xsl:value-of select="$setSelection"/></xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="action"><xsl:value-of select="$setSelectionList"/></xsl:attribute>
-            <xsl:attribute name="onsubmit">return changeStartDate(this,bwMainEventList);</xsl:attribute>
           </xsl:otherwise>
         </xsl:choose>
         <ul id="bwDatePickerTodayLink">
@@ -41,7 +51,7 @@
             <xsl:if test="($useAdvancedDateRangeMenu = 'true')">
               <xsl:attribute name="class">last</xsl:attribute>
             </xsl:if>
-            <a href="{$setSelectionList}&amp;start={$todayDate}">
+            <a href="{$setSelectionList}&amp;start={$todayDate}&amp;setappvar=navDate({$todayDate})">
               <xsl:if test="/bedework/page = 'eventscalendar' or /bedework/appvar[key='listPage']/value='eventscalendar'">
                 <xsl:attribute name="href"><xsl:value-of select="$setViewPeriod"/>&amp;viewType=todayView</xsl:attribute>
               </xsl:if>
@@ -58,12 +68,11 @@
         </ul>
         <label for="bwDatePickerInput"><xsl:value-of select="$bwStr-DatePicker-StartDate"/></label>
         <div class="bwInputs">
-          <input type="date" id="bwDatePickerInput" name="start" class="form-control" onchange="this.form.submit();">
+          <input type="date" id="bwDatePickerInput" name="start" class="form-control">
             <xsl:attribute name="value"><xsl:value-of select="$datePickerDate"/></xsl:attribute>
-            <xsl:if test="/bedework/page = 'eventList'">
-              <xsl:attribute name="onchange">return changeStartDate(this.form,bwMainEventList);</xsl:attribute>
-            </xsl:if>
+            <xsl:attribute name="onchange">return changeStartDate(this.form,bwMainEventList);</xsl:attribute>
           </input>
+          <input type="hidden" name="setappvar" value="navDate({$datePickerDate})"/>
           <input type="submit" value="go" class="btn btn-default sr-only"/>
         </div>
         <xsl:if test="$useAdvancedDateRangeMenu = 'true'">

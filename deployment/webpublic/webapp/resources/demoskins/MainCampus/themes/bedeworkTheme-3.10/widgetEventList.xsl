@@ -31,22 +31,20 @@
 
   <!-- Output the event list as an html data island -->
   <xsl:template match="events" mode="widgetEventList">
-    <ul>
-      <xsl:choose>
-        <xsl:when test="not(event)">
-          <script type="text/javascript">
-            // We have no more events: turn off scrolling update, and remove
-            // "Load more events" link (if they exist)
-            $(document).ready(function () {
-              $(window).off("scroll",bwScroll);
-              $("#loadMoreEventsLink").remove();
-            });
-          </script>
-          <li>
-             <xsl:copy-of select="$bwStr-LsEv-NoEventsToDisplay"/>
-          </li>
-        </xsl:when>
-        <xsl:otherwise>
+    <xsl:choose>
+      <xsl:when test="not(event)">
+        <script type="text/javascript">
+          // We have no more events: turn off scrolling update, and remove
+          // "Load more events" link (if they exist)
+          $(document).ready(function () {
+            $(window).off("scroll",bwScroll);
+            $("#loadMoreEventsLink").remove();
+            $("#noEventsToDisplayText").html("<xsl:copy-of select="$bwStr-LsEv-NoEventsToDisplay"/>").removeClass("invisible");
+          });
+        </script>
+      </xsl:when>
+      <xsl:otherwise>
+        <ul>
           <script type="text/javascript">
             // add more events when we scroll
             $(document).ready(function () {
@@ -268,9 +266,9 @@
 
             </li>
           </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </ul>
+        </ul>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

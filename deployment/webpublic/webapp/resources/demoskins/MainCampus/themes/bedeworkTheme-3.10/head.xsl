@@ -96,6 +96,19 @@
         <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">/* category search */</script> <!-- probably should be deprecated-->
       </xsl:if>
 
+
+      <xsl:variable name="navDate">
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar[key='navDate']/value != ''">
+            <xsl:choose>
+              <xsl:when test="contains(/bedework/appvar[key='navDate']/value,'-')"><xsl:value-of select="/bedework/appvar[key='navDate']/value"/></xsl:when>
+              <xsl:otherwise><xsl:value-of select="substring(/bedework/appvar[key='navDate']/value,0,5)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/appvar[key='navDate']/value,5,2)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/appvar[key='navDate']/value,7,2)"/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise><xsl:value-of select="substring(/bedework/currentdate/date,0,5)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/currentdate/date,5,2)"/><xsl:text>-</xsl:text><xsl:value-of select="substring(/bedework/currentdate/date,7,2)"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
       <!-- Set up list and navigation options for the main events list - must be global.
            The list of URLs is for use by JavaScript functions.  These are
            passed up from the client XML and contain the context.  -->
@@ -195,7 +208,7 @@
           bwFilterPaths = buildFilterPaths();
 
           <!-- Create the main event list object -->
-          bwMainEventList = new BwEventList("listEvents","html",bwMainEventsListOptions,"<xsl:value-of select="/bedework/currentdate/date"/>",bwFilterPrefix,bwFilterPaths,bwQuery,"<xsl:value-of select="$setMainEventList"/>","<xsl:value-of select="$nextMainEventList"/>","bwStartDate","bwResultSize");
+          bwMainEventList = new BwEventList("listEvents","html",bwMainEventsListOptions,"<xsl:value-of select="$navDate"/>",bwFilterPrefix,bwFilterPaths,bwQuery,"<xsl:value-of select="$setMainEventList"/>","<xsl:value-of select="$nextMainEventList"/>","bwStartDate","bwResultSize");
 
           <!-- show filters / highlight selected nav -->
           displayAllFilters(bwFilters);

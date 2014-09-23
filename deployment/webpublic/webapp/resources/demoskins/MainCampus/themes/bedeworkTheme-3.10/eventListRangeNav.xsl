@@ -25,7 +25,7 @@
   <xsl:template name="eventListRangeNav">
     <div id="eventListRangeNav">
       <div id="bwNavLinks">
-		    <a id="prevViewPeriod" href="{$setViewPeriod}&amp;date={$prevdate}" class="btn btn-default">
+		    <a id="prevViewPeriod" href="{$setViewPeriod}&amp;date={$prevdate}&amp;setappvar=navDate({$prevdate})" class="btn btn-default">
 		      &#171; <!-- left double arrow -->
 		    </a>
 		    <a id="nextViewPeriod" href="{$setViewPeriod}&amp;date={$nextdate}" class="btn btn-default">

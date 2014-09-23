@@ -12,19 +12,24 @@
 
 cp=.:./classes:./resources
 
-for i in ./rpiutil/lib/*
+for i in ./bw-util/bw-util-deployment/target/*.jar
   do
     cp=$cp:$i
 done
 
-for i in ./rpiutil/dist/*
+for i in ./bw-util/bw-util-args/target/*.jar
+  do
+    cp=$cp:$i
+done
+
+for i in ./bw-util/bw-util-xml/target/*.jar
   do
     cp=$cp:$i
 done
 
 RUNCMDPREFIX="$JAVA_HOME/bin/java -cp $cp "
 
-RUNCMD="$RUNCMDPREFIX edu.rpi.sss.util.deployment.ProcessEars $*"
+RUNCMD="$RUNCMDPREFIX org.bedework.util.deployment.ProcessEars $*"
 
 # echo "$RUNCMD"
 

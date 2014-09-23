@@ -22,10 +22,12 @@ var gViewController = null;
 var currentEntity = null;
 var locations = new BwLocations;
 
+var i18nStrings = null;
+
 var choicesTab = 0;
 var votersTab = 1;
 var resultsTab = 2;
-var active_tab = -1;
+var activeTab = -1;
 
 // Page load
 $(function() {
@@ -183,7 +185,8 @@ ViewController.prototype.init = function() {
     view.activePoll.saveChoice(currentEntity);
 
     // 3. rewrite ui choice list
-    view.activePoll.rewritePanel();
+    view.activePoll.getVpollValues();
+    view.activePoll.writeVpollValues();
 
     // 4. close the popup
     $.magnificPopup.close();
@@ -237,7 +240,7 @@ ViewController.prototype.clickRefresh = function() {
   }
 
   var currentUID = this.activePoll ? this.activePoll.editing_poll.uid() : null;
-  active_tab = $("#editpoll-tabs").tabs("option", "active");
+  activeTab = $("#editpoll-tabs").tabs("option", "active");
   if (this.activePoll) {
     this.clickPollCancel();
   }
@@ -249,8 +252,8 @@ ViewController.prototype.clickRefresh = function() {
     this_view.refreshed();
     if (currentUID) {
       this_view.selectPollByUID(currentUID);
-      $("#editpoll-tabs").tabs("option", "active", active_tab);
-      if (active_tab === resultsTab) {
+      $("#editpoll-tabs").tabs("option", "active", activeTab);
+      if (activeTab === resultsTab) {
         this.activePoll.buildResults();
       }
     }
@@ -314,12 +317,12 @@ ViewController.prototype.clickPollSave = function() {
 
   // TODO: Actually save it to the server
 
-  if (active_tab === votersTab) {
+  if (activeTab === votersTab) {
     // Ensure voters up to date
     this.activePoll.updateVoters();
   }
 
-  this.activePoll.getPanel();
+  this.activePoll.getVpollValues();
   if (this.isNewPoll) {
     this.ownedPolls.newPoll(this.activePoll);
   } else {
@@ -386,7 +389,7 @@ ViewController.prototype.editSetVisible = function(visible) {
       $("#editpoll-tabs").tabs("enable", choicesTab);
       $("#editpoll-tabs").tabs("enable", votersTab);
       $("#editpoll-tabs").tabs("option", "active", choicesTab);
-      active_tab = choicesTab;
+      activeTab = choicesTab;
       $("#response-key").hide();
     } else {
       $("#editpoll-title-edit-panel").hide();
@@ -394,7 +397,7 @@ ViewController.prototype.editSetVisible = function(visible) {
       $("#editpoll-organizer-panel").show();
       $("#editpoll-status-panel").show();
       $("#editpoll-tabs").tabs("option", "active", resultsTab);
-      active_tab = resultsTab;
+      activeTab = resultsTab;
       $("#editpoll-tabs").tabs("disable", choicesTab);
       $("#editpoll-tabs").tabs("disable", votersTab);
       $("#response-key").toggle(this.activePoll.resource.object.mainComponent().editable());
@@ -441,12 +444,12 @@ ViewController.prototype.showResults = function(event, ui) {
   $("#editpoll-autofill").toggle(newTab === resultsTab);
   $("#response-key").toggle(newTab === resultsTab);
 
-  if (active_tab === votersTab) {
+  if (activeTab === votersTab) {
     // Moving away from voters - update the state
     this.activePoll.updateVoters();
   }
 
-  active_tab = newTab;
+  activeTab = newTab;
 }
 
 // Maintains the list of editable polls and manipulates the DOM as polls are

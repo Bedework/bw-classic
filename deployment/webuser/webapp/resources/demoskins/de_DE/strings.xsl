@@ -337,6 +337,7 @@
   <xsl:variable name="bwStr-AEEF-PickNext">W&#228;hlen Weiter &#187;</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Options">Optionen &#x25BC;</xsl:variable>
   <xsl:variable name="bwStr-AEEF-24Hours">24 Stunden</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-FromTheEnd">ab Ende</xsl:variable>
 
   <!-- Details tab (3153)-->
   <xsl:variable name="bwStr-AEEF-Location">Veranstaltungsort:</xsl:variable>

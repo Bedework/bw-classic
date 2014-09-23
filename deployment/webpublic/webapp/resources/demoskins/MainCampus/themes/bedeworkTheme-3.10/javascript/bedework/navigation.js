@@ -97,18 +97,21 @@ $(document).ready(function() {
 // DATE PICKER FUNCTIONS:
 // The date picker was used to set a start date
 function changeStartDate(formObj,eventListObj) {
+  formObj.setappvar.value = "navDate(" + formObj.start.value + ")";
   if (eventListObj != undefined){
     // We have an eventList object.
-    // Update the object and do an ajax call.
+    // Check to see if we are on a page that uses it.
+    // If so, update the object and do an ajax call.
     // Do not submit the form.
     var outputContainer = document.getElementById(eventListObj.outputContainerId);
     if (outputContainer != null) {
       eventListObj.setRequestData("start",formObj.start.value);
+      eventListObj.setRequestData("setappvar","navDate(" + formObj.start.value + ")");
       eventListObj.display();
       return false;
     }
   }
-  // No eventList object was sent - do a normal form submit.
+  // No eventList object was sent or there is no output container: do a normal form submit.
   formObj.submit();
   return true;
 }
@@ -284,6 +287,7 @@ function reloadMainEventList() {
   } else {
     // build up a query string for full request / response
     qstring.push("fexpr=" + fexpr);
+    qstring.push("start=" + bwMainEventList.start);
     if (query != "") {
       qstring.push("query=" + query);
     }

@@ -246,7 +246,9 @@ jcal.prototype.updateProperty = function(name, value, params, value_type) {
 		props[0][3] = value;
 
 		return props[0];
-	} else if (props.length == 0) {
+	}
+
+  if (props.length == 0) {
 		return this.newProperty(name, value, params, value_type);
 	}
 };
@@ -304,7 +306,7 @@ JcalDtTime = function(hour24, name, datePart, allDay, UTC, tzidPar, hours, minut
 
     if (!allDay) {
       this.moment.minutes(minutes);
-      this.moment.hours(JcalDtTime.hour24(am, hours));
+      this.moment.hours(this.toHour24(am, hours));
     }
   } else {
     // Presume a moment
@@ -388,7 +390,11 @@ JcalDtTime.fromProperty = function(hour24, dtProp) {
  * @param am true/false
  * @param hours int 1->12
  */
-JcalDtTime.hour24 = function(am, hours) {
+JcalDtTime.prototype.toHour24 = function(am, hours) {
+  if (this.hour24) {
+    return hours;
+  }
+
   if (am && (hours === 12)) {
     return 0;
   }
@@ -430,7 +436,7 @@ JcalDtTime.prototype.update = function(datePart, allDay, UTC, tzidPar, hours, mi
   }
 
   this.moment.minutes(minutes);
-  this.moment.hours(JcalDtTime.hour24(am, hours));
+  this.moment.hours(this.toHour24(am, hours));
 
   if (!this.UTC) {
     this.tzid(tzidPar);
@@ -451,7 +457,7 @@ JcalDtTime.prototype.updateFromDuration = function(duration, start) {
   this.addSeconds(offset);
 
   if (!this.UTC) {
-    this.tzid(start.tzid);
+    this.tzid(start.tzid());
   }
 };
 
@@ -468,6 +474,7 @@ JcalDtTime.prototype.tzid = function(val) {
 
   if (this.theTzid === null) {
     // Can't set
+    return;
   }
 
   var offset = tzs.getOffset(digits4(this.moment.year()), this.theTzid);
@@ -485,7 +492,7 @@ JcalDtTime.prototype.tzid = function(val) {
  * @returns moment
  */
 JcalDtTime.prototype.addSeconds = function(val) {
-  return this.moment.add('seconds', val);
+  return this.moment.add(val, 'seconds');
 };
 
 /**
@@ -494,7 +501,16 @@ JcalDtTime.prototype.addSeconds = function(val) {
  * @returns moment
  */
 JcalDtTime.prototype.addHours = function(val) {
-  return this.moment.add('hours', val);
+  return this.moment.add(val, 'hours');
+};
+
+/**
+ *
+ * @param val - number of hours
+ * @returns moment
+ */
+JcalDtTime.prototype.subtractHours = function(val) {
+  return this.moment.subtract(val, 'hours');
 };
 
 /**
@@ -503,7 +519,7 @@ JcalDtTime.prototype.addHours = function(val) {
  * @returns moment
  */
 JcalDtTime.prototype.addDays = function(val) {
-  return this.moment.add('days', val);
+  return this.moment.add(val, 'days');
 };
 
 JcalDtTime.prototype.getDate = function() {
@@ -596,7 +612,7 @@ JcalDtTime.prototype.equals = function(other) {
 };
 
 JcalDtTime.prototype.dateEquals = function(other) {
-  return this.getLocalizedShortDate() === other.getLocalizedShortDate();
+  return this.getDatePart() === other.getDatePart();
 };
 
 /**
@@ -624,6 +640,15 @@ JcalDtTime.prototype.getDtval = function() {
 
   return res;
 };
+
+/** return difference between this and that. If that is later result is negative
+ *
+ * @param that - another JcalDtTime object
+ * @param units - as defined in moment.
+ */
+JcalDtTime.prototype.diff = function(that, units) {
+  return this.moment.diff(that.moment, units);
+}
 
 /**
  *
@@ -689,7 +714,7 @@ JcalDtTime.prototype.clone = function() {
   return this.duplicateAs(this.name);
 };
 
-/** 'static' date conversion
+/** 'static' date conversioncl
  *
  * @param date
  * @returns {string}

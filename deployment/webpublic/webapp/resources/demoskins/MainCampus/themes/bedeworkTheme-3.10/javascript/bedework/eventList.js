@@ -147,7 +147,8 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
     skinNameSticky: this.skinName,
     start: this.startDate,
     sort: "dtstart.utc:asc",
-    fexpr: this.fexpr
+    fexpr: this.fexpr,
+    setappvar: "navDate(" + this.startDate + ")"
   };
 
   // add the query if it exists

@@ -413,14 +413,16 @@ function swapRrules(obj) {
   }
 }
 
-function showFreqRrules(freq, intervalLabel) {
+function showFreqRrules(freq, intervalLabel, byMonthDayLabel) {
   // reveal and hide rrules fields for vpoll style event form
   changeClass('recurrenceUntilRules','visible');
-  $('p span#recurIntervalLabel').append(intervalLabel);
+  $('p span#recurIntervalLabel').text(intervalLabel);
+  $('span#byMonthDayLabel').text(byMonthDayLabel);
   changeClass('freqInterval','invisible');
   changeClass('recurByDayRules','invisible');
   changeClass('recurWkStRules','invisible');
   changeClass('byMonthRules','invisible');
+  changeClass('byMonthDayRules','invisible');
 
   if (freq == 'NONE') {
     changeClass('noneRecurrenceRules','visible');
@@ -437,6 +439,7 @@ function showFreqRrules(freq, intervalLabel) {
   if (freq == 'DAILY') {
     changeClass('dailyRecurrenceRules','visible');
     changeClass('byMonthRules','visible');
+    changeClass('byMonthDayRules','visible');
   } else {
     changeClass('dailyRecurrenceRules','invisible');
   }
@@ -449,6 +452,7 @@ function showFreqRrules(freq, intervalLabel) {
   if (freq == 'MONTHLY') {
     changeClass('monthlyRecurrenceRules','visible');
     changeClass('recurByDayRules','visible');
+    changeClass('byMonthDayRules','visible');
   } else {
     changeClass('monthlyRecurrenceRules','invisible');
   }
@@ -457,6 +461,7 @@ function showFreqRrules(freq, intervalLabel) {
     changeClass('recurByDayRules','visible');
     changeClass('recurWkStRules','visible');
     changeClass('byMonthRules','visible');
+    changeClass('byMonthDayRules','visible');
   } else {
     changeClass('yearlyRecurrenceRules','invisible');
   }
