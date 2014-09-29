@@ -266,9 +266,27 @@ jcal.prototype.removeProperties = function(name) {
 	});
 };
 
+/**
+ * remove nth (starting at 0) property with given name
+ * @param name
+ * @param index
+ */
+jcal.prototype.removePropertyMatching = function(name, indexToRemove) {
+  name = name.toLowerCase();
+  var i = 0;
+  this.caldata[1] = $.grep(this.caldata[1], function(propdata, index) {
+    if (propdata[0] !== name) {
+      return true;
+    }
+
+    i++;
+
+    return indexToRemove !== (i - 1);
+  });
+};
+
 // Remove properties for which test() returns true
 jcal.prototype.removePropertiesMatching = function(test) {
-	name = name.toLowerCase();
 	this.caldata[1] = $.grep(this.caldata[1], function(propdata, index) {
 		return !test(propdata);
 	});

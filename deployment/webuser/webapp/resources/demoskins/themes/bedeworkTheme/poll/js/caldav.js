@@ -1148,6 +1148,18 @@ CalendarPoll.prototype.addVoter = function() {
 	return new CalendarUser(this.data.newProperty("voter", "", {}, "cal-address"), this);
 }
 
+/** Remove nth voter from the VPOLL
+ *
+ * @returns {CalendarUser}
+ */
+CalendarPoll.prototype.removeVoter = function(index) {
+  if (this.voters().length === 1) {
+    alert("Must have at least 1 voter");
+  }
+  this.changed(true);
+  this.data.removePropertyMatching("voter", index);
+}
+
 // Mark current user as accepted
 CalendarPoll.prototype.acceptInvite = function() {
 	if (!this.isOwned()) {

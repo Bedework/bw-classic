@@ -607,8 +607,6 @@ Poll.prototype.populateRRule = function() {
 
   if (!$("#byMonthEnabled").is(":checked")) {
     var byMonthVals = $("[name=byMonthItem] :checked");
-
-    alert("at by month");
   }
 
   var byDayI = 1;
@@ -725,10 +723,12 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
   var ctr = $("#bwComp-" + itemType + "list").children().length + 1;
   var iditem = itemType + "-address-" + ctr;
   var iditemTypePrefix = itemType + "-" + ctr;
+  var idRemove = itemType + "-remove-" + ctr;
+  var idDiv = itemType + "-div-" + ctr;
   var radioName = itemType + "Type" + ctr;
 
   // Add new list item
-  var idiv = '<div class="' + itemType + '">';
+  var idiv = '<div class="' + itemType + '" id="' + idDiv + '">';
   idiv += '<div class="edit-' + itemType + '">';
   idiv += '<label for="' + iditem + '">' + itemLabel + ': </label>';
   idiv += '<input type="text" id="' + iditem + '" class="' + itemType + '-address"/>';
@@ -749,7 +749,7 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
   */
   idiv += '</span>';
   idiv += '</div>';
-  idiv += '<button class="input-remove">Remove</button>';
+  idiv += '<button class="input-remove" id="' + idRemove + '">Remove</button>';
   idiv += '</div>';
   idiv = $(idiv).appendTo("#bwComp-" + itemType + "list");
 
@@ -785,8 +785,12 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
 
   idiv.find(".input-remove").button({
     icons : {
-      primary : "ui-icon-close"
+      primary : "ui-icon-trash",
+      text: false
     }
+  }).click(function() {
+    //alert("remove particpant " + ctr);
+    this_poll.removeParticipant(itemType, ctr - 1, idDiv)
   });
 
   return idiv;
@@ -812,6 +816,21 @@ Poll.prototype.addVoter = function() {
   var voter = this.editing_poll.addVoter();
   return this.setVoterPanel(this.addParticipantPanel(false, "voter", "Voter"), voter);
 };
+
+// Remove participant button clicked
+Poll.prototype.removeParticipant = function(itemType, index, idDiv) {
+  if (itemType !== "voter") {
+    alert("Remove attendee not implemented");
+    return;
+  }
+
+  $("#" + idDiv).remove();
+
+  poll_syncAttendees = $("#syncPollAttendees").is(":checked");
+
+  this.editing_poll.removeVoter(index);
+}
+
 
 // Build the results UI based on the poll details
 Poll.prototype.buildResults = function() {

@@ -328,6 +328,8 @@ ViewController.prototype.clickPollSave = function() {
   } else {
     this.activePoll.list.changePoll(this.activePoll);
   }
+
+  this.clickPollCancel();
 }
 
 // Cancel button clicked
