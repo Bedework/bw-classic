@@ -103,7 +103,9 @@ Poll.prototype.getVpollValues = function() {
   }
 };
 
-// Get voter details from the UI
+/** Get voter details from the UI
+ *
+ */
 Poll.prototype.updateVoters = function() {
   if (!this.owned) {
     return;
@@ -111,7 +113,6 @@ Poll.prototype.updateVoters = function() {
 
   var this_poll = this;
   var voters = this.editing_poll.voters();
-  var hasGroup = false;
 
   $("#bwComp-voterlist").children().each(function(index) {
     var voter = voters[index];
@@ -119,9 +120,8 @@ Poll.prototype.updateVoters = function() {
     var cutype = $("input:radio[name=" + radioName + "]:checked").val();
 
     this_poll.updateVoterFromPanel($(this), voter, cutype);
-
-
   });
+
 
   if ($("#syncPollAttendees").is(":checked")) {
     this.editing_poll.syncAttendees();

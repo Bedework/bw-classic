@@ -320,7 +320,12 @@ CalDAVSession.prototype.currentUserPropfind = function(whenDone) {
 
 var cuaddrVcards = {};
 
-// Search for calendar users matching a string
+/** Search for calendar users matching a string
+ *
+ * @param item
+ * @param cutype
+ * @param whenDone
+ */
 CalDAVSession.prototype.calendarUserSearch = function(item, cutype, whenDone) {
 //	UserSearchReport(joinURLs(this.host, "/principals/"), item).done(function(response) {
 //		var msr = new MultiStatusResponse(response, "/principals/");
@@ -337,7 +342,7 @@ CalDAVSession.prototype.calendarUserSearch = function(item, cutype, whenDone) {
       var jcard = msr.getResourcePropertyText(response_node, "CD:address-data");
       if (jcard !== null) {
         var carddata = jcal.fromString(jcard);
-        cuaddrVcards[cuaddr] = new CardObject(carddata);
+        cuaddrVcards[cuaddr] = new CardObject(cutype, cuaddr, carddata);
       }
 		});
 
@@ -938,9 +943,19 @@ CalendarObject.prototype.constructor = CalendarObject;
 CalendarComponent.registerComponentType("vcalendar", CalendarObject);
 
 // A container class for VCARD objects
-CardObject = function(carddata) {
+CardObject = function(cutype, cuaddr, carddata) {
   CalendarComponent.call(this, carddata, null);
   this._changed = false;
+  this.cutype = cutype;
+  this.cuaddr = cuaddr;
+};
+
+CardObject.prototype.cutype = function() {
+  return this.cutype;
+};
+
+CardObject.prototype.cuaddr = function() {
+  return this.cuaddr;
 };
 
 /**
@@ -1289,6 +1304,17 @@ CalendarComponent.prototype.exdates = function() {
 CalendarUser = function(caldata, parent) {
 	this.data = caldata;
 	this.parent = parent;
+};
+
+// Get or set the user name and/or cu-address
+/** update this from the value
+ *
+ * @param value
+ */
+CalendarUser.prototype.updateFrom = function(value) {
+  this.data[1] = value.data[1];
+  this.data[2] = value.data[2];
+  this.data[3] = value.data[3];
 };
 
 // Get or set the user name and/or cu-address
