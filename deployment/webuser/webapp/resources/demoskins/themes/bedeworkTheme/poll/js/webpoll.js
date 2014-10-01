@@ -29,6 +29,10 @@ var votersTab = 1;
 var resultsTab = 2;
 var activeTab = -1;
 
+/* values from request poarameters */
+var reqUid = null;
+var reqTab = null;
+
 // Page load
 $(function() {
 
@@ -212,6 +216,11 @@ ViewController.prototype.init = function() {
       $("#bwAdvDateTimeSettings").addClass("invisible");
     }
   });
+
+  if (reqUid !== null) {
+    this.selectPollByUID(requid);
+    reqUid = null;
+  }
 }
 
 // Add a poll to the UI
@@ -298,9 +307,11 @@ ViewController.prototype.selectPollByUID = function(uid) {
 //A poll was selected
 ViewController.prototype.selectPoll = function(index, owner) {
   // Make sure edit panel is visible
-  this.activatePoll(owner ? this.ownedPolls.polls[index] : this.voterPolls.polls[index]);
   if (owner) {
+    this.activatePoll(this.ownedPolls.polls[index]);
     $("#editpoll-title-edit").focus();
+  } else {
+    this.activatePoll(this.voterPolls.polls[index]);
   }
 };
 

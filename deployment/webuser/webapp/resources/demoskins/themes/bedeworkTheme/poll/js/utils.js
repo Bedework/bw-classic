@@ -150,6 +150,11 @@ function addressDescription(cn, addr) {
 	return addr ? (cn ? cn + " " : "") + "<" + addr + ">" : "";
 }
 
+/**
+ *
+ * @param desc name<addr> or addr
+ * @returns {string[]|*}
+ */
 function splitAddressDescription(desc) {
 	results = ["", ""];
 	if (desc.indexOf("<") == -1) {

@@ -1317,7 +1317,11 @@ CalendarUser.prototype.updateFrom = function(value) {
   this.data[3] = value.data[3];
 };
 
-// Get or set the user name and/or cu-address
+/** Get or set the user name and/or cu-address
+ *
+ * @param value  name<addr> or addr
+ * @returns {*}
+ */
 CalendarUser.prototype.addressDescription = function(value) {
 	if (value === undefined) {
 		var cn = this.data[1]["cn"] ? this.data[1]["cn"] + " " : "";

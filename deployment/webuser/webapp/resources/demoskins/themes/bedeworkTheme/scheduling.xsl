@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,7 +20,7 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <!--==== INBOX, OUTBOX, and SCHEDULING ====-->
   <xsl:template match="inbox">
     <h2 class="common"><xsl:copy-of select="$bwStr-Inbx-Inbox"/></h2>
@@ -45,11 +45,18 @@
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <xsl:variable name="inboxItemAction">
           <xsl:choose>
-            <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:when>
-            <xsl:when test="scheduleMethod=3"><xsl:value-of select="$eventView"/></xsl:when>
-            <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
-            <xsl:when test="scheduleMethod=7"><xsl:value-of select="$eventView"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:otherwise>
+            <xsl:when test="entityType=7">
+              <xsl:value-of select="$showPage"/><xsl:text>&amp;refinterval=1500&amp;setappvar=page(polls)</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:when>
+                <xsl:when test="scheduleMethod=3"><xsl:value-of select="$eventView"/></xsl:when>
+                <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
+                <xsl:when test="scheduleMethod=7"><xsl:value-of select="$eventView"/></xsl:when>
+                <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
         <tr>
@@ -446,7 +453,7 @@
                   <input type="radio" name="method" value="DELEGATE" onclick="swapScheduleDisplay('hide');"/><xsl:copy-of select="$bwStr-AtRe-DelegateTo"/>
                   <input type="test" name="delegate" value=""/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-AtRe-URIOrAccount"/><br/>
                   <!-- We are hiding "counter" for now.  It may come back, so the code should remain. -->
-                  <!-- 
+                  <!--
                   <input type="radio" name="method" value="COUNTER" onclick="swapScheduleDisplay('show');"/><xsl:copy-of select="$bwStr-AtRe-CounterSuggest"/>
                   -->
                 </xsl:otherwise>
@@ -1055,6 +1062,6 @@
       </table>
     </form>
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>
