@@ -34,5 +34,5 @@
   <xsl:variable name="publicOnly">false</xsl:variable>
 
   <!-- Set true to use vpoll features in the client -->
-  <xsl:variable name="useVpoll">false</xsl:variable>
+  <xsl:variable name="useVpoll">true</xsl:variable>
 </xsl:stylesheet>
