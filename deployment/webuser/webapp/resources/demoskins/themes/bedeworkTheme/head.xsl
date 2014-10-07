@@ -47,7 +47,7 @@
     <!-- note: the non-breaking spaces in the script bodies below are to avoid
          losing the script closing tags (which avoids browser problems) -->
     <xsl:choose>
-      <xsl:when test="/bedework/page='showPage' and /bedework/appvar[key='page']/value = 'polls'">
+      <xsl:when test="/bedework/page='managePolls'">
         <script src="/bedework-common/javascript/jquery/jquery-1.11.1.min.js">&#160;</script>
         <script src="/bedework-common/javascript/jquery/jquery-ui-1.11.0.min.js">&#160;</script>
         <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/jquery-ui-1.11.0/jquery-ui.min.css"/>

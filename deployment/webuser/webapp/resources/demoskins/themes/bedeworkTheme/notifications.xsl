@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -23,16 +23,16 @@
   xmlns:CSS="http://calendarserver.org/ns/"
   xmlns:C="urn:ietf:params:xml:ns:caldav"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <!--== NOTIFICATIONS ==-->
   <xsl:template match="notification">
     <xsl:variable name="position" select="position()"/>
 
     <xsl:choose>
-      <!-- check invite status - look for invite-deleted --> 
+      <!-- check invite status - look for invite-deleted -->
       <xsl:when test="type = 'invite-notification' and message/CSS:notification/CSS:invite-notification/CSS:invite-deleted">
-        <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>  
-        
+        <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>
+
         <li class="shareRemove shareNotification" id="shareNotification-{$position}">
           <xsl:copy-of select="$bwStr-Notif-NotificationFrom"/>
           <xsl:text> </xsl:text>
@@ -59,28 +59,28 @@
                      <xsl:choose>
                        <xsl:when test="$transaction = 'false'">
                          <!-- this action terminates a running transaction -->
-                         notificationRemoveReply("<xsl:value-of select="$notifications-remove"/>","<xsl:value-of select="name"/>"); 
+                         notificationRemoveReply("<xsl:value-of select="$notifications-remove"/>","<xsl:value-of select="name"/>");
                        </xsl:when>
                        <xsl:otherwise>
                          <!-- this action continues/gets added to a running transaction -->
                          notificationRemoveReply("<xsl:value-of select="$notifications-removeTrans"/>","<xsl:value-of select="name"/>");
                        </xsl:otherwise>
-                     </xsl:choose>                    
+                     </xsl:choose>
                    }
                  }
                });
-                
+
                $("#shareNotification-<xsl:value-of select="$position"/>").click(function() {
                  $("#notificationDialog-<xsl:value-of select="$position"/>").dialog("open");
                });
-                
+
             });
           </script>
         </li>
       </xsl:when>
-      <xsl:when test="type = 'invite-notification'">  
-        <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>  
-        
+      <xsl:when test="type = 'invite-notification'">
+        <xsl:variable name="sharer"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-notification/CSS:organizer/DAV:href,'mailto:')"/></xsl:variable>
+
         <li class="shareInvite shareNotification" id="shareNotification-{$position}">
           <xsl:copy-of select="$bwStr-Notif-InviteFrom"/>
           <xsl:text> </xsl:text>
@@ -108,23 +108,23 @@
 			            }
 			          }
 			        });
-			         
+
 			        $("#shareNotification-<xsl:value-of select="$position"/>").click(function() {
 			          $("#notificationDialog-<xsl:value-of select="$position"/>").dialog("open");
 			        });
-			         
+
 			      });
 			    </script>
         </li>
       </xsl:when>
       <xsl:when test="type = 'invite-reply'">
-        <xsl:variable name="sharee"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-reply/DAV:href,'mailto:')"/></xsl:variable>  
-        
+        <xsl:variable name="sharee"><xsl:value-of select="substring-after(message/CSS:notification/CSS:invite-reply/DAV:href,'mailto:')"/></xsl:variable>
+
         <li class="shareReply shareNotification" id="shareNotification-{$position}">
           <xsl:copy-of select="$bwStr-Notif-ReplyFrom"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$sharee"/>
-          
+
           <div class="notificationDialog invisible" id="notificationDialog-{$position}">
             <xsl:attribute name="title"><xsl:copy-of select="$bwStr-Notif-SharingReply"/></xsl:attribute>
             <xsl:copy-of select="$bwStr-Notif-TheUser"/><xsl:text> </xsl:text>
@@ -136,10 +136,10 @@
               <xsl:otherwise>
                 <span class="accepted"><xsl:copy-of select="$bwStr-Notif-HasAccepted"/></span><xsl:text> </xsl:text>
               </xsl:otherwise>
-            </xsl:choose> 
+            </xsl:choose>
             <xsl:value-of select="message/CSS:notification/CSS:invite-reply/CSS:hosturl/DAV:href"/>
           </div>
-          
+
           <script type="text/javascript">
             $(document).ready(function() {
               $("#notificationDialog-<xsl:value-of select="$position"/>").dialog({
@@ -154,31 +154,31 @@
                     <xsl:choose>
                       <xsl:when test="$transaction = 'false'">
                         <!-- this action terminates a running transaction -->
-                        notificationRemoveReply("<xsl:value-of select="$notifications-remove"/>","<xsl:value-of select="name"/>"); 
+                        notificationRemoveReply("<xsl:value-of select="$notifications-remove"/>","<xsl:value-of select="name"/>");
                       </xsl:when>
                       <xsl:otherwise>
                         <!-- this action continues/gets added to a running transaction -->
                         notificationRemoveReply("<xsl:value-of select="$notifications-removeTrans"/>","<xsl:value-of select="name"/>");
                       </xsl:otherwise>
-                    </xsl:choose>                    
+                    </xsl:choose>
                   }
                 }
               });
-               
+
               $("#shareNotification-<xsl:value-of select="$position"/>").click(function() {
                 $("#notificationDialog-<xsl:value-of select="$position"/>").dialog("open");
               });
-               
+
             });
           </script>
         </li>
       </xsl:when>
-      <xsl:otherwise>    
+      <xsl:otherwise>
         <li><xsl:value-of select="type"/></li>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template name="notificationReplyWidgets"><!-- not yet in use, but will be -->
 	  <xsl:if test="/bedework/notifications/notification/type = 'invite-notification'">
 	    <div id="sharingColNameWidget" class="invisible">
@@ -191,20 +191,28 @@
 	    </div>
 	  </xsl:if>
   </xsl:template>
-  
+
   <!-- scheduling messages -->
   <xsl:template match="event" mode="schedNotifications">
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="eventName" select="name"/>
+    <xsl:variable name="entityType" select="entityType"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
+    <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="inboxItemAction">
       <xsl:choose>
-        <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:when>
-        <xsl:when test="scheduleMethod=3"><xsl:value-of select="$eventView"/></xsl:when>
-        <xsl:when test="scheduleMethod=5"><xsl:value-of select="$eventView"/></xsl:when>
-        <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
-        <xsl:when test="scheduleMethod=7"><xsl:value-of select="$eventView"/></xsl:when>
-        <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:otherwise>
+        <xsl:when test="entityType=7"><xsl:value-of select="$vpoll-manage"/><xsl:text>&amp;uid={$guid}</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:when>
+            <xsl:when test="scheduleMethod=3"><xsl:value-of select="$eventView"/></xsl:when>
+            <xsl:when test="scheduleMethod=5"><xsl:value-of select="$eventView"/></xsl:when>
+            <xsl:when test="scheduleMethod=6"><xsl:value-of select="$schedule-processRefresh"/></xsl:when>
+            <xsl:when test="scheduleMethod=7"><xsl:value-of select="$eventView"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <li>
@@ -217,6 +225,6 @@
       </a>
     </li>
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>

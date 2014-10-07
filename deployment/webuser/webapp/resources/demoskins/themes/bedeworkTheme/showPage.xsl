@@ -28,6 +28,8 @@
       <xsl:when test="/bedework/appvar[key='page']">
         <xsl:choose>
           <xsl:when test="/bedework/appvar[key='page']/value = 'polls'">
+            <!-- XXX the polls page is now deprecated in favor of a proper action.
+                 This is left here as an example of how to insert a generic page.  -->
             <xsl:call-template name="polls"/>
           </xsl:when>
           <xsl:otherwise>

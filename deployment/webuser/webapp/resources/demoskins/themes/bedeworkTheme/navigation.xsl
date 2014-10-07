@@ -67,9 +67,9 @@
         </li>
         <xsl:if test="$useVpoll = 'true'">
           <li>
-            <xsl:if test="/bedework/page='showPage' and /bedework/appvar[key='page']/value='polls'">
+            <xsl:if test="/bedework/page='managePolls'">
               <xsl:attribute name="class">selected</xsl:attribute>
-            </xsl:if><a href="{$showPage}&amp;refinterval=1500&amp;setappvar=page(polls)">POLLS</a>
+            </xsl:if><a href="{$vpoll-manage}&amp;refinterval=1500&amp;setappvar=page(polls)">POLLS</a>
           </li>
         </xsl:if>
       </ul>

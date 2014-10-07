@@ -104,6 +104,13 @@
                 </div>
               </div>
             </xsl:when>
+            <xsl:when test="/bedework/page='managePolls'">
+              <div id="pageBlock">
+                <div id="pageBlockContainer">
+                  <xsl:call-template name="polls"/>
+                </div>
+              </div>
+            </xsl:when>
             <xsl:otherwise>
               <xsl:if test="/bedework/page != 'eventList'">
                 <xsl:call-template name="navigation"/>

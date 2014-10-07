@@ -29,7 +29,7 @@ var votersTab = 1;
 var resultsTab = 2;
 var activeTab = -1;
 
-/* values from request poarameters */
+/* values from request parameters */
 var reqUid = null;
 var reqTab = null;
 

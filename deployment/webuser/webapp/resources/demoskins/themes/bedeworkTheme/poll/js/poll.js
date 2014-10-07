@@ -859,17 +859,24 @@ Poll.prototype.buildResults = function() {
   $('<td>End:</td>').appendTo(th_end);
   $('<td>Recurs:</td>').appendTo(th_recur);
   $('<td>Description:</td>').appendTo(th_desc);
-  $('<td>Overall (all voters):</td>').appendTo(tf_overall);
+  $('<td>Overall calculation:</td>').appendTo(tf_overall);
   $('<td />').appendTo(tf_commit);
+
+  if (this_poll.editing_poll.editable()) {
+    $('#editpoll-resultsButtons').removeClass('invisible');
+  } else {
+    $('#editpoll-resultsButtons').addClass('invisible');
+  }
+
   $.each(event_details, function(index, event) {
     //$("#debug").append(print_r(event));
-    var td_summary = $('<td />').appendTo(th_summary).text(event.summary()).addClass("summary-td");;
+    var td_summary = $('<td />').appendTo(th_summary).text(event.summary()).addClass("summary-td");
     var td_start = $('<td />').appendTo(th_start).html(event.start().getLocalizedDate() + ' - ' + event.start().getPrintableTime()).addClass("start-td");
     var endDate = "";
     if (!event.start().dateEquals(event.end())) {
       endDate = event.end().getLocalizedDate() + ' - ';
     }
-    var td_end = $('<td />').appendTo(th_end).html(endDate + event.end().getPrintableTime());
+    var td_end = $('<td />').appendTo(th_end).html(endDate + event.end().getPrintableTime()).addClass("end-td");
 
     var rinfo = getRecurrenceInfo(event);
 
@@ -962,6 +969,7 @@ Poll.prototype.buildResults = function() {
         $('#respond_best-' + pollItemId).next("label").addClass("bestButton");
       } else {
         td.text(this_poll.textForResponse(response)[0]);
+        td.addClass("resp-" + this_poll.textForResponse(response)[0].replace(/\s/g, '')); // XXX adds a class based on display string.  Should be based on an abstract value (that won't change).
       }
     });
     if (active) {

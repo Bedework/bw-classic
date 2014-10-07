@@ -102,7 +102,7 @@
                     </tbody>
                     <tfoot>
                       <tr><td><xsl:text> </xsl:text></td></tr>
-                      <tr id="editpoll-resultsButtons"><td><xsl:text> </xsl:text></td></tr>
+                      <tr id="editpoll-resultsButtons" class="invisible"><td><xsl:text> </xsl:text></td></tr>
                     </tfoot>
                   </table>
                 </div>
