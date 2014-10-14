@@ -27,7 +27,7 @@
       <xsl:copy-of select="$bwStr-Foot-DemonstrationCalendar"/>
     </div>
     <div id="subfoot">
-      <a href="http://www.jasig.org/bedework"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
+      <a href="http://www.apereo.org/bedework"><xsl:copy-of select="$bwStr-Foot-BedeworkWebsite"/></a> |
       <a href="?noxslt=yes"><xsl:copy-of select="$bwStr-Foot-ShowXML"/></a> |
       <a href="?refreshXslt=yes"><xsl:copy-of select="$bwStr-Foot-RefreshXSLT"/></a>
     </div>

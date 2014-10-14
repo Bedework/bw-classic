@@ -22,15 +22,15 @@ Poll = function(resource) {
   this.owned = this.resource.object.mainComponent().isOwned();
   this.editing_object = null;
   this.editing_poll = null;
-}
+};
 
 Poll.prototype.title = function() {
   return this.editing_poll ? this.editing_poll.summary() : this.resource.object.mainComponent().summary();
-}
+};
 
 Poll.prototype.closed = function() {
   this.editing_poll = null;
-}
+};
 
 // Save the editable state
 Poll.prototype.saveResource = function(whenDone) {
@@ -78,7 +78,7 @@ Poll.prototype.writeVpollValues = function() {
   $("#editpoll-status").text(this.editing_poll.status());
   $("#editpoll-choicelist").empty();
   $.each(this.editing_poll.choices(), function(index, choice) {
-    this_poll.addChoicePanel(choice);
+    this_poll.addChoicePanel(index, choice);
     //$("#debug").append(print_r(choice) + '<div style="margin: 4em 0;">new choice</div>');
   });
   $("#bwComp-voterlist").empty();
@@ -129,13 +129,13 @@ Poll.prototype.updateVoters = function() {
 };
 
 //Add a new event item in the UI
-Poll.prototype.addChoicePanel = function(choice) {
-
-  var chc = '<div class="bwChoiceDisplay">';
+// XXX This is wrong. index should be the poll item id
+Poll.prototype.addChoicePanel = function(index, choice) {
+  var chc = '<div class="bwChoiceDisplay" id="choice-' + index +'">';
   chc += '<div class="bwChoiceButtons">';
   chc += '<div class="bwChoiceType">event</div>'; // XXX replace with actual type (e.g. event, task, location)
-  chc += '<button id="choice-edit-' + choice.data.getPropertyValue("uid") + '" class="choice-edit">Edit</button>';
-  chc += '<button id="choice-delete-' + choice.data.getPropertyValue("uid") + '" class="choice-delete">Delete</button>';
+  chc += '<button id="choice-edit-' + index + '" class="choice-edit">Edit</button>';
+  chc += '<button id="choice-delete-' + index + '" class="choice-delete">Delete</button>';
   chc += '</div>';
   chc += '<div class="bwChoiceSummary">' + choice.data.getPropertyValue("summary") + '</div>';
 
@@ -154,26 +154,35 @@ Poll.prototype.addChoicePanel = function(choice) {
   }
   chc += choice.end().getPrintableTime();
   chc += '</div>';
-  if (choice.data.getPropertyValue("description") != null && choice.data.getPropertyValue("description") != "") {
+  if (choice.data.getPropertyValue("description") !== null && choice.data.getPropertyValue("description") !== "") {
     chc += '<div class="bwChoiceDesc">' + choice.data.getPropertyValue("description") + '</div>';
   }
   chc += '</div></div>';
   chc = $(chc).appendTo("#editpoll-choicelist");
-  $("#editpoll-choicelist .choice-edit").button({
+
+  var thisPoll = this;
+
+  $("#choice-edit-" + index).button({
     icons : {
       primary : "ui-icon-pencil",
       text: false
     }
   }).click(function() {
-    view.clickChoiceEdit();
+    var id = this.id;
+    var index = parseInt(id.substring(id.lastIndexOf("-") + 1));
+    thisPoll.showChoice(thisPoll.editing_poll.choices()[index]);
   });
-  $("#editpoll-choicelist .choice-delete").button({
+  $("#choice-delete-" + index).button({
     icons : {
       primary : "ui-icon-trash",
       text: false
     }
   }).click(function() {
-    view.clickChoiceDelete();
+    var id = this.id;
+    var index = parseInt(id.substring(id.lastIndexOf("-") + 1));
+    thisPoll.editing_poll.removeIndexedChoice(index);
+
+    $("#choice-" + index).remove();
   });
 
   return chc;
@@ -182,7 +191,6 @@ Poll.prototype.addChoicePanel = function(choice) {
 // Update the UI for this event
 // XXX Deprecated?
 Poll.prototype.setChoicePanel = function(panel, event) {
-
   return panel;
 };
 
@@ -223,8 +231,14 @@ Poll.prototype.addChoice = function() {
       end.addDays(1);
     }
     end.updateProperty(currentEntity.data, start);
-    currentEntity.data.updateProperty("poll-item-id", this.editing_poll.nextPollItemId().toString());
+    currentEntity.pollitemid(this.editing_poll.nextPollItemId());
   }
+
+  this.showChoice(currentEntity);
+};
+
+Poll.prototype.showChoice = function(choice) {
+  currentEntity = choice;
 
   $.magnificPopup.open({
     items: {
@@ -235,7 +249,10 @@ Poll.prototype.addChoice = function() {
     midClick: true,
     focus: "#bwEventTitle",
     callbacks: {
-      beforeOpen: this.populateChoiceForm(currentEntity)
+      beforeOpen: this.populateChoiceForm(currentEntity),
+      open: function() {
+        $("#choice-widget #bwEventTitle").select();
+      }
     }
   }, 0);
 
@@ -328,6 +345,11 @@ Poll.prototype.populateChoiceForm = function(choice) {
       }
     }
   }
+
+  // Add a handler for the all day flag.
+  $("#allDayFlag").on('click', function(cb){
+    swapAllDayEvent(this);
+  });
 
   // setup the location data
   var locationOptions = "";
@@ -635,83 +657,6 @@ Poll.prototype.populateRRule = function() {
   return rrule;
 };
 
-// 1. iterate over the form elements, update the current entity
-/*
- I'm guessing we can get rid of some of the complication around
- the date check boxes. e.g for the "floatingFlag" checkbox we have
- associated hidden fields "eventStartDate.dateOnly",
- "eventEndDate.dateOnly". These can go - they feed the action
- when we return all the values as form elements.
-
- Also - shouldn't those 3 flags be radio - not checkboxes
-
- How do we get/set allDayFlag? Just get/set the checkbox?
- $('input[name=allDayFlag]').attr('checked')
- $('input[name=allDayFlag]').attr('checked', true);
-
- Note: there are no flags in the actual data. Setting the json object
- can just be a matter of updating the date value.
-
- Setting form values means inspecting the data
-
- All day - no time part to the value
- Floating - time has no ending "Z" but no timezone specified
- UTC - time ends with "Z"
- Local - no ending "Z" and timezone specified
-
- How do we get/set floatingFlag?
- $('input[name=floatingFlag]').attr('checked')
- $('input[name=floatingFlag]').attr('checked', true);
-
- How do we get/set storeUTCFlag?
- $('input[name=storeUTCFlag]').attr('checked')
- $('input[name=storeUTCFlag]').attr('checked', true);
-
- id=bwEventWidgetStartDate - start date?
- id=eventStartDateHour
- id=eventStartDateMinute
- id=eventStartDateAmpm
-
- start tzid - appears to require selecting choice
-
- Fields eventStartDate.xxx are part of the event mod action
- Not needed for this - really only need the sart date as a text field.
-
- id=bwEventWidgetEndDate
- id=eventEndDateHour
- id=eventEndDateMinute
- id=eventEndDateAmpm
-
- id=end tzid - appears to require selecting choice
-
- eventEndTypeDuration  duration checkbox
- id=durationDays
- id=durationHours
- id=durationMinutes
-
- id=durationWeeks
-
- id=eventEndTypeNone
-
- location appears to have no id
-
- link - ditto
-
- id=description
-
- status - no id
-
- transparency - no id
-
- categories - no id - how do we multiselect?
-
- recurring - no id?
-
- recurring fields - lne 815 - no id?
-
- many more recurring issues - later...
- */
-
 /** Add a new voter or attendee item in the UI
  *
  * @param readOnly true if this is for display only
@@ -739,9 +684,9 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
   idiv += '<input type="radio" id="' + iditemTypePrefix +
       '-typeGroup" name="' + radioName + '" value="GROUP"/>';
   idiv += '<label for="' + iditemTypePrefix + '-typeGroup">group</label>';
-  idiv += '<input type="radio" id="' + iditemTypePrefix +
+  idiv += '<input type="radio" disabled="disabled" id="' + iditemTypePrefix +
       '-typeLocation" name="' + radioName + '" value="ROOM"/>';
-  idiv += '<label for="' + iditemTypePrefix + '-typeLocation">location</label>';
+  idiv += '<label for="' + iditemTypePrefix + '-typeLocation" class="disabled">location</label>';
   /* Not yet
   idiv += '<input type="radio" id="' + iditemTypePrefix +
       '-typeAny" name="' + radioName + '" value="ANY"/>';
@@ -829,8 +774,7 @@ Poll.prototype.removeParticipant = function(itemType, index, idDiv) {
   poll_syncAttendees = $("#syncPollAttendees").is(":checked");
 
   this.editing_poll.removeVoter(index);
-}
-
+};
 
 // Build the results UI based on the poll details
 Poll.prototype.buildResults = function() {
@@ -843,24 +787,26 @@ Poll.prototype.buildResults = function() {
   var event_details = this.editing_poll.choices();
   var voter_details = this.editing_poll.voters();
 
-  var thead = $("#editpoll-resulttable").children("thead").first();
-  var th_summary = thead.children("tr").eq(0).empty();
-  var th_start = thead.children("tr").eq(1).empty();
-  var th_end = thead.children("tr").eq(2).empty();
-  var th_recur = thead.children("tr").eq(3).empty().addClass("invisible");
-  var th_desc = thead.children("tr").eq(4).empty();
-  var tf = $("#editpoll-resulttable").children("tfoot").first();
-  var tf_overall = tf.children("tr").first().empty();
-  var tf_commit = tf.children("tr").last().empty();
-  tf_commit.toggle(this.owned || !this_poll.editing_poll.editable());
-  var tbody = $("#editpoll-resulttable").children("tbody").first().empty();
-  $('<td>Summary:</td>').appendTo(th_summary);
-  $('<td>Start:</td>').appendTo(th_start);
-  $('<td>End:</td>').appendTo(th_end);
-  $('<td>Recurs:</td>').appendTo(th_recur);
-  $('<td>Description:</td>').appendTo(th_desc);
-  $('<td>Overall calculation:</td>').appendTo(tf_overall);
-  $('<td />').appendTo(tf_commit);
+  var th = $("#editpoll-resulttable").children("thead").first(); //XXX
+  var th_overall = th.children("tr").first().empty();
+  var th_commit = th.children("tr").last().empty();
+  th_commit.toggle(this.owned || !this_poll.editing_poll.editable());
+
+  var tbody = $("#editpoll-resulttable").children("tbody").first();
+  var tb_summary = tbody.children("tr").eq(0).empty();
+  var tb_start = tbody.children("tr").eq(1).empty();
+  var tb_end = tbody.children("tr").eq(2).empty();
+  var tb_recur = tbody.children("tr").eq(3).empty().addClass("invisible");
+  var tb_desc = tbody.children("tr").eq(4).empty();
+  var tfoot = $("#editpoll-resulttable").children("tfoot").first().empty();
+
+  $('<td class="noborder"></td>').appendTo(th_overall);
+  $('<td class="noborder"/>').appendTo(th_commit);
+  $('<td>Summary:</td>').appendTo(tb_summary);
+  $('<td>Start:</td>').appendTo(tb_start);
+  $('<td>End:</td>').appendTo(tb_end);
+  $('<td>Recurs:</td>').appendTo(tb_recur);
+  $('<td>Description:</td>').appendTo(tb_desc);
 
   if (this_poll.editing_poll.editable()) {
     $('#editpoll-resultsButtons').removeClass('invisible');
@@ -870,42 +816,54 @@ Poll.prototype.buildResults = function() {
 
   $.each(event_details, function(index, event) {
     //$("#debug").append(print_r(event));
-    var td_summary = $('<td />').appendTo(th_summary).text(event.summary()).addClass("summary-td");
-    var td_start = $('<td />').appendTo(th_start).html(event.start().getLocalizedDate() + ' - ' + event.start().getPrintableTime()).addClass("start-td");
+    var td_summary = $('<td />').appendTo(tb_summary).text(event.summary()).addClass("summary-td");
+    var td_start = $('<td />').appendTo(tb_start).html(event.start().getLocalizedDate() + ' - ' + event.start().getPrintableTime()).addClass("start-td");
     var endDate = "";
     if (!event.start().dateEquals(event.end())) {
       endDate = event.end().getLocalizedDate() + ' - ';
     }
-    var td_end = $('<td />').appendTo(th_end).html(endDate + event.end().getPrintableTime()).addClass("end-td");
+    var td_end = $('<td />').appendTo(tb_end).html(endDate + event.end().getPrintableTime()).addClass("end-td");
 
     var rinfo = getRecurrenceInfo(event);
 
     if (rinfo !== null) {
-      th_recur.removeClass("invisible");
-      var td_recur = $('<td />').appendTo(th_recur).text(rinfo).addClass("recur-td");
+      tb_recur.removeClass("invisible");
+      var td_recur = $('<td />').appendTo(tb_recur).text(rinfo).addClass("recur-td");
     } else {
-      var td_recur = $('<td />').appendTo(th_recur).text(i18nStrings["bwStr-AEEF-No"]).addClass("recur-td");
+      var td_recur = $('<td />').appendTo(tb_recur).text(i18nStrings["bwStr-AEEF-No"]).addClass("recur-td");
     }
 
-    var td_desc = $('<td />').appendTo(th_desc).text(event.description()).addClass("desc-td");
-    $('<td />').appendTo(tf_overall).addClass("center-td");
-    $('<td />').appendTo(tf_commit).addClass("center-td");
+    var desc;
+    if (event.description() === null) {
+      desc = "";
+    } else {
+      desc = event.description();
+    }
+    var td_desc = $('<td />').appendTo(tb_desc).text(desc).addClass("desc-td");
+    $('<td />').appendTo(th_overall).addClass("center-td");
+    $('<td />').appendTo(th_commit).addClass("center-td");
     if (event.ispollwinner()) {
       td_summary.addClass("poll-winner-td");
       td_start.addClass("poll-winner-td");
       td_end.addClass("poll-winner-td");
+      td_desc.addClass("poll-winner-td");
+      td_recur.addClass("poll-winner-td");
     }
     td_summary.hover(
         function() {
-          this_poll.hoverCalDialogOpen(td_summary, thead, event);
+          this_poll.hoverCalDialogOpen(td_summary, tbody, event);
         },
         this_poll.hoverCalDialogClose
     );
   });
   $.each(voter_details, function(index, voter) {
     var active = gSession.currentPrincipal.matchingAddress(voter.cuaddr());
-    var tr = $("<tr/>").appendTo(tbody);
-    $("<td/>").appendTo(tr).text(voter.nameOrAddress());
+    var tr = $("<tr/>").appendTo(tfoot);
+    var voterName = voter.nameOrAddress();
+    if (voterName.indexOf("mailto:") == 0) {
+      voterName = voterName.substring(7);
+    }
+    $("<td/>").appendTo(tr).text(voterName);
     $.each(event_details, function(index, event) {
       var response = event.voter_responses()[voter.cuaddr()];
       var pollItemId = event.pollitemid();
@@ -979,16 +937,11 @@ Poll.prototype.buildResults = function() {
 
   $.each(event_details, function(index, event) {
     if (this_poll.editing_poll.editable()) {
-      $('<button id="winner-' + event.pollitemid() + '">Pick Winner</button>').appendTo(tf_commit.children()[index + 1]).button({
+      $('<button id="winner-' + event.pollitemid() + '">Pick Winner</button>').appendTo(th_commit.children()[index + 1]).button({
         icons : {
           primary : "ui-icon-star"
         }
       }).click(this_poll.clickWinner);
-    } else {
-      if (event.ispollwinner()) {
-        $(tf_commit.children()[index + 1]).addClass("poll-winner-td");
-        $('<div id="winner-text"><span id="winner-icon-left" class="ui-icon ui-icon-star" />Winner<span id="winner-icon-right" class="ui-icon ui-icon-star" /></div>').appendTo(tf_commit.children()[index + 1]);
-      }
     }
   });
 
@@ -1041,16 +994,20 @@ Poll.prototype.clickWinner = function() {
   var new_resource = comp.pickAsWinner();
   new_resource.saveResource(function() {
     gViewController.activePoll.saveResource(function() {
-      gViewController.activatePoll(gViewController.activePoll);
+//      gViewController.activatePoll(gViewController.activePoll);
+      // Make everything disappear
+//      gViewController.clickPollCancel();
     });
-  })
+  });
+
+  gViewController.clickPollSave();
 };
 
 // Open the event time-range hover dialog
-Poll.prototype.hoverCalDialogOpenClassic = function(td_summary, thead, event) {
+Poll.prototype.hoverCalDialogOpenClassic = function(td_summary, tbody, event) {
   var dialog_div = $('<div id="hover-cal" />').appendTo(td_summary).dialog({
     dialogClass: "no-close",
-    position: { my: "left top", at: "right+20 top", of: thead },
+    position: { my: "left top", at: "right+20 top", of: tbody },
     show: "fade",
     title: "Your Events for " + event.start().getLocalizedDate(),
     width: 400
@@ -1086,10 +1043,10 @@ Poll.prototype.hoverCalDialogOpenClassic = function(td_summary, thead, event) {
 }
 
 // Open the event time-range hover dialog
-Poll.prototype.hoverCalDialogOpenFancy = function(td_summary, thead, event) {
+Poll.prototype.hoverCalDialogOpenFancy = function(td_summary, tbody, event) {
   var dialog_div = $('<div id="hover-cal" />').appendTo(td_summary).dialog({
     dialogClass: "no-close",
-    position: { my: "left top", at: "right+20 top", of: thead },
+    position: { my: "left top", at: "right+20 top", of: tbody },
     show: "fade",
     title: "Your Events for " + event.start().getPrintableTime(),
     width: 400
@@ -1134,12 +1091,19 @@ Poll.prototype.hoverCalDialogOpenFancy = function(td_summary, thead, event) {
 
           var seconds = result.end().diff(result.start(), 'seconds');
           var height = (seconds * 30) / (60 * 60) - 6;
-          var styles = "top:" + topOffset + "px;height:" + height + "px";
+
+          var theDiv = $('<div class="hover-event ui-corner-all"/>').appendTo(grid);
+
+          theDiv.css('position', 'absolute');
+          theDiv.css('top', topOffset + "px");
+          theDiv.css('height', height + "px");
+
           if ((lastDtend !== null) && (lastDtend.diff(result.start(), 'millisecsonds') > 0)) {
-            styles += ";left:206px;width:125px";
+            theDiv.css('left', "206px");
+            theDiv.css('width', "125px");
           }
           lastDtend = result.end();
-          $('<div class="hover-event ui-corner-all" style="' + styles + '" />').appendTo(grid).addClass(result.pollitemid() !== null ? "ui-state-active" : "ui-state-default").text(result.summary());
+          theDiv.addClass(result.pollitemid() !== null ? "ui-state-active" : "ui-state-default").text(result.summary());
         });
       }
   );
@@ -1197,7 +1161,7 @@ Poll.prototype.updateOverallResults = function() {
   var this_poll = this;
   var event_details = this.editing_poll.choices();
   var voter_details = this.editing_poll.voters();
-  var tds = $("#editpoll-resulttable").children("tfoot").first().children("tr").first().children("td");
+  var tds = $("#editpoll-resulttable").children("thead").first().children("tr").first().children("td"); // XXX
 
   // Update overall items
   $.each(event_details, function(index, event) {
@@ -1214,7 +1178,13 @@ Poll.prototype.updateOverallResults = function() {
     possible_classes.splice(possible_classes.indexOf(response_details[1]), 1);
     $(tds[index + 1]).text(response_details[0]);
     $(tds[index + 1]).removeClass(possible_classes.join(" "));
-    $(tds[index + 1]).addClass(event.ispollwinner() ? "poll-winner-td" : response_details[1]);
+    if(event.ispollwinner()) {
+      $(tds[index + 1]).addClass("poll-winner-td");
+      $(tds[index + 1]).html('<div id="winner-text"><span id="winner-icon-left" class="ui-icon ui-icon-star" />Winner<span id="winner-icon-right" class="ui-icon ui-icon-star" /></div>');
+    } else {
+      $(tds[index + 1]).addClass(response_details[1]);
+    }
+    //$(tds[index + 1]).addClass(event.ispollwinner() ? "poll-winner-td" : response_details[1]);
   });
 };
 

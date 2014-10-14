@@ -364,7 +364,8 @@ CalDAVPrincipal = function(url) {
 	this.calendar_user_addresses = [];
 	this.default_address = null;
 	this.poll_calendars = [];
-	this.event_calendars = [];
+  this.defaultEventCalendar = null;
+	this.eventCalendars = [];
   this.taskCalendars = [];
 };
 
@@ -408,7 +409,8 @@ CalDAVPrincipal.prototype.init = function(whenDone) {
 // For a reload of all calendar data
 CalDAVPrincipal.prototype.refresh = function(whenDone) {
 	this.poll_calendars = [];
-	this.event_calendars = [];
+  this.defaultEventCalendar = null;
+	this.eventCalendars = [];
 	this.loadCalendars(whenDone);
 };
 
@@ -472,7 +474,10 @@ CalDAVPrincipal.prototype.loadCalendars = function(whenDone) {
 				this_principal.poll_calendars.push(cal);
 			}
 			if (hasVevent) {
-				this_principal.event_calendars.push(cal);
+        if ((defaultCalendarPath.length > 0) && (cal.url.indexOf(defaultCalendarPath) > 0)) {
+          this_principal.defaultEventCalendar = cal;
+        }
+				this_principal.eventCalendars.push(cal);
 			}
       if (hasVtodo) {
         this_principal.taskCalendars.push(cal);
@@ -579,7 +584,14 @@ CalDAVPrincipal.prototype.isBusy = function(user, start, end, whenDone) {
 // Get a summary of events for the specified time-range
 CalDAVPrincipal.prototype.eventsForTimeRange = function(start, end, whenDone) {
 	var this_principal = this;
-  var url = joinURLs(gSession.host, this.event_calendars[0].url);
+  var eventCal;
+
+  if (this.defaultEventCalendar !== null) {
+    eventCal = this.defaultEventCalendar;
+  } else {
+    eventCal = this.eventCalendars[0];
+  }
+  var url = joinURLs(gSession.host, eventCal.url);
 
 	var tresqr = TimeRangeExpandedSummaryQueryReport(url,
       start, end,
@@ -587,7 +599,7 @@ CalDAVPrincipal.prototype.eventsForTimeRange = function(start, end, whenDone) {
 
   tresqr.done(function(response) {
 		var results = [];
-		var msr = new MultiStatusResponse(response, this_principal.event_calendars[0].url);
+		var msr = new MultiStatusResponse(response, eventCal.url);
 		msr.doToEachChildResource(function(url, response_node) {
 			var caldata = jcal.fromString(msr.getResourcePropertyText(response_node, "C:calendar-data"));
 			results.push(new CalendarObject(caldata));
@@ -893,8 +905,8 @@ CalendarComponent.prototype.pollitemid = function(value) {
 	if (value === undefined) {
 		return this.data.getPropertyValue("poll-item-id");
 	} else {
-		if (this.politemid() != value) {
-			this.data.updateProperty("poll-item-id", value);
+		if (this.pollitemid() != value) {
+			this.data.updateProperty("poll-item-id", value, {}, "integer");
 			this.changed(true);
 		}
 	}
@@ -1059,7 +1071,11 @@ CalendarPoll.prototype.choices = function() {
 	});
 };
 
-// Get the designated choice
+/** Get the designated choice
+ *
+ * @param itemId poll-item-id value
+ * @returns {*}
+ */
 CalendarPoll.prototype.getChoice = function(itemId) {
   var comps = this.data.getComponents();
   for (var i = 0; i < comps.length; i++) {
@@ -1082,6 +1098,54 @@ CalendarPoll.prototype.getChoice = function(itemId) {
   return null;
 };
 
+/** remove the indexed choice
+ *
+ * @param index 0 based
+ * @return {boolean} true if removed
+ */
+CalendarPoll.prototype.removeIndexedChoice = function(index) {
+  var cs = this.choices();
+
+  if (cs.length <= index) {
+    return false;
+  }
+
+  var choice = cs[index];
+
+  var pi = choice.pollitemid();
+  if (pi === null) {
+    return false;
+  }
+
+  this.removeChoice(parseInt(pi));
+  return true;
+};
+
+/** remove the designated choice by poll item id
+ *
+ * @param itemId poll-item-id value
+ */
+CalendarPoll.prototype.removeChoice = function(itemId) {
+  var thisComp = this;
+  var results = $.grep(this.data.getComponents(),
+      function(compData, index) {
+        var comp = new jcal(compData);
+
+        var pi = comp.getPropertyValue("poll-item-id");
+        if (pi === null) {
+          return true;
+        }
+
+        if (parseInt(pi) === itemId) {
+          thisComp.changed(true);
+          return false;
+        }
+
+        return true;
+      });
+  this.data.setComponents(results);
+};
+
 /** Make a new choice for the VPOLL
  *
  * @param type
@@ -1099,7 +1163,7 @@ CalendarPoll.prototype.makeChoice = function(type, start, end) {
   end.updateProperty(comp, start);
 
 	comp.newProperty("summary", this.summary());
-	comp.newProperty("poll-item-id", this.nextPollItemId().toString());
+	comp.newProperty("poll-item-id", this.nextPollItemId(), {}, "integer");
 	comp.newProperty(
 		"voter",
 		this.organizer(),
@@ -1267,8 +1331,15 @@ CalendarComponent.prototype.pickAsWinner = function() {
 
   calendar.data.addComponent(winner.data);
   calendar.changed(true);
+  var eventCal;
 
-	return new CalendarResource(gSession.currentPrincipal.event_calendars[0], null, null, calendar);
+  if (gSession.currentPrincipal.defaultEventCalendar !== null) {
+    eventCal = gSession.currentPrincipal.defaultEventCalendar;
+  } else {
+    eventCal = gSession.currentPrincipal.eventCalendars[0];
+  }
+
+	return new CalendarResource(eventCal, null, null, calendar);
 };
 
 // Get an array of attendees

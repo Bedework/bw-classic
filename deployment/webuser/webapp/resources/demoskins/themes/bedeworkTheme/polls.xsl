@@ -71,8 +71,8 @@
                   <div id="editpoll-choiceType">
                     <input type="radio" name="choiceType" id="choiceTypeEvent" value="vevent" checked="checked"/>
                     <label for="choiceTypeEvent">event</label>
-                    <input type="radio" name="choiceType" id="choiceTypeTask" value="vtodo" />
-                    <label for="choiceTypeTask">task</label>
+                    <input type="radio" name="choiceType" id="choiceTypeTask" disabled="disabled" value="vtodo" />
+                    <label for="choiceTypeTask" class="disabled">task</label>
                   </div>
                 </div>
                 <div id="choice-widget" class="mfp-hide">
@@ -92,17 +92,17 @@
                   <table id="editpoll-resulttable">
                     <thead>
                       <tr><td><xsl:text> </xsl:text></td></tr>
-                      <tr><td><xsl:text> </xsl:text></td></tr>
-                      <tr><td><xsl:text> </xsl:text></td></tr>
-                      <tr><td><xsl:text> </xsl:text></td></tr>
-                      <tr><td><xsl:text> </xsl:text></td></tr>
+                      <tr id="editpoll-resultsButtons" class="invisible"><td><xsl:text> </xsl:text></td></tr>
                     </thead>
                     <tbody>
+                      <tr><td><xsl:text> </xsl:text></td></tr>
+                      <tr><td><xsl:text> </xsl:text></td></tr>
+                      <tr><td><xsl:text> </xsl:text></td></tr>
+                      <tr><td><xsl:text> </xsl:text></td></tr>
                       <tr><td><xsl:text> </xsl:text></td></tr>
                     </tbody>
                     <tfoot>
                       <tr><td><xsl:text> </xsl:text></td></tr>
-                      <tr id="editpoll-resultsButtons" class="invisible"><td><xsl:text> </xsl:text></td></tr>
                     </tfoot>
                   </table>
                 </div>
@@ -548,13 +548,14 @@
               <h4><xsl:copy-of select="$bwStr-AEEF-RecurrenceRules"/></h4>
               <!-- show or hide rrules fields when editing: -->
 
+              <!-- XXX Shouldn't need this now - we are setting the values directly
               <input type="checkbox" name="rrulesFlag" onclick="swapRrules(this)" value="on"/>
               <span id="rrulesSwitch">
                 <xsl:copy-of select="$bwStr-AEEF-ChangeRecurrenceRules"/>
-              </span>
+              </span>-->
               <span id="rrulesUiSwitch">
                 <input type="checkbox" name="rrulesUiSwitch" id="recurAdvanced" value="advanced" onchange="swapVisible(this,'advancedRrules')"/>
-                <xsl:copy-of select="$bwStr-AEEF-ShowAdvancedRecurrenceRules"/>
+                <label for="recurAdvanced"><xsl:copy-of select="$bwStr-AEEF-ShowAdvancedRecurrenceRules"/></label>
               </span>
 
               <xsl:if test="form/recurrence">
@@ -756,10 +757,6 @@
                    <xsl:text> </xsl:text>
                 </div>
               </div>
-              <div id="bwFreeBusyDisplay">
-                attendees here...
-              </div>
-
             </div>
           </div>
 

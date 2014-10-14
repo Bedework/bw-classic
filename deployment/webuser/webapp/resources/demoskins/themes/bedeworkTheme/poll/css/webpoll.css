@@ -86,7 +86,8 @@
   background-color: #f5f5f5;
 }
 #editpoll-choicelist .bwChoiceDisplay:nth-child(even),
-#bwPolls .voter:nth-child(even) {
+#bwPolls .voter:nth-child(even),
+#choice-widget .attendee:nth-child(even) {
   background-color: #e5e5e5;
 }
 #editpoll-choicelist .bwChoiceSummary {
@@ -132,38 +133,40 @@
 	position: relative;
 	left: 50px;
 }
-#bwComp-voterlist {
+#bwComp-voterlist,
+#bwComp-attendeelist{
   margin: 0;
   padding: 0;
 }
-#bwComp-attendeelist {
-    margin: 0;
-    padding: 0;
-}
-#bwPolls .voter {
+#bwPolls .voter,
+#choice-widget .attendee {
 	position: relative;
 	background-color:#eee;
-	/*box-shadow: 5px 5px 2px #888;
-	margin: 8px;
-	padding: 4px;*/
   margin: 0 0 0.5em 0;
   padding: 0.5em;
 }
-#bwPolls #edit-votertype label {
+#bwPolls #edit-votertype label,
+#choice-widget #edit-attendeetype label {
   width: auto;
 }
 #bwPolls .edit-datetime {
 	margin: 4px;
 }
 #bwPolls .edit-datetime label,
-#bwPolls .edit-voter label {
+#bwPolls .edit-voter label{
 	display: inline-block;
 	width: 40px;
 }
-#bwPolls .voter-address {
+#choice-widget .edit-attendee label {
+  display: inline-block;
+  width: 70px;
+}
+#bwPolls .voter-address,
+#choice-widget .attendee-address {
 	width: 250px;
 }
-#bwPolls .input-remove {
+#bwPolls .input-remove,
+#choice-widget .input-remove {
 	position: absolute;
 	right: 4px;
 	bottom: 4px;
@@ -174,9 +177,11 @@
 #bwPolls .active-voter {
 	font-weight:bold;
 }
+#bwPolls .active-attendee {
+    font-weight:bold;
+}
 #editpoll-resulttable {
 	border-collapse:collapse;
-	border: 1px solid #ccc;
   overflow: scroll;
   font-size: 0.9em;
 }
@@ -188,13 +193,17 @@
 	border: 1px solid #ccc;
 	padding: 4px;
 }
-#editpoll-resulttable thead td,
-#editpoll-resulttable tbody td {
+#editpoll-resulttable tbody td,
+#editpoll-resulttable tfoot td {
   border-right: 2px solid #ccc;
 }
-#editpoll-resulttable tfoot {
-	border: 2px solid;
-  font-weight: bold;
+#editpoll-resulttable .noborder {
+  border: none;
+}
+#editpoll-resulttable thead {
+}
+#editpoll-resulttable tbody {
+  border-bottom: 3px solid #aaa;
 }
 #bwPolls .response-btns,
 #bwPolls .response-btns label {
@@ -216,10 +225,13 @@
 	margin-top: -8px;
 }
 #bwPolls .summary-td {
-  background-color: #eee;
+  font-weight: bold;
+  cursor: pointer;
 }
-#bwPolls .start-td {
+#bwPolls .start-td,
+#bwPolls .end-td {
   white-space: nowrap;
+  cursor: pointer;
 }
 #bwPolls .center-td {
 	text-align:center;
@@ -228,9 +240,27 @@
   text-align:left;
   width: 135px;
   font-style: italic;
+  cursor: pointer;
+}
+#bwPolls .recur-td {
+  cursor: pointer;
 }
 #bwPolls .poll-winner-td {
-	background-color:#D9D9D9;
+  border-left: 4px solid black;
+  border-right: 4px solid black;
+  background-color: #ffd;
+}
+#bwPolls thead .poll-winner-td {
+  border-top: 4px solid black;
+  background-color: #def;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+}
+#bwPolls tfoot tr:last-child .poll-winner-td {
+  border-bottom: 4px solid black;
+}
+#bwPolls label.disabled {
+  color: #999;
 }
 /* use background, not background-color, to override button background images:  */
 /* These are the Overall cells: */
@@ -269,7 +299,7 @@
   background: #fdd;
 }
 #bwPolls .resp-NoResponse {
-  background: #eee;
+  background: #f5f5f5;
 }
 #bwPolls .no-close .ui-dialog-titlebar-close {
   display: none;
@@ -277,6 +307,7 @@
 #bwPolls #hover-grid {
 	position: relative;
 	width: 100%;
+    height: 30px;
 	margin: 10px;
 	border-collapse:collapse;
 	border: 1px solid #ccc;
@@ -292,6 +323,9 @@
 #bwPolls #hover-grid .hover-grid-td-time {
 	width: 70px;
 	text-align: right;
+}
+#bwPolls #hover-grid .hover-grid-td-slot {
+    text-align: left;
 }
 #bwPolls .hover-event {
 	position: absolute;

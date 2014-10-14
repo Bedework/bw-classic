@@ -134,7 +134,7 @@
   <!-- <xsl:variable name="prefs-setAccess" select="/bedework/urlPrefixes/prefs/setAccess"/>-->
   <xsl:variable name="prefs-updateSchedulingPrefs" select="/bedework/urlPrefixes/prefs/updateSchedulingPrefs"/>
   <!-- vpoll -->
-  <xsl:variable name="vpoll-manage" select="/bedework/urlPrefixes/vpoll/managePolls"/>
+  <xsl:variable name="vpoll-initmanage" select="/bedework/urlPrefixes/vpoll/initManageVpoll"/>
   <!-- scheduling -->
   <xsl:variable name="showInbox" select="/bedework/urlPrefixes/schedule/showInbox"/>
   <xsl:variable name="showOutbox" select="/bedework/urlPrefixes/schedule/showOutbox"/>

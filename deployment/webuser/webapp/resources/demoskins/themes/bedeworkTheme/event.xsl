@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,11 +20,12 @@
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml">
-  
+
     <!--==== SINGLE EVENT ====-->
   <xsl:template match="event">
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
+    <xsl:variable name="eventName" select="name"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:variable name="statusClass">
       <xsl:choose>
@@ -64,12 +65,12 @@
                     <div id="bwDeleteRecurWidget" class="bwMenuWidget">
                       <ul>
                         <li>
-                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-SgEv-DeleteMaster}" onclick="return confirm('{$bwStr-SgEv-DeleteAllRecurrences}');">
+                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}" title="{$bwStr-SgEv-DeleteMaster}" onclick="return confirm('{$bwStr-SgEv-DeleteAllRecurrences}');">
                             <xsl:copy-of select="$bwStr-SgEv-All"/>
                           </a>
                         </li>
                         <li>
-                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-DeleteThisInstance}" onclick="return confirm('{$bwStr-SgEv-DeleteThisEvent}');">
+                          <a href="{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-DeleteThisInstance}" onclick="return confirm('{$bwStr-SgEv-DeleteThisEvent}');">
                             <xsl:copy-of select="$bwStr-SgEv-Instance"/>
                           </a>
                         </li>
@@ -78,7 +79,7 @@
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-DeleteEvent}" class="bwMenuButton" onclick="return confirm('{$bwStr-SgEv-DeleteThisEvent}');">
+                  <a href="{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-SgEv-DeleteEvent}" class="bwMenuButton" onclick="return confirm('{$bwStr-SgEv-DeleteThisEvent}');">
                     <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="delete"/>
                     <xsl:copy-of select="$bwStr-SgEv-Delete"/><xsl:text> </xsl:text>
                   </a>
@@ -593,12 +594,12 @@
         <tr>
           <td class="fieldname"><xsl:copy-of select="$bwStr-SgEv-Calendar"/><xsl:text> </xsl:text></td>
           <td class="fieldval">
-            
+
             <xsl:value-of select="calendar/summary"/>
             <xsl:if test="not(starts-with(calendar/path,/bedework/myCalendars/calendars/calendar/path))">
               <xsl:variable name="remotePath"><xsl:value-of select="calendar/path"/></xsl:variable>
               <!-- this event comes from a subscription / shared calendar; look up and display the local name:
-                   v. 3.9: Can't display local name at the moment with new subscription model - but keep this code for future use: 
+                   v. 3.9: Can't display local name at the moment with new subscription model - but keep this code for future use:
               <xsl:value-of select="/bedework/myCalendars/calendars//calendar[substring-after(aliasUri,'bwcal://')=$remotePath]/summary"/>
               -->
               <!-- do, however, display the full remote path: -->
@@ -631,7 +632,7 @@
         <tr>
           <td class="fieldname"></td>
           <td class="fieldval">
-            <input name="submit" type="button" value="{$bwStr-AEEF-Clear}" onclick="window.location='{$schedule-clearReply}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}'"/>
+            <input name="submit" type="button" value="{$bwStr-AEEF-Clear}" onclick="window.location='{$schedule-clearReply}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}'"/>
           </td>
         </tr>
       </xsl:if>
@@ -641,5 +642,5 @@
       </tr>
     </table>
   </xsl:template>
-  
+
 </xsl:stylesheet>

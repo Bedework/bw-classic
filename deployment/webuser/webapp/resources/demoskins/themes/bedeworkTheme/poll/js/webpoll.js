@@ -29,10 +29,6 @@ var votersTab = 1;
 var resultsTab = 2;
 var activeTab = -1;
 
-/* values from request parameters */
-var reqUid = null;
-var reqTab = null;
-
 // Page load
 $(function() {
 
@@ -217,8 +213,8 @@ ViewController.prototype.init = function() {
     }
   });
 
-  if (reqUid !== null) {
-    this.selectPollByUID(requid);
+  if ((reqUid !== null) && (reqUid.length > 0)) {
+    this.selectPollByUID(reqUid);
     reqUid = null;
   }
 }
@@ -321,7 +317,7 @@ ViewController.prototype.activatePoll = function(poll) {
   this.activePoll.setPanel();
   this.isNewPoll = false;
   this.editSetVisible(true);
-}
+};
 
 // Save button clicked
 ViewController.prototype.clickPollSave = function() {
@@ -341,7 +337,7 @@ ViewController.prototype.clickPollSave = function() {
   }
 
   this.clickPollCancel();
-}
+};
 
 // Cancel button clicked
 ViewController.prototype.clickPollCancel = function() {
@@ -351,19 +347,18 @@ ViewController.prototype.clickPollCancel = function() {
   this.activePoll = null;
   this.isNewPoll = null;
   this.editSetVisible(false);
-}
+};
 
 // Delete button clicked
 ViewController.prototype.clickPollDelete = function() {
+  if (confirm("Delete this Poll?")) {
+    this.activePoll.list.removePoll(this.activePoll);
 
-  // TODO: Actually delete it on the server
-
-  this.activePoll.list.removePoll(this.activePoll);
-
-  // Make sure edit panel is visible
-  this.activePoll = null;
-  this.isNewPoll = null;
-  this.editSetVisible(false);
+    // Make sure edit panel is visible
+    this.activePoll = null;
+    this.isNewPoll = null;
+    this.editSetVisible(false);
+  }
 }
 
 // Autofill button clicked

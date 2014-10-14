@@ -69,7 +69,7 @@
           <li>
             <xsl:if test="/bedework/page='managePolls'">
               <xsl:attribute name="class">selected</xsl:attribute>
-            </xsl:if><a href="{$vpoll-manage}&amp;refinterval=1500&amp;setappvar=page(polls)">POLLS</a>
+            </xsl:if><a href="{$vpoll-initmanage}">POLLS</a>
           </li>
         </xsl:if>
       </ul>

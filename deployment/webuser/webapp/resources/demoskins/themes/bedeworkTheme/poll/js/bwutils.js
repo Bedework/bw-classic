@@ -137,6 +137,8 @@ function getRecurrenceInfo(comp) {
     rinfo += i18nStrings["bwStr-AEEF-Year"];
   }
 
+  rinfo += " ";
+
   var byday = rrule["byday"];
 
   if (byday !== undefined) {

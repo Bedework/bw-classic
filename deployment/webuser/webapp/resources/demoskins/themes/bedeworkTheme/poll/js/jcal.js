@@ -150,9 +150,20 @@ jcal.prototype.components = function(name) {
 	});
 };
 
-// Get all components
+/** Get all components
+ *
+ * @returns {*}
+ */
 jcal.prototype.getComponents = function() {
   return this.caldata[2];
+};
+
+/** Set all components
+ *
+ * @returns {*}
+ */
+jcal.prototype.setComponents = function(comps) {
+  this.caldata[2] = comps;
 };
 
 // Get the next pollItemId
@@ -166,7 +177,7 @@ jcal.prototype.nextPollItemId = function() {
             }
         }
     });
-    return pid + 1;
+    return parseInt(pid) + 1;
 };
 
 // Remove all matching components
@@ -600,11 +611,11 @@ JcalDtTime.prototype.getPrintableTime = function() {
   if (this.hour24) {
     return this.moment.format("HH:mm")
   }
-  return this.moment.format("h:mm:ss a");
+  return this.moment.format("h:mm a");
 };
 
 JcalDtTime.prototype.getLocalizedDate = function() {
-  return this.moment.format("LL");
+  return this.moment.format("dd, ll");
 };
 
 JcalDtTime.prototype.getLocalizedShortDate = function() {

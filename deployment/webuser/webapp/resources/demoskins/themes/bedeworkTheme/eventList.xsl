@@ -1,4 +1,4 @@
-<!-- 
+<!--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -6,9 +6,9 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -212,6 +212,7 @@
 
   <xsl:template name="eventLinks">
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
+    <xsl:variable name="eventName" select="name"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <xsl:if test="currentAccess/current-user-privilege-set/privilege/write-content">
@@ -240,11 +241,11 @@
       <xsl:choose>
         <xsl:when test="recurring='true' or recurrenceId != ''">
           <xsl:copy-of select="$bwStr-EvLn-DeleteColon"/><xsl:text> </xsl:text>
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}" title="{$bwStr-EvLn-DeleteMaster}" onclick="return confirm('{$bwStr-EvLn-DeleteAllRecurrences}');"><xsl:copy-of select="$bwStr-EvLn-All"/></a>
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvLn-DeleteInstance}" onclick="return confirm('{$bwStr-EvLn-DeleteThisEvent}');"><xsl:copy-of select="$bwStr-EvLn-Instance"/></a>
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}" title="{$bwStr-EvLn-DeleteMaster}" onclick="return confirm('{$bwStr-EvLn-DeleteAllRecurrences}');"><xsl:copy-of select="$bwStr-EvLn-All"/></a>
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvLn-DeleteInstance}" onclick="return confirm('{$bwStr-EvLn-DeleteThisEvent}');"><xsl:copy-of select="$bwStr-EvLn-Instance"/></a>
         </xsl:when>
         <xsl:otherwise>
-          <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvLn-DeleteEvent}" onclick="return confirm('{$bwStr-EvLn-DeleteThisEvent}');">
+          <a href="{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-EvLn-DeleteEvent}" onclick="return confirm('{$bwStr-EvLn-DeleteThisEvent}');">
             <xsl:copy-of select="$bwStr-EvLn-Delete"/>
           </a>
         </xsl:otherwise>

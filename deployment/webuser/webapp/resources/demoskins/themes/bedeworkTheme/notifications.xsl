@@ -198,11 +198,9 @@
     <xsl:variable name="eventName" select="name"/>
     <xsl:variable name="entityType" select="entityType"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
-    <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="inboxItemAction">
       <xsl:choose>
-        <xsl:when test="entityType=7"><xsl:value-of select="$vpoll-manage"/><xsl:text>&amp;uid={$guid}</xsl:text>
-        </xsl:when>
+        <xsl:when test="entityType=7"><xsl:value-of select="$vpoll-initmanage"/></xsl:when>
         <xsl:otherwise>
           <xsl:choose>
             <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:when>
@@ -215,13 +213,24 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="title">
+      <xsl:choose>
+        <xsl:when test="title != ''"><xsl:value-of select="title"/></xsl:when><!-- title is used for entityType 7 (vpoll) -->
+        <xsl:when test="summary != ''"><xsl:value-of select="summary"/></xsl:when><!-- summary is used for other types of events -->
+        <xsl:otherwise><xsl:copy-of select="$bwStr-EvCG-NoTitle"/></xsl:otherwise><!-- otherwise show "no title" text -->
+      </xsl:choose>
+    </xsl:variable>
+
     <li>
-      <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}">
-        <xsl:if test="scheduleMethod=3"><xsl:copy-of select="$bwStr-ScN-Re"/><xsl:text> </xsl:text></xsl:if>
+      <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="summary = ''"><xsl:copy-of select="$bwStr-EvCG-NoTitle"/></xsl:when>
-          <xsl:otherwise><xsl:value-of select="summary"/></xsl:otherwise>
+          <xsl:when test="entityType=7">bwPollMsg</xsl:when>
+          <xsl:otherwise>bwSchMsg</xsl:otherwise>
         </xsl:choose>
+      </xsl:attribute>
+      <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;refinterval=1500">
+        <xsl:if test="scheduleMethod=3"><xsl:copy-of select="$bwStr-ScN-Re"/><xsl:text> </xsl:text></xsl:if>
+        <xsl:value-of select="$title"/>
       </a>
     </li>
   </xsl:template>

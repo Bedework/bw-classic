@@ -41,6 +41,10 @@
       var hour24 = <xsl:value-of select="/bedework/hour24"/>;
       var preferredEndType = '<xsl:value-of select="/bedework/preferredEndType"/>';
       var currentLocale = "<xsl:value-of select="/bedework/currentLocale"/>";
+      var reqUid = "<xsl:value-of select="/bedework/vpoll/uid"/>";
+      var reqTab = "<xsl:value-of select="/bedework/vpoll/tab"/>";
+      var defaultCalendarPath = "<xsl:value-of select="/bedework/vpoll/defaultCalendarPath"/>";
+
       </xsl:comment>
     </script>
 
@@ -283,7 +287,7 @@
 
     <xsl:if test="/bedework/page='addEvent' or
                   /bedework/page='editEvent'  or
-                  (/bedework/page='showPage' and /bedework/appvar[key='page']/value = 'polls')">
+                  /bedework/page='managePolls'">
 
       <!-- import the internationalized strings for the javascript widgets -->
       <xsl:call-template name="bedeworkEventJsStrings"/>
@@ -423,7 +427,7 @@
              };
            });
          </xsl:if>
-         <xsl:if test="/bedework/page='showPage' and /bedework/appvar[key='page']/value = 'polls'">
+         <xsl:if test="/bedework/page='managePolls'">
            focusElement('bwEventTitle');
            bwSetupDatePickers();
          </xsl:if>

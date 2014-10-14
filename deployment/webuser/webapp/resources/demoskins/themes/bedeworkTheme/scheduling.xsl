@@ -45,9 +45,7 @@
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <xsl:variable name="inboxItemAction">
           <xsl:choose>
-            <xsl:when test="entityType=7">
-              <xsl:value-of select="$showPage"/><xsl:text>&amp;refinterval=1500&amp;setappvar=page(polls)</xsl:text>
-            </xsl:when>
+            <xsl:when test="entityType=7"><xsl:value-of select="$vpoll-initmanage"/></xsl:when>
             <xsl:otherwise>
               <xsl:choose>
                 <xsl:when test="scheduleMethod=2"><xsl:value-of select="$schedule-initAttendeeUpdate"/></xsl:when>
@@ -256,7 +254,7 @@
             </a>
           </td>
           <td>
-            <a href="{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Oubx-Delete}">
+            <a href="{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}" title="{$bwStr-Oubx-Delete}">
               <img src="{$resourcesRoot}/images/trashIcon.gif" width="13" height="13" border="0" alt="{$bwStr-Oubx-Delete}"/>
             </a>
           </td>
@@ -282,6 +280,7 @@
   <xsl:template match="formElements" mode="attendeeRespond">
     <xsl:variable name="calPathEncoded" select="form/calendar/encodedPath"/>
     <xsl:variable name="calPath" select="form/calendar/path"/>
+    <xsl:variable name="eventName" select="name"/>
     <xsl:variable name="guid"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template></xsl:variable>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
     <!-- The name "eventForm" is referenced by several javascript functions. Do not
@@ -682,7 +681,7 @@
           <td class="fieldval scheduleActions">
             <xsl:choose>
               <xsl:when test="scheduleMethod='8'">
-                <input name="delete" type="button" value="{$bwStr-AtRe-Delete}" onclick="document.location.replace('{$delEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}')"/>
+                <input name="delete" type="button" value="{$bwStr-AtRe-Delete}" onclick="document.location.replace('{$delEvent}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}')"/>
               </xsl:when>
               <xsl:otherwise>
                 <input name="submit" type="submit" value="{$bwStr-AtRe-Submit}"/>
