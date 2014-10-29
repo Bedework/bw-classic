@@ -22,7 +22,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-york-vpoll-03" ipr="trust200902">
+<rfc category="std" docName="draft-york-vpoll-04" ipr="trust200902">
 
   <front>
     <title abbrev="VPOLL">VPOLL: Consensus Scheduling Component for iCalendar</title>
@@ -89,7 +89,7 @@
     <abstract>
       <t>
         This specification introduces a new iCalendar component which allows
-        for consensus scheduling, that is voting on a number of alternative
+        for consensus scheduling, that is, voting on a number of alternative
         meeting or task alternatives.
       </t>
     </abstract>
@@ -199,7 +199,8 @@
              title="The VPOLL Component: An Overview">
         <t>
           The VPOLL component acts as a wrapper for a number of alternatives to
-          be voted on, together with some properties used to maintain the state
+          be voted on, together with some properties and a new component used
+          to maintain the state
           of the voting. For our simple example the following VPOLL properties
           and sub-components are either required or appropriate:
 
@@ -270,6 +271,10 @@
               In our simple use case there will be multiple VEVENT sub-components
               defining the alternatives. Each will have a different date and or time
               for the meeting.
+            </t>
+
+            <t hangText="VOTE:">
+              A new sub-component .
             </t>
           </list>
         </t>
