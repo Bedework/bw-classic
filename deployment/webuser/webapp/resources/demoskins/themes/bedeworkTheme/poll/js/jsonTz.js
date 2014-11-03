@@ -84,7 +84,7 @@ TzHandler.prototype.waitFetch = function(tzid, year) {
 
 /** Given a date and a tzid return the offset for that date
  *
- * @param date - json format date
+ * @param date - json format date yyyy-mm-dd
  * @param tzid - name of timezone
  * @return null if unknown timezone otherwise offset in minutes
  */

@@ -229,9 +229,26 @@
         </xsl:choose>
       </xsl:attribute>
       <a href="{$inboxItemAction}&amp;calPath={$calPath}&amp;eventName={$eventName}&amp;recurrenceId={$recurrenceId}&amp;refinterval=1500">
-        <xsl:if test="scheduleMethod=3"><xsl:copy-of select="$bwStr-ScN-Re"/><xsl:text> </xsl:text></xsl:if>
+        <xsl:attribute name="title">
+          <xsl:choose>
+            <xsl:when test="entityType = 7 ">
+              <xsl:choose>
+                <xsl:when test="originator = organizer/organizerUri">Poll from </xsl:when>
+                <xsl:otherwise>Poll response from </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:when test="scheduleMethod = 3">Meeting reply from </xsl:when>
+            <xsl:otherwise>Meeting request for <xsl:value-of select="start/longdate"/> from </xsl:otherwise>
+          </xsl:choose>
+          <xsl:value-of select="substring-after(originator,'mailto:')"/>
+        </xsl:attribute>
+        <xsl:if test="scheduleMethod = 3"><xsl:copy-of select="$bwStr-ScN-Re"/><xsl:text> </xsl:text></xsl:if>
         <xsl:value-of select="$title"/>
+        <xsl:if test="entityType = 0 and scheduleMethod = 2"><!-- this is an organizers message -->
+          - <xsl:value-of select="start/shortdate"/>
+        </xsl:if>
       </a>
+      <!--From <xsl:value-of select="substring-before(substring-after(originator,'mailto:'),'@')"/>-->
     </li>
   </xsl:template>
 

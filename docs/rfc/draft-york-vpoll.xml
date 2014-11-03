@@ -261,20 +261,31 @@
               significant for the voting process.
             </t>
 
+            <t hangText="VVOTER:">
+              A new component. There is one of these for each voter and it
+              contains a VOTER property to identify the voter and one VOTE
+              component for each item being voted on.
+            </t>
+
+            <t hangText="VOTE:">
+              A new component. There is one of these for each voter and choice.
+              It usually contains at least a POLL-ITEM-ID property to identify the choice
+              and a RESPONSE property to provide a vote. For more complex poll
+              modes it may contain other information such as cost or
+              estimated duration.
+            </t>
+
             <t hangText="VOTER:">
               A new property. There is one of these for each voter and it is
-              similar to the <xref target='RFC5545'/> ATTENDEE property. In the
-              VPOLL component it shows who takes part in the voting.
+              similar to the <xref target='RFC5545'/> ATTENDEE property. It
+              identifies the VVOTER component to show who is taking part in
+              the voting and their results.
             </t>
 
             <t hangText="VEVENT:">
               In our simple use case there will be multiple VEVENT sub-components
               defining the alternatives. Each will have a different date and or time
               for the meeting.
-            </t>
-
-            <t hangText="VOTE:">
-              A new sub-component .
             </t>
           </list>
         </t>
@@ -298,8 +309,15 @@
        DTSTAMP:20120101T000000Z
        SUMMARY:What to do this week
        DTEND:20120101T000000Z
+       BEGIN: VVOTER
        VOTER:mailto:cyrus@example.com
+       END VVOTER
+       BEGIN: VVOTER
        VOTER:mailto:eric@example.com
+       END VVOTER
+       BEGIN: VVOTER
+       VOTER:mailto:mike@example.com
+       END VVOTER
        BEGIN:VEVENT.......(with a poll-item-id=1)
        END:VEVENT
        BEGIN:VEVENT.......(with a poll-item-id=2)
@@ -333,16 +351,6 @@
               This provides a unique reference to the sub-component within the
               VPOLL. It's value SHOULD be a small integer.
             </t>
-
-            <t hangText="VOTER:">
-              The VOTER property within a VPOLL sub-component specifies the
-              state of the vote for that voter. The RESPONSE parameter supplies
-              the current vote in the range 0 to 100. For many purposes this is
-              too fine grained and recommended values are defined for voting
-              preferences of "NO", "MAYBE" and "YES" with an additional
-              "YES but not the preferred outcome". These properties will be
-              added to the sub-components as responses appear.
-            </t>
           </list>
         </t>
       </section>
@@ -352,7 +360,7 @@
         <t>
           Upon receipt of a VPOLL REQUEST the voter will reply with a VPOLL
           component containing their vote. In our simple case it will have the
-          following properties:
+          following properties and components:
 
           <list style='hanging'>
             <t hangText="DTSTAMP:">
@@ -376,14 +384,25 @@
               Same as the request.
             </t>
 
+            <t hangText="VVOTER:">
+              One only.
+            </t>
+
             <t hangText="VOTER:">
-              One only - the voter replying.
+              One only inside the VVOTER component - the voter replying.
+            </t>
+
+            <t hangText="VOTE:">
+              One per item being voted on. There does not need to be one for
+              each choice.
             </t>
 
             <t hangText="POLL-ITEM-ID:">
-              One per item being voted on. There does not need to be one for
-              each sub-component but each REPLY will set the voting state for
-              every sub-component.
+              One inside each VOTE component to identify the choice.
+            </t>
+
+            <t hangText="RESPONSE:">
+              One inside each VOTE component to specify the vote.
             </t>
           </list>
         </t>
@@ -407,14 +426,27 @@
        PRODID:-//Example//Example
        METHOD: REPLY
        BEGIN:VPOLL
-       ORGANIZER:mailto:douglm@example.com
-       VOTER:mailto:cyrus@example.com
+       ORGANIZER:mailto:mike@example.com
        UID:sched01-1234567890
        DTSTAMP:20120101T010000Z
        SUMMARY:What to do this week
-       POLL-ITEM-ID;RESPONSE=50;PUBLIC-COMMENT=Work on iTIP:1
-       POLL-ITEM-ID;RESPONSE=100;PUBLIC-COMMENT=Work on WebDAV:2
-       POLL-ITEM-ID;RESPONSE=0:3
+       BEGIN:VVOTER
+       VOTER:mailto:cyrus@example.com
+       BEGIN:VOTE
+       POLL-ITEM-ID:1
+       RESPONSE:50
+       COMMENT:Work on iTIP
+       END:VOTE
+       BEGIN:VOTE
+       POLL-ITEM-ID:2
+       RESPONSE:100
+       COMMENT:Work on WebDAV
+       END:VOTE
+       BEGIN:VOTE
+       POLL-ITEM-ID:3
+       RESPONSE:0
+       END:VOTE
+       END:VVOTER
        END:VPOLL
        END:VCALENDAR
 ]]></artwork>
@@ -428,14 +460,9 @@
           When the organizer receives a response from one or more voters the
           current state of the poll is sent to all voters. The new iTip method
           POLLSTATUS is used. The VPOLL can contain a reduced set of properties
-          but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, ORGANIZER and VOTER.
-        </t>
-
-        <t>
-          In addition, for our use case, it will contain skeleton VEVENT
-          sub-components with the POLL-ITEM-ID and VOTER properties. Clients
-          receiving this poll status SHOULD merge it in to their own copy to give
-          the full current status
+          but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, ORGANIZER and
+          one or more VVOTER components each populated with a VOTER property and
+          zero or more VOTE components.
         </t>
 
         <t>
@@ -448,28 +475,43 @@
        PRODID:-//Example//Example
        METHOD: POLLSTATUS
        BEGIN:VPOLL
-       ORGANIZER:mailto:douglm@example.com
-       VOTER:mailto:cyrus@example.com
-       VOTER:mailto:eric@example.com
+       ORGANIZER:mailto:mike@example.com
        UID:sched01-1234567890
        DTSTAMP:20120101T020000Z
        SEQUENCE:0
        SUMMARY:What to do this week
-       BEGIN:VEVENT
-       POLL-ITEM-ID: 1
-       VOTER;RESPONSE=50;mailto:cyrus@example.com
-       VOTER;RESPONSE=100:mailto:eric@example.com
-       END:VEVENT
-       BEGIN:VEVENT
-       POLL-ITEM-ID: 2
-       VOTER;RESPONSE=100;mailto:cyrus@example.com
-       VOTER;RESPONSE=100:mailto:eric@example.com
-       END:VEVENT
-       BEGIN:VEVENT
-       POLL-ITEM-ID: 3
-       VOTER;RESPONSE=0:mailto:cyrus@example.com
-       VOTER;RESPONSE=0:mailto:eric@example.com
-       END:VEVENT
+       BEGIN:VVOTER
+       VOTER:mailto:cyrus@example.com
+       BEGIN: VOTE
+       POLL-ITEM-ID:1
+       RESPONSE:50
+       COMMENT:Work on iTIP
+       END:VOTE
+       BEGIN:VOTE
+       POLL-ITEM-ID:2
+       RESPONSE:100
+       COMMENT:Work on WebDAV
+       END:VOTE
+       BEGIN:VOTE
+       POLL-ITEM-ID:3
+       RESPONSE:0
+       END:VOTE
+       END:VVOTER
+       BEGIN:VVOTER
+       VOTER:mailto:eric@example.com
+       BEGIN:VOTE
+       POLL-ITEM-ID:1
+       RESPONSE:100
+       END:VOTE
+       BEGIN:VOTE
+       POLL-ITEM-ID:2
+       RESPONSE:100
+       END:VOTE
+       BEGIN:VOTE
+       POLL-ITEM-ID:3
+       RESPONSE:0
+       END:VOTE
+       END:VVOTER
        END:VPOLL
        END:VCALENDAR
 ]]></artwork>
@@ -529,6 +571,28 @@
           </figure>
         </t>
       </section>
+
+      <section anchor="other_responses"
+               title="Other Responses">
+        <t>
+          A voter being asked to choose between a number of ORGANIZER
+          supplied alternatives may find none of them acceptable or may
+          simply not care.
+        </t>
+
+        <t>
+          An alternative response, which may be disallowed, is to send
+          back the respondees availability or freebusy or even one or more new,
+          alternative choices.
+        </t>
+
+        <t>
+          This is accomplished by responding with a VOTE component which
+          has no POLL-ITEM-ID property. In this case it MUST contain
+          some alternative information. What form this takes depends
+          on the poll mode in effect.
+        </t>
+      </section>
     </section>
 
     <section anchor="icalendar_extensions"
@@ -573,7 +637,7 @@
         <t>
           Status property values are defined in section 3.8.1.11. of
           <xref target='RFC5545'/>. This specification updates that type to
-          valid VPOLL status values.
+          define valid VPOLL status values.
         </t>
 
         <t>
@@ -605,8 +669,8 @@
             </t>
 
             <t>
-              If the client is choosing and teh server submitting then
-              the client should set teh POLL-WINNER property, set the
+              If the client is choosing and the server submitting then
+              the client should set the POLL-WINNER property, set the
               status to CONFIRMED and save the poll. When the server
               submits the winning choice it will set the status to
               SUBMITTED.
@@ -617,38 +681,6 @@
 
       <section anchor="new_property_parameters"
                title="New Property Parameters">
-        <section anchor="parameter_public_comment"
-                 title="Public-Comment">
-          <t>
-            <list style='hanging'>
-              <t hangText="Parameter name:">
-                PUBLIC-COMMENT
-              </t>
-
-              <t hangText="Purpose:">
-                To allow voters to provide a public comment in their response.
-              </t>
-
-              <t hangText="Format Definition:">
-                <figure>
-                  <preamble>
-                    This parameter is defined by the following notation:
-                  </preamble>
-
-                  <artwork type="abnf">
-   public-comment-param = "PUBLIC-COMMENT=" DQUOTE text DQUOTE
-                  </artwork>
-                </figure>
-              </t>
-
-              <t hangText="Description:">
-                This parameter can be specified on the POLL-ITEM-ID property to
-                allow a voter to add some commentary visible to all voters.
-              </t>
-            </list>
-          </t>
-        </section>
-
         <section anchor="parameter_required"
                  title="Required">
           <t>
@@ -679,63 +711,6 @@
                 This parameter MAY be specified on REPLY-URL and, if the value is TRUE,
                 indicates the organizer requires all replies to be made
                 via the specified service rather than iTip replies.
-              </t>
-            </list>
-          </t>
-        </section>
-
-        <section anchor="parameter_response"
-                 title="Response">
-          <t>
-            <list style='hanging'>
-              <t hangText="Parameter name:">
-                RESPONSE
-              </t>
-
-              <t hangText="Purpose:">
-                To specify a response vote.
-              </t>
-
-              <t hangText="Format Definition:">
-                <figure>
-                  <preamble>
-                    This parameter is defined by the following notation:
-                  </preamble>
-
-                  <artwork type="abnf">
-    responseparam = "RESPONSE=" integer
-          ; integer value 0..100
-                  </artwork>
-                </figure>
-              </t>
-
-              <t hangText="Description:">
-                This parameter can be specified on the POLL-ITEM-ID property to
-                provide the value of the voters response. This parameter allows
-                for fine grained responses which are appropriate to some
-                applications. For the case of individuals voting for a choice of
-                events, client applications SHOULD conform to the following
-                convention:
-                <list style='symbols'>
-                  <t>
-                    0 - 39 A "NO vote".
-                  </t>
-                  <t>
-                    40 - 79 A "MAYBE" vote
-                  </t>
-                  <t>
-                    80 - 89 A "YES - but not preferred vote"
-                  </t>
-                  <t>
-                    90-100 A "YES" vote.
-                  </t>
-                </list>
-              </t>
-
-              <t>
-                Clients MUST preserve the responseparam value when there is no
-                change from the user even if they have a UI with fixed states
-                (e.g. yes/no/maybe).
               </t>
             </list>
           </t>
@@ -809,7 +784,7 @@
 
               <t>
                 If this property is not present voters are only allowed to
-                respond with the same component type as in the request.
+                respond to the choices in the request.
               </t>
 
               <t hangText="Format Definition:">
@@ -902,7 +877,7 @@
                   </preamble>
 
                   <artwork>
-   POLL-COMPLETION: SERVER-SUBMIT
+  POLL-COMPLETION: SERVER-SUBMIT
                   </artwork>
                 </figure>
               </t>
@@ -919,8 +894,7 @@
               </t>
 
               <t hangText="Purpose:">
-                This property is used in VPOLL child items as an identifier
-                and in a VPOLL REPLY to specify the vote for the indicated item.
+                This property is used in VPOLL child components as an identifier.
               </t>
 
               <t hangText="Value type:">
@@ -928,17 +902,17 @@
               </t>
 
               <t hangText="Property Parameters:">
-                Non-standard, response, public-comment or stayinformed parameters
+                Non-standard parameters
                 can be specified on this property.
               </t>
 
               <t hangText="Conformance:">
-                This property MAY be specified in a VPOLL component or its
-                sub-components.
+                This property MUST be specified in a VOTE component and
+                in VPOLL choice items.
               </t>
 
               <t hangText="Description:">
-                In a METHOD:REQUEST each child component MUST have a POLL-ITEM-ID
+                In a METHOD:REQUEST each choice component MUST have a POLL-ITEM-ID
                 property. Each set of components with the same POLL-ITEM-ID value
                 represents one overall set of items to be voted on.
               </t>
@@ -951,13 +925,6 @@
                 POLL-ITEM-ID MUST change.
               </t>
 
-              <t>
-                In a METHOD:REPLY there is a single VPOLL component which MUST have:
-                either one or more POLL-ITEM-ID properties with a RESPONSE param
-                matching that from a REQUEST or a VFREEBUSY or VAVAILABILITY child
-                component showing overall busy/available time.
-              </t>
-
               <t hangText="Format Definition:">
                 <figure>
                   <preamble>
@@ -965,13 +932,10 @@
                   </preamble>
 
                   <artwork type="abnf">
-          pollitemid = "POLL-ITEM-ID" pollitemdparams ":"
+  pollitemid = "POLL-ITEM-ID" pollitemdparams ":"
                      integer CRLF
 
-          pollitemidparams = *(
-                      (";" responseparam) /
-                      (";" stayinformedparam) /
-                      (";" public-comment-param) /
+  pollitemidparams = *(
                       (";" other-param)
                )
 
@@ -1023,10 +987,10 @@
                   </preamble>
 
                   <artwork type="abnf">
-          pollmode = "POLL-MODE" pollmodeparams ":"
+  pollmode = "POLL-MODE" pollmodeparams ":"
               ("BASIC" / iana-token / other-token) CRLF
 
-          pollmodeparams = *(";" other-param)
+  pollmodeparams = *(";" other-param)
 
                   </artwork>
                 </figure>
@@ -1070,10 +1034,10 @@
                   </preamble>
 
                   <artwork type="abnf">
-          pollproperties = "POLL-PROPERTIES" pollpropparams ":"
+  pollproperties = "POLL-PROPERTIES" pollpropparams ":"
               text *("," text) CRLF
 
-          pollpropparams = *(";" other-param)
+  pollpropparams = *(";" other-param)
 
                   </artwork>
                 </figure>
@@ -1123,10 +1087,10 @@
                   </preamble>
 
                   <artwork type="abnf">
-          pollwinner = "POLL-WINNER" pollwinnerparams ":"
+  pollwinner = "POLL-WINNER" pollwinnerparams ":"
                     integer CRLF
 
-          pollwinnerparams = *(";" other-param)
+  pollwinnerparams = *(";" other-param)
 
           ; Used with a STATUS:CONFIRMED VPOLL to indicate which
           ; components have been confirmed
@@ -1139,7 +1103,7 @@
         </section>
 
         <section anchor="reply_url"
-                 title="REPLY-URL">
+                 title="Reply-URL">
           <t>
             <list style='hanging'>
               <t hangText="Property name:">
@@ -1160,7 +1124,7 @@
               </t>
 
               <t hangText="Description:">
-                When used in a scheduling meassage this property indicates
+                When used in a scheduling message this property indicates
                 additional or required services that can be used to reply.
                 Typically this would be a web service of some form.
               </t>
@@ -1172,14 +1136,77 @@
                   </preamble>
 
                   <artwork type="abnf">
-          reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
+  reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
 
-          reply-urlparams = *(
-                    (";" requiredparam) /
-                    (";" other-param)
-                    )
+  reply-urlparams = *(
+                     (";" requiredparam) /
+                     (";" other-param)
+                     )
                   </artwork>
                 </figure>
+              </t>
+            </list>
+          </t>
+        </section>
+
+        <section anchor="response"
+                 title="Response">
+          <t>
+            <list style='hanging'>
+              <t hangText="Property name:">
+                RESPONSE
+              </t>
+
+              <t hangText="Purpose:">
+                To specify a response vote.
+              </t>
+
+              <t hangText="Value type:">
+                INTEGER
+              </t>
+
+              <t hangText="Format Definition:">
+                <figure>
+                  <preamble>
+                    This property is defined by the following notation:
+                  </preamble>
+
+                  <artwork type="abnf">
+  response = "RESPONSE" response-params ":" integer CRLF
+                    ; integer value 0..100
+
+  responseparams = *(";" other-param)
+                  </artwork>
+                </figure>
+              </t>
+
+              <t hangText="Description:">
+                This parameter can be specified on the POLL-ITEM-ID property to
+                provide the value of the voters response. This parameter allows
+                for fine grained responses which are appropriate to some
+                applications. For the case of individuals voting for a choice of
+                events, client applications SHOULD conform to the following
+                convention:
+                <list style='symbols'>
+                  <t>
+                    0 - 39 A "NO vote".
+                  </t>
+                  <t>
+                    40 - 79 A "MAYBE" vote
+                  </t>
+                  <t>
+                    80 - 89 A "YES - but not preferred vote"
+                  </t>
+                  <t>
+                    90-100 A "YES" vote.
+                  </t>
+                </list>
+              </t>
+
+              <t>
+                Clients MUST preserve the response value when there is no
+                change from the user even if they have a UI with fixed states
+                (e.g. yes/no/maybe).
               </t>
             </list>
           </t>
@@ -1194,8 +1221,9 @@
               </t>
 
               <t hangText="Purpose:">
-                This property is used in VPOLL to indicate recipients of the poll
-                and in VPOLL sub-components to give the voters response.
+                This property is used in VVOTER components to indicate
+                recipients of the poll and to identify that component
+                as containing the voters responses.
               </t>
 
               <t hangText="Value type:">
@@ -1204,7 +1232,7 @@
 
               <t hangText="Property Parameters:">
                 Non-standard, cutype, member, role, rsvp, delto, delfrom, sentby,
-                cn, dir, lang, response or stayinformed parameters
+                cn, dir, lang or stayinformed parameters
                 can be specified on this property.
               </t>
 
@@ -1214,15 +1242,8 @@
               </t>
 
               <t hangText="Description:">
-                When used in a VPOLL this property indicates who the poll is sent
-                to. When used in sub-components of VPOLL this property indicate
-                the response of each voter as known at that time.
-              </t>
-
-              <t>
-                When the Organizer sends a full update (METHOD:REQUEST), then
-                VOTER properties MUST be included in the child components for
-                any voters that have responded.
+                This property appears in the VVOTER component only and
+                indicates a recipient of the poll and their responses.
               </t>
 
               <t hangText="Format Definition:">
@@ -1232,9 +1253,9 @@
                   </preamble>
 
                   <artwork type="abnf">
-    voter = "VOTER" voterparams ":" cal-address CRLF
+  voter = "VOTER" voterparams ":" cal-address CRLF
 
-    voterparam   = *(
+  voterparam   = *(
                     ;
                     ; The following are OPTIONAL,
                     ; but MUST NOT occur more than once.
@@ -1245,7 +1266,6 @@
                     (";" delfromparam) / (";" sentbyparam) /
                     (";" cnparam) / (";" dirparam) /
                     (";" languageparam) /
-                    (";" responseparam) /
                     (";" stayinformedparam) /
 
                     ;
@@ -1283,30 +1303,31 @@
         </section>
       </section>
 
-      <section anchor="new_vpoll_component"
-               title="VPOLL Component">
+      <section anchor="new_components"
+               title="New Components">
+        <section anchor="vpoll_component"
+                 title="VPOLL Component">
+          <t>
+            <list style='hanging'>
+              <t hangText="Component name:">
+                VPOLL
+              </t>
 
-        <t>
-          <list style='hanging'>
-            <t hangText="Component name:">
-              VPOLL
-            </t>
+              <t hangText="Purpose:">
+                This component provides a mechanism by which voters can vote on
+                provided choices.
+              </t>
 
-            <t hangText="Purpose:">
-              This component provides a mechanism by which voters can vote on
-              provided choices.
-            </t>
+              <t hangText="Format Definition:">
+                <figure>
+                  <preamble>
+                    This property is defined by the following notation:
+                  </preamble>
 
-            <t hangText="Format Definition:">
-              <figure>
-                <preamble>
-                  This property is defined by the following notation:
-                </preamble>
-
-                <artwork type="abnf">
+                  <artwork type="abnf">
   pollc    = "BEGIN" ":" "VPOLL" CRLF
                pollprop
-               *eventc *todoc *journalc *freebusyc
+               *voterc *eventc *todoc *journalc *freebusyc
                *availabilityc *alarmc *iana-comp *x-comp
                "END" ":" "VPOLL" CRLF
 
@@ -1338,7 +1359,7 @@
              ;
              attach / categories / comment /
              contact / rstatus / related /
-             resources / voter / x-prop / iana-prop
+             resources / x-prop / iana-prop
              ;
              ; The following is OPTIONAL, it SHOULD appear
              ; once for the confirmation of a BASIC mode
@@ -1348,51 +1369,187 @@
              pollwinner /
              ;
              )
-               </artwork>
-              </figure>
-            </t>
+                 </artwork>
+                </figure>
+              </t>
 
-            <t hangText="Description:">
-              This component provides a mechanism by which voters can vote on
-              provided choices. The outcome depends upon the POLL-MODE in effect.
-            </t>
+              <t hangText="Description:">
+                This component provides a mechanism by which voters can vote on
+                provided choices. The outcome depends upon the POLL-MODE in effect.
+              </t>
 
-            <t>
-              VOTER in VPOLL requests refers to each person who will be voting -
-              RSVP=TRUE is used by the organizer to force the voter to reset
-              their state and re-vote
-            </t>
+              <t>
+                The VVOTER components in VPOLL requests provide information on
+                each recipient who will be voting - both their identity
+                through the VOTER property and their votes through the VOTE
+                components.
+              </t>
 
-            <t>
-              If specified, the "DTSTART" property defines the start or
-              opening of the poll active period. If absent the poll is presumed
-              to have started when created.
-            </t>
+              <t>
+                If specified, the "DTSTART" property defines the start or
+                opening of the poll active period. If absent the poll is presumed
+                to have started when created.
+              </t>
 
-            <t>
-              If "DTSTART" is present "DURATION" MAY be specified and indicates
-              the duration, and hence the ending, of the poll. The value of the
-              property MUST be a positive duration.
-            </t>
+              <t>
+                If "DTSTART" is present "DURATION" MAY be specified and indicates
+                the duration, and hence the ending, of the poll. The value of the
+                property MUST be a positive duration.
+              </t>
 
-            <t>
-              "DTEND" MAY be specified with or without "DTSTART" and indicates
-              the ending of the poll. If DTEND is specified it MUST be later than
-              the DTSTART or CREATED property.
-            </t>
+              <t>
+                "DTEND" MAY be specified with or without "DTSTART" and indicates
+                the ending of the poll. If DTEND is specified it MUST be later than
+                the DTSTART or CREATED property.
+              </t>
 
-            <t>
-              If one or more VALARM components are included in the VPOLL they
-              are not components to be voted on and MUST NOT contain a POLL-ITEM-ID
-              property. VALARM sub-components may be used to provide warnings to
-              the user when polls are due to start or end.
-            </t>
+              <t>
+                If one or more VALARM components are included in the VPOLL they
+                are not components to be voted on and MUST NOT contain a POLL-ITEM-ID
+                property. VALARM sub-components may be used to provide warnings to
+                the user when polls are due to start or end.
+              </t>
 
-            <t>
-              Need some text to describe what relative alarms are relative to.
-            </t>
-          </list>
-        </t>
+              <t>
+                Need some text to describe what relative alarms are relative to.
+              </t>
+            </list>
+          </t>
+        </section>
+
+        <section anchor="vvoter_component"
+                 title="VVOTER Component">
+          <t>
+            <list style='hanging'>
+              <t hangText="Component name:">
+                VPOLL
+              </t>
+
+              <t hangText="Purpose:">
+                This component contains identification of the recipient
+                and voter and their responses.
+              </t>
+
+              <t hangText="Format Definition:">
+                <figure>
+                  <preamble>
+                    This property is defined by the following notation:
+                  </preamble>
+
+                  <artwork type="abnf">
+  voterc   = "BEGIN" ":" "VVOTER" CRLF
+              voterprop
+              *votec *iana-comp *x-comp
+              "END" ":" "VVOTER" CRLF
+
+  voterprop = *(
+              ;
+              ; The following are REQUIRED,
+              ; but MUST NOT occur more than once.
+              ;
+              dtstamp  / voter /
+              ;
+              ; The following are OPTIONAL,
+              ; but MUST NOT occur more than once.
+              ;
+              created / description / last-mod / seq /
+              status / summary / url /
+              ;
+              ; The following are OPTIONAL,
+              ; and MAY occur more than once.
+              ;
+              attach / categories / comment /
+              contact / rstatus / related /
+              resources / x-prop / iana-prop
+              ;
+              )
+                  </artwork>
+                </figure>
+              </t>
+
+              <t hangText="Description:">
+                This component contains a VOTER property identifying a
+                recipient and voter and zero or more VOTE components
+                containing their responses.
+              </t>
+
+              <t>
+                The VOTER property in VVOTER objects refers to a recipient
+                who will be voting -
+                RSVP=TRUE is used by the organizer to force the voter to reset
+                their state and re-vote
+              </t>
+            </list>
+          </t>
+        </section>
+
+        <section anchor="vote_component"
+                 title="VOTE Component">
+          <t>
+            <list style='hanging'>
+              <t hangText="Component name:">
+                VPOLL
+              </t>
+
+              <t hangText="Purpose:">
+                This component provides a mechanism by which voters can vote on
+                provided choices.
+              </t>
+
+              <t hangText="Format Definition:">
+                <figure>
+                  <preamble>
+                    This property is defined by the following notation:
+                  </preamble>
+
+                  <artwork type="abnf">
+  votec     = "BEGIN" ":" "VOTE" CRLF
+               voteprop
+               *eventc *todoc *journalc *freebusyc
+               *availabilityc *alarmc *iana-comp *x-comp
+               "END" ":" "VOTE" CRLF
+
+  voteprop = *(
+              ;
+              ; The following are OPTIONAL,
+              ; but MUST NOT occur more than once.
+              ;
+              pollitemid / response /
+              ;
+              ; The following are OPTIONAL,
+              ; and MAY occur more than once.
+              ;
+              comment / x-prop / iana-prop
+              ;
+              )
+                  </artwork>
+                </figure>
+              </t>
+
+              <t hangText="Description:">
+                This component identifies voters and contains their
+                responses.
+              </t>
+
+              <t>
+                The required and optional properties and their meanings
+                depend upon the POLL-MODE in effect.
+              </t>
+
+              <t>
+                For any POLL-MODE, POLL-ITEM-ID is used to associate the
+                information to a choice supplied by the organizer.
+              </t>
+
+              <t>
+                If allowed by the POLL-MODE a VOTE component without a
+                POLL-ITEM-ID may be provided in a REPLY to indicate a
+                possible new choice or to provide information to the
+                ORGANIZER - such as the respondees availability.
+              </t>
+            </list>
+          </t>
+        </section>
       </section>
     </section>
 
@@ -5229,13 +5386,9 @@
           <ttcol align="left">Status</ttcol>
           <ttcol align="left">Reference</ttcol>
 
-          <c>PUBLIC-COMMENT</c>
+          <c>REQUIRED</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="parameter_public_comment"/></c>
-
-          <c>RESPONSE</c>
-          <c>Current</c>
-          <c>RFCXXXX, <xref target="parameter_response"/></c>
+          <c>RFCXXXX, <xref target="parameter_required"/></c>
 
           <c>STAY-INFORMED</c>
           <c>Current</c>
@@ -5273,6 +5426,10 @@
           <c>POLL-WINNER</c>
           <c>Current</c>
           <c>RFCXXXX, <xref target="poll_winner"/></c>
+
+          <c>RESPONSE</c>
+          <c>Current</c>
+          <c>RFCXXXX, <xref target="response"/></c>
 
           <c>VOTER</c>
           <c>Current</c>
@@ -5474,6 +5631,21 @@
     </section>
 
     <section title="Change log">
+      <t>
+        V03: 2014-10-28  MD
+        <list style='symbols'>
+          <t>
+            Add VVOTER and VOTE components.
+          </t>
+          <t>
+            Add RESPONSE property.
+          </t>
+          <t>
+            Remove RESPONSE parameter from VOTER.
+          </t>
+        </list>
+      </t>
+
       <t>
         V03: 2014-05-12  MD
         <list style='symbols'>

@@ -112,7 +112,7 @@ function removeTrailingSlash(url) {
 	return (url[url.length - 1] == "/") ? url.substr(0, url.length - 1) : url;
 }
 
-// Removing any trailing slash from a URL
+// Removing any leading slash from a URL
 function removeLeadingSlash(url) {
 	return (url[0] == "/") ? url = url.substr(1) : url;
 }

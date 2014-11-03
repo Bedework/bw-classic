@@ -69,8 +69,10 @@
   <xsl:variable name="bwStr-Navi-WeekOf">Week of</xsl:variable>
   <xsl:variable name="bwStr-Navi-Go">go</xsl:variable>
   <xsl:variable name="bwStr-Navi-Today">today</xsl:variable>
+  <xsl:variable name="bwStr-Navi-Timezone">Timezone:</xsl:variable>
 
   <!--  xsl:template name="utilBar" -->
+  <xsl:variable name="bwStr-Util-EventsTitle">events</xsl:variable>
   <xsl:variable name="bwStr-Util-Add">add...</xsl:variable>
   <xsl:variable name="bwStr-Util-View">View</xsl:variable>
   <xsl:variable name="bwStr-Util-DefaultView">default view</xsl:variable>
@@ -1064,7 +1066,7 @@
     <li>Outbox: users granted scheduling access on your outbox can schedule on your behalf.</li></ul>
     <p class="note">*this approach is temporary and will be improved in upcoming releases.</p></xsl:variable>
   <xsl:variable name="bwStr-ScPr-SchedulingAutoProcessing">Scheduling auto-processing:</xsl:variable>
-  <xsl:variable name="bwStr-ScPr-RespondToSchedReqs">Respond to scheduling requests:</xsl:variable>
+  <xsl:variable name="bwStr-ScPr-RespondToSchedReqs">Auto-respond to scheduling requests:</xsl:variable>
   <xsl:variable name="bwStr-ScPr-True">true</xsl:variable>
   <xsl:variable name="bwStr-ScPr-False">false</xsl:variable>
   <xsl:variable name="bwStr-ScPr-AcceptDoubleBookings">Accept double-bookings:</xsl:variable>

@@ -42,7 +42,7 @@
         <xsl:variable name="gLocation"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="location/address" /></xsl:call-template></xsl:variable>
         <xsl:variable name="gEnddate" select="end/utcdate" />
         <xsl:variable name="gText"><xsl:call-template name="url-encode"><xsl:with-param name="str" select="summary" /></xsl:call-template></xsl:variable>
-        <xsl:variable name="gDetails" select="description" /><!-- this could be changed to better reflect the details -->
+        <xsl:variable name="gDetails"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="description" /></xsl:call-template></xsl:variable>
 
         <a class="linkBack" href="{$setSelectionList}">
           <xsl:if test="/bedework/appvar[key='listPage']/value = 'eventscalendar'">
@@ -68,7 +68,7 @@
           </a>
         </xsl:if>
         <xsl:if test="$eventIconShareThis = 'true'">
-           <xsl:variable name="shareURL"><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?b=de>&amp;calPath=/public/cals/MainCal&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></xsl:variable>
+           <xsl:variable name="shareURL"><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?b=de&amp;calPath=/public/cals/MainCal&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></xsl:variable>
            <xsl:variable name="encodedShareURL">
               <xsl:call-template name="url-encode">
                   <xsl:with-param name="str" select="$shareURL"/>

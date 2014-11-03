@@ -67,7 +67,7 @@
                     <xsl:apply-templates select="calendar[number(calType) &lt; 2 or number(calType) = 4 or number(calType) &gt; 6]" mode="listForUpdate"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:apply-templates select="calendar[number(calType) &lt; 2]" mode="listForUpdate"/> 
+                    <xsl:apply-templates select="calendar[number(calType) &lt; 2]" mode="listForUpdate"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:otherwise>
@@ -119,7 +119,7 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="myCalendars">
-    <!-- this template receives calType 0,1,4,7,8,9  -->
+    <!-- this template receives calType 0,1,4,7  (what about 8,9?)  -->
     <xsl:variable name="id" select="id"/>
     <xsl:variable name="userRootCalendar">/user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
     <li>
@@ -178,7 +178,8 @@
       </xsl:if>
       <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
       <xsl:variable name="calPath" select="encodedPath"/>
-      <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}">
+      <!--a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}"-->
+      <a href="{$setSelection}&amp;fexpr=(vpath=%22{$virtualPath}%22)&amp;calUrl={$calPath}">
         <xsl:if test="lastRefreshStatus &gt;= 300">
           <xsl:attribute name="title">
             <xsl:call-template name="httpStatusCodes">
@@ -197,7 +198,7 @@
         <ul>
           <xsl:choose>
             <xsl:when  test="$publicOnly = 'false'">
-              <xsl:apply-templates select="calendar[canAlias = 'true']" mode="myCalendars">
+              <xsl:apply-templates select="calendar[canAlias = 'true' and (calType &lt; 2 or calType = 4 or calType = 7)]" mode="myCalendars">
                 <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
               </xsl:apply-templates>
             </xsl:when>
@@ -249,7 +250,8 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
-          <a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}">
+          <!--a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}"-->
+          <a href="{$setSelection}&amp;fexpr=(vpath=%22{$virtualPath}%22)">
             <xsl:attribute name="title">
               <xsl:choose>
                 <xsl:when test="calType = 2">Contains items you have access to delete.</xsl:when>
@@ -299,7 +301,7 @@
             <img src="{$resourcesRoot}/images/calAddIcon.gif" width="13" height="13" alt="*" border="0"/>
             <span class="addCalText"><xsl:copy-of select="$bwStr-CuCa-AddCalText"/></span>
           </a>
-        </xsl:if> --> 
+        </xsl:if> -->
       </xsl:if>
       <xsl:if test="calendar and isSubscription='false'">
         <ul>

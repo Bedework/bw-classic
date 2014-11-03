@@ -79,6 +79,41 @@ function print_r(obj) {
   return str;
 }
 
+/** Turn null or undefined values into a zero length string.
+ *
+ * @param val
+ * @returns {*}
+ */
+function nullToStr(val) {
+  if (val === undefined) {
+    return "";
+  }
+
+  if (val === null) {
+    return "";
+  }
+
+  return val;
+}
+
+/** If the value is undefined or null or zero length returns null -
+ * otherwise returns the value.
+ *
+ * @param val - to test
+ * @returns {*}
+ */
+function checkStr(val) {
+  if (val === undefined) {
+    return null;
+  }
+
+  if (val === "") {
+    return null;
+  }
+
+  return val;
+}
+
 /**
  * @param comp
  * @returns {String} describing the recurrence - null for not recurring
@@ -201,13 +236,6 @@ function getRecurrenceInfo(comp) {
   if (bymonth !== undefined) {
     rinfo += " " + i18nStrings["bwStr-AEEF-In"] + " " +
        monthLabels[parseInt(bymonth)];
-  }
-
-  var bymonthday = rrule["bymonthday"];
-  if (bymonthday !== undefined) {
-    rinfo += " " + i18nStrings["bwStr-AEEF-OnThe"] + " " +
-        moment().ordinal[parseInt(bymonthday)] + " " +
-        i18nStrings["bwStr-AEEF-DayOfTheMonth"];
   }
 
   var bymonthday = rrule["bymonthday"];

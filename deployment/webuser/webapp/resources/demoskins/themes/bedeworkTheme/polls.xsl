@@ -38,15 +38,45 @@
             <button id="sidebar-new-poll">New Poll</button>
             <ul id="sidebar-owned"></ul>
           </div>
-          <div class="sidebar-title">Polls to Vote On<span id="sidebar-vote-poll-count">0</span></div>
+          <div class="sidebar-title">Active Polls<span id="sidebar-vote-poll-count">0</span></div>
           <div>
             <ul id="sidebar-voter"></ul>
           </div>
         </div>
+        <ul id="sideBarMenu">
+          <xsl:if test="$publicOnly = 'false' and $useAddressBook = 'true'">
+            <li>
+              <xsl:variable name="userid" select="/bedework/userid"/>
+              <a href="/bwAddrbookClient/?user={$userid}" target="bwAddrBook">
+                <img height="13" border="0" width="13"
+                     src="{$resourcesRoot}/images/silk/book.png"
+                     alt="{$bwStr-SdBr-AddrBook}" />
+                <xsl:text> </xsl:text>
+                <xsl:copy-of select="$bwStr-SdBr-AddrBook"/>
+              </a>
+            </li>
+          </xsl:if>
+          <li class="prefs">
+            <a href="{$prefs-fetchForUpdate}">
+              <img height="13" border="0" width="13"
+                   src="{$resourcesRoot}/images/prefsIcon.gif"
+                   alt="upload event" />
+              <xsl:text> </xsl:text>
+              <xsl:copy-of select="$bwStr-SdBr-Preferences"/>
+            </a>
+          </li>
+        </ul>
       </div>
 
       <div id="detail">
-        <div id="detail-nocontent" class="ui-widget">Select a poll to view its details.</div>
+        <div id="timezoneDisplay">
+          <xsl:copy-of select="$bwStr-Navi-Timezone"/><xsl:text> </xsl:text>
+          <xsl:value-of select="/bedework/now/defaultTzid"/>
+        </div>
+        <div id="detail-nocontent" class="ui-widget">
+          <div id="detail-generic">Select a poll to view its details.</div>
+          <div id="detail-messages"><xsl:text> </xsl:text></div>
+        </div>
         <div id="editpoll">
           <div id="editpoll-description">
             <div id="editpoll-title-edit-panel" class="ui-widget">
@@ -82,7 +112,7 @@
               <div id="editpoll-voters">
                 <div id="bwComp-voterlist"><xsl:text> </xsl:text></div>
                 <div id="editpoll-syncAttendees">
-                  <input type="checkbox" name="syncPollAttendees" id="syncPollAttendees" checked="checked"/>
+                  <input type="checkbox" name="syncPollAttendees" id="syncPollAttendees" checked="checked" disabled="disabled"/>
                   <label for="syncPollAttendees">synchronize voters with attendees</label>
                 </div>
                 <button id="editpoll-addvoter">Add Voter</button>
@@ -108,11 +138,13 @@
                 </div>
               </div>
             </div>
-            <button id="editpoll-save">Save</button>
+            <button id="editpoll-save">Save &amp; Send</button>
             <button id="editpoll-cancel">Cancel</button>
             <button id="editpoll-done">Done</button>
             <button id="editpoll-delete">Delete Poll</button>
-            <button id="editpoll-autofill">Auto Fill</button>
+            <xsl:if test="$useVpollAutofill = 'true'">
+              <button id="editpoll-autofill">Auto Fill</button>
+            </xsl:if>
             <!--
             <div id="response-key" class="ui-widget">
               Possible Responses:
@@ -757,6 +789,11 @@
                    <xsl:text> </xsl:text>
                 </div>
               </div>
+              <!-- XXX Keep: this will be used when work with attendees is enabled -->
+              <div id="editchoice-syncAttendees">
+                <input type="button" name="editChoiceAttendees" id="editChoiceAttendees" value="Edit Attendees" disabled="disabled"/>
+              </div>
+              <div id="editchoicce-syncAttendeesStatus">Attendees are synchronized with voters</div>
             </div>
           </div>
 

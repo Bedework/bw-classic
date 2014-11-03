@@ -60,7 +60,29 @@ $(document).ready(function() {
     }
   });
 
-  /* Open and close the tree (by clicking the + or -) */
+  /* Open and close the views (by clicking the caret or the text  */
+  /* Default state is open */
+  $(".bwMenuTitle").click(function(){
+    //$(this).next(".bwMenuTree").toggle(100);
+    //$(this).find(".caret").toggleClass("caret-right");
+    var curItem = $(this).parent("div");
+    $(curItem).children(".bwMenuTree").slideToggle(100, function () {
+      if ($(this).is(":hidden")) {
+        $(curItem).find(".caret").addClass("caret-right");
+        closedViews.push($(curItem).attr("id"));
+      } else {
+        var itemIndex = $.inArray($(curItem).attr("id"), openCals);
+        $(curItem).find(".caret").removeClass("caret-right");
+        closedViews.splice(itemIndex, 1);
+      }
+
+      sendAjax("setappvar=closedViews(" + closedViews.toString() + ")");
+
+    });
+  });
+
+  /* Open and close the calendar subtree (by clicking the + or -) */
+  /* Default state is closed */
   $(".bwMenuTree .menuTreeToggle").click(function () {
     var curItem = $(this).parent("li");
     $(curItem).children("ul").slideToggle("fast", function () {
@@ -76,7 +98,21 @@ $(document).ready(function() {
       sendAjax("setappvar=opencals(" + openCals.toString() + ")");
 
     });
+  });
 
+  /* Open and close the mobile menu */
+  $("#mobileMenu").click(function(){
+    $("#bwDatePickerRangeLinks").toggle(100);
+    $("#bwBasicSearch").toggle(100);
+    $("#bwViewList").toggle(100);
+    /*$(".bwMenu").toggle(100, function() {
+      if ($(this).find(".bwMenuTree").is(":visible")) {
+        $(this).find(".caret").removeClass("caret-right");
+      } else {
+        $(this).find(".caret").addClass("caret-right");
+      }
+    });*/
+    $("#ongoing").toggle(100);
   });
 
   /* Add the click handler to filters that are generated on first page load.  */
@@ -287,7 +323,7 @@ function reloadMainEventList() {
   } else {
     // build up a query string for full request / response
     qstring.push("fexpr=" + fexpr);
-    qstring.push("start=" + bwMainEventList.start);
+    qstring.push("start=" + bwMainEventList.startDate.replace(/-/g,""));
     if (query != "") {
       qstring.push("query=" + query);
     }

@@ -23,6 +23,14 @@
 
   <!--==== THEME SETTINGS ====-->
 
+  <script type="text/javascript">
+    <xsl:comment>
+    var featureFlags = <xsl:value-of select="/bedework/featureFlags"/>;
+    </xsl:comment>
+  </script>
+
+  <xsl:variable name="featureFlags"><xsl:value-of select="/bedework/featureFlags" /></xsl:variable>
+
   <!-- URL of html resources (images, css, other html); for the personal calendar
        this should be changed to point to a web server over https to avoid mixed content errors, e.g.,
   <xsl:variable name="resourcesRoot">https://mywebserver.edu/myresourcesdir</xsl:variable>
@@ -30,9 +38,23 @@
   <!-- URL of html resources (images, css, other html) for the current theme -->
   <xsl:variable name="resourcesRoot"><xsl:value-of select="/bedework/browserResourceRoot" />/themes/bedeworkTheme</xsl:variable>
 
+  <!-- Use address book? -->
+  <xsl:variable name="useAddressBook">true</xsl:variable>
+
   <!-- Set true to make this a "subscription-only" client -->
   <xsl:variable name="publicOnly">false</xsl:variable>
 
   <!-- Set true to use vpoll features in the client -->
-  <xsl:variable name="useVpoll">false</xsl:variable>
+  <xsl:variable name="useVpoll">
+    <xsl:choose>
+      <xsl:when test="contains($featureFlags, '-VPOLLUI-')">true</xsl:when>
+      <xsl:otherwise>false</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:variable name="useVpollAutofill">
+    <xsl:choose>
+      <xsl:when test="contains($featureFlags, '-VPOLLUI+AUTOFILL-')">true</xsl:when>
+      <xsl:otherwise>false</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 </xsl:stylesheet>

@@ -53,7 +53,7 @@
             </xsl:if>
             <a href="{$setSelectionList}&amp;start={$todayDate}&amp;setappvar=navDate({$todayDate})">
               <xsl:if test="/bedework/page = 'eventscalendar' or /bedework/appvar[key='listPage']/value='eventscalendar'">
-                <xsl:attribute name="href"><xsl:value-of select="$setViewPeriod"/>&amp;viewType=todayView</xsl:attribute>
+                <xsl:attribute name="href"><xsl:value-of select="$setViewPeriod"/>&amp;viewType=todayView&amp;setappvar=navDate(<xsl:value-of select="$todayDate"/>)</xsl:attribute>
               </xsl:if>
               <xsl:copy-of select="$bwStr-DatePicker-Today"/>
             </a>
@@ -68,9 +68,12 @@
         </ul>
         <label for="bwDatePickerInput"><xsl:value-of select="$bwStr-DatePicker-StartDate"/></label>
         <div class="bwInputs">
-          <input type="date" id="bwDatePickerInput" name="start" class="form-control">
+          <input type="text" id="bwDatePickerInput" name="start" class="form-control">
             <xsl:attribute name="value"><xsl:value-of select="$datePickerDate"/></xsl:attribute>
             <xsl:attribute name="onchange">return changeStartDate(this.form,bwMainEventList);</xsl:attribute>
+            <xsl:if test="$useHTML5DatePicker = 'true'">
+              <xsl:attribute name="type">date</xsl:attribute>
+            </xsl:if>
           </input>
           <input type="hidden" name="setappvar" value="navDate({$datePickerDate})"/>
           <input type="submit" value="go" class="btn btn-default sr-only"/>

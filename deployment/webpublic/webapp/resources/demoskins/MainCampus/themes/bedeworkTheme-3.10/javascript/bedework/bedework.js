@@ -72,18 +72,8 @@ function showLink(urlString,title) {
   linkWindow.document.close();
   linkWindow.focus();
 }
-// add some toggles
+// add some resize handling
 $(document).ready(function(){
-  $(".bwMenuTitle").click(function(){
-    $(this).next(".bwMenuTree").toggle(100);
-    $(this).find(".caret").toggleClass("caret-right");
-  });
-  $("#mobileMenu").click(function(){
-    $("#bwDatePickerRangeLinks").toggle(100);
-    $("#bwBasicSearch").toggle(100);
-    $(".bwMenu").toggle(100);
-    $("#ongoing").toggle(100);
-  });
 
   window.onresize = function () {
     // force show or hide of menus if a browser is scaled
@@ -93,9 +83,7 @@ $(document).ready(function(){
       isTiny = false;
       $("#bwDatePickerRangeLinks").show();
       $("#bwBasicSearch").show();
-      $(".bwMenu").show();
-      $(".bwMenuTree").show();
-      $(".bwMenuTitle .caret").removeClass("caret-right");
+      $("#bwViewList").show();
       $("#ongoing").show();
       $("#ongoing .bwEventList").show();
       $("#ongoing .bwEventsTitle .caret").removeClass("caret-right");
@@ -105,10 +93,9 @@ $(document).ready(function(){
       isTiny = true;
       $("#bwDatePickerRangeLinks").hide(100);
       $("#bwBasicSearch").hide(100);
-      $(".bwMenu").hide(100);
+      $("#bwViewList").hide(100);
       $("#ongoing").hide(100);
-      //$(".bwMenuTitle .caret").addClass("caret-right");
-      //$("#ongoing .bwEventsTitle .caret").addClass("caret-right");
+      $("#ongoing .bwEventsTitle .caret").addClass("caret-right");
     }
   };
 });

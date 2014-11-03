@@ -64,10 +64,9 @@
           <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType = 0]" mode="myCalendars"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType != 5 and calType != 6 and calType != 2 and calType != 3]" mode="myCalendars"/>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType &lt; 2 or calType = 4 or calType = 7]" mode="myCalendars"/>
         </xsl:otherwise>
       </xsl:choose>
-
     </ul>
     <!-- special calendars: inbox, outbox, and trash -->
     <xsl:if test="$publicOnly = 'false'">
@@ -100,7 +99,7 @@
 
     <h3><xsl:copy-of select="$bwStr-SdBr-Options"/></h3>
     <ul id="sideBarMenu">
-      <xsl:if test="$publicOnly = 'false'">
+      <xsl:if test="$publicOnly = 'false' and $useAddressBook = 'true'">
         <li>
           <xsl:variable name="userid" select="/bedework/userid"/>
           <a href="/bwAddrbookClient/?user={$userid}" target="bwAddrBook">

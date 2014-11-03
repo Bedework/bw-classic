@@ -22,28 +22,40 @@
 
   <!-- View List -->
   <xsl:template name="viewList">
-    <xsl:for-each select="/bedework/views/view">
-      <xsl:variable name="viewId">bwNav<xsl:value-of select="position()-1"/></xsl:variable>
-      <div class="bwMenu">
-        <xsl:attribute name="id"><xsl:value-of select="$viewId"/></xsl:attribute>
-        <div class="bwMenuTitle">
-          <span class="caret"><xsl:text> </xsl:text></span>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="name"/>
+    <div id="bwViewList">
+      <xsl:for-each select="/bedework/views/view">
+        <xsl:variable name="viewId">bwNav<xsl:value-of select="position()-1"/></xsl:variable>
+        <xsl:variable name="viewState">
+          <xsl:choose>
+            <xsl:when test="contains(/bedework/appvar[key='closedViews']/value,$viewId)">closed</xsl:when>
+            <xsl:otherwise>open</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <div class="bwMenu">
+          <xsl:attribute name="id"><xsl:value-of select="$viewId"/></xsl:attribute>
+          <div class="bwMenuTitle">
+            <span class="caret">
+              <xsl:if test="$viewState = 'closed'"><xsl:attribute name="class">caret caret-right</xsl:attribute></xsl:if>
+              <xsl:text> </xsl:text>
+            </span>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="name"/>
+          </div>
+          <div class="bwMenuTree">
+            <xsl:if test="$viewState = 'closed'"><xsl:attribute name="style">display: none</xsl:attribute></xsl:if>
+            <ul>
+              <xsl:for-each select="paths/path">
+                <xsl:sort select="." order="ascending"/><!-- when a sort field is available, remove this line -->
+                <xsl:variable name="currentPath"><xsl:value-of select="."/></xsl:variable>
+                <xsl:apply-templates select="/bedework/myCalendars/calendars//calendar[path=$currentPath]" mode="menuTree">
+                  <xsl:with-param name="viewId"><xsl:value-of select="$viewId"/></xsl:with-param>
+                </xsl:apply-templates>
+              </xsl:for-each>
+            </ul>
+          </div>
         </div>
-        <div class="bwMenuTree">
-          <ul>
-            <xsl:for-each select="paths/path">
-              <xsl:sort select="." order="ascending"/><!-- when a sort field is available, remove this line -->
-              <xsl:variable name="currentPath"><xsl:value-of select="."/></xsl:variable>
-              <xsl:apply-templates select="/bedework/myCalendars/calendars//calendar[path=$currentPath]" mode="menuTree">
-                <xsl:with-param name="viewId"><xsl:value-of select="$viewId"/></xsl:with-param>
-              </xsl:apply-templates>
-            </xsl:for-each>
-          </ul>
-        </div>
-      </div>
-    </xsl:for-each>
+      </xsl:for-each>
+    </div>
   </xsl:template>
 
   <xsl:template match="calendar" mode="menuTree">
@@ -55,7 +67,7 @@
 
     <xsl:variable name="name" select="name"/>
     <xsl:variable name="summary" select="summary"/>
-    <xsl:variable name="itemId"><xsl:value-of select="$viewId"/>-<xsl:value-of select="translate(path,'/_- ','')"/></xsl:variable>
+    <xsl:variable name="itemId"><xsl:value-of select="$viewId"/>-<xsl:value-of select="translate(path,'/_- ()','')"/></xsl:variable>
     <!--<xsl:variable name="itemId">bw<xsl:value-of select="$viewPrefix"/>-<xsl:value-of select="generate-id(path)"/></xsl:variable>-->
     <xsl:variable name="folderState">
       <xsl:choose>

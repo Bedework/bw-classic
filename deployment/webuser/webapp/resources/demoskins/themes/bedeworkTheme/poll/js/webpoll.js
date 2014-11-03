@@ -83,7 +83,7 @@ ViewController = function(session) {
   this.isNewPoll = null;
 
   this.init();
-}
+};
 
 // Setup all the parts of the view
 ViewController.prototype.init = function() {
@@ -124,7 +124,7 @@ ViewController.prototype.init = function() {
 
 
   // Detail Panel
-  this.editSetVisible(false);
+  this.editSetVisible(false, false);
   $("#editpoll-title-edit").focus(function() {
     $(this).select();
   });
@@ -212,12 +212,7 @@ ViewController.prototype.init = function() {
       $("#bwAdvDateTimeSettings").addClass("invisible");
     }
   });
-
-  if ((reqUid !== null) && (reqUid.length > 0)) {
-    this.selectPollByUID(reqUid);
-    reqUid = null;
-  }
-}
+};
 
 // Add a poll to the UI
 ViewController.prototype.addPoll = function(poll) {
@@ -226,7 +221,7 @@ ViewController.prototype.addPoll = function(poll) {
   } else {
     this.voterPolls.addPoll(poll)
   }
-}
+};
 
 // Switching away from active poll
 ViewController.prototype.aboutToClosePoll = function() {
@@ -256,7 +251,7 @@ ViewController.prototype.clickRefresh = function() {
   this.session.currentPrincipal.refresh(function() {
     this_view.refreshed();
     if (currentUID) {
-      this_view.selectPollByUID(currentUID);
+      this_view.selectPollByUID(currentUID, false);
       $("#editpoll-tabs").tabs("option", "active", activeTab);
       if (activeTab === resultsTab) {
         this.activePoll.buildResults();
@@ -272,7 +267,7 @@ ViewController.prototype.clickAddPoll = function() {
   }
 
   // Make sure edit panel is visible
-  this.activatePoll(new Poll(CalendarResource.newPoll("New Poll")));
+  this.activatePoll(new Poll(CalendarResource.newPoll("New Poll")), false);
   this.isNewPoll = true;
   $("#editpoll-title-edit").focus();
 }
@@ -283,40 +278,40 @@ ViewController.prototype.clickSelectPoll = function(event, ui, owner) {
     return;
   }
 
-  this.selectPoll(ui.item.index(), owner);
+  this.selectPoll(ui.item.index(), owner, false);
 };
 
 // Select a poll from the list based on its UID
-ViewController.prototype.selectPollByUID = function(uid) {
+ViewController.prototype.selectPollByUID = function(uid, showResults) {
   var result = this.ownedPolls.indexOfPollUID(uid);
   if (result !== null) {
-    this.selectPoll(result, true);
+    this.selectPoll(result, true, showResults);
     return;
   }
 
   result = this.voterPolls.indexOfPollUID(uid);
   if (result !== null) {
-    this.selectPoll(result, false);
+    this.selectPoll(result, false, showResults);
   }
 };
 
 //A poll was selected
-ViewController.prototype.selectPoll = function(index, owner) {
+ViewController.prototype.selectPoll = function(index, owner, showResults) {
   // Make sure edit panel is visible
   if (owner) {
-    this.activatePoll(this.ownedPolls.polls[index]);
+    this.activatePoll(this.ownedPolls.polls[index], showResults);
     $("#editpoll-title-edit").focus();
   } else {
-    this.activatePoll(this.voterPolls.polls[index]);
+    this.activatePoll(this.voterPolls.polls[index], showResults);
   }
 };
 
 // Activate specified poll
-ViewController.prototype.activatePoll = function(poll) {
+ViewController.prototype.activatePoll = function(poll, showResults) {
   this.activePoll = poll;
   this.activePoll.setPanel();
   this.isNewPoll = false;
-  this.editSetVisible(true);
+  this.editSetVisible(true, showResults);
 };
 
 // Save button clicked
@@ -346,7 +341,7 @@ ViewController.prototype.clickPollCancel = function() {
   this.activePoll.closed();
   this.activePoll = null;
   this.isNewPoll = null;
-  this.editSetVisible(false);
+  this.editSetVisible(false, false);
 };
 
 // Delete button clicked
@@ -357,28 +352,28 @@ ViewController.prototype.clickPollDelete = function() {
     // Make sure edit panel is visible
     this.activePoll = null;
     this.isNewPoll = null;
-    this.editSetVisible(false);
+    this.editSetVisible(false, false);
   }
 }
 
 // Autofill button clicked
 ViewController.prototype.clickPollAutofill = function() {
   this.activePoll.autoFill();
-}
+};
 
 // Add event button clicked
 ViewController.prototype.clickAddChoice = function() {
   this.activePoll.addChoice();
-}
+};
 
 // Add voter button clicked
 ViewController.prototype.clickAddVoter = function() {
   var panel = this.activePoll.addVoter();
   panel.find(".voter-address").focus();
-}
+};
 
 // Toggle display of poll details
-ViewController.prototype.editSetVisible = function(visible) {
+ViewController.prototype.editSetVisible = function(visible, showResults) {
 
   if (visible) {
 
@@ -389,7 +384,7 @@ ViewController.prototype.editSetVisible = function(visible) {
       $("#editpoll-delete").show();
       $("#editpoll-tabs").tabs("enable", resultsTab);
     }
-    if (this.activePoll.owned && this.activePoll.resource.object.mainComponent().editable()) {
+    if (!showResults && this.activePoll.owned && this.activePoll.resource.object.mainComponent().editable()) {
       $("#editpoll-title-panel").hide();
       $("#editpoll-organizer-panel").hide();
       $("#editpoll-status-panel").hide();
@@ -423,7 +418,7 @@ ViewController.prototype.editSetVisible = function(visible) {
     $("#editpoll").hide();
     $("#detail-nocontent").show();
   }
-}
+};
 
 ViewController.prototype.refreshed = function() {
   showLoading(false);
@@ -432,7 +427,13 @@ ViewController.prototype.refreshed = function() {
   } else {
     $("#sidebar").accordion("option", "active", 0);
   }
-}
+
+  if ((reqUid !== null) && (reqUid.length > 0)) {
+    //alert("requid=" + reqUid);
+    this.selectPollByUID(reqUid, true);
+    reqUid = null;
+  }
+};
 
 // Rebuild results panel each time it is selected
 ViewController.prototype.showResults = function(event, ui) {

@@ -31,8 +31,7 @@
   #ongoing,
   #bwDatePickerRangeLinks,
   #bwBasicSearch,
-  .bwMenu, /* the bwMenuTitle secondarily toggles the bwMenuTree */
-  .bwMenuTree {
+  #bwViewList {
     display: none;
   }
   /* These are not toggled (they remain hidden): */
@@ -85,19 +84,6 @@
   }
   .leftMenuTitle {
     margin: 0;
-  }
-  /* reverse the caret toggle state to match the mobile view title state;
-     JavaScript is used to correct these if a desktop browser scales between
-     mobile and desktop sizes. */
-  .bwMenuTitle .caret { /* behaves like global caret-right */
-    border-top: 4px solid rgba(0, 0, 0, 0);
-    border-bottom: 4px solid rgba(0, 0, 0, 0);
-    border-left: 4px solid;
-  }
-  .bwMenuTitle .caret-right { /* behaves like global caret (down) */
-    border-left: 4px solid rgba(0, 0, 0, 0);
-    border-right: 4px solid rgba(0, 0, 0, 0);
-    border-top: 4px solid;
   }
   #ongoing h3.bwEventsTitle {
     cursor: pointer;

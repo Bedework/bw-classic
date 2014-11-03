@@ -203,7 +203,7 @@
             </a>
           </xsl:if>
           <xsl:if test="$eventIconShareThis = 'true'">
-            <xsl:variable name="shareURL"><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?b=de>&amp;calPath=/public/cals/MainCal&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></xsl:variable>
+            <xsl:variable name="shareURL"><xsl:value-of select="/bedework/urlprefix"/>/event/eventView.do?b=de&amp;calPath=/public/cals/MainCal&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/></xsl:variable>
             <xsl:variable name="encodedShareURL">
               <xsl:call-template name="url-encode">
                 <xsl:with-param name="str" select="$shareURL"/>

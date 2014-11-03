@@ -129,7 +129,12 @@
         }
 
         // calendar explorers
+        var closedViews = new Array();
         var openCals = new Array();
+        <xsl:if test="/bedework/appvar[key='closedViews']">
+          var closedViewsRaw = "<xsl:value-of select="/bedework/appvar[key='closedViews']/value"/>";
+          closedViews = closedViewsRaw.split(",");
+        </xsl:if>
         <xsl:if test="/bedework/appvar[key='opencals']">
           var openCalsRaw = "<xsl:value-of select="/bedework/appvar[key='opencals']/value"/>";
           openCals = openCalsRaw.split(",");

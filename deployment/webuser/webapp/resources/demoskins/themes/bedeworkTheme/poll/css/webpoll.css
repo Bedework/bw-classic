@@ -6,11 +6,11 @@
   min-height: 400px;
 }
 #bwPolls #loading {
-	float: right;
+	position: absolute;
 	height: 20px;
 	width: 170px;
 	right: 0;
-	top: 0;
+	top: 30px;
   font-style: italic;
 }
 #bwPolls #progressbar {
@@ -19,6 +19,9 @@
 	height: 20px;
 	top: 0px;
 	right: 0px;
+}
+#bwPolls #timezoneDisplay {
+  font-size: 0.9em;
 }
 /* Sidebar Panel */
 #bwPolls #sidepanel {
@@ -41,6 +44,9 @@
   text-align: left;
   margin-bottom: 1em;
 }
+#bwPolls #sideBarMenu {
+  font-size: 0.8em;
+}
 /* Refresh Button */
 #bwPolls #refresh {
 	position: absolute;
@@ -51,11 +57,17 @@
 #bwPolls #detail {
   margin-left: 225px;
 }
+#bwPolls #detail-messages {
+  font-size: 1.2em;
+  font-weight: bold;
+  font-style: italic;
+  margin: 1em 0;
+}
 #editpoll-description {
 	height: 32px;
 }
 #editpoll-title-edit {
-  width: 30em;
+  width: 20em;
 }
 #editpoll-title-edit-panel {
 	float: left;
@@ -128,6 +140,13 @@
   float: right;
   font-size: 0.8em;
   margin: 0.5em 0;
+}
+#editchoice-syncAttendees {
+  float: right;
+}
+#editchoicce-syncAttendeesStatus {
+  color: #666;
+  font-style: italic;
 }
 #editpoll-autofill {
 	position: relative;
@@ -235,6 +254,8 @@
 }
 #bwPolls .center-td {
 	text-align:center;
+  border-left: 2px solid #ccc;
+  border-right: 2px solid #ccc;
 }
 #bwPolls .desc-td {
   text-align:left;
@@ -252,7 +273,7 @@
 }
 #bwPolls thead .poll-winner-td {
   border-top: 4px solid black;
-  background-color: #def;
+  background-color: #ffb;
   font-weight: bold;
   letter-spacing: 0.4px;
 }
@@ -266,15 +287,15 @@
 /* These are the Overall cells: */
 #bwPolls .best-td,
 #bwPolls .response-btns label.ui-state-active.bestButton {
-	background: #def;
+  background: #8d8;
 }
 #bwPolls .ok-td,
 #bwPolls .response-btns label.ui-state-active.okButton {
-	background: #8d8;
+  background: #def;
 }
 #bwPolls .maybe-td,
 #bwPolls .response-btns label.ui-state-active.maybeButton {
-	background: #ffb;
+	background: #fff;
 }
 #bwPolls .no-td,
 #bwPolls .response-btns label.ui-state-active.noButton {
@@ -286,14 +307,15 @@
 /* These are the voter detail cells: */
 /* XXX Not so great, as these are determined by display strings.  Should
    be determined by something abstract. */
+
 #bwPolls .resp-Best {
-  background: #def;
-}
-#bwPolls .resp-Ok {
   background: #CCE6CC;
 }
+#bwPolls .resp-Ok {
+  background: #def;
+}
 #bwPolls .resp-Maybe {
-  background: #ffd;
+  background: #fff; /* don't color maybes */
 }
 #bwPolls .resp-No {
   background: #fdd;

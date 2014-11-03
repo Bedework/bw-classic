@@ -241,11 +241,11 @@
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="ical4j" version="1.0-BW-SNAPSHOT"/>
+              name="ical4j" version="1.1-BW-SNAPSHOT"/>
 
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
-              name="ical4j-vcard" version="0.9.6-BW-SNAPSHOT"/>
+              name="ical4j-vcard" version="0.9.6a-BW-SNAPSHOT"/>
 
       <!-- ======================= Commons jars ============================ -->
 

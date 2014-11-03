@@ -63,7 +63,9 @@
         <li>
           <xsl:if test="/bedework/page='eventList'">
             <xsl:attribute name="class">selected</xsl:attribute>
-          </xsl:if><a href="{$listEvents}"><xsl:copy-of select="$bwStr-Tabs-Upcoming"/></a>
+          </xsl:if>
+          <xsl:variable name="usersRootCal" select="/bedework/myCalendars/calendars/calendar/path"/>
+          <a href="{$listEvents}&amp;fexpr=(colPath=%22{$usersRootCal}%22 and (entity_type=%22event%22|entity_type=%22todo%22))&amp;sort=dtstart.utc:asc"><xsl:copy-of select="$bwStr-Tabs-Upcoming"/></a>
         </li>
         <xsl:if test="$useVpoll = 'true'">
           <li>
@@ -87,6 +89,10 @@
     <table border="0" cellpadding="0" cellspacing="0" id="navigationBarTable">
       <tr>
         <td class="leftCell">
+          <div id="timezoneDisplay">
+            <xsl:copy-of select="$bwStr-Navi-Timezone"/><xsl:text> </xsl:text>
+            <xsl:value-of select="/bedework/now/defaultTzid"/>
+          </div>
           <a href="{$navAction}&amp;date={$prevdate}"><img src="{$resourcesRoot}/images/std-arrow-left.gif" alt="previous" width="13" height="16" class="prevImg" border="0"/></a>
           <a href="{$navAction}&amp;date={$nextdate}"><img src="{$resourcesRoot}/images/std-arrow-right.gif" alt="next" width="13" height="16" class="nextImg" border="0"/></a>
           <xsl:choose>
@@ -173,6 +179,7 @@
   </xsl:template>
 
   <xsl:template name="utilBar">
+    <h3 id="bwEventColTitle"><xsl:copy-of select="$bwStr-Util-EventsTitle"/></h3>
     <table width="100%" border="0" cellpadding="0" cellspacing="0" id="utilBarTable">
       <tr>
         <td class="leftCell">

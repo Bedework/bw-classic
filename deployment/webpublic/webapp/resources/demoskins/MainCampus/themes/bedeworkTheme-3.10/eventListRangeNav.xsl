@@ -28,7 +28,7 @@
 		    <a id="prevViewPeriod" href="{$setViewPeriod}&amp;date={$prevdate}&amp;setappvar=navDate({$prevdate})" class="btn btn-default">
 		      &#171; <!-- left double arrow -->
 		    </a>
-		    <a id="nextViewPeriod" href="{$setViewPeriod}&amp;date={$nextdate}" class="btn btn-default">
+		    <a id="nextViewPeriod" href="{$setViewPeriod}&amp;date={$nextdate}&amp;setappvar=navDate({$nextdate})" class="btn btn-default">
 		      &#187; <!-- right double arrow -->
 		    </a>
 	      <h3>

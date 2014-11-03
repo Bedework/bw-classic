@@ -357,11 +357,11 @@ td {
   margin: 3px 0;
   vertical-align: middle;
 }
-#bodyBlock td#sideBar #sideBarMenu {
+#sideBarMenu {
   margin: 1em;
   padding: 0;
 }
-#bodyBlock td#sideBar #sideBarMenu li {
+#sideBarMenu li {
   list-style: none;
   padding: 0 0 0.5em 0;
   margin: 0;
@@ -383,6 +383,15 @@ td {
 }
 #bodyBlock td#bodyContent.withNotices {
   border-right: none;
+}
+#bodyBlock td#bodyContent h3#bwEventColTitle {
+  display: none;
+  background-color: #4164ae;
+  color: #eee;
+  font-weight: normal;
+  margin: 0;
+  padding: 2px 4px;
+  font-size: 14px;
 }
 #utilBarTable {
   margin: 0;
@@ -642,6 +651,11 @@ td {
 }
 #navigationBarTable .calLinks {
   white-space: nowrap;
+}
+#timezoneDisplay {
+  float: right;
+  font-weight: normal;
+  font-size: 0.8em;
 }
 #messages,
 #errors {

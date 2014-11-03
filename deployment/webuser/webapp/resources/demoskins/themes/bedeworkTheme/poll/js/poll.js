@@ -16,6 +16,8 @@
  ##
  */
 
+var okResponse = 89;
+
 // An editable poll. It manipulates the DOM for editing a poll
 Poll = function(resource) {
   this.resource = resource;
@@ -75,15 +77,26 @@ Poll.prototype.writeVpollValues = function() {
   $("#editpoll-title-edit").val(this.editing_poll.summary());
   $("#editpoll-title").text(this.editing_poll.summary());
   $("#editpoll-organizer").text(this.editing_poll.organizerDisplayName());
-  $("#editpoll-status").text(this.editing_poll.status());
+
+  var curStatus = this.editing_poll.status();
+  if (curStatus == null) {
+    curStatus = "In Progress";
+  }
+  $("#editpoll-status").text(curStatus);
   $("#editpoll-choicelist").empty();
-  $.each(this.editing_poll.choices(), function(index, choice) {
+
+  var choices = this.editing_poll.choices();
+  choices.sort(function(a, b) {
+    return a.start().milliseconds() - b.start().milliseconds();
+  });
+
+  $.each(choices, function(index, choice) {
     this_poll.addChoicePanel(index, choice);
     //$("#debug").append(print_r(choice) + '<div style="margin: 4em 0;">new choice</div>');
   });
   $("#bwComp-voterlist").empty();
-  $.each(this.editing_poll.voters(), function(index, voter) {
-    this_poll.setVoterPanel(this_poll.addParticipantPanel(false, "voter", "Voter"), voter);
+  $.each(this.editing_poll.getVvoters(), function(index, vvoter) {
+    this_poll.setVoterPanel(this_poll.addParticipantPanel(false, "voter", "Voter"), vvoter.getVoter());
   });
 };
 
@@ -112,10 +125,11 @@ Poll.prototype.updateVoters = function() {
   }
 
   var this_poll = this;
-  var voters = this.editing_poll.voters();
+  var vvoters = this.editing_poll.getVvoters();
 
   $("#bwComp-voterlist").children().each(function(index) {
-    var voter = voters[index];
+    var vvoter = vvoters[index];
+    var voter = vvoter.getVoter();
     var radioName = "voterType" + (index + 1);
     var cutype = $("input:radio[name=" + radioName + "]:checked").val();
 
@@ -137,7 +151,7 @@ Poll.prototype.addChoicePanel = function(index, choice) {
   chc += '<button id="choice-edit-' + index + '" class="choice-edit">Edit</button>';
   chc += '<button id="choice-delete-' + index + '" class="choice-delete">Delete</button>';
   chc += '</div>';
-  chc += '<div class="bwChoiceSummary">' + choice.data.getPropertyValue("summary") + '</div>';
+  chc += '<div class="bwChoiceSummary">' + choice.summary() + '</div>';
 
   var rinfo = getRecurrenceInfo(choice);
 
@@ -146,16 +160,35 @@ Poll.prototype.addChoicePanel = function(index, choice) {
   }
 
   chc += '<div class="bwChoiceContent">';
+  var start = choice.start();
+  var end = choice.end();
+  var startDtLocale = start.getPrintableDateLocale() + ' ' + start.getPrintableTimeLocale();
   chc += '<div class="bwChoiceDates">';
-  chc += choice.start().getLocalizedDate() + ' ';
-  chc += choice.start().getPrintableTime() + ' - ';
-  if (!choice.start().dateEquals(choice.end())) {
-    chc += choice.end().getLocalizedDate() + ' ';
+  chc += startDtLocale + ' - ';
+  if (!start.dateEquals(end)) {
+    chc += end.getPrintableDateLocale() + ' ';
   }
-  chc += choice.end().getPrintableTime();
+  chc += end.getPrintableTimeLocale();
+  chc += ' ' + defaultTzid;
+  // Debug
+  //chc += ' ' + start.getIcalUTC();
   chc += '</div>';
-  if (choice.data.getPropertyValue("description") !== null && choice.data.getPropertyValue("description") !== "") {
-    chc += '<div class="bwChoiceDesc">' + choice.data.getPropertyValue("description") + '</div>';
+
+  var startDt = start.getPrintableDate() + ' ' + start.getPrintableTime();
+
+  if (startDt !== startDtLocale) {
+    chc += '<div class="bwChoiceDates">';
+    chc += startDt + ' - ';
+    if (!start.dateEquals(end)) {
+      chc += end.getPrintableDate() + ' ';
+    }
+    chc += end.getPrintableTime();
+    chc += ' ' + start.tzid();
+    chc += '</div>';
+  }
+
+  if (checkStr(choice.description()) !== null) {
+    chc += '<div class="bwChoiceDesc">' + choice.description() + '</div>';
   }
   chc += '</div></div>';
   chc = $(chc).appendTo("#editpoll-choicelist");
@@ -231,9 +264,11 @@ Poll.prototype.addChoice = function() {
       end.addDays(1);
     }
     end.updateProperty(currentEntity.data, start);
-    currentEntity.pollitemid(this.editing_poll.nextPollItemId());
   }
 
+  var itemId = this.editing_poll.nextPollItemId();
+  currentEntity.pollitemid(itemId);
+  this.editing_poll.changeVoterResponse(itemId, okResponse);
   this.showChoice(currentEntity);
 };
 
@@ -261,10 +296,10 @@ Poll.prototype.showChoice = function(choice) {
 
 //Add a new choice item in the UI
 Poll.prototype.populateChoiceForm = function(choice) {
-  $("#choice-widget #bwEventTitle").val(choice.data.getPropertyValue("summary"));
+  $("#choice-widget #bwEventTitle").val(choice.summary());
+  $("#choice-widget #description").val(choice.description());
 
   var dtSt = choice.start();
-  var hour = 0;
   var hour24Opts = "";
   var locNames = locations.getDisplayNames();
   var thisPoll = this;
@@ -283,23 +318,22 @@ Poll.prototype.populateChoiceForm = function(choice) {
       }
       $("#choice-widget #eventStartDateHour").empty();
       $("#choice-widget #eventStartDateHour").html(hour24Opts);
-      $('#eventStartDateHour option[value="' + dtSt.hours() + '"]').prop('selected',true);
     } else {
       if(!dtSt.am()) {
-        $("#choice-widget #eventStartDateAmpm").prop("selectedIndex", 1);
+        $("#eventStartDateAmpm").val("pm");
       }
     }
 
-    $("#choice-widget #eventStartDateHour").val(dtSt.hoursAmPm24());
+    $('#eventStartDateHour option[value="' + dtSt.hoursAmPm24() + '"]').prop('selected',true);
 //    $("#choice-widget #eventStartDateMinute").val(dtSt.minutes());
     $('#eventStartDateMinute option[value="' + dtSt.minutes() + '"]').prop('selected',true);
 
-    if (dtSt.tzid !== undefined) {
-      // Set the tzid from dtSt.tzid
+    if (dtSt.tzid() !== undefined) {
+      $("#startTzid").val(dtSt.tzid());
     }
   }
 
-  var dur = choice.data.getPropertyValue("duration");
+  var dur = choice.duration();
 
   if (dur != null) {
     // Flag it as end type duration
@@ -325,7 +359,7 @@ Poll.prototype.populateChoiceForm = function(choice) {
 
     var dtE = choice.end();
 
-    $("#choice-widget #bwEventWidgetEndDate").val(dtE.getDtval());
+    $("#choice-widget #bwEventWidgetEndDate").val(dtE.getDatePart());
 
     if (!dtSt.allDay) {
       if (hour24) { // hour24 is a global variable passed in from the XML in the XSLT
@@ -334,14 +368,14 @@ Poll.prototype.populateChoiceForm = function(choice) {
         $("#choice-widget #eventEndDateHour").html(hour24Opts);
       } else {
         if(!dtE.am) {
-          $("#choice-widget #eventEndDateAmpm").prop("selectedIndex", 1);
+          $("#choice-widget #eventEndDateAmpm").val("pm");
         }
       }
       $("#choice-widget #eventEndDateHour").val(dtE.hoursAmPm24());
       $("#choice-widget #eventEndDateMinute").val(dtE.minutes());
 
       if (dtE.tzid !== undefined) {
-        // Set the tzid from dtE.tzid
+        $("#startTzid").val(dtE.tzid());
       }
     }
   }
@@ -387,11 +421,6 @@ Poll.prototype.addFormRecurrenceInfo = function(choice) {
   $("#recurCountVal").val(1);
   $("#recurInterval").val(1);
   $('#recurAdvanced').checked = false;
-
-  if (choice.data.getProperty("recurrence-id") !== null) {
-    // An instance
-    return false;
-  }
 
   var rrules = choice.rrules(); // Array - we only handle 1
   var rdates = choice.rdates();
@@ -524,8 +553,8 @@ Poll.prototype.setAttendeePanel = function(panel, attendee) {
  * @param choice
  */
 Poll.prototype.populateChoice = function(choice) {
-  choice.data.updateProperty("summary", $("#choice-widget #bwEventTitle").val());
-  choice.data.updateProperty("description", $("#choice-widget #description").val());
+  choice.summary($("#choice-widget #bwEventTitle").val());
+  choice.description($("#choice-widget #description").val());
 
   var datePart = $("#choice-widget #bwEventWidgetStartDate").val();
   var allDay = $("#allDayFlag").is(":checked");
@@ -535,13 +564,13 @@ Poll.prototype.populateChoice = function(choice) {
 
   var am = false;
   if (!hour24) {
-    am = $("#eventStartDateAmpm").attr("selectedIndex") == 0;
+    am = $("#eventStartDateAmpm").val() === "am";
   }
 
   // Set the tzid from the form if one is selected
-  var tzid = defaultTzid;
+  var tzid = $("#startTzid").val();
 
-  choice.start().update(datePart, allDay, UTC, tzid, hours, minutes, am);
+  choice.start().update(datePart, allDay, UTC, tzid, parseInt(hours), parseInt(minutes), am);
   choice.start().updateProperty(choice.data);
 
   var endType = $("input:radio[name=eventEndType]:checked").val();
@@ -574,13 +603,13 @@ Poll.prototype.populateChoice = function(choice) {
 
     am = false;
     if (!hour24) {
-      am = $("#eventEndDateAmpm").attr("selectedIndex") == 0;
+      am = $("#eventEndDateAmpm").val() === "am";
     }
 
     // Set the tzid from the form if one is selected
-    tzid = defaultTzid;
+    tzid = $("#endTzid").val();
 
-    choice.end().update(datePart, allDay, UTC, tzid, hours, minutes, am);
+    choice.end().update(datePart, allDay, UTC, tzid, parseInt(hours), parseInt(minutes), am);
   }
 
   choice.end().updateProperty(choice.data, choice.start());
@@ -588,7 +617,7 @@ Poll.prototype.populateChoice = function(choice) {
   var rrule = this.populateRRule();
 
   if (rrule !== null) {
-    choice.data.updateProperty("rrule", rrule, {}, "recur");
+    choice.rrules(rrule);
   }
 };
 
@@ -673,70 +702,84 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
   var radioName = itemType + "Type" + ctr;
 
   // Add new list item
-  var idiv = '<div class="' + itemType + '" id="' + idDiv + '">';
-  idiv += '<div class="edit-' + itemType + '">';
-  idiv += '<label for="' + iditem + '">' + itemLabel + ': </label>';
-  idiv += '<input type="text" id="' + iditem + '" class="' + itemType + '-address"/>';
-  idiv += '<span id="edit-' + itemType + 'type">';
-  idiv += '<input type="radio" id="' + iditemTypePrefix +
-      '-typeUser" name="' + radioName + '" value="INDIVIDUAL" checked/>';
-  idiv += '<label for="' + iditemTypePrefix + '-typeUser">user</label>';
-  idiv += '<input type="radio" id="' + iditemTypePrefix +
-      '-typeGroup" name="' + radioName + '" value="GROUP"/>';
-  idiv += '<label for="' + iditemTypePrefix + '-typeGroup">group</label>';
-  idiv += '<input type="radio" disabled="disabled" id="' + iditemTypePrefix +
-      '-typeLocation" name="' + radioName + '" value="ROOM"/>';
-  idiv += '<label for="' + iditemTypePrefix + '-typeLocation" class="disabled">location</label>';
-  /* Not yet
-  idiv += '<input type="radio" id="' + iditemTypePrefix +
-      '-typeAny" name="' + radioName + '" value="ANY"/>';
-  idiv += '<label for="' + iditemTypePrefix + '-typeAny">Any</label>';
-  */
-  idiv += '</span>';
-  idiv += '</div>';
-  idiv += '<button class="input-remove" id="' + idRemove + '">Remove</button>';
-  idiv += '</div>';
-  idiv = $(idiv).appendTo("#bwComp-" + itemType + "list");
+  var idiv = '';
 
-  var this_poll = this;
+  if (readOnly) {
+    // if readOnly, just generate a very simple list
+    idiv += '<div class="' + itemType + '" id="' + idDiv + '">';
+    idiv += '<div class="edit-' + itemType + '">';
+    idiv += '<label for="' + iditem + '">' + itemLabel + ': </label>';
+    idiv += '<input type="text" id="' + iditem + '" class="' + itemType + '-address" disabled="disabled"/>';
+    idiv += '</div>';
+    idiv += '</div>';
+    idiv = $(idiv).appendTo("#bwComp-" + itemType + "list");
+  } else {
+    // is editable - generate a panel
+    idiv += '<div class="' + itemType + '" id="' + idDiv + '">';
+    idiv += '<div class="edit-' + itemType + '">';
+    idiv += '<label for="' + iditem + '">' + itemLabel + ': </label>';
+    idiv += '<input type="text" id="' + iditem + '" class="' + itemType + '-address"/>';
+    idiv += '<span id="edit-' + itemType + 'type">';
+    idiv += '<input type="radio" id="' + iditemTypePrefix +
+        '-typeUser" name="' + radioName + '" value="INDIVIDUAL" checked/>';
+    idiv += '<label for="' + iditemTypePrefix + '-typeUser">user</label>';
+    idiv += '<input type="radio" id="' + iditemTypePrefix +
+        '-typeGroup" name="' + radioName + '" value="GROUP"/>';
+    idiv += '<label for="' + iditemTypePrefix + '-typeGroup">group</label>';
+    idiv += '<input type="radio" disabled="disabled" id="' + iditemTypePrefix +
+        '-typeLocation" name="' + radioName + '" value="ROOM"/>';
+    idiv += '<label for="' + iditemTypePrefix + '-typeLocation" class="disabled">location</label>';
+    /* Not yet
+     idiv += '<input type="radio" id="' + iditemTypePrefix +
+     '-typeAny" name="' + radioName + '" value="ANY"/>';
+     idiv += '<label for="' + iditemTypePrefix + '-typeAny">Any</label>';
+     */
+    idiv += '</span>';
+    idiv += '</div>';
+    idiv += '<button class="input-remove" id="' + idRemove + '">Remove</button>';
+    idiv += '</div>';
+    idiv = $(idiv).appendTo("#bwComp-" + itemType + "list");
 
-  var addrField = idiv.find("." + itemType + "-address");
-  addrField.hover(
-      function() {
-        this_poll.hoverCuaddrDialogOpen(addrField);
+    var this_poll = this;
+
+    var addrField = idiv.find("." + itemType + "-address");
+    addrField.hover(
+        function () {
+          this_poll.hoverCuaddrDialogOpen(addrField);
+        },
+        this_poll.hoverCuaddrDialogClose
+    );
+
+    addrField.autocomplete({
+      minLength: 3,
+      extraParams: {
+        cutype: function () {
+          return  $("input:radio[name=" + radioName + "]:checked").val();
+        }
       },
-      this_poll.hoverCuaddrDialogClose
-  );
-
-  addrField.autocomplete({
-    minLength : 3,
-    extraParams: {
-      cutype : function() {
-        return  $("input:radio[name=" + radioName + "]:checked").val();
+      source: function (request, response) {
+        var cutype = this.options.extraParams.cutype();
+        if (cutype === "ANY") {
+          cutype = null;
+        }
+        gSession.calendarUserSearch(request.term, cutype, function (results) {
+          response(results);
+        });
       }
-    },
-    source : function(request, response) {
-      var cutype = this.options.extraParams.cutype();
-      if (cutype === "ANY") {
-        cutype = null;
-      }
-      gSession.calendarUserSearch(request.term, cutype, function(results) {
-        response(results);
-      });
-    }
-  }).focus(function() {
-    $(this).select();
-  });
+    }).focus(function () {
+      $(this).select();
+    });
 
-  idiv.find(".input-remove").button({
-    icons : {
-      primary : "ui-icon-trash",
-      text: false
-    }
-  }).click(function() {
-    //alert("remove particpant " + ctr);
-    this_poll.removeParticipant(itemType, ctr - 1, idDiv)
-  });
+    idiv.find(".input-remove").button({
+      icons: {
+        primary: "ui-icon-trash",
+        text: false
+      }
+    }).click(function () {
+      //alert("remove particpant " + ctr);
+      this_poll.removeParticipant(itemType, ctr - 1, idDiv)
+    });
+  }
 
   return idiv;
 };
@@ -758,8 +801,8 @@ Poll.prototype.addVoter = function() {
   // Add new list item
   poll_syncAttendees = $("#syncPollAttendees").is(":checked");
 
-  var voter = this.editing_poll.addVoter();
-  return this.setVoterPanel(this.addParticipantPanel(false, "voter", "Voter"), voter);
+  var vvoter = this.editing_poll.addVvoter();
+  return this.setVoterPanel(this.addParticipantPanel(false, "voter", "Voter"), vvoter.getVoter());
 };
 
 // Remove participant button clicked
@@ -773,19 +816,20 @@ Poll.prototype.removeParticipant = function(itemType, index, idDiv) {
 
   poll_syncAttendees = $("#syncPollAttendees").is(":checked");
 
-  this.editing_poll.removeVoter(index);
+  this.editing_poll.removeVvoter(index);
 };
 
 // Build the results UI based on the poll details
 Poll.prototype.buildResults = function() {
-
   var this_poll = this;
 
   // Sync with any changes from other panels
   this.getVpollValues();
 
-  var event_details = this.editing_poll.choices();
-  var voter_details = this.editing_poll.voters();
+  var choices = this.editing_poll.choices();
+  choices.sort(function(a, b) {
+    return a.start().milliseconds() - b.start().milliseconds();
+  });
 
   var th = $("#editpoll-resulttable").children("thead").first(); //XXX
   var th_overall = th.children("tr").first().empty();
@@ -814,13 +858,13 @@ Poll.prototype.buildResults = function() {
     $('#editpoll-resultsButtons').addClass('invisible');
   }
 
-  $.each(event_details, function(index, event) {
+  $.each(choices, function(index, event) {
     //$("#debug").append(print_r(event));
     var td_summary = $('<td />').appendTo(tb_summary).text(event.summary()).addClass("summary-td");
-    var td_start = $('<td />').appendTo(tb_start).html(event.start().getLocalizedDate() + ' - ' + event.start().getPrintableTime()).addClass("start-td");
+    var td_start = $('<td />').appendTo(tb_start).html(event.start().getPrintableDate() + ' - ' + event.start().getPrintableTime()).addClass("start-td");
     var endDate = "";
     if (!event.start().dateEquals(event.end())) {
-      endDate = event.end().getLocalizedDate() + ' - ';
+      endDate = event.end().getPrintableDate() + ' - ';
     }
     var td_end = $('<td />').appendTo(tb_end).html(endDate + event.end().getPrintableTime()).addClass("end-td");
 
@@ -834,7 +878,7 @@ Poll.prototype.buildResults = function() {
     }
 
     var desc;
-    if (event.description() === null) {
+    if (event.description() === null || event.description() == "null") {
       desc = "";
     } else {
       desc = event.description();
@@ -849,14 +893,18 @@ Poll.prototype.buildResults = function() {
       td_desc.addClass("poll-winner-td");
       td_recur.addClass("poll-winner-td");
     }
+    /* XXX Disable while in progress
     td_summary.hover(
         function() {
           this_poll.hoverCalDialogOpen(td_summary, tbody, event);
         },
         this_poll.hoverCalDialogClose
-    );
+    ); */
   });
-  $.each(voter_details, function(index, voter) {
+  var voterDetails = this.editing_poll.getVvoters();
+
+  $.each(voterDetails, function(index, vvoter) {
+    var voter = vvoter.getVoter();
     var active = gSession.currentPrincipal.matchingAddress(voter.cuaddr());
     var tr = $("<tr/>").appendTo(tfoot);
     var voterName = voter.nameOrAddress();
@@ -864,13 +912,19 @@ Poll.prototype.buildResults = function() {
       voterName = voterName.substring(7);
     }
     $("<td/>").appendTo(tr).text(voterName);
-    $.each(event_details, function(index, event) {
-      var response = event.voter_responses()[voter.cuaddr()];
+
+    $.each(choices, function(index, event) {
       var pollItemId = event.pollitemid();
       var td = $("<td />").appendTo(tr).addClass("center-td");
       if (event.ispollwinner()) {
         td.addClass("poll-winner-td");
       }
+      var vote = vvoter.getVote(pollItemId);
+      var response = null;
+      if (vote !== null) {
+        response = vote.response();
+      }
+
       if (active && this_poll.editing_poll.editable()) {
         var radios = $('<div id="response-' + pollItemId + '" />').appendTo(td).addClass("response-btns");
         $('<input type="radio" id="respond_no-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
@@ -882,12 +936,13 @@ Poll.prototype.buildResults = function() {
         $('<input type="radio" id="respond_best-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
         $('<label for="respond_best-' + pollItemId + '"/>').appendTo(radios);
         radios.buttonset();
-        if (response !== undefined) {
+
+        if (response !== null) {
           if (response < 40) {
             $('#respond_no-' + pollItemId).click();
           } else if (response < 80) {
             $('#respond_maybe-' + pollItemId).click();
-          } else if (response < 90) {
+          } else if (response <= okResponse) {
             $('#respond_ok-' + pollItemId).click();
           } else {
             $('#respond_best-' + pollItemId).click();
@@ -935,7 +990,7 @@ Poll.prototype.buildResults = function() {
     }
   });
 
-  $.each(event_details, function(index, event) {
+  $.each(choices, function(index, event) {
     if (this_poll.editing_poll.editable()) {
       $('<button id="winner-' + event.pollitemid() + '">Pick Winner</button>').appendTo(th_commit.children()[index + 1]).button({
         icons : {
@@ -950,16 +1005,16 @@ Poll.prototype.buildResults = function() {
 
 Poll.prototype.textForResponse = function(response) {
   var result = [];
-  if (response === undefined) {
+  if (response === null) {
     result.push("No Response");
     result.push("no-response-td");
-  } else if (response < 40) {
+  } else if (response < 51) {
     result.push("No");
     result.push("no-td");
-  } else if (response < 80) {
+  } else if (response < 74) {
     result.push("Maybe");
     result.push("maybe-td");
-  } else if (response < 90) {
+  } else if (response < 88) {
     result.push("Ok");
     result.push("ok-td");
   } else {
@@ -972,7 +1027,7 @@ Poll.prototype.textForResponse = function(response) {
 Poll.prototype.clickResponse = function() {
   var splits = $(this).attr("id").split("-");
   var response_type = splits[0];
-  var index = parseInt(splits[1]);
+  var itemId = parseInt(splits[1]);
   var response = 0;
   if (response_type == "respond_maybe") {
     response = 50;
@@ -982,8 +1037,7 @@ Poll.prototype.clickResponse = function() {
     response = 100;
   }
 
-  var event = gViewController.activePoll.editing_poll.getChoice(index);
-  event.changeVoterResponse(response);
+  gViewController.activePoll.editing_poll.changeVoterResponse(itemId, response);
   gViewController.activePoll.updateOverallResults();
 };
 
@@ -994,7 +1048,7 @@ Poll.prototype.clickWinner = function() {
   var new_resource = comp.pickAsWinner();
   new_resource.saveResource(function() {
     gViewController.activePoll.saveResource(function() {
-//      gViewController.activatePoll(gViewController.activePoll);
+//      gViewController.activatePoll(gViewController.activePoll, false);
       // Make everything disappear
 //      gViewController.clickPollCancel();
     });
@@ -1009,7 +1063,7 @@ Poll.prototype.hoverCalDialogOpenClassic = function(td_summary, tbody, event) {
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: tbody },
     show: "fade",
-    title: "Your Events for " + event.start().getLocalizedDate(),
+    title: "Your Events for " + event.start().getPrintableDateLocale(),
     width: 400
   });
   var start = event.start().clone().addHours(-6);
@@ -1029,8 +1083,8 @@ Poll.prototype.hoverCalDialogOpenClassic = function(td_summary, tbody, event) {
         var relative_offset = 10;
         var last_end = null;
         $.each(results, function(index, result) {
-          text = result.start().getPrintableTime() + " - ";
-          text += result.end().getPrintableTime() + " : ";
+          text = result.start().getPrintableTimeLocale() + " - ";
+          text += result.end().getPrintableTimeLocale() + " : ";
           text += result.summary();
           if (last_end !== null && !last_end.equals(result.start())) {
             relative_offset += 10;
@@ -1048,7 +1102,7 @@ Poll.prototype.hoverCalDialogOpenFancy = function(td_summary, tbody, event) {
     dialogClass: "no-close",
     position: { my: "left top", at: "right+20 top", of: tbody },
     show: "fade",
-    title: "Your Events for " + event.start().getPrintableTime(),
+    title: "Your Events for " + event.start().getPrintableDateLocale(),
     width: 400
   });
 
@@ -1063,7 +1117,7 @@ Poll.prototype.hoverCalDialogOpenFancy = function(td_summary, tbody, event) {
 
   var grid = $('<table id="hover-grid" />').appendTo(dialog_div);
   for(var i = 0; i <= 12; i++) {
-    var text = gridStart.getPrintableTime();
+    var text = gridStart.getPrintableTimeLocale();
     gridStart.addHours(1);
     $('<tr><td class="hover-grid-td-time">' + text + '</td><td class="hover-grid-td-slot" /></tr>').appendTo(grid);
   }
@@ -1159,18 +1213,18 @@ Poll.prototype.hoverCuaddrDialogClose = function() {
 
 Poll.prototype.updateOverallResults = function() {
   var this_poll = this;
-  var event_details = this.editing_poll.choices();
-  var voter_details = this.editing_poll.voters();
+  var choices = this.editing_poll.choices();
+  var voterDetails = this.editing_poll.getVvoters();
   var tds = $("#editpoll-resulttable").children("thead").first().children("tr").first().children("td"); // XXX
 
   // Update overall items
-  $.each(event_details, function(index, event) {
+  $.each(choices, function(index, choice) {
     var overall = [];
-    var responses = event.voter_responses();
-    $.each(voter_details, function(index, voter) {
-      var response = responses[voter.cuaddr()];
-      if (response !== undefined) {
-        overall.push(response);
+    var itemId = choice.pollitemid();
+    $.each(voterDetails, function(index, vvoter) {
+      var vote = vvoter.getVote(itemId);
+      if (vote !== null) {
+        overall.push(vote.response());
       }
     });
     var response_details = this_poll.textForResponse(overall.average());
@@ -1178,7 +1232,7 @@ Poll.prototype.updateOverallResults = function() {
     possible_classes.splice(possible_classes.indexOf(response_details[1]), 1);
     $(tds[index + 1]).text(response_details[0]);
     $(tds[index + 1]).removeClass(possible_classes.join(" "));
-    if(event.ispollwinner()) {
+    if(choice.ispollwinner()) {
       $(tds[index + 1]).addClass("poll-winner-td");
       $(tds[index + 1]).html('<div id="winner-text"><span id="winner-icon-left" class="ui-icon ui-icon-star" />Winner<span id="winner-icon-right" class="ui-icon ui-icon-star" /></div>');
     } else {

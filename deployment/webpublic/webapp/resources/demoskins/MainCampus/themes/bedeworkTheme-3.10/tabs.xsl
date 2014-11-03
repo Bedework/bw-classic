@@ -29,7 +29,7 @@
         <xsl:variable name="currentClass">current</xsl:variable>
         <li>
           <a
-            href="{$listEvents}&amp;p=1">
+            href="{$setSelectionList}&amp;setappvar=listPage(upcoming)">
             <xsl:if test="/bedework/page='eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
@@ -40,7 +40,7 @@
         </li>
         <li>
           <a
-            href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}">
+            href="{$setViewPeriod}&amp;viewType=dayView&amp;date={$curdate}&amp;setappvar=listPage(eventscalendar)">
             <xsl:if test="/bedework/periodname='Day' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
@@ -51,7 +51,7 @@
         </li>
         <li>
           <a
-            href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}">
+            href="{$setViewPeriod}&amp;viewType=weekView&amp;date={$curdate}&amp;setappvar=listPage(eventscalendar)">
             <xsl:if test="/bedework/periodname='Week' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
@@ -62,7 +62,7 @@
         </li>
         <li>
           <a
-            href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}">
+            href="{$setViewPeriod}&amp;viewType=monthView&amp;date={$curdate}&amp;setappvar=listPage(eventscalendar)">
             <xsl:if test="/bedework/periodname='Month' and /bedework/page = 'eventscalendar'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />
