@@ -98,6 +98,9 @@ deployurlbuilder=
 
 specialTarget=
 
+dobuild=yes
+deployEarsUrl=
+
 echo ""
 echo "  Bedework Calendar System"
 echo "  ------------------------"
@@ -615,6 +618,15 @@ do
       BWJMXCONFIG="$1"
       shift
       ;;
+    -nobuild)
+      dobuild="no"
+      shift
+      ;;
+    -deployUrl)
+      shift
+      deployEarsUrl="$1"
+      shift
+      ;;
     -offline)
       offline="-Dorg.bedework.offline.build=yes"
       shift
@@ -975,7 +987,12 @@ if [ "$deployConfig" = "" ] ; then
   deployConfig=./bw-classic/config/deploy.properties
 fi
 
-postDeploycmd="./bw-classic/deployment/deployer/deploy.sh --delete"
+postDeploycmd="./bw-classic/deployment/deployer/deploy.sh --noversion --delete"
+
+if [ "$deployEarsUrl" != "" ] ; then
+  postDeploycmd="$postDeploycmd --inurl $deployEarsUrl"
+fi
+
 postDeploycmd="$postDeploycmd --props $deployConfig"
 
 while true
@@ -996,7 +1013,7 @@ do
       echo "$postDeploycmd --ear $postDeploy"
       $postDeploycmd --ear $postDeploy
     fi
-  else
+  elif [ "$dobuild" = "yes" ] ; then
     $javacmd $*
   fi
 

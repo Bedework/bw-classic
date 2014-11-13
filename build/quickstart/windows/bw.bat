@@ -100,6 +100,9 @@ SET saveData=
 
 SET specialTarget=
 
+SET dobuild="yes"
+SET deployEarsUrl=
+
 :: check for command-line arguments and branch on them
 IF "%1noargs" == "noargs" GOTO usage
 GOTO branch
@@ -111,9 +114,20 @@ GOTO branch
   SHIFT
   GOTO branch
 
-:bwc
+:nobuild
+  SET dobuild="no"
   SHIFT
-  SET bwc=%1
+  GOTO branch
+
+:deployUrl
+  SHIFT
+  SET deployEarsUrl=%1
+  SHIFT
+  GOTO branch
+
+:dc
+  SHIFT
+  SET deployConfig=%1
   SHIFT
   GOTO branch
 
