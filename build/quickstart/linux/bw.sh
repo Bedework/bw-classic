@@ -31,7 +31,7 @@ bw_loglevel=""
 mvn_quiet="-q"
 
 #mvn_binary="/usr/share/maven/bin/mvn";
-mvn_binary="mvn3"
+mvn_binary="mvn"
 
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
@@ -169,7 +169,7 @@ usage() {
   echo "     -bwann        Target is for the annotation classes"
   echo "     -bw_calengine Target is for the bedework calendar engine"
   echo "     -bw_webclients Target is for the bedework web ui classes"
-  echo "     -bw_xml       Target is for the Bedework XML schemas build"
+  echo "     -bw_ws        Target is for the Bedework XML schemas build"
   echo "                        (usually built automatically be dependent projects"
   echo "     -bw_caldav    Target is for the generic CalDAV server"
   echo "     -carddav      Target is for the CardDAV build"
