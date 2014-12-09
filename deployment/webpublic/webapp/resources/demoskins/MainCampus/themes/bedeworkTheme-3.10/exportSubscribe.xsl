@@ -106,12 +106,20 @@
             <label for="bwExpJson">JSON</label>
           </li>
           <li>
-            <input type="radio" id="bwExpIcs" class="bwExpDfTrigger" onclick='updateUrlDisplay()' name="bwExpDataType" value="ics"/>
-            <label for="bwExpIcs">ICS (iCalendar)</label>
-          </li>
-          <li>
             <input type="radio" id="bwExpXml" class="bwExpDfTrigger" onclick='updateUrlDisplay()' name="bwExpDataType" value="xml"/>
             <label for="bwExpXml">XML</label>
+          </li>
+          <li>
+            <input type="radio" id="bwExpIcs" class="bwExpDfTrigger" onclick='updateUrlDisplay()' name="bwExpDataType" value="ics"/>
+            <label for="bwExpIcs">iCal - iCalendar (<a href="http://tools.ietf.org/html/rfc5545" target="_blank">RFC5545</a>, .ics)</label>
+          </li>
+          <li>
+            <input type="radio" id="bwExpJcal" class="bwExpDfTrigger" onclick='updateUrlDisplay()' name="bwExpDataType" value="ics"/>
+            <label for="bwExpJcal">jCal - iCalendar JSON (<a href="http://tools.ietf.org/html/rfc7265" target="_blank">RFC7265</a>, .jcs)</label>
+          </li>
+          <li>
+            <input type="radio" id="bwExpXcal" class="bwExpDfTrigger" onclick='updateUrlDisplay()' name="bwExpDataType" value="ics"/>
+            <label for="bwExpXcal">xCal - iCalendar XML (<a href="http://tools.ietf.org/html/rfc6321" target="_blank">RFC6321</a>, .xcs)</label>
           </li>
           <li>
             <input type="radio" id="bwExpCsv" class="bwExpDfTrigger" onclick='updateUrlDisplay()' name="bwExpDataType" value="csv"/>

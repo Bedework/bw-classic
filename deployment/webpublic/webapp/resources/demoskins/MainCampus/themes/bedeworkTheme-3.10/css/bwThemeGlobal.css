@@ -456,8 +456,13 @@ ul#calDisplayOptions li a {
 #listEvents .withImage {
   margin-left: 96px;
 }
-#listEvents img.eventThumb {
+#listEvents .eventThumbLink {
+  max-height: 70px;
+  overflow: hidden;
+  display: block;
   float: left;
+}
+#listEvents img.eventThumb {
   margin: 0.5em;
 }
 #bwStartDateContainer {

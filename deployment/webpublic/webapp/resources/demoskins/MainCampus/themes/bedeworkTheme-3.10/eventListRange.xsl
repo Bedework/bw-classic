@@ -48,7 +48,7 @@
       <xsl:choose>
         <xsl:when test="not(/bedework/eventscalendar/year/month/week/day/event)">
           <tr>
-            <td class="noEventsCell">
+            <td colspan="3" class="noEventsCell">
               <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplay"/>
             </td>
           </tr>
@@ -56,7 +56,7 @@
         <xsl:when test="$ongoingEventsEnabled = 'true' and $ongoingEventsShowForCollection = 'true'
                and not(/bedework/eventscalendar/year/month/week/day/event[not(categories/category/uid = $ongoingEventsCatUid)])">
             <tr>
-              <td class="noEventsCell">
+              <td colspan="3" class="noEventsCell">
                 <xsl:copy-of select="$bwStr-LsVw-NoEventsToDisplayWithOngoing"/>
               </td>
             </tr>

@@ -29,7 +29,7 @@
         <xsl:variable name="currentClass">current</xsl:variable>
         <li>
           <a
-            href="{$setSelectionList}&amp;setappvar=listPage(upcoming)">
+            href="{$setSelectionList}&amp;listMode=true&amp;setappvar=listPage(upcoming)">
             <xsl:if test="/bedework/page='eventList'">
               <xsl:attribute name="class">
                 <xsl:value-of select="$currentClass" />

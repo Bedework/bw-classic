@@ -215,15 +215,16 @@ function bwReplaceFilters(filterPath) {
   $("#bwBasicSearchInput").val("");
   refreshQuery(bwQueryName,bwClearQueryMarkup);
 
-  // Look up the new filter by finding href="path" in the navigation tree
-  var filterId = $(".bwMenu a[href=" + filterPath +  "]").attr("id");
+  // Look up the new filter by finding href="path" in the navigation tree.
+  // XXX  This is not appropriate - the filter may not exist in the tree.
+  /*var filterId = $(".bwMenu a[href='" + filterPath +  "']").attr("id");
   console.log("filterId = " + filterId);
-  if (filterId == "") {
+  if (filterId == undefined) {
     filterId = "empty";
   }
   // set the new filter:
   bwFilters[0][0] = filterId;
-  bwFilterPaths[0][0] = filterPath;
+  bwFilterPaths[0][0] = filterPath;*/
 
   reloadMainEventList();
 }
@@ -460,7 +461,6 @@ function bwFilterClickHandler(event) {
     sendAjax(qstring); // pass back the state parameters
     launchAjax(bwMainEventList, reqData); // refresh the bwMainEventList display
   } else { // day, week, month views
-    var qstring = new Array();
     if (bwFilters[navIndex].length == 0) { // we have no more filters
       qstring.push("viewName=All");
     } else { // we have filters

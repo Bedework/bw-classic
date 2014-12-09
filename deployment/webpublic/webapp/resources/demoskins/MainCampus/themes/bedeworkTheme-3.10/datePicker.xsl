@@ -60,7 +60,7 @@
           </li>
           <xsl:if test="$useAdvancedDateRangeMenu = 'false'">
             <li class="last">
-              <a href="{$setSelectionList}&amp;setappvar=listPage(upcoming)" class="bwUpcomingLink">
+              <a href="{$setSelectionList}&amp;listMode=true&amp;setappvar=listPage(upcoming)" class="bwUpcomingLink">
                 <xsl:copy-of select="$bwStr-DatePicker-Upcoming"/>
               </a>
             </li>
@@ -83,7 +83,7 @@
             <!-- NOTE: all links below have onclick handlers applied.  See javascript/navigation.js -->
             <ul id="bwDatePickerRangeLinks">
               <li>
-                <a href="{$setSelectionList}&amp;setappvar=listPage(upcoming)" class="bwUpcomingLink">
+                <a href="{$setSelectionList}&amp;listMode=true&amp;setappvar=listPage(upcoming)" class="bwUpcomingLink">
                   <xsl:copy-of select="$bwStr-DatePicker-Upcoming"/>
                 </a>
               </li>

@@ -23,7 +23,7 @@
   <xsl:template name="head">
 
     <head>
-      <title>BW 3.10:
+      <title>BW 4.0:
         <xsl:if test="/bedework/page='event'">
           <xsl:value-of select="/bedework/event/summary" />
           <xsl:text> - </xsl:text>
@@ -124,7 +124,7 @@
           "setSelection" : "<xsl:value-of select="$setSelection"/>",
           "setSelectionList" : "<xsl:value-of select="$setSelectionList"/>",
           "async" : "<xsl:value-of select="$async"/>",
-          "feedPrefix" : "<xsl:value-of select="/bedework/cachePrefix"/>/feeder/main/eventsFeed.do?f=y",
+          "feedPrefix" : "<xsl:value-of select="/bedework/cachePrefix"/>",
           "feedResources" : "/calfeedrsrc.MainCampus/default/default/theme"
         }
 

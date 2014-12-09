@@ -67,7 +67,7 @@
 
     <xsl:variable name="name" select="name"/>
     <xsl:variable name="summary" select="summary"/>
-    <xsl:variable name="itemId"><xsl:value-of select="$viewId"/>-<xsl:value-of select="translate(path,'/_- ()','')"/></xsl:variable>
+    <xsl:variable name="itemId"><xsl:value-of select="$viewId"/>-<xsl:value-of select="translate(path,translate(path,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',''),'')"/></xsl:variable>
     <!--<xsl:variable name="itemId">bw<xsl:value-of select="$viewPrefix"/>-<xsl:value-of select="generate-id(path)"/></xsl:variable>-->
     <xsl:variable name="folderState">
       <xsl:choose>

@@ -74,7 +74,7 @@ $(function() {
 
 function constructURL() {
 
-  var ics = false;
+  var contentType = "";
   var outputType = "";
   var skin = "";
   var timeframe = "";
@@ -102,9 +102,16 @@ function constructURL() {
     }
   }
 
-  // Feed. ics?  If not, get skin.  ics doesn't need a skin.
+  // Content Type:
+  // Did user request ics,jcal, or xcal?
+  // If yes, set the content type.  No skin is needed - transform is handled by back-end.
+  // If no, just set the skin for standard XSL transform handled by front-end.
   if (document.getElementById('bwExpIcs').checked == true) {
-    ics = true;
+    contentType = "text/calendar";
+  } else if (document.getElementById('bwExpJcal').checked == true) {
+    contentType = "application/calendar%2Bjson";
+  } else if (document.getElementById('bwExpXcal').checked == true) {
+    contentType = "application/calendar%2Bxml";
   } else {
     outputType = $("input[name='bwExpDataType']:checked").val();
     skin = '&skinName=list-' + outputType;
@@ -132,10 +139,10 @@ function constructURL() {
 
 
   // Assemble the full URL.
-  if (ics) {
-    constructedURL = getEventListCacheUrl() + "&format=text/calendar" + count + timeframe;
+  if (contentType != "") {
+    constructedURL = getEventListCacheUrl("eventsFeed.gdo") + "&format=" + contentType + count + timeframe;
   } else {
-    constructedURL = getEventListCacheUrl() +  skin + count + timeframe;
+    constructedURL = getEventListCacheUrl("eventsFeed.do") +  skin + count + timeframe;
   }
 
   return constructedURL;
@@ -191,7 +198,7 @@ function uncheckAll(checkList) {
 
 /* Return an encoded URL for use with the export/subscribe feature.
    Depends on js/bedework/navigation.js */
-function getEventListCacheUrl() {
+function getEventListCacheUrl(action) {
   bwFilterPaths = buildFilterPaths(); // global
   var fexpr = bwMainEventList.getFilterExpression(bwFilterPaths);
   var query = bwMainEventList.getQuery();
@@ -218,10 +225,10 @@ function getEventListCacheUrl() {
 
   // return the prefix and the query string, encoded for use in a GET request
   if (qstring.length) {
-    return encodeURI(bwUrls.feedPrefix + qstring);
+    return encodeURI(bwUrls.feedPrefix + "/feeder/main/" + action + "?f=y" + qstring);
   }
 
   // no query string - just return the prefix ...maybe not valid;
   // perhaps return error, null, or empty string?
-  return encodeURI(bwUrls.feedPrefix);
+  return encodeURI(bwUrls.feedPrefix + "/feeder/main/" + action);
 }
