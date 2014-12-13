@@ -121,6 +121,7 @@
   <xsl:variable name="bwStr-EvLC-Suggested">Sugerido</xsl:variable>
   <xsl:variable name="bwStr-EvLC-TopicalAreas">Áreas topicas </xsl:variable>
   <xsl:variable name="bwStr-EvLC-Categories">Categorías</xsl:variable>
+  <xsl:variable name="bwStr-EvLC-Author">Autor</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Description">Descripción</xsl:variable>
   <xsl:variable name="bwStr-EvLC-NoEvents">No hay eventos para mostrar</xsl:variable>
 

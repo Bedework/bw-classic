@@ -39,6 +39,7 @@
         <xsl:if test="$pending = 'false'">
           <th><xsl:copy-of select="$bwStr-EvLC-Categories"/></th>
         </xsl:if>
+        <th><xsl:copy-of select="$bwStr-EvLC-Author"/></th>
         <th><xsl:copy-of select="$bwStr-EvLC-Description"/></th>
       </tr>
 
@@ -196,6 +197,9 @@
           </xsl:for-each>
         </td>
       </xsl:if>
+      <td>
+        <xsl:value-of select="substring-before(xproperties/X-BEDEWORK-SUBMITTEDBY/values/text,' ')"/>
+      </td>
       <td>
         <xsl:value-of select="description"/>
         <xsl:if test="recurring = 'true' or recurrenceId != ''">

@@ -78,6 +78,7 @@
 
   <!--  xsl:template name="tabUsers" -->
   <xsl:variable name="bwStr-TaUs-ManageUsersAndGroups">Manage Users &amp; Groups</xsl:variable>
+  <xsl:variable name="bwStr-TaUs-ManageAdminRoles">Manage admin roles</xsl:variable>
   <xsl:variable name="bwStr-TaUs-ManageAdminGroups">Manage admin groups</xsl:variable>
   <xsl:variable name="bwStr-TaUs-ChangeGroup">Change group...</xsl:variable>
   <xsl:variable name="bwStr-TaUs-EditUsersPrefs">Edit user preferences (enter userid):</xsl:variable>
@@ -121,6 +122,7 @@
   <xsl:variable name="bwStr-EvLC-Suggested">Suggested</xsl:variable>
   <xsl:variable name="bwStr-EvLC-TopicalAreas">Topical Areas</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Categories">Categories</xsl:variable>
+  <xsl:variable name="bwStr-EvLC-Author">Author</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Description">Description</xsl:variable>
   <xsl:variable name="bwStr-EvLC-NoEvents">No events to display</xsl:variable>
 
@@ -674,7 +676,6 @@
   <xsl:variable name="bwStr-Resource-ClassLabel">Class:</xsl:variable>
   <xsl:variable name="bwStr-Resource-CalendarSuite">Calendar Suite</xsl:variable>
   <xsl:variable name="bwStr-Resource-Admin">Admin</xsl:variable>
-  <xsl:variable name="bwStr-Resource-CalendarSuite">Calendar Suite</xsl:variable>
   <xsl:variable name="bwStr-Resource-ResourceURL">Resource URL</xsl:variable>
 
   <!-- xsl:template name="modResource" -->
@@ -926,7 +927,7 @@
   <xsl:variable name="bwStr-UpTZ-Cancel">Cancel</xsl:variable>
   <xsl:variable name="bwStr-UpTZ-FixTZ">Fix Timezones</xsl:variable>
   <xsl:variable name="bwStr-UpTZ-RecalcUTC">(recalculate UTC values)</xsl:variable>
-  <xsl:variable name="bwStr-UpTZ-FixTZNote">Run this to make sure no UTC values have changed due to this upload (e.g. DST changes).</xsl:variable>
+  <xsl:variable name="bwStr-UpTZ-FixTZNote">Run this to make sure UTC values are correct.</xsl:variable>
 
   <!--  xsl:template name="authUserList" -->
   <xsl:variable name="bwStr-AuUL-ModifyAdministrators">Modify Administrators</xsl:variable>
@@ -940,6 +941,8 @@
   <xsl:variable name="bwStr-MoAU-UpdateAdmin">Update Administrator</xsl:variable>
   <xsl:variable name="bwStr-MoAU-Account">Account:</xsl:variable>
   <xsl:variable name="bwStr-MoAU-PublicEvents">Public Events:</xsl:variable>
+  <xsl:variable name="bwStr-MoAU-ContentAdmin">Content Admin:</xsl:variable>
+  <xsl:variable name="bwStr-MoAU-Approver">Approver:</xsl:variable>
   <xsl:variable name="bwStr-MoAU-Update">Update</xsl:variable>
   <xsl:variable name="bwStr-MoAU-Cancel">Cancel</xsl:variable>
 

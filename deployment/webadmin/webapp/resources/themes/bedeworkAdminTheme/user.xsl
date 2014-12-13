@@ -31,14 +31,13 @@
     <xsl:if test="/bedework/userInfo/superUser='true'">
       <h2><xsl:copy-of select="$bwStr-TaUs-ManageUsersAndGroups"/></h2>
       <ul class="adminMenu">
-        <!-- deprecated (for now, likely permanent) -->
-        <!-- xsl:if test="/bedework/userInfo/userMaintOK='true'">
+        <xsl:if test="/bedework/workflowEnabled='true'">
           <li>
             <a href="{$authuser-initUpdate}">
-              Manage admin roles
+              <xsl:copy-of select="$bwStr-TaUs-ManageAdminRoles"/>
             </a>
           </li>
-        </xsl:if-->
+        </xsl:if>
         <xsl:if test="/bedework/userInfo/adminGroupMaintOk='true'">
           <li class="groups">
             <a href="{$admingroup-initUpdate}">
@@ -86,16 +85,22 @@
         <tr>
           <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
-            <xsl:value-of select="account"/>
+            <xsl:value-of select="userHref"/>
           </td>
           <td>
             <xsl:if test="publicEventUser='true'">
               publicEvent; <xsl:text> </xsl:text>
             </xsl:if>
+            <xsl:if test="contentAdminUser='true'">
+              contentAdmin; <xsl:text> </xsl:text>
+            </xsl:if>
+            <xsl:if test="approverUser='true'">
+              approver; <xsl:text> </xsl:text>
+            </xsl:if>
           </td>
           <td>
-            <xsl:variable name="account" select="account"/>
-            <a href="{$authuser-fetchForUpdate}&amp;editAuthUserId={$account}">
+            <xsl:variable name="userHref" select="userHref"/>
+            <a href="{$authuser-fetchForUpdate}&amp;editAuthUserId={userHref}">
               <xsl:copy-of select="$bwStr-AuUL-Edit"/>
             </a>
           </td>
@@ -114,7 +119,7 @@
             <xsl:copy-of select="$bwStr-MoAU-Account"/>
           </td>
           <td>
-            <xsl:value-of select="/bedework/formElements/form/account"/>
+            <xsl:value-of select="/bedework/formElements/form/userHref"/>
           </td>
         </tr>
         <tr>
@@ -125,51 +130,22 @@
             <xsl:copy-of select="/bedework/formElements/form/publicEvents/*"/>
           </td>
         </tr>
-        <!--<tr>
-          <td class="optional">
-            Email:
+        <tr>
+          <td class="fieldName">
+            <xsl:copy-of select="$bwStr-MoAU-ContentAdmin"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/email/*"/>
-            <span class="fieldInfo"></span>
+            <xsl:copy-of select="/bedework/formElements/form/contentAdmin/*"/>
           </td>
         </tr>
         <tr>
-          <td class="optional">
-            Phone:
+          <td class="fieldName">
+            <xsl:copy-of select="$bwStr-MoAU-Approver"/>
           </td>
           <td>
-            <xsl:copy-of select="/bedework/formElements/form/phone/*"/>
-            <span class="fieldInfo"></span>
+            <xsl:copy-of select="/bedework/formElements/form/approver/*"/>
           </td>
         </tr>
-        <tr>
-          <td class="optional">
-            Department:
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/dept/*"/>
-            <span class="fieldInfo"></span>
-          </td>
-        </tr>
-        <tr>
-          <td class="optional">
-            Last name:
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/lastName/*"/>
-            <span class="fieldInfo"></span>
-          </td>
-        </tr>
-        <tr>
-          <td class="optional">
-            First name:
-          </td>
-          <td>
-            <xsl:copy-of select="/bedework/formElements/form/firstName/*"/>
-            <span class="fieldInfo"></span>
-          </td>
-        </tr>-->
       </table>
       <br />
 
