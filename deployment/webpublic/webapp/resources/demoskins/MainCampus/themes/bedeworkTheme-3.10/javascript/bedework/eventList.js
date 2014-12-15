@@ -147,6 +147,7 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
     skinNameSticky: this.skinName,
     start: this.startDate,
     sort: "dtstart.utc:asc",
+    listMode: "true",
     fexpr: this.fexpr,
     setappvar: "navDate(" + this.startDate + ")"
   };

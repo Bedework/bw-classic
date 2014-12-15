@@ -51,7 +51,7 @@
             <xsl:if test="($useAdvancedDateRangeMenu = 'true')">
               <xsl:attribute name="class">last</xsl:attribute>
             </xsl:if>
-            <a href="{$setSelectionList}&amp;start={$todayDate}&amp;setappvar=navDate({$todayDate})">
+            <a href="{$setSelectionList}&amp;start={$todayDate}&amp;listMode=true&amp;setappvar=navDate({$todayDate})">
               <xsl:if test="/bedework/page = 'eventscalendar' or /bedework/appvar[key='listPage']/value='eventscalendar'">
                 <xsl:attribute name="href"><xsl:value-of select="$setViewPeriod"/>&amp;viewType=todayView&amp;setappvar=navDate(<xsl:value-of select="$todayDate"/>)</xsl:attribute>
               </xsl:if>
