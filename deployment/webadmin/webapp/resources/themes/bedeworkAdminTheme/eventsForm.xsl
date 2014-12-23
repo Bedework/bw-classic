@@ -2231,7 +2231,7 @@
             <xsl:when test="/bedework/creating='true'">
               <input type="submit" name="addEvent" value="{$bwStr-SEBu-AddEvent}" class="noFocus"/>
               <input type="submit" name="cancelled" value="{$bwStr-SEBu-Cancel}" class="noFocus"/>
-      event-fetchForUpdateApprovalQueue      </xsl:when>
+            </xsl:when>
             <xsl:otherwise>
               <xsl:if test="$canEdit = 'true'">
                 <div class="right">
