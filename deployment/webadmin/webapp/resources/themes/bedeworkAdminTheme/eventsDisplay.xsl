@@ -26,7 +26,7 @@
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
 
     <xsl:choose>
-      <xsl:when test="/bedework/page='deleteEventConfirm' or /bedework/page='deleteEventConfirmPending'">
+      <xsl:when test="/bedework/page='deleteEventConfirm' or /bedework/page='deleteEventConfirmPending' or /bedework/page='deleteEventConfirmApprovalQueue'">
         <h2><xsl:copy-of select="$bwStr-DsEv-OkayToDelete"/></h2>
 
         <xsl:if test="/bedework/page='deleteEventConfirm'">

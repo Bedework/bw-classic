@@ -32,15 +32,25 @@
       </div>
 
       <div id="sidepanel">
+        <!-- if you want a large button, above the polls listings, uncomment
+             the following, and comment out sidebar-add-poll, below: -->
+        <!--<button id="sidebar-new-poll">New Poll</button>-->
         <div id="sidebar">
-          <div class="sidebar-title">Your Polls<span id="sidebar-new-poll-count">0</span></div>
+          <div class="sidebar-title">
+            Your Polls
+            <span id="sidebar-add-poll">Add +</span>
+            <span id="sidebar-new-poll-count">0</span>
+          </div>
           <div>
-            <button id="sidebar-new-poll">New Poll</button>
-            <ul id="sidebar-owned"></ul>
+            <ul id="sidebar-owned-polls"></ul>
           </div>
           <div class="sidebar-title">Active Polls<span id="sidebar-vote-poll-count">0</span></div>
           <div>
             <ul id="sidebar-voter"></ul>
+          </div>
+          <div class="sidebar-title">Completed Polls<span id="sidebar-completed-poll-count">0</span></div>
+          <div>
+            <ul id="sidebar-completed-polls"></ul>
           </div>
         </div>
         <ul id="sideBarMenu">
@@ -111,6 +121,7 @@
               </div>
               <div id="editpoll-voters">
                 <div id="bwComp-voterlist"><xsl:text> </xsl:text></div>
+                <div class="note">Enter calendar user addresses (not email addresses).  These can be found by typing the name of a user or group.</div>
                 <div id="editpoll-syncAttendees">
                   <input type="checkbox" name="syncPollAttendees" id="syncPollAttendees" checked="checked" disabled="disabled"/>
                   <label for="syncPollAttendees">synchronize voters with attendees</label>
@@ -129,7 +140,6 @@
                       <tr><td><xsl:text> </xsl:text></td></tr>
                       <tr><td><xsl:text> </xsl:text></td></tr>
                       <tr><td><xsl:text> </xsl:text></td></tr>
-                      <tr><td><xsl:text> </xsl:text></td></tr>
                     </tbody>
                     <tfoot>
                       <tr><td><xsl:text> </xsl:text></td></tr>
@@ -138,7 +148,7 @@
                 </div>
               </div>
             </div>
-            <button id="editpoll-save">Save &amp; Send</button>
+            <button id="editpoll-save">Save &amp; Notify</button>
             <button id="editpoll-cancel">Cancel</button>
             <button id="editpoll-done">Done</button>
             <button id="editpoll-delete">Delete Poll</button>

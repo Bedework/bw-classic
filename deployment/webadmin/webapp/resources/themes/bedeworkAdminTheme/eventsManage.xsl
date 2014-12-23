@@ -38,6 +38,7 @@
         <input id="bwListWidgetToday" type="submit" value="{$bwStr-EvLs-Today}" onclick="setListDateToday('{$today}',this.form);"/>
         <input type="hidden" name="fexpr" value="(entity_type=&quot;event&quot;|entity_type=&quot;todo&quot;)"/> <!-- fexpr value will be overridden by value in bwFilterEventsForm -->
         <input type="hidden" name="sort" value="dtstart.utc:asc"/>
+        <input type="hidden" name="listMode" value="true"/>
         <input type="hidden" name="setappvar" id="curListDateHolder" value="curListDate()"/> <!-- value is set in the setListDate function to maintain date between requests -->
       </form>
 

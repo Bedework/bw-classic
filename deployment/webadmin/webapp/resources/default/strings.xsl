@@ -39,6 +39,7 @@
   <xsl:variable name="bwStr-Head-LogOut">log out</xsl:variable>
   <xsl:variable name="bwStr-Head-MainMenu">Main Menu</xsl:variable>
   <xsl:variable name="bwStr-Head-PendingEvents">Pending Events</xsl:variable>
+  <xsl:variable name="bwStr-Head-ApprovalQueueEvents">Approval Queue</xsl:variable>
   <xsl:variable name="bwStr-Head-Users">Users</xsl:variable>
   <xsl:variable name="bwStr-Head-System">System</xsl:variable>
 
@@ -65,6 +66,10 @@
   <!--  xsl:template name="tabPendingEvents" -->
   <xsl:variable name="bwStr-TaPE-PendingEvents">Pending Events</xsl:variable>
   <xsl:variable name="bwStr-TaPE-EventsAwaitingModeration">The following events are awaiting moderation:</xsl:variable>
+
+  <!--  xsl:template name="tabApprovalQueueEvents" -->
+  <xsl:variable name="bwStr-TaAQ-ApprovalQueueEvents">Approval Queue</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-EventsAwaitingApproval">The following events are awaiting approval:</xsl:variable>
 
   <!--  xsl:template name="tabCalsuite" -->
   <xsl:variable name="bwStr-TaCS-ManageCalendarSuite">Manage Calendar Suite</xsl:variable>
@@ -197,6 +202,7 @@
   <xsl:variable name="bwStr-AEEF-ThisEventRecurrenceInstance">This event is a recurrence instance.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditMasterEvent">edit master event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditPendingMasterEvent">edit or publish master event</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EditApprovalQueueMasterEvent">edit or approve master event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditMaster">edit master (recurring event)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventRecurs">event recurs</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventDoesNotRecur">event does not recur</xsl:variable>
@@ -319,6 +325,7 @@
   <xsl:variable name="bwStr-SEBu-ReturnToList">Return to list</xsl:variable>
   <xsl:variable name="bwStr-SEBu-UpdateEvent">Update Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-PublishEvent">Publish Event</xsl:variable>
+  <xsl:variable name="bwStr-SEBu-ApproveEvent">Approve Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-Cancel">Cancel</xsl:variable>
   <xsl:variable name="bwStr-SEBu-ClaimEvent">Claim Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-AddEvent">Add Event</xsl:variable>
@@ -365,6 +372,7 @@
   <xsl:variable name="bwStr-DsEv-NoteDontEncourageDeletes">Note: we do not encourage deletion of old but correct events; we prefer to keep old events for historical reasons.  Please remove only those events that are truly erroneous.</xsl:variable>
   <xsl:variable name="bwStr-DsEv-AllDay">(all day)</xsl:variable>
   <xsl:variable name="bwStr-DsEv-YouDeletingPending">You are deleting a pending event.</xsl:variable>
+  <xsl:variable name="bwStr-DsEv-YouDeletingApprovalQueue">You are deleting an entry on the approval queue.</xsl:variable>
   <xsl:variable name="bwStr-DsEv-SendNotification">Send notification to submitter</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Reason">Reason (leave blank to exclude):</xsl:variable>
   <xsl:variable name="bwStr-DsEv-EventInfo">Event Information</xsl:variable>

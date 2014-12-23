@@ -59,7 +59,7 @@
           <li><a href="{$initEvent}"><xsl:copy-of select="$bwStr-MeTa-AddEvent"/></a></li>
           <li>
             <a>
-              <xsl:attribute name="href"><xsl:value-of select="$initPendingEvents"/>&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")</xsl:attribute>
+              <xsl:attribute name="href"><xsl:value-of select="$initPendingEvents"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")</xsl:attribute>
               <xsl:copy-of select="$bwStr-MeTa-MyPendingEvents"/>
             </a>
           </li>
@@ -74,7 +74,7 @@
           <li class="selected"><xsl:copy-of select="$bwStr-MeTa-AddEvent"/></li>
           <li>
             <a>
-              <xsl:attribute name="href"><xsl:value-of select="$initPendingEvents"/>&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")</xsl:attribute>
+              <xsl:attribute name="href"><xsl:value-of select="$initPendingEvents"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")</xsl:attribute>
               <xsl:copy-of select="$bwStr-MeTa-MyPendingEvents"/>
             </a>
           </li>

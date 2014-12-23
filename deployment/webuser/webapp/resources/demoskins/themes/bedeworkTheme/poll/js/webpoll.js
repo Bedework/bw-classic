@@ -24,6 +24,10 @@ var locations = new BwLocations;
 
 var i18nStrings = null;
 
+var ownedPolls = 0;
+var voterForPoll = 1;
+var completedPolls = 2;
+
 var choicesTab = 0;
 var votersTab = 1;
 var resultsTab = 2;
@@ -77,8 +81,9 @@ function showLoading(visible) {
 // Handles all the view interactions
 ViewController = function(session) {
   this.session = session;
-  this.ownedPolls = new PollList($("#sidebar-owned"), $("#sidebar-new-poll-count"));
+  this.ownedPolls = new PollList($("#sidebar-owned-polls"), $("#sidebar-new-poll-count"));
   this.voterPolls = new PollList($("#sidebar-voter"), $("#sidebar-vote-poll-count"));
+  this.completedPolls = new PollList($("#sidebar-completed-polls"), $("#sidebar-completed-poll-count"));
   this.activePoll = null;
   this.isNewPoll = null;
 
@@ -95,9 +100,9 @@ ViewController.prototype.init = function() {
   $("#sidebar").accordion({
     heightStyle : "content"
   });
-  $("#sidebar-owned").menu({
+  $("#sidebar-owned-polls").menu({
     select : function(event, ui) {
-      view.clickSelectPoll(event, ui, true);
+      view.clickSelectPoll(event, ui, ownedPolls);
     }
   });
   $("#sidebar-new-poll").button({
@@ -108,9 +113,19 @@ ViewController.prototype.init = function() {
     view.clickAddPoll();
   });
 
+  $("#sidebar-add-poll").click(function() {
+    view.clickAddPoll();
+  });
+
   $("#sidebar-voter").menu({
     select : function(event, ui) {
-      view.clickSelectPoll(event, ui, false);
+      view.clickSelectPoll(event, ui, voterForPoll);
+    }
+  });
+
+  $("#sidebar-completed-polls").menu({
+    select : function(event, ui) {
+      view.clickSelectPoll(event, ui, completedPolls);
     }
   });
 
@@ -216,7 +231,9 @@ ViewController.prototype.init = function() {
 
 // Add a poll to the UI
 ViewController.prototype.addPoll = function(poll) {
-  if (poll.owned) {
+  if (poll.completed) {
+    this.completedPolls.addPoll(poll)
+  } else if (poll.owned) {
     this.ownedPolls.addPoll(poll)
   } else {
     this.voterPolls.addPoll(poll)
@@ -247,6 +264,7 @@ ViewController.prototype.clickRefresh = function() {
   showLoading(true);
   this.ownedPolls.clearPolls();
   this.voterPolls.clearPolls();
+  this.completedPolls.clearPolls();
   var this_view = this;
   this.session.currentPrincipal.refresh(function() {
     this_view.refreshed();
@@ -273,34 +291,56 @@ ViewController.prototype.clickAddPoll = function() {
 }
 
 // A poll was selected
-ViewController.prototype.clickSelectPoll = function(event, ui, owner) {
+ViewController.prototype.clickSelectPoll = function(event, ui, listIndex) {
   if (!this.aboutToClosePoll()) {
     return;
   }
 
-  this.selectPoll(ui.item.index(), owner, false);
+  this.selectPoll(ui.item.index(), listIndex, false);
 };
 
-// Select a poll from the list based on its UID
+/** Given poll is completed. Update lists.
+ *
+ * @param poll poll.js object
+ */
+ViewController.prototype.completed = function(poll) {
+  // Might be in owned or voter list
+  this.ownedPolls.removePoll(poll);
+  this.voterPolls.removePoll(poll);
+  this.completedPolls.addPoll(poll);
+};
+
+/** Select a poll from the list based on its UID
+ *
+ * @param uid the uid
+ * @param showResults
+ */
 ViewController.prototype.selectPollByUID = function(uid, showResults) {
   var result = this.ownedPolls.indexOfPollUID(uid);
   if (result !== null) {
-    this.selectPoll(result, true, showResults);
+    this.selectPoll(result, ownedPolls, showResults);
     return;
   }
 
   result = this.voterPolls.indexOfPollUID(uid);
   if (result !== null) {
-    this.selectPoll(result, false, showResults);
+    this.selectPoll(result, voterForPoll, showResults);
+  }
+
+  result = this.completedPolls.indexOfPollUID(uid);
+  if (result !== null) {
+    this.selectPoll(result, completedPolls, showResults);
   }
 };
 
 //A poll was selected
-ViewController.prototype.selectPoll = function(index, owner, showResults) {
+ViewController.prototype.selectPoll = function(index, listIndex, showResults) {
   // Make sure edit panel is visible
-  if (owner) {
+  if (listIndex === ownedPolls) {
     this.activatePoll(this.ownedPolls.polls[index], showResults);
     $("#editpoll-title-edit").focus();
+  } else if (listIndex === completedPolls) {
+    this.activatePoll(this.completedPolls.polls[index], showResults);
   } else {
     this.activatePoll(this.voterPolls.polls[index], showResults);
   }
@@ -459,32 +499,41 @@ ViewController.prototype.showResults = function(event, ui) {
   }
 
   activeTab = newTab;
-}
+};
 
-// Maintains the list of editable polls and manipulates the DOM as polls are
-// added
-// and removed.
+/** Maintains the list of editable polls and manipulates the DOM as polls are
+ * added and removed.
+ *
+ * <p>Objects stored in the list are poll.js class
+ *
+ * @param menu
+ * @param counter
+ * @constructor
+ */
 PollList = function(menu, counter) {
   this.polls = [];
   this.menu = menu;
   this.counter = counter;
-}
+};
 
-// Add a poll to the UI.
+/** Add a poll to the UI.
+ *
+ * @param poll a Poll.js object
+ */
 PollList.prototype.addPoll = function(poll) {
   this.polls.push(poll);
   poll.list = this;
   this.menu.append('<li class="sidebar-list"><a href="#">' + poll.title() + '</a></li>');
   this.menu.menu("refresh");
   this.counter.text(this.polls.length);
-}
+};
 
 // Add a poll to the UI and save its resource
 PollList.prototype.newPoll = function(poll) {
   this.addPoll(poll);
   poll.saveResource();
   $("#editpoll-delete").show();
-}
+};
 
 // Change a poll in the UI and save its resource
 PollList.prototype.changePoll = function(poll) {
@@ -492,7 +541,7 @@ PollList.prototype.changePoll = function(poll) {
   this.menu.find("a").eq(index).text(poll.title());
   this.menu.menu("refresh");
   poll.saveResource();
-}
+};
 
 // Remove a poll resource and its UI
 PollList.prototype.removePoll = function(poll) {
@@ -504,7 +553,7 @@ PollList.prototype.removePoll = function(poll) {
     this_polllist.menu.menu("refresh");
     this_polllist.counter.text(this_polllist.polls.length);
   });
-}
+};
 
 PollList.prototype.indexOfPollUID = function(uid) {
   var result = null;
@@ -515,7 +564,7 @@ PollList.prototype.indexOfPollUID = function(uid) {
     }
   });
   return result;
-}
+};
 
 // Remove all UI items
 PollList.prototype.clearPolls = function() {
@@ -523,4 +572,4 @@ PollList.prototype.clearPolls = function() {
   this.menu.menu("refresh");
   this.polls = [];
   this.counter.text(this.polls.length);
-}
+};

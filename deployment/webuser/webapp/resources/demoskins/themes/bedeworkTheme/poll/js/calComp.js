@@ -474,7 +474,7 @@ CalendarPoll.prototype.getVvoter = function(cua) {
 /** Change active user's response in this object
  *
  * @param itemId
- * @param response
+ * @param response - normalised response value
  */
 CalendarPoll.prototype.changeVoterResponse = function(itemId, response) {
   /* Locate the current users vvoter entry */
@@ -491,7 +491,16 @@ CalendarPoll.prototype.changeVoterResponse = function(itemId, response) {
   }
 
   /* matchs[0] is a VVOTER */
-  matches[0].addVote(itemId).response(response);
+  var vote = matches[0].addVote(itemId);
+  var presp = vote.response();
+
+  if ((presp !== null) &&
+      (normaliseVpollResponse(parseInt(presp)) === response)) {
+    // Don't change
+    return;
+  }
+
+  vote.response(unnormaliseVpollResponse(response));
 };
 
 /** Add a voter to the VPOLL
@@ -589,20 +598,22 @@ CalendarPoll.prototype.syncAttendees = function(comp) {
   var vvoters = this.getVvoters();
   $.each(vvoters, function(index, vvoter) {
     var voter = vvoter.getVoter();
-    var attendee = comp.newProperty(
+    var attP = comp.newProperty(
         "attendee",
         voter.cuaddr(),
         {},
         "cal-address"
     );
 
-    attendee[1]["cn"] = voter.cn();
+    var attendee = new CalendarUser(attP, null);
+    attendee.cn(voter.cn());
+    attendee.cutype(voter.cutype());
 
     if (gSession.currentPrincipal.matchingAddress(voter[3])) {
-      attendee[1]["partstat"] = "ACCEPTED";
+      attendee.partstat("ACCEPTED");
     } else {
-      attendee[1]["partstat"] = "NEEDS-ACTION";
-      attendee[1]["rsvp"] = "TRUE";
+      attendee.partstat("NEEDS-ACTION");
+      attendee.rsvp(true);
     }
   });
 };
@@ -689,6 +700,21 @@ CalendarVvoter.prototype.getVote = function(itemId) {
   return null;
 };
 
+/** Get the designated response normalised to small values
+ *
+ * @param itemId poll-item-id
+ * @returns int response value normalised
+ */
+CalendarVvoter.prototype.getResponseNormalised = function(itemId) {
+  var vote = this.getVote(itemId);
+  var response = null;
+  if (vote !== null) {
+    response = parseInt(vote.response());
+  }
+
+  return normaliseVpollResponse(response);
+};
+
 /** Add the designated vote element
  *
  * @param itemId poll-item-id value
@@ -725,6 +751,11 @@ CalendarVote.prototype = new CalendarComponent();
 CalendarVote.prototype.constructor = CalendarVote;
 CalendarComponent.registerComponentType("vote", CalendarVote);
 
+/**
+ *
+ * @param val - response value
+ * @returns {*|string}
+ */
 CalendarVote.prototype.response = function(val) {
   if (val === undefined) {
     return this.data.getPropertyValue("response");
@@ -744,7 +775,7 @@ CalendarComponent.prototype.pickAsWinner = function() {
 	vpoll.data.newProperty("poll-winner", this.pollitemid());
 	vpoll.changed(true);
 
-  // Create the new event resource with voters mapped to attendees
+  // Create the new event resource
   var calendar = new CalendarObject(jcal.newCalendar());
 
   var winner = this.duplicate();
@@ -841,7 +872,9 @@ CalendarUser.prototype.updateFrom = function(value) {
 CalendarUser.prototype.update = function(value, params) {
   this.data[3] = value;
   this.data[1] = params;
-  this.parent.changed(true);
+  if (this.parent != null) {
+    this.parent.changed(true);
+  }
 };
 
 /** Get or set the user name and/or cu-address
@@ -863,7 +896,9 @@ CalendarUser.prototype.addressDescription = function(value) {
       delete this.data[1]["cn"];
     }
     this.data[3] = splits[1];
-    this.parent.changed(true);
+    if (this.parent != null) {
+      this.parent.changed(true);
+    }
   }
 };
 
@@ -893,17 +928,84 @@ CalendarUser.prototype.cutype = function(value) {
   this.data[1]["cutype"] = value;
 };
 
+// Get or set the user partstat
+CalendarUser.prototype.partstat = function(value) {
+  var cur = this.data[1]["partstat"];
+
+  if (value === undefined) {
+    return cur;
+  }
+
+  // We don't want partstat present if it's default of NEEDS-ACTION
+  var isDefault = value === "NEEDS-ACTION";
+
+  if (cur === undefined) {
+    if (!isDefault) {
+      this.data[1]["partstat"] = value;
+    }
+    return;
+  }
+
+  if (isDefault) {
+    delete this.data[1]["partstat"];
+    return;
+  }
+
+  this.data[1]["partstat"] = value;
+};
+
+// Get or set the user rsvp
+CalendarUser.prototype.rsvp = function(value) {
+  var cur = this.data[1]["rsvp"];
+
+  if (value === undefined) {
+    return cur;
+  }
+
+  // We don't want rsvp present if it's default of false
+  var isDefault = value === false;
+
+  if (cur === undefined) {
+    if (!isDefault) {
+      this.data[1]["rsvp"] = "TRUE";
+    }
+    return;
+  }
+
+  if (isDefault) {
+    delete this.data[1]["rsvp"];
+    return;
+  }
+
+  this.data[1]["rsvp"] = "TRUE";
+};
+
 // Get a suitable display string for this user
 CalendarUser.prototype.nameOrAddress = function() {
-	return this.data[1]["cn"] ? this.data[1]["cn"] : this.data[3];
+  var cn = this.cn();
+
+  if (cn != null) {
+    return cn;
+  }
+
+	return this.data[3];
 };
 
 /** Get the common name
  *
  * @returns {*}
  */
-CalendarUser.prototype.cn = function() {
-  return this.data[1]["cn"];
+CalendarUser.prototype.cn = function(value) {
+  if (value === undefined) {
+    return this.data[1]["cn"];
+  }
+
+  if (this.cn() != value) {
+    this.data[1]["cn"] = value;
+    if (this.parent != null) {
+      this.parent.changed(true);
+    }
+  }
 };
 
 CalendarUser.prototype.cuaddr = function() {
@@ -913,11 +1015,13 @@ CalendarUser.prototype.cuaddr = function() {
 // Get or set the voter response
 CalendarUser.prototype.response = function(value) {
 	if (value === undefined) {
-		return this.data[1]["response"];
-	} else {
-		if (this.response != value) {
-			this.data[1]["response"] = value;
-			this.parent.changed(true);
-		}
+    return this.data[1]["response"];
+  }
+
+  if (this.response() != value) {
+    this.data[1]["response"] = value;
+    if (this.parent != null) {
+      this.parent.changed(true);
+    }
 	}
 };

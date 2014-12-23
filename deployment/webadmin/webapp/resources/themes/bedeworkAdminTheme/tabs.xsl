@@ -35,7 +35,7 @@
         <xsl:if test="/bedework/tab = 'main'">
           <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
-        <a href="{$setup}&amp;listAllEvents=false">
+        <a href="{$setup}&amp;listMode=true&amp;listAllEvents=false">
           <xsl:copy-of select="$bwStr-Head-MainMenu"/>
         </a>
       </li>
@@ -44,10 +44,21 @@
           <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
         <a>
-          <xsl:attribute name="href"><xsl:value-of select="$initPendingTab"/>&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")&amp;listAllEvents=true</xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="$initPendingTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")&amp;listAllEvents=true</xsl:attribute>
           <xsl:copy-of select="$bwStr-Head-PendingEvents"/>
         </a>
       </li>
+      <xsl:if test="/bedework/workflowEnabled='true'">
+        <li>
+          <xsl:if test="/bedework/tab = 'approvalQueue'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a>
+            <xsl:attribute name="href"><xsl:value-of select="$initApprovalQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;listAllEvents=true</xsl:attribute>
+            <xsl:copy-of select="$bwStr-Head-ApprovalQueueEvents"/>
+          </a>
+        </li>
+      </xsl:if>
       <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
           <li>

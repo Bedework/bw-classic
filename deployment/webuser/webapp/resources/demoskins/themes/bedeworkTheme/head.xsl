@@ -40,6 +40,9 @@
       var imagesRoot = resourcesRoot + "/images";
       var hour24 = <xsl:value-of select="/bedework/hour24"/>;
       var preferredEndType = '<xsl:value-of select="/bedework/preferredEndType"/>';
+      if (preferredEndType === "") {
+        preferredEndType = "duration";
+      }
       var currentLocale = "<xsl:value-of select="/bedework/currentLocale"/>";
       var reqUid = "<xsl:value-of select="/bedework/vpoll/uid"/>";
       var reqTab = "<xsl:value-of select="/bedework/vpoll/tab"/>";

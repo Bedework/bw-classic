@@ -103,15 +103,98 @@ function nullToStr(val) {
  * @returns {*}
  */
 function checkStr(val) {
+  if (val === null) {
+    return null;
+  }
+
   if (val === undefined) {
     return null;
   }
 
-  if (val === "") {
+  if ($.trim(val) === "") {
     return null;
   }
 
   return val;
+}
+
+/**
+ * @param comp
+ * @param purpose - String purpose for the dates
+ * @returns {String} describing when the component happens
+ */
+function getWhen(comp, purpose) {
+  var start = comp.start();
+  var end = comp.end();
+  var startDtLocale = start.getPrintableDateLocale() + '<br/>' + start.getPrintableTimeLocale();
+  var when = '<div class="bw' + purpose + '">';
+  when += startDtLocale + ' - ';
+  if (!start.dateEquals(end)) {
+    when += end.getPrintableDateLocale() + ' ';
+  }
+  when += end.getPrintableTimeLocale();
+  when += '<br/><span class="tz">' + defaultTzid + '</span>';
+  // Debug
+  //when += ' ' + start.getIcalUTC();
+  when += '</div>';
+
+  var startDt = start.getPrintableDate() + '<br/>' + start.getPrintableTime();
+
+  if (startDt !== startDtLocale) {
+    when += '<div class="bw' + purpose + 'Locale">';
+    when += startDt + ' - ';
+    if (!start.dateEquals(end)) {
+      when += end.getPrintableDate() + '<br/>';
+    }
+    when += end.getPrintableTime();
+    when += '<br/><span class="tz">' + start.tzid() + '</span>';
+    when += '</div>';
+  }
+
+  return when;
+}
+
+/* Normalised vpoll response values */
+
+var vpollResponseNone = 0;
+var vpollResponseNo = 1;
+var vpollResponseMaybe = 2;
+var vpollResponseOk = 3;
+var vpollResponseBest = 4;
+
+/* Max values for each normalised value - from the spec */
+var vpollResponseThresholds = [-1, 39, 79, 89, 100];
+
+/** Normalise a vpoll response value
+ *
+ * @param response - int 0-100
+ * @returns int normalised value
+ */
+function normaliseVpollResponse(response) {
+  if (response === null) {
+    return vpollResponseNone;
+  }
+
+  for (var i = 0; i < vpollResponseThresholds.length; i++) {
+    if (response <=  vpollResponseThresholds[i]) {
+      return i;
+    }
+  }
+
+  return vpollResponseBest; // Assume illegal response > 100
+}
+
+/** Unnormalise a vpoll response - that is create a compliant number
+ *
+ * @param response
+ * @returns int 0-100
+ */
+function unnormaliseVpollResponse(response) {
+  if (response === null) {
+    return vpollResponseNone;
+  }
+
+  return vpollResponseThresholds[response - 1] + 1;
 }
 
 /**
@@ -308,3 +391,4 @@ function getRecurrenceInfo(comp) {
 
   return rinfo;
 }
+

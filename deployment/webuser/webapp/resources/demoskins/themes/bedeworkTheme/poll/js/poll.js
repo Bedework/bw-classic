@@ -16,12 +16,11 @@
  ##
  */
 
-var okResponse = 89;
-
 // An editable poll. It manipulates the DOM for editing a poll
 Poll = function(resource) {
   this.resource = resource;
   this.owned = this.resource.object.mainComponent().isOwned();
+  this.completed = this.resource.object.mainComponent().pollwinner() !== null;
   this.editing_object = null;
   this.editing_poll = null;
 };
@@ -87,7 +86,7 @@ Poll.prototype.writeVpollValues = function() {
 
   var choices = this.editing_poll.choices();
   choices.sort(function(a, b) {
-    return a.start().milliseconds() - b.start().milliseconds();
+    return a.start().getEpochMilliseconds() - b.start().getEpochMilliseconds();
   });
 
   $.each(choices, function(index, choice) {
@@ -268,7 +267,7 @@ Poll.prototype.addChoice = function() {
 
   var itemId = this.editing_poll.nextPollItemId();
   currentEntity.pollitemid(itemId);
-  this.editing_poll.changeVoterResponse(itemId, okResponse);
+  this.editing_poll.changeVoterResponse(itemId, responseOk);
   this.showChoice(currentEntity);
 };
 
@@ -325,7 +324,6 @@ Poll.prototype.populateChoiceForm = function(choice) {
     }
 
     $('#eventStartDateHour option[value="' + dtSt.hoursAmPm24() + '"]').prop('selected',true);
-//    $("#choice-widget #eventStartDateMinute").val(dtSt.minutes());
     $('#eventStartDateMinute option[value="' + dtSt.minutes() + '"]').prop('selected',true);
 
     if (dtSt.tzid() !== undefined) {
@@ -371,8 +369,8 @@ Poll.prototype.populateChoiceForm = function(choice) {
           $("#choice-widget #eventEndDateAmpm").val("pm");
         }
       }
-      $("#choice-widget #eventEndDateHour").val(dtE.hoursAmPm24());
-      $("#choice-widget #eventEndDateMinute").val(dtE.minutes());
+      $('#eventEndDateHour option[value="' + dtE.hoursAmPm24() + '"]').prop('selected',true);
+      $('#eventEndDateMinute option[value="' + dtE.minutes() + '"]').prop('selected',true);
 
       if (dtE.tzid !== undefined) {
         $("#startTzid").val(dtE.tzid());
@@ -718,7 +716,7 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
     idiv += '<div class="' + itemType + '" id="' + idDiv + '">';
     idiv += '<div class="edit-' + itemType + '">';
     idiv += '<label for="' + iditem + '">' + itemLabel + ': </label>';
-    idiv += '<input type="text" id="' + iditem + '" class="' + itemType + '-address"/>';
+    idiv += '<input type="text" id="' + iditem + '" class="' + itemType + '-address" placeholder="Type a name"/>';
     idiv += '<span id="edit-' + itemType + 'type">';
     idiv += '<input type="radio" id="' + iditemTypePrefix +
         '-typeUser" name="' + radioName + '" value="INDIVIDUAL" checked/>';
@@ -787,6 +785,7 @@ Poll.prototype.addParticipantPanel = function(readOnly, itemType, itemLabel) {
 // Update UI for this voter
 Poll.prototype.setVoterPanel = function(panel, voter) {
   panel.find(".voter-address").val(voter.addressDescription());
+  panel.find("[name='voterType']").find("[value='" + voter.cutype() + "']").prop('checked', true);
   return panel;
 };
 
@@ -819,38 +818,106 @@ Poll.prototype.removeParticipant = function(itemType, index, idDiv) {
   this.editing_poll.removeVvoter(index);
 };
 
-// Build the results UI based on the poll details
+/** Build the results UI based on the poll details
+ * We're building something that looks like below: i,e
+ *
+ * table head is the overall results
+ * table body information about choice
+ * table footer is the voting buttons and per-voter status.
+ *
+ * The first element in each row is the label column
+ *
+ * For overall results -
+ *    first row - some sort of status
+ *    Second row - if we own the poll we can select the winner so
+ *                      we have a row of commit buttons.
+ *
+ *  For body:
+ *    Varying number of rows with choice data
+ *
+ *  For footer
+ *
+ * <div id="editpoll-resultsbox">
+   <table id="editpoll-resulttable">
+     <thead>
+       <tr>
+         <td class="noborder"></td>
+         <td class="respNoResponseOverall">No Response</td>
+         <td class="respNoResponseOverall">No Response</td>
+       </tr>
+       <tr id="editpoll-resultsButtons" class="" style="display: none;">
+     </thead>
+     <tbody>
+       <tr>
+         <td>Summary:</td>
+         <td class="summary-td">la - 10pm 7th</td>
+         <td class="summary-td">la - 10pm 8th</td>
+       </tr>
+       <tr>
+         <td>When:</td>
+         <td class="when-td"></td>
+         <td class="when-td"></td>
+       </tr>
+       <tr class="invisible">
+         <td>Recurs:</td>
+         <td class="recur-td">no</td>
+         <td class="recur-td">no</td>
+       </tr>
+       <tr></tr>
+     </tbody>
+     <tfoot>
+       <tr class="active-voter">
+         <td> Douglass</td>
+         <td class="center-td">
+         <td class="center-td">
+       </tr>
+       <tr>
+         <td>johnsa</td>
+         <td class="center-td respOk">Ok</td>
+         <td class="center-td respOk">Ok</td>
+       </tr>
+     </tfoot>
+   </table>
+ </div>
+
+ */
 Poll.prototype.buildResults = function() {
   var this_poll = this;
+  var resultTable = $("#editpoll-resulttable");
 
   // Sync with any changes from other panels
   this.getVpollValues();
 
   var choices = this.editing_poll.choices();
   choices.sort(function(a, b) {
-    return a.start().milliseconds() - b.start().milliseconds();
+    return a.start().getEpochMilliseconds() - b.start().getEpochMilliseconds();
   });
 
-  var th = $("#editpoll-resulttable").children("thead").first(); //XXX
-  var th_overall = th.children("tr").first().empty();
-  var th_commit = th.children("tr").last().empty();
-  th_commit.toggle(this.owned || !this_poll.editing_poll.editable());
+  var th = resultTable.children("thead").first();
+  var thOverallRows = th.children("tr");
+  var thOverall = thOverallRows.first().empty();
+  var thCommit = thOverallRows.last().empty();
+  thCommit.toggle(this.owned || !this_poll.editing_poll.editable());
 
-  var tbody = $("#editpoll-resulttable").children("tbody").first();
-  var tb_summary = tbody.children("tr").eq(0).empty();
-  var tb_start = tbody.children("tr").eq(1).empty();
-  var tb_end = tbody.children("tr").eq(2).empty();
-  var tb_recur = tbody.children("tr").eq(3).empty().addClass("invisible");
-  var tb_desc = tbody.children("tr").eq(4).empty();
-  var tfoot = $("#editpoll-resulttable").children("tfoot").first().empty();
+  // Add empty invisible label boxes to the overall rows as first column.
+  $('<td class="noborder"></td>').appendTo(thOverall);
+  $('<td class="noborder"/>').appendTo(thCommit);
 
-  $('<td class="noborder"></td>').appendTo(th_overall);
-  $('<td class="noborder"/>').appendTo(th_commit);
+  var tbody = resultTable.children("tbody").first();
+  var tbodyRows = tbody.children("tr");
+  var tb_summary = tbodyRows.eq(0).empty();
+  var tb_when = tbodyRows.eq(1).empty();
+  var tb_recur = tbodyRows.eq(2).empty().addClass("invisible");
+  //var tb_desc = tbodyRows.eq(3).empty();
+
+  // Add labels to each body row as column 0
   $('<td>Summary:</td>').appendTo(tb_summary);
-  $('<td>Start:</td>').appendTo(tb_start);
-  $('<td>End:</td>').appendTo(tb_end);
+  $('<td>When:</td>').appendTo(tb_when);
   $('<td>Recurs:</td>').appendTo(tb_recur);
-  $('<td>Description:</td>').appendTo(tb_desc);
+  // XXX deprecate? $('<td>Description:</td>').appendTo(tb_desc);
+
+
+  var tfoot = resultTable.children("tfoot").first().empty();
 
   if (this_poll.editing_poll.editable()) {
     $('#editpoll-resultsButtons').removeClass('invisible');
@@ -858,17 +925,15 @@ Poll.prototype.buildResults = function() {
     $('#editpoll-resultsButtons').addClass('invisible');
   }
 
-  $.each(choices, function(index, event) {
-    //$("#debug").append(print_r(event));
-    var td_summary = $('<td />').appendTo(tb_summary).text(event.summary()).addClass("summary-td");
-    var td_start = $('<td />').appendTo(tb_start).html(event.start().getPrintableDate() + ' - ' + event.start().getPrintableTime()).addClass("start-td");
-    var endDate = "";
-    if (!event.start().dateEquals(event.end())) {
-      endDate = event.end().getPrintableDate() + ' - ';
-    }
-    var td_end = $('<td />').appendTo(tb_end).html(endDate + event.end().getPrintableTime()).addClass("end-td");
+  /* For each choice add a column with the choice data
+   */
+  $.each(choices, function(index, choice) {
+    var td_summary = $('<td />').appendTo(tb_summary).text(choice.summary()).addClass("summary-td");
 
-    var rinfo = getRecurrenceInfo(event);
+    var when = getWhen(choice, "ChoiceDates");
+    var td_when = $('<td />').appendTo(tb_when).html(when).addClass("when-td");
+
+    var rinfo = getRecurrenceInfo(choice);
 
     if (rinfo !== null) {
       tb_recur.removeClass("invisible");
@@ -877,20 +942,11 @@ Poll.prototype.buildResults = function() {
       var td_recur = $('<td />').appendTo(tb_recur).text(i18nStrings["bwStr-AEEF-No"]).addClass("recur-td");
     }
 
-    var desc;
-    if (event.description() === null || event.description() == "null") {
-      desc = "";
-    } else {
-      desc = event.description();
-    }
-    var td_desc = $('<td />').appendTo(tb_desc).text(desc).addClass("desc-td");
-    $('<td />').appendTo(th_overall).addClass("center-td");
-    $('<td />').appendTo(th_commit).addClass("center-td");
-    if (event.ispollwinner()) {
+    $('<td />').appendTo(thOverall).addClass("center-td");
+    $('<td />').appendTo(thCommit).addClass("center-td");
+    if (choice.ispollwinner()) {
       td_summary.addClass("poll-winner-td");
-      td_start.addClass("poll-winner-td");
-      td_end.addClass("poll-winner-td");
-      td_desc.addClass("poll-winner-td");
+      td_when.addClass("poll-winner-td");
       td_recur.addClass("poll-winner-td");
     }
     /* XXX Disable while in progress
@@ -919,70 +975,45 @@ Poll.prototype.buildResults = function() {
       if (event.ispollwinner()) {
         td.addClass("poll-winner-td");
       }
-      var vote = vvoter.getVote(pollItemId);
-      var response = null;
-      if (vote !== null) {
-        response = vote.response();
+      var response = vvoter.getResponseNormalised(pollItemId);
+
+      if (!active || !this_poll.editing_poll.editable()) {
+        td.text(textForResponse[response]);
+        td.addClass(classForResponse[response]);
+        return;
       }
 
-      if (active && this_poll.editing_poll.editable()) {
-        var radios = $('<div id="response-' + pollItemId + '" />').appendTo(td).addClass("response-btns");
-        $('<input type="radio" id="respond_no-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
-        $('<label for="respond_no-' + pollItemId + '"/>').appendTo(radios);
-        $('<input type="radio" id="respond_maybe-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
-        $('<label for="respond_maybe-' + pollItemId + '"/>').appendTo(radios);
-        $('<input type="radio" id="respond_ok-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
-        $('<label for="respond_ok-' + pollItemId + '"/>').appendTo(radios);
-        $('<input type="radio" id="respond_best-' + pollItemId + '" name="response-' + pollItemId + '"/>').appendTo(radios);
-        $('<label for="respond_best-' + pollItemId + '"/>').appendTo(radios);
-        radios.buttonset();
+      /* Add voting buttons */
+      var name = "response-" + pollItemId;
+      var radios = $('<div id="' + name + '" />').appendTo(td).addClass("response-btns");
+      for (var i = 1; i < idPrefixForResponse.length; i++) {
+        var id = idPrefixForResponse[i] + "-" + pollItemId;
+        $('<input type="radio" id="' + id + '" name="' + name + '"/>').appendTo(radios);
+        $('<label for="' + id + '"/>').appendTo(radios);
+      }
+      radios.buttonset();
 
-        if (response !== null) {
-          if (response < 40) {
-            $('#respond_no-' + pollItemId).click();
-          } else if (response < 80) {
-            $('#respond_maybe-' + pollItemId).click();
-          } else if (response <= okResponse) {
-            $('#respond_ok-' + pollItemId).click();
-          } else {
-            $('#respond_best-' + pollItemId).click();
-          }
+      if (response >= 0) {
+        if (response === vpollResponseNo) {
+          $('#respond_no-' + pollItemId).click();
+        } else if (response === vpollResponseMaybe) {
+          $('#respond_maybe-' + pollItemId).click();
+        } else if (response === vpollResponseOk) {
+          $('#respond_ok-' + pollItemId).click();
+        } else {
+          $('#respond_best-' + pollItemId).click();
         }
-        $('#respond_no-' + pollItemId).button({
-          icons : {
-            primary : "ui-icon-close"
+      }
+      for (var i = 1; i < idPrefixForResponse.length; i++) {
+        var id = '#' + idPrefixForResponse[i] + "-" + pollItemId;
+        $(id).button({
+          icons: {
+            primary: iconForResponse[i]
           },
-          label: "No",
+          label: textForResponse[i],
           text: false
         }).click(this_poll.clickResponse);
-        $('#respond_no-' + pollItemId).next("label").addClass("noButton");
-        $('#respond_maybe-' + pollItemId).button({
-          icons : {
-            primary : "ui-icon-help"
-          },
-          label: "Maybe",
-          text: false
-        }).click(this_poll.clickResponse);
-        $('#respond_maybe-' + pollItemId).next("label").addClass("maybeButton");
-        $('#respond_ok-' + pollItemId).button({
-          icons : {
-            primary : "ui-icon-check"
-          },
-          label: "Ok",
-          text: false
-        }).click(this_poll.clickResponse);
-        $('#respond_ok-' + pollItemId).next("label").addClass("okButton");
-        $('#respond_best-' + pollItemId).button({
-          icons : {
-            primary : "ui-icon-circle-check"
-          },
-          label: "Best",
-          text: false
-        }).click(this_poll.clickResponse);
-        $('#respond_best-' + pollItemId).next("label").addClass("bestButton");
-      } else {
-        td.text(this_poll.textForResponse(response)[0]);
-        td.addClass("resp-" + this_poll.textForResponse(response)[0].replace(/\s/g, '')); // XXX adds a class based on display string.  Should be based on an abstract value (that won't change).
+        $(id).next("label").addClass(buttonClassForResponse[i]);
       }
     });
     if (active) {
@@ -990,64 +1021,210 @@ Poll.prototype.buildResults = function() {
     }
   });
 
-  $.each(choices, function(index, event) {
-    if (this_poll.editing_poll.editable()) {
-      $('<button id="winner-' + event.pollitemid() + '">Pick Winner</button>').appendTo(th_commit.children()[index + 1]).button({
+  if (this.editing_poll.editable()) {
+    $.each(choices, function(index, choice) {
+      $('<button id="winner-' + choice.pollitemid() + '">Pick Winner</button>').appendTo(thCommit.children()[index + 1]).button({
         icons : {
           primary : "ui-icon-star"
         }
       }).click(this_poll.clickWinner);
-    }
-  });
+    });
+  }
 
   this.updateOverallResults();
 };
 
-Poll.prototype.textForResponse = function(response) {
-  var result = [];
-  if (response === null) {
-    result.push("No Response");
-    result.push("no-response-td");
-  } else if (response < 51) {
-    result.push("No");
-    result.push("no-td");
-  } else if (response < 74) {
-    result.push("Maybe");
-    result.push("maybe-td");
-  } else if (response < 88) {
-    result.push("Ok");
-    result.push("ok-td");
-  } else {
-    result.push("Best");
-    result.push("best-td");
-  }
-  return result;
-};
+// TODO - add to localizations
+var textForResponse = [
+  "No Response",
+  "No",
+  "Maybe",
+  "Ok",
+  "Best"
+];
+
+var classForResponse = [
+  "respNoResponse",
+  "respNo",
+  "respMaybe",
+  "respOk",
+  "respBest"
+];
+
+var iconForResponse = [
+  null,
+  "ui-icon-close",
+  "ui-icon-help",
+  "ui-icon-check",
+  "ui-icon-circle-check"
+];
+
+var idPrefixForResponse = [
+  "respondNoResponse",
+  "respondNo",
+  "respondMaybe",
+  "respondOk",
+  "respondBest"
+];
+
+var buttonClassForResponse = [
+  null,
+  "noButton",
+  "maybeButton",
+  "okButton",
+  "bestButton"
+];
 
 Poll.prototype.clickResponse = function() {
   var splits = $(this).attr("id").split("-");
-  var response_type = splits[0];
+  var idPrefix = splits[0];
   var itemId = parseInt(splits[1]);
-  var response = 0;
-  if (response_type == "respond_maybe") {
-    response = 50;
-  } else if (response_type == "respond_ok") {
-    response = 85;
-  } else if (response_type == "respond_best") {
-    response = 100;
+  var response = vpollResponseNone;
+
+  for (var i = 1; i < idPrefixForResponse.length; i++) {
+    if (idPrefix === idPrefixForResponse[i]) {
+      response = i;
+      break;
+    }
   }
 
   gViewController.activePoll.editing_poll.changeVoterResponse(itemId, response);
   gViewController.activePoll.updateOverallResults();
 };
 
+/** For basic poll mode we need to provide some overall view of the
+ * voting for a choice. Simple aerages don't work. What we do here is:
+ *
+ * If all voters (except the organizer) vote NO - then it's a NO vote
+ *       (We'll fake this for the moment by saying on non-no vote must be the organizer)
+ *
+ * If all voters vote best - then it's a Best vote
+ *
+ * If all voters vote best or Ok - then it's an Ok vote
+ *
+ * Otherwise it's maybe
+ *
+ */
+Poll.prototype.updateOverallResults = function() {
+  var thisPoll = this;
+  var choices = this.editing_poll.choices();
+  var voterDetails = this.editing_poll.getVvoters();
+  var resultTable = $("#editpoll-resulttable");
+  var th = resultTable.children("thead").first();
+  var tbody = resultTable.children("tbody").first();
+  var tfoot = resultTable.children("tfoot").first();
+
+  var overallStatusRow = th.children("tr").first().children("td");
+
+  // Update overall items
+  $.each(choices, function(index, choice) {
+    var numResponses = 0;
+    var responses = [0, 0, 0, 0, 0];
+
+    var itemId = choice.pollitemid();
+    $.each(voterDetails, function(index, vvoter) {
+      var response = vvoter.getResponseNormalised(itemId);
+
+      responses[response]++;
+
+      if (response === vpollResponseNone) {
+        return;
+      }
+
+      numResponses++;
+    });
+
+    var overallResponse = vpollResponseNone;
+
+    if (numResponses > 1) {
+      if ((responses[1] / numResponses) > 0.5) {
+        // At least half said No
+        overallResponse = vpollResponseNo;
+      } else if (numResponses === responses[4]) {
+        // All say Aye
+        overallResponse = vpollResponseBest;
+      } else if ((responses[4] > 0) &&
+          (numResponses === (responses[3] + responses[4]))) {
+        // At least some say Aye and the rest are near enough
+        overallResponse = vpollResponseBest;
+      } else if (numResponses === responses[3]) {
+        // All say Ok
+        overallResponse = vpollResponseOk;
+      } else {
+        // TODO - I think the above works better - this probably needs work
+        /* More than half the responses were not NO -
+         If necessary we could add some intermediate states but I think
+         people really only case about the best ones and the worst ones.
+
+         That is - we need to know if everybody says NO and Ok + Best
+         is really good enough. If we get a true everybody says this
+         is best that's the one to highlight.
+
+         I'm guessing that after about half the responses we're better
+         off showing only the best - at least for polls with a lot
+         of choices
+         */
+        overallResponse = vpollResponseMaybe;
+      }
+    }
+
+    var overallClass = classForResponse[overallResponse] + "Overall";
+
+    /*
+     $(overallStatusRow[index + 1]).text(textForResponse[overallResponse]);
+     $(overallStatusRow[index + 1]).removeClass();
+     if(choice.ispollwinner()) {
+     $(overallStatusRow[index + 1]).addClass("poll-winner-td");
+     $(overallStatusRow[index + 1]).html('<div id="winner-text"><span id="winner-icon-left" class="ui-icon ui-icon-star" />Winner<span id="winner-icon-right" class="ui-icon ui-icon-star" /></div>');
+     } else {
+     $(overallStatusRow[index + 1]).addClass(overallClass);
+     }
+     //$(overallStatusRow[index + 1]).addClass(event.ispollwinner() ? "poll-winner-td" : response_details[1]);
+     */
+
+    /* Remove the overall status from each cell in the current column
+     */
+
+    /* Index is offset by 1 to account for the label column. Note that
+     index is 0 based and nth-child is 1 based so we have to offset
+     by 2.
+     */
+
+    var colI = "" + (index + 2);
+    var headCol = $(th).find("tr td:nth-child(" + colI + ")");
+    var bodyCol = $(tbody).find("tr td:nth-child(" + colI + ")");
+    var footCol = $(tfoot).find("tr td:nth-child(" + colI + ")");
+
+    thisPoll.removeOverallClasses(headCol);
+    thisPoll.removeOverallClasses(bodyCol);
+    thisPoll.removeOverallClasses(footCol);
+
+    headCol.addClass(overallClass);
+    bodyCol.addClass(overallClass);
+    footCol.addClass(overallClass);
+
+    if(choice.ispollwinner()) {
+      $(overallStatusRow[index + 1]).addClass("poll-winner-td");
+      $(overallStatusRow[index + 1]).html('<div id="winner-text"><span id="winner-icon-left" class="ui-icon ui-icon-star" />Winner<span id="winner-icon-right" class="ui-icon ui-icon-star" /></div>');
+    }
+  });
+};
+
+Poll.prototype.removeOverallClasses = function(element) {
+  for (var index = 0; index < classForResponse.length; ++index) {
+    $(element).removeClass(classForResponse[index] + "Overall");
+  }
+};
+
 // A winner was chosen, make poll changes and create new event and save everything
 Poll.prototype.clickWinner = function() {
   var splits = $(this).attr("id").split("-");
-  var comp = gViewController.activePoll.editing_poll.getChoice(parseInt(splits[1]));
+  var poll = gViewController.activePoll;
+  var vpoll = poll.editing_poll;
+  var comp = vpoll.getChoice(parseInt(splits[1]));
   var new_resource = comp.pickAsWinner();
   new_resource.saveResource(function() {
-    gViewController.activePoll.saveResource(function() {
+    poll.saveResource(function() {
 //      gViewController.activatePoll(gViewController.activePoll, false);
       // Make everything disappear
 //      gViewController.clickPollCancel();
@@ -1055,6 +1232,7 @@ Poll.prototype.clickWinner = function() {
   });
 
   gViewController.clickPollSave();
+  gViewController.completed(this);
 };
 
 // Open the event time-range hover dialog
@@ -1078,7 +1256,7 @@ Poll.prototype.hoverCalDialogOpenClassic = function(td_summary, tbody, event) {
         });
         results.push(event);
         results.sort(function(a, b) {
-          return a.start().milliseconds() - b.start().milliseconds();
+          return a.start().getEpochMilliseconds() - b.start().getEpochMilliseconds();
         });
         var relative_offset = 10;
         var last_end = null;
@@ -1133,7 +1311,7 @@ Poll.prototype.hoverCalDialogOpenFancy = function(td_summary, tbody, event) {
         /* Add the current event to the result */
         results.push(event);
         results.sort(function(a, b) {
-          return a.start().diff(b.start(), 'milliseconds');
+          return a.start().getEpochMilliseconds - b.start().getEpochMilliseconds();
         });
         var lastDtend = null;
         $.each(results, function(index, result) {
@@ -1205,41 +1383,9 @@ Poll.prototype.hoverCuaddrDialogOpen = function(td_addr) {
   }
 };
 
-
 // Close the participant address hover dialog
 Poll.prototype.hoverCuaddrDialogClose = function() {
   $("#hover-cuaddr").dialog("close").remove();
-};
-
-Poll.prototype.updateOverallResults = function() {
-  var this_poll = this;
-  var choices = this.editing_poll.choices();
-  var voterDetails = this.editing_poll.getVvoters();
-  var tds = $("#editpoll-resulttable").children("thead").first().children("tr").first().children("td"); // XXX
-
-  // Update overall items
-  $.each(choices, function(index, choice) {
-    var overall = [];
-    var itemId = choice.pollitemid();
-    $.each(voterDetails, function(index, vvoter) {
-      var vote = vvoter.getVote(itemId);
-      if (vote !== null) {
-        overall.push(vote.response());
-      }
-    });
-    var response_details = this_poll.textForResponse(overall.average());
-    var possible_classes = ["best-td", "ok-td", "maybe-td", "no-td", "no-response-td"];
-    possible_classes.splice(possible_classes.indexOf(response_details[1]), 1);
-    $(tds[index + 1]).text(response_details[0]);
-    $(tds[index + 1]).removeClass(possible_classes.join(" "));
-    if(choice.ispollwinner()) {
-      $(tds[index + 1]).addClass("poll-winner-td");
-      $(tds[index + 1]).html('<div id="winner-text"><span id="winner-icon-left" class="ui-icon ui-icon-star" />Winner<span id="winner-icon-right" class="ui-icon ui-icon-star" /></div>');
-    } else {
-      $(tds[index + 1]).addClass(response_details[1]);
-    }
-    //$(tds[index + 1]).addClass(event.ispollwinner() ? "poll-winner-td" : response_details[1]);
-  });
 };
 
 /** Fill in the responses based on users freebusy at the time of the choice

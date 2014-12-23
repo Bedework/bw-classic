@@ -36,6 +36,7 @@
   <xsl:include href="eventsForm.xsl" />
   <xsl:include href="eventsDisplay.xsl" />
   <xsl:include href="eventsPending.xsl" />
+  <xsl:include href="eventsApprovalQueue.xsl" />
   <xsl:include href="contacts.xsl" />
   <xsl:include href="locations.xsl" />
   <xsl:include href="categories.xsl" />
@@ -80,6 +81,9 @@
                 <xsl:when test="/bedework/page='tabPendingEvents'">
                   <xsl:call-template name="tabPendingEvents"/>
                 </xsl:when>
+                <xsl:when test="/bedework/page='tabApprovalQueueEvents'">
+                  <xsl:call-template name="tabApprovalQueueEvents"/>
+                </xsl:when>
                 <xsl:when test="/bedework/page='tabCalsuite'">
                   <xsl:call-template name="tabCalsuite"/>
                 </xsl:when>
@@ -93,12 +97,14 @@
                   <xsl:call-template name="eventList"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='modEvent' or
-                               /bedework/page='modEventPending'">
+                               /bedework/page='modEventPending' or
+                               /bedework/page='modEventApprovalQueue'">
                   <xsl:apply-templates select="/bedework/formElements" mode="modEvent"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='displayEvent' or
                                 /bedework/page='deleteEventConfirm' or
-                                /bedework/page='deleteEventConfirmPending'">
+                                /bedework/page='deleteEventConfirmPending' or
+                                /bedework/page='deleteEventConfirmApprovalQueue'">
                   <xsl:apply-templates select="/bedework/event" mode="displayEvent"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='contactList'">

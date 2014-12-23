@@ -39,6 +39,7 @@
   <xsl:variable name="bwStr-Head-LogOut">desconectar</xsl:variable>
   <xsl:variable name="bwStr-Head-MainMenu">Menu Principal</xsl:variable>
   <xsl:variable name="bwStr-Head-PendingEvents">Eventos pendientes</xsl:variable>
+  <xsl:variable name="bwStr-Head-ApprovalQueueEvents">Approval Queue</xsl:variable>
   <xsl:variable name="bwStr-Head-Users">Usuarios</xsl:variable>
   <xsl:variable name="bwStr-Head-System">Sistema</xsl:variable>
 
@@ -65,6 +66,10 @@
   <!--  xsl:template name="tabPendingEvents" -->
   <xsl:variable name="bwStr-TaPE-PendingEvents">Eventos pendientes</xsl:variable>
   <xsl:variable name="bwStr-TaPE-EventsAwaitingModeration">Los siguientes eventos están pendientes de moderación:</xsl:variable>
+
+  <!--  xsl:template name="tabApprovalQueueEvents" -->
+  <xsl:variable name="bwStr-TaPE-ApprovalQueueEvents">Approval Queue</xsl:variable>
+  <xsl:variable name="bwStr-TaPE-EventsAwaitingApproval">The following events are awaiting approval:</xsl:variable>
 
   <!--  xsl:template name="tabCalsuite" -->
   <xsl:variable name="bwStr-TaCS-ManageCalendarSuite">Gestión de Calendar Suite</xsl:variable>
@@ -196,6 +201,7 @@
   <xsl:variable name="bwStr-AEEF-ThisEventRecurrenceInstance">Este evento es una instancia de recurrencia.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditMasterEvent">editar evento maestro</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditPendingMasterEvent">editar o publicar evento maestro</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-EditApprovalQueueMasterEvent">edit or approve master event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EditMaster">editar maestro (evento recurrente)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventRecurs">evento recurrente</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventDoesNotRecur">evento no recurrente</xsl:variable>
@@ -364,6 +370,7 @@
   <xsl:variable name="bwStr-DsEv-NoteDontEncourageDeletes">Nota: no se recomienda borrar los eventos antiguos pero correctos; es preferible mantener los eventos antiguos por motivos históricos. Por favor, borre sólo los eventos que son erróneos.</xsl:variable>
   <xsl:variable name="bwStr-DsEv-AllDay">(todo el día)</xsl:variable>
   <xsl:variable name="bwStr-DsEv-YouDeletingPending">Está borrando un evento pendiente.</xsl:variable>
+  <xsl:variable name="bwStr-DsEv-YouDeletingApprovalQueue">You are deleting an entry on the approval queue.</xsl:variable>
   <xsl:variable name="bwStr-DsEv-SendNotification">Enviar notificación al remitente</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Reason">Razón (dejar en blanco para excluir):</xsl:variable>
   <xsl:variable name="bwStr-DsEv-EventInfo">Información de evento</xsl:variable>

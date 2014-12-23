@@ -84,29 +84,31 @@ TzHandler.prototype.waitFetch = function(tzid, year) {
 
 /** Given a date and a tzid return the offset for that date
  *
- * @param date - json format date yyyy-mm-dd
+ * @param dt    - json format date/time YYYY-MM-DDTHH:mm:ss
  * @param tzid - name of timezone
  * @return null if unknown timezone otherwise offset in minutes
  */
-TzHandler.prototype.getOffset = function(date, tzid) {
+TzHandler.prototype.getOffset = function(dt, tzid) {
   if (tzid == null) {
     return null;
   }
 
-  var exptz = this.waitFetch(tzid, date.substring(0, 4));
+  var exptz = this.waitFetch(tzid, dt.substring(0, 4));
   var offset = null;
 
   if ((exptz == null) || (exptz.status != this.okStatus)) {
     return null;
   }
 
-  var obs = exptz.findObservance(date);
+  var obs = exptz.findObservance(dt);
 
   if (obs == null) {
     return null;
   }
 
-  return obs.to / 60;
+  // Observance is AFTER current one.
+
+  return obs.from / 60;
 }
 
 
@@ -183,15 +185,24 @@ TzExpanded.prototype.coversYear = function(year) {
     return year <= lastYear;
 };
 
-
+/**
+ *
+ * @param dt - date time value in format YYYY-MM-DDTHH:mm:ss
+ * @returns {*} observance after one we are in
+ */
 TzExpanded.prototype.findObservance = function(dt) {
   if (this.sortedObservances == null) {
     this.sortedObservances = this.observances.sort(tzObservanceCompare);
   }
 
-  for (i in this.sortedObservances) {
-    if (dt > this.sortedObservances[i].onset) {
-      return this.sortedObservances[i];
+  var obss = this.sortedObservances;
+
+  for (var i = 0; i < obss.length; i++) {
+    var obs = obss[i];
+    var onset = obs.onset;
+
+    if (onset > dt) {
+      return obs;
     }
   }
 

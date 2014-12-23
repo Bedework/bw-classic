@@ -76,6 +76,7 @@
   <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="initPendingTab" select="/bedework/urlPrefixes/initPendingTab"/>
+  <xsl:variable name="initApprovalQueueTab" select="/bedework/urlPrefixes/initApprovalQueueTab"/>
   <xsl:variable name="showCalsuiteTab" select="/bedework/urlPrefixes/showCalsuiteTab"/>
   <xsl:variable name="showUsersTab" select="/bedework/urlPrefixes/showUsersTab"/>
   <xsl:variable name="showSystemTab" select="/bedework/urlPrefixes/showSystemTab"/>
@@ -96,8 +97,10 @@
   <xsl:variable name="event-fetchForDisplay" select="/bedework/urlPrefixes/event/fetchForDisplay"/>
   <xsl:variable name="event-fetchForUpdate" select="/bedework/urlPrefixes/event/fetchForUpdate"/>
   <xsl:variable name="event-fetchForUpdatePending" select="/bedework/urlPrefixes/event/fetchForUpdatePending"/>
+  <xsl:variable name="event-fetchForUpdateApprovalQueue" select="/bedework/urlPrefixes/event/fetchForUpdateApprovalQueue"/>
   <xsl:variable name="event-update" select="/bedework/urlPrefixes/event/update"/>
   <xsl:variable name="event-updatePending" select="/bedework/urlPrefixes/event/updatePending"/>
+  <xsl:variable name="event-updateApprovalQueue" select="/bedework/urlPrefixes/event/updateApprovalQueue"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent"/>
   <xsl:variable name="event-initUpload" select="/bedework/urlPrefixes/event/initUpload"/>
   <xsl:variable name="event-upload" select="/bedework/urlPrefixes/event/upload"/>
@@ -180,6 +183,12 @@
   <xsl:variable name="calsuite-resources-add" select="/bedework/urlPrefixes/calsuiteresources/add"/>
   <xsl:variable name="calsuite-resources-update" select="/bedework/urlPrefixes/calsuiteresources/update"/>
   <xsl:variable name="calsuite-resources-remove" select="/bedework/urlPrefixes/calsuiteresources/remove"/>
+  <!-- global resources -->
+  <xsl:variable name="global-resources-fetch" select="/bedework/urlPrefixes/globalresources/fetch"/>
+  <xsl:variable name="global-resources-edit" select="/bedework/urlPrefixes/globalresources/edit"/>
+  <xsl:variable name="global-resources-add" select="/bedework/urlPrefixes/globalresources/add"/>
+  <xsl:variable name="global-resources-update" select="/bedework/urlPrefixes/globalresources/update"/>
+  <xsl:variable name="global-resources-remove" select="/bedework/urlPrefixes/globalresources/remove"/>
   <!-- timezones and stats -->
   <xsl:variable name="timezones-initUpload" select="/bedework/urlPrefixes/timezones/initUpload"/>
   <xsl:variable name="timezones-upload" select="/bedework/urlPrefixes/timezones/upload"/>

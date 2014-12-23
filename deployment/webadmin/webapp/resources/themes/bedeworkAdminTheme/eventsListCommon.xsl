@@ -24,6 +24,7 @@
 
   <xsl:template name="eventListCommon">
     <xsl:param name="pending">false</xsl:param>
+    <xsl:param name="approvalQueue">false</xsl:param>
     <table id="commonListTable" title="event listing">
       <tr>
         <th><xsl:copy-of select="$bwStr-EvLC-Title"/></th>
@@ -45,6 +46,7 @@
 
       <xsl:apply-templates select="/bedework/events/event" mode="eventListCommon">
         <xsl:with-param name="pending"><xsl:value-of select="$pending"/></xsl:with-param>
+        <xsl:with-param name="approvalQueue"><xsl:value-of select="$approvalQueue"/></xsl:with-param>
       </xsl:apply-templates>
 
       <xsl:if test="not(/bedework/events/event)">
@@ -56,6 +58,7 @@
 
   <xsl:template match="event" mode="eventListCommon">
     <xsl:param name="pending">false</xsl:param>
+    <xsl:param name="approvalQueue">false</xsl:param>
     <xsl:variable name="calPath" select="calendar/encodedPath"/>
     <xsl:variable name="guid" select="guid"/>
     <xsl:variable name="recurrenceId" select="recurrenceId"/>
@@ -112,7 +115,23 @@
               <xsl:when test="status = 'CANCELLED'"><strong><xsl:copy-of select="$bwStr-EvLC-Cancelled"/></strong><br/></xsl:when>
               <xsl:when test="status = 'TENTATIVE'"><xsl:copy-of select="$bwStr-EvLC-Tentative"/><br/></xsl:when>
             </xsl:choose>
-            <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a>
+              <xsl:choose>
+                <xsl:when test="$approvalQueue = 'true'">
+                  <xsl:choose>
+                    <xsl:when test="recurrenceId != ''">
+                      <!-- recurrence instances should be updated like normal events - only master events should be published -->
+                      <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdateApprovalQueue"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
+                </xsl:otherwise>
+              </xsl:choose>
               <xsl:choose>
                 <xsl:when test="summary != ''">
                   <xsl:value-of select="summary"/>
@@ -213,8 +232,13 @@
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
                 </a> |
               </xsl:when>
+              <xsl:when test="$approvalQueue = 'true'">
+                <a href="{$event-fetchForUpdateApprovalQueue}&amp;calPath={$calPath}&amp;guid={$guid}">
+                  <xsl:copy-of select="$bwStr-EvLC-Master"/>
+                </a> |
+              </xsl:when>
               <xsl:otherwise>
-                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}">
+                <a href="{$event-fetchForUpdate}calPath={$calPath}&amp;guid={$guid}">
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
                 </a> |
               </xsl:otherwise>

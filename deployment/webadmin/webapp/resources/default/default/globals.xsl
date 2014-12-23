@@ -57,6 +57,10 @@
   <xsl:variable name="submissionsRootEncoded" select="/bedework/submissionsRoot/encoded"/>
   <xsl:variable name="submissionsRootUnencoded" select="/bedework/submissionsRoot/unencoded"/>
 
+  <!-- Root folder of the workflow collections -->
+  <xsl:variable name="workflowRootEncoded" select="/bedework/workflowRoot/encoded"/>
+  <xsl:variable name="workflowRootUnencoded" select="/bedework/workflowRoot/unencoded"/>
+
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them
@@ -65,6 +69,7 @@
   <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="initPendingTab" select="/bedework/urlPrefixes/initPendingTab"/>
+  <xsl:variable name="initApprovalQueueTab" select="/bedework/urlPrefixes/initApprovalQueueTab"/>
   <xsl:variable name="showCalsuiteTab" select="/bedework/urlPrefixes/showCalsuiteTab"/>
   <xsl:variable name="showUsersTab" select="/bedework/urlPrefixes/showUsersTab"/>
   <xsl:variable name="showSystemTab" select="/bedework/urlPrefixes/showSystemTab"/>
@@ -85,8 +90,10 @@
   <xsl:variable name="event-fetchForDisplay" select="/bedework/urlPrefixes/event/fetchForDisplay"/>
   <xsl:variable name="event-fetchForUpdate" select="/bedework/urlPrefixes/event/fetchForUpdate"/>
   <xsl:variable name="event-fetchForUpdatePending" select="/bedework/urlPrefixes/event/fetchForUpdatePending"/>
+  <xsl:variable name="event-fetchForUpdateApprovalQueue" select="/bedework/urlPrefixes/event/fetchForUpdateApprovalQueue"/>
   <xsl:variable name="event-update" select="/bedework/urlPrefixes/event/update"/>
   <xsl:variable name="event-updatePending" select="/bedework/urlPrefixes/event/updatePending"/>
+  <xsl:variable name="event-updateApprovalQueue" select="/bedework/urlPrefixes/event/updateApprovalQueue"/>
   <xsl:variable name="event-selectCalForEvent" select="/bedework/urlPrefixes/event/selectCalForEvent"/>
   <xsl:variable name="event-initUpload" select="/bedework/urlPrefixes/event/initUpload"/>
   <xsl:variable name="event-upload" select="/bedework/urlPrefixes/event/upload"/>

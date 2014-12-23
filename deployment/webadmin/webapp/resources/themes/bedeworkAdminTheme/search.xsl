@@ -145,6 +145,7 @@
             <xsl:attribute name="class">noFocus</xsl:attribute>
           </input>
           <input type="hidden" name="count" value="{$searchResultSize}"/>
+          <input type="hidden" name="listMode" value="true"/>
           <input type="hidden" name="start" value="today"/>
           <input type="hidden" name="sort" value="dtstart.utc:asc"/>
           <input type="hidden" name="setappvar" value="bwQuery()"/>

@@ -19,11 +19,16 @@
 
 /** A wrapper around a moment.js object representing the date/time for
  * a property. If the property is specified with a timezone that timezone
- * will be used to set the offset.
+ * will be used to set the offset. That timezone is set in this.moment
  *
  * The locale timezone might be different from property timezone. When
  * displaying time the locale time is more relevant to the end user than
- * the property time.
+ * the property time. The locale timezone is specified by the global
+ * variable defaultTimezone. The field localeMoment has it's timezone
+ * set to that display timezone.
+ *
+ * When the default timezone and the user locael timezone are equal we
+ * have no localeMoment
  *
  * @param hour24
  * @param name "start" or "end"
@@ -54,14 +59,14 @@ JcalDtTime = function(hour24, name, datePart, allDay, UTC, tzidPar, hours, minut
 
   if (typeof datePart === "string") {
     if (allDay) {
-      this.moment = moment(datePart);
+      this.moment = moment.tz(datePart, defaultTzid);
       return;
     }
 
 
     if (UTC) {
       datePart += "T" + this.toHour24(am, hours) + ":" + minutes + ":00Z";
-      this.moment = moment(datePart);
+      this.moment = moment.tz(datePart, defaultTzid);
       return;
     }
 
@@ -166,7 +171,7 @@ JcalDtTime.prototype.toHour24 = function(am, hours) {
 };
 
 JcalDtTime.now = function(hour24, name) {
-  var mt = moment();
+  var mt = moment.tz(defaultTzid);
 
   mt.minutes(0);
   mt.seconds(0);
@@ -185,7 +190,7 @@ JcalDtTime.now = function(hour24, name) {
  * @param am - for string datePart
  */
 JcalDtTime.prototype.update = function(datePart, allDay, UTC, tzidPar, hours, minutes, am) {
-  this.moment = moment(datePart, "YYYY-MM-DD");
+  this.moment = moment.tz(datePart, "YYYY-MM-DD", defaultTzid);
 
   this.allDay = allDay;
   this.UTC = UTC;
@@ -307,9 +312,19 @@ JcalDtTime.prototype.seconds = function(val) {
   return this.moment.seconds(val);
 };
 
+/** The milliseconds value - usually 0
+ *
+ * @param val
+ * @returns {*}
+ */
 JcalDtTime.prototype.milliseconds = function(val) {
   return this.moment.milliseconds(val);
 };
+
+JcalDtTime.prototype.getEpochMilliseconds = function() {
+  return this.moment.valueOf();
+};
+
 
 JcalDtTime.prototype.am = function() {
   return this.moment.hours() < 12;
@@ -545,7 +560,7 @@ JcalDtTime.prototype.tzid = function(val) {
    */
 //  this.moment.utc().zone(-offset).local();
 //  this.moment.zone(-offset, true);
-  this.moment.tz(val);
+  this.moment = this.moment.tz(val);
 };
 
 //moment.fn.setOffset = function(val) {

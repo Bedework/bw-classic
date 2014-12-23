@@ -64,7 +64,7 @@
           <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType = 0]" mode="myCalendars"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType &lt; 2 or calType = 4 or calType = 7]" mode="myCalendars"/>
+          <xsl:apply-templates select="/bedework/myCalendars/calendars/calendar[calType &lt; 2 or calType = 4 or calType = 7 or calType = 8]" mode="myCalendars"/>
         </xsl:otherwise>
       </xsl:choose>
     </ul>

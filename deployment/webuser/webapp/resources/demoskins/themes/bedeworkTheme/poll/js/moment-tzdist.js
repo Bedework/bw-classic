@@ -56,7 +56,7 @@
 		},
 
 		offset : function (mom) {
-			return this.parse(mom.format("YYYY-MM-DD"));
+			return this.parse(mom.format("YYYY-MM-DDTHH:mm:ss"));
 		}
 	};
 
@@ -105,7 +105,7 @@
        UTC offset
        http://stackoverflow.com/questions/22275025/inverted-zone-in-moment-timezone
        */
-			out.add(-zone.parse(out.format("YYYY-MM-DD")), 'minutes');
+			out.add(-zone.parse(out.format("YYYY-MM-DDTHH:mm:ss")), 'minutes');
 		}
 
 		out.tz(name);
@@ -134,7 +134,7 @@
 	moment.updateOffset = function(mom, keepTime) {
 		var offset;
 		if (mom._tzid) {
-			offset = -tzs.getOffset(mom.format("YYYY-MM-DD"), mom._tzid);
+			offset = -tzs.getOffset(mom.format("YYYY-MM-DDTHH:mm:ss"), mom._tzid);
 			if (Math.abs(offset) < 16) {
 				offset = offset / 60;
 			}

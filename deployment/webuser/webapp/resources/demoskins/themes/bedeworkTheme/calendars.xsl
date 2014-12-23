@@ -119,17 +119,18 @@
   </xsl:template>
 
   <xsl:template match="calendar" mode="myCalendars">
-    <!-- this template receives calType 0,1,4,7  (what about 8,9?)  -->
+    <!-- this template receives calType 0,1,4,7,8  (what 9?)  -->
     <xsl:variable name="id" select="id"/>
     <xsl:variable name="userRootCalendar">/user/<xsl:value-of select="/bedework/userid"/></xsl:variable>
+    <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
+    <xsl:variable name="calPath" select="encodedPath"/>
     <li>
       <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="disabled = 'true'">unknown</xsl:when>
           <xsl:when test="lastRefreshStatus &gt; 300">unknown</xsl:when>
-          <xsl:when test="not(path = $userRootCalendar)
-                          and /bedework/selectionState/selectionType = 'collections'
-                          and path = /bedework/selectionState/collection/virtualpath">selected</xsl:when>
+          <xsl:when test="not(path = $userRootCalendar) and
+                          /bedework/appvar[key='selectedcal']/value = path">selected</xsl:when>
           <xsl:when test="isSubscription = 'true'">
             <xsl:choose>
               <xsl:when test="calType = '0'">aliasFolder</xsl:when>
@@ -176,10 +177,8 @@
         </form>
         <xsl:text> </xsl:text>
       </xsl:if>
-      <xsl:variable name="virtualPath"><xsl:call-template name="url-encode"><xsl:with-param name="str">/user<xsl:for-each select="ancestor-or-self::calendar/name">/<xsl:value-of select="."/></xsl:for-each></xsl:with-param></xsl:call-template></xsl:variable>
-      <xsl:variable name="calPath" select="encodedPath"/>
       <!--a href="{$setSelection}&amp;virtualPath={$virtualPath}&amp;calUrl={$calPath}"-->
-      <a href="{$setSelection}&amp;fexpr=(vpath=%22{$virtualPath}%22)&amp;calUrl={$calPath}">
+      <a href="{$setSelection}&amp;fexpr=(vpath=%22{$virtualPath}%22)&amp;calUrl={$calPath}&amp;setappvar=selectedcal({$calPath})">
         <xsl:if test="lastRefreshStatus &gt;= 300">
           <xsl:attribute name="title">
             <xsl:call-template name="httpStatusCodes">
@@ -198,7 +197,7 @@
         <ul>
           <xsl:choose>
             <xsl:when  test="$publicOnly = 'false'">
-              <xsl:apply-templates select="calendar[canAlias = 'true' and (calType &lt; 2 or calType = 4 or calType = 7)]" mode="myCalendars">
+              <xsl:apply-templates select="calendar[canAlias = 'true' and (calType &lt; 2 or calType = 4 or calType = 7 or calType = 8)]" mode="myCalendars">
                 <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
               </xsl:apply-templates>
             </xsl:when>
@@ -926,13 +925,6 @@
       </table>
     </form>
 
-    <xsl:if test="default-scheduling-collection">
-      <div id="calSharingBox">
-        <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>
-        <!-- users may not share the default scheduling collection -->
-        <p><xsl:copy-of select="$bwStr-CuCa-DefaultSchedNotShared"/></p>
-      </div>
-    </xsl:if>
     <xsl:if test="can-be-shared">
       <div id="calSharingBox">
         <h3><xsl:copy-of select="$bwStr-CuCa-Sharing"/></h3>

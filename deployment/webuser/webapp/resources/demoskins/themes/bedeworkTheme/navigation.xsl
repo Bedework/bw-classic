@@ -65,7 +65,7 @@
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
           <xsl:variable name="usersRootCal" select="/bedework/myCalendars/calendars/calendar/path"/>
-          <a href="{$listEvents}&amp;fexpr=(colPath=%22{$usersRootCal}%22 and (entity_type=%22event%22|entity_type=%22todo%22))&amp;sort=dtstart.utc:asc"><xsl:copy-of select="$bwStr-Tabs-Upcoming"/></a>
+          <a href="{$listEvents}&amp;listMode=true&amp;fexpr=(colPath=%22{$usersRootCal}%22 and (entity_type=%22event%22|entity_type=%22todo%22))&amp;sort=dtstart.utc:asc"><xsl:copy-of select="$bwStr-Tabs-Upcoming"/></a>
         </li>
         <xsl:if test="$useVpoll = 'true'">
           <li>
