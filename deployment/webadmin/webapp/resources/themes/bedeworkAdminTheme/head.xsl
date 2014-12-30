@@ -71,7 +71,7 @@
           </xsl:comment>
         </script>
         <!-- conditional javascript and css -->
-        <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending'">
+        <xsl:if test="/bedework/page='modEvent' or /bedework/page='modEventPending' or /bedework/page='modEventApprovalQueue'">
           <!-- import the internationalized strings for the javascript widgets -->
           <xsl:call-template name="bedeworkEventJsStrings"/>
 

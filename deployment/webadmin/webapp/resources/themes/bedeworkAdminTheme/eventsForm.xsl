@@ -42,12 +42,26 @@
     <xsl:variable name="eventUrlPrefix"><xsl:value-of select="$publicCal"/>/event/eventView.do?guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:variable>
     <xsl:variable name="userPath"><xsl:value-of select="/bedework/syspars/userPrincipalRoot"/><xsl:value-of select="/bedework/userInfo/user"/></xsl:variable>
 
+    <xsl:variable name="modEventPending">
+      <xsl:choose>
+        <xsl:when test="/bedework/page = 'modEventPending'">true</xsl:when>
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="modEventApprovalQueue">
+      <xsl:choose>
+        <xsl:when test="/bedework/page = 'modEventApprovalQueue'">true</xsl:when>
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <!-- Determine if the current user can edit this event.
          If canEdit is false, we will only allow tagging by topical area,
          and other fields will be disabled. -->
     <xsl:variable name="canEdit">
       <xsl:choose>
-        <xsl:when test="($userPath = creator) or (/bedework/page = 'modEventPending') or (/bedework/page = 'modEventApprovalQueue') or (/bedework/userInfo/superUser = 'true') or (/bedework/creating = 'true')">true</xsl:when>
+        <xsl:when test="($userPath = creator) or ($modEventPending = 'true') or ($modEventApprovalQueue = 'true') or ($superUser = 'true') or (/bedework/creating = 'true')">true</xsl:when>
         <xsl:otherwise>false</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -152,6 +166,7 @@
         <xsl:with-param name="eventTitle" select="$eventTitle"/>
         <xsl:with-param name="eventUrlPrefix" select="$eventUrlPrefix"/>
         <xsl:with-param name="canEdit" select="$canEdit"/>
+        <xsl:with-param name="modEventApprovalQueue" select="$modEventApprovalQueue"/>
       </xsl:call-template>
 
       <table class="eventFormTable" title="Event Modification Form">
@@ -184,7 +199,8 @@
                 </tr>
         -->
         <xsl:if test="count(form/calendar/all/select/option) &gt; 1 and
-                      not(starts-with(form/calendar/path,$submissionsRootUnencoded))">
+                      not(starts-with(form/calendar/path,$submissionsRootUnencoded)) and
+                      not(starts-with(form/calendar/path,$workflowRootUnencoded))">
         <!-- check to see if we have more than one publishing calendar
              but disallow directly setting for pending events -->
           <tr>
@@ -2015,6 +2031,7 @@
           <xsl:with-param name="eventTitle" select="$eventTitle"/>
           <xsl:with-param name="eventUrlPrefix" select="$eventUrlPrefix"/>
           <xsl:with-param name="canEdit" select="$canEdit"/>
+          <xsl:with-param name="modEventApprovalQueue" select="$modEventApprovalQueue"/>
         </xsl:call-template>
       </xsl:if>
     </form>
@@ -2091,6 +2108,7 @@
     <xsl:param name="eventTitle"/>
     <xsl:param name="eventUrlPrefix"/>
     <xsl:param name="canEdit"/>
+    <xsl:param name="modEventApprovalQueue"/>
 
     <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="$eventTitle"/></xsl:call-template></xsl:variable>
     <div class="submitBox">
@@ -2167,7 +2185,7 @@
             </xsl:choose>
           </span>
         </xsl:when>
-        <xsl:when test="/bedework/page = 'modEventApprovalQueue'">
+        <xsl:when test="($modEventApprovalQueue = 'true') and (($superUser = 'true') or ($approverUser = 'true'))">
           <div class="right">
             <input type="submit" name="delete" value="{$bwStr-SEBu-DeleteEvent}" class="noFocus"/>
           </div>
@@ -2243,8 +2261,16 @@
                 <!-- cannot duplicate recurring events for now -->
                 <input type="submit" name="copy" value="{$bwStr-SEBu-CopyEvent}" class="noFocus"/>
               </xsl:if>
-              <xsl:variable name="backToListLink">location.href='<xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="/bedework/currentdate/date"/>&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))&amp;sort=dtstart.utc:asc'</xsl:variable>
-              <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="{$backToListLink}" class="noFocus"/>
+              <xsl:choose>
+                <xsl:when test="$modEventApprovalQueue = 'true'">
+                  <xsl:variable name="backToListLink">location.href='<xsl:value-of select="$initApprovalQueueTab"/>&amp;start=<xsl:value-of select="/bedework/currentdate/date"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;sort=dtstart.utc:asc'</xsl:variable>
+                  <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="{$backToListLink}" class="noFocus"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:variable name="backToListLink">location.href='<xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="/bedework/currentdate/date"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))&amp;sort=dtstart.utc:asc'</xsl:variable>
+                  <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="{$backToListLink}" class="noFocus"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:otherwise>

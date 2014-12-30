@@ -882,6 +882,43 @@ function doPublishEvent(publishingCal,eventTitle,eventUrlPrefix,formObj) {
   }
 }
 
+function doApproveEvent(approvedCal, eventTitle, eventUrlPrefix, formObj) {
+  // User has submitted the event when there is only a single publishing calendar.
+  // Update the newCalPath to reflect the public calendar:
+  newCalPath = document.getElementById("newCalPath");
+  newCalPath.value = approvedCal;
+
+  // If email notification is enabled, set field to true
+  // (set to 'true' for now to get the feature working)
+  submitNotification = document.getElementById("submitNotification");
+  submitNotification.value = true;
+
+  // set the email field values
+  snsubject = document.getElementById("snsubject");
+  snsubject.value = "Event Approved: " + eventTitle;
+  sntext = document.getElementById("sntext");
+  var message;
+  message = "Your event has been approved and is now published.\n\n";
+  message += "EVENT DETAILS\n-------------\n";
+  message += "Title: " + eventTitle + "\n";
+  message += "URL: " + eventUrlPrefix + "&calPath=" + approvedCal;
+  sntext.value = message;
+
+  // Send the names of xproperties we wish to retain after we publish.
+  // Those not listed will be thrown away
+  // but must first be passed to the backend for use
+  // (e.g. the email address of the submitter).
+  var xpropPreserve = [bwXPropertyAlias, bwXPropertyImage, bwXPropertySubmittedBy];
+
+  for (var i = 0; i < xpropPreserve.length; i++) {
+    var xpropPreserveField = document.createElement("input");
+    xpropPreserveField.type = "hidden"; // change type prior to appending to DOM
+    formObj.appendChild(xpropPreserveField);
+    xpropPreserveField.name = "xprop-preserve";
+    xpropPreserveField.value = xpropPreserve[i];
+  }
+}
+
 function doRejectEvent(formObj, eventTitle, eventDatesForEmail){
   // If email notification is enabled, set field to true
   // (set to 'true' for now to get the feature working)

@@ -61,6 +61,9 @@
   <xsl:variable name="workflowRootEncoded" select="/bedework/workflowRoot/encoded"/>
   <xsl:variable name="workflowRootUnencoded" select="/bedework/workflowRoot/unencoded"/>
 
+  <xsl:variable name="approverUser" select="/bedework/userInfo/approverUser"/>
+  <xsl:variable name="superUser" select="/bedework/userInfo/superUser"/>
+
   <!-- Properly encoded prefixes to the application actions; use these to build
        urls; allows the application to be used without cookies or within a portal.
        we will probably change the way we create these before long (e.g. build them

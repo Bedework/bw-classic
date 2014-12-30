@@ -35,7 +35,7 @@
         <xsl:if test="/bedework/tab = 'main'">
           <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
-        <a href="{$setup}&amp;listMode=true&amp;listAllEvents=false">
+        <a href="{$setup}&amp;listMode=true&amp;listAllEvents=false&amp;sort=dtstart.utc:asc">
           <xsl:copy-of select="$bwStr-Head-MainMenu"/>
         </a>
       </li>
@@ -54,7 +54,7 @@
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
           <a>
-            <xsl:attribute name="href"><xsl:value-of select="$initApprovalQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;listAllEvents=true</xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$initApprovalQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;listAllEvents=false&amp;sort=dtstart.utc:asc</xsl:attribute>
             <xsl:copy-of select="$bwStr-Head-ApprovalQueueEvents"/>
           </a>
         </li>
