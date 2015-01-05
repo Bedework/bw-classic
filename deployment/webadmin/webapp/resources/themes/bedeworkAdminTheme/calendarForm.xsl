@@ -136,6 +136,14 @@
       </table>
 
       <div id="subscriptionTypes" class="invisible">
+        <table class="common">
+        <tr>
+          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionCanCreateEprops"/></th>
+          <td>
+            <input type="checkbox" name="adminAllowCreateEprops"/>
+          </td>
+        </tr>
+        <tr>
         <h4><xsl:copy-of select="$bwStr-CuCa-SubscriptionURL"/></h4>
         <input type="hidden" value="publicTree" name="subType" id="bwSubType"/>
         <div id="subscriptionTypeExternal">
@@ -164,6 +172,8 @@
             bwcal://[path], e.g. bwcal:///public/cals/MainCal
           </p>
         </div>
+        </tr>
+        </table>
       </div>
 
       <!-- div id="sharingBox">

@@ -527,6 +527,7 @@
   <xsl:variable name="bwStr-CuCa-Folder">carpeta</xsl:variable>
   <xsl:variable name="bwStr-CuCa-FOLDER">Carpeta</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Subscription">suscripción</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SubscriptionCanCreateEprops">Allow Location etc create?</xsl:variable>
   <xsl:variable name="bwStr-CuCa-SubscriptionURL">URL de la suscripción</xsl:variable>
   <xsl:variable name="bwStr-CuCa-URLToCalendar">URL al calendario:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ID">ID (si es necesaria):</xsl:variable>

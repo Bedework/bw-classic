@@ -529,6 +529,7 @@
   <xsl:variable name="bwStr-CuCa-Folder">folder</xsl:variable>
   <xsl:variable name="bwStr-CuCa-FOLDER">Folder</xsl:variable>
   <xsl:variable name="bwStr-CuCa-Subscription">subscription</xsl:variable>
+  <xsl:variable name="bwStr-CuCa-SubscriptionCanCreateEprops">Allow Location etc create?</xsl:variable>
   <xsl:variable name="bwStr-CuCa-SubscriptionURL">Subscription URL</xsl:variable>
   <xsl:variable name="bwStr-CuCa-URLToCalendar">URL to calendar:</xsl:variable>
   <xsl:variable name="bwStr-CuCa-ID">ID (if required):</xsl:variable>
