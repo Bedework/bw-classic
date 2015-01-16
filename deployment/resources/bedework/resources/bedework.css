@@ -175,6 +175,10 @@ div.loginInfo a.title {
 #resources {
   float: left;
 }
+#resources ul {
+  padding-left: 1em;
+  white-space: nowrap;
+}
 /* Generic Selectors */
 li {
   padding: 0 0 0.5em 0;
