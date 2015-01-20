@@ -267,7 +267,7 @@ Poll.prototype.addChoice = function() {
 
   var itemId = this.editing_poll.nextPollItemId();
   currentEntity.pollitemid(itemId);
-  this.editing_poll.changeVoterResponse(itemId, responseOk);
+  this.editing_poll.changeVoterResponse(itemId, vpollResponseOk);
   this.showChoice(currentEntity);
 };
 
