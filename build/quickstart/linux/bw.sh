@@ -469,11 +469,11 @@ setDirectory() {
 
     if [ "$bw_synch" != "" ] ; then
       echo "Build synch"
-      cd $GIT_HOME/bw-synch
+      earName=bw-synch
+      cd $GIT_HOME/${earName}
       maven=yes
       bw_synch=
-      deploy="$GIT_HOME/bw-synch/bw-synch-ear/target/"
-      earName=bw-synch
+      deploy="$GIT_HOME/$earName/$earName-ear/target/"
 
       copyDeployable "$deploy" "$earName"
 
