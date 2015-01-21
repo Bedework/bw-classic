@@ -26,7 +26,7 @@
     <attribute name="name"/>
     <attribute name="mvn" default="no" />
     <attribute name="version" default="" />
-    <attribute name="src" default="http://dev.bedework.org/downloads/lib"/>
+    <attribute name="src" default="http://www.bedework.org/downloads/lib"/>
     <attribute name="lib" default="${lib.dir}"/>
     <attribute name="libcache" default="${org.bedework.libcache.dir}"/>
     <attribute name="property" default="" />
@@ -34,7 +34,7 @@
     <attribute name="projectHome" default="" />
     <sequential>
       <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-    	
+
    	  <mkdir dir="@{libcache}" />
 
       <if>
@@ -54,10 +54,10 @@
       <if>
         <isset property="org.bedework.print.jar.licence.info" />
         <then>
-          <license name="@{name}" version="@{version}" 
-                   prefix="org.bedework.license" 
+          <license name="@{name}" version="@{version}"
+                   prefix="org.bedework.license"
                    licenseInfoFile="${org.bedework.license-mappings}" />
-          
+
           <mkdir dir="${bedework.home}/dist"/>
           <echoxml file="${bedework.home}/dist/jarlicenses.xml" append="true">
             <jarLicense>
@@ -107,7 +107,7 @@
 
       <!-- If a project or projecthome was specified try to get it from the
            local file system -->
-      
+
       <if>
         <or>
           <not>
@@ -130,7 +130,7 @@
             </else>
           </if>
           <noisyMsg message="check ${org.bedework.getjar.project.jar}" />
-        	
+
           <if>
             <available file="${org.bedework.getjar.project.jar}" />
             <then>
@@ -204,11 +204,11 @@
                 <then>
                   <!-- Write the name to the list -->
                   <echo file="${org.bedework.getjar.jar.listfile}"
-                        append="yes" 
+                        append="yes"
                         message="@{name}" />
                 </then>
               </if>
-            	
+
               <copy file="@{libcache}/${org.bedework.getjar.jarname}"
                     todir="@{lib}" overwrite="yes" preservelastmodified="true" />
             </else>
