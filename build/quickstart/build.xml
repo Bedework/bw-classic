@@ -22,7 +22,7 @@
   <import file="${bedework.quickstart.basedir}/../buildTools/deftasks.xml"/>
 
   <property name="bedework.home"
-            location="${env.QUICKSTART_HOME}/bedework" />
+            location="${env.QUICKSTART_HOME}/bw-classic" />
 
   <deftasks/>
 

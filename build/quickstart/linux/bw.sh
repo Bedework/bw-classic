@@ -271,7 +271,7 @@ setDirectory() {
   fi
 
 	if [ "$dirstart" != "" ] ; then
-	  cd $GIT_HOME
+	  cd $GIT_HOME/bw-classic/build/quickstart
 	  specialTarget=dirstart
       dirstart=
 	  return
@@ -1004,6 +1004,7 @@ do
 #  echo "######### postDeploy = $postDeploy"
 
   if [ "$specialTarget" != "" ] ; then
+    echo "Execute special target $specialTarget"
     $javacmd $specialTarget
   elif [ "$maven" != "" ] ; then
     $mvncmd
