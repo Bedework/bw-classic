@@ -59,6 +59,17 @@
           </a>
         </li>
       </xsl:if>
+      <xsl:if test="/bedework/suggestionEnabled='true'">
+        <li>
+          <xsl:if test="/bedework/tab = 'suggestionQueue'">
+            <xsl:attribute name="class">selected</xsl:attribute>
+          </xsl:if>
+          <a>
+            <xsl:attribute name="href"><xsl:value-of select="$initApprovalQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;listAllEvents=false&amp;sort=dtstart.utc:asc</xsl:attribute>
+            <xsl:copy-of select="$bwStr-Head-SuggestionQueueEvents"/>
+          </a>
+        </li>
+      </xsl:if>
       <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
         <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
           <li>

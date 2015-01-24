@@ -40,6 +40,7 @@
   <xsl:variable name="bwStr-Head-MainMenu">Menu Principal</xsl:variable>
   <xsl:variable name="bwStr-Head-PendingEvents">Eventos pendientes</xsl:variable>
   <xsl:variable name="bwStr-Head-ApprovalQueueEvents">Approval Queue</xsl:variable>
+  <xsl:variable name="bwStr-Head-SuggestionQueueEvents">Suggestion Queue</xsl:variable>
   <xsl:variable name="bwStr-Head-Users">Usuarios</xsl:variable>
   <xsl:variable name="bwStr-Head-System">Sistema</xsl:variable>
 
@@ -70,6 +71,10 @@
   <!--  xsl:template name="tabApprovalQueueEvents" -->
   <xsl:variable name="bwStr-TaPE-ApprovalQueueEvents">Approval Queue</xsl:variable>
   <xsl:variable name="bwStr-TaPE-EventsAwaitingApproval">The following events are awaiting approval:</xsl:variable>
+
+  <!--  xsl:template name="tabSuggestionQueueEvents" -->
+  <xsl:variable name="bwStr-TaAQ-SuggestionQueueEvents">Approval Queue</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-SuggestedEvents">The following events are suggested:</xsl:variable>
 
   <!--  xsl:template name="tabCalsuite" -->
   <xsl:variable name="bwStr-TaCS-ManageCalendarSuite">Gestión de Calendar Suite</xsl:variable>

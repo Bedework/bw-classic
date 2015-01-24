@@ -25,6 +25,7 @@
   <xsl:template name="eventListCommon">
     <xsl:param name="pending">false</xsl:param>
     <xsl:param name="approvalQueue">false</xsl:param>
+    <xsl:param name="suggestionQueue">false</xsl:param>
     <table id="commonListTable" title="event listing">
       <tr>
         <th><xsl:copy-of select="$bwStr-EvLC-Title"/></th>

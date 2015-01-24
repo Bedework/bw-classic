@@ -37,6 +37,7 @@
   <xsl:include href="eventsDisplay.xsl" />
   <xsl:include href="eventsPending.xsl" />
   <xsl:include href="eventsApprovalQueue.xsl" />
+  <xsl:include href="eventsSuggestionQueue.xsl" />
   <xsl:include href="contacts.xsl" />
   <xsl:include href="locations.xsl" />
   <xsl:include href="categories.xsl" />
@@ -84,6 +85,9 @@
                 <xsl:when test="/bedework/page='tabApprovalQueueEvents'">
                   <xsl:call-template name="tabApprovalQueueEvents"/>
                 </xsl:when>
+                <xsl:when test="/bedework/page='tabSuggestionQueueEvents'">
+                  <xsl:call-template name="tabSuggestionQueueEvents"/>
+                </xsl:when>
                 <xsl:when test="/bedework/page='tabCalsuite'">
                   <xsl:call-template name="tabCalsuite"/>
                 </xsl:when>
@@ -104,7 +108,8 @@
                 <xsl:when test="/bedework/page='displayEvent' or
                                 /bedework/page='deleteEventConfirm' or
                                 /bedework/page='deleteEventConfirmPending' or
-                                /bedework/page='deleteEventConfirmApprovalQueue'">
+                                /bedework/page='deleteEventConfirmApprovalQueue' or
+                                /bedework/page='deleteEventConfirmSuggestionQueue'">
                   <xsl:apply-templates select="/bedework/event" mode="displayEvent"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='contactList'">
