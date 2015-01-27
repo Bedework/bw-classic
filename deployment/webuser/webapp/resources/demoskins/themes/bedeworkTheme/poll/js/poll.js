@@ -994,16 +994,9 @@ Poll.prototype.buildResults = function() {
       radios.buttonset();
 
       if (response >= 0) {
-        if (response === vpollResponseNo) {
-          $('#respond_no-' + pollItemId).click();
-        } else if (response === vpollResponseMaybe) {
-          $('#respond_maybe-' + pollItemId).click();
-        } else if (response === vpollResponseOk) {
-          $('#respond_ok-' + pollItemId).click();
-        } else {
-          $('#respond_best-' + pollItemId).click();
-        }
+        $('#' + idPrefixForResponse[response] + '-' + pollItemId).click();
       }
+
       for (var i = 1; i < idPrefixForResponse.length; i++) {
         var id = '#' + idPrefixForResponse[i] + "-" + pollItemId;
         $(id).button({

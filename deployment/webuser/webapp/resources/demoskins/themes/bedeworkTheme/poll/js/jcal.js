@@ -336,7 +336,7 @@ function digits4(val) {
 }
 
 function jcalTimestamp() {
-  return new Date().toISOString().substr(0, 19);
+  return new Date().toISOString().substr(0, 19) + "Z";
 }
 
 // Duration utility functions
