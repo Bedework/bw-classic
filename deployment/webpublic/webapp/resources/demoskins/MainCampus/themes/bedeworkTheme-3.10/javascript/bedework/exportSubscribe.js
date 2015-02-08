@@ -153,7 +153,7 @@ function updateUrlDisplay() {
     // build and display the widget code
     var url = constructURL();
     var bwCalendarServer = document.location.origin;
-    var bwJsLoc = bwUrls.cacheResources + "/javascript/eventListWidget.js";
+    var bwJsLoc = bwUrls.feedResources + "/javascript/eventListWidget.js";
     var jsHtml = '<textarea name="functions" id="bwExpFunctions" rows="20" cols="78">';
     jsHtml += '<div id="bwOutput"></div>\n';
     jsHtml += '<script type="text/javascript" src="' + bwJsLoc + '"> </script>\n';
@@ -164,7 +164,7 @@ function updateUrlDisplay() {
     jsHtml += '  showTitle: ' + $("input[name='jsShowTitle']:checked").val() + ',\n';
     jsHtml += '  displayDescription: ' + $("input[name='jsDisplayDescription']:checked").val() + ',\n';
     jsHtml += '  calendarServer: "' + bwCalendarServer + '",\n';
-    jsHtml += '  resourcesRoot: "' + bwUrls.cacheResources + '",\n';
+    jsHtml += '  resourcesRoot: "' + bwUrls.feedResources + '",\n';
     jsHtml += '  limitList: ' + $("input[name='jsLimitList']:checked").val() + ',\n';
     jsHtml += '  limit: ' + $("input[name='jsLimit']").val() + ',\n';
     //jsHtml += '  displayEventDetailsInline: ' + $("input[name='jsDisplayInline']:checked").val() + ',\n';

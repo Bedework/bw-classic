@@ -201,7 +201,7 @@
         <xsl:if test="count(form/calendar/all/select/option) &gt; 1 and
                       not(starts-with(form/calendar/path,$submissionsRootUnencoded)) and
                       not(starts-with(form/calendar/path,$workflowRootUnencoded))">
-        <!-- check to see if we have more than one publishing calendar
+          <!-- check to see if we have more than one publishing calendar
              but disallow directly setting for pending events -->
           <tr>
             <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
@@ -475,7 +475,7 @@
                       <script type="text/javascript">
                         <xsl:comment>
                         endDateDynCalWidget = new dynCalendar('endDateDynCalWidget', <xsl:value-of select="number(form/start/yearText/input/@value)"/>, <xsl:value-of select="number(form/start/month/select/option[@selected='selected']/@value)-1"/>, <xsl:value-of select="number(form/start/day/select/option[@selected='selected']/@value)"/>, 'endDateCalWidgetCallback',true,'<xsl:value-of select="$resourcesRoot"/>/resources/');
-                      </xsl:comment>
+                        </xsl:comment>
                       </script>
                     </xsl:when>
                     <xsl:otherwise>
@@ -559,7 +559,7 @@
                 <div class="{$endDurationClass}" id="endDuration">
                   <xsl:choose>
                     <xsl:when test="form/end/duration/weeks/input/@value = '0'">
-                    <!-- we are using day, hour, minute format --><!-- must send either no week value or week value of 0 (zero) -->
+                      <!-- we are using day, hour, minute format --><!-- must send either no week value or week value of 0 (zero) -->
                       <div class="durationBox">
                         <input type="radio" name="eventDuration.type" value="daytime" onclick="swapDurationType('daytime')" checked="checked"/>
                         <input type="text" name="eventDuration.daysStr" size="2" id="durationDays">
@@ -872,9 +872,9 @@
 
                   <!-- wrapper for rrules: -->
                   <table id="rrulesTable" cellspacing="0">
-                  <xsl:if test="form/recurrence">
-                    <xsl:attribute name="class">invisible</xsl:attribute>
-                  </xsl:if>
+                    <xsl:if test="form/recurrence">
+                      <xsl:attribute name="class">invisible</xsl:attribute>
+                    </xsl:if>
                     <tr>
                       <td id="recurrenceFrequency" rowspan="2">
                         <em><xsl:copy-of select="$bwStr-AEEF-Frequency"/></em><br/>
@@ -1088,7 +1088,7 @@
                                 <xsl:attribute name="value"><xsl:value-of select="form/recurrence/interval"/></xsl:attribute>
                               </xsl:if>
                             </input>
-                           <xsl:copy-of select="$bwStr-AEEF-Year"/>
+                            <xsl:copy-of select="$bwStr-AEEF-Year"/>
                           </p>
                           <div id="yearRecurFields">
                             <div id="yearRecurFields1">
@@ -1174,9 +1174,9 @@
                     <xsl:copy-of select="$bwStr-AEEF-RecurrenceAndExceptionDates"/>
                   </h4>
                   <div id="raContent">
-                      <div class="dateStartEndBox" id="rdatesFormFields">
-                        <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
-                        <!--
+                    <div class="dateStartEndBox" id="rdatesFormFields">
+                      <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
+                      <!--
                         <input type="checkbox" name="dateOnly" id="rdateDateOnly" onclick="swapRdateAllDay(this)" value="true"/>
                         all day
                         <input type="checkbox" name="floating" id="rdateFloating" onclick="swapRdateFloatingTime(this)" value="true"/>
@@ -1184,68 +1184,68 @@
                         store time as coordinated universal time (UTC)
                         <input type="checkbox" name="storeUTC" id="rdateStoreUTC" onclick="swapRdateStoreUTC(this)" value="true"/>
                         store as UTC<br/>-->
-                        <div class="dateFields">
-                          <!-- input name="eventRdate.date"
+                      <div class="dateFields">
+                        <!-- input name="eventRdate.date"
                                  dojoType="dropdowndatepicker"
                                  formatLength="medium"
                                  value="today"
                                  saveFormat="yyyyMMdd"
                                  id="bwEventWidgeRdate"
                                  iconURL="{$resourcesRoot}/images/calIcon.gif"/-->
-                          <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
-                          <script type="text/javascript">
-                            <xsl:comment>
+                        <input type="text" name="eventRdate.date" id="bwEventWidgetRdate" size="10"/>
+                        <script type="text/javascript">
+                          <xsl:comment>
                             /*$("#bwEventWidgetRdate").datepicker({
                               defaultDate: new Date(<xsl:value-of select="form/start/yearText/input/@value"/>, <xsl:value-of select="number(form/start/month/select/option[@selected = 'selected']/@value) - 1"/>, <xsl:value-of select="form/start/day/select/option[@selected = 'selected']/@value"/>),
                               dateFormat: "yymmdd"
                             }).attr("readonly", "readonly");
                             $("#bwEventWidgetRdate").val('<xsl:value-of select="substring-before(form/start/rfc3339DateTime,'T')"/>');*/
-                            </xsl:comment>
-                          </script>
-                        </div>
-                        <div id="rdateTimeFields" class="timeFields">
-                         <select name="eventRdate.hour" id="eventRdateHour">
-                            <option value="00">00</option>
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03">03</option>
-                            <option value="04">04</option>
-                            <option value="05">05</option>
-                            <option value="06">06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12" selected="selected">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                          </select>
-                          <select name="eventRdate.minute" id="eventRdateMinute">
-                            <option value="00" selected="selected">00</option>
-                            <option value="05">05</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                            <option value="30">30</option>
-                            <option value="35">35</option>
-                            <option value="40">40</option>
-                            <option value="45">45</option>
-                            <option value="50">50</option>
-                            <option value="55">55</option>
-                          </select>
-                         <xsl:text> </xsl:text>
-                         <img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" id="bwRecExcClock" alt="*"/>
+                          </xsl:comment>
+                        </script>
+                      </div>
+                      <div id="rdateTimeFields" class="timeFields">
+                        <select name="eventRdate.hour" id="eventRdateHour">
+                          <option value="00">00</option>
+                          <option value="01">01</option>
+                          <option value="02">02</option>
+                          <option value="03">03</option>
+                          <option value="04">04</option>
+                          <option value="05">05</option>
+                          <option value="06">06</option>
+                          <option value="07">07</option>
+                          <option value="08">08</option>
+                          <option value="09">09</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12" selected="selected">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                        </select>
+                        <select name="eventRdate.minute" id="eventRdateMinute">
+                          <option value="00" selected="selected">00</option>
+                          <option value="05">05</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                          <option value="20">20</option>
+                          <option value="25">25</option>
+                          <option value="30">30</option>
+                          <option value="35">35</option>
+                          <option value="40">40</option>
+                          <option value="45">45</option>
+                          <option value="50">50</option>
+                          <option value="55">55</option>
+                        </select>
+                        <xsl:text> </xsl:text>
+                        <img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" id="bwRecExcClock" alt="*"/>
 
                         <select name="tzid" id="rdateTzid" class="timezones">
                           <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
@@ -1261,23 +1261,23 @@
                         </select>
                       </div>
                       <xsl:text> </xsl:text>
-                        <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
-                        <span>
+                      <!--bwRdates.update() accepts: date, time, allDay, floating, utc, tzid-->
+                      <span>
                         <xsl:if test="$canEdit = 'false'"><xsl:attribute name="class">invisible</xsl:attribute></xsl:if>
                         <input type="button" name="rdate" value="{$bwStr-AEEF-AddRecurance}" onclick="bwRdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/>
-                          <!-- input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/-->
+                        <!-- input type="button" name="exdate" value="add exception" onclick="bwExdates.update(this.form['eventRdate.date'].value,this.form['eventRdate.hour'].value + this.form['eventRdate.minute'].value,false,false,false,this.form.tzid.value)"/-->
                       </span>
                       <br class="clear"/>
 
                       <input type="hidden" name="rdates" value="" id="bwRdatesField"/>
-                        <!-- if there are no recurrence dates, the following table will show -->
-                        <table cellspacing="0" class="invisible" id="bwCurrentRdatesNone">
+                      <!-- if there are no recurrence dates, the following table will show -->
+                      <table cellspacing="0" class="invisible" id="bwCurrentRdatesNone">
                         <tr><th><xsl:copy-of select="$bwStr-AEEF-RecurrenceDates"/></th></tr>
                         <tr><td><xsl:copy-of select="$bwStr-AEEF-NoRecurrenceDates"/></td></tr>
                       </table>
 
-                        <!-- if there are recurrence dates, the following table will show -->
-                        <table cellspacing="0" class="invisible" id="bwCurrentRdates">
+                      <!-- if there are recurrence dates, the following table will show -->
+                      <table cellspacing="0" class="invisible" id="bwCurrentRdates">
                         <tr>
                           <th colspan="4"><xsl:copy-of select="$bwStr-AEEF-RecurrenceDates"/></th>
                         </tr>
@@ -1290,21 +1290,21 @@
                       </table>
 
                       <input type="hidden" name="exdates" value="" id="bwExdatesField"/>
-                        <!-- if there are no exception dates, the following table will show -->
-                        <table cellspacing="0" class="invisible" id="bwCurrentExdatesNone">
+                      <!-- if there are no exception dates, the following table will show -->
+                      <table cellspacing="0" class="invisible" id="bwCurrentExdatesNone">
                         <tr><th><xsl:copy-of select="$bwStr-AEEF-ExceptionDates"/></th></tr>
                         <tr><td><xsl:copy-of select="$bwStr-AEEF-NoExceptionDates"/></td></tr>
                       </table>
 
-                        <!-- if there are exception dates, the following table will show -->
-                        <table cellspacing="0" class="invisible" id="bwCurrentExdates">
+                      <!-- if there are exception dates, the following table will show -->
+                      <table cellspacing="0" class="invisible" id="bwCurrentExdates">
                         <tr>
                           <th colspan="4"><xsl:copy-of select="$bwStr-AEEF-NoExceptionDates"/></th>
                         </tr>
                         <tr class="colNames">
                           <td><xsl:copy-of select="$bwStr-AEEF-Date"/></td>
-                        <td><xsl:copy-of select="$bwStr-AEEF-TIME"/></td>
-                        <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
+                          <td><xsl:copy-of select="$bwStr-AEEF-TIME"/></td>
+                          <td><xsl:copy-of select="$bwStr-AEEF-TZid"/></td>
                           <td></td>
                         </tr>
                       </table>
@@ -1724,35 +1724,35 @@
 
                 <label for="xBwRegistrationOpensDate" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-RegistrationOpens"/></label>
                 <div class="dateFields">
-                   <input type="text" name="xBwRegistrationOpensDate" id="xBwRegistrationOpensDate" size="10"/>
+                  <input type="text" name="xBwRegistrationOpensDate" id="xBwRegistrationOpensDate" size="10"/>
                 </div>
                 <div class="timeFields" id="xBwRegistrationOpensTimeFields">
-                   <select name="xBwRegistrationOpens.hour" id="xBwRegistrationOpensHour">
-                     <xsl:copy-of select="form/start/hour/select/*"/>
-                   </select>
-                   <select name="xBwRegistrationOpens.minute" id="xBwRegistrationOpensMinute">
-                     <xsl:copy-of select="form/start/minute/select/*"/>
-                   </select>
-                   <xsl:if test="form/start/ampm">
-                     <select name="xBwRegistrationOpens.ampm" id="xBwRegistrationOpensAmpm">
-                       <xsl:copy-of select="form/start/ampm/select/*"/>
-                     </select>
-                   </xsl:if>
-                   <xsl:text> </xsl:text>
-                   <img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" id="xBwRegistrationOpensClock" alt="*"/>
+                  <select name="xBwRegistrationOpens.hour" id="xBwRegistrationOpensHour">
+                    <xsl:copy-of select="form/start/hour/select/*"/>
+                  </select>
+                  <select name="xBwRegistrationOpens.minute" id="xBwRegistrationOpensMinute">
+                    <xsl:copy-of select="form/start/minute/select/*"/>
+                  </select>
+                  <xsl:if test="form/start/ampm">
+                    <select name="xBwRegistrationOpens.ampm" id="xBwRegistrationOpensAmpm">
+                      <xsl:copy-of select="form/start/ampm/select/*"/>
+                    </select>
+                  </xsl:if>
+                  <xsl:text> </xsl:text>
+                  <img src="{$resourcesRoot}/images/clockIcon.gif" width="16" height="15" id="xBwRegistrationOpensClock" alt="*"/>
 
-                   <select name="xBwRegistrationOpens.tzid" id="xBwRegistrationOpensTzid" class="timezones">
-                     <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-                     <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
-                     <xsl:variable name="xBwRegistrationOpensTzId" select="form/start/tzid"/>
-                     <xsl:for-each select="/bedework/timezones/timezone">
-                       <option>
-                         <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
-                         <xsl:if test="$xBwRegistrationOpensTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-                         <xsl:value-of select="name"/>
-                       </option>
-                     </xsl:for-each>
-                   </select>
+                  <select name="xBwRegistrationOpens.tzid" id="xBwRegistrationOpensTzid" class="timezones">
+                    <xsl:if test="form/floating/input/@checked='checked'"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+                    <option value="-1"><xsl:copy-of select="$bwStr-AEEF-SelectTimezone"/></option>
+                    <xsl:variable name="xBwRegistrationOpensTzId" select="form/start/tzid"/>
+                    <xsl:for-each select="/bedework/timezones/timezone">
+                      <option>
+                        <xsl:attribute name="value"><xsl:value-of select="id"/></xsl:attribute>
+                        <xsl:if test="$xBwRegistrationOpensTzId = id"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+                        <xsl:value-of select="name"/>
+                      </option>
+                    </xsl:for-each>
+                  </select>
                 </div>
                 <xsl:text> </xsl:text><span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-RegistrationOpensInfo"/></span><br/>
                 <!-- Set the registration start date/time fields if populated  -->
@@ -1760,16 +1760,16 @@
                   <script type="text/javascript">
                     $(document).ready(function() {
                        $("#xBwRegistrationOpensDate").val("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,1,4)"/>-<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,5,2)"/>-<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,7,2)"/>");
-                       <xsl:choose>
-                         <xsl:when test="form/start/ampm"><!-- we're in am/pm mode -->$("#xBwRegistrationOpensHour").val(hour24ToAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,10,2)"/>"));
+                    <xsl:choose>
+                      <xsl:when test="form/start/ampm"><!-- we're in am/pm mode -->$("#xBwRegistrationOpensHour").val(hour24ToAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,10,2)"/>"));
                            $("#xBwRegistrationOpensMinute").val(hour24ToAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,12,2)"/>"));
                            $("#xBwRegistrationOpensAmpm").val(hour24GetAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,10,2)"/>"));
-                         </xsl:when>
-                         <xsl:otherwise>
+                      </xsl:when>
+                      <xsl:otherwise>
                            $("#xBwRegistrationOpensHour").val("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,10,2)"/>");
                            $("#xBwRegistrationOpensMinute").val("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/values/text,12,2)"/>");
-                         </xsl:otherwise>
-                       </xsl:choose>
+                      </xsl:otherwise>
+                    </xsl:choose>
                        $("#xBwRegistrationOpensTzid").val("<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']/parameters/TZID"/>");
                     });
                   </script>
@@ -1813,16 +1813,16 @@
                   <script type="text/javascript">
                     $(document).ready(function() {
                        $("#xBwRegistrationClosesDate").val("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,1,4)"/>-<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,5,2)"/>-<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,7,2)"/>");
-                       <xsl:choose>
-                         <xsl:when test="form/start/ampm"><!-- we're in am/pm mode -->$("#xBwRegistrationClosesHour").val(hour24ToAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,10,2)"/>"));
+                    <xsl:choose>
+                      <xsl:when test="form/start/ampm"><!-- we're in am/pm mode -->$("#xBwRegistrationClosesHour").val(hour24ToAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,10,2)"/>"));
                            $("#xBwRegistrationClosesMinute").val(hour24ToAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,12,2)"/>"));
                            $("#xBwRegistrationClosesAmpm").val(hour24GetAmpm("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,10,2)"/>"));
-                         </xsl:when>
-                         <xsl:otherwise>
+                      </xsl:when>
+                      <xsl:otherwise>
                            $("#xBwRegistrationClosesHour").val("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,10,2)"/>");
                            $("#xBwRegistrationClosesMinute").val("<xsl:value-of select="substring(form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/values/text,12,2)"/>");
-                         </xsl:otherwise>
-                       </xsl:choose>
+                      </xsl:otherwise>
+                    </xsl:choose>
                        $("#xBwRegistrationClosesTzid").val("<xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-REGISTRATION-END']/parameters/TZID"/>");
                     });
                   </script>
@@ -1855,106 +1855,94 @@
           </td>
         </tr>
 
-        <!--  Category  --><!--
-          direct setting of categories is deprecated; if you want to reenable, uncomment this block - but
-          be forwarned that this will have peculiar consequences if using the submissions client
-          --><!--
-        <tr>
-          <td class="fieldName">
-            Categories:
-          </td>
-          <td>
-            <a href="javascript:toggleVisibility('bwEventCategories','visible')">
-              show/hide categories
-            </a>
-            <div id="bwEventCategories" class="invisible">
-              <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
-                <input type="radio" name="categoryCheckboxes" value="preferred" checked="checked" onclick="changeClass('preferredCategoryCheckboxes','shown');changeClass('allCategoryCheckboxes','invisible');"/>preferred
-                <input type="radio" name="categoryCheckboxes" value="all" onclick="changeClass('preferredCategoryCheckboxes','invisible');changeClass('allCategoryCheckboxes','shown')"/>all<br/>
-                <table cellpadding="0" id="preferredCategoryCheckboxes">
+        <!-- Suggestions  -->
+        <xsl:if test="/bedework/suggestionEnabled = 'true'">
+          <tr>
+            <td class="fieldName">
+            Suggest To:
+            </td>
+            <td>
+              <a href="javascript:toggleVisibility('bwSuggestions','visible')">
+              show/hide list of groups
+              </a>
+              <div id="bwSuggestions" class="invisible">
+                <xsl:if test="form/suggestTo/preferred">
+                  <input type="radio" name="suggestTo" value="preferred" checked="checked" onclick="changeClass('preferredsuggestTo','shown');changeClass('allsuggestTo','invisible');"/>preferred
+                  <input type="radio" name="suggestTo" value="all" onclick="changeClass('preferredsuggestTo','invisible');changeClass('allsuggestTo','shown')"/>all<br/>
+
+                  <table cellpadding="0" id="preferredsuggestTo">
+                    <tr>
+                      <xsl:variable name="groupCount" select="count(form/suggestTo/preferred/group)"/>
+                      <td>
+                        <xsl:for-each select="form/suggestTo/preferred/group[position() &lt;= ceiling($groupCount div 2)]">
+                          <xsl:sort select="value" order="ascending"/>
+                          <input type="checkbox" name="groupHref">
+                            <xsl:attribute name="value"><xsl:value-of select="href"/></xsl:attribute>
+                            <xsl:attribute name="id">pref-<xsl:value-of select="href"/></xsl:attribute>
+                            <xsl:attribute name="onchange">setGroupChBx('pref-<xsl:value-of select="href"/>','all-<xsl:value-of select="href"/>')</xsl:attribute>
+                            <xsl:if test="uid = ../../current//group/href"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                            <xsl:value-of select="name"/>
+                          </input><br/>
+                        </xsl:for-each>
+                      </td>
+                      <td>
+                        <xsl:for-each select="form/suggestTo/preferred/group[position() &gt; ceiling($groupCount div 2)]">
+                          <xsl:sort select="value" order="ascending"/>
+                          <input type="checkbox" name="groupHref">
+                            <xsl:attribute name="value"><xsl:value-of select="href"/></xsl:attribute>
+                            <xsl:attribute name="id">pref-<xsl:value-of select="href"/></xsl:attribute>
+                            <xsl:attribute name="onchange">setGroupChBx('pref-<xsl:value-of select="href"/>','all-<xsl:value-of select="href"/>')</xsl:attribute>
+                            <xsl:if test="uid = ../../current//group/href"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                            <xsl:value-of select="name"/>
+                          </input><br/>
+                        </xsl:for-each>
+                      </td>
+                    </tr>
+                  </table>
+                </xsl:if>
+                <table cellpadding="0" id="allsuggestTo">
+                  <!-- <xsl:if test="form/suggestTo/preferred">
+                  <xsl:attribute name="class">invisible</xsl:attribute>
+                </xsl:if> -->
                   <tr>
-                    <xsl:variable name="catCount" select="count(form/categories/preferred/category)"/>
+                    <xsl:variable name="groupCount" select="count(form/suggestTo/all/group)"/>
                     <td>
-                      <xsl:for-each select="form/categories/preferred/category[position() &lt;= ceiling($catCount div 2)]">
-                        <xsl:sort select="value" order="ascending"/>
-                        <input type="checkbox" name="catUid">
-                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="uid"/>','all-<xsl:value-of select="uid"/>')</xsl:attribute>
-                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
-                            <xsl:attribute name="disabled">disabled</xsl:attribute>
+                      <xsl:for-each select="form/suggestTo/all/group[position() &lt;= ceiling($groupCount div 2)]">
+                        <input type="checkbox" name="groupHref">
+                          <xsl:attribute name="value"><xsl:value-of select="href"/></xsl:attribute>
+                          <xsl:if test="/bedework/creating='true'">
+                            <xsl:attribute name="id">all-<xsl:value-of select="href"/></xsl:attribute>
+                            <xsl:attribute name="onchange">setGroupChBx('all-<xsl:value-of select="href"/>','pref-<xsl:value-of select="href"/>')</xsl:attribute>
                           </xsl:if>
-                          <xsl:value-of select="value"/>
+                          <xsl:if test="uid = ../../current//group/href">
+                            <xsl:attribute name="checked">checked</xsl:attribute>
+                          </xsl:if>
+                          <xsl:value-of select="name"/>
                         </input><br/>
                       </xsl:for-each>
                     </td>
                     <td>
-                      <xsl:for-each select="form/categories/preferred/category[position() &gt; ceiling($catCount div 2)]">
-                        <xsl:sort select="value" order="ascending"/>
-                        <input type="checkbox" name="catUid">
-                          <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:attribute name="id">pref-<xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:attribute name="onchange">setCatChBx('pref-<xsl:value-of select="uid"/>','all-<xsl:value-of select="uid"/>')</xsl:attribute>
-                          <xsl:if test="uid = ../../current//category/uid"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
-                            <xsl:attribute name="disabled">disabled</xsl:attribute>
+                      <xsl:for-each select="form/suggestTo/all/group[position() &gt; ceiling($groupCount div 2)]">
+                        <input type="checkbox" name="groupHref">
+                          <xsl:attribute name="value"><xsl:value-of select="href"/></xsl:attribute>
+                          <xsl:if test="/bedework/creating='true'">
+                            <xsl:attribute name="id">all-<xsl:value-of select="href"/></xsl:attribute>
+                            <xsl:attribute name="onchange">setGroupChBx('all-<xsl:value-of select="href"/>','pref-<xsl:value-of select="href"/>')</xsl:attribute>
                           </xsl:if>
-                          <xsl:value-of select="value"/>
+                          <xsl:if test="uid = ../../current//group/href">
+                            <xsl:attribute name="checked">checked</xsl:attribute>
+                          </xsl:if>
+                          <xsl:value-of select="name"/>
                         </input><br/>
                       </xsl:for-each>
                     </td>
                   </tr>
                 </table>
-              </xsl:if>
-              <table cellpadding="0" id="allCategoryCheckboxes">
-                <xsl:if test="form/categories/preferred/category and /bedework/creating='true'">
-                  <xsl:attribute name="class">invisible</xsl:attribute>
-                </xsl:if>
-                <tr>
-                  <xsl:variable name="catCount" select="count(form/categories/all/category)"/>
-                  <td>
-                    <xsl:for-each select="form/categories/all/category[position() &lt;= ceiling($catCount div 2)]">
-                      <input type="checkbox" name="catUid">
-                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:if test="/bedework/creating='true'">
-                          <xsl:attribute name="id">all-<xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="uid"/>','pref-<xsl:value-of select="uid"/>')</xsl:attribute>
-                        </xsl:if>
-                        <xsl:if test="uid = ../../current//category/uid">
-                          <xsl:attribute name="checked">checked</xsl:attribute>
-                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
-                            <xsl:attribute name="disabled">disabled</xsl:attribute>
-                          </xsl:if>
-                        </xsl:if>
-                        <xsl:value-of select="value"/>
-                      </input><br/>
-                    </xsl:for-each>
-                  </td>
-                  <td>
-                    <xsl:for-each select="form/categories/all/category[position() &gt; ceiling($catCount div 2)]">
-                      <input type="checkbox" name="catUid">
-                        <xsl:attribute name="value"><xsl:value-of select="uid"/></xsl:attribute>
-                        <xsl:if test="/bedework/creating='true'">
-                          <xsl:attribute name="id">all-<xsl:value-of select="uid"/></xsl:attribute>
-                          <xsl:attribute name="onchange">setCatChBx('all-<xsl:value-of select="uid"/>','pref-<xsl:value-of select="uid"/>')</xsl:attribute>
-                        </xsl:if>
-                        <xsl:if test="uid = ../../current//category/uid">
-                          <xsl:attribute name="checked">checked</xsl:attribute>
-                          <xsl:if test="uid = /bedework/currentCalSuite/defaultCategories//category/uid">
-                            <xsl:attribute name="disabled">disabled</xsl:attribute>
-                          </xsl:if>
-                        </xsl:if>
-                        <xsl:value-of select="value"/>
-                      </input><br/>
-                    </xsl:for-each>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </td>
-        </tr>
-        --><!-- note --><!-- let's shut this off for now - needs rewriting if we keep it at all
+              </div>
+            </td>
+          </tr>
+        </xsl:if>
+        <!-- note --><!-- let's shut this off for now - needs rewriting if we keep it at all
         <tr>
           <td colspan="2" style="padding-top: 1em;">
             <span class="fieldInfo">
@@ -2073,20 +2061,20 @@
               </xsl:if>
             </input>
             <label for="{generate-id(path)}">
-            <xsl:choose>
-              <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
-                <strong><xsl:value-of select="summary"/></strong>
-              </xsl:when>
-              <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text">
-                <strong><xsl:value-of select="summary"/></strong>
-              </xsl:when>
-              <xsl:when test="/bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text = substring-after(aliasUri,'bwcal://')">
-                <strong><xsl:value-of select="summary"/></strong>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="summary"/>
-              </xsl:otherwise>
-            </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$virtualPath = /bedework/formElements/form/xproperties//X-BEDEWORK-ALIAS/values/text">
+                  <strong><xsl:value-of select="summary"/></strong>
+                </xsl:when>
+                <xsl:when test="path = /bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text">
+                  <strong><xsl:value-of select="summary"/></strong>
+                </xsl:when>
+                <xsl:when test="/bedework/formElements/form/xproperties//X-BEDEWORK-SUBMIT-ALIAS/values/text = substring-after(aliasUri,'bwcal://')">
+                  <strong><xsl:value-of select="summary"/></strong>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="summary"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </label>
           </xsl:otherwise>
         </xsl:choose>

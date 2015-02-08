@@ -23,7 +23,7 @@
   <xsl:template name="head">
 
     <head>
-      <title>BW 4.0:
+      <title>BW 3.10:
         <xsl:if test="/bedework/page='event'">
           <xsl:value-of select="/bedework/event/summary" />
           <xsl:text> - </xsl:text>

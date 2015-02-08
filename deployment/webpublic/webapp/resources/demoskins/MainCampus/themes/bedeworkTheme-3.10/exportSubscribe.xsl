@@ -232,7 +232,7 @@
               <em><xsl:copy-of select="$bwStr-exSu-DefaultTrue "/></em>
               <div id="bwExpJsSetTitle">
                 <xsl:copy-of select="$bwStr-exSu-TitleColon"/>
-                <input size="20" id="bwExpJsSetTitleName" name="jsTitleName" onblur="updateUrlDisplay();" type="text" value="$bwStr-exSu-UpcomingEvents"/>
+                <input size="20" id="bwExpJsSetTitleName" name="jsTitleName" onblur="updateUrlDisplay();" type="text" value="{$bwStr-exSu-UpcomingEvents}"/>
                 <em><xsl:copy-of select="$bwStr-exSu-DefaultUpcomingEvents"/></em>
               </div>
             </div>

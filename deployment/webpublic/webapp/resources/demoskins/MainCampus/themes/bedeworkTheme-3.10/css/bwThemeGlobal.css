@@ -280,7 +280,6 @@ label {
 }
 .bwMenuTree {
   margin: 0.5em 0 0 1em;
-  white-space: nowrap;
   font-size: 1.2em;
 }
 .bwMenuTree ul {
@@ -290,12 +289,13 @@ label {
 .bwMenuTree li {
   list-style: none;
   margin-left: 14px;
+  margin-bottom: 4px;
+  line-height: 16px;
 }
 .bwMenuTree li.hasChildren {
-  margin-left: 2px;
 }
 .bwMenuTree li ul {
-  margin-left: 14px;
+  margin-top: 4px;
 }
 .bwMenuTree li.selected {
   font-weight: bold;
@@ -316,6 +316,7 @@ label {
   display: block;
   float: left;
   margin-right: 2px;
+  margin-left: -14px;
   width: 10px;
   height: 10px;
   text-align: center;
