@@ -1880,7 +1880,12 @@
                             <xsl:attribute name="value"><xsl:value-of select="href"/></xsl:attribute>
                             <xsl:attribute name="id">pref-<xsl:value-of select="href"/></xsl:attribute>
                             <xsl:attribute name="onchange">setGroupChBx('pref-<xsl:value-of select="href"/>','all-<xsl:value-of select="href"/>')</xsl:attribute>
-                            <xsl:if test="uid = ../../current//group/href"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                            <xsl:variable name="href" select="href"/>
+                            <xsl:for-each select="/bedework/formElements/form/xproperties/X-BEDEWORK-SUGGESTED-TO">
+                              <xsl:if test="$href = substring-after(values/text,':')">
+                                 <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+                              </xsl:if>
+                            </xsl:for-each>
                             <xsl:value-of select="name"/>
                           </input><br/>
                         </xsl:for-each>
@@ -1892,7 +1897,12 @@
                             <xsl:attribute name="value"><xsl:value-of select="href"/></xsl:attribute>
                             <xsl:attribute name="id">pref-<xsl:value-of select="href"/></xsl:attribute>
                             <xsl:attribute name="onchange">setGroupChBx('pref-<xsl:value-of select="href"/>','all-<xsl:value-of select="href"/>')</xsl:attribute>
-                            <xsl:if test="uid = ../../current//group/href"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+                            <xsl:variable name="href" select="href"/>
+                            <xsl:for-each select="/bedework/formElements/form/xproperties/X-BEDEWORK-SUGGESTED-TO">
+                              <xsl:if test="$href = substring-after(values/text,':')">
+                                 <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+                              </xsl:if>
+                            </xsl:for-each>
                             <xsl:value-of select="name"/>
                           </input><br/>
                         </xsl:for-each>
@@ -1901,9 +1911,9 @@
                   </table>
                 </xsl:if>
                 <table cellpadding="0" id="allsuggestTo">
-                  <!-- <xsl:if test="form/suggestTo/preferred">
-                  <xsl:attribute name="class">invisible</xsl:attribute>
-                </xsl:if> -->
+                  <xsl:if test="form/suggestTo/preferred">
+                    <xsl:attribute name="class">invisible</xsl:attribute>
+                  </xsl:if>
                   <tr>
                     <xsl:variable name="groupCount" select="count(form/suggestTo/all/group)"/>
                     <td>
@@ -1914,9 +1924,12 @@
                             <xsl:attribute name="id">all-<xsl:value-of select="href"/></xsl:attribute>
                             <xsl:attribute name="onchange">setGroupChBx('all-<xsl:value-of select="href"/>','pref-<xsl:value-of select="href"/>')</xsl:attribute>
                           </xsl:if>
-                          <xsl:if test="uid = ../../current//group/href">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                          </xsl:if>
+                          <xsl:variable name="href" select="href"/>
+                          <xsl:for-each select="/bedework/formElements/form/xproperties/X-BEDEWORK-SUGGESTED-TO">
+                            <xsl:if test="$href = substring-after(values/text,':')">
+                               <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+                            </xsl:if>
+                          </xsl:for-each>
                           <xsl:value-of select="name"/>
                         </input><br/>
                       </xsl:for-each>
@@ -1929,10 +1942,13 @@
                             <xsl:attribute name="id">all-<xsl:value-of select="href"/></xsl:attribute>
                             <xsl:attribute name="onchange">setGroupChBx('all-<xsl:value-of select="href"/>','pref-<xsl:value-of select="href"/>')</xsl:attribute>
                           </xsl:if>
-                          <xsl:if test="uid = ../../current//group/href">
-                            <xsl:attribute name="checked">checked</xsl:attribute>
-                          </xsl:if>
-                          <xsl:value-of select="name"/>
+                          <xsl:variable name="href" select="href"/>
+                          <xsl:for-each select="/bedework/formElements/form/xproperties/X-BEDEWORK-SUGGESTED-TO">
+                             <xsl:if test="$href = substring-after(values/text,':')">
+                               <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+                            </xsl:if>
+                          </xsl:for-each>
+                          <xsl:value-of select="name"/>  
                         </input><br/>
                       </xsl:for-each>
                     </td>

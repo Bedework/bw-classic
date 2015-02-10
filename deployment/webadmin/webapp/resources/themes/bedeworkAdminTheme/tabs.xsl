@@ -65,7 +65,8 @@
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
           <a>
-            <xsl:attribute name="href"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;listAllEvents=false&amp;sort=dtstart.utc:asc</xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="P:<xsl:value-of
+                    select="/bedework/currentCalSuite/groupHref"/>")&amp;listAllEvents=true&amp;sort=dtstart.utc:asc</xsl:attribute>
             <xsl:copy-of select="$bwStr-Head-SuggestionQueueEvents"/>
           </a>
         </li>
