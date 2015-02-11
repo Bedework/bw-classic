@@ -9,7 +9,7 @@
   <dataOutPrefix>eventreg</dataOutPrefix>
   <hibernateProperties>
     <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
-    <hibernateProperty>hibernate.connection.datasource=java:/CalendarDS</hibernateProperty>
+    <hibernateProperty>hibernate.connection.datasource=java:/EventregDS</hibernateProperty>
     <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
     <hibernateProperty>hibernate.show_sql=false</hibernateProperty>
     <hibernateProperty>hibernate.format_sql=true</hibernateProperty>
@@ -17,7 +17,7 @@
     <hibernateProperty>hibernate.jdbc.batch_size=0</hibernateProperty>
     <hibernateProperty>hibernate.jdbc.batch_versioned_data=true</hibernateProperty>
     <hibernateProperty>hibernate.jdbc.use_streams_for_binary=true</hibernateProperty>
-    <hibernateProperty>hibernate.cache.region_prefix=calendardb</hibernateProperty>
+    <hibernateProperty>hibernate.cache.region_prefix=eventregdb</hibernateProperty>
     <hibernateProperty>hibernate.cache.use_second_level_cache=false</hibernateProperty>
     <hibernateProperty>hibernate.cache.use_query_cache=true</hibernateProperty>
     <hibernateProperty>hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider</hibernateProperty>
