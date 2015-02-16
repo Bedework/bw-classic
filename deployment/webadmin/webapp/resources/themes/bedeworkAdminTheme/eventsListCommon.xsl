@@ -239,7 +239,7 @@
                 </a> |
               </xsl:when>
               <xsl:otherwise>
-                <a href="{$event-fetchForUpdate}calPath={$calPath}&amp;guid={$guid}">
+                <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}">
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
                 </a> |
               </xsl:otherwise>

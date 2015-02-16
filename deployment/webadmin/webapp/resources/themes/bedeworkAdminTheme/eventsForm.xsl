@@ -1948,7 +1948,7 @@
                                <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
                             </xsl:if>
                           </xsl:for-each>
-                          <xsl:value-of select="name"/>  
+                          <xsl:value-of select="name"/>
                         </input><br/>
                       </xsl:for-each>
                     </td>
@@ -2271,7 +2271,7 @@
                   <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="{$backToListLink}" class="noFocus"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:variable name="backToListLink">location.href='<xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="/bedework/currentdate/date"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))&amp;sort=dtstart.utc:asc'</xsl:variable>
+                  <xsl:variable name="backToListLink">location.href='<xsl:value-of select="$event-initUpdateEvent"/>&amp;start=<xsl:value-of select="/bedework/currentdate/date"/>&amp;listMode=true&amp;listAllEvents=false&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))&amp;sort=dtstart.utc:asc'</xsl:variable>
                   <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="{$backToListLink}" class="noFocus"/>
                 </xsl:otherwise>
               </xsl:choose>
