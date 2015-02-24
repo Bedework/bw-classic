@@ -52,6 +52,23 @@ activemquri="vm://bedework"
 
 exprfilters=INFO
 
+# Figure out where java is for version checks
+if [ "x$JAVA" = "x" ]; then
+    if [ "x$JAVA_HOME" != "x" ]; then
+	JAVA="$JAVA_HOME/bin/java"
+    else
+	JAVA="java"
+    fi
+fi
+
+version=$("$JAVA" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+#echo version "$version"
+#echo "${version:0:3}"
+java8plus=false
+if [[ "${version:0:3}" > "1.7" ]]; then
+  java8plus=true
+fi
+
 # =================== End defaults ===============================
 
 LOG_THRESHOLD="-Djboss.server.log.threshold=INFO"
@@ -176,7 +193,11 @@ JAVA_OPTS="$JAVA_OPTS $profiler"
 
 HAWT_OPTS="-Dhawtio.authenticationEnabled=true"
 
-export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
+if [ "$java8plus" = "true" ] ; then
+  export JAVA_OPTS="$JAVA_OPTS -XX:MetaspaceSize=$permsize -XX:MaxMetaspaceSize=$permsize"
+else
+  export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
+fi
 
 RUN_CMD="./$JBOSS_VERSION/bin/run.sh"
 RUN_CMD="$RUN_CMD -c $JBOSS_CONFIG $JBOSS_BIND $JBOSS_PORTS"

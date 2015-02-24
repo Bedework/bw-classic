@@ -521,6 +521,14 @@ if [ -z "$JAVA_HOME" -o ! -d "$JAVA_HOME" ] ; then
   errorUsage "JAVA_HOME is not defined correctly for bedework."
 fi
 
+version=$("$JAVA_HOME/bin/java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+#echo version "$version"
+#echo "${version:0:3}"
+java8plus=false
+if [[ "${version:0:3}" > "1.7" ]]; then
+  java8plus=true
+fi
+
 #saveddir=`pwd`
 saveddir=$GIT_HOME
 
@@ -965,7 +973,11 @@ export GIT_HOME
 
 javacmd="$JAVA_HOME/bin/java -classpath $CLASSPATH"
 # Build (of bwxml) blew up with permgen error
-javacmd="$javacmd -Xmx512M -XX:MaxPermSize=512M"
+if [ "$java8plus" = "true" ] ; then
+  javacmd="$javacmd -Xmx512M -XX:MaxMetaspaceSize=512m"
+else
+  javacmd="$javacmd -Xmx512M -XX:MaxPermSize=512M"
+fi
 
 javacmd="$javacmd $ant_xmllogfile $offline"
 javacmd="$javacmd -Dant.home=$antHome org.apache.tools.ant.launch.Launcher"
