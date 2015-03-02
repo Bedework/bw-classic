@@ -116,7 +116,7 @@
             <ul class="subscriptionsListSubs">
               <!--<xsl:for-each select="/bedework/calendars/calendar//calendar[isSubscription = 'true' or calType = '0']">
                 <xsl:sort select="substring-after(path, $userPath)" order="ascending" case-order="upper-first"/>-->
-              <xsl:apply-templates select="/bedework/calendars/calendar/calendar[(calType &lt; 2) and (name != 'calendar') and not(starts-with(name,'.cs'))]" mode="availableForViews">
+              <xsl:apply-templates select="/bedework/calendars/calendar/calendar[((calType &lt; 2) or (calType = 8)) and (name != 'calendar') and not(starts-with(name,'.cs'))]" mode="availableForViews">
                 <xsl:sort select="summary" order="ascending" case-order="upper-first"/>
               </xsl:apply-templates>
             </ul>

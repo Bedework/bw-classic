@@ -260,6 +260,7 @@ actionUpdateall() {
 setDirectory() {
     specialTarget=
     postDeploy=
+    maven=
 #    deploy=
 
 #     Special targets
@@ -1009,7 +1010,6 @@ postDeploycmd="$postDeploycmd --props $deployConfig"
 
 while true
 do
-  maven=
   setDirectory
 
 

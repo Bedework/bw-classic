@@ -144,6 +144,12 @@
           </td>
         </tr>
         <tr>
+          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionXlocXcontact"/></th>
+          <td>
+            <input type="checkbox" name="xlocxcontact"/>
+          </td>
+        </tr>
+        <tr>
         <h4><xsl:copy-of select="$bwStr-CuCa-SubscriptionURL"/></h4>
         <input type="hidden" value="publicTree" name="subType" id="bwSubType"/>
         <div id="subscriptionTypeExternal">
