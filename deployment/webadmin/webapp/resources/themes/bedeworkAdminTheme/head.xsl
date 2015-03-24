@@ -36,7 +36,7 @@
           var imagesRoot = resourcesRoot + "/images";
           </xsl:comment>
         </script>
-        <!-- load jQuery  -->
+        <!-- load jQuery -->
         <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-1.3.2.min.js">/* jQuery */</script>
         <script type="text/javascript" src="/bedework-common/javascript/jquery/jquery-ui-1.7.1.custom.min.js">/* jQuery UI */</script>
         <link rel="stylesheet" href="/bedework-common/javascript/jquery/css/custom-theme/jquery-ui-1.7.1.custom.css"/>
@@ -266,6 +266,9 @@
             });
             </xsl:comment>
           </script>
+        </xsl:if>
+        <xsl:if test="/bedework/page='tabSuggestionQueueEvents' or /bedework/page='modEventSuggestionQueue'">
+          <script type="text/javascript" src="{$resourcesRoot}/javascript/suggestions.js">/* Suggestion queue */</script>
         </xsl:if>
         <xsl:if test="/bedework/page='eventList'">
           <!-- now setup date and time pickers -->

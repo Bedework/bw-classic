@@ -66,6 +66,13 @@
             <xsl:copy-of select="$bwStr-TaSy-ManageCalDAVFilters"/>
           </a>
         </li>
+        <li>
+          <form name="unindex" id="bwUnindexHrefForm" action="{$index-unindex}">
+            <xsl:copy-of select="$bwStr-Idx-Unindex"/><br/>
+            <input type="text" size="40" name="href"/>
+            <input type="submit" value="{$bwStr-Cals-Go}"/>
+          </form>
+        </li>
         <li class="timezones">
           <a href="{$timezones-fix}">
             <xsl:attribute name="title"><xsl:copy-of select="$bwStr-UpTZ-FixTZNote"/></xsl:attribute>

@@ -102,7 +102,8 @@
                 </xsl:when>
                 <xsl:when test="/bedework/page='modEvent' or
                                /bedework/page='modEventPending' or
-                               /bedework/page='modEventApprovalQueue'">
+                               /bedework/page='modEventApprovalQueue' or
+                               /bedework/page='modEventSuggestionQueue'">
                   <xsl:apply-templates select="/bedework/formElements" mode="modEvent"/>
                 </xsl:when>
                 <xsl:when test="/bedework/page='displayEvent' or

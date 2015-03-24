@@ -22,7 +22,7 @@
   <!--+++++++++++++++ Users ++++++++++++++++++++-->
   <!-- templates:
          - tabUsers
-         - authUserList
+         - authUserList - for setting roles
          - modAuthUser
    -->
 
@@ -85,7 +85,7 @@
         <tr>
           <xsl:if test="position() mod 2 = 0"><xsl:attribute name="class">even</xsl:attribute></xsl:if>
           <td>
-            <xsl:value-of select="userHref"/>
+            <xsl:value-of select="substring-after(userHref,'/principals/users/')"/>
           </td>
           <td>
             <xsl:if test="publicEventUser='true'">
