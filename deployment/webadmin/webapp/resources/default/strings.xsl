@@ -19,6 +19,11 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <!-- include the common language string libraries -->
+  <xsl:include href="/bedework-common/default/default/errors.xsl" />
+  <xsl:include href="/bedework-common/default/default/messages.xsl" />
+  <xsl:include href="/bedework-common/default/default/bedeworkAccessStrings.xsl"/>
+
   <!--  xsl:template match="/" -->
   <xsl:variable name="bwStr-Root-PageTitle">Calendar Admin: Public Events Administration</xsl:variable>
   <xsl:variable name="bwStr-Root-NoAdminGroup">No administrative group</xsl:variable>
@@ -38,7 +43,7 @@
   <xsl:variable name="bwStr-Head-LoggedInAs">Logged in as:</xsl:variable>
   <xsl:variable name="bwStr-Head-LogOut">log out</xsl:variable>
   <xsl:variable name="bwStr-Head-MainMenu">Main Menu</xsl:variable>
-  <xsl:variable name="bwStr-Head-PendingEvents">Pending Events</xsl:variable>
+  <xsl:variable name="bwStr-Head-PendingEvents">Pending Queue</xsl:variable>
   <xsl:variable name="bwStr-Head-ApprovalQueueEvents">Approval Queue</xsl:variable>
   <xsl:variable name="bwStr-Head-SuggestionQueueEvents">Suggestion Queue</xsl:variable>
   <xsl:variable name="bwStr-Head-Users">Users</xsl:variable>
@@ -65,7 +70,7 @@
   <xsl:variable name="bwStr-MMnu-AddDates">all dates</xsl:variable>
 
   <!--  xsl:template name="tabPendingEvents" -->
-  <xsl:variable name="bwStr-TaPE-PendingEvents">Pending Events</xsl:variable>
+  <xsl:variable name="bwStr-TaPE-PendingEvents">Pending Queue</xsl:variable>
   <xsl:variable name="bwStr-TaPE-EventsAwaitingModeration">The following events are awaiting moderation:</xsl:variable>
 
   <!--  xsl:template name="tabApprovalQueueEvents" -->
@@ -73,8 +78,12 @@
   <xsl:variable name="bwStr-TaAQ-EventsAwaitingApproval">The following events are awaiting approval:</xsl:variable>
 
   <!--  xsl:template name="tabSuggestionQueueEvents" -->
-  <xsl:variable name="bwStr-TaAQ-SuggestionQueueEvents">Approval Queue</xsl:variable>
-  <xsl:variable name="bwStr-TaAQ-SuggestedEvents">The following events are suggested:</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-SuggestionQueueEvents">Suggestion Queue</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-SuggestedEvents">The following events are suggested by other administrative groups for inclusion in your suite:</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-View">View:</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-Suggested">suggested</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-Accepted">accepted</xsl:variable>
+  <xsl:variable name="bwStr-TaAQ-Rejected">rejected</xsl:variable>
 
   <!--  xsl:template name="tabCalsuite" -->
   <xsl:variable name="bwStr-TaCS-ManageCalendarSuite">Manage Calendar Suite</xsl:variable>
@@ -152,6 +161,7 @@
   <xsl:variable name="bwStr-AEEF-RECURRANCE">Recurrence:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-EventInfo">Event Information</xsl:variable>
   <xsl:variable name="bwStr-AEEF-YouMayTag">You may tag this event by selecting topical areas below.</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-TheFollowingEvent">The following event has been suggested for inclusion in your calendar suite.</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SubmittedBy">Submitted by</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SendMsg">send message</xsl:variable>
   <xsl:variable name="bwStr-AEEF-CommentsFromSubmitter">Comments from Submitter</xsl:variable>
@@ -331,11 +341,15 @@
   <xsl:variable name="bwStr-SEBu-UpdateEvent">Update Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-PublishEvent">Publish Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-ApproveEvent">Approve Event</xsl:variable>
+  <xsl:variable name="bwStr-SEBu-AcceptEvent">Accept Event</xsl:variable>
+  <xsl:variable name="bwStr-SEBu-RejectEvent">Reject Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-Cancel">Cancel</xsl:variable>
   <xsl:variable name="bwStr-SEBu-ClaimEvent">Claim Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-AddEvent">Add Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-CopyEvent">Copy Event</xsl:variable>
   <xsl:variable name="bwStr-SEBu-ReleaseEvent">Release Event</xsl:variable>
+  <xsl:variable name="bwStr-SEBu-Accept">Accept</xsl:variable>
+  <xsl:variable name="bwStr-SEBu-Reject">Reject</xsl:variable>
 
 
   <!--  xsl:template match="val" mode="weekMonthYearNumbers" -->
@@ -1053,6 +1067,9 @@
   <xsl:variable name="bwStr-SysS-Disable">disable</xsl:variable>
   <xsl:variable name="bwStr-SysS-FetchRefreshStats">fetch/refresh statistics</xsl:variable>
   <xsl:variable name="bwStr-SysS-DumpStatsToLog">dump stats to log</xsl:variable>
+
+  <!--  xsl:template ? -->
+  <xsl:variable name="bwStr-Idx-Unindex">Unindex an entity by Href. WARNING - may damage the index</xsl:variable>
 
   <!--  xsl:template name="searchResult" -->
   <xsl:variable name="bwStr-Srch-Search">Search:</xsl:variable>

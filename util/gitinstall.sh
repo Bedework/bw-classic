@@ -26,4 +26,5 @@ install() {
 #install "bw-calendar-engine"
 #install "bw-calendar-client"
 #install "bw-event-registration"
-install "bw-notifier"
+#install "bw-notifier"
+install "bw-cache-proxy"
