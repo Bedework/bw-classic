@@ -150,6 +150,18 @@
           </td>
         </tr>
         <tr>
+          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionXcategories"/></th>
+          <td>
+            <input type="checkbox" name="xcategories"/>
+          </td>
+        </tr>
+        <tr>
+          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionRefresh"/></th>
+          <td>
+            <input type="text" name="refinterval" value="15" size="10"/>
+          </td>
+        </tr>
+        <tr>
         <h4><xsl:copy-of select="$bwStr-CuCa-SubscriptionURL"/></h4>
         <input type="hidden" value="publicTree" name="subType" id="bwSubType"/>
         <div id="subscriptionTypeExternal">

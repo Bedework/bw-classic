@@ -56,12 +56,23 @@
       </xsl:choose>
     </xsl:variable>
 
+    <xsl:variable name="modEventSuggestionQueue">
+      <xsl:choose>
+        <xsl:when test="/bedework/page = 'modEventSuggestionQueue'">true</xsl:when>
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <!-- Determine if the current user can edit this event.
          If canEdit is false, we will only allow tagging by topical area,
          and other fields will be disabled. -->
     <xsl:variable name="canEdit">
       <xsl:choose>
-        <xsl:when test="($userPath = creator) or ($modEventPending = 'true') or ($modEventApprovalQueue = 'true') or ($superUser = 'true') or (/bedework/creating = 'true')">true</xsl:when>
+        <xsl:when test="($userPath = creator) or
+                        ($modEventPending = 'true') or
+                        ($modEventApprovalQueue = 'true') or
+                        ($superUser = 'true') or
+                        (/bedework/creating = 'true')">true</xsl:when>
         <xsl:otherwise>false</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -69,7 +80,12 @@
     <h2><xsl:copy-of select="$bwStr-AEEF-EventInfo"/></h2>
 
     <xsl:if test="$canEdit = 'false'">
-      <p><xsl:copy-of select="$bwStr-AEEF-YouMayTag"/></p>
+      <p>
+        <xsl:if test="$modEventSuggestionQueue = 'true'">
+          <xsl:copy-of select="$bwStr-AEEF-TheFollowingEvent"/><br/>
+        </xsl:if>
+        <xsl:copy-of select="$bwStr-AEEF-YouMayTag"/>
+      </p>
     </xsl:if>
 
     <xsl:if test="/bedework/page = 'modEventPending'">
@@ -137,6 +153,9 @@
         <xsl:when test="/bedework/page = 'modEventApprovalQueue'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updateApprovalQueue"/></xsl:attribute>
         </xsl:when>
+        <xsl:when test="/bedework/page = 'modEventSuggestionQueue'">
+          <xsl:attribute name="action"><xsl:value-of select="$suggest-setStatus"/></xsl:attribute>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name="action"><xsl:value-of select="$event-update"/></xsl:attribute>
         </xsl:otherwise>
@@ -167,6 +186,8 @@
         <xsl:with-param name="eventUrlPrefix" select="$eventUrlPrefix"/>
         <xsl:with-param name="canEdit" select="$canEdit"/>
         <xsl:with-param name="modEventApprovalQueue" select="$modEventApprovalQueue"/>
+        <xsl:with-param name="modEventSuggestionQueue" select="$modEventSuggestionQueue"/>
+        <xsl:with-param name="actionPrefix"><xsl:value-of select="$suggest-setStatus"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:with-param>
       </xsl:call-template>
 
       <table class="eventFormTable" title="Event Modification Form">
@@ -1856,7 +1877,7 @@
         </tr>
 
         <!-- Suggestions  -->
-        <xsl:if test="/bedework/suggestionEnabled = 'true'">
+        <xsl:if test="/bedework/suggestionEnabled = 'true' and $modEventSuggestionQueue = 'false' and $canEdit = 'true'">
           <tr>
             <td class="fieldName">
             Suggest To:
@@ -2036,6 +2057,8 @@
           <xsl:with-param name="eventUrlPrefix" select="$eventUrlPrefix"/>
           <xsl:with-param name="canEdit" select="$canEdit"/>
           <xsl:with-param name="modEventApprovalQueue" select="$modEventApprovalQueue"/>
+          <xsl:with-param name="modEventSuggestionQueue" select="$modEventSuggestionQueue"/>
+          <xsl:with-param name="actionPrefix"><xsl:value-of select="$suggest-setStatus"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:with-param>
         </xsl:call-template>
       </xsl:if>
     </form>
@@ -2113,6 +2136,8 @@
     <xsl:param name="eventUrlPrefix"/>
     <xsl:param name="canEdit"/>
     <xsl:param name="modEventApprovalQueue"/>
+    <xsl:param name="modEventSuggestionQueue"/>
+    <xsl:param name="actionPrefix"/>
 
     <xsl:variable name="escapedTitle"><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="$eventTitle"/></xsl:call-template></xsl:variable>
     <div class="submitBox">
@@ -2189,6 +2214,12 @@
             </xsl:choose>
           </span>
         </xsl:when>
+        <xsl:when test="$modEventSuggestionQueue = 'true'">
+          <xsl:variable name="backToListLink"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="P:<xsl:value-of select="/bedework/currentCalSuite/groupHref"/>")&amp;listAllEvents=true&amp;sort=dtstart.utc:asc</xsl:variable>
+          <input type="button" name="acceptEvent" value="{$bwStr-SEBu-AcceptEvent}" class="noFocus" onclick="setSuggestionStatus('accept','{$actionPrefix}','{$backToListLink}')"/>
+          <input type="button" name="rejectEvent" value="{$bwStr-SEBu-RejectEvent}" class="noFocus" onclick="setSuggestionStatus('reject','{$actionPrefix}','{$backToListLink}')"/>
+          <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="location.href='{$backToListLink}'" class="noFocus"/>
+        </xsl:when>
         <xsl:when test="($modEventApprovalQueue = 'true') and (($superUser = 'true') or ($approverUser = 'true'))">
           <div class="right">
             <input type="submit" name="delete" value="{$bwStr-SEBu-DeleteEvent}" class="noFocus"/>
@@ -2260,7 +2291,11 @@
                   <input type="submit" name="delete" value="{$bwStr-SEBu-DeleteEvent}" class="noFocus"/>
                 </div>
               </xsl:if>
-              <input type="submit" name="updateEvent" value="{$bwStr-SEBu-UpdateEvent}" class="noFocus"/>
+              <input type="submit" name="updateEvent" value="{$bwStr-SEBu-UpdateEvent}" class="noFocus">
+                <xsl:if test="$modEventSuggestionQueue = 'true'">
+                  <xsl:attribute name="value"><xsl:value-of select="$bwStr-SEBu-AcceptEvent"/></xsl:attribute>
+                </xsl:if>
+              </input>
               <xsl:if test="form/recurringEntity != 'true' and recurrenceId = '' and $canEdit = 'true'">
                 <!-- cannot duplicate recurring events for now -->
                 <input type="submit" name="copy" value="{$bwStr-SEBu-CopyEvent}" class="noFocus"/>

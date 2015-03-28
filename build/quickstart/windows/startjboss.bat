@@ -111,7 +111,8 @@ SET BW_DATA_DIR_DEF=%BW_DATA_DIR_DEF% %BW_SYNCH_DATAURI_DEF%
 :: Configurations property file
 
 SET BW_CONF_DIR=%JBOSS_SERVER_DIR%\conf\bedework
-SET BW_CONF_DIR_DEF=-Dorg.bedework.config.pfile=%BW_CONF_DIR%\config.defs
+SET BW_CONF_FILE_DEF=-Dorg.bedework.config.pfile=%BW_CONF_DIR%\config.defs
+SET BW_CONF_DIR_DEF=-Dorg.bedework.config.dir=%BW_CONF_DIR%\"
 
 :: Elastic search home
 
@@ -132,7 +133,7 @@ SET RUN_CMD=%RUN_CMD% -c %JBOSS_CONFIG%
 SET RUN_CMD=%RUN_CMD% %JBOSS_BIND% %JBOSS_PORTS%
 SET RUN_CMD=%RUN_CMD% %LOG_THRESHOLD%
 SET RUN_CMD=%RUN_CMD% %ACTIVEMQ_DIRPREFIX% %ACTIVEMQ_URI%
-SET RUN_CMD=%RUN_CMD% %BW_DATA_DIR_DEF% %BW_CONF_DIR_DEF%
+SET RUN_CMD=%RUN_CMD% %BW_CONF_DIR_DEF% %BW_CONF_FILE_DEF% %BW_DATA_DIR_DEF%
 
 :: Specifying jboss.platform.mbeanserver makes jboss use the standard
 :: platform mbean server.

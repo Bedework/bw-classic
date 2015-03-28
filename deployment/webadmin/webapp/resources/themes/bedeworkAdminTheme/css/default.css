@@ -127,7 +127,7 @@ body {
 #bwAdminMenu li.selected {
   color: #333;
   background: white url("../images/menuBgGray.gif") repeat-x top;
-  border-bottom: 1px solid white;
+  border-bottom: 2px solid white;
 }
 #bwAdminMenu a:link,
 #bwAdminMenu a:active,
@@ -190,12 +190,29 @@ th {
 }
 /* mainMenu = manage events tab icons and links */
 #mainMenu {
+  width: 100%;
+  margin: 0;
+  font-size: 0.9em;
+}
+#mainMenu.mainMenuMost {
   width: 550px;
   margin: 2em auto 12em auto;
-  font-size: 0.9em;
 }
 #mainMenu.mainMenuFull {
   width: 750px;
+  margin: 0 auto;
+}
+#mainMenu.mainMenuInline {
+  /* for approver, when workflow is enabled */
+  position: relative;
+  height: 200px;
+}
+#mainMenu.mainMenuInline ul {
+  position: absolute;
+  bottom: 0;
+}
+#mainMenu.mainMenuInline ul + ul {
+   left: 180px;
 }
 #mainMenu ul {
   clear: both;
@@ -205,7 +222,7 @@ th {
   vertical-align: middle;
   padding: 1em 0.5em;
   list-style: none;
-  float: left;
+  display: inline-block;
 }
 #mainMenu img {
   text-align: center;
@@ -442,6 +459,19 @@ ul.adminMenu li {
   font-style: italic;
   font-size: 0.9em;
   margin-top: 0.5em;
+}
+#commonListTable tr.suggestion-accepted td {
+  background-color: #dfd;
+}
+#commonListTable tr.suggestion-rejected td {
+  background-color: #fee;
+}
+#commonListTable tr.suggestion-rejected td a {
+  text-decoration: line-through;
+}
+#refreshBwList {
+  float: right;
+  margin:  1em 0 0 0;
 }
 table.eventFormTable {
   margin: 1em 0;
