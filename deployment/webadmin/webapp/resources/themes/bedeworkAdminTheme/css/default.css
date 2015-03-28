@@ -202,18 +202,6 @@ th {
   width: 750px;
   margin: 0 auto;
 }
-#mainMenu.mainMenuInline {
-  /* for approver, when workflow is enabled */
-  position: relative;
-  height: 200px;
-}
-#mainMenu.mainMenuInline ul {
-  position: absolute;
-  bottom: 0;
-}
-#mainMenu.mainMenuInline ul + ul {
-   left: 180px;
-}
 #mainMenu ul {
   clear: both;
 }

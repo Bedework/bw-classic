@@ -31,10 +31,7 @@
     </div>
 
     <div id="mainMenu">
-      <xsl:if test="/bedework/userInfo/approverUser = 'true'">
-        <xsl:attribute name="class">mainMenuInline</xsl:attribute>
-      </xsl:if>
-      <xsl:if test="/bedework/workflowEnabled = 'false'">
+      <xsl:if test="/bedework/userInfo/approverUser = 'true' or /bedework/workflowEnabled = 'false'">
         <xsl:attribute name="class">mainMenuMost</xsl:attribute>
       </xsl:if>
       <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
@@ -53,6 +50,7 @@
           </a>
         </li>
         <xsl:if test="/bedework/workflowEnabled = 'false' or
+                      /bedework/userInfo/approverUser = 'true' or
                       /bedework/userInfo/superUser = 'true'">
           <li>
             <a id="addContactLink" href="{$contact-initAdd}">
@@ -95,32 +93,29 @@
               <br/><xsl:copy-of select="$bwStr-MMnu-ManageEvents"/>
             </a>
           </li>
-          <xsl:if test="/bedework/workflowEnabled = 'false' or
-                    /bedework/userInfo/superUser = 'true'">
-            <li>
-              <a href="{$contact-initUpdate}">
-                <img src="{$resourcesRoot}/images/bwAdminManageContactsIcon.jpg" width="100" height="73" alt=""/><!-- alt tag empty for accessibility -->
-                <br/><xsl:copy-of select="$bwStr-MMnu-ManageContacts"/>
-              </a>
-            </li>
-            <li>
-              <a href="{$location-initUpdate}">
-                <img src="{$resourcesRoot}/images/bwAdminManageLocsIcon.jpg" width="100" height="73" alt=""/><!-- alt tag empty for accessibility -->
-                <br/><xsl:copy-of select="$bwStr-MMnu-ManageLocations"/>
-              </a>
-            </li>
-            <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
-              <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
-                <!--
-                  Category management is a super-user and calsuite admin feature;
-                  Categories underlie much of the new single calendar and filtering model.-->
-                <li>
-                  <a href="{$category-initUpdate}">
-                    <img src="{$resourcesRoot}/images/bwAdminManageCatsIcon.jpg" width="100" height="73" alt=""/><!-- alt tag empty for accessibility -->
-                    <br/><xsl:copy-of select="$bwStr-MMnu-ManageCategories"/>
-                  </a>
-                </li>
-              </xsl:if>
+          <li>
+            <a href="{$contact-initUpdate}">
+              <img src="{$resourcesRoot}/images/bwAdminManageContactsIcon.jpg" width="100" height="73" alt=""/><!-- alt tag empty for accessibility -->
+              <br/><xsl:copy-of select="$bwStr-MMnu-ManageContacts"/>
+            </a>
+          </li>
+          <li>
+            <a href="{$location-initUpdate}">
+              <img src="{$resourcesRoot}/images/bwAdminManageLocsIcon.jpg" width="100" height="73" alt=""/><!-- alt tag empty for accessibility -->
+              <br/><xsl:copy-of select="$bwStr-MMnu-ManageLocations"/>
+            </a>
+          </li>
+          <xsl:if test="/bedework/currentCalSuite/group = /bedework/userInfo/group">
+            <xsl:if test="/bedework/currentCalSuite/currentAccess/current-user-privilege-set/privilege/write or /bedework/userInfo/superUser = 'true'">
+              <!--
+                Category management is a super-user and calsuite admin feature;
+                Categories underlie much of the new single calendar and filtering model.-->
+              <li>
+                <a href="{$category-initUpdate}">
+                  <img src="{$resourcesRoot}/images/bwAdminManageCatsIcon.jpg" width="100" height="73" alt=""/><!-- alt tag empty for accessibility -->
+                  <br/><xsl:copy-of select="$bwStr-MMnu-ManageCategories"/>
+                </a>
+              </li>
             </xsl:if>
           </xsl:if>
         </ul>
