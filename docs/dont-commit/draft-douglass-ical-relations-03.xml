@@ -16,7 +16,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc category="std" docName="draft-douglass-ical-relations-02" ipr="trust200902">
+<rfc category="std" docName="draft-douglass-ical-relations-03" ipr="trust200902">
 
   <front>
     <title abbrev="Icalendar Relationships">Support for Icalendar Relationships</title>
@@ -173,6 +173,59 @@
       </section>
     </section>
 
+    <section anchor="qualified_name_syntax"
+             title='Qualified Name Syntax'>
+      <t>
+        Some property and parameter values need a more "structured" value
+        than simple text to be defined within a namespace. The syntax defined
+        here creates a new syntactic element that incorporates a namespace
+        component and a token component, that togther form a "qualified"
+        name.
+      </t>
+      <t>
+        <list style='hanging'>
+          <t hangText="Format Definition:">
+            <figure>
+              <preamble>
+                This syntax is defined by the following notation:
+              </preamble>
+
+              <artwork type="abnf">
+    q-name = [ "{" uri "}" ] 1*(ALPHA / DIGIT / "-")
+            / x-name
+            / iana-token
+              </artwork>
+            </figure>
+          </t>
+
+          <t hangText="Description:">
+            The value is a namespaced value in the style of Clark
+            notation [CLARK], that is the namespace is enclosed in braces,
+            "{","}".  The part following the namespace is defined by the owner of
+            that namespace and may be simple text, a path or any appropriate text
+            value.
+          </t>
+
+          <t hangText="Example:">
+            <figure>
+              <artwork>
+    REASON={http://example.org/reasons}delivery-failed
+
+    RELATED-ID;RELTYPE={http://example.org/reltypes}tracking-id:
+    1234-5678
+
+    RELATED-ID;RELTYPE={http://example.org/reltypes}type:
+    {http://example.com/ns}invoice
+
+    RELATED-ID;RELTYPE={http://example.com/ical}category:/public/
+    categories/Arts/Dance
+              </artwork>
+            </figure>
+          </t>
+        </list>
+      </t>
+    </section>
+
     <section anchor="reference_types"
              title="Reference Types">
       <t>
@@ -237,6 +290,7 @@
                           / "CHILD"     ; Child relationship
                           / "SIBLING"   ; Sibling relationship
                           / "DEPENDS-ON" ; refers to previous task
+                          / "REFID"     ; Relationship based on REFID
                           / "FINISHTOSTART" ;  Temporal relationship
                           / "FINISHTOFINISH" ;  Temporal relationship
                           / "STARTTOFINISH" ;  Temporal relationship
@@ -291,6 +345,12 @@
             Indicates that the current calendar component depends on
             the referenced calendar component in some manner. For example
             a task may be blocked waiting on the other, referenced, task.
+          </t>
+
+          <t hangText="RELTYPE=REFID:">
+            Establishes a reference from the current component to
+            components with a REFID property which matches the value
+            given in the associated RELATED-TO property.
           </t>
 
           <t hangText="RELTYPE=FINISHTOSTART:">
@@ -612,12 +672,12 @@
         </t>
       </section>
 
-      <section anchor="related-id"
-               title="Related-id">
+      <section anchor="refid"
+               title="Refid">
         <t>
           <list style='hanging'>
             <t hangText="Property name:">
-              RELATED-ID
+              REFID
             </t>
 
             <t hangText="Purpose:">
@@ -625,7 +685,7 @@
             </t>
 
             <t hangText="Value type:">
-              TEXT
+              Q-NAME
             </t>
 
             <t hangText="Property Parameters:">
@@ -651,11 +711,11 @@
             </t>
 
             <t>
-              A CUA MUST preserve any RELATED-ID property with a
+              A CUA MUST preserve any REFID property with a
               namespace it does not recognize or own. This allows other
-              CUAs to use the RELATED-ID to define groups which only
+              CUAs to use the REFID to define groups which only
               have significance to that application. For example, a
-              project management tol may flag all tasks that form part
+              project management tool may flag all tasks that form part
               of a specific project, or an itinerary tool may flag all
               events that are part of an itinerary.
             </t>
@@ -667,10 +727,10 @@
                 </preamble>
 
                 <artwork>
-  related-id      = "RELATED-ID" relidparam ":" text CRLF
+  refid      = "REFID" refidparam ":" q-name CRLF
 
 
-  relidparam      = *(
+  refidparam      = *(
 
                   ; the following is OPTIONAL
                   ; and MAY occur more than once
@@ -691,7 +751,7 @@
                 </preamble>
 
                 <artwork>
-                  RELATED-ID:{org.calconnect.project}Main-Project
+  REFID:{org.calconnect.project}Main-Project
                 </artwork>
               </figure>
             </t>
