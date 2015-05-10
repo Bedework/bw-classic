@@ -9,7 +9,7 @@ BASE_DIR=`pwd`
 PRG="$0"
 
 usage() {
-  echo "  $PRG [-heap size] [-newsize size] [-permgen size] [-debug]"
+  echo "  $PRG [-heap size] [-stack size] [-newsize size] [-permgen size] [-debug]"
   echo "       [-debugexprfilters name] [-activemquri uri]"
   echo ""
   echo " Where:"
@@ -40,6 +40,7 @@ usage() {
 }
 
 # ===================== Defaults =================================
+stack="300k"
 heap="600M"
 newsize="200M"
 permsize="256M"
@@ -86,6 +87,11 @@ do
     -heap)         # Heap size bytes or nK, nM, nG
       shift
       heap="$1"
+      shift
+      ;;
+    -stack)
+      shift
+      stack="$1"
       shift
       ;;
     -newsize)
@@ -186,7 +192,7 @@ BW_CONF_DIR_DEF="-Dorg.bedework.config.dir=$BW_CONF_DIR/"
 export ES_HOME="$BW_DATA_DIR/elasticsearch"
 JAVA_OPTS="$JAVA_OPTS -Des.path.home=$ES_HOME"
 
-JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap"
+JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap -Xss$stack"
 
 # Put all the temp stuff inside the jboss temp
 JAVA_OPTS="$JAVA_OPTS -Djava.io.tmpdir=$JBOSS_SERVER_DIR/tmp"
