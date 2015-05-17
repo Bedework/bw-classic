@@ -33,6 +33,10 @@ mvn_quiet="-q"
 #mvn_binary="/usr/share/maven/bin/mvn";
 mvn_binary="mvn"
 
+if [ "$MVN_BINARY" != "" ] ; then
+    mvn_binary="$MVN_BINARY"
+fi
+
 # Projects we need to update - these are the svn projects - not internal variables
 # or user parameters.
 updateSvnProjects="bedenote"
@@ -1027,6 +1031,8 @@ do
       $postDeploycmd --ear $postDeploy
     fi
   elif [ "$dobuild" = "yes" ] ; then
+    echo `pwd`
+    echo $javacmd
     $javacmd $*
   fi
 
