@@ -222,12 +222,12 @@ errorUsage() {
 # $2 - ear name without version or ".ear"
 copyDeployable() {
   basedir=$1
-#  echo "copyDeployable par 1 = $1"
-#  echo "copyDeployable par 2 = $2"
+  echo "copyDeployable par 1 = $1"
+  echo "copyDeployable par 2 = $2"
 
   for dir in "$basedir"/$2*; do
     if test -d "$dir"; then
-#      echo "copyDeployable dir = $dir"
+      echo "copyDeployable dir = $dir"
 
       mkdir -p $deployableDir
       rm -r $deployableDir/$2*.ear

@@ -14,7 +14,7 @@
      ================================================================= -->
 
 <hibernate-mapping>
-  <class name="org.bedework.calfacade.BwAuthUser"
+  <class name="org.bedework.calfacade.svc.BwAuthUser"
          table="bw_auth">
     <id name="id" type="integer" column="userid" unsaved-value="-1">
       <generator class="native"/>
@@ -103,7 +103,7 @@
        I added a bogus class and mapped it here.
     -->
 
-<!-- 
+<!--
   <class name="org.bedework.calfacade.svc.prefs.BwAuthUserPrefsCategory"
          table="bw_authprefCategories">
     <id name="id" column="userid" unsaved-value="-1"/>

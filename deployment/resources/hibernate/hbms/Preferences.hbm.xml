@@ -8,7 +8,7 @@
      =================================================================== -->
 
 <hibernate-mapping>
-  <class name="org.bedework.calfacade.BwPreferences"
+  <class name="org.bedework.calfacade.svc.BwPreferences"
          table="bw_preferences" >
     <cache usage="read-write"/>
     <id name="id" type="integer" column="prefid" unsaved-value="-1">
@@ -80,7 +80,7 @@
        ================================================================= -->
 
   <query name="getAllPreferences"><![CDATA[
-    from org.bedework.calfacade.BwPreferences p
+    from org.bedework.calfacade.svc.BwPreferences p
       order by p.ownerHref
   ]]></query>
 </hibernate-mapping>
