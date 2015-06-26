@@ -705,8 +705,8 @@ Internet-Draft                    VPOLL                       March 2014
 
    Property name:  POLL-ITEM-ID
 
-   Purpose:  This property is used in VPOLL to indicate recipients of
-      the poll and in VPOLL sub-components to give the voters response.
+   Purpose:  This property is used in VPOLL child items as an identifier
+      and in a VPOLL REPLY to specify the vote for the idicated item.
 
    Value type:  INTEGER
 

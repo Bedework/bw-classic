@@ -117,7 +117,7 @@
       <t>
         A number of studies have shown that large amounts of time are spent
         trying to come to an agreement - up to and beyond 20 working hours
-        per meeting. many organizers fall back on other approaches such as
+        per meeting. Many organizers fall back on other approaches such as
         phone calls and email to determine a suitable time.
       </t>
 
@@ -169,7 +169,7 @@
           </t>
 
           <t hangText="Voter:">
-            A participant who votes on th ealternatives. A voter need not be
+            A participant who votes on the alternatives. A voter need not be
             an attendee of any of the alternatives presented.
           </t>
         </list>
@@ -190,9 +190,9 @@
 
       <t>
         This specification not only defines data structures but adds a new iTip
-        method used when consensus has been reached. we will show how a VPOLL
-        object is used to inform voters of the state of a simple vote on
-        some alternatives.
+        method used when consensus has been reached. This document will
+        show how a VPOLL object is used to inform voters of the state
+        of a simple vote on some alternatives.
       </t>
 
       <section anchor="vpoll_component_overview"
@@ -548,8 +548,8 @@
               <t hangText="Description:">
                 This parameter can be specified on a property that
                 references another related calendar component.
-                The new parameter value indicates gthat the associated
-                proeprty references a VPOLL component which contains the
+                The new parameter value indicates that the associated
+                property references a VPOLL component which contains the
                 current component.
               </t>
             </list>
