@@ -8,7 +8,7 @@
   <id>notify-user</id>
   <keepAliveInterval>300</keepAliveInterval>
   <mbeanClassName>org.bedework.notifier.cnctrs.bedework.BedeworkConnConf</mbeanClassName>
-  <name>localBedework</name>
+  <name>bedeworkCal</name>
   <readOnly>false</readOnly>
   <retryInterval>10</retryInterval>
   <token>abcd</token>

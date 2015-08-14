@@ -3,6 +3,21 @@
 <note-confinfo xmlns="http://bedework.org/ns/"
                 type="org.bedework.notifier.conf.NotifyConfig">
   <callbackURI>http://localhost:8080/notify/</callbackURI>
+  <hibernateProperties>
+    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect</hibernateProperty>
+    <hibernateProperty>hibernate.connection.datasource=java:/NotifyDS</hibernateProperty>
+    <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
+    <hibernateProperty>hibernate.show_sql=false</hibernateProperty>
+    <hibernateProperty>hibernate.format_sql=true</hibernateProperty>
+    <hibernateProperty>hibernate.max_fetch_depth=1</hibernateProperty>
+    <hibernateProperty>hibernate.jdbc.batch_size=0</hibernateProperty>
+    <hibernateProperty>hibernate.jdbc.batch_versioned_data=true</hibernateProperty>
+    <hibernateProperty>hibernate.jdbc.use_streams_for_binary=true</hibernateProperty>
+    <hibernateProperty>hibernate.cache.region_prefix=calendardb</hibernateProperty>
+    <hibernateProperty>hibernate.cache.use_second_level_cache=false</hibernateProperty>
+    <hibernateProperty>hibernate.cache.use_query_cache=true</hibernateProperty>
+    <hibernateProperty>hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider</hibernateProperty>
+  </hibernateProperties>
   <missingTargetRetries>10</missingTargetRetries>
   <name>note-config</name>
   <privKeys>/home/douglm/bedeworkqs/quickstart/bedework/../jboss-5.1.0.GA/server/default/data/bedework/privkeys</privKeys>
