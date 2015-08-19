@@ -5,10 +5,10 @@
   <notificationDirHref>http://localhost:8080/pubcaldav/user/notify-user/Notifications/</notificationDirHref>
   <bwWSDLURI>http://localhost:8080/wsdls/synch/wssvc.wsdl</bwWSDLURI>
   <connectorClassName>org.bedework.notifier.cnctrs.bedework.BedeworkConnector</connectorClassName>
-  <id>notify-user</id>
+  <id>bedeworkCal</id>
   <keepAliveInterval>300</keepAliveInterval>
   <mbeanClassName>org.bedework.notifier.cnctrs.bedework.BedeworkConnConf</mbeanClassName>
-  <name>bedeworkCal</name>
+  <name>localBedework</name>
   <readOnly>false</readOnly>
   <retryInterval>10</retryInterval>
   <token>abcd</token>
