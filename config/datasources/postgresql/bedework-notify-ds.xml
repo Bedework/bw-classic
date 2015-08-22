@@ -8,8 +8,8 @@ http://www.mysql.com/downloads/api-jdbc-stable.html
 
 <datasources>
   <local-tx-datasource>
-    <jndi-name>SynchDS</jndi-name>
-    <connection-url>jdbc:postgresql://localhost:5432/bwsynch</connection-url>
+    <jndi-name>NotifyDS</jndi-name>
+    <connection-url>jdbc:postgresql://localhost:5432/bwnotify</connection-url>
     <driver-class>org.postgresql.Driver</driver-class>
     <user-name>bedework</user-name>
     <password></password>
