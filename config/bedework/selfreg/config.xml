@@ -13,7 +13,7 @@
   <adminPw>secret</adminPw>
   <mailProtocol>smtp</mailProtocol>
   <mailProtocolClass>com.sun.mail.smtp.SMTPTransport</mailProtocolClass>
-  <mailServerIp>localhost</mailServerIp>
+  <mailServerHost>localhost</mailServerHost>
   <mailFrom>bedework@bedework.org</mailFrom>
   <mailSubject>Bedework self registration</mailSubject>
   <mailDisabled>false</mailDisabled>
