@@ -782,6 +782,7 @@ do
       bw_access="yes"
       bw_ws="yes"
       bw_util="yes"
+      bw_webdav="yes"
       bw_caldav="yes"
       pkgdefault=
       shift
