@@ -11,6 +11,7 @@
   <groupsDn>ou=groups, dc=bedework, dc=org</groupsDn>
   <adminId>uid=admin,ou=system</adminId>
   <adminPw>secret</adminPw>
+  <confirmUrl>http://localhost:8080/selfreg/</confirmUrl>
   <dbPath>${org.bedework.data.dir}/selfreg</dbPath>
   <mailProtocol>smtp</mailProtocol>
   <mailProtocolClass>com.sun.mail.smtp.SMTPTransport</mailProtocolClass>
