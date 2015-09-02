@@ -25,4 +25,5 @@
   <notelingPoolSize>20</notelingPoolSize>
   <notelingPoolTimeout>5000</notelingPoolTimeout>
   <timezonesURI>http://localhost:8080/tzsvr</timezonesURI>
+  <templatesPath>${org.bedework.config.dir}/notify/ftls/</templatesPath>
 </note-confinfo>
