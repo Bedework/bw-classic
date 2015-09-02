@@ -63,6 +63,8 @@
     <bedeworkWebappsVersion>${defaultedVersion}</bedeworkWebappsVersion>
     <bedeworkWebdavVersion>${defaultedVersion}</bedeworkWebdavVersion>
     <bedeworkXmlschemaVersion>${defaultedVersion}</bedeworkXmlschemaVersion>
+
+    <javax.mail.version>1.5.4</javax.mail.version>
   </properties>
 
   <mailingLists>
@@ -129,10 +131,6 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <groupId>javax.mail</groupId>
-          <artifactId>mail</artifactId>
-        </exclusion>
-        <exclusion>
           <groupId>javax.jms</groupId>
           <artifactId>jms</artifactId>
         </exclusion>
@@ -159,31 +157,20 @@
       <version>1.8.4</version>
     </dependency>
       <!-- scope runtime? Need these to get into the repository -->
-      <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>dsn</artifactId>
-        <version>1.4.5</version>
-      </dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>${javax.mail.version}</version>
+    </dependency>
 
-      <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>imap</artifactId>
-        <version>1.4.5</version>
-      </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <version>${javax.mail.version}</version>
+    </dependency>
 
-      <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>pop3</artifactId>
-        <version>1.4.5</version>
-      </dependency>
 
-      <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>smtp</artifactId>
-        <version>1.4.5</version>
-      </dependency>
-
-      <dependency>
+    <dependency>
         <groupId>net.sf.ehcache</groupId>
         <artifactId>ehcache-core</artifactId>
         <version>2.5.1</version>

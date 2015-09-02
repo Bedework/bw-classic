@@ -10,17 +10,14 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: log4j:log4j:1.2.15" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.mail:mail:1.4" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant:1.8.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.8.4" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:dsn:1.4.5" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.5.4" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:imap:1.4.5" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:pop3:1.4.5" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.mail:smtp:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: javax.mail:javax.mail-api:1.5.4" level="project" />
     <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
   </component>
 </module>
-
