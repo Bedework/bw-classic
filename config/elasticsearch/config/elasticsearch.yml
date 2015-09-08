@@ -27,6 +27,9 @@
 # Disable auto creation of indexes
 action.auto_create_index: false
 
+# THIS MAKES IT DANGEROUS TO EXPOSE THE SERVICE
+script.disable_dynamic: false
+
 ################################### Cluster ###################################
 
 # Cluster name identifies your cluster for auto-discovery. If you're running
