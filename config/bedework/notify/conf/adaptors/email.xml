@@ -12,4 +12,9 @@
   <protocolClass>com.sun.mail.smtp.SMTPTransport</protocolClass>
   <serverUri>mail.mysite.edu</serverUri>
   <locale>en_US</locale>
+  <subjects>
+    <subject>AS-invite-notification=Invitation to share</subject>
+    <subject>BW-eventregCancelled=Cancelled: An event for which you were registered</subject>
+    <subject>BW-eventregRegistered=You are registered for an event</subject>
+  </subjects>
 </notify-adaptor>
