@@ -7,7 +7,7 @@
      An Event in Bedework.
      =================================================================== -->
 
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
   <class name="org.bedework.calfacade.BwEventObj"
          table="bw_events">
     <cache usage="read-write"/>

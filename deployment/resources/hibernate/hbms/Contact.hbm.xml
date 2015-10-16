@@ -7,7 +7,7 @@
      Object representing contacts
      =================================================================== -->
 
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
   <class name="org.bedework.calfacade.BwContact"
          table="bw_contacts">
     <cache usage="read-write"/>

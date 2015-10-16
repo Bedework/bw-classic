@@ -7,7 +7,7 @@
      Object representing the location of an event
      =================================================================== -->
 
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
   <class name="org.bedework.calfacade.BwLocation"
          table="bw_locations" >
     <cache usage="read-write"/>
