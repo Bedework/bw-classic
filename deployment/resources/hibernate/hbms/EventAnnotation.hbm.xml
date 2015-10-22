@@ -13,7 +13,7 @@
      not have a reference to another event.
      =================================================================== -->
 
-<hibernate-mapping default-lazy="false">
+<hibernate-mapping>
   <class name="org.bedework.calfacade.BwEventAnnotation"
          table="bw_event_annotations">
     <cache usage="read-write"/>
