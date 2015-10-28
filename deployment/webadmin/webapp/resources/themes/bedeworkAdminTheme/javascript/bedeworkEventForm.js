@@ -319,18 +319,20 @@ function bwSubmitComment(locationAddress,locationSubaddress,locationUrl,contactN
 // ========================================================================
 // ========================================================================
 
-function setEventFields(formObj,portalFriendly,submitter) {
-  cleanEventFields(formObj);
-  if (!validateEventForm(formObj)) {
-    return false;
+function setEventFields(formObj,portalFriendly,submitter,creating) {
+  if(formObj.submitVal.value != 'cancelled') {
+    cleanEventFields(formObj);
+    if (!validateEventForm(formObj,creating)) {
+      return false;
+    }
+    if (!portalFriendly) {
+      setDates(formObj);
+    }
+    if(formObj.freq){
+      setRecurrence(formObj);
+    } // else we are editing an instance of a recurrence
+    setBedeworkXProperties(formObj,submitter);
   }
-  if (!portalFriendly) {
-    setDates(formObj);
-  }
-  if(formObj.freq){
-    setRecurrence(formObj);
-  } // else we are editing an instance of a recurrence
-  setBedeworkXProperties(formObj,submitter);
   return true;
 }
 
@@ -352,7 +354,9 @@ function cleanEventFields(formObj) {
 }
 
 /* do some basic client-side validation where needed */
-function validateEventForm(formObj) {
+function validateEventForm(formObj,creating) {
+
+  // Event registration
   if(formObj["bwIsRegisterableEvent"] != undefined) {
     if(formObj["bwIsRegisterableEvent"].checked) {
       var maxTickets = trim(formObj["xBwMaxTicketsHolder"].value);
@@ -369,6 +373,7 @@ function validateEventForm(formObj) {
       }
     }
   }
+
   return true;
 }
 
@@ -394,8 +399,22 @@ function setBedeworkXProperties(formObj,submitter) {
   // X-BEDEWORK-IMAGE and its parameters:
   if (formObj["xBwImageHolder"] &&
       formObj["xBwImageHolder"].value != '') {
+
+    var imgDesc = '';
+    if (formObj["xBwImageDescHolder"] &&
+      formObj["xBwImageDescHolder"].value != '') {
+      imgDesc = formObj["xBwImageDescHolder"].value;
+    }
+
+    var imgAlt = '';
+    if (formObj["xBwImageAltHolder"] &&
+      formObj["xBwImageAltHolder"].value != '') {
+      imgAlt = formObj["xBwImageAltHolder"].value;
+    }
+
     bwXProps.update(bwXPropertyImage,
-                  [[bwXParamDescription,''],
+                  [[bwXParamDescription,imgDesc],
+                   [bwXParamAlt,imgAlt],
                    [bwXParamWidth,''],
                    [bwXParamHeight,'']],
                    formObj["xBwImageHolder"].value,true);
@@ -423,12 +442,29 @@ function setBedeworkXProperties(formObj,submitter) {
       bwXProps.update(bwXPropertyMaxTickets,[],formObj["xBwMaxTicketsHolder"].value,true);
       bwXProps.update(bwXPropertyMaxTicketsPerUser,[],formObj["xBwMaxTicketsPerUserHolder"].value,true);
 
-      var bwRegDateString = ""
-      bwRegDateString = formObj["xBwRegistrationOpensDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationOpens.hour"].value) + padTimeUnit(formObj["xBwRegistrationOpens.minute"].value) + "00";
+      var bwRegDateString = "";
+      if (formObj["xBwRegistrationOpensAmpm"] == undefined) {
+        // 24-hour
+        var bwRegOpensHour = setBwRegXpropHour(formObj["xBwRegistrationOpens.hour"].value);
+        var bwRegClosesHour = setBwRegXpropHour(formObj["xBwRegistrationCloses.hour"].value);
+      } else {
+        // am/pm
+        var bwRegOpensHour = setBwRegXpropHour(formObj["xBwRegistrationOpens.hour"].value,formObj["xBwRegistrationOpensAmpm"].value);
+        var bwRegClosesHour = setBwRegXpropHour(formObj["xBwRegistrationCloses.hour"].value,formObj["xBwRegistrationClosesAmpm"].value);
+      }
+
+      bwRegDateString = formObj["xBwRegistrationOpensDate"].value.replace(/-/g,"") + "T" + bwRegOpensHour + padTimeUnit(formObj["xBwRegistrationOpens.minute"].value) + "00";
       bwXProps.update(bwXPropertyRegistrationStart,[["TZID",formObj["xBwRegistrationOpensTzid"].value]],bwRegDateString,true);
 
-      bwRegDateString = formObj["xBwRegistrationClosesDate"].value.replace(/-/g,"") + "T" + padTimeUnit(formObj["xBwRegistrationCloses.hour"].value) + padTimeUnit(formObj["xBwRegistrationCloses.minute"].value) + "00";
+      bwRegDateString = formObj["xBwRegistrationClosesDate"].value.replace(/-/g,"") + "T" + bwRegClosesHour + padTimeUnit(formObj["xBwRegistrationCloses.minute"].value) + "00";
       bwXProps.update(bwXPropertyRegistrationEnd,[["TZID",formObj["xBwRegistrationClosesTzid"].value]],bwRegDateString,true);
+
+      var bwCustomFields = formObj["xbwCustomFieldCollections"].value;
+      if (bwCustomFields != undefined) {
+        if (bwCustomFields != "") {
+          bwXProps.update(bwXPropertyRegistrationForm,[],bwCustomFields,true);
+        }
+      }
     }
   }
 
@@ -440,6 +476,9 @@ function setBedeworkXProperties(formObj,submitter) {
 }
 function padTimeUnit(val) {
   var timeUnit = parseInt(val,10);
+  if (isNaN(timeUnit)) {
+    return "00"; // this shouldn't happen, but let's ensure our xprops stay clean.
+  }
   if (timeUnit < 10) {
     return "0" + timeUnit;
   } else {
@@ -448,34 +487,82 @@ function padTimeUnit(val) {
 }
 function hour24ToAmpm(val) {
   var hour = parseInt(val,10);
-  if (hour == 0) {
-    return "12";
-  } else if (hour < 10) {
-    return "0" + hour;
-  } else if (hour > 12) {
-    return String(hour - 10);
+  if (isNaN(hour)) {
+    return "0";
+  }
+  if (hour > 11) {
+    return String(hour - 12);
   } else {
     return String(hour);
   }
 }
+function timeString2Int(val) {
+  var timeString = parseInt(val,10);
+  if (isNaN(timeString)){
+    return "0";
+  }
+  return String(timeString);
+}
 function hour24GetAmpm(val) {
   var hour = parseInt(val,10);
-  if (hour < 12) {
+  if (hour < 12 || isNaN(hour)) {
     return "am";
   } else {
     return "pm";
   }
 }
-function removeEventImage(imgField,thumbField) {
+function setBwRegXpropHour(val,ampm) {
+  if (ampm == undefined) {
+    // 24 hour mode
+    return val;
+  }
+  var hour = parseInt(val,10);
+  if (isNaN(hour)) {
+    return "00"; // this shouldn't happen, but let's ensure our xprops stay clean.
+  }
+  // 12 hour mode, PM:
+  if (ampm == 'pm') {
+    if (hour < 12) {
+      return String(hour + 12);
+    }
+    return hour;
+  }
+  // 12 hour mode, AM:
+  if (hour == 12) {
+    return "00";
+  }
+  if (hour < 10) {
+    return "0" + hour;
+  }
+  return hour;
+}
+function removeEventImage(imgField,thumbField,descField,altField) {
   bwXProps.remove(bwXPropertyImage);
   bwXProps.remove(bwXPropertyThumbImage);
   imgField.value = "";
   thumbField.value = "";
+  if (descField != undefined) {
+    descField.value = "";
+  }
+  if (altField != undefined) {
+    altField.value = "";
+  }
   $("#eventFormImage").hide();
   $("#eventImageRemoveButton").hide();
 }
+function removeCustomFields() {
+  if (confirm("Removing custom fields will have significant\nconsequences on registration reporting.\nAre you sure you wish to proceed?")) {
+    bwXProps.remove(bwXPropertyRegistrationForm);
+    $("#xbwCustomFieldCurrentFormHolder").hide();
+    $("#xbwCustomFieldCollectionsHolder").show();
+    $("#bwToggleUnpublishedCustFieldsHolder").show();
+    getCustomFields(true); // true = don't set the selected index after retrieval
+    $("#xbwCustomFieldCollections")[0].selectedIndex = 0;; // set to empty first element
+    alert("You must save the event for this change to take effect.");
+  }
+}
 function toggleBedeworkTopicalArea(displayName,vpath,checked,submitted,path,aliasPath) {
-  toggleBedeworkXProperty('X-BEDEWORK-ALIAS',displayName,vpath,checked,true);
+  toggleBedeworkXProperty('X-BEDEWORK-ALIAS',displayName,vpath,path,aliasPath,checked,true);
   if (submitted && !checked) {
     // This is a submitted event; remove the submitted alias if unchecked (don't toggle these).
     // Send both the path and aliasPath for removal - it will be one or the other (but not both).
@@ -487,7 +574,7 @@ function toggleBedeworkTopicalArea(displayName,vpath,checked,submitted,path,alia
     console.log(bwXProps.display());
   }
 }
-function toggleBedeworkXProperty(xprop,displayName,value,checked,isUniqueByValue) {
+function toggleBedeworkXProperty(xprop,displayName,value,path,aliasPath,checked,isUniqueByValue) {
   if (!checked) {
     if (bwJsDebug) {
       console.log("Removing " + xprop + ":" + value);
@@ -498,7 +585,36 @@ function toggleBedeworkXProperty(xprop,displayName,value,checked,isUniqueByValue
     if (isUniqueByValue) {
       uniqueByValue = true;
     }
-    bwXProps.update(xprop,[[bwXParamDisplayName,displayName]],value,false,uniqueByValue);
+    bwXProps.update(xprop,[[bwXParamDisplayName,displayName],[bwXParamPath,path],[bwXParamAliasPath,aliasPath]],value,false,uniqueByValue);
+  }
+}
+/**
+ * Show or hide the unpublished custom fields from pull-down
+ * @param {boolean} checked - state of checkbox that toggles the visibility of the unpublished sets
+ */
+function toggleUnpublishedCustomFields(checked) {
+  if (checked) {
+    $("#xbwCustomFieldCollections option.unpublished").show();
+  } else {
+    $("#xbwCustomFieldCollections option.unpublished").hide();
+  }
+}
+/**
+ * Disable suggestions if an unpublished custom field set is selected
+ * @param customFieldsType - "published" or "unpublished"
+ */
+function toggleSuggestions(customFieldsType) {
+  if(customFieldsType == "unpublished") {
+    $("#bwSuggestions").addClass("dim");
+    $("#bwSuggestions input[type=checkbox]").each(function() {
+      $(this).prop('checked', false);
+      $(this).prop("disabled",true);
+    });
+  } else {
+    $("#bwSuggestions").removeClass("dim");
+    $("#bwSuggestions input[type=checkbox]").each(function() {
+      $(this).prop("disabled", false);
+    });
   }
 }
 function claimPendingEvent(group,user) {
@@ -829,10 +945,13 @@ function setRecurrence(formObj) {
   }
   return true;
 }
-function showRegistrationFields(obj) {
+function showRegistrationFields(obj,hasForm) {
   // toggle the registration fields
   if (obj.checked) {
     changeClass('bwRegistrationFields','visible');
+    if (!hasForm) { // don't retrieve the forms if the event already has one attached
+      getCustomFields();
+    }
   } else {
     changeClass('bwRegistrationFields','invisible');
   }
@@ -945,4 +1064,140 @@ function setOverwriteImageField(chkBox) {
     $("#replaceImage").removeAttr('checked');
   }
 }
+/* checkboxes for all suggestion
+   groups and preferred suggestion groups are on the page
+   simultaneously.  The user can toggle between which group is shown and which is
+   hidden.  When a checkbox from one collection is changed, the corresponding
+   checkbox should be changed in the other set if it exists. */
+function setCollChBx(thisID,otherID) {
+  thisCollCheckBox = document.getElementById(thisID);
+  if (document.getElementById(otherID)) {
+    otherCollCheckBox = document.getElementById(otherID);
+    otherCollCheckBox.checked =  thisCollCheckBox.checked;
+  }
+}
+function processLocationsPrimary(locations,selectedUid) {
+// Process bwLocation options returned by ajax call
+  var locs = new Array();
+  var locOptions = "";
+  var lastAddress = "";
+  var selectedLocIndex = -1;
+  var selectedLocText = "";
 
+  // build an array of primary addresses + the selected location
+  $(locations).each(function() {
+    if (this.addressField != undefined) {
+      if (this.uid == selectedUid) {
+        locs.push([this.uid,this.addressField]);
+        lastAddress = this.addressField;
+        selectedLocIndex = locs.length - 1;
+        selectedLocText = this.addressField;
+      } else if (lastAddress != this.addressField) {
+        locs.push([this.uid,this.addressField]);
+        lastAddress = this.addressField;
+      }
+    }
+  });
+
+  /* If our selected location is not in the first position
+     for the primary address, we will end up with
+     a duplicate entry that we'll now remove */
+  if (selectedLocIndex != -1) {
+    for (var i=0; i<locs.length; i++) {
+      if((i != selectedLocIndex) && (locs[i][1] == selectedLocText)) {
+        locs.splice(i,1);
+        break;
+      }
+    }
+  }
+
+  // Finally convert the resulting array into a string of html options tags
+  for (var i=0; i<locs.length; i++) {
+    locOptions += "<option value=\"" + locs[i][0] + "\"";
+    if (locs[i][0] == selectedUid) {
+      locOptions += ' selected="selected" ';
+    }
+    locOptions += ">" + locs[i][1] + "</option>";
+  }
+
+  return locOptions;
+}
+function processLocationsSecondary(locations,key,emptyText,selectedUid) {
+// Gather the sublocations associated with a primary address
+  var locOptions = "";
+  $(locations).each(function() {
+    if (this.addressField != undefined) {
+      if (this.addressField == key) {
+        if (this.roomField == undefined) { // there is no room field; just use the primary address
+          locOptions += "<option value=\"" + this.uid + "\"";
+          if (this.uid == selectedUid) {
+            locOptions += ' selected="selected" ';
+          }
+          locOptions += ">" + emptyText + "</option>";
+        } else {
+          locOptions += "<option value=\"" + this.uid + "\"";
+          if (this.uid == selectedUid) {
+            locOptions += ' selected="selected" ';
+          }
+          locOptions += ">" + this.roomField + "</option>";
+        }
+      }
+    }
+  });
+  return locOptions;
+}
+/**
+ * Determine if a location is selected yet.
+ * Used to turn off the add room link.
+ */
+function bwCheckPrimaryLoc() {
+  var currentAddrUid = $("#bwLocationsPrimary option:selected").val();
+  if (currentAddrUid == undefined || currentAddrUid == "") {
+    return false;
+  }
+  return true;
+}
+/**
+ * Launch the add room popup box
+ */
+function bwAddRoomInit() {
+  // set up the form
+  var currentAddrTxt = $("#bwLocationsPrimary option:selected").text();
+  var currentAddrUid = $("#bwLocationsPrimary option:selected").val();
+  $("#bwAddRoomAddress").html(currentAddrTxt);
+  $("#bwAddRoomUid").val(currentAddrUid);
+  $("#bwAddRoomContainer").removeClass("invisible");
+}
+/**
+ * Add a room to a location
+ */
+function bwAddRoom() {
+  var roomName = $("#bwAddRoomName").val();
+  var locationUid = $("#bwAddRoomUid").val();
+  $.ajax({
+    type: "POST",
+    url: "/caladmin/location/addsub.gdo",
+    data: {
+      uid: locationUid,
+      sub: roomName
+    },
+    success: function(response) {
+      if(response.uid != undefined) {
+        // we have a new location (room) - set the list display and the hidden field
+        bwSetupLocations(response.uid);
+        $("#bwLocation").val(response.uid);
+      } else {
+        // must have been a problem; just keep the original selection in place
+        bwSetupLocations(locationUid);
+      }
+      $("#bwAddRoomLink").magnificPopup("close");
+    }
+  })
+  .fail(function(jqxhr, textStatus, error ) {
+    alert("There was an error saving the room.");
+    if (bwJsDebug) {
+      var err = textStatus + ", " + error;
+      console.log( "Add room failed: " + err );
+    }
+  });
+}

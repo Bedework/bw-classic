@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:CSS="http://calendarserver.org/ns/" xmlns:DAV="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:BW="http://bedeworkcalserver.org/ns/" xmlns:BSS="http://bedework.org/ns/">
 
   <!--==== BANNER and MENU TABS  ====-->
 
@@ -34,7 +34,6 @@
         <xsl:copy-of select="$bwStr-Head-BedeworkPubEventsAdmin"/>
       </h1>
     </div>
-    <xsl:call-template name="messagesAndErrors"/>
     <div id="statusBar">
       <div id="userInfo">
         <xsl:if test="/bedework/userInfo/user">
@@ -70,7 +69,7 @@
           </a>
         </xsl:if>
       </div>
-      <xsl:copy-of select="$bwStr-Head-CalendarSuite"/>
+      <xsl:copy-of select="$bwStr-Head-CalendarSuite"/>:
       <xsl:text> </xsl:text>
       <span class="status">
         <xsl:choose>
@@ -82,7 +81,10 @@
           </xsl:otherwise>
         </xsl:choose>
       </span>
-      <xsl:text> </xsl:text>
+      <!-- notification menu - only display if calsuite is active -->
+      <xsl:if test="/bedework/currentCalSuite/name">
+        <xsl:call-template name="notifications"/>
+      </xsl:if>
     </div>
   </xsl:template>
 

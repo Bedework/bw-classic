@@ -35,7 +35,7 @@
         <xsl:if test="/bedework/tab = 'main'">
           <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
-        <a href="{$setup}&amp;listMode=true&amp;listAllEvents=false&amp;sort=dtstart.utc:asc">
+        <a href="{$setup}&amp;listMode=true&amp;sort=dtstart.utc:asc">
           <xsl:copy-of select="$bwStr-Head-MainMenu"/>
         </a>
       </li>
@@ -45,7 +45,7 @@
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
           <a>
-            <xsl:attribute name="href"><xsl:value-of select="$initApprovalQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;listAllEvents=false&amp;sort=dtstart.utc:asc</xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$initApprovalQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$workflowRootEncoded"/>")&amp;sort=dtstart.utc:asc</xsl:attribute>
             <xsl:copy-of select="$bwStr-Head-ApprovalQueueEvents"/>
           </a>
         </li>
@@ -55,9 +55,16 @@
           <xsl:if test="/bedework/tab = 'suggestionQueue'">
             <xsl:attribute name="class">selected</xsl:attribute>
           </xsl:if>
+          <xsl:variable name="suggestedListType">
+            <xsl:choose>
+              <xsl:when test="/bedework/appvar[key='suggestType']/value = 'A'">A</xsl:when>
+              <xsl:when test="/bedework/appvar[key='suggestType']/value = 'R'">R</xsl:when>
+              <xsl:otherwise>P</xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <a>
-            <xsl:attribute name="href"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="P:<xsl:value-of
-                    select="/bedework/currentCalSuite/groupHref"/>")&amp;listAllEvents=true&amp;sort=dtstart.utc:asc</xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;sg=true&amp;start=<xsl:value-of select="$curListDate"/>&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="<xsl:value-of select="$suggestedListType"/>:<xsl:value-of
+                    select="/bedework/currentCalSuite/groupHref"/>")&amp;master=true&amp;sort=dtstart.utc:asc</xsl:attribute>
             <xsl:copy-of select="$bwStr-Head-SuggestionQueueEvents"/>
           </a>
         </li>
@@ -67,7 +74,7 @@
           <xsl:attribute name="class">selected</xsl:attribute>
         </xsl:if>
         <a>
-          <xsl:attribute name="href"><xsl:value-of select="$initPendingTab"/>&amp;listMode=true&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>")&amp;listAllEvents=true</xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="$initPendingTab"/>&amp;listMode=true&amp;sg=true&amp;start=<xsl:value-of select="$curListDate"/>&amp;fexpr=(colPath="<xsl:value-of select="$submissionsRootEncoded"/>" and (entity_type="event"|entity_type="todo"))&amp;sort=dtstart.utc:asc</xsl:attribute>
           <xsl:copy-of select="$bwStr-Head-PendingEvents"/>
         </a>
       </li>
@@ -102,6 +109,7 @@
         </li>
       </xsl:if>
     </ul>
+    <xsl:call-template name="messagesAndErrors"/>
   </xsl:template>
 
 </xsl:stylesheet>

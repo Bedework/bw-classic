@@ -136,32 +136,6 @@
       </table>
 
       <div id="subscriptionTypes" class="invisible">
-        <table class="common">
-        <tr>
-          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionCanCreateEprops"/></th>
-          <td>
-            <input type="checkbox" name="adminAllowCreateEprops"/>
-          </td>
-        </tr>
-        <tr>
-          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionXlocXcontact"/></th>
-          <td>
-            <input type="checkbox" name="xlocxcontact"/>
-          </td>
-        </tr>
-        <tr>
-          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionXcategories"/></th>
-          <td>
-            <input type="checkbox" name="xcategories"/>
-          </td>
-        </tr>
-        <tr>
-          <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionRefresh"/></th>
-          <td>
-            <input type="text" name="refinterval" value="15" size="10"/>
-          </td>
-        </tr>
-        <tr>
         <h4><xsl:copy-of select="$bwStr-CuCa-SubscriptionURL"/></h4>
         <input type="hidden" value="publicTree" name="subType" id="bwSubType"/>
         <div id="subscriptionTypeExternal">
@@ -184,14 +158,31 @@
                 <input type="password" name="remotePw" value="" size="40"/>
               </td>
             </tr>
+
+            <tr>
+              <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionXlocXcontact"/></th>
+              <td>
+                <input type="checkbox" name="xlocxcontact"/>
+              </td>
+            </tr>
+            <tr>
+              <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionXcategories"/></th>
+              <td>
+                <input type="checkbox" name="xcategories"/>
+              </td>
+            </tr>
+            <tr>
+              <th><xsl:copy-of select="$bwStr-CuCa-SubscriptionRefresh"/></th>
+              <td>
+                <input type="text" name="refinterval" value="15" size="10"/>
+              </td>
+            </tr>
           </table>
           <p class="note">
             <xsl:copy-of select="$bwStr-CuCa-NoteAliasCanBeAdded"/><br/>
             bwcal://[path], e.g. bwcal:///public/cals/MainCal
           </p>
         </div>
-        </tr>
-        </table>
       </div>
 
       <!-- div id="sharingBox">
@@ -499,24 +490,6 @@
         <input type="submit" name="cancelled" value="{$bwStr-CuCa-Cancel}"/>
       </div>
     </form>
-    <!-- div id="sharingBox">
-      <xsl:apply-templates select="acl" mode="currentAccess">
-        <xsl:with-param name="action" select="$calendar-setAccess"/>
-        <xsl:with-param name="calPathEncoded" select="$calPathEncoded"/>
-      </xsl:apply-templates>
-      <form name="calendarShareForm" method="post" action="{$calendar-setAccess}" id="shareForm" onsubmit="setAccessHow(this)">
-        <input type="hidden" name="calPath" value="{$calPath}"/>
-        <xsl:call-template name="entityAccessForm">
-          <xsl:with-param name="type">
-            <xsl:choose>
-              <xsl:when test="calType = '5'">inbox</xsl:when>
-              <xsl:when test="calType = '6'">outbox</xsl:when>
-              <xsl:otherwise>normal</xsl:otherwise>
-            </xsl:choose>
-          </xsl:with-param>
-        </xsl:call-template>
-      </form>
-    </div-->
   </xsl:template>
 
 </xsl:stylesheet>

@@ -22,39 +22,78 @@
   <!--+++++++++++++++ Suggestion Queue Tab ++++++++++++++++++++-->
   <xsl:template name="tabSuggestionQueueEvents">
     <h2><xsl:copy-of select="$bwStr-TaAQ-SuggestionQueueEvents"/></h2>
-    <xsl:variable name="bwSuggestTabP"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="P:<xsl:value-of
-            select="/bedework/currentCalSuite/groupHref"/>")&amp;listAllEvents=true&amp;sort=dtstart.utc:asc&amp;setappvar=suggestType(P)</xsl:variable>
-    <xsl:variable name="bwSuggestTabA"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="A:<xsl:value-of
-            select="/bedework/currentCalSuite/groupHref"/>")&amp;listAllEvents=true&amp;sort=dtstart.utc:asc&amp;setappvar=suggestType(A)</xsl:variable>
-    <xsl:variable name="bwSuggestTabR"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="R:<xsl:value-of
-            select="/bedework/currentCalSuite/groupHref"/>")&amp;listAllEvents=true&amp;sort=dtstart.utc:asc&amp;setappvar=suggestType(R)</xsl:variable>
-    <div id="refreshBwList">
-      <div id="refreshBwListControls">
-        <xsl:copy-of select="$bwStr-TaAQ-View"/>
-        <input type="radio" name="suggestedListType" id="bwSuggestTabP" onclick="location.href='{$bwSuggestTabP}'">
-          <xsl:if test="not(/bedework/appvar[key='suggestType']) or /bedework/appvar[key='suggestType']/value = 'P'">
-            <xsl:attribute name="checked">checked</xsl:attribute>
-          </xsl:if>
-        </input>
-        <label for="bwSuggestTabP"><xsl:copy-of select="$bwStr-TaAQ-Suggested"/></label>
-        <input type="radio" name="suggestedListType" id="bwSuggestTabA" onclick="location.href='{$bwSuggestTabA}'">
-          <xsl:if test="/bedework/appvar[key='suggestType']/value = 'A'">
-            <xsl:attribute name="checked">checked</xsl:attribute>
-          </xsl:if>
-        </input>
-        <label for="bwSuggestTabA"><xsl:copy-of select="$bwStr-TaAQ-Accepted"/></label>
-        <input type="radio" name="suggestedListType" id="bwSuggestTabR" onclick="location.href='{$bwSuggestTabR}'">
-          <xsl:if test="/bedework/appvar[key='suggestType']/value = 'R'">
-            <xsl:attribute name="checked">checked</xsl:attribute>
-          </xsl:if>
-        </input>
-        <label for="bwSuggestTabR"><xsl:copy-of select="$bwStr-TaAQ-Rejected"/></label>
-      </div>
-    </div>
+
     <p><xsl:copy-of select="$bwStr-TaAQ-SuggestedEvents"/></p>
+
+    <xsl:variable name="today"><xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="substring(/bedework/now/date,5,2)"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/></xsl:variable>
+
+    <div id="bwEventListControls">
+      <xsl:call-template name="eventListControls">
+        <xsl:with-param name="nextAction"><xsl:value-of select="$nextSuggestionQueueTab"/>&amp;sg=true</xsl:with-param>
+      </xsl:call-template>
+
+      <form name="bwManageEventListControls"
+            id="bwManageEventListControls"
+            method="post"
+            action="{$initSuggestionQueueTab}">
+
+        <input type="hidden" name="sort" value="dtstart.utc:asc"/>
+        <input type="hidden" name="listMode" value="true"/>
+        <input type="hidden" name="sg" value="true"/>
+        <input type="hidden" name="colPath"  value="/public/cals/MainCal"/>
+        <input type="hidden" name="suggestedTo">
+          <xsl:attribute name="value"><xsl:value-of select="/bedework/currentCalSuite/groupHref"/></xsl:attribute>
+        </input>
+        <input type="hidden" name="catFilter" value=""/>
+        <input type="hidden" name="master" value="true"/>
+        <!-- the following two fields are set by javascript -->
+        <input type="hidden" name="fexpr" value=""/>
+        <input type="hidden" name="setappvar" id="appvar" value="suggestType(P)"/>
+
+        <div class="container-nowrap">
+          <label for="bwListWidgetStartDate"><xsl:copy-of select="$bwStr-EvLs-StartDate"/></label>
+          <input id="bwListWidgetStartDate" type="text" class="noFocus" name="start" size="10"
+                 onchange="setSuggestListDate(this.form,this.value);"/>
+          <input id="bwListWidgetToday" type="submit" value="{$bwStr-EvLs-Today}"
+                 onclick="setSuggestListDateToday('{$today}',this.form);"/>
+        </div>
+
+        <div id="refreshBwList">
+          <div id="refreshBwListControls">
+            <xsl:copy-of select="$bwStr-TaAQ-View"/>
+            <input type="radio" name="suggestedListType" id="bwSuggestTabP" onclick="setSuggestListType(this.form,this.value);" value="P">
+              <xsl:if test="not(/bedework/appvar[key='suggestType']) or /bedework/appvar[key='suggestType']/value = 'P'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <label for="bwSuggestTabP"><xsl:copy-of select="$bwStr-TaAQ-Suggested"/></label>
+            <input type="radio" name="suggestedListType" id="bwSuggestTabA" onclick="setSuggestListType(this.form,this.value);" value="A">
+              <xsl:if test="/bedework/appvar[key='suggestType']/value = 'A'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <label for="bwSuggestTabA"><xsl:copy-of select="$bwStr-TaAQ-Accepted"/></label>
+            <input type="radio" name="suggestedListType" id="bwSuggestTabR" onclick="setSuggestListType(this.form,this.value);" value="R">
+              <xsl:if test="/bedework/appvar[key='suggestType']/value = 'R'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <label for="bwSuggestTabR"><xsl:copy-of select="$bwStr-TaAQ-Rejected"/></label>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
     <xsl:call-template name="eventListCommon">
       <xsl:with-param name="suggestionQueue">true</xsl:with-param>
     </xsl:call-template>
+
+    <xsl:call-template name="eventListControls">
+      <xsl:with-param name="nextAction"><xsl:value-of select="$nextSuggestionQueueTab"/>&amp;sg=true</xsl:with-param>
+      <xsl:with-param name="bottom">true</xsl:with-param>
+    </xsl:call-template>
+
   </xsl:template>
 
 </xsl:stylesheet>

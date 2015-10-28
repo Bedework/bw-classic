@@ -23,7 +23,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   min-width: 680px;
 }
 #bedework {
@@ -33,7 +33,7 @@ body {
   color: #eee;
   background-color : #333;
   margin: 0;
-  padding: 0.5em 1em 0.5em 1em;
+  padding: 0.5em 1em 0.75em 1em;
 }
 #header a {
   color: #dde;
@@ -47,14 +47,14 @@ body {
   float: right;
   border: 0;
 }
-#messages,
-#errors {
-  font-size: 0.8em;
-  margin: 0;
-  padding: 0.3em 0 0.3em 1em;
-  border-bottom: 1px solid Gray;
+#messages, #errors {
+  background: none repeat scroll 0 0 #f8f7a3;
+  border: 1px solid #f2f2f2;
+  border-radius: 4px;
   color: black;
-  background: #ff0 url(../images/glassFill-message.gif) repeat-x top;
+  font-size: 0.9em;
+  margin: 2em 2em 0;
+  padding: 0.5em 1em;
 }
 #errors {
   border: 2px solid red;
@@ -68,13 +68,18 @@ body {
   margin: 0;
   padding: 2px 0;
 }
+#messages .ui-icon,
+#errors .ui-icon {
+  float: left;
+}
 #statusBar {
+  clear: both;
   margin: 0;
   color: #eee;
   background-color: #5c7486;
-  font-size: 0.8em;
+  font-size: 0.9em;
   border-bottom: 1px solid #999;
-  padding: 0.2em 1em;
+  padding: 0.5em 1em;
   white-space: nowrap;
 }
 #statusBar #userInfo {
@@ -102,26 +107,91 @@ body {
 #statusBar #groupDisplay {
   padding-right: 1.5em;
 }
+
+/* Notifications */
+#notificationMenu {
+  display: inline-block;
+  position: relative;
+  margin-left: 1em;
+  background-color: #eee;
+  color: black;
+  padding: 0 6px 0 4px;
+  border-radius: 3px;
+}
+#notificationMenu .ui-icon {
+  float: left;
+}
+#notificationMenu .notificationCount {
+  font-size: 0.9em;
+}
+#notificationMessages {
+  display: none;
+  position: absolute;
+  background-color: #eee;
+  color: #222;
+  margin: -1px 0 0 -4px;
+  padding: 1em;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  z-index: 10;
+}
+#notificationMessages li {
+  list-style: none;
+  margin: 0;
+  padding: 0.5em 4em 0.75em 0.5em;
+  background-color: #e5e5e5;
+  height: 1em;
+}
+#notificationMessages li:nth-child(odd) {
+  background-color: #ddd;
+}
+#notificationMessages a {
+  font-weight: normal;
+  color: #174581 !important;
+  margin: 0 !important;
+}
+#notificationMessages a.notificationClear {
+  position: relative;
+  float: right;
+  left: 3.5em;
+}
+#notificationMessages a.notificationClear .ui-icon {
+  float: none;
+  margin-right: 0;
+}
+#notificationMessages .ui-icon {
+  margin-right: 4px;
+}
+#notificationMessages a.approvalResponse.true,
+#notificationMessages a.suggestReply.true,
+#notificationMessages span.approvalResponse.true,
+#notificationMessages span.suggestReply.true {
+  color: green !important;
+}
+#notificationMessages a.approvalResponse.false,
+#notificationMessages a.suggestReply.false,
+#notificationMessages span.approvalResponse.false,
+#notificationMessages span.suggestReply.false {
+  color: red !important;
+}
+#notificationMessages a.awaitingApproval {
+  color: purple !important;
+}
+/* Tabs */
 #bwAdminMenu {
   margin: 0;
-  padding: 6px 0 4px 0;
+  padding: 0;
   color: #eee;
   background-color: #ddd;
-  font-size: 0.9em;
-  border-bottom: 1px solid #999;
+  font-size: 0.8em;
+  border-bottom: 1px solid #ccc;
 }
 #bwAdminMenu li {
   display: inline;
   margin: 0;
-  /*color: #eee;
-  background: #009 url("../images/menuBgBlue.gif") repeat-x top;*/
+  padding: 6px 0 4px 0;
   color: #777;
   background-color: #eee;
-  padding-top: 6px;
-  padding-bottom: 4px;
-  padding-left: 1em;
-  padding-right: 1em;
-  border-bottom: 1px solid #999;
   border-right: 1px solid #999;
 }
 #bwAdminMenu li.selected {
@@ -133,9 +203,16 @@ body {
 #bwAdminMenu a:active,
 #bwAdminMenu a:hover,
 #bwAdminMenu a:visited {
+  display: inline-block;
   color: #777;
   background-color: transparent;
   text-decoration: none;
+  padding-top: 6px;
+  padding-bottom: 4px;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin: 0;
+  white-space: nowrap;
 }
 #bwAdminMenu li.selected a:link,
 #bwAdminMenu li.selected a:active,
@@ -167,6 +244,15 @@ body {
 #content h2.leftTitle {
   float: left;
 }
+#content .mgmtHeading h2 {
+  float: left;
+}
+#content .mgmtHeading input {
+  margin: 2em 0 0 1em;
+}
+#content .mgmtHeading p {
+  clear: both;
+}
 #content h3 {
   margin: 0;
   padding: 1em 0.2em 0 0.2em;
@@ -196,13 +282,32 @@ th {
 }
 #mainMenu.mainMenuMost {
   width: 550px;
-  margin: 2em auto 12em auto;
+  margin: 2em auto 6em auto;
+}
+#mainMenu.mainMenuMost #mainMenuRow2 {
+  margin-left: 1em;
 }
 #mainMenu.mainMenuFull {
   width: 750px;
   margin: 0 auto;
 }
-#mainMenu ul {
+#mainMenu.mainMenuFull #mainMenuRow2 {
+  padding-left: 5em;
+}
+#mainMenu.mainMenuInline {
+  /* for approver, when workflow is enabled */
+  position: relative;
+  height: 200px;
+}
+#mainMenu.mainMenuInline ul {
+  position: absolute;
+  bottom: 0;
+}
+#mainMenu.mainMenuInline ul + ul {
+   left: 180px;
+}
+#mainMenu.mainMenuMost ul,
+#mainMenu.mainMenuFull ul {
   clear: both;
 }
 #mainMenu li {
@@ -228,6 +333,11 @@ textarea:focus,
 select:focus {
   background-color: #DFEAFF !important;
   color: inherit;
+}
+textarea:required {
+  border-color: #ccc !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
 }
 select:focus option {
   background-color: white;
@@ -277,7 +387,7 @@ select:focus option {
 }
 #searchFilter input[type="text"] {
   width: 165px;
-  height: 14px;
+  height: 11px;
 }
 #searchFilter input[type="submit"] {
   display: none;
@@ -393,14 +503,14 @@ ul.adminMenu li {
 }
 #commonListTable {
   width: 100%;
-  margin-bottom: 2em;
+  margin-bottom: 0;
   border-spacing: 0;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
 }
 #commonListTable th {
-  padding: 0.2em 1em 0.2em 0.5em;
-  background-color : #ccc;
+  padding: 0.5em 1em 0.5em 0.5em;
+  background-color : #ddd;
   color: black;
   white-space: nowrap;
   border-right: 1px solid #ccc;
@@ -415,8 +525,34 @@ ul.adminMenu li {
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
-#commonListTable td.date,
+#commonListTable td.date {
+  white-space: nowrap;
+}
 #commonListTable td.calcat {
+  font-size: 0.8em;
+  /*padding: 0;*/
+}
+#commonListTable td.calcat ul {
+  margin: 0;
+  padding: 0;
+}
+#commonListTable td.calcat li {
+  list-style: none;
+  margin: 0;
+  padding: 4px 6px;
+}
+/*#commonListTable td.calcat li:nth-child(even) {
+  background-color: #f5f5f5;
+}
+#commonListTable td.calcat li:nth-child(odd) {
+  background-color: #fff;
+}*/
+.bwEventListOtherGroupTags {
+  font-size: 0.8em;
+  margin: 1em 0 0 0;
+  padding: 0 6px;
+}
+.otherTagsControls {
   white-space: nowrap;
 }
 #commonListTable tr.even td {
@@ -457,9 +593,55 @@ ul.adminMenu li {
 #commonListTable tr.suggestion-rejected td a {
   text-decoration: line-through;
 }
-#refreshBwList {
+.suggestionStatus {
+  font-size: 1em;
+  margin: 1em 0;
+}
+.suggestionStatus span {
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.suggestionStatus .suggestion-accepted {
+  background-color: #8d8;
+  color: white;
+}
+.suggestionStatus .suggestion-rejected {
+  background-color: #f33;
+  color: white;
+}
+.suggestionStatus .suggestion-suggested {
+  background-color: #ff9;
+}
+#bwSuggestions li {
+  margin-right: 1em;
+}
+#bwSuggestions span.suggestion-accepted {
+  background-color: #6c6;
+  color: white;
+  margin-left: 0.5em;
+  padding: 0 4px;
+}
+#bwSuggestions span.suggestion-rejected {
+  background-color: #e33;
+  color: white;
+  margin-left: 0.5em;
+  padding: 0 4px;
+}
+#eventListMetaData {
+  margin-bottom: 1em;
+  padding: 0.5em;
+  font-size: 0.9em;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  border-top: none;
+  font-weight: bold;
+}
+.bwPublicLink {
   float: right;
-  margin:  1em 0 0 0;
+}
+#bwPublicEventLinkInput {
+  width: 100%;
 }
 table.eventFormTable {
   margin: 1em 0;
@@ -490,6 +672,9 @@ table.eventFormTable tr.optional td {
   white-space: nowrap;
   font-style: italic;
 }
+table.eventFormTable tr.optional textarea {
+  white-space: wrap;
+}
 table.eventFormTable tr.optional td.fieldName {
   font-weight: normal;
   font-style: normal;
@@ -511,6 +696,28 @@ table.eventFormTable td.allField {
   display: inline;
   margin-left: 1em;
 }
+#xbwCustomFieldCollectionsHolder,
+#xbwCustomFieldCurrentFormHolder {
+  display: inline-block;
+}
+#customFieldsContainer .interiorLabel {
+  margin-top: 0.5em;
+}
+#xbwCustomFieldCollections option.unpublished {
+  display: none;
+  background-color: #fee;
+  font-style: italic;
+}
+.customFields {
+  display: inline-block;
+  margin-top: 2px;
+}
+.customFields a {
+  display: inline-block !important;
+}
+.customFields .ui-icon {
+  float: left;
+}
 .fieldInfo {
   font-size: 0.9em;
   font-style: italic;
@@ -528,6 +735,9 @@ table.eventFormTable td.allField {
 	float: right;
 	margin: 0.5em 2em 1em 0;
 }
+.dim {
+  color: #aaa;
+}
 fieldset {
   border: none;
   margin: 0;
@@ -540,6 +750,87 @@ label.interiorLabel {
   display: block;
   float: left;
   width: 140px;
+}
+.ui-datepicker-trigger {
+  position: relative;
+  top: 4px;
+  left: 4px;
+}
+#bwLocationsCell label {
+  display: block;
+}
+#bwLocationsPrimaryContainer {
+  float: left;
+  margin: 0 0.25em 0.25em 0;
+}
+#bwLocationsSecondaryContainer {
+  margin: 0;
+}
+#bwPrefContactContainer,
+#bwAllContactContainer {
+  float: left;
+}
+.container {
+  margin-top: 0.5em;
+  clear: both;
+}
+.container-nowrap {
+  margin: 0 0 0.5em 0;
+  white-space: nowrap;
+}
+.popup {
+  position: relative;
+  background-color: white;
+  margin: auto;
+  padding: 0.5em 2em 2.5em;
+  max-width: 500px;
+}
+a.disabled {
+  color: #bbb;
+  font-style: italic;
+}
+#bwAddRoom h2 {
+  font-size: 1.4em;
+  margin-bottom: 0;
+}
+#bwAddRoomFields {
+  margin-top: 1em;
+}
+#bwAddRoomFields input,
+#bwAddRoomFields button {
+  font-size: 1em;
+}
+#bwAddRoomAddress {
+  font-style: italic;
+}
+#bwSuggestions .bwPrefAllControls {
+  clear: both;
+}
+.bwColumn {
+  float: left;
+  margin-right: 2em;
+}
+#bwTopicalAreas .bwColumn {
+  width: 50%;
+}
+#bwTopicalAreas li.checkedByOtherGroup {
+  color: #777;
+  font-style: italic;
+}
+#bwTopicalAreas input[type='checkbox'] {
+  opacity: 0; /* hide the actual checkbox, but make sure it is clickable */
+}
+#bwTopicalAreas input[type='checkbox'] + label {
+  margin: 0 0 0 -20px;
+  padding: 5px 4px 4px 20px;
+  cursor: pointer;
+  background: url("../images/checkbox-off.png") left center no-repeat;
+}
+#bwTopicalAreas li.checkedByOtherGroup input[type='checkbox'] + label {
+  background-image: url("../images/checkbox-others.png");
+}
+#bwTopicalAreas input[type='checkbox']:checked + label {
+  background-image: url("../images/checkbox-on.png") !important;
 }
 #remainingChars {
 	margin-left: 2em;
@@ -1043,6 +1334,9 @@ table.common th.thin {
   margin: 0;
   padding: 0 0 0 20px;
 }
+.submitButtons {
+  margin-top: 1em;
+}
 #deleteListTable {
   margin: 1em 0 2em 1em;
 }
@@ -1254,7 +1548,7 @@ li.changeGroup {
 }
 .aliasTree li {
   list-style: none !important;
-  margin: 0;
+  margin: 0 0 2px 0;
   padding: 0;
 }
 .aliasTree li ul {
@@ -1266,7 +1560,8 @@ li.changeGroup {
   background-color: transparent;
 }
 .aliasTree input {
-	margin-left: 6px;
+  margin-left: 6px;
+  cursor: pointer;
 }
 img.folderForAliasTree {
   padding: 0.5em 0.2em 0 0.5em;
@@ -1292,14 +1587,19 @@ img.folderForAliasTree {
   margin: 1em 0 -1em 1em;
 }
 #bwEventListAddEventButton {
-  margin: 1.5em 0 0 1em;
+  margin: 2em 0 0 1em;
 }
 #bwEventListControls {
   margin: 1em 0 0 0;
 }
-#bwEventListControls form {
-  display: inline;
-  padding-right: 2em;
+#bwEventListControls .container-nowrap {
+  float: left;
+  padding-right: 1.5em;
+}
+#bwEventListControls select {
+  max-width: 200px;
+  font-size: 0.8em;
+  padding: 2px;
 }
 #bwListWidgetToday {
   margin-left: 1em;
@@ -1307,6 +1607,24 @@ img.folderForAliasTree {
 .bwEventListNav {
   float: right;
   clear: right;
+}
+.bwEventListNav button.disabled {
+  cursor: default;
+}
+.bwEventListNav button.prev {
+  padding: 2px 8px 2px 0;
+}
+.bwEventListNav button.prev .ui-icon {
+  float: left;
+}
+.bwEventListNav button.next {
+  padding: 2px 0 2px 8px;
+}
+.bwEventListNav button.next .ui-icon {
+  float: right;
+}
+.bwListNavBottom {
+  /*margin: -2.6em 0.5em 0 0;*/
 }
 #daysSetterBox {
 	margin-left: 1em;
@@ -1409,6 +1727,16 @@ img.folderForAliasTree {
 }
 button {
   margin-bottom: 1em;
+}
+button,
+input[type="submit"],
+input[type="button"] {
+  -moz-appearance: none;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 2px 8px;
+  cursor: pointer;
 }
 a {
   color: #00c;

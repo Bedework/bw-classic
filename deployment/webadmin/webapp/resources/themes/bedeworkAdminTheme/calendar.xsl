@@ -257,7 +257,7 @@
         </xsl:choose>
       </xsl:if>
       <xsl:choose>
-        <xsl:when test="currentAccess/current-user-privilege-set/privilege/write-content and (calType != '0')">
+        <xsl:when test="(currentAccess/current-user-privilege-set/privilege/write-content or /bedework/userInfo/superUser = 'true') and (calType != '0')">
           <a href="javascript:updateEventFormCalendar('{$calPath}','{$calDisplay}')">
             <strong>
               <xsl:value-of select="summary"/>

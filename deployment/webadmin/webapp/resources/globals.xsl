@@ -72,8 +72,11 @@
   <!-- primary navigation, menu tabs -->
   <xsl:variable name="setup" select="/bedework/urlPrefixes/setup"/>
   <xsl:variable name="initPendingTab" select="/bedework/urlPrefixes/initPendingTab"/>
+  <xsl:variable name="nextPendingTab" select="/bedework/urlPrefixes/nextPendingTab"/>
   <xsl:variable name="initApprovalQueueTab" select="/bedework/urlPrefixes/initApprovalQueueTab"/>
+  <xsl:variable name="nextApprovalQueueTab" select="/bedework/urlPrefixes/nextApprovalQueueTab"/>
   <xsl:variable name="initSuggestionQueueTab" select="/bedework/urlPrefixes/initSuggestionQueueTab"/>
+  <xsl:variable name="nextSuggestionQueueTab" select="/bedework/urlPrefixes/nextSuggestionQueueTab"/>
   <xsl:variable name="showCalsuiteTab" select="/bedework/urlPrefixes/showCalsuiteTab"/>
   <xsl:variable name="showUsersTab" select="/bedework/urlPrefixes/showUsersTab"/>
   <xsl:variable name="showSystemTab" select="/bedework/urlPrefixes/showSystemTab"/>
@@ -106,6 +109,7 @@
 
   <!-- suggestions -->
   <xsl:variable name="suggest-setStatus" select="/bedework/urlPrefixes/suggest/setStatus"/>
+  <xsl:variable name="suggest-setStatusForUpdate" select="/bedework/urlPrefixes/suggest/setStatusForUpdate"/>
 
   <!-- contacts -->
   <xsl:variable name="contact-showContact" select="/bedework/urlPrefixes/contact/showContact"/>
@@ -155,6 +159,9 @@
   <xsl:variable name="calendar-openCloseDisplay" select="/bedework/urlPrefixes/calendar/calOpenCloseDisplay"/>
   <xsl:variable name="calendar-openCloseMove" select="/bedework/urlPrefixes/calendar/calOpenCloseMove"/>
   <xsl:variable name="calendar-move" select="/bedework/urlPrefixes/calendar/move"/>
+  <!-- notifications -->
+  <xsl:variable name="notify-remove" select="/bedework/urlPrefixes/notifications/remove"/>
+  <xsl:variable name="notify-removeTrans" select="/bedework/urlPrefixes/notifications/removeTrans"/>
   <!-- subscriptions -->
   <xsl:variable name="subscriptions-fetch" select="/bedework/urlPrefixes/subscriptions/fetch"/>
   <xsl:variable name="subscriptions-fetchForUpdate" select="/bedework/urlPrefixes/subscriptions/fetchForUpdate"/>
@@ -232,7 +239,8 @@
   <!-- Other generally useful global variables -->
   <xsl:variable name="publicCal">/cal</xsl:variable>
 
-  <!-- the following variable can be set to "true" or "false";
+  <!-- DEPRECATED: but left here for backward compatibility with older themes.
+       The following variable can be set to "true" or "false";
        to use jQuery widgets and fancier UI features, set to false - these are
        not guaranteed to work in portals.  -->
   <xsl:variable name="portalFriendly">false</xsl:variable>

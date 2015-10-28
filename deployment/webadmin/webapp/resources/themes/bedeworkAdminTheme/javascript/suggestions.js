@@ -17,10 +17,12 @@
    under the License.
 */
 
-// Set the status of a suggestion in the suggestion queue
-//   status: "accept" or "reject"
-//   actionPrefix: the action and event parameters
-//   rowId: the id of the table row in which the call was made
+/**
+ * Set the status of a suggestion in the suggestion queue
+ * @param {string} status: "accept" or "reject"
+ * @param {string} actionPrefix: the action URL and event parameters
+ * @param {string} rowId: the id of the table row in which the call was made
+ */
 function setSuggestionRowStatus(status,actionPrefix,rowId,emptyMsg) {
   // color the row first
   if (status == "accept") {
@@ -34,8 +36,8 @@ function setSuggestionRowStatus(status,actionPrefix,rowId,emptyMsg) {
 
   $.ajax({
     type: 'GET',
+    dataType: 'text',
     url: actionPrefix + '&' + status,
-    dataType: "text",
     error: function(xobj,msg) {
       alert("Ajax error: " + msg);
       $('#' + rowId).removeClass('suggestion-accepted suggestion-rejected');
@@ -44,17 +46,24 @@ function setSuggestionRowStatus(status,actionPrefix,rowId,emptyMsg) {
 
 }
 
-// Set the status of a suggestion from an event detail page
-//   status: "accept" or "reject"
-//   actionPrefix: the action and event parameters
-//   redirect: url to redirect to (the suggestions queue)
-function setSuggestionStatus(status,actionPrefix,redirect) {
+/**
+ * Set the status of a suggestion from an event detail page
+ * @param {string} status: "accept" or "reject"
+ * @param {string} actionPrefix: the action URL and event parameters
+ * @param {string} redirect: url to redirect to (the suggestions queue - only used on reject)
+ * @param {object} formObj - the form object to be submitted (only used on accept)
+ */
+function setSuggestionStatus(status,actionPrefix,redirect,formObj) {
   $.ajax({
     type: 'GET',
+    dataType: 'text',
     url: actionPrefix + '&' + status,
-    dataType: "text",
     success: function(){
-      location.href = redirect;
+      if (status == 'accept') {
+        formObj.submit();
+      } else {
+        location.href = redirect;
+      }
     },
     error: function(xobj,msg) {
       alert("Ajax error: " + msg);

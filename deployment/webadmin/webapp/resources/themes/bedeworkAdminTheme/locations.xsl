@@ -28,11 +28,13 @@
    -->
 
   <xsl:template name="locationList">
-    <h2><xsl:copy-of select="$bwStr-LoLi-ManageLocations"/></h2>
-    <p>
-      <xsl:copy-of select="$bwStr-LoLi-SelectLocationToUpdate"/>
+    <div class="mgmtHeading">
+      <h2><xsl:copy-of select="$bwStr-LoLi-ManageLocations"/></h2>
       <input type="button" name="return" value="{$bwStr-LoLi-AddNewLocation}" onclick="javascript:location.replace('{$location-initAdd}')"/>
-    </p>
+      <p>
+        <xsl:copy-of select="$bwStr-LoLi-SelectLocationToUpdate"/>
+      </p>
+    </div>
 
     <table id="commonListTable">
       <tr>
@@ -71,17 +73,32 @@
       </xsl:otherwise>
     </xsl:choose>
 
-    <form action="{$location-update}" method="post">
+    <form action="{$location-update}" id="bwModLocationForm" method="post">
       <table id="eventFormTable">
         <tr>
           <td class="fieldName">
-            <label for="locationAddress"><xsl:copy-of select="$bwStr-MoLo-Address"/></label>
+            <label for="locationAddressField"><xsl:copy-of select="$bwStr-MoLo-Address"/></label>
           </td>
           <td>
-            <input type="text" name="locationAddress.value" id="locationAddress" size="80">
-              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/address/input/@value"/></xsl:attribute>
+            <!-- value is set by javascript -->
+            <input type="text" name="location.addressField" id="locationAddressField" size="80" value="">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/addressField/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-Address-Placeholder"/></xsl:attribute>
             </input>
-            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Address-Placeholder"/></span>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Address-Info"/></span>
+          </td>
+        </tr>
+        <tr class="optional">
+          <td>
+            <label for="locationRoomField"><xsl:copy-of select="$bwStr-MoLo-Address2"/></label>
+          </td>
+          <td>
+            <!-- value is set by javascript -->
+            <input type="text" name="location.roomField" id="locationRoomField" size="80" value="">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/roomField/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-Address2-Placeholder"/></xsl:attribute>
+            </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
           </td>
         </tr>
         <tr class="optional">

@@ -27,11 +27,13 @@
    -->
 
   <xsl:template name="categoryList">
-    <h2><xsl:copy-of select="$bwStr-CtgL-ManageCategories"/></h2>
-    <p>
-      <xsl:copy-of select="$bwStr-CtgL-SelectCategory"/>
+    <div class="mgmtHeading">
+      <h2><xsl:copy-of select="$bwStr-CtgL-ManageCategories"/></h2>
       <input type="button" name="return" value="{$bwStr-CtgL-AddNewCategory}" onclick="javascript:location.replace('{$category-initAdd}')"/>
-    </p>
+      <p>
+        <xsl:copy-of select="$bwStr-CtgL-SelectCategory"/>
+      </p>
+    </div>
 
     <table id="commonListTable">
       <tr>

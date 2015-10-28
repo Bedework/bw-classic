@@ -28,11 +28,13 @@
   <!-- Site subsections -->
   <xsl:include href="head.xsl" />
   <xsl:include href="header.xsl" />
+  <xsl:include href="notifications.xsl" />
   <xsl:include href="tabs.xsl" />
   <xsl:include href="messagesErrors.xsl" />
   <xsl:include href="mainMenu.xsl" />
   <xsl:include href="eventsManage.xsl" />
   <xsl:include href="eventsListCommon.xsl" />
+  <xsl:include href="eventsListControls.xsl" />
   <xsl:include href="eventsForm.xsl" />
   <xsl:include href="eventsDisplay.xsl" />
   <xsl:include href="eventsPending.xsl" />

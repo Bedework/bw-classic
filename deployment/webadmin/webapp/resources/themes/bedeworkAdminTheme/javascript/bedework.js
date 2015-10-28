@@ -139,7 +139,7 @@ function launchSimpleWindow(URL) {
 
 // launch a size parameterized window for displaying information; no header or status bar
 function launchSizedWindow(URL,width,height) {
-  paramStr = "width=" + width + ",height=" + height + ",scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=no,toolbar=no";
+  paramStr = "width=" + width + ",height=" + height + ",scrollbars=yes,resizable=yes,alwaysRaised=yes,menubar=yes,toolbar=yes";
   sizedWindow = window.open(URL, "sizedWindow", paramStr);
   window.sizedWindow.focus();
 }
@@ -313,15 +313,55 @@ function setCalSummary(val,summaryField) {
 }
 // set the event list date
 function setListDate(formObj,dateString) {
-  $("#curListDateHolder").val("curListDate(" + dateString + ")");
-  // get the fexpr from the filter form
-  formObj.fexpr.value =  $("#listEventsCatFilter").val();
+  $("#appvar").val("curListDate(" + dateString + ")");
+  var catFilter = "";
+  if (formObj.catFilter.value != "") {
+    catFilter = "categories.href=\"" + formObj.catFilter.value + "\" and ";
+  }
+  formObj.fexpr.value = '(' + catFilter + 'colPath="' + formObj.colPath.value + '" and (entity_type="event"|entity_type="todo"))';
+  formObj.submit();
+}
+function setSuggestListDate(formObj,dateString) {
+  $("#appvar").val("curListDate(" + dateString + ")");
+  formObj.fexpr.value = '(colPath="' + formObj.colPath.value + '" and (entity_type="event"|entity_type="todo") and suggested-to="' + formObj.suggestedListType.value + ':' + formObj.suggestedTo.value + '")';
   formObj.submit();
 }
 function setListDateToday(dateString,formObj) {
   // note that the today button is a submit, so no need to submit it via JS
   $("#bwListWidgetStartDate").val(dateString);
-  $("#curListDateHolder").val("curListDate(" + dateString + ")");
-  // get the fexpr from the filter form
-  formObj.fexpr.value =  $("#listEventsCatFilter").val();
+  $("#appvar").val("curListDate(" + dateString + ")");
+  var catFilter = "";
+  if (formObj.catFilter.value != "") {
+    catFilter = "categories.href=\"" + formObj.catFilter.value + "\" and ";
+  }
+  formObj.fexpr.value = '(' + catFilter + 'colPath="' + formObj.colPath.value + '" and (entity_type="event"|entity_type="todo"))';
+}
+function setSuggestListDateToday(dateString,formObj) {
+  // note that the today button is a submit, so no need to submit it via JS
+  $("#bwListWidgetStartDate").val(dateString);
+  $("#appvar").val("curListDate(" + dateString + ")");
+  formObj.fexpr.value = '(colPath="' + formObj.colPath.value + '" and (entity_type="event"|entity_type="todo") and suggested-to="' + formObj.suggestedListType.value + ':' + formObj.suggestedTo.value + '")';
+}
+function setListCal(formObj,calPath) {
+  var catFilter = "";
+  if (formObj.catFilter.value != "") {
+    catFilter = "categories.href=\"" + formObj.catFilter.value + "\" and ";
+  }
+  formObj.fexpr.value = '(' + catFilter + 'colPath="' + calPath + '" and (entity_type="event"|entity_type="todo"))';
+  formObj.appvar.value = "calendarPath(" + calPath + ")";
+  formObj.submit();
+}
+function setListCat(formObj,cat) {
+  var catFilter = "";
+  if (cat != "") {
+    catFilter = "categories.href=\"" + cat + "\" and ";
+  }
+  formObj.fexpr.value = '(' + catFilter + 'colPath="' + formObj.colPath.value + '" and (entity_type="event"|entity_type="todo"))';
+  formObj.appvar.value = "catFilter(" + cat + ")";
+  formObj.submit();
+}
+function setSuggestListType(formObj,suggestType) {
+  $("#appvar").val("suggestType(" + suggestType + ")");
+  formObj.fexpr.value = '(colPath="' + formObj.colPath.value + '" and (entity_type="event"|entity_type="todo") and suggested-to="' + suggestType + ':' + formObj.suggestedTo.value + '")';
+  formObj.submit();
 }

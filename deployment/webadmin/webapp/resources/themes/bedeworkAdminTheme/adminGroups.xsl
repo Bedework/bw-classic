@@ -31,7 +31,7 @@
     <h2>
       <xsl:copy-of select="$bwStr-LsAG-ModifyGroups"/>
     </h2>
-    <form name="adminGroupMembersForm" method="post"
+    <form id="adminGroupMembersForm" name="adminGroupMembersForm" method="post"
           action="{$admingroup-initUpdate}">
       <xsl:choose>
         <xsl:when test="/bedework/groups/showMembers='true'">
@@ -375,7 +375,7 @@
       <xsl:copy-of select="$bwStr-MAGM-EnterUserID"/>
     </p>
 
-    <form name="adminGroupMembersForm" method="post"
+    <form id="adminGroupMembersForm" name="adminGroupMembersForm" method="post"
           action="{$admingroup-updateMembers}">
       <p>
         <label for="agMember">
@@ -383,7 +383,7 @@
         </label>
         <xsl:text> </xsl:text>
         <input type="text" id="agMember" name="updGroupMember"
-               size="15"/>
+               size="15" onblur="this.value = trim(this.value);"/>
         <input type="radio" value="user" id="agUser" name="kind"
                checked="checked"/>
         <label for="agUser">

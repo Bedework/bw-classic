@@ -29,4 +29,17 @@
   <!-- Size of results returned from a search.  Upper limit is 250. -->
   <xsl:variable name="searchResultSize">20</xsl:variable>
 
+  <!-- Notification auto-remove: set to true to automatically clear actionable notifications when they are clicked -->
+  <xsl:variable name="notificationAutoRemove">true</xsl:variable>
+
+  <!-- If single sign on is enabled (e.g. CAS or similar SSO technology),
+       do you wish to allow the event form to automatically authenticate to
+       event registration system / web service?
+       Leave this value false if you are not using SSO or if you are
+       not using the event registration system. -->
+  <xsl:variable name="eventRegSsoEnabled">false</xsl:variable>
+
+  <!-- If workflow is enabled (i.e. event approvals) set this to true -->
+  <xsl:variable name="workflowEnabled">false</xsl:variable>
+
 </xsl:stylesheet>

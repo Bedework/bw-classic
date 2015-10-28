@@ -27,11 +27,13 @@
    -->
 
   <xsl:template name="contactList">
-    <h2><xsl:copy-of select="$bwStr-Cont-ManageContacts"/></h2>
-    <p>
-      <xsl:copy-of select="$bwStr-Cont-SelectContact"/>
+    <div class="mgmtHeading">
+      <h2><xsl:copy-of select="$bwStr-Cont-ManageContacts"/></h2>
       <input type="button" name="return" value="{$bwStr-Cont-AddNewContact}" onclick="javascript:location.replace('{$contact-initAdd}')"/>
-    </p>
+      <p>
+        <xsl:copy-of select="$bwStr-Cont-SelectContact"/>
+      </p>
+    </div>
 
     <table id="commonListTable" title="{$bwStr-Cont-ListOfContacts}">
       <tr>

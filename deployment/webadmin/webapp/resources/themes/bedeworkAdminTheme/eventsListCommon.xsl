@@ -36,13 +36,13 @@
           <th><xsl:copy-of select="$bwStr-EvLC-Start"/></th>
           <th><xsl:copy-of select="$bwStr-EvLC-End"/></th>
           <xsl:if test="$suggestionQueue = 'false'">
-            <th>
+            <th class="calcat">
               <xsl:if test="$pending = 'true'"><xsl:copy-of select="$bwStr-EvLC-Suggested"/><xsl:text> </xsl:text></xsl:if>
               <xsl:copy-of select="$bwStr-EvLC-TopicalAreas"/>
             </th>
           </xsl:if>
           <xsl:if test="$pending = 'false'">
-            <th><xsl:copy-of select="$bwStr-EvLC-Categories"/></th>
+            <th class="calcat"><xsl:copy-of select="$bwStr-EvLC-Categories"/></th>
           </xsl:if>
           <th><xsl:copy-of select="$bwStr-EvLC-Author"/></th>
           <th><xsl:copy-of select="$bwStr-EvLC-Description"/></th>
@@ -66,12 +66,63 @@
                 <xsl:attribute name="colspan">7</xsl:attribute>
               </xsl:if-->
               <xsl:copy-of select="$bwStr-EvLC-NoEvents"/>
+              (<xsl:value-of select="/bedework/maxdays"/>
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="$bwStr-EvLC-DayWindow"/>)
             </td>
           </tr>
         </xsl:if>
 
       </tbody>
     </table>
+
+    <xsl:if test="/bedework/events/event">
+      <xsl:variable name="resultSize" select="/bedework/events/resultSize"/>
+      <xsl:variable name="pageSize" select="/bedework/events/pageSize"/>
+      <xsl:variable name="offset">
+        <xsl:choose>
+          <xsl:when test="/bedework/events/curOffset = $resultSize">0</xsl:when>
+          <xsl:otherwise><xsl:value-of select="/bedework/events/curOffset"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="totalPages"><xsl:value-of select="ceiling($resultSize div $pageSize)"/></xsl:variable>
+      <xsl:variable name="curPage"><xsl:value-of select="floor($offset div $pageSize) + 1"/></xsl:variable>
+      <xsl:variable name="firstOfOffset">
+        <xsl:choose>
+          <xsl:when test="$resultSize = 0">0</xsl:when>
+          <xsl:otherwise><xsl:value-of select="$offset + 1"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="lastOfOffset">
+        <xsl:choose>
+          <xsl:when test="$offset + $pageSize &gt; $resultSize"><xsl:value-of select="$resultSize"/></xsl:when>
+          <xsl:otherwise><xsl:value-of select="$offset + $pageSize"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <div id="eventListMetaData">
+        <xsl:value-of select="$bwStr-EvLC-Page"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$curPage"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$bwStr-EvLC-Of"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$totalPages"/>,
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$bwStr-EvLC-Viewing"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$firstOfOffset"/>-<xsl:value-of select="$lastOfOffset"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$bwStr-EvLC-Of"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="/bedework/events/resultSize"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$bwStr-EvLC-EventsInA"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="/bedework/maxdays"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$bwStr-EvLC-DayWindow"/>
+      </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="event" mode="eventListCommon">
@@ -137,6 +188,7 @@
               <xsl:when test="status = 'TENTATIVE'"><xsl:copy-of select="$bwStr-EvLC-Tentative"/><br/></xsl:when>
             </xsl:choose>
             <a>
+              <xsl:attribute name="title"><xsl:copy-of select="$bwStr-EvLC-EditEvent"/></xsl:attribute>
               <xsl:choose>
                 <xsl:when test="$approvalQueue = 'true'">
                   <xsl:choose>
@@ -150,7 +202,8 @@
                   </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$suggestionQueue = 'true'">
-                  <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdateSuggestionQueue"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
+                  <!-- only link to master events - do not link to recurrence instances -->
+                  <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdateSuggestionQueue"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/></xsl:attribute>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:attribute name="href"><xsl:value-of select="$event-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
@@ -165,6 +218,15 @@
                 </xsl:otherwise>
               </xsl:choose>
             </a>
+            <xsl:if test="$approvalQueue = 'false'">
+              <!-- generate a public link; for now always expose in the main suite. -->
+              <a class="bwPublicLink" href="#bwPublicEventLinkBox">
+                <xsl:attribute name="data-public-event-path">/cal/event/eventView.do?calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:attribute>
+                <xsl:attribute name="data-public-event-summary"><xsl:value-of select="summary"/></xsl:attribute>
+                <xsl:attribute name="title"><xsl:value-of select="$bwStr-EvLC-ShowPublicLink"/></xsl:attribute>
+                <span class="ui-icon ui-icon-link"></span>
+              </a>
+            </xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </td>
@@ -210,25 +272,35 @@
         <td class="calcat">
           <xsl:choose>
             <xsl:when test="$pending = 'true'">
-              <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
-                <xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/><br/>
-              </xsl:for-each>
+              <xsl:if test="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
+                <ul>
+                  <xsl:for-each select="xproperties/X-BEDEWORK-SUBMIT-ALIAS">
+                    <li><xsl:value-of select="parameters/X-BEDEWORK-PARAM-DISPLAYNAME"/></li>
+                  </xsl:for-each>
+                </ul>
+              </xsl:if>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[contains(values/text,/bedework/currentCalSuite/resourcesHome)]">
-                <xsl:value-of select="substring-after(values/text,/bedework/currentCalSuite/resourcesHome)"/><br/>
-              </xsl:for-each>
+              <xsl:if test="xproperties/X-BEDEWORK-ALIAS[contains(values/text,/bedework/currentCalSuite/resourcesHome)]">
+                <ul>
+                  <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[contains(values/text,/bedework/currentCalSuite/resourcesHome)]">
+                    <li><xsl:value-of select="substring-after(values/text,/bedework/currentCalSuite/resourcesHome)"/></li>
+                  </xsl:for-each>
+                </ul>
+              </xsl:if>
               <xsl:if test="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
                 <xsl:variable name="tagsId">bwTags-<xsl:value-of select="guid"/></xsl:variable>
                 <div class="bwEventListOtherGroupTags">
-                  <strong><xsl:copy-of select="$bwStr-EvLC-ThisEventCrossTagged"/></strong><br/>
-                  <input type="checkbox" name="tagsToggle" value="" onclick="toggleVisibility('{$tagsId}','bwOtherTags')"/>
-                  <xsl:copy-of select="$bwStr-EvLC-ShowTagsByOtherGroups"/>
-                  <div id="{$tagsId}" class="invisible">
-                    <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
-                      <xsl:value-of select="values/text"/><br/>
-                    </xsl:for-each>
+                  <div class="otherTagsControls">
+                    <strong><xsl:copy-of select="$bwStr-EvLC-ThisEventCrossTagged"/></strong><br/>
+                    <input type="checkbox" name="tagsToggle" id="tagsToggle-{$tagsId}" value="" onclick="toggleVisibility('{$tagsId}','bwOtherTags')"/>
+                    <label for="tagsToggle-{$tagsId}"><xsl:copy-of select="$bwStr-EvLC-ShowTagsByOtherGroups"/></label>
                   </div>
+                  <ul id="{$tagsId}" class="invisible">
+                    <xsl:for-each select="xproperties/X-BEDEWORK-ALIAS[not(contains(values/text,/bedework/currentCalSuite/resourcesHome))]">
+                      <li><xsl:value-of select="values/text"/></li>
+                    </xsl:for-each>
+                  </ul>
                 </div>
               </xsl:if>
             </xsl:otherwise>
@@ -237,13 +309,24 @@
       </xsl:if>
       <xsl:if test="$pending = 'false'">
         <td class="calcat">
-          <xsl:for-each select="categories/category">
-            <xsl:value-of select="value"/><br/>
-          </xsl:for-each>
+          <xsl:if test="categories/category">
+            <ul>
+              <xsl:for-each select="categories/category">
+                <li><xsl:value-of select="value"/></li>
+              </xsl:for-each>
+            </ul>
+          </xsl:if>
         </td>
       </xsl:if>
       <td>
-        <xsl:value-of select="substring-before(xproperties/X-BEDEWORK-SUBMITTEDBY/values/text,' ')"/>
+        <xsl:choose>
+          <xsl:when test="$pending = 'true'">
+            <xsl:value-of select="xproperties/X-BEDEWORK-SUBMITTEDBY/values/text"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="substring-before(xproperties/X-BEDEWORK-SUBMITTEDBY/values/text,' ')"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </td>
       <td>
         <xsl:value-of select="description"/>
@@ -251,28 +334,31 @@
           <div class="recurrenceEditLinks">
             <xsl:text> </xsl:text>
             <xsl:copy-of select="$bwStr-EvLC-RecurringEventEdit"/>
+            <xsl:text> </xsl:text>
             <xsl:choose>
               <xsl:when test="$pending = 'true'">
                 <!-- only master events can be published -->
                 <a href="{$event-fetchForUpdatePending}&amp;calPath={$calPath}&amp;guid={$guid}">
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
-                </a> |
+                </a>
               </xsl:when>
               <xsl:when test="$approvalQueue = 'true'">
                 <a href="{$event-fetchForUpdateApprovalQueue}&amp;calPath={$calPath}&amp;guid={$guid}">
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
-                </a> |
+                </a>
               </xsl:when>
               <xsl:otherwise>
                 <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}">
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
-                </a> |
+                </a>
               </xsl:otherwise>
             </xsl:choose>
-            <!-- recurrence instances can only be edited -->
-            <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
-              <xsl:copy-of select="$bwStr-EvLC-Instance"/>
-            </a>
+            <!-- recurrence instances can only be edited; and do not link to them in suggestion queue-->
+            <xsl:if test="$suggestionQueue = 'false'">
+            | <a href="{$event-fetchForUpdate}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <xsl:copy-of select="$bwStr-EvLC-Instance"/>
+              </a>
+            </xsl:if>
           </div>
         </xsl:if>
       </td>
