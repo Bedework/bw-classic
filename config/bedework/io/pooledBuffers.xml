@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch xmlns="http://bedework.org/ns/"
-        type="org.bedework.util.servlet.io.PooledBuffersPropertiesImpl">
-  <smallBufferSize>250</smallBufferSize>
-  <mediumBufferSize>4096</mediumBufferSize>
-  <largeBufferSize>1000000</largeBufferSize>
-  <smallBufferPoolSize>20</smallBufferPoolSize>
-  <mediumBufferPoolSize>20</mediumBufferPoolSize>
+<pooled-buffer-properties xmlns="http://bedework.org/ns/" type="edu.rpi.sss.util.servlets.io.PooledBuffersPropertiesImpl">
   <largeBufferPoolSize>60</largeBufferPoolSize>
-</synch>
+  <largeBufferSize>1000000</largeBufferSize>
+  <mediumBufferPoolSize>20</mediumBufferPoolSize>
+  <mediumBufferSize>4096</mediumBufferSize>
+  <name>pooledBuffers</name>
+  <smallBufferPoolSize>20</smallBufferPoolSize>
+  <smallBufferSize>250</smallBufferSize>
+</pooled-buffer-properties>

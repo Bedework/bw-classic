@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch-connector xmlns="http://bedework.org/ns/"
-                 type="org.bedework.synch.cnctrs.bedework.BedeworkConnectorConfig">
+<synch-connector xmlns="http://bedework.org/ns/" type="org.bedework.synch.cnctrs.bedework.BedeworkConnectorConfig">
   <bwWSDLURI>http://localhost:8080/wsdls/synch/wssvc.wsdl</bwWSDLURI>
   <connectorClassName>org.bedework.synch.cnctrs.bedework.BedeworkConnector</connectorClassName>
   <keepAliveInterval>300</keepAliveInterval>

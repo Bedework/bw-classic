@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<client-config xmlns="http://bedework.org/ns/"
-               type="org.bedework.webcommon.config.ConfigCommonImpl">
+<client-config xmlns="http://bedework.org/ns/" type="org.bedework.webcommon.config.ConfigCommonImpl">
   <appRoot>http://localhost:8080/eventsubmitrsrc</appRoot>
   <appType>websubmit</appType>
   <autoCreateContacts>false</autoCreateContacts>

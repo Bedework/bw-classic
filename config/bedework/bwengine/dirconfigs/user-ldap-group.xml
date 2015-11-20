@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<dir-config xmlns="http://bedework.org/ns/"
-            type="org.bedework.calsvc.jmx.LdapConfigPropertiesImpl">
+<dir-config xmlns="http://bedework.org/ns/" type="org.bedework.calsvc.jmx.LdapConfigPropertiesImpl">
   <authDn>uid=admin,ou=system</authDn>
   <authPw>secret</authPw>
   <defaultDomain>mysite.edu</defaultDomain>

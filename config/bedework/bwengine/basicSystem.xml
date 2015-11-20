@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<basic-properties xmlns="http://bedework.org/ns/"
-                   type="org.bedework.calsvc.jmx.BasicSystemPropertiesImpl">
+<basic-properties xmlns="http://bedework.org/ns/" type="org.bedework.calsvc.jmx.BasicSystemPropertiesImpl">
   <bedeworkResourceDirectory>.bedework</bedeworkResourceDirectory>
   <bwadmingroupPrincipalRoot>/principals/groups/bwadmin/</bwadmingroupPrincipalRoot>
   <defaultAttachmentsName>Attachments</defaultAttachmentsName>

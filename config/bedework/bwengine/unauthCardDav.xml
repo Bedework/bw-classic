@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<carddav-info xmlns="http://bedework.org/ns/"
-              type="org.bedework.calsvc.jmx.CardDavInfoImpl" >
+<carddav-info xmlns="http://bedework.org/ns/" type="org.bedework.calsvc.jmx.CardDavInfoImpl">
   <auth>false</auth>
   <contextPath>/pubcarddav</contextPath>
   <host>localhost</host>

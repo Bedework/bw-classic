@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<synch-connector xmlns="http://bedework.org/ns/"
-                 type="org.bedework.synch.conf.ConnectorConfig">
+<synch-connector xmlns="http://bedework.org/ns/" type="org.bedework.synch.conf.ConnectorConfig">
   <connectorClassName>org.bedework.synch.cnctrs.manager.SynchConnector</connectorClassName>
   <mbeanClassName>org.bedework.synch.service.SynchConnConf</mbeanClassName>
   <name>manager</name>

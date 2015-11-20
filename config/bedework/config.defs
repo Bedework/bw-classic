@@ -1,13 +1,7 @@
 # This file locates all the configurations in the jboss server
 # configuration directory
 
-# During execution of the deployConf target the token
-# @APPSERVER-CONF-DIR@ gets replaced with the value of the build time
-# property org.bedework.jboss.conf.dir which is set in cal.properties.
-
-org.bedework.config.base=file:${org.bedework.config.dir}/bedework/
-
-#org.bedework.config.base=@APPSERVER-CONF-DIR-URL@bedework/
+org.bedework.config.base=file:${org.bedework.config.dir}
 
 #         Calendar clients config dir
 org.bedework.clients.confuri=client-configs

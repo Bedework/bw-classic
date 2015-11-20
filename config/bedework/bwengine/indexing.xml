@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<index-properties xmlns="http://bedework.org/ns/"
-                  type="org.bedework.indexer.IndexPropertiesImpl">
+<index-properties xmlns="http://bedework.org/ns/" type="org.bedework.indexer.IndexPropertiesImpl">
   <account>admin</account>
-  <skipPaths>/public/unbrowsable:/public/aliases:*/Outbox:*/Inbox:*/Deleted</skipPaths>
-  <maxEntityThreads>5</maxEntityThreads>
-  <maxPrincipalThreads>5</maxPrincipalThreads>
-
+  <dataDir>${org.bedework.data.dir}/elasticsearch/</dataDir>
   <discardMessages>false</discardMessages>
-  <indexPublic>true</indexPublic>
-  <indexUsers>true</indexUsers>
-
-  <solrCoreAdmin>admin/cores/</solrCoreAdmin>
-  <publicIndexName>bwpublic</publicIndexName>
-  <indexerConfig>@APPSERVER-CONF-DIR@/elasticsearch/mappings.json</indexerConfig>
-  <indexerURL>localhost:9300</indexerURL>
-  <userIndexName>bwuser</userIndexName>
-
   <embeddedIndexer>true</embeddedIndexer>
   <httpEnabled>false</httpEnabled>
-  <dataDir>@APPSERVER-DATA-DIR@/elasticsearch/</dataDir>
+  <indexPublic>true</indexPublic>
+  <indexUsers>true</indexUsers>
+  <indexerConfig>${org.bedework.config.dir}/elasticsearch/mappings.json</indexerConfig>
+  <indexerURL>localhost:9300</indexerURL>
+  <maxEntityThreads>5</maxEntityThreads>
+  <maxPrincipalThreads>5</maxPrincipalThreads>
+  <publicIndexName>bwpublic</publicIndexName>
+  <skipPaths>/public/unbrowsable:/public/aliases:*/Outbox:*/Inbox:*/Deleted</skipPaths>
+  <userIndexName>bwuser</userIndexName>
 </index-properties>

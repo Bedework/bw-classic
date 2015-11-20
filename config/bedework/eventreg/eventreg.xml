@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<eventreg-properties xmlns="http://bedework.org/ns/"
-                 type="org.bedework.eventreg.service.EventregPropertiesImpl">
-  <export>false</export>
-  <schemaOutFile>@APPSERVER-DATA-DIR@/eventreg/schema.txt</schemaOutFile>
-  <dataIn>@APPSERVER-DATA-DIR@/eventreg/initdata.xml</dataIn>
-  <dataOut>@APPSERVER-DATA-DIR@/eventreg/</dataOut>
+<eventreg-properties xmlns="http://bedework.org/ns/" type="org.bedework.eventreg.service.EventregPropertiesImpl">
+  <bwId>localBedework</bwId>
+  <bwToken>abcd</bwToken>
+  <bwUrl>http://localhost:8080/notifyws</bwUrl>
+  <dataIn>${org.bedework.data.dir}/eventreg/initdata.xml</dataIn>
+  <dataOut>${org.bedework.data.dir}/eventreg/</dataOut>
   <dataOutPrefix>eventreg</dataOutPrefix>
+  <defaultEmailDomain>bedework.org</defaultEmailDomain>
+  <eventregAdminToken>ba48c4dc-ab49-4f55-b2c5-02cd450d2762</eventregAdminToken>
   <hibernateProperties>
     <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
     <hibernateProperty>hibernate.connection.datasource=java:/EventregDS</hibernateProperty>
@@ -24,6 +26,7 @@
     <hibernateProperty>hibernate.connection.pool_size=1</hibernateProperty>
     <hibernateProperty>hibernate.query.substitutions=true 'T', false 'F', yes 'Y', no 'N'</hibernateProperty>
   </hibernateProperties>
+  <schemaOutFile>${org.bedework.data.dir}/eventreg/schema.txt</schemaOutFile>
   <tzsUri>http://localhost:8080/tzsvr</tzsUri>
   <wsdlUri>http://localhost:8080/wsdls/pubcalws-soap/wssvc.wsdl</wsdlUri>
 </eventreg-properties>

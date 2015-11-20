@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<note-confinfo xmlns="http://bedework.org/ns/"
-                type="org.bedework.notifier.conf.NotifyConfig">
+<note-confinfo xmlns="http://bedework.org/ns/" type="org.bedework.notifier.conf.NotifyConfig">
   <callbackURI>http://localhost:8080/notify/</callbackURI>
   <hibernateProperties>
     <hibernateProperty>hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect</hibernateProperty>
@@ -20,10 +19,10 @@
   </hibernateProperties>
   <missingTargetRetries>10</missingTargetRetries>
   <name>note-config</name>
-  <privKeys>/home/douglm/bedeworkqs/quickstart/bedework/../jboss-5.1.0.GA/server/default/data/bedework/privkeys</privKeys>
-  <pubKeys>/home/douglm/bedeworkqs/quickstart/bedework/../jboss-5.1.0.GA/server/default/data/bedework/pubkeys</pubKeys>
   <notelingPoolSize>20</notelingPoolSize>
   <notelingPoolTimeout>5000</notelingPoolTimeout>
-  <timezonesURI>http://localhost:8080/tzsvr</timezonesURI>
+  <privKeys>${org.bedework.data.dir}/privkeys</privKeys>
+  <pubKeys>${org.bedework.data.dir}/pubkeys</pubKeys>
   <templatesPath>${org.bedework.config.dir}/notify/ftls/</templatesPath>
+  <timezonesURI>http://localhost:8080/tzsvr</timezonesURI>
 </note-confinfo>

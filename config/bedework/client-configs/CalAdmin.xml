@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<client-config xmlns="http://bedework.org/ns/"
-               type="org.bedework.webcommon.config.AdminConfigImpl">
+<client-config xmlns="http://bedework.org/ns/" type="org.bedework.webcommon.config.AdminConfigImpl">
   <allowEditAllCategories>true</allowEditAllCategories>
   <allowEditAllContacts>true</allowEditAllContacts>
   <allowEditAllLocations>true</allowEditAllLocations>
@@ -14,7 +13,7 @@
   <browserResourceRoot>/caladminrsrc</browserResourceRoot>
   <categoryOptional>true</categoryOptional>
   <guestMode>false</guestMode>
-  <hour24>true</hour24>
+  <hour24>false</hour24>
   <logPrefix>PubEventsAdmin</logPrefix>
   <mbeanClassName>org.bedework.webcommon.config.AdminConf</mbeanClassName>
   <minIncrement>5</minIncrement>
