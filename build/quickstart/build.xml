@@ -115,6 +115,19 @@
   </target>
 
   <!-- =================================================================
+       "deploywf" target
+       ================================================================= -->
+
+  <target name="deploywf" depends="init"
+          description="Deploy wildfly configuration files">
+    <property name="org.bedework.wildfly.configs"
+              location="${env.BEDEWORK_CONFIGS_HOME}/../wildfly" />
+    <copy tofile="${org.bedework.jboss.conf.dir}/standalone.xml"
+          file="${org.bedework.wildfly.configs}/quickstart/standalone.xml"
+          overwrite="true" />
+  </target>
+
+  <!-- =================================================================
        "deployActivemq" target
        ================================================================= -->
 
@@ -136,9 +149,13 @@
        ================================================================= -->
 
   <target name="deployConf" depends="init"
-          description="Copy the solr config into the appserver">
-    <ant antfile="${bedework.build.file}" inheritrefs="true"
-         target="deployConf" />
+          description="Copy the config files into the appserver">
+    <delete dir="${org.bedework.jboss.conf.dir}/bedework"/>
+    <mkdir dir="${org.bedework.jboss.conf.dir}/bedework"/>
+
+    <copy todir="${org.bedework.jboss.conf.dir}/bedework">
+      <fileset dir="${env.BEDEWORK_JMX_CONFIG}"/>
+    </copy>
   </target>
 
   <!-- =================================================================
