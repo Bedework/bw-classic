@@ -2,7 +2,7 @@
 
 <bwcore-dbconfig xmlns="http://bedework.org/ns/" type="org.bedework.calcore.hibernate.DbConfig">
   <hibernateProperties>
-    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
+    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.H2Dialect</hibernateProperty>
     <hibernateProperty>hibernate.connection.datasource=java:/CalendarDS</hibernateProperty>
     <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
     <hibernateProperty>hibernate.show_sql=false</hibernateProperty>
