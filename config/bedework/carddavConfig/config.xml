@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<bwcarddav xmlns="http://bedework.org/ns/" type="org.bedework.carddav.server.config.CardDAVConfig">
+<bwcarddav xmlns="http://bedework.org/ns/" type="org.bedework.carddav.common.config.CardDAVConfig">
   <dataOut>${org.bedework.data.dir}/carddav/dumprestore/</dataOut>
   <defaultAddressbook>addressbook</defaultAddressbook>
   <groupPrincipalRoot>/principals/groups</groupPrincipalRoot>

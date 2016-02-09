@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <eventreg-properties xmlns="http://bedework.org/ns/" type="org.bedework.eventreg.service.EventregPropertiesImpl">
+  <actionDelayQueueName>eventregActionDelay</actionDelayQueueName>
+  <actionQueueName>eventregAction</actionQueueName>
+  <delayMillis>1000</delayMillis>
+  <retries>10</retries>
   <bwId>localBedework</bwId>
   <bwToken>abcd</bwToken>
   <bwUrl>http://localhost:8080/notifyws</bwUrl>
@@ -9,8 +13,22 @@
   <dataOutPrefix>eventreg</dataOutPrefix>
   <defaultEmailDomain>bedework.org</defaultEmailDomain>
   <eventregAdminToken>ba48c4dc-ab49-4f55-b2c5-02cd450d2762</eventregAdminToken>
+  <syseventsProperties>
+    <syseventsProperty>java.naming.provider.url = vm://bedework</syseventsProperty>
+    <syseventsProperty>org.bedework.connection.factory.name=java:/jms/BedeworkConnectionFactory</syseventsProperty>
+    <syseventsProperty>org.bedework.jms.queue.prefix=activemq/queue/</syseventsProperty>
+    <syseventsProperty>connectionFactoryNames = activemq/QueueConnectionFactory</syseventsProperty>
+    <syseventsProperty>queue.queue/eventregAction = bedework.eventregAction</syseventsProperty>
+    <syseventsProperty>queue.queue/eventregActionDelay = bedework.eventregActionDelay</syseventsProperty>
+    <syseventsProperty>queue.queue/sysevents = bedework.sysevents</syseventsProperty>
+    <syseventsProperty>queue.queue/syseventslog = bedework.sysevents.logger</syseventsProperty>
+    <syseventsProperty>queue.queue/monitor = bedework.sysevents.monitor</syseventsProperty>
+    <syseventsProperty>queue.queue/schedulerIn = bedework.scheduleIn</syseventsProperty>
+    <syseventsProperty>queue.queue/schedulerOut = bedework.scheduleOut</syseventsProperty>
+    <syseventsProperty>queue.queue/crawler = bedework.crawler</syseventsProperty>
+  </syseventsProperties>
   <hibernateProperties>
-    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
+    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.H2Dialect</hibernateProperty>
     <hibernateProperty>hibernate.connection.datasource=java:/EventregDS</hibernateProperty>
     <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
     <hibernateProperty>hibernate.show_sql=false</hibernateProperty>

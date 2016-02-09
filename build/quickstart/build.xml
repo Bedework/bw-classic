@@ -133,6 +133,7 @@
 
   <target name="deployActivemq" depends="init"
           description="Copy the Activemq config into the appserver">
+    <echo message="Activemq destination: ${org.bedework.global.activemq.dir}" />
     <copy file="${org.bedework.activemq.configurations}/activemq-ra.xml"
           tofile="${org.bedework.global.activemq.dir}/META-INF/ra.xml"
           overwrite="yes" />

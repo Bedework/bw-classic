@@ -130,6 +130,22 @@
       <attribute name="Properties">PhysicalName=bedework.scheduleOut</attribute>
    </mbean>
 
+  <!-- Bedework eventreg action processing queues -->
+  <mbean code="org.jboss.resource.deployment.AdminObject"
+         name="activemq.queue:name=eventregAction">
+    <attribute name="JNDIName">activemq/queue/eventregAction</attribute>
+    <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
+    <attribute name="Type">javax.jms.Queue</attribute>
+    <attribute name="Properties">PhysicalName=bedework.eventregAction</attribute>
+  </mbean>
+  <mbean code="org.jboss.resource.deployment.AdminObject"
+         name="activemq.queue:name=eventregActionDelay">
+    <attribute name="JNDIName">activemq/queue/eventregActionDelay</attribute>
+    <depends optional-attribute-name="RARName">jboss.jca:service=RARDeployment,name='activemq-rar-5.9.0.rar'</depends>
+    <attribute name="Type">javax.jms.Queue</attribute>
+    <attribute name="Properties">PhysicalName=bedework.eventregActionDelay</attribute>
+  </mbean>
+
 <!-- A topic example
    <mbean code="org.jboss.resource.deployment.AdminObject" name="activemq.topic:name=inboundTopic">
       <attribute name="JNDIName">activemq/topic/inbound</attribute>

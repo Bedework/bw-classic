@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<bwcarddav xmlns="http://bedework.org/ns/" type="org.bedework.carddav.server.config.CardDAVContextConfig">
+<bwcarddav xmlns="http://bedework.org/ns/" type="org.bedework.carddav.common.config.CardDAVContextConfig">
   <addressBookHandlerPrefix>/user</addressBookHandlerPrefix>
   <directoryBrowsingDisallowed>false</directoryBrowsingDisallowed>
   <name>usercarddav</name>

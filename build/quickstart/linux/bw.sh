@@ -44,6 +44,7 @@ updateSvnProjects="bedenote"
 # Projects we will build - pkgdefault (bedework) is built if nothing specified
 pkgdefault=yes
 bedenote=
+bwcli=
 bwtools=
 caldavTest=
 catsvr=
@@ -377,6 +378,12 @@ setDirectory() {
       cd $GIT_HOME/bw-caldav
       maven=yes
       bw_caldav=
+	  return
+	fi
+
+	if [ "$bwcli" != "" ] ; then
+	  cd $GIT_HOME/bwcli
+      bwcli=
 	  return
 	fi
 
@@ -776,6 +783,13 @@ do
       pkgdefault=
       shift
       ;;
+    -bwcli)
+      bwcli="yes"
+
+      bw_util="yes"
+      pkgdefault=
+      shift
+      ;;
     -notifier)
       bw_notifier="yes"
 
@@ -1010,6 +1024,8 @@ postDeploycmd="./bw-classic/deployment/deployer/deploy.sh --noversion --delete"
 if [ "$deployEarsUrl" != "" ] ; then
   postDeploycmd="$postDeploycmd --inurl $deployEarsUrl"
 fi
+
+postDeploycmd="$postDeploycmd --baseDir $QUICKSTART_HOME"
 
 postDeploycmd="$postDeploycmd --props $deployConfig"
 

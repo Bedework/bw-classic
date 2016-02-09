@@ -21,7 +21,7 @@ FOR /f %%i IN ('dir /b rpiutil\lib\*.jar') DO SET cp=%cp%;.\rpiutil\lib\%%i
 
 FOR /f %%i IN ('dir /b rpiutil\dist\*.jar') DO SET cp=%cp%;.\rpiutil\dist\%%i
 
-SET RUNCMD="%JAVA_HOME%\bin\java" -cp %cp% edu.rpi.sss.util.deployment.ProcessEars
+SET RUNCMD="%JAVA_HOME%\bin\java" -cp %cp% org.bedework.util.deployment.Runnable
 
 ECHO.
 

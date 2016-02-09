@@ -1,0 +1,5 @@
+<listeners>
+  <listener>
+    <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+  </listener>
+</listeners>

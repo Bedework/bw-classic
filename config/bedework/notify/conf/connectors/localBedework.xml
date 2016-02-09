@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <notify-connector xmlns="http://bedework.org/ns/" type="org.bedework.notifier.cnctrs.bedework.BedeworkConnectorConfig">
-  <notificationDirHref>http://localhost:8080/pubcaldav/user/notify-user/Notifications/</notificationDirHref>
   <connectorClassName>org.bedework.notifier.cnctrs.bedework.BedeworkConnector</connectorClassName>
   <id>bedeworkCal</id>
   <keepAliveInterval>300</keepAliveInterval>

@@ -456,9 +456,11 @@
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="lucene-analyzers-common" version="${org.bedework.lucene.version}"/>
+      <!--
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="lucene-codecs" version="${org.bedework.lucene.version}"/>
+              -->
       <getJar lib="${org.bedework.temp.extrajars.dir}"
               libcache="${org.bedework.libcache.dir}"
               name="lucene-highlighter" version="${org.bedework.lucene.version}"/>

@@ -12,7 +12,7 @@
   <groupsDn>ou=groups, dc=bedework, dc=org</groupsDn>
   <groupsOu>groups</groupsOu>
   <hibernateProperties>
-    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
+    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.H2Dialect</hibernateProperty>
     <hibernateProperty>hibernate.connection.datasource=java:/selfregDS</hibernateProperty>
     <hibernateProperty>hibernate.transaction.factory_class=org.hibernate.transaction.JDBCTransactionFactory</hibernateProperty>
     <hibernateProperty>hibernate.show_sql=false</hibernateProperty>

@@ -12,12 +12,22 @@
 
 cp=.:./classes:./resources
 
+for i in ./bw-classic/deployment/deployer/lib/*.jar
+  do
+    cp=$cp:$i
+done
+
 for i in ./bw-util/bw-util-deployment/target/*.jar
   do
     cp=$cp:$i
 done
 
 for i in ./bw-util/bw-util-args/target/*.jar
+  do
+    cp=$cp:$i
+done
+
+for i in ./bw-util/bw-util-misc/target/*.jar
   do
     cp=$cp:$i
 done
@@ -29,7 +39,7 @@ done
 
 RUNCMDPREFIX="$JAVA_HOME/bin/java -cp $cp "
 
-RUNCMD="$RUNCMDPREFIX org.bedework.util.deployment.ProcessEars $*"
+RUNCMD="$RUNCMDPREFIX org.bedework.util.deployment.Runnable $*"
 
 # echo "$RUNCMD"
 

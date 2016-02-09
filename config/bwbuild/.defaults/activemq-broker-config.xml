@@ -82,6 +82,14 @@
       <queue name="schedulerOut"
              physicalName="bedework.scheduleOut" />
 
+      <!--
+        The queues for event registration actions
+      -->
+      <queue name="eventregAction"
+             physicalName="bedework.eventregAction" />
+      <queue name="eventregActionDelay"
+             physicalName="bedework.eventregActionDelay" />
+
       <!-- <topic physicalName="SOME.TOPIC" /> -->
 
       <!--  ================= queues for camel stuff ======================

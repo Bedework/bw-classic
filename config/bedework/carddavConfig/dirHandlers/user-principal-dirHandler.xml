@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<bwcarddav-dirhandler xmlns="http://bedework.org/ns/" type="org.bedework.carddav.server.config.LdapDirHandlerConfig">
+<bwcarddav-dirhandler xmlns="http://bedework.org/ns/" type="org.bedework.carddav.common.config.LdapDirHandlerConfig">
   <addressBook>true</addressBook>
   <addressbookEntryIdAttr>uid</addressbookEntryIdAttr>
   <addressbookEntryObjectClass>inetOrgPerson</addressbookEntryObjectClass>

@@ -15,7 +15,7 @@
     <hibernateProperty>hibernate.cache.use_second_level_cache=false</hibernateProperty>
     <hibernateProperty>hibernate.cache.use_query_cache=true</hibernateProperty>
     <hibernateProperty>hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider</hibernateProperty>
-    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.HSQLDialect</hibernateProperty>
+    <hibernateProperty>hibernate.dialect=org.hibernate.dialect.H2Dialect</hibernateProperty>
   </hibernateProperties>
   <lastChanged>0</lastChanged>
   <missingTargetRetries>10</missingTargetRetries>
