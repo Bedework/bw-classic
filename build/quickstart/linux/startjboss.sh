@@ -47,6 +47,8 @@ permsize="256M"
 testmode=""
 profiler=""
 
+startH2=true
+
 portoffset=0
 
 activemquri="vm://bedework"
@@ -125,6 +127,14 @@ do
       shift
       exprfilters=DEBUG
       shift
+      ;;
+    -noh2)
+      shift
+      startH2=false
+      ;;
+    -h2)
+      shift
+      startH2=true
       ;;
     -portoffset)
       shift
@@ -222,6 +232,11 @@ RUN_CMD="$RUN_CMD -Djboss.platform.mbeanserver"
 #RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.defaultdomain=jboss"
 RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.isJboss5=true"
 RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.classloader=org.jboss.mx.classloader"
+
+if [ "$startH2" = "true" ] ; then
+  echo "About to start h2 process"
+  $JAVA -cp $JBOSS_SERVER_DIR/lib/h2-1.4.190.jar org.h2.tools.Server -tcp -web -baseDir $BW_DATA_DIR/h2 &
+fi
 
 echo $RUN_CMD
 

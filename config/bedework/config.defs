@@ -15,6 +15,12 @@ org.bedework.bwengine.confuri=bwengine
 #         carddav conf dir
 org.bedework.carddav.confuri=carddavConfig
 
+#         categories conf dir
+org.bedework.categories.confuri=categories
+
+#         elasticsearch conf dir
+org.bedework.elasticsearch.confuri=elasticsearch
+
 #         eventreg conf dir
 org.bedework.eventreg.confuri=eventreg
 

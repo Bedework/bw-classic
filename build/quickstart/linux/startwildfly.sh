@@ -47,6 +47,8 @@ permsize="256M"
 testmode=""
 profiler=""
 
+startH2=true
+
 activemquri="vm://bedework"
 
 exprfilters=INFO
@@ -123,6 +125,14 @@ do
       shift
       exprfilters=DEBUG
       shift
+      ;;
+    -noh2)
+      shift
+      startH2=false
+      ;;
+    -h2)
+      shift
+      startH2=true
       ;;
     -activemquri)
       shift
@@ -208,6 +218,14 @@ RUN_CMD="$RUN_CMD $BW_CONF_DIR_DEF $BW_CONF_FILE_DEF $BW_DATA_DIR_DEF"
 #RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.defaultdomain=jboss"
 #wilfdfly RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.isJboss5=true"
 #wilfdfly RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.classloader=org.jboss.mx.classloader"
+
+if [ "$startH2" = "true" ] ; then
+  echo "About to start h2 process"
+
+  H2cp="$BASE_DIR/$JBOSS_VERSION/modules/system/layers/base/com/h2database/h2/main/h2*.jar"
+
+  $JAVA -cp $H2cp org.h2.tools.Server -tcp -web -baseDir $BW_DATA_DIR/h2 &
+fi
 
 echo $RUN_CMD
 

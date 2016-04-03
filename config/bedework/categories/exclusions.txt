@@ -1,0 +1,14 @@
+#
+# This file provides a set of skipped paths for the dmoz data.
+#
+
+/dmoz/Business/Construction_and_Maintenance/By_Region/
+/dmoz/Games/Video_Games/Fan_Pages/
+/dmoz/Games/Video_Games/News_and_Reviews/
+/dmoz/Health/Mental_Health/Counseling_Services/
+/dmoz/Reference/
+/dmoz/Regional/
+/dmoz/Science/Instruments_and_Supplies/
+/dmoz/Shopping/
+/dmoz/Society/Relationships/Personal_Pages/
+/dmoz/World/
