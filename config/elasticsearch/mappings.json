@@ -1567,17 +1567,17 @@
                         },
 
                         "attach" : {
-                            "type" : "integer",
+                            "type" : "string",
                             "index" : "not_analyzed"
                         },
 
                         "description" : {
-                            "type" : "integer",
+                            "type" : "string",
                             "index" : "not_analyzed"
                         },
 
                         "summary" : {
-                            "type" : "integer",
+                            "type" : "string",
                             "index" : "not_analyzed"
                         },
 
@@ -1855,6 +1855,76 @@
                 },
 
 
+                "affectsFreeBusy" : {
+                  "type" : "boolean",
+                  "include_in_all": false,
+                  "index" : "not_analyzed"
+                },
+                "aliasURI" : {
+                  "type" : "string",
+                  "include_in_all": true
+                },
+                "caltype" : {
+                  "type" : "integer",
+                  "index" : "not_analyzed"
+                },
+                "display" : {
+                  "type" : "boolean",
+                  "include_in_all": false,
+                  "index" : "not_analyzed"
+                },
+                "filterExpr" : {
+                  "type" : "string",
+                  "include_in_all": true
+                },
+                "ignoreTransp" : {
+                  "type" : "boolean",
+                  "include_in_all": false,
+                  "index" : "not_analyzed"
+                },
+                "lastRefresh" : {
+                  "type" : "string",
+                  "include_in_all": true
+                },
+                "lastRefreshStatus" : {
+                  "type" : "string",
+                  "include_in_all": true
+                },
+                "refreshRate" : {
+                  "type" : "integer",
+                  "index" : "not_analyzed"
+                },
+                "remoteId" : {
+                  "type" : "string",
+                  "include_in_all": true
+                },
+                "remotePw" : {
+                  "type" : "string",
+                  "include_in_all": true
+                },
+                "unremoveable" : {
+                  "type" : "boolean",
+                  "include_in_all": false,
+                  "index" : "not_analyzed"
+                },
+  
+  
+                "colProperties" : {
+                    "type" : "object",
+                    "properties" : {
+                        "name" : {
+                            "type" : "string",
+                            "include_in_all": false,
+                            "index" : "not_analyzed"
+                      },
+                      "value" : {
+                          "type" : "string",
+                          "include_in_all": false,
+                          "index" : "not_analyzed"
+                      }
+                    }
+                },
+              
                 "categories" : {
                     "type" : "object",
                     "properties" : {

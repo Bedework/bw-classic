@@ -177,7 +177,7 @@
                  anchor="server_info_retrieval">
           <t>
             The document may be retrieved from the server by including the
-            server-info-token header field with a value of "*" any
+            server-info-token header field with a value of "*" in any
             request to the server.
           </t>
 
@@ -264,7 +264,7 @@
                   is absent or it's value does not match.
                 </t>
                 <t>Any request with the server-info-token header field
-                  where the value of the header field does not math the
+                  where the value of the header field does not match the
                   current token value.
                 </t>
               </list>
