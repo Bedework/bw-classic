@@ -26,7 +26,7 @@
             "guid" : "<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>",
             "recurrenceId" : "<xsl:value-of select="recurrenceId"/>",
             "link" : "<xsl:value-of select='link'/>",
-            "eventlink" : "<xsl:value-of select="$urlPrefix"/><xsl:value-of select="$eventView"/><xsl:text disable-output-escaping="yes"><![CDATA[&]]></xsl:text>calPath=<xsl:value-of select="calendar/encodedPath"/><xsl:text disable-output-escaping="yes"><![CDATA[&]]></xsl:text>guid=<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template><xsl:text disable-output-escaping="yes"><![CDATA[&]]></xsl:text>recurrenceId=<xsl:value-of select="recurrenceId"/>",
+            "eventlink" : "<xsl:value-of select="substring-before($urlPrefix,$feeder)"/><xsl:value-of select="$publicCal"/>/event/eventView.do?calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:value-of select="guid"/>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>",
             "status" : "<xsl:value-of select='status'/>",
             "formattedDate" : "<xsl:value-of select="start/dayname" />, <xsl:value-of select="start/longdate" /><xsl:text> </xsl:text><xsl:if test="start/allday = 'false'"><xsl:value-of select="start/time" /></xsl:if> <xsl:if test="(end/longdate != start/longdate) or ((end/longdate = start/longdate) and (end/time != start/time))"> - </xsl:if> <xsl:if test="end/longdate != start/longdate"> <xsl:value-of select="substring(end/dayname,1,3)" /> , <xsl:value-of select="end/longdate" /> <xsl:text> </xsl:text> </xsl:if> <xsl:choose> <xsl:when test="start/allday = 'true'"> <xsl:copy-of select="$bwStr-SgEv-AllDay"/> </xsl:when> <xsl:when test="end/longdate != start/longdate"> <xsl:value-of select="end/time" /> </xsl:when> <xsl:when test="end/time != start/time"> <xsl:value-of select="end/time" /> </xsl:when> </xsl:choose> <!-- if timezones are not local, or if floating add labels: --> <xsl:if test="start/timezone/islocal = 'false' or end/timezone/islocal = 'false'"> <xsl:text> </xsl:text> -- <xsl:choose> <xsl:when test="start/floating = 'true'"> <xsl:copy-of select="$bwStr-SgEv-FloatingTime"/> </xsl:when> <xsl:otherwise> <xsl:copy-of select="$bwStr-SgEv-LocalTime"/> </xsl:otherwise> </xsl:choose> </xsl:if> <!-- display in timezone if not local or floating time) --> <xsl:if test="(start/timezone/islocal = 'false' or end/timezone/islocal = 'false') and start/floating = 'false'"> <xsl:choose> <xsl:when test="start/timezone/id != end/timezone/id"> <!-- need to display both timezones if they differ from start to end --> <xsl:copy-of select="$bwStr-SgEv-Start"/><xsl:text> </xsl:text> <xsl:choose> <xsl:when test="start/timezone/islocal='true'"> <xsl:value-of select="start/dayname"/>, <xsl:value-of select="start/longdate"/> <xsl:text> </xsl:text> <xsl:value-of select="start/time"/> </xsl:when> <xsl:otherwise> <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/> <xsl:text> </xsl:text> <xsl:value-of select="start/timezone/time"/> </xsl:otherwise> </xsl:choose> -- <xsl:value-of select="start/timezone/id"/> | <xsl:copy-of select="$bwStr-SgEv-End"/><xsl:text> </xsl:text> <xsl:choose> <xsl:when test="end/timezone/islocal='true'"> <xsl:value-of select="end/dayname"/>, <xsl:value-of select="end/longdate"/> <xsl:text> </xsl:text> <xsl:value-of select="end/time"/> </xsl:when> <xsl:otherwise> <xsl:value-of select="end/timezone/dayname"/>, <xsl:value-of select="end/timezone/longdate"/> <xsl:text> </xsl:text> <xsl:value-of select="end/timezone/time"/> </xsl:otherwise> </xsl:choose> -- <xsl:value-of select="end/timezone/id"/> </xsl:when> <xsl:otherwise> <!-- otherwise, timezones are the same: display as a single line --> <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text> <xsl:if test="start/allday = 'false'"> <xsl:value-of select="start/timezone/time"/> </xsl:if> <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if> <xsl:if test="end/timezone/longdate != start/timezone/longdate"> <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text> </xsl:if> <xsl:choose> <xsl:when test="start/allday = 'true'"> <xsl:text> </xsl:text><xsl:copy-of select="$bwStr-SgEv-AllDay"/> </xsl:when> <xsl:when test="end/timezone/longdate != start/timezone/longdate"> <xsl:value-of select="end/timezone/time"/> </xsl:when> <xsl:when test="end/timezone/time != start/timezone/time"> <xsl:value-of select="end/timezone/time"/> </xsl:when> </xsl:choose> <xsl:text> </xsl:text> -- <xsl:value-of select="start/timezone/id"/> </xsl:otherwise> </xsl:choose> </xsl:if>",
             "start" : {
@@ -50,13 +50,20 @@
               "timezone" : "<xsl:value-of select='end/timezone/id'/>"
             },
             "location" : {
-              "address" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="location/address"/></xsl:call-template>",
+              <xsl:choose>
+                <xsl:when test="location/address = ''">
+                  "address" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/></xsl:call-template>",
+                </xsl:when>
+                <xsl:otherwise>
+                  "address" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="location/address"/></xsl:call-template>",
+                </xsl:otherwise>
+              </xsl:choose>
               "link" : "<xsl:value-of select='location/link'/>"
             },
             "contact" : {
               "name" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="contact/name"/></xsl:call-template>",
-              "phone" : "<xsl:value-of select="contact/phone"/>",<!--
-              "email" : "<xsl:value-of select="contact/email"/>", -->
+              "phone" : "<xsl:value-of select="contact/phone"/>",
+              "email" : "<xsl:value-of select="contact/email"/>",
               "link" : "<xsl:value-of select='contact/link'/>"
             },
             "calendar" : {

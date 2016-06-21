@@ -232,7 +232,14 @@
         <xsl:copy-of select="$bwStr-SgEv-Where"/><xsl:text> </xsl:text>
         <!-- <xsl:choose>
           <xsl:when test="location/link=''">-->
-            <xsl:value-of select="location/address" />
+            <xsl:choose>
+              <xsl:when test="location/address = ''">
+                <xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="location/address" />
+              </xsl:otherwise>
+            </xsl:choose>
             <xsl:text> </xsl:text>
             <xsl:if test="location/subaddress!=''">
               <xsl:text> </xsl:text>

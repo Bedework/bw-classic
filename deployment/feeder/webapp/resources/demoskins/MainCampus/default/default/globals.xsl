@@ -50,7 +50,6 @@
   <xsl:variable name="eventsFeed" select="/bedework/urlPrefixes/main/eventsFeed" />
   <xsl:variable name="setSelection" select="/bedework/urlPrefixes/main/setSelection" />
   <xsl:variable name="setSelectionList" select="/bedework/urlPrefixes/main/setSelectionList" />
-  <xsl:variable name="fetchPublicCalendars" select="/bedework/urlPrefixes/calendar/fetchPublicCalendars" />
   <xsl:variable name="setViewPeriod" select="/bedework/urlPrefixes/main/setViewPeriod" />
   <xsl:variable name="listEvents" select="/bedework/urlPrefixes/main/listEvents" />
   <xsl:variable name="eventView" select="/bedework/urlPrefixes/event/eventView" />

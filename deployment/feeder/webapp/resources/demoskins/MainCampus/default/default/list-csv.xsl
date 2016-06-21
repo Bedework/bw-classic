@@ -31,7 +31,7 @@
   <xsl:include href="../strings.xsl"/>
 
 <xsl:template match='/'>"summary","subscriptionId","calPath","guid","recurrenceId","link","eventlink","status",<!--
--->"startallday","startshortdate","startlongdate","startdayname","starttime","startutcdate","startdatetime""starttimezone",<!--
+-->"startallday","startshortdate","startlongdate","startdayname","starttime","startutcdate","startdatetime","starttimezone",<!--
 -->"endallday","endshortdate","endlongdate","enddayname","endtime","endutcdate","enddatetime","endtimezone",<!--
 -->"locationaddress","locationlink",<!--
 -->"contactname","contactphone","contactlink",<!--
@@ -45,7 +45,7 @@
 -->"<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>",<!--
 -->"<xsl:value-of select="recurrenceId"/>",<!--
 -->"<xsl:value-of select='link'/>",<!--
--->"<xsl:value-of select="$urlPrefix"/><xsl:value-of select="$eventView"/>&amp;calPath=<xsl:value-of select="calendar/encodedPath"/>&amp;guid=<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template>&amp;recurrenceId=<xsl:value-of select="recurrenceId"/>",<!--
+-->"<xsl:value-of select="$urlPrefix"/><xsl:value-of select="$eventView"/><xsl:text disable-output-escaping="yes"><![CDATA[&]]></xsl:text>calPath=<xsl:value-of select="calendar/encodedPath"/><xsl:text disable-output-escaping="yes"><![CDATA[&]]></xsl:text>guid=<xsl:call-template name="url-encode"><xsl:with-param name="str" select="guid"/></xsl:call-template><xsl:text disable-output-escaping="yes"><![CDATA[&]]></xsl:text>recurrenceId=<xsl:value-of select="recurrenceId"/>",<!--
 -->"<xsl:value-of select='status'/>",<!--
 -->"<xsl:value-of select='start/allday'/>",<!--
 -->"<xsl:value-of select='start/shortdate'/>",<!--
@@ -54,7 +54,7 @@
 -->"<xsl:value-of select='start/time'/>",<!--
 -->"<xsl:value-of select='start/utcdate'/>",<!--
 -->"<xsl:value-of select='start/unformatted'/>",<!--
--->"<xsl:value-of select='start/timezone/id'/>"<!--
+-->"<xsl:value-of select='start/timezone/id'/>",<!--
 -->"<xsl:value-of select='end/allday'/>",<!--
 -->"<xsl:value-of select='end/shortdate'/>",<!--
 -->"<xsl:value-of select='end/longdate'/>",<!--
@@ -62,20 +62,18 @@
 -->"<xsl:value-of select='end/time'/>",<!--
 -->"<xsl:value-of select='end/utcdate'/>",<!--
 -->"<xsl:value-of select='end/unformatted'/>",<!--
--->"<xsl:value-of select='end/timezone/id'/>"<!--
+-->"<xsl:value-of select='end/timezone/id'/>",<!--
 -->"<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="location/address"/></xsl:call-template>",<!--
--->"<xsl:value-of select='location/link'/>"<!--
+-->"<xsl:value-of select='location/link'/>",<!--
 -->"<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="contact/name"/></xsl:call-template>",<!--
 -->"<xsl:value-of select="contact/phone"/>",<!--
--->"<xsl:value-of select='contact/link'/>"<!--
+-->"<xsl:value-of select='contact/link'/>",<!--
 -->"<xsl:value-of select='calendar/name'/>",<!--
 -->"<xsl:value-of select='calendar/summary'/>",<!--
 -->"<xsl:value-of select='calendar/path'/>",<!--
--->"<xsl:value-of select='calendar/encodedPath'/>"<!--
---><xsl:for-each select='categories/category'>"<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="value"/></xsl:call-template><xsl:if test='position() != last()'>,</xsl:if>"</xsl:for-each><!--
+-->"<xsl:value-of select='calendar/encodedPath'/>",<!--
+-->"<xsl:for-each select='categories/category'><xsl:call-template name="escapeJson"><xsl:with-param name="string" select="value"/></xsl:call-template><xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>",<!--
 -->"<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="description"/></xsl:call-template>",<!--
 -->"<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="cost"/></xsl:call-template>",<!--
 -->"<xsl:for-each select="xproperties/node()[name() != '']"><xsl:value-of select='name()'/> : values : <xsl:for-each select="values/node()[name() != '']"><xsl:value-of select='name()'/> : <xsl:call-template name="escapeJson"><xsl:with-param name="string" select="."/></xsl:call-template><xsl:if test='position() != last()'>,</xsl:if></xsl:for-each><xsl:if test='position() != last()'>,</xsl:if></xsl:for-each>"
 </xsl:for-each></xsl:template></xsl:stylesheet>
-
-

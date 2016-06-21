@@ -45,6 +45,10 @@
     </xsl:choose>
         "resultSize": "<xsl:value-of select="/bedework/events/resultSize"/>",
         "paged": "<xsl:value-of select="/bedework/events/paged"/>",
+        "lastMod" : {
+          "utc" : "<xsl:value-of select="/bedework/now/utc"/>",
+          "long" : "<xsl:value-of select="/bedework/now/longdate"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/now/time"/>"
+        },
         "events": [
            <xsl:apply-templates select="/bedework/events" />
         ]
