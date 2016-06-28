@@ -18,7 +18,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc category="std" updates="5545,5546"
-     docName="draft-douglass-calendar-extension-05" ipr="trust200902">
+     docName="draft-douglass-calendar-extension-06" ipr="trust200902">
   <front>
     <title abbrev="Event Publishing Extensions to iCalendar">Event Publishing Extensions to iCalendar</title>
 
@@ -552,7 +552,8 @@ jourprop =/ *(
                     (
                       (
                         ";" "VALUE" "=" "URI"
-                        ":" uri)  /
+                        ":" uri
+                      )  /
                       (
                         ";" "VALUE" "=" "TEXT"
                         ":" text
@@ -714,7 +715,8 @@ jourprop =/ *(
                     (
                       (
                         ";" "VALUE" "=" "URI"
-                        ":" uri)  /
+                        ":" uri
+                      )  /
                       (
                         ";" "VALUE" "=" "TEXT"
                         ":" text
@@ -805,7 +807,8 @@ jourprop =/ *(
                     (
                       (
                         ";" "VALUE" "=" "URI"
-                        ":" uri)  /
+                        ":" uri
+                      )  /
                       (
                         ";" "VALUE" "=" "TEXT"
                         ":" text
@@ -1202,10 +1205,6 @@ END:VEVENT
           <c>Current</c>
           <c>RFCXXXX, <xref target="parameter_assoctype"/></c>
 
-          <c>LABEL</c>
-          <c>Current</c>
-          <c>RFCXXXX, <xref target="parameter_label"/></c>
-
           <c>LOCTYPE</c>
           <c>Current</c>
           <c>RFCXXXX, <xref target="parameter_loctype"/></c>
@@ -1332,16 +1331,25 @@ END:VEVENT
             Need to determine what if any registry of resource types already
             exists and use that.
           </t>
-          <t>
-            Fix abnf issues
-            change ref to ietf from daboo
-            take out label spec - use Cyrus spec
-          </t>
         </list>
       </t>
     </section>
 
     <section title="Change log">
+      <t>
+        v05 2016-06-26  MD
+        <list style='symbols'>
+          <t>
+            Fix up abnf
+          </t>
+          <t>
+            change ref to ietf from daboo
+          </t>
+          <t>
+            take out label spec - use Cyrus spec
+          </t>
+        </list>
+      </t>
       <t>
         v05 2016-06-14  MD
         <list style='symbols'>
