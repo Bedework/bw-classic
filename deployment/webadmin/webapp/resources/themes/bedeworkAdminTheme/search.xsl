@@ -33,7 +33,7 @@
       <strong><xsl:value-of select="/bedework/searchResults/resultSize"/></strong>
       <xsl:text> </xsl:text>
       <xsl:copy-of select="$bwStr-Srch-ResultReturnedFor"/><xsl:text> </xsl:text>
-      "<strong><em><xsl:value-of select="substring-after(/bedework/appvar[key='bwQuery']/value,'|')"/></em></strong>"
+      <strong><em><xsl:value-of select="substring-before(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|')"/></em></strong>
     </div>
 
     <div class="bwEventListNav">
@@ -49,12 +49,40 @@
       <xsl:copy-of select="$bwStr-Srch-Search"/>
       <xsl:text> </xsl:text>
       <input type="text" name="query" size="27">
-        <xsl:attribute name="value"><xsl:value-of select="substring-after(/bedework/appvar[key='bwQuery']/value,'|')"/></xsl:attribute>
+        <xsl:attribute name="value"><xsl:value-of select="substring-before(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|')"/></xsl:attribute>
       </input>
       <input type="submit" value="{$bwStr-Srch-Go}"/>
+
+
+      <input type="radio" name="fexpr" id="searchScopeSP-local">
+        <xsl:attribute name="value">(creator="/principals/users/<xsl:value-of select="/bedework/userInfo/user"/>" and colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:attribute>
+        <xsl:if test="not(/bedework/appvar[key='bwQuery']) or substring-after(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|') = 'local'">
+          <xsl:attribute name="checked">checked</xsl:attribute>
+        </xsl:if>
+      </input>
+      <label for="searchScopeSP-local"><xsl:value-of select="$bwStr-Srch-ScopeLocal"/></label>
+
+      <input type="radio" name="fexpr" id="searchScopeSP-mine">
+        <xsl:attribute name="value">(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:attribute>
+        <xsl:if test="substring-after(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|') = 'mine'">
+          <xsl:attribute name="checked">checked</xsl:attribute>
+        </xsl:if>
+      </input>
+      <label for="searchScopeSP-mine"><xsl:value-of select="$bwStr-Srch-ScopeMine"/></label>
+
+      <input type="radio" name="fexpr" id="searchScopeSP-all">
+        <xsl:attribute name="value">(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:attribute>
+        <xsl:if test="substring-after(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|') = 'all'">
+          <xsl:attribute name="checked">checked</xsl:attribute>
+        </xsl:if>
+      </input>
+      <label for="searchScopeSP-all"><xsl:value-of select="$bwStr-Srch-ScopeAll"/></label>
+
+
       <input type="hidden" name="setappvar" id="curQueryHolder" value="bwQuery()"/>
       <input type="hidden" name="sort" value="dtstart.utc:asc"/>
       <input type="hidden" name="count" value="{$searchResultSize}"/>
+      <input type="hidden" name="ignoreCreator" value="true"/>
     </form>
 
     <table id="searchTable">
@@ -138,30 +166,55 @@
     <div id="searchFilter">
       <form name="searchForm" method="post" action="{$search}" onsubmit="return setBwQuery(this);">
         <div class="searchQueryBlock">
-          <xsl:copy-of select="$bwStr-Srch-Search"/>
+          <label for="query">
+            <xsl:copy-of select="$bwStr-Srch-Search"/>
+          </label>
           <xsl:text> </xsl:text>
-          <input type="text" name="query" size="27">
-            <xsl:attribute name="value"><xsl:value-of select="substring-after(/bedework/appvar[key='bwQuery']/value,'|')"/></xsl:attribute>
+          <input type="text" name="query" id="query" size="27">
+            <xsl:attribute name="value"><xsl:value-of select="substring-before(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|')"/></xsl:attribute>
             <xsl:attribute name="class">noFocus</xsl:attribute>
           </input>
           <input type="hidden" name="count" value="{$searchResultSize}"/>
           <input type="hidden" name="listMode" value="true"/>
           <input type="hidden" name="start" value="today"/>
           <input type="hidden" name="sort" value="dtstart.utc:asc"/>
+          <input type="hidden" name="ignoreCreator" value="true"/>
           <input type="hidden" name="setappvar" value="bwQuery()"/>
           <input type="submit" name="submit" value="{$bwStr-Srch-Go}" class="noFocus"/>
-        </div>
+          <div id="searchScope">
 
-        <!--
-        <div class="searchLimitBlock">
-          <xsl:if test="$toggleLimits = 'true'">
-            <xsl:attribute name="class">searchLimitBlock searchLimitBlockToggle</xsl:attribute>
-          </xsl:if>
-          <label for="bwSearchWidgetStartDate"><xsl:copy-of select="$bwStr-Srch-Starting"/></label>
-          <input id="bwSearchWidgetStartDate" type="text" class="noFocus" name="start" size="10" onchange="setSearchDate(this.form,this.value);"/>
-          <input id="bwSearchWidgetToday" type="button" value="{$bwStr-EvLs-Today}" onclick="setSearchDate(this.form,'{$searchToday}');"/>
+            <input type="radio" name="fexpr" id="searchScope-local">
+              <xsl:attribute name="value">(creator="/principals/users/<xsl:value-of select="/bedework/userInfo/user"/>" and colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:attribute>
+              <xsl:if test="not(/bedework/appvar[key='bwQuery']) or substring-after(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|') = 'local'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <label for="searchScope-local"><xsl:value-of select="$bwStr-Srch-ScopeLocal"/></label>
+
+            <input type="radio" name="fexpr" id="searchScope-mine">
+              <xsl:attribute name="value">
+                <xsl:choose>
+                  <xsl:when test="/bedework/userInfo/superUser = 'true'">(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:when>
+                  <xsl:when test="/bedework/userInfo/oneGroup = 'true'">(creator="/principals/users/<xsl:value-of select="/bedework/userInfo/user"/>" and colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:when>
+                  <xsl:otherwise>((<xsl:for-each select="/bedework/userInfo/groups/group">creator="<xsl:value-of select="ownerHref"/>"<xsl:if test="position() != last()"> or </xsl:if></xsl:for-each>) and colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
+              <xsl:if test="substring-after(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|') = 'mine'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <label for="searchScope-mine"><xsl:value-of select="$bwStr-Srch-ScopeMine"/></label>
+
+            <input type="radio" name="fexpr" id="searchScope-all">
+              <xsl:attribute name="value">(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo"))</xsl:attribute>
+              <xsl:if test="substring-after(substring-after(/bedework/appvar[key='bwQuery']/value,'|'),'|') = 'all'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>
+            <label for="searchScope-all"><xsl:value-of select="$bwStr-Srch-ScopeAll"/></label>
+
+          </div>
         </div>
-        -->
 
       </form>
     </div>

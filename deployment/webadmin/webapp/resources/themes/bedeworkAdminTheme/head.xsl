@@ -54,15 +54,22 @@
             $(':input[type=text]:visible:enabled:first:not(.noFocus)').focus();
           });
 
-          // hold the most recent search query and start date
+          // hold the most recent search query, start date, and scope
           function setBwQuery(formObj,dateString,submit) {
             if (trim(formObj.query.value) != "") {
               var date = dateString;
+              var scope = "local";
               if (date == "today" || date == undefined || date == "") {
                 date = "<xsl:value-of select="substring(/bedework/now/date,1,4)"/>-<xsl:value-of select="substring(/bedework/now/date,5,2)"/>-<xsl:value-of select="substring(/bedework/now/date,7,2)"/>";
                 formObj.start.value = date;
               }
-              formObj.setappvar.value = "bwQuery(" + date + "|" + formObj.query.value + ")";
+              if (formObj.fexpr[1].checked) {
+                scope = "mine";
+              }
+              if (formObj.fexpr[2].checked) {
+                scope = "all";
+              }
+              formObj.setappvar.value = "bwQuery(" + date + "|" + formObj.query.value  + "|" + scope + ")";
               if (submit == true) {
                 formObj.submit();
               }

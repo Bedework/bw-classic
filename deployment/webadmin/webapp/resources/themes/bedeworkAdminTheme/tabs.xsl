@@ -22,14 +22,18 @@
   <!--==== BANNER and MENU TABS  ====-->
 
   <xsl:template name="tabs">
-    <xsl:call-template name="upperSearchForm">
-      <xsl:with-param name="toggleLimits">
-        <xsl:choose>
-          <xsl:when test="/bedework/page='searchResult'">false</xsl:when>
-          <xsl:otherwise>true</xsl:otherwise>
-        </xsl:choose>
-      </xsl:with-param>
-    </xsl:call-template>
+    <!-- When workflow is enabled, only show the search form to approvers and superusers (otherwise, show to all) -->
+    <xsl:if test="/bedework/workflowEnabled='false' or /bedework/userInfo/superUser='true' or /bedework/userInfo/approverUser='true'">
+      <xsl:call-template name="upperSearchForm">
+        <xsl:with-param name="toggleLimits">
+          <xsl:choose>
+            <xsl:when test="/bedework/page='searchResult'">false</xsl:when>
+            <xsl:otherwise>true</xsl:otherwise>
+          </xsl:choose>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>
+
     <ul id="bwAdminMenu">
       <li>
         <xsl:if test="/bedework/tab = 'main'">

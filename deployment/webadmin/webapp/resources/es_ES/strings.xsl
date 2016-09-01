@@ -372,6 +372,9 @@
   <xsl:variable name="bwStr-AEEF-To">De:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SuggestTo">Sugieren a:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SuggestionStatus">Sugerencia Estado:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ChangeGroup1">Usted es un miembro de "</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ChangeGroup2">", el grupo que creó este evento.<br/>Si desea editar completamente, debe </xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ChangeGroup3">cambiar grupos de.</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="showEventFormAliases" -->
 
@@ -451,7 +454,7 @@
   <xsl:variable name="bwStr-DsEv-Submitter">Remitente:</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Calendar">Calendario:</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Categories">Categorias:</xsl:variable>
-  <xsl:variable name="bwStr-DsEv-TagEvent">Etiquetar evento con áreas tópicas</xsl:variable>
+  <xsl:variable name="bwStr-DsEv-TagEvent">Etiquetar o Editar evento</xsl:variable>
   <xsl:variable name="bwStr-DsEv-YesDeleteEvent">Borrar evento</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Cancel">Cancelar</xsl:variable>
 
@@ -1122,6 +1125,9 @@
   <!--  xsl:template name="searchResult" -->
   <xsl:variable name="bwStr-Srch-Search">Buscar:</xsl:variable>
   <xsl:variable name="bwStr-Srch-Go">ir</xsl:variable>
+  <xsl:variable name="bwStr-Srch-ScopeLocal">este grupo</xsl:variable>
+  <xsl:variable name="bwStr-Srch-ScopeMine">mis grupos</xsl:variable>
+  <xsl:variable name="bwStr-Srch-ScopeAll">todos los grupos</xsl:variable>
   <xsl:variable name="bwStr-Srch-Limit">Limitar:</xsl:variable>
   <xsl:variable name="bwStr-Srch-TodayForward">de hoy en adelante</xsl:variable>
   <xsl:variable name="bwStr-Srch-PastDates">fechas pasadas</xsl:variable>

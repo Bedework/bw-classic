@@ -345,7 +345,9 @@
   <xsl:variable name="bwStr-AEEF-Registration">Registration:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-UsersMayRegister">Users may register for this event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-MaxTickets">Max tickets:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-MaxWaitList">Max wait list:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-MaxTicketsInfo">(maximum number of tickets allowed for the event)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-MaxWaitListInfo">(maximum number of people on the wait list for the event. Integer or percent. Leave blank for no limit.)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-TicketsAllowed">Tickets allowed:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-TicketsAllowedInfo">(maximum number of tickets per user)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-RegistrationOpens">Registration opens:</xsl:variable>
@@ -373,6 +375,9 @@
   <xsl:variable name="bwStr-AEEF-To">To:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SuggestTo">Suggest To:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-SuggestionStatus">Suggestion Status:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ChangeGroup1">You are a member of "</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ChangeGroup2">", the group that created this event.<br/>If you wish to edit it fully, you must </xsl:variable>
+  <xsl:variable name="bwStr-AEEF-ChangeGroup3">change groups.</xsl:variable>
 
   <!--  xsl:template match="calendar" mode="showEventFormAliases" -->
 
@@ -452,7 +457,7 @@
   <xsl:variable name="bwStr-DsEv-Submitter">Submitter:</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Calendar">Calendar:</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Categories">Categories:</xsl:variable>
-  <xsl:variable name="bwStr-DsEv-TagEvent">Tag event with topical areas</xsl:variable>
+  <xsl:variable name="bwStr-DsEv-TagEvent">Tag or edit event</xsl:variable>
   <xsl:variable name="bwStr-DsEv-YesDeleteEvent">Yes: Delete Event</xsl:variable>
   <xsl:variable name="bwStr-DsEv-Cancel">Cancel</xsl:variable>
 
@@ -1123,6 +1128,9 @@
   <!--  xsl:template name="searchResult" -->
   <xsl:variable name="bwStr-Srch-Search">Search:</xsl:variable>
   <xsl:variable name="bwStr-Srch-Go">go</xsl:variable>
+  <xsl:variable name="bwStr-Srch-ScopeLocal">this group</xsl:variable>
+  <xsl:variable name="bwStr-Srch-ScopeMine">my groups</xsl:variable>
+  <xsl:variable name="bwStr-Srch-ScopeAll">all groups</xsl:variable>
   <xsl:variable name="bwStr-Srch-Limit">Limit:</xsl:variable>
   <xsl:variable name="bwStr-Srch-TodayForward">today forward</xsl:variable>
   <xsl:variable name="bwStr-Srch-PastDates">past dates</xsl:variable>

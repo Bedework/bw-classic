@@ -47,9 +47,9 @@
           <xsl:attribute name="class">mainMenuMost</xsl:attribute>
         </xsl:when>
         <!-- when using workflow, both calsuite admins and regular admins have one or two buttons in a single row -->
-        <xsl:when test="/bedework/userInfo/approverUser = 'true'">
+        <!-- <xsl:when test="/bedework/userInfo/approverUser = 'true'">
           <xsl:attribute name="class">mainMenuInline</xsl:attribute>
-        </xsl:when>
+        </xsl:when> -->
       </xsl:choose>
       <ul class="mainMenuRow" id="mainMenuRow1">
         <li>
@@ -62,6 +62,7 @@
           </a>
         </li>
         <xsl:if test="/bedework/workflowEnabled = 'false' or
+                      /bedework/userInfo/approverUser = 'true' or
                       /bedework/userInfo/superUser = 'true'">
           <li>
             <a id="addContactLink" href="{$contact-initAdd}">
@@ -113,6 +114,7 @@
             </a>
           </li>
           <xsl:if test="/bedework/workflowEnabled = 'false' or
+                    /bedework/userInfo/approverUser = 'true' or
                     /bedework/userInfo/superUser = 'true'">
             <li>
               <a href="{$contact-initUpdate}">

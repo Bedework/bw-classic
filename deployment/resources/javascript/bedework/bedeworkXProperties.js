@@ -37,13 +37,19 @@ var bwXPropertySubmitterEmail = "X-BEDEWORK-SUBMITTER-EMAIL";
 var bwXPropertySubmissionClaimant = "X-BEDEWORK-SUBMISSION-CLAIMANT";
 var bwXPropertyMaxTickets = "X-BEDEWORK-MAX-TICKETS";
 var bwXPropertyMaxTicketsPerUser = "X-BEDEWORK-MAX-TICKETS-PER-USER";
+var bwXPropertyMaxWaitList = "X-BEDEWORK-WAIT-LIST-LIMIT";
+
 var bwXPropertyRegistrationStart = "X-BEDEWORK-REGISTRATION-START";
 var bwXPropertyRegistrationEnd = "X-BEDEWORK-REGISTRATION-END";
+var bwXPropertyRegistrationForm = "X-BEDEWORK-REGISTRATION-FORM";
 var bwXPropertyInstanceOnly = "X-BEDEWORK-INSTANCE-ONLY";
 
 
 var bwXParamDisplayName = "X-BEDEWORK-PARAM-DISPLAYNAME";
+var bwXParamPath = "X-BEDEWORK-PARAM-PATH";
+var bwXParamAliasPath = "X-BEDEWORK-PARAM-ALIASPATH";
 var bwXParamDescription = "X-BEDEWORK-PARAM-DESCRIPTION";
+var bwXParamAlt = "X-BEDEWORK-PARAM-ALT";
 var bwXParamWidth = "X-BEDEWORK-PARAM-WIDTH";
 var bwXParamHeight = "X-BEDEWORK-PARAM-HEIGHT";
 var bwXParamSubAddress = "X-BEDEWORK-PARAM-SUBADDRESS";

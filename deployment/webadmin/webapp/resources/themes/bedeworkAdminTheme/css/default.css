@@ -390,7 +390,7 @@ select:focus option {
   height: 11px;
 }
 #searchFilter input[type="submit"] {
-  display: none;
+  padding: 0 8px 1px;
 }
 #searchFilter .searchLimitBlock {
   margin: 8px 4px 0 0;
@@ -404,6 +404,9 @@ select:focus option {
 }
 #searchFilter:hover .searchLimitBlockToggle {
   visibility: visible;
+}
+#searchScope {
+  margin: 4px 25px 0 0;
 }
 .searchResultNav {
   float: right;
@@ -883,7 +886,7 @@ table.eventFormTable select.timezones {
   visibility: hidden;
 }
 .bwHighlightBox {
-  margin: 0;
+  margin: -0.2em;
   padding: 1em;
   color: black;
   background-color: #ffe;

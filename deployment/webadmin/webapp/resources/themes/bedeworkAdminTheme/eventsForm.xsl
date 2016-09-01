@@ -149,7 +149,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="creating"><xsl:value-of select="/bedework/creating"/></xsl:variable>
-    <form name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return setEventFields(this,{$portalFriendly},'{$submitter}','{$creating}')">
+    <form id="bwEventForm" name="eventForm" method="post" enctype="multipart/form-data" onsubmit="return setEventFields(this,{$portalFriendly},'{$submitter}','{$creating}')">
       <xsl:choose>
         <xsl:when test="/bedework/page = 'modEventPending'">
           <xsl:attribute name="action"><xsl:value-of select="$event-updatePending"/></xsl:attribute>
@@ -217,6 +217,24 @@
       </xsl:if>
 
       <table class="eventFormTable" title="Event Modification Form">
+        <xsl:if test="$canEdit = 'false'">
+          <xsl:if test="creator = /bedework/userInfo/groups//group/ownerHref">
+            <xsl:variable name="evCreator"><xsl:value-of select="creator"/></xsl:variable>
+            <!--
+            <xsl:variable name="switchGroupUrl">
+              <xsl:value-of select="$setup"/>&amp;adminGroupName=<xsl:value-of select="/bedework/userInfo/groups/group[ownerHref = $evCreator]/name"/>
+            </xsl:variable>
+            -->
+            <tr>
+              <td colspan="2">
+                <div class="bwHighlightBox">
+                  <xsl:value-of select="$bwStr-AEEF-ChangeGroup1"/><strong><xsl:value-of select="/bedework/userInfo/groups/group[ownerHref = $evCreator]/name"/></strong><xsl:copy-of select="$bwStr-AEEF-ChangeGroup2"/>
+                  <a href="{$admingroup-switch}"><xsl:value-of select="$bwStr-AEEF-ChangeGroup3"/></a>
+                </div>
+              </td>
+            </tr>
+          </xsl:if>
+        </xsl:if>
         <tr>
           <td class="fieldName">
             <label for="bwSummary"><xsl:copy-of select="$bwStr-AEEF-Title"/></label>
@@ -2741,6 +2759,14 @@
                 </input>
                 <xsl:text> </xsl:text><span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-TicketsAllowedInfo"/></span><br/>
 
+                <label for="xBwMaxWaitListHolder" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-MaxWaitList"/></label>
+                <input type="text" name="xBwMaxWaitListHolder" id="xBwMaxWaitListHolder" value="" size="4">
+                  <xsl:if test="form/xproperties/node()[name()='X-BEDEWORK-WAIT-LIST-LIMIT']">
+                    <xsl:attribute name="value"><xsl:value-of select="form/xproperties/node()[name()='X-BEDEWORK-WAIT-LIST-LIMIT']/values/text"/></xsl:attribute>
+                  </xsl:if>
+                </input>
+                <xsl:text> </xsl:text><span class="fieldInfo"><xsl:copy-of select="$bwStr-AEEF-MaxWaitListInfo"/></span><br/>
+
                 <label for="xBwRegistrationOpensDate" class="interiorLabel"><xsl:copy-of select="$bwStr-AEEF-RegistrationOpens"/></label>
                 <div class="dateFields">
                   <input type="text" name="xBwRegistrationOpensDate" id="xBwRegistrationOpensDate" size="10"/>
@@ -2934,6 +2960,7 @@
                     $.ajax({
                       method: "GET",
                       url: customFieldsUrl,
+                      cache: false,
                       dataType: 'json'
                     })
                     .done(function(data) {
@@ -3366,9 +3393,9 @@
               <xsl:otherwise>P</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <xsl:variable name="backToListLink"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;sg=true&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="<xsl:value-of select="$suggestedListType"/>:<xsl:value-of select="/bedework/currentCalSuite/groupHref"/>")&amp;sort=dtstart.utc:asc&amp;master=true&amp;setappvar=suggestType(<xsl:value-of select="$suggestedListType"/>)</xsl:variable>
+          <xsl:variable name="backToListLink"><xsl:value-of select="$initSuggestionQueueTab"/>&amp;listMode=true&amp;sg=true&amp;start=<xsl:value-of select="$curListDate"/>&amp;fexpr=(colPath="/public/cals/MainCal" and (entity_type="event"|entity_type="todo") and suggested-to="<xsl:value-of select="$suggestedListType"/>:<xsl:value-of select="/bedework/currentCalSuite/groupHref"/>")&amp;sort=dtstart.utc:asc&amp;master=true&amp;setappvar=suggestType(<xsl:value-of select="$suggestedListType"/>)</xsl:variable>
           <xsl:variable name="reloadEventLink"><xsl:value-of select="$event-fetchForUpdateSuggestionQueue"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;recurrenceId=<xsl:value-of select="$recurrenceId"/></xsl:variable>
-          <input type="button" name="updateEvent" value="{$bwStr-SEBu-AcceptEvent}" class="noFocus" onclick="setSuggestionStatus('accept','{$actionPrefix}','',this.form)"/><!-- accept and update -->
+          <input type="button" name="updateEvent" value="{$bwStr-SEBu-AcceptEvent}" class="noFocus" onclick="setSuggestionStatus('accept','{$actionPrefix}','')"/><!-- accept and update -->
           <input type="button" name="rejectEvent" value="{$bwStr-SEBu-RejectEvent}" class="noFocus" onclick="setSuggestionStatus('reject','{$actionPrefix}','{$backToListLink}')"/>
           <input type="button" name="returnToList" value="{$bwStr-SEBu-ReturnToList}" onclick="location.href='{$backToListLink}'" class="noFocus"/>
         </xsl:when>
@@ -3448,14 +3475,11 @@
                   <xsl:attribute name="value"><xsl:value-of select="$bwStr-SEBu-AcceptEvent"/></xsl:attribute>
                 </xsl:if-->
               </input>
-              <xsl:if test="form/recurringEntity != 'true' and
-                            recurrenceId = '' and
-                            $canEdit = 'true' and
-                            $workflowEnabled != 'true'">
+              <xsl:if test="recurrenceId = '' and $canEdit = 'true'">
                 <!-- Cannot duplicate recurring instances. -->
-                <!-- Copying a published event will create a duplicate with all categories applied such
-                   that the dupliacte will also be published.  Disable for workflow systems until we have a better approach.-->
-                <input type="submit" name="copy" value="{$bwStr-SEBu-CopyEvent}" class="noFocus"/>
+                <input type="button" name="copy" value="{$bwStr-SEBu-CopyEvent}" class="noFocus">
+                  <xsl:attribute name="onclick">location.href='<xsl:value-of select="$event-fetchForUpdate"/>&amp;calPath=<xsl:value-of select="$calPath"/>&amp;guid=<xsl:value-of select="$guid"/>&amp;copy=true'</xsl:attribute>
+                </input>
               </xsl:if>
               <xsl:choose>
                 <xsl:when test="$modEventApprovalQueue = 'true'">

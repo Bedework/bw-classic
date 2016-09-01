@@ -361,6 +361,7 @@ function validateEventForm(formObj,creating) {
     if(formObj["bwIsRegisterableEvent"].checked) {
       var maxTickets = trim(formObj["xBwMaxTicketsHolder"].value);
       var maxTicketsPerUser = trim(formObj["xBwMaxTicketsPerUserHolder"].value);
+      var maxWaitList = trim(formObj["xBwMaxWaitListHolder"].value);
       if(maxTickets == "" || isNaN(maxTickets)) {
         alert(maxTicketsWarning);
         formObj["xBwMaxTicketsHolder"].focus();
@@ -369,6 +370,19 @@ function validateEventForm(formObj,creating) {
       if(maxTicketsPerUser == "" || isNaN(maxTicketsPerUser)) {
         alert(maxTicketsPerUserWarning);
         formObj["xBwMaxTicketsPerUserHolder"].focus();
+        return false;
+      }
+      if(maxWaitList == "") {
+        removeRegistrationWaitList();
+        formObj["xBwMaxWaitListHolder"].value = "";
+      }
+      if(!isNaN(maxWaitList)) {
+        return true;
+      } else if ((maxWaitList.slice(-1) == '%') && (!isNaN(maxWaitList.slice(0, -2)))) {
+        return true;
+      } else {
+        alert(maxWaitListWarning);
+        formObj["xBwMaxWaitListHolder"].focus();
         return false;
       }
     }
@@ -441,6 +455,7 @@ function setBedeworkXProperties(formObj,submitter) {
     if (formObj["bwIsRegisterableEvent"].checked) {
       bwXProps.update(bwXPropertyMaxTickets,[],formObj["xBwMaxTicketsHolder"].value,true);
       bwXProps.update(bwXPropertyMaxTicketsPerUser,[],formObj["xBwMaxTicketsPerUserHolder"].value,true);
+      bwXProps.update(bwXPropertyMaxWaitList,[],formObj["xBwMaxWaitListHolder"].value,true);
 
       var bwRegDateString = "";
       if (formObj["xBwRegistrationOpensAmpm"] == undefined) {
@@ -550,6 +565,11 @@ function removeEventImage(imgField,thumbField,descField,altField) {
   $("#eventFormImage").hide();
   $("#eventImageRemoveButton").hide();
 }
+
+function removeRegistrationWaitList() {
+  bwXProps.remove(bwXPropertyMaxWaitList);
+}
+
 function removeCustomFields() {
   if (confirm("Removing custom fields will have significant\nconsequences on registration reporting.\nAre you sure you wish to proceed?")) {
     bwXProps.remove(bwXPropertyRegistrationForm);

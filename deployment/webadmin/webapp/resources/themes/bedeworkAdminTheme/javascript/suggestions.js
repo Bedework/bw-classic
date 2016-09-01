@@ -50,17 +50,17 @@ function setSuggestionRowStatus(status,actionPrefix,rowId,emptyMsg) {
  * Set the status of a suggestion from an event detail page
  * @param {string} status: "accept" or "reject"
  * @param {string} actionPrefix: the action URL and event parameters
- * @param {string} redirect: url to redirect to (the suggestions queue - only used on reject)
- * @param {object} formObj - the form object to be submitted (only used on accept)
+ * @param {string} redirect: url to redirect to (the suggestions queue - only used on reject;
+ *                           on accept, we submit the event form)
  */
-function setSuggestionStatus(status,actionPrefix,redirect,formObj) {
+function setSuggestionStatus(status,actionPrefix,redirect) {
   $.ajax({
     type: 'GET',
     dataType: 'text',
     url: actionPrefix + '&' + status,
     success: function(){
       if (status == 'accept') {
-        formObj.submit();
+        $("#bwEventForm").submit();
       } else {
         location.href = redirect;
       }
