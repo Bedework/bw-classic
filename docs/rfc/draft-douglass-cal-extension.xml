@@ -18,7 +18,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 <rfc category="std" updates="5545,5546"
-     docName="draft-douglass-calendar-extension-06" ipr="trust200902">
+     docName="draft-ietf-calext-eventpub-extensions-00" ipr="trust200902">
   <front>
     <title abbrev="Event Publishing Extensions to iCalendar">Event Publishing Extensions to iCalendar</title>
 
@@ -39,7 +39,7 @@
       </address>
     </author>
 
-    <date month='June' year='2016' />
+    <date month='August' year='2016' />
 
     <area>Applications</area>
 

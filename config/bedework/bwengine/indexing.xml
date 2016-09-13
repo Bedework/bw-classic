@@ -13,6 +13,6 @@
   <maxEntityThreads>5</maxEntityThreads>
   <maxPrincipalThreads>5</maxPrincipalThreads>
   <publicIndexName>bwpublic</publicIndexName>
-  <skipPaths>/public/unbrowsable:/public/aliases:*/Outbox:*/Inbox:*/Deleted</skipPaths>
+  <skipPaths>/public/unbrowsable:*/Deleted</skipPaths>
   <userIndexName>bwuser</userIndexName>
 </index-properties>
