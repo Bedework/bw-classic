@@ -105,10 +105,6 @@
                     foreign-key="bw_aa_att_fk"/>
     </set>
 
-    <property name="triggerTime" column="trigger_time" type="string" length="16" />
-    <property name="previousTrigger" column="previous_trigger" type="string" length="16" />
-    <property name="repeatCount" column="repeat_count" type="integer" />
-
     <property name="expired" type="true_false">
       <column name="expired" not-null="true" />
     </property>
@@ -129,22 +125,5 @@
       </composite-element>
     </list>
   </class>
-
-  <!-- =================================================================
-       Alarm queries
-       ================================================================= -->
-
-  <query name="getUnexpiredAlarmsUser"><![CDATA[
-    from org.bedework.calfacade.BwAlarm as al
-      where al.expired = false and al.ownerHref=:userHref
-  ]]></query>
-
-  <!-- Return all unexpired alarms for the given user before the given time
-    -->
-  <query name="getUnexpiredAlarmsUserTime"><![CDATA[
-    from org.bedework.calfacade.BwAlarm as al
-      where al.expired = false and al.ownerHref=:userHref and
-            al.triggerTime <= :tt
-  ]]></query>
 </hibernate-mapping>
 
