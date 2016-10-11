@@ -65,11 +65,6 @@
         <classpath refid="build.cp"/>
       </taskdef>
 
-      <taskdef name="makeLangXsl"
-               classname="org.bedework.deployment.MakeLangXsl">
-        <classpath refid="build.cp"/>
-      </taskdef>
-
       <taskdef name="optional"
                classname="org.bedework.deployment.OptionalTask">
         <classpath refid="build.cp"/>
