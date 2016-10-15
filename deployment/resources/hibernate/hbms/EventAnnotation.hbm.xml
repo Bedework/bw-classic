@@ -388,14 +388,5 @@
     <property name="emptyFlags" type="string" length="200"
               column="bw_empty_flags" />
   </class>
-
-  <!-- =================================================================
-       Event queries
-       ================================================================= -->
-
-  <query name="annotationsByTarget"><![CDATA[
-    from org.bedework.calfacade.BwEventAnnotation as ev
-      where ev.target = :target and ev.tombstoned=false
-  ]]></query>
 </hibernate-mapping>
 

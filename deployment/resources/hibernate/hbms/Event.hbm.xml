@@ -439,15 +439,5 @@
     <dialect-scope name="org.hibernate.dialect.OracleDialect"/>
   </database-object>
   -->
-
-  <!-- =================================================================
-       Event queries
-       ================================================================= -->
-
-  <!-- Use this to see if a uid exists. -->
-  <query name="getGuidCount"><![CDATA[
-    select count(*) from org.bedework.calfacade.BwEventObj as ev
-      where ev.uid = :guid and ev.tombstoned=false
-  ]]></query>
 </hibernate-mapping>
 
