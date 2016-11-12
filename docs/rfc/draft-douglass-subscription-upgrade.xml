@@ -22,7 +22,7 @@
 <rfc category="std" updates="5545,5546"
      docName="draft-douglass-subscription-upgrade-00" ipr="trust200902">
   <front>
-    <title abbrev="Event Publishing Extensions to iCalendar">Event Publishing Extensions to iCalendar</title>
+    <title abbrev="Calendar subscription upgrades">Calendar subscription upgrades</title>
 
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -120,7 +120,7 @@
       </t>
     </section>
 
-    <section anchor="link_relation_subscribe-caldav"
+    <section anchor="link_relation_subscribe_caldav"
              title="Link relation subscribe-caldav">
       <t>
         This specifies an access point which is a full implementation of 
@@ -135,7 +135,7 @@
       </t>
     </section>
 
-    <section anchor="link_relation_subscribe-caldav_auth"
+    <section anchor="link_relation_subscribe_caldav_auth"
              title="Link relation subscribe-caldav-auth">
       <t>
         This specifies an access point which is a full implementation of
@@ -149,7 +149,7 @@
       </t>
     </section>
 
-    <section anchor="link_relation_subscribe-webdav-sync"
+    <section anchor="link_relation_subscribe_webdav_sync"
              title="Link relation subscribe-webdav-sync">
       <t>
         This specifies an access point which supports only webdav sync.
@@ -167,7 +167,7 @@
       </t>
     </section>
 
-    <section anchor="link_relation_subscribe-something-else"
+    <section anchor="link_relation_subscribe_something_else"
              title="Link relation subscribe-something-else">
       <t>
         This specifies an access point which supports something new.
@@ -210,19 +210,19 @@
 
           <c>subscribe-caldav</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="link_relation_subscribe-caldav"/></c>
+          <c>RFCXXXX, <xref target="link_relation_subscribe_caldav"/></c>
 
           <c>subscribe-caldav_auth</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="link_relation_subscribe-caldav-auth" /></c>
+          <c>RFCXXXX, <xref target="link_relation_subscribe_caldav_auth" /></c>
 
           <c>subscribe-webdav-sync</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="link_relation_subscribe-webdav-sync"/></c>
+          <c>RFCXXXX, <xref target="link_relation_subscribe_webdav_sync"/></c>
 
           <c>subscribe-something-else</c>
           <c>Current</c>
-          <c>RFCXXXX, <xref target="link_relation_subscribe-something-else"/></c>
+          <c>RFCXXXX, <xref target="link_relation_subscribe_something_else"/></c>
         </texttable>
       </section>
     </section>
@@ -230,7 +230,7 @@
     <section title="Acknowledgements">
       <t>
         The author would also like to thank the members of the Calendaring and
-        Scheduling Consortium Event Publication technical committee and the following
+        Scheduling Consortium Calendar Sharing technical committee and the following
         individuals for contributing their ideas and support:
       </t>
       <t>
@@ -285,136 +285,12 @@
 
     <section title="Change log">
       <t>
-        v05 2016-10-27  MD
+        v05 2016-11-08  MD
         <list style='symbols'>
           <t>
-            Change ASSOCIATE back to PARTICIPANT
-          </t>
-          <t>
-            PARTICIPANT becomes a component rather than a property
-          </t>
-      </t>
-      <t>
-        v05 2016-08-??  MD
-        <list style='symbols'>
-          <t>
-            Name changed - taken up by calext working group
+            First pass
           </t>
         </list>
-      </t>
-      <t>
-        v05 2016-06-26  MD
-        <list style='symbols'>
-          <t>
-            Fix up abnf
-          </t>
-          <t>
-            change ref to ietf from daboo
-          </t>
-          <t>
-            take out label spec - use Cyrus spec
-          </t>
-        </list>
-      </t>
-      <t>
-        v05 2016-06-14  MD
-        <list style='symbols'>
-          <t>
-            Remove GROUP and HASH. they can be dealt with elsewhere if desired
-          </t>
-          <t>
-            Change ORDER to integer >= 1.
-          </t>
-          <t>
-            Incorporate Structured-Data into this specification.
-          </t>
-        </list>
-      </t>
-      <t>
-        v04 2014-02-01  MD
-        <list style='symbols'>
-          <t>
-            Added updates attribute.
-          </t>
-          <t>
-            Minor typos.
-          </t>
-          <t>
-            Resubmitted mostly to refresh the draft.
-          </t>
-        </list>
-      </t>
-      <t>
-        v03 2013-03-06  MD
-        <list style='symbols'>
-          <t>
-            Replace PARTICIPANT with ASSOCIATE plus related changes.
-          </t>
-          <t>
-            Added section showing modifications to components.
-          </t>
-          <t>
-            Replace ID with GROUP and modify HASH.
-          </t>
-          <t>
-            Replace TITLE param with LABEL.
-          </t>
-          <t>
-            Fixed STYLED-DESCRIPTION in various ways, correct example.
-          </t>
-        </list>
-      </t>
-      <t>
-        v02 2012-11-02  MD
-        <list style='symbols'>
-          <t>
-            Collapse sections with description of properties and the use cases
-            into a section with sub-sections.
-          </t>
-          <t>
-            New section to describe relating properties.
-          </t>
-          <t>
-            Remove idref and upgrade hash to have the reference
-          </t>
-          <t>
-            No default value types on properties..
-          </t>
-        </list>
-      </t>
-      <t>
-        v01 2012-10-18  MD    Many changes.
-        <list style='symbols'>
-          <t>
-            SPONSOR and STRUCTURED-CONTACT are now in PARTICIPANT
-          </t>
-          <t>
-            Add a STRUCTURED-RESOURCE property
-          </t>
-          <t>
-            STYLED-DESCRIPTION to handle rich text
-          </t>
-          <t>
-            Much more...
-          </t>
-        </list>
-      </t>
-      <t>
-        2011-01-07
-        <list style='symbols'>
-          <t>
-            Remove MEDIA - it's going in the Cyrus RFC
-          </t>
-          <t>
-            Rename EXTENDED-... to STRUCTURED-...
-          </t>
-          <t>
-            Add TYPE parameter to SPONSOR
-          </t>
-        </list>
-      </t>
-      <t>
-        v00 2007-10-19  MD    Initial version
       </t>
     </section>
   </back>
