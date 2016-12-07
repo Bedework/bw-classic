@@ -3,7 +3,7 @@
 <index-properties xmlns="http://bedework.org/ns/" type="org.bedework.indexer.IndexPropertiesImpl">
   <account>admin</account>
   <dataDir>${org.bedework.data.dir}/elasticsearch/</dataDir>
-  <discardMessages>false</discardMessages>
+  <discardMessages>true</discardMessages>
   <embeddedIndexer>true</embeddedIndexer>
   <httpEnabled>false</httpEnabled>
   <indexPublic>true</indexPublic>
