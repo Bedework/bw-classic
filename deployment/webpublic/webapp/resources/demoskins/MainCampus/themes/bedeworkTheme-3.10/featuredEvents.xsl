@@ -36,10 +36,10 @@
         </xsl:if>
         <!-- The featured events triptych can be managed from within the admin client by adding the contents of FeaturedEvent.xml
              as a resource in the calendar suite.  The URL of the resource is referenced as follows:  -->
-        <xsl:apply-templates select="document('/pubcaldav/user/agrp_calsuite-MainCampus/.csResources/FeaturedEvents')/featuredEvents"/>
+        <!--xsl:apply-templates select="document('/pubcaldav/user/agrp_calsuite-MainCampus/.csResources/FeaturedEvents')/featuredEvents"/-->
 
         <!-- If you prefer to reference the static XML document found in the theme, use the following instead. -->
-        <!--<xsl:apply-templates select="document('../../themes/bedeworkTheme-3.10/featured/FeaturedEvent.xml')/featuredEvents"/>-->
+        <xsl:apply-templates select="document('../../themes/bedeworkTheme-3.10/featured/FeaturedEvent.xml')/featuredEvents"/>
 
         <xsl:text> </xsl:text><!-- this must remain, in the event that the content is empty -->
       </div>

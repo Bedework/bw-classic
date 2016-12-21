@@ -146,7 +146,7 @@ body {
 }
 #bedework #menuTabs li.selected {
   background: white url("../images/menuBgGray.gif") repeat-x top;
-  border-bottom: 1px solid white;
+  border-bottom: 2px solid white;
   color: #333;
 }
 #bedework #menuTabs a:link,
@@ -518,7 +518,7 @@ body {
 #bedework input:focus,
 #bedework textarea:focus,
 #bedework select:focus {
-  background-color: #ffb !important;
+  background-color: #ffe !important;
   color: inherit;
 }
 #bedework select:focus option {
@@ -805,6 +805,13 @@ display: inline;
   font-style: italic;
   font-size: 0.9em;
   margin-top: 0.5em;
+}
+
+.maxCharNotice, #remainingChars {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #777;
+  background-color: transparent;
 }
 
 /* FOOTER */

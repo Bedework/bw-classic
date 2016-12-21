@@ -159,14 +159,26 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
 
   this.display = function() {
     var me = this;
+
+    /* start the spinner */
+    var spinnerId = "bwSpinner" + this.outputContainerId;
+    var spinnerDiv = '<div id="' + spinnerId + '"></div>';
+    $("body").append(spinnerDiv);
+    var bwSpinnerTarget = document.getElementById(spinnerId);
+    var bwSpinner = new Spinner(this.bwSpinnerOpts).spin(bwSpinnerTarget);
+
     $.ajax({
       url: this.fetchUri,
       data: this.requestData,
       type: "POST",
       dataType: this.dataType
-    }).done(function(eventListObject) {
-        me.setEvents(eventListObject);
-        me.render();
+    })
+    .done(function(eventListObject) {
+      me.setEvents(eventListObject);
+      me.render();
+    })
+    .always(function () {
+      bwSpinner.stop();
     });
   }
 
@@ -187,15 +199,27 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
     var appendReqData = this.requestData;
     appendReqData.next = "next";
     appendReqData.setappvar = "lastDateSeparatorInList(" + dateSeparator + ")";
+
+    /* start the spinner */
+    var spinnerId = "bwSpinner" + this.outputContainerId;
+    var spinnerDiv = '<div id="' + spinnerId + '"></div>';
+    $("body").append(spinnerDiv);
+    var bwSpinnerTarget = document.getElementById(spinnerId);
+    var bwSpinner = new Spinner(this.bwSpinnerOpts).spin(bwSpinnerTarget);
+
     $.ajax({
       url: this.fetchNextUri,
       data: appendReqData,
       type: "POST",
       async: false,
       dataType: this.dataType
-    }).done(function(eventListObject) {
+    })
+    .done(function(eventListObject) {
       me.setEvents(eventListObject);
       me.render("append");
+    })
+    .always(function () {
+      bwSpinner.stop();
     });
   }
 
@@ -238,6 +262,24 @@ function BwEventList(outputContainerID,dataType,options,startDate,filterPrefix,f
       insertBwEvents(this.outputContainerId,this.events,this.options,action);
     }
   }
+
+  this.bwSpinnerOpts = {
+    lines: 13, // The number of lines to draw
+    length: 20, // The length of each line
+    width: 8, // The line thickness
+    radius: 20, // The radius of the inner circle
+    corners: 0.4, // Corner roundness (0..1)
+    rotate: 0, // The rotation offset
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    color: '#9FC6E2', // #rgb or #rrggbb or array of colors
+    speed: 1.2, // Rounds per second
+    trail: 60, // Afterglow percentage
+    shadow: false, // Whether to render a shadow
+    hwaccel: false, // Whether to use hardware acceleration
+    className: 'spinner', // The CSS class to assign to the spinner
+    zIndex: 100 // The z-index (defaults to 2000000000)
+  };
+
 }
 
 /* Insert Bedework calendar events list from an HTML data island.
@@ -608,3 +650,4 @@ function getBwEventLink(event,bwListOptions) {
 
   return urlPrefix + eventQueryString;
 }
+

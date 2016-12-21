@@ -31,12 +31,56 @@
         <xsl:copy-of select="$bwStr-Root-PageTitle" />
       </title>
 
+      <meta property="og:title">
+        <xsl:attribute name="content">
+          <xsl:choose>
+            <xsl:when test="/bedework/page='event'">
+              <xsl:value-of select="/bedework/event/summary" />
+            </xsl:when>
+            <xsl:otherwise><xsl:copy-of select="$bwStr-Root-PageTitle" /></xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </meta>
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="Columbia University Events" />
+
+      <xsl:variable name="ogURL">
+        <xsl:choose>
+          <xsl:when test="/bedework/page='event'">
+            <xsl:value-of select="$eventView"/>&amp;calPath=<xsl:value-of select="bedework/event/calendar/path"/>&amp;guid=<xsl:value-of select="bedework/event/guid"/>&amp;recurrenceId=<xsl:value-of select="bedework/event/recurrenceId"/>
+          </xsl:when>
+          <xsl:otherwise><xsl:value-of select="$urlPrefix"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <meta property="og:url" content="{$ogURL}"/>
+
+
+      <xsl:if test="/bedework/page='event'">
+        <xsl:if test="bedework/event/xproperties/X-BEDEWORK-IMAGE/values/text">
+          <meta property="og:image">
+            <xsl:attribute name="content">
+              <xsl:value-of select="substring(/bedework/urlprefix,1,string-length(/bedework/urlprefix)-3)"/>pubcaldav<xsl:value-of select="/bedework/event/xproperties/X-BEDEWORK-IMAGE/values/text"/>
+            </xsl:attribute>
+          </meta>
+          <!--
+          <meta property="og:image:width" content="200" />
+          <meta property="og:image:height" content="200" />
+          -->
+        </xsl:if>
+        <meta property="og:description">
+          <xsl:attribute name="content">
+            <xsl:value-of select="/bedework/event/description"/>
+          </xsl:attribute>
+        </meta>
+      </xsl:if>
+
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
       <xsl:if test="$useIE-X-UA-Compatible = 'true'">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
       </xsl:if>
 
+      <link rel="canonical" href="{$ogURL}" />
       <!-- address bar favicon -->
       <link rel="icon" type="image/ico" href="{$favicon}" />
 
@@ -91,6 +135,7 @@
         <script type="text/javascript" src="{$resourcesRoot}/javascript/magnific/jquery.magnific-popup.min.js">/* for export/subscribe lightbox */</script>
         <link rel="stylesheet" type="text/css" media="screen" href="{$resourcesRoot}/css/bwExportSubscribe.css" />
         <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework/exportSubscribe.js">/* bedework export/subscribe form */</script>
+        <script src="/bedework-common/javascript/jquery/spin.min.js">/* spinner for event load animations */</script>
       </xsl:if>
       <xsl:if test="/bedework/page='searchResult'">
         <script type="text/javascript" src="{$resourcesRoot}/javascript/catSearch.js">/* category search */</script> <!-- probably should be deprecated-->

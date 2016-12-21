@@ -35,8 +35,31 @@
     <script type="text/javascript" src="{$resourcesRoot}/javascript/bedework.js"><xsl:text> </xsl:text></script>
 
     <xsl:if test="/bedework/page='addEvent' or /bedework/page='editEvent'">
+      <script type="text/javascript" src="/bedework-common/javascript/bedework/bwClock.js">&#160;</script>
+      <link rel="stylesheet" href="/bedework-common/javascript/bedework/bwClock.css"/>
       <script type="text/javascript">
         <xsl:comment>
+        
+         $(document).ready(function(){
+          // trim the event description:
+          $("#bwEventDesc").val($.trim($("#bwEventDesc").val()));
+
+          // limit the event description to maxPublicDescriptionLength as configured in cal.options.xml
+          $("#bwEventDesc").keyup(function(){
+             var maxDescLength = parseInt(<xsl:value-of select="/bedework/formElements/form/descLength"/>);
+             var desc = $(this).val();
+             var remainingChars = maxDescLength - desc.length;
+             if (remainingChars &lt; 0) {
+               remainingChars = 0;
+             }
+             $("#remainingChars").html(remainingChars + " <xsl:value-of select="$bwStr-FoEl-CharsRemaining"/>");
+             if(desc.length > maxDescLength){
+               var truncDesc = desc.substr(0, maxDescLength);
+               $(this).val(truncDesc);
+             };
+          });
+        });
+        
         $.datepicker.setDefaults({
           constrainInput: true,
           dateFormat: "yy-mm-dd",
@@ -46,7 +69,7 @@
           gotoCurrent: true,
           duration: ""
         });
-
+        
         function bwSetupDatePickers() {
           // startdate
           $("#bwEventWidgetStartDate").datepicker({

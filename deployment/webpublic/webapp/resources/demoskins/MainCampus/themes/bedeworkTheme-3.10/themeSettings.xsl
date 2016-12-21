@@ -305,6 +305,9 @@
   <xsl:variable name="useFullImageThumbs">true</xsl:variable>
   <!-- Use a placeholder thumbnail in listing if no image supplied with event? -->
   <xsl:variable name="usePlaceholderThumb">false</xsl:variable>
+  <!-- Use a blank instead of an image for placeholder -->
+  <xsl:variable name="usePlaceholderThumbBlank">true</xsl:variable>
+
   <!-- THE FOLLOWING THREE SETTINGS ARE NOT IMPLEMENTED IN AJAX LISTINGS -->
   <!-- Limit thumbs to specific views and collections? (Used with the next two variables.) -->
   <xsl:variable name="limitThumbs">false</xsl:variable>
@@ -312,7 +315,6 @@
   <xsl:variable name="limitThumbsToView"></xsl:variable>
   <!-- Limit the thumbs to these comma separated collections (full virtual paths): -->
   <xsl:variable name="limitThumbsToCollections"></xsl:variable>
-
 
 
 

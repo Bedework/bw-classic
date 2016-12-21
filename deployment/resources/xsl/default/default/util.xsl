@@ -38,13 +38,19 @@
     </xsl:choose>
   </xsl:template>
   
-  <!-- escape line breaks and double quotes  -->
+  <!-- escape line breaks, double quotes, and tabs  -->
   <xsl:template name="escapeJson">
     <xsl:param name="string"/>
     <xsl:call-template name="replace">
       <xsl:with-param name="string">
         <xsl:call-template name="replace">
-          <xsl:with-param name="string" select="$string"/>
+          <xsl:with-param name="string">
+            <xsl:call-template name="replace">
+              <xsl:with-param name="string" select="$string"/>
+              <xsl:with-param name="pattern" select="'&#9;'"/>
+              <xsl:with-param name="replacement" select="'\t'"/>
+            </xsl:call-template>
+          </xsl:with-param>
           <xsl:with-param name="pattern" select="'&#xA;'"/>
           <xsl:with-param name="replacement" select="'\n'"/>
         </xsl:call-template>
@@ -192,6 +198,17 @@
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise><xsl:value-of select="$string" /></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="changeCase">
+    <xsl:param name="to">lower</xsl:param>
+    <xsl:param name="string"/>
+    <xsl:variable name="lower">abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿžšœ</xsl:variable>
+    <xsl:variable name="upper">ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸŽŠŒ</xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$to='upper'"><xsl:value-of select="translate($string,$lower,$upper)"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="translate($string,$upper,$lower)"/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

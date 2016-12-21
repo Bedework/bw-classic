@@ -587,8 +587,8 @@
       <p>
         <strong><xsl:copy-of select="$bwStr-CuCa-SubscriptionType"/></strong>
         <xsl:text> </xsl:text>
-        <!-- subType is defaulted to public.  It is changed when a subTypeSwitch is clicked. -->
-        <input type="hidden" value="public" name="subType" id="bwSubType"/><br/>
+        <!-- subType is defaulted to external.  It is changed when a subTypeSwitch is clicked. -->
+        <input type="hidden" value="external" name="subType" id="bwSubType"/><br/>
 
         <input type="radio" name="subTypeSwitch" id="subSwitchExternal" value="external" checked="checked" onclick="changeClass('subscriptionTypePublic','invisible');changeClass('subscriptionTypeExternal','visible');setField('bwSubType',this.value);"/>
         <xsl:text> </xsl:text>

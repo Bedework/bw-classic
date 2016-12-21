@@ -45,10 +45,10 @@ $(document).ready(function() {
     }
     if (itemIndex != -1) {
       bwFilters[navIndex].splice(itemIndex, 1);
-      $(this).css("font-weight", "normal");
+      $(this).css("font-weight", "normal").attr("aria-selected","false");
     } else {
       bwFilters[navIndex].push(curFilter);
-      $(this).css("font-weight", "bold");
+      $(this).css("font-weight", "bold").attr("aria-selected","true");
     }
 
     refreshFilterList(navIndex,navName);
@@ -102,7 +102,7 @@ $(document).ready(function() {
 
   /* Open and close the mobile menu */
   $("#mobileMenu").click(function(){
-    $("#bwDatePickerRangeLinks").toggle(100);
+    $("#bwDatePickerLinks").toggle(100);
     $("#bwBasicSearch").toggle(100);
     $("#bwViewList").toggle(100);
     /*$(".bwMenu").toggle(100, function() {
@@ -187,11 +187,11 @@ function bwClearFilters(navIndex) {
   bwFilters[navIndex].length = 0;
   bwFilterPaths[navIndex].length = 0;
   refreshFilterList(navIndex);
-  $("#bwNav" + navIndex +  " .bwMenuTree a").css("font-weight", "normal");
+  $("#bwNav" + navIndex +  " .bwMenuTree a").css("font-weight", "normal").attr("aria-selected","false");
   reloadMainEventList();
 }
 
-/* Clear everything. */
+/* Clear all filters. */
 function bwClearAllFilters() {
   $.each(bwFilters, function (i) {
     bwFilters[i].length = 0; // clear the inner arrays, but leave them in place.
@@ -199,6 +199,24 @@ function bwClearAllFilters() {
     $("#calFilterContainer" + i).empty();
   });
   $(".bwMenuTree a").css("font-weight", "normal");
+  reloadMainEventList();
+}
+
+/* Clear everything */
+function bwClearAll() {
+  // clear all filters
+  $.each(bwFilters, function (i) {
+    bwFilters[i].length = 0; // clear the inner arrays, but leave them in place.
+    bwFilterPaths[i].length = 0; // same goes for the filter paths.
+    $("#calFilterContainer" + i).empty();
+  });
+  $(".bwMenuTree a").css("font-weight", "normal");
+  $(".bwMenuTree a").css("background", "none");
+  // clear the query
+  bwMainEventList.setQuery("");
+  $("#bwBasicSearchInput").val("");
+  refreshQuery(bwQueryName,bwClearQueryMarkup);
+  // reload
   reloadMainEventList();
 }
 
@@ -269,7 +287,7 @@ function displayAllFilters(bwFilters) {
         }
         // make our selected navigational items bold on every page
         $.each(value, function (j, val) {
-          $("#" + val).css("font-weight","bold");
+          $("#" + val).css("font-weight","bold").attr("aria-selected","true");
         });
       }
     });
@@ -281,7 +299,7 @@ function renderFilter(id) {
   var anchorId = "f" + id;
   var filterPath = $("#" + id).attr("href");
   var label = $("#" + id).text();
-  return '<span class="bwfilter"><a href="' + filterPath + '" id="' + anchorId + '">x</a><span class="bwFilterItemName">' + label + '</span></span> ';
+  return '<span class="bwfilter"><span class="bwFilterItemName">' + label + '</span><a href="' + filterPath + '" id="' + anchorId + '">x</a></span> ';
 }
 
 /* Construct the filter paths by looking up the IDs in bwFilters (global) */
@@ -470,6 +488,11 @@ function bwFilterClickHandler(event) {
   }
 }
 
+// pass in an ID to click
+function bwClick(itemId) {
+  $(itemId).click();
+}
+
 function addCalFilter(filterId) {
   // user clicked on a topical area within an event
   // or a calendar from full listing
@@ -506,5 +529,5 @@ function bwOngoingClickHandler(event) {
 function bwListedEventClickHandler(event) {
   // highlight the list element briefly and then go to the event
   $(this).closest("li").addClass("clickedEvent");
-  location.href = ($(this).find("h4.bwSummary > a").attr("href"));
+  location.href = ($(this).find(".bwSummary > a").attr("href"));
 }

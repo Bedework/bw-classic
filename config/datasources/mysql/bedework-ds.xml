@@ -7,7 +7,7 @@
 <datasources>
   <local-tx-datasource>
     <jndi-name>CalendarDS</jndi-name>
-    <connection-url>jdbc:mysql://127.0.0.1:3306/bedework3p7</connection-url>
+    <connection-url>jdbc:mysql://127.0.0.1:3306/bedework</connection-url>
     <driver-class>com.mysql.jdbc.Driver</driver-class>
     <user-name>[[[yourDbUserNameHere]]]</user-name>
     <password>[[[yourDbPasswordHere]]]</password>

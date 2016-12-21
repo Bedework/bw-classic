@@ -151,7 +151,12 @@
       <xsl:choose>
         <xsl:when test="color and color != ''"><xsl:value-of select="color"/></xsl:when>
         <xsl:when test="xproperties/X-BEDEWORK-ALIAS/values/text = /bedework/myCalendars//calendar/path"><xsl:value-of select="/bedework/myCalendars//calendar[path=xproperties/X-BEDEWORK-ALIAS/values/text]/color"/></xsl:when>
-        <xsl:when test="calendar/color != ''"><xsl:value-of select="calendar/color"/></xsl:when>
+        <xsl:when test="calendar/color != '' and calendar/color != 'null'"><xsl:value-of select="calendar/color"/></xsl:when>
+        <xsl:when test="not(starts-with(calendar/path,/bedework/myCalendars/calendars/calendar/path))">
+          <!-- this event comes from a subscription / shared calendar; look up color on user's calendar -->
+          <xsl:variable name="remotePath"><xsl:value-of select="calendar/path"/></xsl:variable>
+          <xsl:value-of select="/bedework/myCalendars/calendars//calendar[substring-after(aliasUri,'bwcal://')=$remotePath]/color"/>
+        </xsl:when>
       </xsl:choose>
     </xsl:variable>
     <!-- Calendar colors are set in the add/modify calendar forms which, if present,

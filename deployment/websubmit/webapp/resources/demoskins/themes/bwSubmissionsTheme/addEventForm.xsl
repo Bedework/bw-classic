@@ -598,6 +598,9 @@
                   </textarea>
                 </xsl:otherwise>
               </xsl:choose>
+              <br />
+              <span class="maxCharNotice"><xsl:value-of select="form/descLength"/><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-FoEl-CharsMax"/></span>
+              <span id="remainingChars">&#160;</span>
             </td>
           </tr>
           <!--  Status  -->
@@ -750,6 +753,7 @@
           <!-- hard coding the "aliases" name is not best, but will do for now -->
           <xsl:apply-templates select="form/calendars/calendar/calendar[name='aliases']" mode="showEventFormAliases">
             <xsl:with-param name="root">true</xsl:with-param>
+            <xsl:sort select="summary" />
           </xsl:apply-templates>
         </ul>
         <p class="subFormMessage">
@@ -993,7 +997,9 @@
 
       <xsl:if test="calendar">
         <ul>
-          <xsl:apply-templates select="calendar" mode="showEventFormAliases"/>
+          <xsl:apply-templates select="calendar" mode="showEventFormAliases">
+            <xsl:sort select="summary" />
+          </xsl:apply-templates>
         </ul>
       </xsl:if>
     </li>

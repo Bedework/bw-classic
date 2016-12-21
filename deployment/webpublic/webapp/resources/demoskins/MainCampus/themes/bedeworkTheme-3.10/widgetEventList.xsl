@@ -163,27 +163,41 @@
                         <xsl:otherwise><xsl:value-of select="$resourcesRoot"/>/images/placeholder.png</xsl:otherwise>
                       </xsl:choose>
                     </xsl:attribute>
-                    <xsl:attribute name="alt"><xsl:value-of select="summary"/></xsl:attribute>
+                    <xsl:attribute name="alt">
+                      <xsl:choose>
+                        <xsl:when test="xproperties/X-BEDEWORK-IMAGE/parameters/X-BEDEWORK-PARAM-ALT">
+                          <xsl:value-of select="xproperties/X-BEDEWORK-IMAGE/parameters/X-BEDEWORK-PARAM-ALT" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:call-template name="escapeJson"><xsl:with-param name="string" select="summary" /></xsl:call-template>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:attribute>
                   </img>
                 </a>
               </xsl:if>
 
               <div class="eventListContent">
-                <xsl:if test="xproperties/X-BEDEWORK-IMAGE or $usePlaceholderThumb = 'true'">
-                  <xsl:attribute name="class">eventListContent withImage</xsl:attribute>
-                </xsl:if>
+                <xsl:attribute name="class">
+                  <xsl:choose>
+                    <xsl:when test="xproperties/X-BEDEWORK-IMAGE or $usePlaceholderThumb = 'true'">eventListContent withImage</xsl:when>
+                    <xsl:when test="$usePlaceholderThumbBlank = 'true'">eventListContent withBlank</xsl:when>
+                    <xsl:otherwise>eventListContent</xsl:otherwise>
+                  </xsl:choose>
+                </xsl:attribute>
+
 
                 <!-- event title -->
                 <xsl:if test="status='CANCELLED'"><strong><xsl:copy-of select="$bwStr-LsVw-Canceled"/><xsl:text> </xsl:text></strong></xsl:if>
                 <xsl:if test="status='TENTATIVE'"><strong><xsl:copy-of select="$bwStr-LsEv-Tentative"/><xsl:text> </xsl:text></strong></xsl:if>
-                <h4 class="bwSummary">
+                <div class="bwSummary">
                   <a href="{$eventView}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
                     <xsl:value-of select="summary"/>
                     <xsl:if test="summary = ''">
                       <xsl:copy-of select="$bwStr-SgEv-NoTitle" />
                     </xsl:if>
                   </a>
-                </h4>
+                </div>
 
                 <xsl:value-of select="substring(start/dayname,1,3)"/>,
                 <xsl:value-of select="start/longdate"/>
@@ -211,10 +225,29 @@
 
                 <br/>
                 <xsl:copy-of select="$bwStr-LsVw-Location"/><xsl:text> </xsl:text>
-                <xsl:value-of select="location/address"/>
-                <xsl:if test="location/subaddress != ''">
-                  , <xsl:value-of select="location/subaddress"/>
-                </xsl:if>
+                <xsl:choose>
+                  <xsl:when test="location/address = ''">
+                    <xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/>
+                  </xsl:when>
+                  <xsl:when test="location/link=''">
+                    <xsl:value-of select="location/address" />
+                    <xsl:text> </xsl:text>
+                    <xsl:if test="location/subaddress!=''">
+                      <xsl:text> </xsl:text>
+                      <xsl:value-of select="location/subaddress" />
+                    </xsl:if>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <a>
+                      <xsl:attribute name="href"><xsl:value-of select="location/link"/></xsl:attribute>
+                      <xsl:value-of select="location/address"/>
+                      <xsl:if test="location/subaddress!=''">
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="location/subaddress" />
+                      </xsl:if>
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
 
                 <xsl:if test="/bedework/appvar[key='listEventsSummaryMode']/value='details'">
                   <br/>

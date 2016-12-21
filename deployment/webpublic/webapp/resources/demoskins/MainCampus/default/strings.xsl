@@ -76,6 +76,7 @@
 
   <!--  xsl:template name="searchBar" -->
   <xsl:variable name="bwStr-SrcB-SearchForEvents">Search for events:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-ApplyFilter">apply filter</xsl:variable>
   <xsl:variable name="bwStr-Util-List">LIST</xsl:variable>
   <xsl:variable name="bwStr-Util-Cal">CAL</xsl:variable>
   <xsl:variable name="bwStr-Util-Summary">SUMMARY</xsl:variable>

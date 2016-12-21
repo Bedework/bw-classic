@@ -113,6 +113,16 @@
         </xsl:variable>
         <img class="bwEventImage img-responsive">
           <xsl:attribute name="src"><xsl:value-of select="$imgPrefix"/><xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-IMAGE']/values/text" /></xsl:attribute>
+          <xsl:attribute name="alt">
+            <xsl:choose>
+              <xsl:when test="xproperties/X-BEDEWORK-IMAGE/parameters/node()[name()='X-BEDEWORK-PARAM-ALT']">
+                <xsl:value-of select="xproperties/X-BEDEWORK-IMAGE/parameters/X-BEDEWORK-PARAM-ALT" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:call-template name="escapeJson"><xsl:with-param name="string" select="summary" /></xsl:call-template>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
         </img>
       </xsl:if>
 
@@ -121,131 +131,135 @@
         <xsl:value-of select="start/dayname" />,
         <xsl:value-of select="start/longdate" />
         <xsl:text> </xsl:text>
-        <xsl:if test="start/allday = 'false'">
-          <span class="time">
-            <xsl:value-of select="start/time" />
-          </span>
-        </xsl:if>
-        <xsl:if
-          test="(end/longdate != start/longdate) or
-                ((end/longdate = start/longdate) and (end/time != start/time))">
-          -
-        </xsl:if>
-        <xsl:if test="end/longdate != start/longdate">
-          <xsl:value-of select="substring(end/dayname,1,3)" />
-          ,
-          <xsl:value-of select="end/longdate" />
-          <xsl:text> </xsl:text>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="start/allday = 'true'">
+        <div class="time-container">
+          <xsl:if test="start/allday = 'false'">
             <span class="time">
-              <em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em>
+              <xsl:value-of select="start/time" />
             </span>
-          </xsl:when>
-          <xsl:when test="end/longdate != start/longdate">
-            <span class="time">
-              <xsl:value-of select="end/time" />
-            </span>
-          </xsl:when>
-          <xsl:when test="end/time != start/time">
-            <span class="time">
-              <xsl:value-of select="end/time" />
-            </span>
-          </xsl:when>
-        </xsl:choose>
-        <!-- if timezones are not local, or if floating add labels: -->
-        <xsl:if test="start/timezone/islocal = 'false' or end/timezone/islocal = 'false'">
-          <xsl:text> </xsl:text>
-          --
-          <strong>
+          </xsl:if>
+          <xsl:if
+            test="(end/longdate != start/longdate) or
+                  ((end/longdate = start/longdate) and (end/time != start/time))">
+            -
+          </xsl:if>
+          <xsl:if test="end/longdate != start/longdate">
+            <xsl:value-of select="end/dayname" />,
+            <xsl:value-of select="end/longdate" />
+            <xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="start/allday = 'true'">
+              <span class="time">
+                <em><xsl:copy-of select="$bwStr-SgEv-AllDay"/></em>
+              </span>
+            </xsl:when>
+            <xsl:when test="end/longdate != start/longdate">
+              <span class="time">
+                <xsl:value-of select="end/time" />
+              </span>
+            </xsl:when>
+            <xsl:when test="end/time != start/time">
+              <span class="time">
+                <xsl:value-of select="end/time" />
+              </span>
+            </xsl:when>
+          </xsl:choose>
+          <!-- if timezones are not local, or if floating add labels: -->
+          <xsl:if test="start/timezone/islocal = 'false' or end/timezone/islocal = 'false'">
+            <xsl:text> </xsl:text>
+            --
+            <strong>
+              <xsl:choose>
+                <xsl:when test="start/floating = 'true'">
+                  <xsl:copy-of select="$bwStr-SgEv-FloatingTime"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:copy-of select="$bwStr-SgEv-LocalTime"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </strong>
+            <br/>
+          </xsl:if>
+          <!-- display in timezone if not local or floating time) -->
+          <xsl:if test="(start/timezone/islocal = 'false' or end/timezone/islocal = 'false') and start/floating = 'false'">
             <xsl:choose>
-              <xsl:when test="start/floating = 'true'">
-                <xsl:copy-of select="$bwStr-SgEv-FloatingTime"/>
+              <xsl:when test="start/timezone/id != end/timezone/id">
+                <!-- need to display both timezones if they differ from start to end -->
+                <div class="tzdates">
+                  <em><xsl:copy-of select="$bwStr-SgEv-Start"/><xsl:text> </xsl:text></em>
+                  <xsl:choose>
+                    <xsl:when test="start/timezone/islocal='true'">
+                      <xsl:value-of select="start/dayname"/>,
+                      <xsl:value-of select="start/longdate"/>
+                      <xsl:text> </xsl:text>
+                      <span class="time"><xsl:value-of select="start/time"/></span>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="start/timezone/dayname"/>,
+                      <xsl:value-of select="start/timezone/longdate"/>
+                      <xsl:text> </xsl:text>
+                      <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  --
+                  <strong><xsl:value-of select="start/timezone/id"/></strong>
+                  <br/>
+                  <em><xsl:copy-of select="$bwStr-SgEv-End"/><xsl:text> </xsl:text></em>
+                  <xsl:choose>
+                    <xsl:when test="end/timezone/islocal='true'">
+                      <xsl:value-of select="end/dayname"/>,
+                      <xsl:value-of select="end/longdate"/>
+                      <xsl:text> </xsl:text>
+                      <span class="time"><xsl:value-of select="end/time"/></span>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="end/timezone/dayname"/>,
+                      <xsl:value-of select="end/timezone/longdate"/>
+                      <xsl:text> </xsl:text>
+                      <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  --
+                  <strong><xsl:value-of select="end/timezone/id"/></strong>
+                </div>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:copy-of select="$bwStr-SgEv-LocalTime"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </strong>
-          <br/>
-        </xsl:if>
-        <!-- display in timezone if not local or floating time) -->
-        <xsl:if test="(start/timezone/islocal = 'false' or end/timezone/islocal = 'false') and start/floating = 'false'">
-          <xsl:choose>
-            <xsl:when test="start/timezone/id != end/timezone/id">
-              <!-- need to display both timezones if they differ from start to end -->
-              <div class="tzdates">
-                <em><xsl:copy-of select="$bwStr-SgEv-Start"/><xsl:text> </xsl:text></em>
+                <!-- otherwise, timezones are the same: display as a single line  -->
+                <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
+                <xsl:if test="start/allday = 'false'">
+                  <span class="time"><xsl:value-of select="start/timezone/time"/></span>
+                </xsl:if>
+                <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
+                              ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
+                <xsl:if test="end/timezone/longdate != start/timezone/longdate">
+                  <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
+                </xsl:if>
                 <xsl:choose>
-                  <xsl:when test="start/timezone/islocal='true'">
-                    <xsl:value-of select="start/dayname"/>,
-                    <xsl:value-of select="start/longdate"/>
-                    <xsl:text> </xsl:text>
-                    <span class="time"><xsl:value-of select="start/time"/></span>
+                  <xsl:when test="start/allday = 'true'">
+                    <span class="time"><em> <xsl:copy-of select="$bwStr-SgEv-AllDay"/></em></span>
                   </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="start/timezone/dayname"/>,
-                    <xsl:value-of select="start/timezone/longdate"/>
-                    <xsl:text> </xsl:text>
-                    <span class="time"><xsl:value-of select="start/timezone/time"/></span>
-                  </xsl:otherwise>
+                  <xsl:when test="end/timezone/longdate != start/timezone/longdate">
+                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                  </xsl:when>
+                  <xsl:when test="end/timezone/time != start/timezone/time">
+                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
+                  </xsl:when>
                 </xsl:choose>
+                <xsl:text> </xsl:text>
                 --
                 <strong><xsl:value-of select="start/timezone/id"/></strong>
-                <br/>
-                <em><xsl:copy-of select="$bwStr-SgEv-End"/><xsl:text> </xsl:text></em>
-                <xsl:choose>
-                  <xsl:when test="end/timezone/islocal='true'">
-                    <xsl:value-of select="end/dayname"/>,
-                    <xsl:value-of select="end/longdate"/>
-                    <xsl:text> </xsl:text>
-                    <span class="time"><xsl:value-of select="end/time"/></span>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="end/timezone/dayname"/>,
-                    <xsl:value-of select="end/timezone/longdate"/>
-                    <xsl:text> </xsl:text>
-                    <span class="time"><xsl:value-of select="end/timezone/time"/></span>
-                  </xsl:otherwise>
-                </xsl:choose>
-                --
-                <strong><xsl:value-of select="end/timezone/id"/></strong>
-              </div>
-            </xsl:when>
-            <xsl:otherwise>
-              <!-- otherwise, timezones are the same: display as a single line  -->
-              <xsl:value-of select="start/timezone/dayname"/>, <xsl:value-of select="start/timezone/longdate"/><xsl:text> </xsl:text>
-              <xsl:if test="start/allday = 'false'">
-                <span class="time"><xsl:value-of select="start/timezone/time"/></span>
-              </xsl:if>
-              <xsl:if test="(end/timezone/longdate != start/timezone/longdate) or
-                            ((end/timezone/longdate = start/timezone/longdate) and (end/timezone/time != start/timezone/time))"> - </xsl:if>
-              <xsl:if test="end/timezone/longdate != start/timezone/longdate">
-                <xsl:value-of select="substring(end/timezone/dayname,1,3)"/>, <xsl:value-of select="end/timezone/longdate"/><xsl:text> </xsl:text>
-              </xsl:if>
-              <xsl:choose>
-                <xsl:when test="start/allday = 'true'">
-                  <span class="time"><em> <xsl:copy-of select="$bwStr-SgEv-AllDay"/></em></span>
-                </xsl:when>
-                <xsl:when test="end/timezone/longdate != start/timezone/longdate">
-                  <span class="time"><xsl:value-of select="end/timezone/time"/></span>
-                </xsl:when>
-                <xsl:when test="end/timezone/time != start/timezone/time">
-                  <span class="time"><xsl:value-of select="end/timezone/time"/></span>
-                </xsl:when>
-              </xsl:choose>
-              <xsl:text> </xsl:text>
-              --
-              <strong><xsl:value-of select="start/timezone/id"/></strong>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:if>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+        </div>
       </div>
 
       <div class="eventWhere">
         <span class="infoTitle"><xsl:copy-of select="$bwStr-SgEv-Where"/><xsl:text> </xsl:text></span>
         <xsl:choose>
+          <xsl:when test="location/address = ''">
+            <xsl:value-of select="xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/>
+          </xsl:when>
           <xsl:when test="location/link=''">
             <xsl:value-of select="location/address" />
             <xsl:text> </xsl:text>
@@ -384,7 +398,14 @@
       <xsl:if test="$eventRegEnabled and xproperties/node()[name()='X-BEDEWORK-REGISTRATION-START']">
         <div id="bwRegistrationBox">
           <xsl:variable name="eventName"><xsl:value-of select="name"/></xsl:variable>
-          <iframe src="{$eventReg}?href={$calPath}%2F{$eventName}" width="300" height="175">
+          <!-- if we have custom fields, point to them -->
+          <xsl:variable name="customFieldsSuiteParams"><!-- use comments to avoid white-space
+          --><xsl:if test="xproperties/node()[name()='X-BEDEWORK-REGISTRATION-FORM']"><!--
+              -->&amp;calsuite=<xsl:value-of select="substring-before(xproperties/node()[name()='X-BEDEWORK-REGISTRATION-FORM']/values/text,'|')"/><!--
+              -->&amp;formName=<xsl:value-of select="substring-after(xproperties/node()[name()='X-BEDEWORK-REGISTRATION-FORM']/values/text,'|')"/><!--
+          --></xsl:if><!--
+       --></xsl:variable>
+          <iframe src="{$eventReg}?href={$calPath}%2F{$eventName}{$customFieldsSuiteParams}" width="100%" height="600">
 	          <p>
 			        <xsl:copy-of select="$bwStr-Error-IframeUnsupported"/>
 			      </p>

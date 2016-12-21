@@ -137,7 +137,6 @@
          }).attr("readonly", "readonly");
        });
       </script>
-      <noscript><xsl:copy-of select="$bwStr-Error-NoScript"/></noscript>
 
     </div>
   </xsl:template>

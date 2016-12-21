@@ -34,6 +34,7 @@
         </input>
         <button id="searchSubmit" type="submit" name="submit" class="btn">
           <span class="glyphicon glyphicon-search"><xsl:text> </xsl:text></span>
+          <span class="bwa-label"><xsl:value-of select="$bwStr-SrcB-ApplyFilter"/></span>
         </button>
       </div>
       <!--

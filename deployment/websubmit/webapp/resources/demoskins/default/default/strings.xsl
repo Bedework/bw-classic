@@ -91,6 +91,8 @@
   <xsl:variable name="bwStr-FoEl-This">This</xsl:variable>
   <xsl:variable name="bwStr-FoEl-HasNoDurationEndDate">has no duration / end date</xsl:variable>
   <xsl:variable name="bwStr-FoEl-Description">Description</xsl:variable>
+  <xsl:variable name="bwStr-FoEl-CharsMax">characters max.</xsl:variable>
+  <xsl:variable name="bwStr-FoEl-CharsRemaining">character(s) remaining.</xsl:variable>
   <xsl:variable name="bwStr-FoEl-MustIncludeDescription">You must include a description.</xsl:variable>
   <xsl:variable name="bwStr-FoEl-Status">Status:</xsl:variable>
   <xsl:variable name="bwStr-FoEl-Confirmed">confirmed</xsl:variable>

@@ -46,7 +46,7 @@ a {
 a:hover {
   color: #2828a0;
   text-decoration: underline;
- }
+}
 .clear {
   display: block;
   clear: both;
@@ -250,7 +250,12 @@ label {
   top: -6px;
   opacity: 0.4;
 }
-
+.bwa-label {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+}
 
 /* Date Picker and Search Box Form Control styles
    (Bootstrap overrides) */
@@ -454,7 +459,8 @@ ul#calDisplayOptions li a {
 #listEvents .bwSummary {
   font-weight: bold;
 }
-#listEvents .withImage {
+#listEvents .withImage,
+#listEvents .withBlank {
   margin-left: 96px;
 }
 #listEvents .eventThumbLink {

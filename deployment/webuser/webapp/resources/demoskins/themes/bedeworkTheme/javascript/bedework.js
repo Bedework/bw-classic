@@ -213,11 +213,8 @@ function setCalendarAlias(formObj) {
 
     // set the aliasUri to an empty string.  Only set it if user
     // has requested a subscription.
-    formObj.aliasUri.value == "";
-
-    if (formObj.type.value == "folder") {
-      formObj.calendarCollection.value = "false";
-    } else if (formObj.type.value == "subscription") {
+    if (formObj.aliasUri != undefined) {
+      formObj.aliasUri.value == "";
       switch (formObj.subType.value) {
         case "public":
           formObj.aliasUri.value = "bwcal://" + formObj.publicAliasHolder.value;

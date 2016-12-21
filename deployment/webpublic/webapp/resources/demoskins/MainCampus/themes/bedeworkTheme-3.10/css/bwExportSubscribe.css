@@ -67,10 +67,16 @@
   color: black;
   padding: 4px 4px 4px 8px;
 }
+#exportSubscribeForm fieldset {
+  margin: 1em 0;
+}
 #exportSubscribeForm ul {
   list-style-type: none;
-  margin: 1em 0;
+  margin: 0 0 0 2em;
   padding: 0;
+}
+#exportSubscribeForm #bwExpCountWidget {
+  margin: 0 0 1em 2em;
 }
 #exportSubscribeForm #bwExpUrlBox {
   font-family: monospace;
@@ -112,9 +118,6 @@
   padding: 1em 0 0.5em 0;
   text-align: left;
   vertical-align: top;
-}
-#exportSubscribeForm ul {
-  margin-left: 2em;
 }
 #exportSubscribeForm label {
   margin: 0;

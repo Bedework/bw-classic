@@ -29,7 +29,7 @@
     <hibernateProperty>hibernate.query.substitutions=true 'T', false 'F', yes 'Y', no 'N'</hibernateProperty>
   </hibernateProperties>
   <ldapUrl>ldap://localhost:10389</ldapUrl>
-  <mailDisabled>false</mailDisabled>
+  <mailDisabled>true</mailDisabled>
   <mailFrom>bedework@bedework.org</mailFrom>
   <mailProtocol>smtp</mailProtocol>
   <mailProtocolClass>com.sun.mail.smtp.SMTPTransport</mailProtocolClass>
@@ -39,5 +39,6 @@
   <messageDigest>SHA</messageDigest>
   <name>config</name>
   <schemaOutFile>${org.bedework.data.dir}/selfreg/schema.sql</schemaOutFile>
+  <unauthCanRegister>true</unauthCanRegister>
   <useLdap>false</useLdap>
 </selfreg>

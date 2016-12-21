@@ -96,6 +96,7 @@
   <xsl:variable name="bwStr-SrcB-AllCalendars">alle Kalender</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Search">Suchen:</xsl:variable>
   <xsl:variable name="bwStr-SrcB-SearchForEvents">Suche nach Veranstaltungen:</xsl:variable>
+  <xsl:variable name="bwStr-SrcB-ApplyFilter">Filter anwenden</xsl:variable>
   <xsl:variable name="bwStr-SrcB-Go">weiter</xsl:variable>
   <xsl:variable name="bwStr-Util-List">LISTE</xsl:variable>
   <xsl:variable name="bwStr-Util-Cal">KALENDER</xsl:variable>

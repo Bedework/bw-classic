@@ -29,7 +29,7 @@
   /* Hide menu components - the #mobileMenu can toggle them on */
   /* These are toggled: */
   #ongoing,
-  #bwDatePickerRangeLinks,
+  #bwDatePickerLinks,
   #bwBasicSearch,
   #bwViewList {
     display: none;
@@ -39,16 +39,23 @@
   .sideBarContainer {
     display: none;
   }
-
   #header {
     margin: 0;
   }
-
   #leftColumn {
     padding: 0.5em 1.2em;
   }
+  #listEvents .withBlank {
+    margin-left: 0;
+  }
+  #bwDatePicker {
+    margin-top: 0;
+  }
   #bwDatePickerLinks {
     margin-bottom: 2em;
+  }
+  #bwDatePickerInput {
+    width: 90%;
   }
   #feature {
     /* if features are displayed, fill the width of the screen */

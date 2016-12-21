@@ -28,7 +28,16 @@
         <extension module="org.wildfly.extension.request-controller"/>
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
+        <extension module="org.wildfly.extension.messaging-activemq"/>
     </extensions>
+
+    <system-properties>
+        <property name="hawtio.authenticationEnabled" value="true"/>
+        <property name="hawtio.realm" value="jboss-web-policy"/>
+        <property name="hawtio.role" value="admin"/>
+    </system-properties>
+
+
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
@@ -41,6 +50,11 @@
                 </authorization>
             </security-realm>
             <security-realm name="ApplicationRealm">
+                <server-identities>
+                    <ssl>
+                        <keystore path="application.keystore" relative-to="jboss.server.config.dir" keystore-password="password" alias="server" key-password="password" generate-self-signed-certificate-host="localhost"/>
+                    </ssl>
+                </server-identities>
                 <authentication>
                     <local default-user="$local" allowed-users="*" skip-group-loading="true"/>
                     <properties path="application-users.properties" relative-to="jboss.server.config.dir"/>
@@ -78,6 +92,7 @@
             </role-mapping>
         </access-control>
     </management>
+
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:3.0">
             <console-handler name="CONSOLE">
@@ -119,9 +134,6 @@
                 <append value="true"/>
             </periodic-rotating-file-handler>
             <logger category="com.arjuna">
-                <level name="WARN"/>
-            </logger>
-            <logger category="org.apache.tomcat.util.modeler">
                 <level name="WARN"/>
             </logger>
             <logger category="org.jboss.as.config">
@@ -191,6 +203,9 @@
                 <level name="INFO"/>
             </logger>
             <logger category="org.elasticsearch">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.bedework.messages.impl.JmsTransactionManager">
                 <level name="INFO"/>
             </logger>
             <logger category="org.bedework.sysevents">
@@ -335,7 +350,6 @@
             </session-bean>
             <pools>
                 <bean-instance-pools>
-                    <!-- Automatically configure pools. Alternatively, max-pool-size can be set to a specific value -->
                     <strict-max-pool name="slsb-strict-max-pool" derive-size="from-worker-pools" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
                     <strict-max-pool name="mdb-strict-max-pool" derive-size="from-cpu-count" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
                 </bean-instance-pools>
@@ -384,6 +398,9 @@
                     <locking isolation="REPEATABLE_READ"/>
                     <transaction mode="BATCH"/>
                     <file-store passivation="false" purge="false"/>
+                </local-cache>
+                <local-cache name="concurrent">
+                    <file-store passivation="true" purge="false"/>
                 </local-cache>
             </cache-container>
             <cache-container name="ejb" aliases="sfsb" default-cache="passivation" module="org.wildfly.clustering.ejb.infinispan">
@@ -454,84 +471,41 @@
             <endpoint/>
             <http-connector name="http-remoting-connector" connector-ref="default" security-realm="ApplicationRealm"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:resource-adapters:4.0">
-            <resource-adapters>
-                <resource-adapter id="activemq-rar.rar">
-                    <archive>
-                        activemq-rar-5.12.1.rar
-                    </archive>
-                    <transaction-support>XATransaction</transaction-support>
-                    <config-property name="ServerUrl">
-                        failover:(${org.bedework.activemq.uri})?timeout=3000
-                    </config-property>
-                    <connection-definitions>
-                        <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/activemq/QueueConnectionFactory" enabled="true" pool-name="ConnectionFactory">
-                            <xa-pool>
-                                <min-pool-size>1</min-pool-size>
-                                <max-pool-size>200</max-pool-size>
-                                <prefill>false</prefill>
-                                <is-same-rm-override>false</is-same-rm-override>
-                            </xa-pool>
-                            <timeout>
-                                <blocking-timeout-millis>30000</blocking-timeout-millis>
-                                <idle-timeout-minutes>3</idle-timeout-minutes>
-                            </timeout>
-                        </connection-definition>
-                        <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/jms/BedeworkConnectionFactory" enabled="true" pool-name="BedeworkConnectionFactory">
-                            <xa-pool>
-                                <min-pool-size>1</min-pool-size>
-                                <max-pool-size>200</max-pool-size>
-                                <prefill>false</prefill>
-                                <is-same-rm-override>false</is-same-rm-override>
-                            </xa-pool>
-                            <timeout>
-                                <blocking-timeout-millis>30000</blocking-timeout-millis>
-                                <idle-timeout-minutes>3</idle-timeout-minutes>
-                            </timeout>
-                        </connection-definition>
-                    </connection-definitions>
-                    <admin-objects>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/activemq/queue/sysevents" use-java-context="true" pool-name="syseventsQueue">
-                            <config-property name="PhysicalName">
-                                bedework.sysevents
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/activemq/queue/changes" use-java-context="true" pool-name="syseventsChangesQueue">
-                            <config-property name="PhysicalName">
-                                bedework.sysevents.changes
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/activemq/queue/crawler" use-java-context="true" pool-name="syseventsCrawlerQueue">
-                            <config-property name="PhysicalName">
-                                bedework.sysevents.crawler
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/activemq/queue/syseventslog" use-java-context="true" pool-name="syseventsLoggerQueue">
-                            <config-property name="PhysicalName">
-                                bedework.sysevents.logger
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/activemq/queue/monitor" use-java-context="true" pool-name="syseventsMonitorQueue">
-                            <config-property name="PhysicalName">
-                                bedework.sysevents.monitor
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/activemq/queue/schedulerOut" use-java-context="true" pool-name="scheduleOutQueue">
-                            <config-property name="PhysicalName">
-                                bedework.scheduleOut
-                            </config-property>
-                        </admin-object>
-                        <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/activemq/queue/schedulerIn" use-java-context="true" pool-name="scheduleInQueue">
-                            <config-property name="PhysicalName">
-                                bedework.scheduleIn
-                            </config-property>
-                        </admin-object>
-                    </admin-objects>
-                </resource-adapter>
-            </resource-adapters>
-        </subsystem>
+        <subsystem xmlns="urn:jboss:domain:resource-adapters:4.0"/>
         <subsystem xmlns="urn:jboss:domain:request-controller:1.0"/>
         <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:messaging-activemq:1.0">
+            <server name="default">
+                <security-setting name="#">
+                    <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+                <address-setting name="#" dead-letter-address="jms.queue.DLQ" expiry-address="jms.queue.ExpiryQueue" max-size-bytes="10485760" page-size-bytes="2097152" message-counter-history-day-limit="10"/>
+                <http-connector name="http-connector" socket-binding="http" endpoint="http-acceptor"/>
+                <http-connector name="http-connector-throughput" socket-binding="http" endpoint="http-acceptor-throughput">
+                    <param name="batch-delay" value="50"/>
+                </http-connector>
+                <in-vm-connector name="in-vm" server-id="0"/>
+                <http-acceptor name="http-acceptor" http-listener="default"/>
+                <http-acceptor name="http-acceptor-throughput" http-listener="default">
+                    <param name="batch-delay" value="50"/>
+                    <param name="direct-deliver" value="false"/>
+                </http-acceptor>
+                <in-vm-acceptor name="in-vm" server-id="0"/>
+                <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
+                <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
+                <jms-queue name="bedework.sysevents" entries="bwqueues/sysevents"/>
+                <jms-queue name="bedework.sysevents.logger" entries="bwqueues/syseventsLogger"/>
+                <jms-queue name="bedework.sysevents.monitor" entries="bwqueues/syseventsMonitor"/>
+                <jms-queue name="bedework.sysevents.crawler" entries="bwqueues/syseventsCrawler"/>
+                <jms-queue name="bedework.sysevents.changeEvent" entries="bwqueues/syseventsChanges"/>
+                <jms-queue name="bedework.sysevents.scheduleIn" entries="bwqueues/syseventsScheduleIn"/>
+                <jms-queue name="bedework.sysevents.scheduleOut" entries="bwqueues/syseventsScheduleOut"/>
+                <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
+                <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
+                <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa"/>
+                <pooled-connection-factory name="BedeworkConnectionFactory" entries="java:/BedeworkConnectionFactory java:jboss/jms/BedeworkConnectionFactory" connectors="in-vm" transaction="xa"/>
+            </server>
+        </subsystem>
         <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
             <deployment-permissions>
                 <maximum-set>
@@ -569,7 +543,7 @@
                         <auth-module code="Dummy"/>
                     </authentication-jaspi>
                 </security-domain>
-                <security-domain name="bedeworkdemo" cache-type="default">
+                <security-domain name="bedework" cache-type="default">
                     <authentication>
                         <login-module code="Ldap" flag="required">
                             <module-option name="java.naming.provider.url" value="ldap://localhost:10389/"/>
@@ -594,10 +568,11 @@
             </core-environment>
             <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:undertow:3.0">
+        <subsystem xmlns="urn:jboss:domain:undertow:3.1">
             <buffer-cache name="default"/>
             <server name="default-server">
-                <http-listener name="default" socket-binding="http" redirect-socket="https"/>
+                <http-listener name="default" socket-binding="http" redirect-socket="https" enable-http2="true"/>
+                <https-listener name="https" socket-binding="https" security-realm="ApplicationRealm" enable-http2="true"/>
                 <host name="default-host" alias="localhost">
                     <location name="/welcome" handler="welcome-content"/>
                     <location name="/" handler="bedework-content"/>
@@ -631,6 +606,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:weld:3.0"/>
     </profile>
+
     <interfaces>
         <interface name="management">
             <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
@@ -639,6 +615,7 @@
             <inet-address value="${jboss.bind.address:127.0.0.1}"/>
         </interface>
     </interfaces>
+
     <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9993}"/>
@@ -651,4 +628,5 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
+
 </server>

@@ -81,7 +81,7 @@ $(document).ready(function(){
     // user can toggle the menus, and we need to recover.
     if (window.innerWidth > 767) {
       isTiny = false;
-      $("#bwDatePickerRangeLinks").show();
+      $("#bwDatePickerLinks").show();
       $("#bwBasicSearch").show();
       $("#bwViewList").show();
       $("#ongoing").show();
@@ -91,7 +91,7 @@ $(document).ready(function(){
 
     if (window.innerWidth < 768) {
       isTiny = true;
-      $("#bwDatePickerRangeLinks").hide(100);
+      $("#bwDatePickerLinks").hide(100);
       $("#bwBasicSearch").hide(100);
       $("#bwViewList").hide(100);
       $("#ongoing").hide(100);
