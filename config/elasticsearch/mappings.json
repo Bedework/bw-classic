@@ -694,12 +694,12 @@
                         },
 
                         "description" : {
-                            "type" : "integer",
+                            "type" : "string",
                             "index" : "not_analyzed"
                         },
 
                         "summary" : {
-                            "type" : "integer",
+                            "type" : "string",
                             "index" : "not_analyzed"
                         },
 
