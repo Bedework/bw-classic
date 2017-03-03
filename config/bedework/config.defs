@@ -3,6 +3,9 @@
 
 org.bedework.config.base=file:${org.bedework.config.dir}
 
+#         Bwmsg config dir
+org.bedework.bwmsg.confuri=bwmsg
+
 #         Calendar clients config dir
 org.bedework.clients.confuri=client-configs
 

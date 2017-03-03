@@ -9,6 +9,7 @@
   <adminPw>secret</adminPw>
   <baseDn>dc=bedework, dc=org</baseDn>
   <confirmUrl>http://localhost:8080/selfreg/confirm</confirmUrl>
+  <confirmForward>http://localhost:8080/selfreg/confirmed</confirmForward>
   <groupsDn>ou=groups, dc=bedework, dc=org</groupsDn>
   <groupsOu>groups</groupsOu>
   <hibernateProperties>

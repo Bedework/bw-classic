@@ -151,6 +151,9 @@
             <logger category="io.hawt">
                 <level name="INFO"/>
             </logger>
+            <logger category="io.undertow.request.security">
+                <level name="INFO"/>
+            </logger>
             <logger category="javax.enterprise">
                 <level name="INFO"/>
             </logger>
@@ -158,6 +161,9 @@
                 <level name="INFO"/>
             </logger>
             <logger category="org.jboss.jca.core">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.jboss.weld">
                 <level name="INFO"/>
             </logger>
             <logger category="net.fortuna">
@@ -205,27 +211,32 @@
             <logger category="org.elasticsearch">
                 <level name="INFO"/>
             </logger>
+            <logger category="org.bedework.calcore.AccessUtil">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.bedework.calsvc.CalSvc$SvcSimpleFilterParser">
+                <level name="INFO"/>
+            </logger>
             <logger category="org.bedework.messages.impl.JmsTransactionManager">
                 <level name="INFO"/>
             </logger>
-            <logger category="org.bedework.sysevents">
+            <logger use-parent-handlers="false" category="org.bedework.sysevents">
                 <level name="INFO"/>
                 <handlers>
                     <handler name="SYSEVENTS"/>
                 </handlers>
             </logger>
-            <logger category="org.bedework.timezones.refresh.logger">
+            <logger use-parent-handlers="false" category="org.bedework.timezones.refresh.logger">
                 <level name="INFO"/>
                 <handlers>
                     <handler name="TZREFRESH"/>
                     <handler name="CONSOLE"/>
                 </handlers>
             </logger>
-            <logger category="org.bedework.chgnote">
+            <logger use-parent-handlers="false" category="org.bedework.chgnote">
                 <level name="INFO"/>
                 <handlers>
                     <handler name="CHANGES"/>
-                    <handler name="CONSOLE"/>
                 </handlers>
             </logger>
             <root-logger>
@@ -264,16 +275,16 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:/CardDS" pool-name="CardDS" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:h2:tcp://localhost/CardDb</connection-url>
+                <datasource jta="true" jndi-name="java:/CalendarDS" pool-name="CalendarDS" enabled="true" use-ccm="true">
+                    <connection-url>jdbc:h2:tcp://localhost/CalDb</connection-url>
                     <driver>h2</driver>
                     <security>
                         <user-name>sa</user-name>
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:/CalendarDS" pool-name="CalendarDS" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:h2:tcp://localhost/CalDb</connection-url>
+                <datasource jta="true" jndi-name="java:/CardDS" pool-name="CardDS" enabled="true" use-ccm="true">
+                    <connection-url>jdbc:h2:tcp://localhost/CardDb</connection-url>
                     <driver>h2</driver>
                     <security>
                         <user-name>sa</user-name>
@@ -493,17 +504,19 @@
                 <in-vm-acceptor name="in-vm" server-id="0"/>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
-                <jms-queue name="bedework.sysevents" entries="bwqueues/sysevents"/>
-                <jms-queue name="bedework.sysevents.logger" entries="bwqueues/syseventsLogger"/>
-                <jms-queue name="bedework.sysevents.monitor" entries="bwqueues/syseventsMonitor"/>
-                <jms-queue name="bedework.sysevents.crawler" entries="bwqueues/syseventsCrawler"/>
-                <jms-queue name="bedework.sysevents.changeEvent" entries="bwqueues/syseventsChanges"/>
-                <jms-queue name="bedework.sysevents.scheduleIn" entries="bwqueues/syseventsScheduleIn"/>
-                <jms-queue name="bedework.sysevents.scheduleOut" entries="bwqueues/syseventsScheduleOut"/>
+                <jms-queue name="bedework.sysevents" entries="activemq/queue/sysevents bwqueues/sysevents"/>
+                <jms-queue name="bedework.sysevents.logger" entries="activemq/queue/syseventslog bwqueues/syseventsLogger"/>
+                <jms-queue name="bedework.sysevents.monitor" entries="activemq/queue/monitor bwqueues/syseventsMonitor"/>
+                <jms-queue name="bedework.crawler" entries="activemq/queue/crawler bwqueues/syseventsCrawler"/>
+                <jms-queue name="bedework.sysevents.changes" entries="activemq/queue/changes bwqueues/syseventsChanges"/>
+                <jms-queue name="bedework.scheduleIn" entries="activemq/queue/schedulerIn bwqueues/syseventsScheduleIn"/>
+                <jms-queue name="bedework.scheduleOut" entries="activemq/queue/schedulerOut bwqueues/syseventsScheduleOut"/>
+                <jms-queue name="bedework.sysevents.eventregAction" entries="activemq/queue/eventregAction bwqueues/eventregAction"/>
+                <jms-queue name="bedework.sysevents.eventregActionDelay" entries="activemq/queue/eventregActionDelay bwqueues/eventregActionDelay"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
                 <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa"/>
-                <pooled-connection-factory name="BedeworkConnectionFactory" entries="java:/BedeworkConnectionFactory java:jboss/jms/BedeworkConnectionFactory" connectors="in-vm" transaction="xa"/>
+                <pooled-connection-factory name="BedeworkConnectionFactory" entries="java:/BedeworkConnectionFactory java:/jms/BedeworkConnectionFactory" connectors="in-vm" transaction="xa"/>
             </server>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
@@ -571,6 +584,7 @@
         <subsystem xmlns="urn:jboss:domain:undertow:3.1">
             <buffer-cache name="default"/>
             <server name="default-server">
+                <ajp-listener name="ajp" socket-binding="ajp" max-post-size="1048576000"/>
                 <http-listener name="default" socket-binding="http" redirect-socket="https" enable-http2="true"/>
                 <https-listener name="https" socket-binding="https" security-realm="ApplicationRealm" enable-http2="true"/>
                 <host name="default-host" alias="localhost">
