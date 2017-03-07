@@ -139,6 +139,12 @@
             <logger category="org.jboss.as.config">
                 <level name="DEBUG"/>
             </logger>
+            <logger category="org.jboss.activemq.artemis.wildfly.integration.recovery">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.jboss.ejb.client.txn">
+                <level name="INFO"/>
+            </logger>
             <logger category="sun.rmi">
                 <level name="WARN"/>
             </logger>
@@ -151,7 +157,7 @@
             <logger category="io.hawt">
                 <level name="INFO"/>
             </logger>
-            <logger category="io.undertow.request.security">
+            <logger category="io.undertow.request">
                 <level name="INFO"/>
             </logger>
             <logger category="javax.enterprise">
@@ -177,6 +183,9 @@
             </logger>
             <logger category="org.apache.activemq">
                 <level name="INFO"/>
+            </logger>
+            <logger category="org.apache.camel">
+              <level name="INFO"/>
             </logger>
             <logger category="org.apache.aries">
                 <level name="INFO"/>
@@ -275,7 +284,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:/CalendarDS" pool-name="CalendarDS" enabled="true" use-ccm="true">
+                <datasource jta="true" jndi-name="java:/CalendarDS" pool-name="CalendarDS" enabled="true" use-ccm="false">
                     <connection-url>jdbc:h2:tcp://localhost/CalDb</connection-url>
                     <driver>h2</driver>
                     <security>
@@ -283,7 +292,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:/CardDS" pool-name="CardDS" enabled="true" use-ccm="true">
+                <datasource jta="true" jndi-name="java:/CardDS" pool-name="CardDS" enabled="true" use-ccm="false">
                     <connection-url>jdbc:h2:tcp://localhost/CardDb</connection-url>
                     <driver>h2</driver>
                     <security>
@@ -291,7 +300,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jndi-name="java:/EventregDS" pool-name="EventregDS" enabled="true" use-java-context="true">
+                <datasource jndi-name="java:/EventregDS" pool-name="EventregDS" enabled="true" use-java-context="true" use-ccm="false">
                     <connection-url>jdbc:h2:tcp://localhost/EventRegDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
                     <driver>h2</driver>
                     <security>
@@ -299,7 +308,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jndi-name="java:/NotifyDS" pool-name="NotifyDS" enabled="true" use-java-context="true">
+                <datasource jndi-name="java:/NotifyDS" pool-name="NotifyDS" enabled="true" use-java-context="true" use-ccm="false">
                     <connection-url>jdbc:h2:tcp://localhost/NotifyDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
                     <driver>h2</driver>
                     <security>
@@ -307,7 +316,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jndi-name="java:/selfregDS" pool-name="selfregDS" enabled="true" use-java-context="true">
+                <datasource jndi-name="java:/selfregDS" pool-name="selfregDS" enabled="true" use-java-context="true" use-ccm="false">
                     <connection-url>jdbc:h2:tcp://localhost/SelfregDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
                     <driver>h2</driver>
                     <security>
@@ -315,7 +324,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jndi-name="java:/SynchDS" pool-name="SynchDS" enabled="true" use-java-context="true">
+                <datasource jndi-name="java:/SynchDS" pool-name="SynchDS" enabled="true" use-java-context="true" use-ccm="false">
                     <connection-url>jdbc:h2:tcp://localhost/SynchDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
                     <driver>h2</driver>
                     <security>
