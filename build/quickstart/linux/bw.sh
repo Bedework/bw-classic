@@ -95,11 +95,10 @@ deployActivemq=
 deployConf=
 deployData=
 deployEs=
+deployDotWellKnown=
+deployWebcache=
 dirstart=
 saveData=
-buildwebcache=
-deploywebcache=
-deployurlbuilder=
 
 specialTarget=
 

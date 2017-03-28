@@ -160,6 +160,43 @@
   </target>
 
   <!-- =================================================================
+       "deployDotWellKnown" target
+       ================================================================= -->
+
+  <target name="deployDotWellKnown" depends="init"
+          description="Copy the .well-known redirector into the appserver">
+    <delete dir="${org.bedework.jboss.config.dir}/deployments/dotwell-known.ear"/>
+    <delete file="${org.bedework.jboss.config.dir}/deployments/dotwell-known.ear.deployed"/>
+
+    <property name="org.bedework.dotwellknown"
+              location="${env.BEDEWORK_CONFIGS_HOME}/../dotwell-known.ear" />
+
+    <copy todir="${org.bedework.jboss.config.dir}/deployments/">
+      <fileset dir="${env.BEDEWORK_CONFIGS_HOME}/.." >
+        <include name="dotwell-known.ear/**" />
+      </fileset>
+    </copy>
+    <touch file="${org.bedework.jboss.config.dir}/deployments/dotwell-known.ear.dodeploy"/>
+  </target>
+
+  <!-- =================================================================
+       "deployWebcache" target
+       ================================================================= -->
+
+  <target name="deployWebcache" depends="init"
+          description="Copy the .well-known redirector into the appserver">
+    <delete dir="${org.bedework.jboss.config.dir}/deployments/webcache.ear"/>
+    <delete file="${org.bedework.jboss.config.dir}/deployments/webcache.deployed"/>
+
+    <copy todir="${org.bedework.jboss.config.dir}/deployments/">
+      <fileset dir="${env.BEDEWORK_CONFIGS_HOME}/.." >
+        <include name="webcache.ear/**" />
+      </fileset>
+    </copy>
+    <touch file="${org.bedework.jboss.config.dir}/deployments/webcache.ear.dodeploy"/>
+  </target>
+
+  <!-- =================================================================
        "deployEs" target
        ================================================================= -->
 

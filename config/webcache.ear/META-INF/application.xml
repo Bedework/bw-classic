@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<application>
+  <display-name>Bedework feed redirector</display-name>
+
+  <module>
+    <web>
+      <web-uri>webcache.war</web-uri>
+      <context-root>/webcache</context-root>
+    </web>
+  </module>
+</application>
