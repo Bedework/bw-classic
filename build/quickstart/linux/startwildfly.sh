@@ -10,7 +10,7 @@ PRG="$0"
 
 usage() {
   echo "  $PRG [-heap size] [-stack size] [-newsize size] [-permgen size] [-debug]"
-  echo "       [-debugexprfilters name] [-activemquri uri]"
+  echo "       [-debugexprfilters name] [-oomdump directory-path]"
   echo ""
   echo " Where:"
   echo ""
@@ -21,17 +21,13 @@ usage() {
   echo "  Default: $heap"
   echo ""
   echo " -permsize sets the permgen size and has the same form as -heap"
+  echo " -oomdump enables an oom dump into the given directory"
   echo "  The value should probably not be less than 256M"
   echo "  Default: $permsize"
   echo ""
   echo " -debug sets the logging level to DEBUG"
   echo ""
   echo " -debugexprfilters sets the logging level for bedework expression filters to DEBUG"
-  echo ""
-  echo " -activemquri sets the uri used by the activemq broker for bedework"
-  echo "  Some possibilities: vm://localhost tcp://localhost:61616"
-  echo "  Default: $activemquri"
-  echo ""
   echo ""
 }
 
@@ -46,10 +42,9 @@ newsize="200M"
 permsize="256M"
 testmode=""
 profiler=""
+oomdump=""
 
-startH2=true
-
-activemquri="vm://bedework"
+debugGC=false
 
 exprfilters=INFO
 
@@ -70,10 +65,15 @@ if [[ "${version:0:3}" > "1.7" ]]; then
   java8plus=true
 fi
 
+if [ "$java8plus" = "false" ] ; then
+  echo "Requires java 8 or higher to run bedework"
+  exit 1
+fi
+
 # =================== End defaults ===============================
 
 LOG_THRESHOLD="-Dorg.bedework.log.level=INFO"
-JBOSS_VERSION="wildfly-9.0.2.Final"
+JBOSS_VERSION="wildfly-10.1.0.Final"
 
 while [ "$1" != "" ]
 do
@@ -109,6 +109,11 @@ do
       JBOSS_VERSION="$1"
       shift
       ;;
+    -oomdump)
+      shift
+      oomdump="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$1/heap-$(date +'%Y-%m-%d_%H:%m:%S').hprof"
+      shift
+      ;;
     -profile)
       shift
       profiler="-agentlib:yjpagent"
@@ -119,24 +124,12 @@ do
       ;;
     -debug)
       shift
+      debugGc=true
       LOG_THRESHOLD="-Dorg.bedework.log.level=DEBUG"
       ;;
     -debugexprfilters)
       shift
       exprfilters=DEBUG
-      shift
-      ;;
-    -noh2)
-      shift
-      startH2=false
-      ;;
-    -h2)
-      shift
-      startH2=true
-      ;;
-    -activemquri)
-      shift
-      activemquri="$1"
       shift
       ;;
     *)
@@ -155,9 +148,6 @@ JBOSS_DATA_DIR="$JBOSS_SERVER_DIR/data"
 JBOSS_BIND="-b 0.0.0.0"
 
 LOG_LEVELS="-Dorg.bedework.loglevel.exprfilters=$exprfilters"
-
-ACTIVEMQ_DIRPREFIX="-Dorg.apache.activemq.default.directory.prefix=$JBOSS_DATA_DIR/"
-ACTIVEMQ_URI="-Dorg.bedework.activemq.uri=$activemquri"
 
 BW_DATA_DIR=$JBOSS_DATA_DIR/bedework
 BW_DATA_DIR_DEF=-Dorg.bedework.data.dir=$BW_DATA_DIR/
@@ -189,22 +179,22 @@ JAVA_OPTS="$JAVA_OPTS -Xms$heap -Xmx$heap -Xss$stack"
 
 # Put all the temp stuff inside the jboss temp
 JAVA_OPTS="$JAVA_OPTS -Djava.io.tmpdir=$JBOSS_SERVER_DIR/tmp"
+JAVA_OPTS="$JAVA_OPTS $oomdump"
 JAVA_OPTS="$JAVA_OPTS $profiler"
 
 HAWT_OPTS="-Dhawtio.authenticationEnabled=true -Dhawtio.realm=other -Dhawtio.role=hawtioadmin"
 
-if [ "$java8plus" = "true" ] ; then
-  export JAVA_OPTS="$JAVA_OPTS -XX:MetaspaceSize=$permsize -XX:MaxMetaspaceSize=$permsize"
-else
-  export JAVA_OPTS="$JAVA_OPTS -XX:PermSize=$permsize -XX:MaxPermSize=$permsize"
+if [ "$debugGc" = "true" ] ; then
+  export JAVA_OPTS="$JAVA_OPTS -Xloggc:$JBOSS_SERVER_DIR/log/jvm.log -verbose:gc "
 fi
+ 
+export JAVA_OPTS="$JAVA_OPTS -XX:MetaspaceSize=$permsize -XX:MaxMetaspaceSize=$permsize"
 
 RUN_CMD="./$JBOSS_VERSION/bin/standalone.sh"
 RUN_CMD="$RUN_CMD $JBOSS_BIND"
 RUN_CMD="$RUN_CMD $HAWT_OPTS"
 RUN_CMD="$RUN_CMD $testmode"
 RUN_CMD="$RUN_CMD $LOG_THRESHOLD $LOG_LEVELS"
-RUN_CMD="$RUN_CMD $ACTIVEMQ_DIRPREFIX $ACTIVEMQ_URI"
 RUN_CMD="$RUN_CMD $BW_CONF_DIR_DEF $BW_CONF_FILE_DEF $BW_DATA_DIR_DEF"
 
 #wilfdfly disable the bits below until we know they are needed for
@@ -218,14 +208,6 @@ RUN_CMD="$RUN_CMD $BW_CONF_DIR_DEF $BW_CONF_FILE_DEF $BW_DATA_DIR_DEF"
 #RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.defaultdomain=jboss"
 #wilfdfly RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.isJboss5=true"
 #wilfdfly RUN_CMD="$RUN_CMD -Dorg.bedework.jmx.classloader=org.jboss.mx.classloader"
-
-if [ "$startH2" = "true" ] ; then
-  echo "About to start h2 process"
-
-  H2cp="$BASE_DIR/$JBOSS_VERSION/modules/system/layers/base/com/h2database/h2/main/h2*.jar"
-
-  $JAVA -cp $H2cp org.h2.tools.Server -tcp -web -baseDir $BW_DATA_DIR/h2 &
-fi
 
 echo $RUN_CMD
 
