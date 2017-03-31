@@ -16,10 +16,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<xsl:stylesheet
-  version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <!-- LOCALE SETTINGS -->
   <!-- A place for javascript strings and locale specific javascript overrides -->
@@ -33,6 +30,7 @@
   <xsl:template name="jqueryDatepickerDefaults">
     
     <!-- pull in the localization strings and defaults. -->
+
     <script type="text/javascript" src="/bedework-common/javascript/jquery/lang-datepicker/jquery.ui.datepicker-es.js">&#160;</script>
     
     <!-- Bedework datepicker defaults.  You can include further overrides to regionalization here. -->
@@ -61,6 +59,7 @@
       // registration strings
       var maxTicketsWarning = "Event Registration Settings:\nYou must set the maximum number of tickets allowed for this event.";
       var maxTicketsPerUserWarning = "Event Registration Settings:\nYou must set the maximum number of tickets each user may aquire.";
+      var maxWaitListWarning = "Event Registration Settings:\n Max wait list value must be an integer or a percentage, or left blank (for no limit).";
     </script>
   </xsl:template>
   

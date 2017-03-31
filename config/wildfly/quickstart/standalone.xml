@@ -605,7 +605,7 @@
                 </host>
             </server>
             <servlet-container name="default">
-                <jsp-config/>
+                <jsp-config x-powered-by="false"/>
                 <websockets/>
             </servlet-container>
             <handlers>

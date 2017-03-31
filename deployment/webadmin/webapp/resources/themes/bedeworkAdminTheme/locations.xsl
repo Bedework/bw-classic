@@ -27,6 +27,7 @@
          - locationReferenced (displayed when trying to delete a location in use)
    -->
 
+  <!-- Locations listing -->
   <xsl:template name="locationList">
     <div class="mgmtHeading">
       <h2><xsl:copy-of select="$bwStr-LoLi-ManageLocations"/></h2>
@@ -63,6 +64,7 @@
     </table>
   </xsl:template>
 
+  <!-- Locations add/modify form -->
   <xsl:template name="modLocation">
     <xsl:choose>
       <xsl:when test="/bedework/creating='true'">
@@ -74,14 +76,14 @@
     </xsl:choose>
 
     <form action="{$location-update}" id="bwModLocationForm" method="post">
-      <table id="eventFormTable">
+      <table id="commonFormTable">
         <tr>
           <td class="fieldName">
             <label for="locationAddressField"><xsl:copy-of select="$bwStr-MoLo-Address"/></label>
           </td>
           <td>
             <!-- value is set by javascript -->
-            <input type="text" name="location.addressField" id="locationAddressField" size="80" value="">
+            <input type="text" name="location.addressField" id="locationAddressField" size="40" value="">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/addressField/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-Address-Placeholder"/></xsl:attribute>
             </input>
@@ -94,9 +96,33 @@
           </td>
           <td>
             <!-- value is set by javascript -->
-            <input type="text" name="location.roomField" id="locationRoomField" size="80" value="">
+            <input type="text" name="location.roomField" id="locationRoomField" size="40" value="">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/roomField/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-Address2-Placeholder"/></xsl:attribute>
+            </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
+          </td>
+        </tr>
+        <tr class="optional">
+          <td>
+            <label for="locationSubField1"><xsl:copy-of select="$bwStr-MoLo-SubField1"/></label>
+          </td>
+          <td>
+            <input type="text" name="location.subField1" id="locationSubField1" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/subField1/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-SubField1-Placeholder"/></xsl:attribute>
+            </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
+          </td>
+        </tr>
+        <tr class="optional">
+          <td>
+            <label for="locationSubField2"><xsl:copy-of select="$bwStr-MoLo-SubField2"/></label>
+          </td>
+          <td>
+            <input type="text" name="location.subField2" id="locationSubField2" size="40">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/subField2/input/@value"/></xsl:attribute>
+              <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-SubField2-Placeholder"/></xsl:attribute>
             </input>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
           </td>
@@ -106,7 +132,7 @@
             <label for="locationSubAddress"><xsl:copy-of select="$bwStr-MoLo-SubAddress"/></label>
           </td>
           <td>
-            <input type="text" name="locationSubaddress.value" id="locationSubAddress" size="80">
+            <input type="text" name="locationSubaddress.value" id="locationSubAddress2" size="40">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/subaddress/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-SubAddress-Placeholder"/></xsl:attribute>
             </input>
@@ -118,10 +144,21 @@
             <label for="locationUrl"><xsl:copy-of select="$bwStr-MoLo-LocationURL"/></label>
           </td>
           <td>
-            <input type="text" name="location.link" id="locationUrl" size="80">
+            <input type="text" name="location.link" id="locationUrl" size="40">
               <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/link/input/@value"/></xsl:attribute>
               <xsl:attribute name="placeholder"><xsl:value-of select="$bwStr-MoLo-LocationURL-Placeholder"/></xsl:attribute>
             </input>
+            <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
+          </td>
+        </tr>
+        <tr class="optional">
+          <td>
+          </td>
+          <td>
+            <input type="checkbox" name="location.accessible" id="locationAccessible">
+              <xsl:attribute name="value"><xsl:value-of select="/bedework/formElements/form/accessible/input/@value"/></xsl:attribute>
+            </input>
+            <label for="locationAccessible"><xsl:copy-of select="$bwStr-MoLo-LocationAccessible"/></label>
             <span class="fieldInfo"><xsl:text> </xsl:text><xsl:copy-of select="$bwStr-MoLo-Optional"/></span>
           </td>
         </tr>
@@ -145,6 +182,7 @@
     </form>
   </xsl:template>
 
+  <!-- Locations deletion confirmation page -->
   <xsl:template name="deleteLocationConfirm">
     <h2><xsl:copy-of select="$bwStr-DeLC-OkDeleteLocation"/></h2>
     <p id="confirmButtons">
@@ -182,6 +220,7 @@
     </table>
   </xsl:template>
 
+  <!-- Locations referenced notice -->
   <xsl:template name="locationReferenced">
     <h2><xsl:copy-of select="$bwStr-DeLR-LocationInUse"/></h2>
     <p id="confirmButtons">

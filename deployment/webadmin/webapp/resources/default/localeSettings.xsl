@@ -30,11 +30,8 @@
   <xsl:template name="jqueryDatepickerDefaults">
 
     <!-- pull in the localization strings and defaults. -->
-    <!--
-      U.S. English is the default, so there is no string file for U.S. English.
-      This code is here for consistency and clarity across localeSettings files.
-    <script type="text/javascript" src="/bedework-common/javascript/jquery/lang-datepicker/jquery.ui.datepicker-en.js">&#160;</script>
-    -->
+    <!-- U.S. English is the default, so there is no string file for U.S. English. This code is here for consistency and clarity across localeSettings files.
+    <script type="text/javascript" src="/bedework-common/javascript/jquery/lang-datepicker/jquery.ui.datepicker-en.js">&#160;</script> -->
 
     <!-- Bedework datepicker defaults.  You can include further overrides to regionalization here. -->
     <script type="text/javascript">
@@ -68,7 +65,12 @@
 
   <!-- Declare the access control strings. -->
   <xsl:template name="bedeworkAccessStrings">
-    <!-- The XSL access strings are found in resources/xsl/lang and are referenced in default/globals.xsl-->
+   <!--
+
+      The XSL access strings are found in resources/xsl/lang and are referenced in default/globals.xsl
+
+
+  -->
   </xsl:template>
 
 </xsl:stylesheet>

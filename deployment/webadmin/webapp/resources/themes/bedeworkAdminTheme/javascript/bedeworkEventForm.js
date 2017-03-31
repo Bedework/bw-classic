@@ -529,7 +529,7 @@ function hour24GetAmpm(val) {
 function setBwRegXpropHour(val,ampm) {
   if (ampm == undefined) {
     // 24 hour mode
-    return val;
+    return padTimeUnit(val);
   }
   var hour = parseInt(val,10);
   if (isNaN(hour)) {

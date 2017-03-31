@@ -77,7 +77,7 @@
                 <label for="categoryDesc"><xsl:copy-of select="$bwStr-MoCa-Description"/></label>
               </td>
               <td>
-                <textarea name="categoryDesc.value" id="categoryDesc" rows="3" cols="60">
+                <textarea name="categoryDescription" id="categoryDesc" rows="3" cols="60">
                   <xsl:text> </xsl:text>
                 </textarea>
               </td>
@@ -108,7 +108,7 @@
                 <label for="categoryDesc"><xsl:copy-of select="$bwStr-MoCa-Description"/></label>
               </td>
               <td>
-                <textarea name="categoryDesc.value" id="categoryDesc" rows="3" cols="60">
+                <textarea name="categoryDescription" id="categoryDesc" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedework/currentCategory/category/description)"/>
                   <xsl:if test="normalize-space(/bedework/currentCategory/category/description) = ''"><xsl:text> </xsl:text></xsl:if>
                 </textarea>

@@ -237,12 +237,13 @@ body {
   padding: 1em 2em;
 }
 #content h2 {
-  margin: 0;
+  margin: 0 0 1em 0;
   padding: 1em 0 0 0;
   font-size: 1.3em;
 }
 #content h2.leftTitle {
   float: left;
+  margin: 0;
 }
 #content .mgmtHeading h2 {
   float: left;
@@ -646,19 +647,27 @@ ul.adminMenu li {
 #bwPublicEventLinkInput {
   width: 100%;
 }
-table.eventFormTable {
+table.eventFormTable,
+table.commonFormTable {
   margin: 1em 0;
 }
-table.eventFormTable td {
+table.eventFormTable td,
+table.commonFormTable td {
   vertical-align: top;
   font-size: 0.9em;
   padding: 0.2em;
 }
-table.eventFormTable td.fieldName {
+table.commonFormTable td {
+  vertical-align: middle;
+}
+table.eventFormTable td.fieldName,
+table.commonFormTable td.fieldName {
   width: 7em;
 }
 table.eventFormTable th,
-table.eventFormTable td.fieldName {
+table.eventFormTable td.fieldName,
+table.commonFormTable th,
+table.commonFormTable td.fieldName {
   white-space: nowrap;
   font-weight: bold;
   background-color : #eee;
@@ -667,18 +676,22 @@ table.eventFormTable td.fieldName {
   font-size: 0.9em;
   vertical-align: top;
 }
-table.eventFormTable tr.validationError td.fieldName {
+table.eventFormTable tr.validationError td.fieldName,
+table.commonFormTable tr.validationError td.fieldName {
   color: black;
   background-color: #ee0 !important;
 }
-table.eventFormTable tr.optional td {
+table.eventFormTable tr.optional td,
+table.commonFormTable tr.optional td {
   white-space: nowrap;
   font-style: italic;
 }
-table.eventFormTable tr.optional textarea {
+table.eventFormTable tr.optional textarea,
+table.commonFormTable tr.optional textarea {
   white-space: wrap;
 }
-table.eventFormTable tr.optional td.fieldName {
+table.eventFormTable tr.optional td.fieldName,
+table.commonFormTable tr.optional td.fieldName {
   font-weight: normal;
   font-style: normal;
 }
@@ -763,7 +776,6 @@ label.interiorLabel {
   display: block;
 }
 #bwLocationsPrimaryContainer {
-  float: left;
   margin: 0 0.25em 0.25em 0;
 }
 #bwLocationsSecondaryContainer {

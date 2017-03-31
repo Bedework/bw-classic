@@ -511,16 +511,21 @@
   <!--  xsl:template name="modLocation" -->
   <xsl:variable name="bwStr-MoLo-AddLocation">Add Location</xsl:variable>
   <xsl:variable name="bwStr-MoLo-UpdateLocation">Update Location</xsl:variable>
-  <xsl:variable name="bwStr-MoLo-Address">Primary Address:</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-Address">Name:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address-Placeholder">building or location name</xsl:variable>
-  <xsl:variable name="bwStr-MoLo-Address-Info">include street address when appropriate</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-Address-Info"></xsl:variable>
   <xsl:variable name="bwStr-MoLo-SubAddress">Subaddress:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-SubAddress-Placeholder">supplimental address information</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address2">Room:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address2-Placeholder">room number, suite number, or area</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Optional">(optional)</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-SubField1">Street address:</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-SubField1-Placeholder"></xsl:variable>
+  <xsl:variable name="bwStr-MoLo-SubField2">Building/Location ID:</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-SubField2-Placeholder"></xsl:variable>
   <xsl:variable name="bwStr-MoLo-LocationURL">Location's URL:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-LocationURL-Placeholder">link to more information or map</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-LocationAccessible">Wheelchair accessible</xsl:variable>
   <xsl:variable name="bwStr-MoLo-DeleteLocation">Delete Location</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Cancel">Cancel</xsl:variable>
 

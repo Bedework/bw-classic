@@ -345,7 +345,9 @@
   <xsl:variable name="bwStr-AEEF-Registration">Registration:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-UsersMayRegister">Users may register for this event</xsl:variable>
   <xsl:variable name="bwStr-AEEF-MaxTickets">Max tickets:</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-MaxWaitList">Max wait list:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-MaxTicketsInfo">(maximum number of tickets allowed for the event)</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-MaxWaitListInfo">(maximum number of people on the wait list for the event. Integer or percent. Leave blank for no limit.)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-TicketsAllowed">Tickets allowed:</xsl:variable>
   <xsl:variable name="bwStr-AEEF-TicketsAllowedInfo">(maximum number of tickets per user)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-RegistrationOpens">Registration opens:</xsl:variable>
@@ -359,6 +361,7 @@
   <xsl:variable name="bwStr-AEEF-CustomFieldsManage">add / manage</xsl:variable>
   <xsl:variable name="bwStr-AEEF-CustomFieldsInfo">(custom form elements)</xsl:variable>
   <xsl:variable name="bwStr-AEEF-CustomFieldsSelect">select custom field collection</xsl:variable>
+  <xsl:variable name="bwStr-AEEF-CustomFieldsShowUnpublished">show unpublished</xsl:variable>
   <xsl:variable name="bwStr-AEEF-ViewRegistrations">View event registrations</xsl:variable>
   <xsl:variable name="bwStr-AEEF-DownloadRegistrations">Download registrations</xsl:variable>
   <xsl:variable name="bwStr-AEEF-Optional">(opcional)</xsl:variable>
@@ -510,14 +513,19 @@
   <xsl:variable name="bwStr-MoLo-UpdateLocation">Actualizar localización</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address">Dirección:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address-Placeholder">nombre del edificio o ubicación</xsl:variable>
-  <xsl:variable name="bwStr-MoLo-Address-Info">incluya la dirección de la calle cuando apropiado</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-Address-Info"></xsl:variable>
   <xsl:variable name="bwStr-MoLo-SubAddress">Subdirección:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-SubAddress-Placeholder">información suplementario</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address2">Habitación:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Address2-Placeholder">número de habitación, número de la calle o área</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Optional">(opcional)</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-SubField1">Street address:</xsl:variable><!-- XXX translate -->
+  <xsl:variable name="bwStr-MoLo-SubField1-Placeholder"></xsl:variable>
+  <xsl:variable name="bwStr-MoLo-SubField2">Building/Location ID:</xsl:variable><!-- XXX translate -->
+  <xsl:variable name="bwStr-MoLo-SubField2-Placeholder"></xsl:variable>
   <xsl:variable name="bwStr-MoLo-LocationURL">URL de la localización:</xsl:variable>
   <xsl:variable name="bwStr-MoLo-LocationURL-Placeholder">Enlace para obtener más información o mapa</xsl:variable>
+  <xsl:variable name="bwStr-MoLo-LocationAccessible">Wheelchair accessible</xsl:variable><!-- XXX translate -->
   <xsl:variable name="bwStr-MoLo-DeleteLocation">Borrar localización</xsl:variable>
   <xsl:variable name="bwStr-MoLo-Cancel">Cancelar</xsl:variable>
 
