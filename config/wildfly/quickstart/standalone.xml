@@ -229,6 +229,9 @@
             <logger category="org.bedework.messages.impl.JmsTransactionManager">
                 <level name="INFO"/>
             </logger>
+            <logger category="org.bedework.calfacade.filter.FilterBuilder">
+                <level name="INFO"/>
+            </logger>
             <logger use-parent-handlers="false" category="org.bedework.sysevents">
                 <level name="INFO"/>
                 <handlers>

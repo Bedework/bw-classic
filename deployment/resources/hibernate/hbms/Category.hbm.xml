@@ -7,7 +7,7 @@
      A category in Bedework
      =================================================================== -->
 
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
   <class name="org.bedework.calfacade.BwCategory"
          table="bw_categories">
     <cache usage="read-write"/>
