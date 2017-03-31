@@ -7,7 +7,7 @@
      A string in Bedework
      =================================================================== -->
 
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
   <class name="org.bedework.calfacade.BwString"
          table="bw_strings">
     <cache usage="read-write"/>
