@@ -185,7 +185,7 @@ JAVA_OPTS="$JAVA_OPTS $profiler"
 HAWT_OPTS="-Dhawtio.authenticationEnabled=true -Dhawtio.realm=other -Dhawtio.role=hawtioadmin"
 
 if [ "$debugGc" = "true" ] ; then
-  export JAVA_OPTS="$JAVA_OPTS -Xloggc:$JBOSS_SERVER_DIR/log/jvm.log -verbose:gc "
+  export JAVA_OPTS="$JAVA_OPTS -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -Xloggc:$JBOSS_SERVER_DIR/log/jvm.log -verbose:gc "
 fi
  
 export JAVA_OPTS="$JAVA_OPTS -XX:MetaspaceSize=$permsize -XX:MaxMetaspaceSize=$permsize"
