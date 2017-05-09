@@ -422,8 +422,14 @@ setDirectory() {
 	fi
 
 	if [ "$catsvr" != "" ] ; then
-	  cd $GIT_HOME/catsvr
+	  cd $GIT_HOME/bw-category
+      maven=yes
       catsvr=
+      deploy="$GIT_HOME/bw-category/bw-category-ear/target/"
+      earName=bw-category
+
+      copyDeployable "$deploy" "$earName"
+
 	  return
 	fi
 
@@ -1015,7 +1021,7 @@ fi
 echo "mvncmd = $mvncmd"
 
 if [ "$deployConfig" = "" ] ; then
-  deployConfig=./bw-classic/config/deploy.properties
+  deployConfig=./bw-classic/config/wildfly.deploy.properties
 fi
 
 postDeploycmd="./bw-classic/deployment/deployer/deploy.sh --noversion --delete"
