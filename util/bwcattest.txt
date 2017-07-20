@@ -1,0 +1,49 @@
+curl -XGET 'http://localhost:9200/categories/_search?pretty=true' -d '{
+  "from" : 0,
+  "size" : 10,
+  "query" : {
+    "function_score" : {
+      "query" : {
+        "bool" : {
+          "should" : {
+            "multi_match" : {
+              "query" : "team building",
+              "fields" : [ "href.autocathref", "last.matcher^5.0" ]
+            }
+          }
+        }
+      },
+      "functions" : [ {
+        "field_value_factor" : {
+          "field" : "hrefDepth",
+          "factor" : 10.0,
+          "modifier" : "reciprocal"
+        }
+      } ]
+    }
+  }
+}'
+
+curl -XGET 'http://localhost:9200/categories/_search?pretty=true' -d '
+{
+  "from" : 0,
+  "size" : 200,
+  "query" : {
+    "bool" : {
+      "must_not" : {
+        "prefix" : {
+          "href" : {
+            "prefix" : "/dmoz/Science/"
+          }
+        }
+      },
+      "should" : {
+        "multi_match" : {
+          "query" : "Evolutionary Anthropology",
+          "fields" : [ "href.autocathref", "last.matcher^5.0" ],
+          "type" : "most_fields"
+        }
+      }
+    }
+  }
+}'
