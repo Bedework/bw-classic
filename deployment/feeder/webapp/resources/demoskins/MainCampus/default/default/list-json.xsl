@@ -36,23 +36,30 @@
 
   <xsl:template match='/'>
     <xsl:choose>
-      <xsl:when test="/bedework/appvar/key = 'objName'">
-        var <xsl:value-of select="/bedework/appvar[key='objName']/value"/> = {"bwEventList": {
+      <xsl:when test="/bedework/error">
+        {"error": "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="/bedework/error/id"/></xsl:call-template>"}
       </xsl:when>
       <xsl:otherwise>
-        {"bwEventList": {
-      </xsl:otherwise>
-    </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="/bedework/appvar/key = 'objName'">
+            var <xsl:value-of select="/bedework/appvar[key='objName']/value"/> = {"bwEventList": {
+          </xsl:when>
+          <xsl:otherwise>
+            {"bwEventList": {
+          </xsl:otherwise>
+        </xsl:choose>
         "resultSize": "<xsl:value-of select="/bedework/events/resultSize"/>",
         "paged": "<xsl:value-of select="/bedework/events/paged"/>",
         "lastMod" : {
-          "utc" : "<xsl:value-of select="/bedework/now/utc"/>",
-          "long" : "<xsl:value-of select="/bedework/now/longdate"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/now/time"/>"
+        "utc" : "<xsl:value-of select="/bedework/now/utc"/>",
+        "long" : "<xsl:value-of select="/bedework/now/longdate"/><xsl:text> </xsl:text><xsl:value-of select="/bedework/now/time"/>"
         },
         "events": [
-           <xsl:apply-templates select="/bedework/events" />
+        <xsl:apply-templates select="/bedework/events" />
         ]
-    }}
+        }}
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="events">

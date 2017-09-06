@@ -50,15 +50,29 @@
               "timezone" : "<xsl:value-of select='end/timezone/id'/>"
             },
             "location" : {
-              <xsl:choose>
-                <xsl:when test="location/address = ''">
-                  "address" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/></xsl:call-template>",
-                </xsl:when>
-                <xsl:otherwise>
-                  "address" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="location/address"/></xsl:call-template>",
-                </xsl:otherwise>
-              </xsl:choose>
-              "link" : "<xsl:value-of select='location/link'/>"
+            <xsl:choose>
+              <xsl:when test="location/address = ''">
+                "address" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="xproperties/node()[name()='X-BEDEWORK-LOCATION']/values/text"/></xsl:call-template>",
+              </xsl:when>
+              <xsl:otherwise>
+                "address" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="location/address"/></xsl:call-template>",
+              </xsl:otherwise>
+            </xsl:choose>
+            "uid" : "<xsl:value-of select='location/uid'/>",
+            "name" : "<xsl:value-of select='location/name'/>",
+            "room" : "<xsl:value-of select='location/roomField'/>",
+            "subField1" : "<xsl:value-of select='location/subField1'/>",
+            "subField2" : "<xsl:value-of select='location/subField2'/>",
+            "accessible" : "<xsl:value-of select='location/accessible'/>",
+            "geouri" : "<xsl:value-of select='location/geouri'/>",
+            "status" : "<xsl:value-of select='location/status'/>",
+            "street" : "<xsl:value-of select='location/street'/>",
+            "city" : "<xsl:value-of select='location/city'/>",
+            "state" : "<xsl:value-of select='location/state'/>",
+            "zip" : "<xsl:value-of select='location/zip'/>",
+            "alternateAddress" : "<xsl:value-of select='location/alternateAddress'/>",
+            "code" : "<xsl:value-of select='location/code'/>",
+            "link" : "<xsl:value-of select='location/link'/>"
             },
             "contact" : {
               "name" : "<xsl:call-template name="escapeJson"><xsl:with-param name="string" select="contact/name"/></xsl:call-template>",
