@@ -322,7 +322,7 @@
                 },
 
                 "relatedTo" : {
-                    "type" : "object",
+                    "type" : "nested",
                     "properties" : {
                         "reltype" : {
                             "type" : "string",
@@ -388,7 +388,7 @@
                 },
 
                 "xprop" : {
-                    "type" : "object",
+                    "type" : "nested",
                     "properties" : {
                         "name" : {
                             "type" : "string",
