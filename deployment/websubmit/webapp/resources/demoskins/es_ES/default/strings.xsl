@@ -170,6 +170,7 @@
 
   <!-- xsl:template name="eventListCommon" -->
   <xsl:variable name="bwStr-EvLC-Title">Título</xsl:variable>
+  <xsl:variable name="bwStr-EvLC-CalSuite">Suite</xsl:variable>
   <xsl:variable name="bwStr-EvLC-ClaimedBy">Reclamado por</xsl:variable>
   <xsl:variable name="bwStr-EvLC-Start">Comienzo</xsl:variable>
   <xsl:variable name="bwStr-EvLC-End">Final</xsl:variable>

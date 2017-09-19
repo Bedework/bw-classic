@@ -30,6 +30,7 @@
     <table id="commonListTable">
       <tr>
         <th><xsl:copy-of select="$bwStr-EvLC-Title"/></th>
+        <th><xsl:copy-of select="$bwStr-EvLC-CalSuite"/></th>
         <th><xsl:copy-of select="$bwStr-EvLC-ClaimedBy"/></th>
         <th><xsl:copy-of select="$bwStr-EvLC-Start"/></th>
         <th><xsl:copy-of select="$bwStr-EvLC-End"/></th>
@@ -39,11 +40,12 @@
 
       <xsl:for-each select="/bedework/events/event">
         <xsl:variable name="calPath" select="calendar/encodedPath"/>
+        <xsl:variable name="calSuite" select="calSuite"/>
         <xsl:variable name="guid" select="guid"/>
         <xsl:variable name="recurrenceId" select="recurrenceId"/>
         <tr>
           <td>
-            <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+            <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;cs={$calSuite}">
               <xsl:choose>
                 <xsl:when test="summary != ''">
                   <xsl:value-of select="summary"/>
@@ -53,6 +55,9 @@
                 </xsl:otherwise>
               </xsl:choose>
             </a>
+          </td>
+          <td>
+            <xsl:value-of select="calSuite"/>
           </td>
           <xsl:choose>
             <xsl:when test="xproperties/X-BEDEWORK-SUBMISSION-CLAIMANT">
@@ -105,7 +110,7 @@
                 <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}">
                   <xsl:copy-of select="$bwStr-EvLC-Master"/>
                 </a> |
-                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}">
+                <a href="{$editEvent}&amp;calPath={$calPath}&amp;guid={$guid}&amp;recurrenceId={$recurrenceId}&amp;cs={$calSuite}">
                   <xsl:copy-of select="$bwStr-EvLC-Instance"/>
                 </a>
               </div>
