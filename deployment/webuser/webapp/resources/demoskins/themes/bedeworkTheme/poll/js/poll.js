@@ -94,8 +94,8 @@ Poll.prototype.writeVpollValues = function() {
     //$("#debug").append(print_r(choice) + '<div style="margin: 4em 0;">new choice</div>');
   });
   $("#bwComp-voterlist").empty();
-  $.each(this.editing_poll.getVvoters(), function(index, vvoter) {
-    this_poll.setVoterPanel(this_poll.addParticipantPanel(false, "voter", "Voter"), vvoter.getVoter());
+  $.each(this.editing_poll.getvoters(), function(index, voter) {
+    this_poll.setVoterPanel(this_poll.addParticipantPanel(false, "voter", "Voter"), voter.getVoter());
   });
 };
 
@@ -124,11 +124,11 @@ Poll.prototype.updateVoters = function() {
   }
 
   var this_poll = this;
-  var vvoters = this.editing_poll.getVvoters();
+  var voters = this.editing_poll.getvoters();
 
   $("#bwComp-voterlist").children().each(function(index) {
-    var vvoter = vvoters[index];
-    var voter = vvoter.getVoter();
+    var voter = voters[index];
+    var voter = voter.getVoter();
     var radioName = "voterType" + (index + 1);
     var cutype = $("input:radio[name=" + radioName + "]:checked").val();
 
@@ -800,8 +800,8 @@ Poll.prototype.addVoter = function() {
   // Add new list item
   poll_syncAttendees = $("#syncPollAttendees").is(":checked");
 
-  var vvoter = this.editing_poll.addVvoter();
-  return this.setVoterPanel(this.addParticipantPanel(false, "voter", "Voter"), vvoter.getVoter());
+  var voter = this.editing_poll.addvoter();
+  return this.setVoterPanel(this.addParticipantPanel(false, "voter", "Voter"), voter.getVoter());
 };
 
 // Remove participant button clicked
@@ -815,7 +815,7 @@ Poll.prototype.removeParticipant = function(itemType, index, idDiv) {
 
   poll_syncAttendees = $("#syncPollAttendees").is(":checked");
 
-  this.editing_poll.removeVvoter(index);
+  this.editing_poll.removevoter(index);
 };
 
 /** Build the results UI based on the poll details
@@ -957,10 +957,10 @@ Poll.prototype.buildResults = function() {
         this_poll.hoverCalDialogClose
     ); */
   });
-  var voterDetails = this.editing_poll.getVvoters();
+  var voterDetails = this.editing_poll.getvoters();
 
-  $.each(voterDetails, function(index, vvoter) {
-    var voter = vvoter.getVoter();
+  $.each(voterDetails, function(index, voter) {
+    var voter = voter.getVoter();
     var active = gSession.currentPrincipal.matchingAddress(voter.cuaddr());
     var tr = $("<tr/>").appendTo(tfoot);
     var voterName = voter.nameOrAddress();
@@ -975,7 +975,7 @@ Poll.prototype.buildResults = function() {
       if (event.ispollwinner()) {
         td.addClass("poll-winner-td");
       }
-      var response = vvoter.getResponseNormalised(pollItemId);
+      var response = voter.getResponseNormalised(pollItemId);
 
       if (!active || !this_poll.editing_poll.editable()) {
         td.text(textForResponse[response]);
@@ -1101,7 +1101,7 @@ Poll.prototype.clickResponse = function() {
 Poll.prototype.updateOverallResults = function() {
   var thisPoll = this;
   var choices = this.editing_poll.choices();
-  var voterDetails = this.editing_poll.getVvoters();
+  var voterDetails = this.editing_poll.getvoters();
   var resultTable = $("#editpoll-resulttable");
   var th = resultTable.children("thead").first();
   var tbody = resultTable.children("tbody").first();
@@ -1115,8 +1115,8 @@ Poll.prototype.updateOverallResults = function() {
     var responses = [0, 0, 0, 0, 0];
 
     var itemId = choice.pollitemid();
-    $.each(voterDetails, function(index, vvoter) {
-      var response = vvoter.getResponseNormalised(itemId);
+    $.each(voterDetails, function(index, voter) {
+      var response = voter.getResponseNormalised(itemId);
 
       responses[response]++;
 

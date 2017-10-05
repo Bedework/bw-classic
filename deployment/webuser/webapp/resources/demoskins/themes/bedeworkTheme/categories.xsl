@@ -101,7 +101,7 @@
                 <xsl:copy-of select="$bwStr-MCat-Description"/>
               </td>
               <td>
-                <textarea name="categoryDesc.value" rows="3" cols="60">
+                <textarea name="categoryDescription" rows="3" cols="60">
                   <xsl:text> </xsl:text>
                 </textarea>
               </td>
@@ -138,7 +138,7 @@
                 <xsl:copy-of select="$bwStr-MCat-Description"/>
               </td>
               <td>
-                <textarea name="categoryDesc.value" rows="3" cols="60">
+                <textarea name="categoryDescription" rows="3" cols="60">
                   <xsl:value-of select="normalize-space(/bedework/currentCategory/category/desc)"/>
                   <xsl:if test="normalize-space(/bedework/currentCategory/category/desc/textarea) = ''">
                     <xsl:text> </xsl:text>

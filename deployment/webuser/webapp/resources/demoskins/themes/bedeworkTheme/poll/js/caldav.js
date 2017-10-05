@@ -447,23 +447,23 @@ CalDAVPrincipal.prototype.loadCalendars = function(whenDone) {
 			// Separate out support for VPOLL and VEVENT
 			var comps = findElementPath(response_node, "D:propstat/D:prop/C:supported-calendar-component-set/C:comp");
 			var hasVpoll = false;
-			var hasVevent = false;
-      var hasVtodo = false;
-			if (comps.length != 0) {
-				$.each(comps, function(index, comp) {
-					if (comp.attr("name") == "VPOLL") {
-						hasVpoll = true;
-					}
-					if (comp.attr("name") == "VEVENT") {
-						hasVevent = true;
-					}
-          if (comp.attr("name") == "VTODO") {
-            hasVtodo = true;
-          }
-				});
-			}
+            var hasVevent = false;
+            var hasVtodo = false;
+            if (comps.length != 0) {
+                $.each(comps, function(index, comp) {
+                    if (comp.attr("name") == "VPOLL") {
+                        hasVpoll = true;
+                    }
+                    if (comp.attr("name") == "VEVENT") {
+                        hasVevent = true;
+                    }
+                    if (comp.attr("name") == "VTODO") {
+                        hasVtodo = true;
+                    }
+                });
+            }
 
-			// Build the calendar and assign to appropriate arrays
+            // Build the calendar and assign to appropriate arrays
 			var cal = new CalendarCollection(url);
 			cal.displayname = getElementText(response_node, "D:propstat/D:prop/D:resourcetype/D:displayname")
 			if (!cal.displayname) {
@@ -500,15 +500,18 @@ CalDAVPrincipal.prototype.loadResources = function(whenDone) {
 
 // Iteratively load all resources from VPOLL calendars
 CalDAVPrincipal.prototype.loadCalendarResources = function(whenDone, process) {
-	var this_principal = this;
-	var calendar = process.pop();
-	calendar.loadResources(function() {
-		if (process.length != 0) {
-			this_principal.loadCalendarResources(whenDone, process);
-		} else {
-			this_principal.addResources(whenDone);
-		}
-	});
+    var this_principal = this;
+    var calendar = process.pop();
+
+    if (calendar) {
+        calendar.loadResources(function () {
+                if (process) {
+                    this_principal.loadCalendarResources(whenDone, process);
+                } else {
+                    this_principal.addResources(whenDone);
+                }
+            });
+    }
 };
 
 // After all resources are loaded, add each VPOLL to view controller
