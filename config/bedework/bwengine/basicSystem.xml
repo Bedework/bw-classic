@@ -2,25 +2,16 @@
 
 <basic-properties xmlns="http://bedework.org/ns/" type="org.bedework.calsvc.jmx.BasicSystemPropertiesImpl">
   <bedeworkResourceDirectory>.bedework</bedeworkResourceDirectory>
-  <bwadmingroupPrincipalRoot>/principals/groups/bwadmin/</bwadmingroupPrincipalRoot>
   <defaultAttachmentsName>Attachments</defaultAttachmentsName>
   <defaultNotificationsName>Notifications</defaultNotificationsName>
   <defaultReferencesName>References</defaultReferencesName>
   <globalResourcesPath>/public/Resources/</globalResourcesPath>
-  <groupPrincipalRoot>/principals/groups/</groupPrincipalRoot>
-  <hostPrincipalRoot>/principals/hosts/</hostPrincipalRoot>
   <indexRoot>lucene/indexroot</indexRoot>
-  <principalRoot>/principals/</principalRoot>
   <publicCalendarRoot>public</publicCalendarRoot>
-  <publicUser>public-user</publicUser>
-  <resourcePrincipalRoot>/principals/resources/</resourcePrincipalRoot>
-  <ticketPrincipalRoot>/principals/tickets/</ticketPrincipalRoot>
   <userCalendarRoot>user</userCalendarRoot>
   <userDefaultCalendar>calendar</userDefaultCalendar>
   <userDefaultPollsCalendar>polls</userDefaultPollsCalendar>
   <userDefaultTasksCalendar>tasks</userDefaultTasksCalendar>
   <userInbox>Inbox</userInbox>
   <userOutbox>Outbox</userOutbox>
-  <userPrincipalRoot>/principals/users/</userPrincipalRoot>
-  <venuePrincipalRoot>/principals/locations/</venuePrincipalRoot>
 </basic-properties>

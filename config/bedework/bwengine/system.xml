@@ -14,7 +14,7 @@
   <suggestionEnabled>true</suggestionEnabled>
   <syseventsProperties>
     <syseventsProperty>java.naming.provider.url = vm://bedework</syseventsProperty>
-    <syseventsProperty>org.bedework.connection.factory.name=java:/jms/BedeworkConnectionFactory</syseventsProperty>
+    <syseventsProperty>org.bedework.connection.factory.name=BedeworkConnectionFactory</syseventsProperty>
     <syseventsProperty>org.bedework.jms.queue.prefix=activemq/queue/</syseventsProperty>
     <syseventsProperty>connectionFactoryNames = activemq/QueueConnectionFactory</syseventsProperty>
     <syseventsProperty>queue.queue/sysevents = bedework.sysevents</syseventsProperty>

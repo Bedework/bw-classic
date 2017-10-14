@@ -2,5 +2,6 @@
 
 <cmdutil-properties xmlns="http://bedework.org/ns/" type="org.bedework.tools.cmdutil.CmdUtilPropertiesImpl">
   <account>admin</account>
+  <superUser>true</superUser>
   <dataOut>${org.bedework.data.dir}/cmdutil/</dataOut>
 </cmdutil-properties>
