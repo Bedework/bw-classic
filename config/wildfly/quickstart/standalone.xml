@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<server xmlns="urn:jboss:domain:4.0">
+<server xmlns="urn:jboss:domain:4.2">
+
     <extensions>
         <extension module="org.jboss.as.clustering.infinispan"/>
         <extension module="org.jboss.as.connector"/>
@@ -232,20 +233,29 @@
             <logger category="org.bedework.calfacade.filter.FilterBuilder">
                 <level name="INFO"/>
             </logger>
-            <logger use-parent-handlers="false" category="org.bedework.sysevents">
+            <logger category="org.bedework.icalendar.RecurUtil">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.bedework.calsvc.Calendars">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.bedework.util.servlet.filters.ConfiguredXSLTFilter">
+              <level name="INFO"/>
+            </logger>
+            <logger category="org.bedework.sysevents" use-parent-handlers="false">
                 <level name="INFO"/>
                 <handlers>
                     <handler name="SYSEVENTS"/>
                 </handlers>
             </logger>
-            <logger use-parent-handlers="false" category="org.bedework.timezones.refresh.logger">
+            <logger category="org.bedework.timezones.refresh.logger" use-parent-handlers="false">
                 <level name="INFO"/>
                 <handlers>
                     <handler name="TZREFRESH"/>
                     <handler name="CONSOLE"/>
                 </handlers>
             </logger>
-            <logger use-parent-handlers="false" category="org.bedework.chgnote">
+            <logger category="org.bedework.chgnote" use-parent-handlers="false">
                 <level name="INFO"/>
                 <handlers>
                     <handler name="CHANGES"/>
@@ -287,9 +297,14 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:/CalendarDS" pool-name="CalendarDS" enabled="true" use-ccm="false">
+                <datasource jta="true" jndi-name="java:/CalendarDS" pool-name="bwCalPool" enabled="true" use-ccm="false">
                     <connection-url>jdbc:h2:tcp://localhost/CalDb</connection-url>
                     <driver>h2</driver>
+                  <pool>
+                    <min-pool-size>1</min-pool-size>
+                    <max-pool-size>50</max-pool-size>
+                    <prefill>true</prefill>
+                  </pool>
                     <security>
                         <user-name>sa</user-name>
                         <password>sa</password>
@@ -338,6 +353,10 @@
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                    </driver>
+                    <driver name="postgresql" module="org.postgresql"/>
+                    <driver name="mysql" module="com.mysql.driver">
+                        <driver-class>com.mysql.jdbc.Driver</driver-class>
                     </driver>
                 </drivers>
             </datasources>
@@ -499,6 +518,7 @@
         <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
         <subsystem xmlns="urn:jboss:domain:messaging-activemq:1.0">
             <server name="default">
+                <journal type="NIO"/>
                 <security-setting name="#">
                     <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
                 </security-setting>
@@ -527,8 +547,8 @@
                 <jms-queue name="bedework.sysevents.eventregActionDelay" entries="activemq/queue/eventregActionDelay bwqueues/eventregActionDelay"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
+                <connection-factory name="BedeworkConnectionFactory" entries="java:/BedeworkConnectionFactory java:/jms/BedeworkConnectionFactory" connectors="in-vm"/>
                 <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa"/>
-                <pooled-connection-factory name="BedeworkConnectionFactory" entries="java:/BedeworkConnectionFactory java:/jms/BedeworkConnectionFactory" connectors="in-vm" transaction="xa"/>
             </server>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
@@ -605,6 +625,7 @@
                     <access-log pattern="%h %l %u [%t] &quot;%r&quot; %s %b &quot;%{i,Referer}&quot; &quot;%{i,User-Agent}&quot;"/>
                     <filter-ref name="server-header"/>
                     <filter-ref name="x-powered-by-header"/>
+                    <filter-ref name="404-handler" predicate="true" />
                 </host>
             </server>
             <servlet-container name="default">
@@ -618,6 +639,7 @@
             <filters>
                 <response-header name="server-header" header-name="Server" header-value="WildFly/10"/>
                 <response-header name="x-powered-by-header" header-name="X-Powered-By" header-value="Undertow/1"/>
+                <error-page name="404-handler" code="404" path="${jboss.home.dir}/welcome-content/Error404.html"/>
             </filters>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0">
