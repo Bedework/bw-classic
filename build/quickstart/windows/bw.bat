@@ -70,7 +70,7 @@ SET updateProjects="%updateProjects%  bw-synch"
 SET updateProjects="%updateProjects%  bw-timezone-server"
 SET updateProjects="%updateProjects%  bw-util"
 SET updateProjects="%updateProjects%  bw-webdav"
-SET updateProjects="%updateProjects%  bw-ws"
+SET updateProjects="%updateProjects%  bw-xml"
 
 # git projects
 SET bw_access=
@@ -600,7 +600,7 @@ GOTO:EOF
   GOTO doant
 
 :cdBwWs
-  cd %QUICKSTART_HOME%\bw-ws
+  cd %QUICKSTART_HOME%\bw-xml
   SET bw_ws=
   GOTO doant
 

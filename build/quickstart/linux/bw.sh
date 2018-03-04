@@ -69,7 +69,7 @@ updateProjects="$updateProjects  bw-synch"
 updateProjects="$updateProjects  bw-timezone-server"
 updateProjects="$updateProjects  bw-util"
 updateProjects="$updateProjects  bw-webdav"
-updateProjects="$updateProjects  bw-ws"
+updateProjects="$updateProjects  bw-xml"
 
 # git projects
 bw_access=
@@ -334,7 +334,7 @@ setDirectory() {
 
 	if [ "$bw_ws" != "" ] ; then
       echo "Build ws"
-      cd $GIT_HOME/bw-ws
+      cd $GIT_HOME/bw-xml
       maven=yes
       bw_ws=
       return

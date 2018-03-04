@@ -14,7 +14,7 @@ install() {
 }
 
 #install "bw-classic"
-#install "bw-ws"
+#install "bw-xml"
 #install "bw-util"
 #install "bw-access"
 #install "bw-synch"
