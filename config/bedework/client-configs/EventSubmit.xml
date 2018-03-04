@@ -8,6 +8,7 @@
   <autoDeleteContacts>false</autoDeleteContacts>
   <autoDeleteLocations>false</autoDeleteLocations>
   <browserResourceRoot>/eventsubmitrsrc</browserResourceRoot>
+  <calSuite>MainCampus</calSuite>
   <guestMode>false</guestMode>
   <hour24>true</hour24>
   <logPrefix>EventSubmit</logPrefix>

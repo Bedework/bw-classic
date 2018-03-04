@@ -17,6 +17,9 @@
     <hibernateProperty>hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory</hibernateProperty>
     <hibernateProperty>hibernate.cache.use_query_cache=true</hibernateProperty>
     <hibernateProperty>hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider</hibernateProperty>
+    <hibernateProperty>hibernate.connection.pool_size=1</hibernateProperty>
+    <hibernateProperty>hibernate.query.substitutions=true 'T', false 'F', yes 'Y', no 'N'</hibernateProperty>
+    <hibernateProperty>net.sf.ehcache.configurationResourceName=/ehcache.xml</hibernateProperty>
   </hibernateProperties>
   <missingTargetRetries>10</missingTargetRetries>
   <name>note-config</name>

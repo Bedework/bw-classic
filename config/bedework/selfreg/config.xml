@@ -24,10 +24,12 @@
     <hibernateProperty>hibernate.jdbc.use_streams_for_binary=true</hibernateProperty>
     <hibernateProperty>hibernate.cache.region_prefix=eventregdb</hibernateProperty>
     <hibernateProperty>hibernate.cache.use_second_level_cache=false</hibernateProperty>
+    <hibernateProperty>hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory</hibernateProperty>
     <hibernateProperty>hibernate.cache.use_query_cache=true</hibernateProperty>
     <hibernateProperty>hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider</hibernateProperty>
     <hibernateProperty>hibernate.connection.pool_size=1</hibernateProperty>
     <hibernateProperty>hibernate.query.substitutions=true 'T', false 'F', yes 'Y', no 'N'</hibernateProperty>
+    <hibernateProperty>net.sf.ehcache.configurationResourceName=/ehcache.xml</hibernateProperty>
   </hibernateProperties>
   <ldapUrl>ldap://localhost:10389</ldapUrl>
   <mailDisabled>true</mailDisabled>

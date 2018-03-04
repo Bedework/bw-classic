@@ -4,13 +4,17 @@
   <admingroupsClass>org.bedework.calsvc.directory.AdminGroupsDbImpl</admingroupsClass>
   <autoKillMinutes>0</autoKillMinutes>
   <cacheUrlPrefix>http://localhost:7070</cacheUrlPrefix>
+  <calSoapWsURI>/calws-soap/</calSoapWsURI>
   <calSoapWsWSDLURI>http://localhost:8080/wsdls/calws-soap/wssvc.wsdl</calSoapWsWSDLURI>
+  <eventregAdminToken>ba48c4dc-ab49-4f55-b2c5-02cd450d2762</eventregAdminToken>
   <eventregUrl>http://localhost:8080/eventreg/</eventregUrl>
   <featureFlags>-VPOLLUI-</featureFlags>
+  <ischeduleURI>/ischedule/</ischeduleURI>
   <mailerClass>org.bedework.mail.DummyMailer</mailerClass>
   <notifierId>notify-user</notifierId>
   <notifierToken>abcd</notifierToken>
   <rootUsers>admin</rootUsers>
+  <socketToken>abcd</socketToken>
   <suggestionEnabled>true</suggestionEnabled>
   <syseventsProperties>
     <syseventsProperty>java.naming.provider.url = vm://bedework</syseventsProperty>
